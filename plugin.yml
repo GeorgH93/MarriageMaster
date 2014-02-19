@@ -1,4 +1,6 @@
 name: MarriageMaster
+author: GeorgH93
+website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
 version: 1
 depend: [Vault]
@@ -18,6 +20,8 @@ permissions:
       marry.tp: true
       marry.home: true
       marry.chat: true
+      marry.setpriest: true
+      marry.reload: true
   marry.admin:
     description: Gives acces to all Marriage Admin commands
     children:
