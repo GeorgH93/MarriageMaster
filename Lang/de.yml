@@ -6,7 +6,7 @@ Language:
         NotFromConsole: Du kannst diesen Befehl nicht von der Konsole aus verwenden.
     Description:
         Commands: Befehle
-        ListAll: Liste alle Verheiraten Spieler.
+        ListAll: Liste alle verheiraten Spieler.
         Marry: Verheiratet zwei Spieler in einem 25 Block Radius.
         Divorce: Scheidet zwei Spieler in einem 25 Block Radius.
         Priest: Setzt einen Priester.
@@ -29,7 +29,7 @@ Language:
         PvPOn: Du hast PvP mit deinem Partner aktiviert.
         PvPOff: Du hast PvP mit deinem Partner deaktiviert.
         NoHome: Du hast noch kein Zuhause.
-        HomeTP: Du wurdest Heim teleportiert.
+        HomeTP: Du wurdest nachhause teleportiert.
         HomeSet: Dein Zuhause wurde gespeichert.
         PlayerNotOn: '%s ist nicht Online.'
         NoTPInVanish: Du kannst dich nicht zu deinem Partner teleportieren wenn er unsichtbar ist.
@@ -54,7 +54,7 @@ Language:
         HasMarried: '%1$s hat dich mit %2$s verheiratet.'
         MadeYouAPriest: '%s hat dich zu einem Priester gemacht.'
         MadeAPriest: 'Du hast %s zu einem Priester gemacht.'
-        PlayerNotMarried: Der spieler ist nicht verheiratet.
+        PlayerNotMarried: Der Spieler ist nicht verheiratet.
         PartnerOffline: "%1$s's Partner (%2$s) ist nicht Online."
         DivorcedPlayer: '%1$s hat dich von %2$s geschieden.'
         Divorced: 'Du hast %1$s von %2$s geschieden.'
