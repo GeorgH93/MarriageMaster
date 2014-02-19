@@ -1,0 +1,60 @@
+Version: 1
+Language:
+    Console:
+        Enabled: Marriage Master wurde aktiviert!
+        Disabled: Marriage Master wurde deaktiviert.
+        NotFromConsole: Du kannst diesen Befehl nicht von der Konsole aus verwenden.
+    Description:
+        Commands: Befehle
+        ListAll: Liste alle Verheiraten Spieler.
+        Marry: Verheiratet zwei Spieler in einem 25 Block Radius.
+        Divorce: Scheidet zwei Spieler in einem 25 Block Radius.
+        Priest: Setzt einen Priester.
+        TP: Teleportation zu deinem Partner.
+        PvPOn: Aktiviert PvP mit deinem Partner.
+        PvPOff: Deaktiviert PvP mit deinem Partner.
+        SetHome: Setzt dein Zuhause.
+        TPHome: Teleportiert dich nachhause.
+        Chat: Privater Chat mit deinem Partner.
+        Reload: Lädt die Config des Plugins neu.
+    Ingame:
+        NotMarried: Du bist nicht Verheiratet.
+        NoMarriedPlayers: Es ist niemand Verheiratet.
+        NotAPriest: Du bist kein Priester.
+        NoPermission: Dir fehlen die Rechte dafür.
+        PartnerOnline: Dein Partner ist Online.
+        PartnerOffline: Dein Partner ist Offline.
+        PartnerNowOnline: Dein Partner ist jetzt Online.
+        PartnerNowOffline: Dein Partner ist jetzt Offline.
+        PvPOn: Du hast PvP mit deinem Partner aktiviert.
+        PvPOff: Du hast PvP mit deinem Partner deaktiviert.
+        NoHome: Du hast noch kein Zuhause.
+        HomeTP: Du wurdest Heim teleportiert.
+        HomeSet: Dein Zuhause wurde gespeichert.
+        PlayerNotOn: '%s ist nicht Online.'
+        NoTPInVanish: Du kannst dich nicht zu deinem Partner teleportieren wenn er unsichtbar ist.
+        TP: Teleportiere zu deinem Partner...
+        TPto: Dein Partner Teleportiert sich zu dir...
+        ListHL: Married Player List
+    Economy:
+        NoEnough: Du hast nicht genug Geld
+        PartnerNotEnough: Dein Partner hat nicht genug Geld
+        HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
+        SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
+        TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
+        DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
+        MarriagePaid: 'Du hast %1$s für deine Eheschließung gezahlt.'
+    Priest:
+        AlreadyAPriest: '%s ist bereits ein Priester!'
+        NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
+        NotInRange: Die Spieler sind nicht in Reichweite.
+        AlreadyMarried: Du kannst niemanden verheiraten der schon verheiratet ist.
+        BroadcastMarriage: '%1$s hat %2$s mit %3$s verheiratet.'
+        Married: 'Du hast %1$s mit %2$s verheiratet.'
+        HasMarried: '%1$s hat dich mit %2$s verheiratet.'
+        MadeYouAPriest: '%s hat dich zu einem Priester gemacht.'
+        MadeAPriest: 'Du hast %s zu einem Priester gemacht.'
+        PlayerNotMarried: Der spieler ist nicht verheiratet.
+        PartnerOffline: "%1$s's Partner (%2$s) ist nicht Online."
+        DivorcedPlayer: '%1$s hat dich von %2$s geschieden.'
+        Divorced: 'Du hast %1$s von %2$s geschieden.'

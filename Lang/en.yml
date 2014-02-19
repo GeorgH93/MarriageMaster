@@ -1,0 +1,60 @@
+Version: 1
+Language:
+    Console:
+        Enabled: Marriage Master has been enabled!
+        Disabled: Marriage Master has been disabled.
+        NotFromConsole: You can't use this command from the console.
+    Description:
+        Commands: commands
+        ListAll: Lists all Married Players.
+        Marry: Marry two Persons in a range of 25 blocks.
+        Divorce: Divorces two Persons in a range of 25 blocks.
+        Priest: Sets a priest.
+        TP: Teleport to Married Player.
+        PvPOn: Enables PvP with Partner.
+        PvPOff: Disables PvP with Partner.
+        SetHome: Sets your Home.
+        TPHome: Teleports to your Home.
+        Chat: Private chat with your partner.
+        Reload: Reloads the config of the plugin.
+    Ingame:
+        NotMarried: You are not Married.
+        NoMarriedPlayers: There are no Married Players.
+        NotAPriest: You are not a Priest.
+        NoPermission: You don't have the Permission to do that.
+        PartnerOnline: Your Partner is online.
+        PartnerOffline: Your Partner is offline.
+        PartnerNowOnline: Your Partner is now online.
+        PartnerNowOffline: Your Partner is now offline.
+        PvPOn: You have now enabled PvP with your Partner.
+        PvPOff: You have now disabled PvP with your Partner.
+        NoHome: You have no Home yet.
+        HomeTP: You have been teleported to your Home.
+        HomeSet: Your home has been saved.
+        PlayerNotOn: '%s is not Online.'
+        NoTPInVanish: You cant use teleport if your Partner is Vanished.
+        TP: Teleporting to Partner...
+        TPto: Your Partner is teleporting to you...
+        ListHL: Married Player List
+    Economy:
+        NoEnough: You dont have enough money
+        PartnerNotEnough: Your partner doesnt have enough money
+        HomeTPPaid: 'You paid %1$s for your home teleport. (%2$s left)'
+        SetHomePaid: 'You paid %1$s to set your Home (%2$s left)'
+        TPPaid: 'You paid %1$s for the Teleport (%1$s left)'
+        DivorcePaid: 'You paid %1$s for the annul of your marriage (%2$s left)'
+        MarriagePaid: 'You paid %1$s for your marriage (%2$s left)'
+    Priest:
+        AlreadyAPriest: '%s is already a priest!'
+        NotWithHimself: "You can't marry %s with himself."
+        NotInRange: The players are not in range.
+        AlreadyMarried: You can't marry people that are already married.
+        BroadcastMarriage: '%1$s has married %2$s with %3$s.'
+        Married: 'You have married %1$s with %2$s.'
+        HasMarried: '%1$s has married you with %2$s.'
+        MadeYouAPriest: '%s has made you a priest.'
+        MadeAPriest: 'You have made %s a priest.'
+        PlayerNotMarried: The players is not married.
+        PartnerOffline: "%1$s's partner (%2$s) is not Online."
+        DivorcedPlayer: '%1$s has divorced your marriage with %2$s.'
+        Divorced: 'You have divorced %1$s and %2$s.'

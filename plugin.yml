@@ -1,0 +1,53 @@
+name: MarriageMaster
+main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
+version: 1
+depend: [Vault]
+commands:
+   marry:
+      description: Main command
+      usage: /marry
+      
+permissions:
+  marry.*:
+    description: Gives access to all MarriageMaster commands
+    children:
+      marry.list: true
+      marry.pvpon: true  
+      marry.pvpoff: true 
+      marry.priest: true
+      marry.tp: true
+      marry.home: true
+      marry.chat: true
+  marry.admin:
+    description: Gives acces to all Marriage Admin commands
+    children:
+      marry.reload: true
+      marry.setpriest: true
+      marry.priest: true
+  marry.list:
+    description: Allows you to use the List command
+    default: true
+  marry.pvpon:
+    description: Allows you to enable pvp with your partner
+    default: true
+  marry.pvpoff:
+    description: Allows you to disable pvp with your partner
+    default: true
+  marry.priest:
+    description: Allows you to marry two players
+    default: op
+  marry.tp:
+    description: Allows you to tp to your partner
+    default: true
+  marry.home:
+    description: Allows you to tp / set to your home
+    default: true
+  marry.chat:
+    description: Allows you to chat with your partner
+    default: true
+  marry.setpriest:
+    description: Allows you to set a priest
+    default: op
+  marry.reload:
+    description: Allows you to reload the config
+    default: op
