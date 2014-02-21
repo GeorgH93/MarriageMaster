@@ -17,7 +17,6 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Listener;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,9 +28,9 @@ public class RegainHealth implements Listener
 {
 	private MarriageMaster marriageMaster;
 
-	public RegainHealth(MarriageMaster marriageMaster) 
+	public RegainHealth(MarriageMaster marriagemaster) 
 	{
-		this.marriageMaster = marriageMaster;
+		marriageMaster = marriagemaster;
 	}
 
 	@EventHandler
@@ -46,40 +45,24 @@ public class RegainHealth implements Listener
 		
 		if(player != null)
 		{
-			if(this.marriageMaster.config.GetHealthRegainEnabled())
+			int amount = marriageMaster.config.GetHealthRegainAmount();
+			
+			String partner = marriageMaster.DB.GetPartner(player.getName());
+			if(partner != null)
 			{
-				int amount = this.marriageMaster.config.GetHealthRegainAmount();
+				Player otherPlayer = marriageMaster.getServer().getPlayer(partner);
 				
-				String partner = this.marriageMaster.DB.GetPartner(player.getName());
-				if(partner != null)
+				if(otherPlayer != null)
 				{
-					Player otherPlayer = this.marriageMaster.getServer().getPlayer(partner);
-					
-					if(otherPlayer != null)
+					if(otherPlayer.isOnline())
 					{
-						if(otherPlayer.isOnline())
+						if(marriageMaster.InRadius(player, otherPlayer,2))
 						{
-							if(this.getRadius(player, otherPlayer))
-							{
-								event.setAmount((double)amount);
-							}
+							event.setAmount((double)amount);
 						}
 					}
 				}
 			}
 		}
-	}
-	
-	private boolean getRadius(Player player, Player otherPlayer) 
-	{
-		Location pl = player.getLocation();
-		Location opl = otherPlayer.getLocation();
-		
-		if(pl.distance(opl) <= 2 && opl.distance(pl) <= 2)
-		{
-			return true;
-		}
-		
-		return false;
 	}
 }

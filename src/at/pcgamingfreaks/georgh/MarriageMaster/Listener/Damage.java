@@ -30,9 +30,9 @@ public class Damage implements Listener
 {
 	private MarriageMaster marriageMaster;
 	
-	public Damage(MarriageMaster marriageMaster)
+	public Damage(MarriageMaster marriagemaster)
 	{
-		this.marriageMaster = marriageMaster;
+		marriageMaster = marriagemaster;
 	}
 
 	@EventHandler
@@ -44,28 +44,24 @@ public class Damage implements Listener
 		Player player = null;
 		Player otherPlayer = null;
 		
-        if(attacker instanceof Player)
+        if(attacker instanceof Player && defender instanceof Player)
         {
         	player = (Player)event.getDamager();
-        }
-        
-        if(defender instanceof Player)
-        {
         	otherPlayer = (Player) event.getEntity();
         }
 		
 		if(player != null && otherPlayer != null)
 		{
-			String married1 = this.marriageMaster.DB.GetPartner(player.getName());
-			String married2 = this.marriageMaster.DB.GetPartner(otherPlayer.getName());
+			String married1 = marriageMaster.DB.GetPartner(player.getName());
+			String married2 = marriageMaster.DB.GetPartner(otherPlayer.getName());
 			
 			if(married1 != null && married2 != null)
 			{
 				if(married1.equalsIgnoreCase(otherPlayer.getName()) && married2.equalsIgnoreCase(player.getName()))
 				{
-					if(!this.marriageMaster.DB.GetPvPEnabled(player.getName()))
+					if(!marriageMaster.DB.GetPvPEnabled(player.getName()))
 					{
-						player.sendMessage(ChatColor.RED + "You can't hurt your Partner if you have PvP disabled.");
+						player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PvPIsOff"));
 						event.setCancelled(true);
 					}
 				}

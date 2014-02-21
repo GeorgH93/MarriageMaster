@@ -69,6 +69,8 @@ public class OnCommand implements CommandExecutor
         	if(marriageMaster.config.CheckPerm(player, "marry.reload"))
         	{
         		marriageMaster.config.Reload();
+        		marriageMaster.lang.Reload();
+        		marriageMaster.DB.Recache();
         		player.sendMessage(ChatColor.BLUE + "Reloaded");
         	}
         	else

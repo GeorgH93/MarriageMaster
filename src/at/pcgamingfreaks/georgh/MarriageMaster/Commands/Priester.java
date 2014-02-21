@@ -123,22 +123,24 @@ public class Priester
 	public void setPriester(String[] args, Player sender) 
 	{
 		Player player = marriageMaster.getServer().getPlayer(args[1]);
-		if(player.isOnline())
+		if(player != null && player.isOnline())
 		{
 			if(marriageMaster.IsPriester(player))
 			{
-				player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.AlreadyAPriest"), player.getName()));
+				marriageMaster.DB.DelPriest(player.getName());
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeYouAPriest"), sender.getName()));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getName()));
 			}
 			else
 			{
-				marriageMaster.DB.SetPriester(player.getName());
+				marriageMaster.DB.SetPriest(player.getName());
 				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeYouAPriest"), sender.getName()));
 				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getName()));
 			}
 		}
 		else
 		{
-			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), player.getName()));
+			sender.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), args[1]));
 		}
 	}
 	

@@ -39,6 +39,15 @@ public class Database
 		}
 	}
 	
+	public void Recache()
+	{
+		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		{
+			case "mysql": break;
+			default: files.Reload();
+		}
+	}
+	
 	public boolean GetPvPEnabled(String playername)
 	{
 		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
@@ -101,12 +110,21 @@ public class Database
 		return null;
 	}
 	
-	public void SetPriester(String Player)
+	public void SetPriest(String Player)
 	{
 		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
 		{
 			case "mysql": break;
-			default: files.SavePriester(Player); break;
+			default: files.AddPriest(Player); break;
+		}
+	}
+	
+	public void DelPriest(String Player)
+	{
+		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		{
+			case "mysql": break;
+			default: files.DelPriest(Player); break;
 		}
 	}
 	

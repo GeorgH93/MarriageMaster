@@ -17,9 +17,17 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Databases;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.bukkit.Location;
@@ -32,28 +40,106 @@ import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 public class Files 
 {
 	private MarriageMaster marriageMaster;
+	private Map<String, FileConfiguration> MarryMap;
+	private List<String> Priests;
 	
 	public Files(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
+		MarryMap = new HashMap<String, FileConfiguration>();
+		Priests = new ArrayList<String>();
+		LoadAllPlayers();
+		LoadPriests();
+	}
+	
+	private void LoadAllPlayers()
+	{
+		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").toString());
+		String temp;
+		if(file.exists())
+		{
+			File[] allFiles = file.listFiles();
+			for (File item : allFiles)
+			{
+				temp = item.getName();
+				LoadPlayer(temp.substring(0, temp.length()-4));
+			}
+		}
+	}
+	
+	public void Reload()
+	{
+		MarryMap.clear();
+		LoadAllPlayers();
+		LoadPriests();
+	}
+	
+	public void LoadPlayer(String playername)
+	{
+		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
+		if(file.exists())
+		{
+			MarryMap.put(playername, YamlConfiguration.loadConfiguration(file));
+		}
+	}
+	
+	public void LoadPriests()
+	{
+		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("priests.yml").toString());
+		Priests.clear();
+		if(file.exists())
+		{
+			BufferedReader in = null;
+	        FileReader fr = null;
+			try
+			{
+	            fr = new FileReader(file);
+	            in = new BufferedReader(fr);
+	            String str;
+	            while ((str = in.readLine()) != null)
+	            {
+	            	if(!str.isEmpty())
+	            	{
+	            		Priests.add(str);
+	            	}
+	            }
+	        }
+			catch (Exception e)
+			{
+	            e.printStackTrace();
+	        }
+			finally
+			{
+				try
+				{
+					in.close();
+	            	fr.close();
+				}
+				catch (Exception e)
+				{
+				}
+	        }
+		}
+	}
+	
+	public void UnloadPlayer(String playername)
+	{
+		MarryMap.remove(playername);
 	}
 	
 	public boolean GetPvPState(String playername)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		return config.getBoolean("PvP");
+		return MarryMap.get(playername).getBoolean("PvP");
 	}
 	
 	public void SetPvPState(String playername, boolean state)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		config.set("PvP", state);
+		MarryMap.get(playername).set("PvP", state);
 		
 		try
         {
-            config.save(file);
+			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
+			MarryMap.get(playername).save(file);
         }
         catch(Exception e)
         {
@@ -62,23 +148,21 @@ public class Files
 	}
 	
 	public void SaveMarriedPlayerDivorce(String playername)
-	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-		config.set("MarriedStatus", "Single");
-		config.set("MarriedTo", "");
-		config.set("MarriedBy", "");
-		config.set("MarriedDay", "");
-		config.set("MarriedHome", "");
-		config.set("MarriedHome.location.World" , "");
-		config.set("MarriedHome.location.X" , "");
-		config.set("MarriedHome.location.Y" , "");
-		config.set("MarriedHome.location.Z" , "");
+	{	
+		MarryMap.get(playername).set("MarriedStatus", "Single");
+		MarryMap.get(playername).set("MarriedTo", "");
+		MarryMap.get(playername).set("MarriedBy", "");
+		MarryMap.get(playername).set("MarriedDay", "");
+		MarryMap.get(playername).set("MarriedHome", "");
+		MarryMap.get(playername).set("MarriedHome.location.World" , "");
+		MarryMap.get(playername).set("MarriedHome.location.X" , "");
+		MarryMap.get(playername).set("MarriedHome.location.Y" , "");
+		MarryMap.get(playername).set("MarriedHome.location.Z" , "");
 		
 		try
         {
-            config.save(file);
+			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
+			MarryMap.get(playername).save(file);
         }
         catch(Exception e)
         {
@@ -102,20 +186,20 @@ public class Files
 		    }
 		}
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+		MarryMap.put(playername,YamlConfiguration.loadConfiguration(file));
 		
         Calendar cal = Calendar.getInstance();
         
-        config.set("MarriedStatus", "Married");
-        config.set("MarriedTo", otherPlayer);
-        config.set("MarriedBy", priester);
-		config.set("MarriedDay", cal.getTime());
-		config.set("MarriedHome", "");
-		config.set("PvP", false);
+        MarryMap.get(playername).set("MarriedStatus", "Married");
+        MarryMap.get(playername).set("MarriedTo", otherPlayer);
+        MarryMap.get(playername).set("MarriedBy", priester);
+        MarryMap.get(playername).set("MarriedDay", cal.getTime());
+        MarryMap.get(playername).set("MarriedHome", "");
+        MarryMap.get(playername).set("PvP", false);
 			
         try
         {
-            config.save(file);
+        	MarryMap.get(playername).save(file);
         }
         catch(Exception e)
         {
@@ -126,115 +210,106 @@ public class Files
 	public void SaveMarriedHome(Location loc, String playername)
 	{
 		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		 
-		if(!file.exists())
+		
+		if(MarryMap.get(playername).getString("MarriedStatus").equalsIgnoreCase("Married"))
 		{
-		    try
-		    {
-		        file.createNewFile();
-		    }
-		    catch(Exception e)
-		    {
-		        e.printStackTrace();
-		    }
+			MarryMap.get(playername).set("MarriedHome.location.World" , loc.getWorld().getName());
+			MarryMap.get(playername).set("MarriedHome.location.X" , loc.getX());
+			MarryMap.get(playername).set("MarriedHome.location.Y" , loc.getY());
+			MarryMap.get(playername).set("MarriedHome.location.Z" , loc.getZ());
+		
+			try
+	        {
+				MarryMap.get(playername).save(file);
+	        }
+	        catch(Exception e)
+	        {
+	            e.printStackTrace();
+	        }
 		}
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-		String status = config.getString("MarriedStatus");
-		
-		if(status.equalsIgnoreCase("Married"))
-		{
-			config.set("MarriedHome.location.World" , loc.getWorld().getName());
-			config.set("MarriedHome.location.X" , loc.getX());
-			config.set("MarriedHome.location.Y" , loc.getY());
-			config.set("MarriedHome.location.Z" , loc.getZ());
-		}
-		
-		try
-        {
-            config.save(file);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
 	}
 	
-	public void SavePriester(String priestname)
+	public void AddPriest(String priestname)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("priests").append(File.separator).append(priestname).append(".yml").toString());
-
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-		config.set("Name", priestname);
-		try 
+		Priests.add(priestname);
+		SavePriests();
+	}
+	
+	public void SavePriests()
+	{
+		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("priests.yml").toString());
+		FileWriter writer = null;
+		try
 		{
-			config.save(file);
+			writer = new FileWriter(file,false);
+			boolean first = true;
+			for(String str: Priests)
+			{
+				if(first)
+				{
+					writer.write(str);
+					first = false;
+				}
+				else
+				{
+					writer.write("\n" + str);
+				}
+			}
 		}
   	  	catch (IOException e) 
   	  	{
   	  		e.printStackTrace();
   	  	}
+		finally
+		{
+			try
+			{
+				writer.close();
+			}
+			catch (IOException e)
+			{
+			}
+		}
+	}
+	
+	public void DelPriest(String priestname)
+	{
+		Priests.remove(priestname);
+		SavePriests();
 	}
 	
 	public boolean IsPriester(String playername)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("priests").append(File.separator).append(playername).append(".yml").toString());
-		if(!file.exists())
+		if(Priests.contains(playername))
 		{
-			return false;
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	
 	public Location LoadMarriedHome(String playername)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		
-		if(!file.exists())
-		{
-		    try
-		    {
-		        file.createNewFile();
-		    }
-		    catch(Exception e)
-		    {
-		        e.printStackTrace();
-		    }
-		}
-		
-		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-		
-
-		
-		Location loc = null;
-		
 		try
 		{
-			World world = marriageMaster.getServer().getWorld(config.getString("MarriedHome.location.World"));
-			double x = (Double) config.get("MarriedHome.location.X");
-			double y = (Double) config.get("MarriedHome.location.Y");
-			double z = (Double) config.get("MarriedHome.location.Z");
+			World world = marriageMaster.getServer().getWorld(MarryMap.get(playername).getString("MarriedHome.location.World"));
+			double x = (Double) MarryMap.get(playername).get("MarriedHome.location.X");
+			double y = (Double) MarryMap.get(playername).get("MarriedHome.location.Y");
+			double z = (Double) MarryMap.get(playername).get("MarriedHome.location.Z");
 			
-			loc = new Location(world, x, y, z);
+			return(new Location(world, x, y, z));
 		}
 		catch(Exception e)
 		{
 			return null;			
 		}
-		
-		return loc;
 	}
 	
 	public String GetPartner(String playername)
 	{
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(playername).append(".yml").toString());
-		if(file.exists())
+		if(MarryMap.get(playername) != null)
 		{
-			FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-			String x = config.getString("MarriedTo");
+			String x = MarryMap.get(playername).getString("MarriedTo");
 			if(x != null && !x.isEmpty())
 			{
 				return x;
@@ -245,32 +320,20 @@ public class Files
 	
 	public TreeMap<String, String> LoadAllMarriedPlayers()
 	{
-		TreeMap<String, String> map = new TreeMap<String, String>();
-		
-		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").toString());
-		 
-		if(file.exists())
+		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
+		String marriedTo;
+		for(Entry<String, FileConfiguration> entry : MarryMap.entrySet())
 		{
-			File[] allFiles = file.listFiles();
-			
-			for (File item : allFiles)
+			marriedTo = entry.getValue().getString("MarriedTo");
+			if(marriedTo != null && !marriedTo.equalsIgnoreCase(""))
 			{
-				File marriedPlayer = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(item.getName()).toString());
-				
-				FileConfiguration config = YamlConfiguration.loadConfiguration(marriedPlayer);
-				
-				String marriedTo = config.getString("MarriedTo");
-				
-				if(marriedTo != null && !marriedTo.equalsIgnoreCase(""))
+				if(!MarryMap_out.containsKey(entry.getKey()) && !MarryMap_out.containsKey(marriedTo) && !MarryMap_out.containsValue(marriedTo) && !MarryMap_out.containsValue(entry.getKey()))
 				{
-					if(!map.containsKey(item.getName()) && !map.containsKey(marriedTo) && !map.containsValue(marriedTo) && !map.containsValue(item.getName()))
-					{
-						map.put(item.getName().replaceAll(".yml", ""), marriedTo);
-					}
+					MarryMap_out.put(entry.getKey(), marriedTo);
 				}
 			}
 		}
 		
-		return map;
+		return MarryMap_out;
 	}
 }

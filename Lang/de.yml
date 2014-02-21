@@ -1,12 +1,13 @@
-Version: 1
+Version: 2
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
         Disabled: Marriage Master wurde deaktiviert.
         NotFromConsole: Du kannst diesen Befehl nicht von der Konsole aus verwenden.
+        LangUpdated: Sprachdatei wurde aktualisiert.
     Description:
         Commands: Befehle
-        ListAll: Liste alle verheiraten Spieler.
+        ListAll: Liste aller verheirateten Spieler.
         Marry: Verheiratet zwei Spieler in einem 25 Block Radius.
         Divorce: Scheidet zwei Spieler in einem 25 Block Radius.
         Priest: Setzt einen Priester.
@@ -34,8 +35,9 @@ Language:
         PlayerNotOn: '%s ist nicht Online.'
         NoTPInVanish: Du kannst dich nicht zu deinem Partner teleportieren wenn er unsichtbar ist.
         TP: Teleportiere zu deinem Partner...
-        TPto: Dein Partner Teleportiert sich zu dir...
-        ListHL: Married Player List
+        TPto: Dein Partner teleportiert sich zu dir...
+        ListHL: Liste verheirateter Spieler
+        PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
     Economy:
         NoEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld
@@ -45,7 +47,6 @@ Language:
         DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
         MarriagePaid: 'Du hast %1$s für deine Eheschließung gezahlt.'
     Priest:
-        AlreadyAPriest: '%s ist bereits ein Priester!'
         NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
         NotInRange: Die Spieler sind nicht in Reichweite.
         AlreadyMarried: Du kannst niemanden verheiraten der schon verheiratet ist.
@@ -54,6 +55,8 @@ Language:
         HasMarried: '%1$s hat dich mit %2$s verheiratet.'
         MadeYouAPriest: '%s hat dich zu einem Priester gemacht.'
         MadeAPriest: 'Du hast %s zu einem Priester gemacht.'
+        UnMadeYouAPriest: '%s hat dir deine Priester Berechtigung entzogen.'
+        UnMadeAPriest: 'Du hast %s seine Priester Berechtigung entzogen.'
         PlayerNotMarried: Der Spieler ist nicht verheiratet.
         PartnerOffline: "%1$s's Partner (%2$s) ist nicht Online."
         DivorcedPlayer: '%1$s hat dich von %2$s geschieden.'

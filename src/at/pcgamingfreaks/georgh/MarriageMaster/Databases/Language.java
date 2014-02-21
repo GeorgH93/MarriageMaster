@@ -35,37 +35,77 @@ public class Language
 	public Language(MarriageMaster marriagemaster) 
 	{
 		marriageMaster = marriagemaster;
-		
-		File file = new File(marriageMaster.getDataFolder() + File.separator + "Lang", marriageMaster.config.GetLanguage()+".yml");
-		if(!file.exists())
-		{
-			try
-			{
-				marriageMaster.saveResource("Lang" + File.separator + marriageMaster.config.GetLanguage() + ".yml", false);
-			}
-			catch(Exception ex)
-			{
-				try
-				{
-					File file_en = new File(marriageMaster.getDataFolder() + File.separator + "Lang", "en.yml");
-					if(!file_en.exists())
-					{
-						marriageMaster.saveResource("Lang" + File.separator + "en.yml", false);
-					}
-					Files.copy(file_en, file);
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		
-		lang = YamlConfiguration.loadConfiguration(file);
+		LoadFile();
 	}
 	
 	public String Get(String Option)
 	{
 		return lang.getString("Language." + Option);
+	}
+	
+	public void Reload()
+	{
+		LoadFile();
+	}
+	
+	private void LoadFile()
+	{
+		File file = new File(marriageMaster.getDataFolder() + File.separator + "Lang", marriageMaster.config.GetLanguage()+".yml");
+		if(!file.exists())
+		{
+			ExtractLangFile(file);
+		}
+		lang = YamlConfiguration.loadConfiguration(file);
+		UpdateLangFile(file);
+	}
+	
+	private void ExtractLangFile(File Target)
+	{
+		try
+		{
+			marriageMaster.saveResource("Lang" + File.separator + marriageMaster.config.GetLanguage() + ".yml", false);
+		}
+		catch(Exception ex)
+		{
+			try
+			{
+				File file_en = new File(marriageMaster.getDataFolder() + File.separator + "Lang", "en.yml");
+				if(!file_en.exists())
+				{
+					marriageMaster.saveResource("Lang" + File.separator + "en.yml", false);
+				}
+				Files.copy(file_en, Target);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private boolean UpdateLangFile(File file)
+	{
+		switch(lang.getInt("Version"))
+		{
+			case 1:
+				lang.set("Console.LangUpdated", "Language File has been updated.");
+				lang.set("Priest.UnMadeYouAPriest", "%s has fired you as a priest.");
+				lang.set("Priest.UnMadeAPriest", "You have fired %s as a priest.");
+				lang.set("Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
+				lang.set("Version", 2);
+			break;
+			case 2: return false;
+			default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
+		}
+		try 
+		{
+			lang.save(file);
+			marriageMaster.log.info(Get("Console.LangUpdated"));
+		}
+  	  	catch (IOException e) 
+  	  	{
+  	  		e.printStackTrace();
+  	  	}
+		return true;
 	}
 }

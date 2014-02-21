@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -90,5 +91,18 @@ public class MarriageMaster extends JavaPlugin
 	{
 		String P = DB.GetPartner(Playername);
 		return (P != null && !P.equalsIgnoreCase(""));
+	}
+	
+	public boolean InRadius(Player player, Player otherPlayer, int radius) 
+	{
+		Location pl = player.getLocation();
+		Location opl = otherPlayer.getLocation();
+		
+		if(pl.distance(opl) <= radius && opl.distance(pl) <= radius)
+		{
+			return true;
+		}
+		
+		return false;
 	}
 }
