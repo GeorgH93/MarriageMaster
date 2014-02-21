@@ -19,7 +19,6 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
@@ -66,7 +65,7 @@ public class Priester
 		}
 		else
 		{
-			if(getRadius(player, otherPlayer, priester))
+			if(InRadius(player, otherPlayer, priester))
 			{
 				String a1 = marriageMaster.DB.GetPartner(player.getName());
 				String a2 = marriageMaster.DB.GetPartner(otherPlayer.getName());
@@ -106,18 +105,9 @@ public class Priester
 		}
 	}
 
-	private boolean getRadius(Player player, Player otherPlayer, Player priester) 
+	private boolean InRadius(Player player, Player otherPlayer, Player priest) 
 	{
-		Location ploc = priester.getLocation();
-		Location plloc = player.getLocation();
-		Location oplloc = otherPlayer.getLocation();
-		
-		if(ploc.distance(plloc) <= 25 && ploc.distance(oplloc) <= 25)
-		{
-			return true;
-		}
-		
-		return false;
+		return marriageMaster.InRadius(player, priest, 25) && marriageMaster.InRadius(otherPlayer, priest, 25);
 	}
 
 	public void setPriester(String[] args, Player sender) 
@@ -168,7 +158,7 @@ public class Priester
 		String p2 = marriageMaster.DB.GetPartner(player.getName());
 		if(p1.equalsIgnoreCase(player.getName()) && p2.equalsIgnoreCase(otherPlayer.getName()))
 		{
-			if(getRadius(player, otherPlayer, priester))
+			if(InRadius(player, otherPlayer, priester))
 			{ 
 				if(marriageMaster.config.GetEconomyStatus())
 				{
