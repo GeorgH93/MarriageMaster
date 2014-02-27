@@ -187,13 +187,11 @@ public class Files
 		}
 
 		MarryMap.put(playername,YamlConfiguration.loadConfiguration(file));
-		
-        Calendar cal = Calendar.getInstance();
         
         MarryMap.get(playername).set("MarriedStatus", "Married");
         MarryMap.get(playername).set("MarriedTo", otherPlayer);
         MarryMap.get(playername).set("MarriedBy", priester);
-        MarryMap.get(playername).set("MarriedDay", cal.getTime());
+        MarryMap.get(playername).set("MarriedDay", Calendar.getInstance().getTime());
         MarryMap.get(playername).set("MarriedHome", "");
         MarryMap.get(playername).set("PvP", false);
 			
@@ -288,7 +286,7 @@ public class Files
 		return false;
 	}
 	
-	public Location LoadMarriedHome(String playername)
+	public Location GetMarriedHome(String playername)
 	{
 		try
 		{
@@ -318,7 +316,7 @@ public class Files
 		return null;
 	}
 	
-	public TreeMap<String, String> LoadAllMarriedPlayers()
+	public TreeMap<String, String> GetAllMarriedPlayers()
 	{
 		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
 		String marriedTo;

@@ -82,7 +82,7 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.list"))
     		{
-    			NavigableMap<String, String> map = marriageMaster.DB.LoadAllMarriedPlayers();
+    			NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
 
     			if(map.size() > 0)
     			{

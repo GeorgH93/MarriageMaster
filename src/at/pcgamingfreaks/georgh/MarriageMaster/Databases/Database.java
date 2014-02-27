@@ -25,23 +25,39 @@ import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 
 public class Database
 {
-	//private MySQL mysql;
-	private Files files;
+	private MySQL mysql = null;
+	private Files files = null;
+	private String DBType = null;
 	private MarriageMaster marriageMaster;
 	
 	public Database(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		DBType = marriageMaster.config.GetDatabaseType().toLowerCase();
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql = new MySQL(marriageMaster); break;
 			default: files = new Files(marriageMaster); break;
 		}
 	}
 	
 	public void Recache()
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		if(marriageMaster.config.GetDatabaseType().toLowerCase() != DBType)
+		{
+			switch(DBType)
+			{
+				case "mysql": mysql = null; break;
+				default: files = null; break;
+			}
+			DBType = marriageMaster.config.GetDatabaseType().toLowerCase();
+			switch(DBType)
+			{
+				case "mysql": mysql = new MySQL(marriageMaster); break;
+				default: files = new Files(marriageMaster); break;
+			}
+		}
+		switch(DBType)
 		{
 			case "mysql": break;
 			default: files.Reload();
@@ -50,37 +66,36 @@ public class Database
 	
 	public boolean GetPvPEnabled(String playername)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": return mysql.GetPvPState(playername);
 			default: return files.GetPvPState(playername);
 		}
-		return true;
 	}
 	
 	public void SetPvPEnabled(String player1, String player2, boolean state)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.SetPvPState(player1, state); break;
 			default: files.SetPvPState(player1, state); files.SetPvPState(player2, state); break;
 		}
 	}
 	
 	public void DivorcePlayer(String player1, String player2)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.SaveMarriedPlayerDivorce(player1); break;
 			default: files.SaveMarriedPlayerDivorce(player1); files.SaveMarriedPlayerDivorce(player2); break;
 		}
 	}
 	
 	public void MarryPlayers(String player1, String player2, String priester)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.SaveMarriedPlayer(player1, player2, priester); break;
 			default:
 				files.SaveMarriedPlayer(player1, player2, priester);
 				files.SaveMarriedPlayer(player2, player1, priester);
@@ -90,9 +105,9 @@ public class Database
 	
 	public void SetMarriedHome(Location loc, String player1, String player2)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.SaveMarryHome(loc, player1); break;
 			default:
 				files.SaveMarriedHome(loc, player1);
 				files.SaveMarriedHome(loc, player2);
@@ -102,59 +117,55 @@ public class Database
 	
 	public Location GetMarryHome(String playername)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
-			default: return files.LoadMarriedHome(playername);
+			case "mysql": return mysql.GetMarriedHome(playername);
+			default: return files.GetMarriedHome(playername);
 		}
-		return null;
 	}
 	
 	public void SetPriest(String Player)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.AddPriest(Player); break;
 			default: files.AddPriest(Player); break;
 		}
 	}
 	
 	public void DelPriest(String Player)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": mysql.DelPriest(Player); break;
 			default: files.DelPriest(Player); break;
 		}
 	}
 	
 	public boolean IsPriester(String playername)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": return mysql.IsPriest(playername);
 			default: return files.IsPriester(playername);
 		}
-		return false;
 	}
 	
 	public String GetPartner(String playername)
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
+			case "mysql": return mysql.GetPartner(playername);
 			default: return files.GetPartner(playername);
 		}
-		return null;
 	}
 	
-	public TreeMap<String, String> LoadAllMarriedPlayers()
+	public TreeMap<String, String> GetAllMarriedPlayers()
 	{
-		switch(marriageMaster.config.GetDatabaseType().toLowerCase())
+		switch(DBType)
 		{
-			case "mysql": break;
-			default: return files.LoadAllMarriedPlayers();
+			case "mysql": return mysql.GetAllMarriedPlayers();
+			default: return files.GetAllMarriedPlayers();
 		}
-		return null;
 	}
 }

@@ -77,7 +77,7 @@ public class Config
 		config.set("PriestEnable", true);
 		config.set("Language","en");
 		config.set("Database.Type","Files");
-		config.set("Database.MySQL.Host", "localhost");
+		config.set("Database.MySQL.Host", "localhost:3306");
 		config.set("Database.MySQL.Database", "minecraft");
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
@@ -216,5 +216,25 @@ public class Config
 			return marriageMaster.perms.has(player, Perm);
 		}
 		return def;
+	}
+	
+	public String GetMySQLHost()
+	{
+		return config.getString("Database.MySQL.Host");
+	}
+	
+	public String GetMySQLDatabase()
+	{
+		return config.getString("Database.MySQL.Database");
+	}
+	
+	public String GetMySQLUser()
+	{
+		return config.getString("Database.MySQL.User");
+	}
+	
+	public String GetMySQLPassword()
+	{
+		return config.getString("Database.MySQL.Password");
 	}
 }
