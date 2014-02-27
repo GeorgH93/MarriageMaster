@@ -73,7 +73,7 @@ public class MySQL
 			ResultSet rs = pstmt.getResultSet();
 			if(rs.next())
 			{
-				id = rs.getInt(0);
+				id = rs.getInt(1);
 			}
 			rs.close();
 			pstmt.close();
@@ -95,7 +95,7 @@ public class MySQL
 			ResultSet rs = stmt.getResultSet();
 			if(rs.next())
 			{
-				name = rs.getString(0);
+				name = rs.getString(1);
 			}
 			rs.close();
 			stmt.close();
@@ -145,7 +145,7 @@ public class MySQL
 		try
 		{
 			Statement stmt = con.createStatement();
-			stmt.execute("DELETE FROM marry_priests WHERE priest_id="+GetPlayerID(priestname)+");");
+			stmt.execute("DELETE FROM marry_priests WHERE priest_id="+GetPlayerID(priestname)+";");
 			stmt.close();
 		}
 		catch (SQLException e)
@@ -156,14 +156,22 @@ public class MySQL
 	
 	public boolean IsPriest(String priestname)
 	{
-		if(GetPlayerID(priestname) != -1)
+		try
 		{
-			return true;
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT priest_id FROM marry_priests WHERE priest_id="+GetPlayerID(priestname)+";");
+			if(rs.next())
+			{
+				return true;
+			}
+			rs.close();
+			stmt.close();
 		}
-		else
+		catch (SQLException e)
 		{
-			return false;
+			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	public boolean GetPvPState(String playername)
@@ -179,7 +187,7 @@ public class MySQL
 			ResultSet rs = pstmt.getResultSet();
 			if(rs.next())
 			{
-				res = rs.getBoolean(0);
+				res = rs.getBoolean(1);
 			}
 			rs.close();
 			pstmt.close();
@@ -204,13 +212,13 @@ public class MySQL
 			ResultSet rs = pstmt.getResultSet();
 			if(rs.next ())
 			{
-				if(rs.getInt(0) == pid)
+				if(rs.getInt(1) == pid)
 				{
-					pid = rs.getInt(1);
+					pid = rs.getInt(2);
 				}
 				else
 				{
-					pid = rs.getInt(0);
+					pid = rs.getInt(1);
 				}
 				partner = GetPlayerName(pid);
 			}
@@ -229,10 +237,10 @@ public class MySQL
 		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
 		try
 		{
-			ResultSet rs = con.createStatement().executeQuery("SELECT player1,player2 FROM marry_partners");
+			ResultSet rs = con.createStatement().executeQuery("SELECT mp1.name,mp2.name FROM marry_partners INNER JOIN marry_players AS mp1 ON player1=mp1.player_id INNER JOIN marry_players AS mp2 ON player2=mp2.player_id");
 			while(rs.next())
 			{
-				MarryMap_out.put(rs.getString(0), rs.getString(1));
+				MarryMap_out.put(rs.getString(1), rs.getString(2));
 			}
 			rs.close();
 		}
@@ -256,7 +264,7 @@ public class MySQL
 			ResultSet rs = pstmt.getResultSet();
 			if(rs.next())
 			{
-				loc = new Location(marriageMaster.getServer().getWorld(rs.getString(3)), rs.getDouble(0), rs.getDouble(1), rs.getDouble(2));
+				loc = new Location(marriageMaster.getServer().getWorld(rs.getString(4)), rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
 			}
 			rs.close();
 			pstmt.close();
@@ -280,7 +288,7 @@ public class MySQL
 			ResultSet rs = pstmt.getResultSet();
 			if(rs.next())
 			{
-				mid = rs.getInt(0);
+				mid = rs.getInt(1);
 				pstmt = con.prepareStatement("REPLACE INTO marry_home (marry_id,home_x,home_y,home_z,home_world) VALUES ("+mid+",?,?,?,?);");
 				pstmt.setDouble(1, loc.getX());
 				pstmt.setDouble(2, loc.getY());
@@ -304,11 +312,10 @@ public class MySQL
 		AddPlayer(priest);
 		try
 		{
-			int pid = GetPlayerID(playername), opid = GetPlayerID(otherPlayer), prid = GetPlayerID(priest);
-			PreparedStatement pstmt = con.prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, opid);
-			pstmt.setInt(3, prid);
+			PreparedStatement pstmt = con.prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			pstmt.setInt(1, GetPlayerID(playername));
+			pstmt.setInt(2, GetPlayerID(otherPlayer));
+			pstmt.setInt(3, GetPlayerID(priest));
 			pstmt.setTimestamp(4, new Timestamp(Calendar.getInstance().getTime().getTime()));
 			pstmt.execute();
 			pstmt.close();
@@ -323,12 +330,23 @@ public class MySQL
 	{
 		try
 		{
-			int pid = GetPlayerID(playername);
-			PreparedStatement pstmt = con.prepareStatement("DELETE FROM marry_partners WHERE player1=? OR player2=?");
+			int pid = GetPlayerID(playername), mid = -1;
+			PreparedStatement pstmt = con.prepareStatement("SELECT marry_id FROM marry_partners WHERE player1=? OR player2=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
-			pstmt.execute();
-			pstmt.close();
+			pstmt.executeQuery();
+			ResultSet rs = pstmt.getResultSet();
+			if(rs.next())
+			{
+				mid = rs.getInt(1);
+				pstmt = con.prepareStatement("DELETE FROM marry_partners WHERE marry_id=?;");
+				pstmt.setInt(1, mid);
+				pstmt.execute();
+				pstmt = con.prepareStatement("DELETE FROM marry_home WHERE marry_id=?;");
+				pstmt.setInt(1, mid);
+				pstmt.execute();
+				pstmt.close();
+			}
 		}
 		catch (Exception e)
 		{
