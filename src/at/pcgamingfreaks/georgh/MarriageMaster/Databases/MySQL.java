@@ -50,7 +50,7 @@ public class MySQL
 		try
 		{
 			Statement stmt = con.createStatement();
-			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NULL , PRIMARY KEY (`player_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_priests (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_partners (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_home (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
