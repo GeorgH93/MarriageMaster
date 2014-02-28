@@ -31,6 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
+	private static final int LANG_VERSION = 2;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -85,27 +86,39 @@ public class Language
 	
 	private boolean UpdateLangFile(File file)
 	{
-		switch(lang.getInt("Version"))
+		if(lang.getInt("Version") != LANG_VERSION)
 		{
-			case 1:
-				lang.set("Console.LangUpdated", "Language File has been updated.");
-				lang.set("Priest.UnMadeYouAPriest", "%s has fired you as a priest.");
-				lang.set("Priest.UnMadeAPriest", "You have fired %s as a priest.");
-				lang.set("Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
-				lang.set("Version", 2);
-			break;
-			case 2: return false;
-			default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
+			if(marriageMaster.config.GetLanguageUpdateMode().equalsIgnoreCase("overwrite"))
+			{
+				ExtractLangFile(file);
+				return true;
+			}
+			else
+			{
+				switch(lang.getInt("Version"))
+				{
+					case 1:
+						lang.set("Console.LangUpdated", "Language File has been updated.");
+						lang.set("Priest.UnMadeYouAPriest", "%s has fired you as a priest.");
+						lang.set("Priest.UnMadeAPriest", "You have fired %s as a priest.");
+						lang.set("Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
+					case 2:
+						break;
+					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
+				}
+				lang.set("Version", LANG_VERSION);
+				try 
+				{
+					lang.save(file);
+					marriageMaster.log.info(Get("Console.LangUpdated"));
+				}
+		  	  	catch (IOException e) 
+		  	  	{
+		  	  		e.printStackTrace();
+		  	  	}
+				return true;
+			}
 		}
-		try 
-		{
-			lang.save(file);
-			marriageMaster.log.info(Get("Console.LangUpdated"));
-		}
-  	  	catch (IOException e) 
-  	  	{
-  	  		e.printStackTrace();
-  	  	}
-		return true;
+		return false;
 	}
 }

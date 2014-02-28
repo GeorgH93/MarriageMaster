@@ -76,6 +76,7 @@ public class Config
 		config.set("InformOnPartnerJoin", true);
 		config.set("PriestEnable", true);
 		config.set("Language","en");
+		config.set("LanguageUpdateMode","Overwrite");
 		config.set("Database.Type","Files");
 		config.set("Database.MySQL.Host", "localhost:3306");
 		config.set("Database.MySQL.Database", "minecraft");
@@ -98,7 +99,11 @@ public class Config
 	{
 		switch(config.getInt("Version"))
 		{
-			case 1: config.set("Database.MySQL.Database", "minecraft"); config.set("Version", 2); break;
+			case 1:
+				config.set("Database.MySQL.Database", "minecraft");
+				config.set("LanguageUpdateMode","Overwrite");
+				config.set("Version", 2);
+			break;
 			case 2: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
 		}
@@ -118,6 +123,11 @@ public class Config
 	public String GetLanguage()
 	{
 		return config.getString("Language");
+	}
+	
+	public String GetLanguageUpdateMode()
+	{
+		return config.getString("LanguageUpdateMode");
 	}
 	
 	public boolean GetPriestStatus()
