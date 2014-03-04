@@ -19,6 +19,7 @@ package at.pcgamingfreaks.georgh.MarriageMaster;
 
 import java.util.logging.Logger;
 
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
@@ -33,24 +34,64 @@ import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
 public class MarriageMaster extends JavaPlugin
 {
 	public Logger log;
-    public HEconomy economy;
-    public Permission perms;
+    public HEconomy economy = null;
+    public Permission perms = null;
+    public Chat chat = null;
     public Config config;
     public Language lang;
     public Database DB;
+    
+    public boolean setupPermissions()
+    {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null)
+        {
+        	perms = permissionProvider.getProvider();
+        }
+        return (perms != null);
+    }
+
+    private boolean setupChat()
+    {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null)
+        {
+            chat = chatProvider.getProvider();
+        }
+
+        return (chat != null);
+    }
 
 	public void onEnable()
 	{			
-		this.log = getLogger();
+		log = getLogger();
 
-		this.setupPermissions();
 		config = new Config(this);
 		lang = new Language(this);
 		DB = new Database(this);
 		
+		if(config.UsePermissions())
+		{
+			if(!setupPermissions())
+			{
+				config.SetPermissionsOff();
+			}
+		}
+		if(config.UseEconomy())
+		{
+			economy = new HEconomy(this);
+		}
+		if(config.UsePrefix())
+		{
+			if(!setupChat())
+			{
+				config.SetPrefixOff();
+			}
+		}
+		
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
-		if(config.GetInformOnPartnerJoinEnabled())
+		if(config.UsePrefix() || config.GetInformOnPartnerJoinEnabled())
 		{
 			getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
 		}
@@ -74,13 +115,6 @@ public class MarriageMaster extends JavaPlugin
 	{ 
 		this.log.info(lang.Get("Console.Disabled"));
 	}
-	  
-	private boolean setupPermissions() 
-	{
-        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-        this.perms = rsp.getProvider();
-        return this.perms != null;
-    }
 	
 	public boolean IsPriester(Player player)
 	{

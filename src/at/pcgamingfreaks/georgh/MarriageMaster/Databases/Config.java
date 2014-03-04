@@ -75,6 +75,8 @@ public class Config
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
 		config.set("PriestEnable", true);
+		config.set("Prefix.Enable", true);
+		config.set("Prefix.String", "§4♥");
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("Database.Type","Files");
@@ -82,7 +84,7 @@ public class Config
 		config.set("Database.MySQL.Database", "minecraft");
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
-		config.set("Version",2);
+		config.set("Version",3);
 		
 		try 
 		{
@@ -102,9 +104,12 @@ public class Config
 			case 1:
 				config.set("Database.MySQL.Database", "minecraft");
 				config.set("LanguageUpdateMode","Overwrite");
-				config.set("Version", 2);
+			case 2:
+				config.set("Prefix.Enable", true);
+				config.set("Prefix.String", "§4♥");
+				config.set("Version", 3);
 			break;
-			case 2: return false;
+			case 3: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
 		}
 		try 
@@ -175,9 +180,34 @@ public class Config
 		return config.getBoolean("Permissions");	
 	}
 	
-	public boolean GetEconomyStatus()
+	public void SetPermissionsOff()
+	{
+		config.set("Permissions", false);
+	}
+	
+	public boolean UsePrefix()
+	{
+		return config.getBoolean("Prefix.Enable");	
+	}
+	
+	public String GetPrefix()
+	{
+		return config.getString("Prefix.String");
+	}
+	
+	public void SetPrefixOff()
+	{
+		config.set("UsePrefix", false);
+	}
+	
+	public boolean UseEconomy()
 	{
 		return config.getBoolean("Economy.Enable");
+	}
+	
+	public void SetEconomyOff()
+	{
+		config.set("Economy.Enable", false);
 	}
 	
 	public double GetEconomyDivorce()

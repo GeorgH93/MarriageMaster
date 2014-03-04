@@ -41,7 +41,7 @@ public class MarryTp
 			{
 				if(player.canSee(otherPlayer))
 				{
-					if(marriageMaster.config.GetEconomyStatus())
+					if(marriageMaster.config.UseEconomy())
 					{
 						if(marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
 						{

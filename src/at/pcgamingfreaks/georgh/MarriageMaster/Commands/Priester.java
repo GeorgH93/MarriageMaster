@@ -74,7 +74,7 @@ public class Priester
 					priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyMarried"));
 					return;
 				}
-				if(marriageMaster.config.GetEconomyStatus())
+				if(marriageMaster.config.UseEconomy())
 				{
 					if(marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
 					{
@@ -160,7 +160,7 @@ public class Priester
 		{
 			if(InRadius(player, otherPlayer, priester))
 			{ 
-				if(marriageMaster.config.GetEconomyStatus())
+				if(marriageMaster.config.UseEconomy())
 				{
 					if(marriageMaster.economy.Divorce(player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
 					{

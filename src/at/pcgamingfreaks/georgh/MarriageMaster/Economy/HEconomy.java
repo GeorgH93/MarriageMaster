@@ -28,25 +28,27 @@ import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 public class HEconomy 
 {
 	private MarriageMaster marriageMaster;
-    public Economy econ;
+    public Economy econ = null;
+    
+    private boolean setupEconomy()
+    {
+        RegisteredServiceProvider<Economy> economyProvider = marriageMaster.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null)
+        {
+        	econ = economyProvider.getProvider();
+        }
+
+        return (econ != null);
+    }
 	
 	public HEconomy(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
 		
-		if(marriageMaster.getServer().getPluginManager().getPlugin("Vault") == null)
+		if(marriageMaster.config.UseEconomy() && !setupEconomy())
 		{
-			return;
-	    }
-		
-        RegisteredServiceProvider<Economy> rsp = marriageMaster.getServer().getServicesManager().getRegistration(Economy.class);
-        
-        if (rsp == null) 
-        {
-            return;
-        }
-    
-        this.econ = rsp.getProvider();
+			marriageMaster.config.SetEconomyOff();
+		}
 	}
 
 	public boolean HomeTeleport(Player player, double money)

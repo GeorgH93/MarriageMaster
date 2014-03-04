@@ -38,35 +38,45 @@ public class JoinLeave implements Listener
 	@EventHandler
 	public void PlayerLoginEvent(PlayerJoinEvent event) 
 	{
-		String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
-		if(otherPlayer != null && !otherPlayer.isEmpty())
+		if(marriageMaster.config.GetInformOnPartnerJoinEnabled())
 		{
-			Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
-			
-			if(oPlayer != null)
+			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
+			if(otherPlayer != null && !otherPlayer.isEmpty())
 			{
-				event.getPlayer().sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerOnline"));
-				oPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerNowOnline"));
+				Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
+				
+				if(oPlayer != null)
+				{
+					event.getPlayer().sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerOnline"));
+					oPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerNowOnline"));
+				}
+				else
+				{
+					event.getPlayer().sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+				}
 			}
-			else
-			{
-				event.getPlayer().sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-			}
+		}
+		if(marriageMaster.config.UsePrefix())
+		{
+			marriageMaster.chat.setPlayerPrefix(event.getPlayer(), marriageMaster.config.GetPrefix());
 		}
 	}
 
 	@EventHandler
 	public void PlayerLeaveEvent(PlayerQuitEvent event)
 	{
-		String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
-		
-		if(otherPlayer != null)
+		if(marriageMaster.config.GetInformOnPartnerJoinEnabled())
 		{
-			Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
+			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
 			
-			if(oPlayer != null)
+			if(otherPlayer != null)
 			{
-				oPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerNowOffline"));
+				Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
+				
+				if(oPlayer != null)
+				{
+					oPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PartnerNowOffline"));
+				}
 			}
 		}
 	}

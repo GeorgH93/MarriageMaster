@@ -27,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
+import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
 import at.pcgamingfreaks.georgh.MarriageMaster.*;
 
 public class OnCommand implements CommandExecutor 
@@ -71,6 +72,37 @@ public class OnCommand implements CommandExecutor
         		marriageMaster.config.Reload();
         		marriageMaster.lang.Reload();
         		marriageMaster.DB.Recache();
+        		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
+        		{
+        			marriageMaster.economy = new HEconomy(marriageMaster);
+        		}
+        		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
+        		{
+        			marriageMaster.economy = null;
+        		}
+        		
+        		if(marriageMaster.perms == null && marriageMaster.config.UsePermissions())
+        		{
+        			if(!marriageMaster.setupPermissions())
+        			{
+        				marriageMaster.config.SetPermissionsOff();
+        			}
+        		}
+        		else if(marriageMaster.perms != null && !marriageMaster.config.UsePermissions())
+        		{
+        			marriageMaster.perms = null;
+        		}
+        		if(marriageMaster.chat == null && marriageMaster.config.UsePrefix())
+        		{
+        			if(!marriageMaster.setupPermissions())
+        			{
+        				marriageMaster.config.SetPrefixOff();
+        			}
+        		}
+        		else if(marriageMaster.chat != null && !marriageMaster.config.UsePrefix())
+        		{
+        			marriageMaster.chat = null;
+        		}
         		player.sendMessage(ChatColor.BLUE + "Reloaded");
         	}
         	else

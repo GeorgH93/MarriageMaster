@@ -38,7 +38,7 @@ public class Home
 		
 		if(loc != null)
 		{
-			if(marriageMaster.config.GetEconomyStatus())
+			if(marriageMaster.config.UseEconomy())
 			{
 				if(marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomyHomeTp()))
 				{
@@ -65,7 +65,7 @@ public class Home
 	public void SetHome(Player player)
 	{
 		Location home = player.getLocation();
-		if(marriageMaster.config.GetEconomyStatus())
+		if(marriageMaster.config.UseEconomy())
 		{
 			if(marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomySetHome()))
 			{
