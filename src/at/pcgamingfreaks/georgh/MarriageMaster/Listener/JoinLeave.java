@@ -62,9 +62,9 @@ public class JoinLeave implements Listener
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e)
 	{
-		if(marriageMaster.config.UsePrefix())
+		if(marriageMaster.config.UsePrefix() && marriageMaster.HasPartner(e.getPlayer().getName()))
 		{
-			e.setFormat(marriageMaster.config.GetPrefix().replace("&#9829;", "♥") + " " + e.getFormat());
+			e.setFormat(marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE).replace("<partnername>", marriageMaster.DB.GetPartner(e.getPlayer().getName())) + " " + e.getFormat());
 		}
 	}
 

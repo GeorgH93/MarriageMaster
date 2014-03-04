@@ -37,7 +37,6 @@ public class HEconomy
         {
         	econ = economyProvider.getProvider();
         }
-
         return (econ != null);
     }
 	
@@ -104,7 +103,6 @@ public class HEconomy
 	{
 		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
 		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
-		
 		if(response.transactionSuccess() && response2.transactionSuccess()) 
 		{
 			otherPlayer.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
@@ -125,7 +123,6 @@ public class HEconomy
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
 				return false;
 			}
-
 			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
 			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
 			return false;
@@ -157,9 +154,8 @@ public class HEconomy
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
 				return false;
 			}
-
-			otherPlayer.sendMessage(String.format(ChatColor.RED + "You dont have enough money"));
-			player.sendMessage(String.format(ChatColor.RED + "You dont have enough money"));
+			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
 			return false;
 		}
 	}

@@ -63,11 +63,7 @@ public class OnCommand implements CommandExecutor
 			return true;
 		}
 		
-        if (args.length == 0 || args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) 
-        {
-        	ShowAvailableCmds(player);
-        }
-        else if (args[0].equalsIgnoreCase("reload"))
+        if (args[0].equalsIgnoreCase("reload"))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.reload"))
         	{
@@ -255,7 +251,7 @@ public class OnCommand implements CommandExecutor
         		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
         	}
         }
-        else if(args.length == 2 && args[0].equalsIgnoreCase("priest") && player.isOp())
+        else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.setpriest"))
         	{
@@ -278,9 +274,11 @@ public class OnCommand implements CommandExecutor
         	}
         }
         else if (args.length == 2)
-        {        	
+        {
+        	marriageMaster.log.info("fail");
         	priester.Marry(player, args);
         }
+        ShowAvailableCmds(player);
         return true;
 	}
 	
