@@ -51,17 +51,6 @@ public class MarriageMaster extends JavaPlugin
         return (perms != null);
     }
 
-    private boolean setupChat()
-    {
-        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
-        if (chatProvider != null)
-        {
-            chat = chatProvider.getProvider();
-        }
-
-        return (chat != null);
-    }
-
 	public void onEnable()
 	{			
 		log = getLogger();
@@ -75,22 +64,23 @@ public class MarriageMaster extends JavaPlugin
 			if(!setupPermissions())
 			{
 				config.SetPermissionsOff();
+				log.info("No Permission Plugin found disable Permissions.");
 			}
 		}
 		if(config.UseEconomy())
 		{
 			economy = new HEconomy(this);
 		}
-		if(config.UsePrefix())
-		{
-			if(!setupChat())
-			{
-				config.SetPrefixOff();
-			}
-		}
 		
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
+		RegisterEvents();
+
+		this.log.info(lang.Get("Console.Enabled"));
+	}
+	
+	public void RegisterEvents()
+	{
 		if(config.UsePrefix() || config.GetInformOnPartnerJoinEnabled())
 		{
 			getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
@@ -107,8 +97,6 @@ public class MarriageMaster extends JavaPlugin
 		{
 			getServer().getPluginManager().registerEvents(new Death(this), this);
 		}
-
-		this.log.info(lang.Get("Console.Enabled"));
 	}
 	 
 	public void onDisable()

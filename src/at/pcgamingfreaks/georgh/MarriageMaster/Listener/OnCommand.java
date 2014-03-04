@@ -25,6 +25,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
@@ -92,17 +94,9 @@ public class OnCommand implements CommandExecutor
         		{
         			marriageMaster.perms = null;
         		}
-        		if(marriageMaster.chat == null && marriageMaster.config.UsePrefix())
-        		{
-        			if(!marriageMaster.setupPermissions())
-        			{
-        				marriageMaster.config.SetPrefixOff();
-        			}
-        		}
-        		else if(marriageMaster.chat != null && !marriageMaster.config.UsePrefix())
-        		{
-        			marriageMaster.chat = null;
-        		}
+        		PlayerInteractEvent.getHandlerList();
+				HandlerList.unregisterAll(marriageMaster);
+        		marriageMaster.RegisterEvents();
         		player.sendMessage(ChatColor.BLUE + "Reloaded");
         	}
         	else

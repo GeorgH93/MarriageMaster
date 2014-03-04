@@ -76,7 +76,7 @@ public class Config
 		config.set("InformOnPartnerJoin", true);
 		config.set("PriestEnable", true);
 		config.set("Prefix.Enable", true);
-		config.set("Prefix.String", "§4♥");
+		config.set("Prefix.String", "§4&#9829;§f");
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("Database.Type","Files");
@@ -106,7 +106,7 @@ public class Config
 				config.set("LanguageUpdateMode","Overwrite");
 			case 2:
 				config.set("Prefix.Enable", true);
-				config.set("Prefix.String", "§4♥");
+				config.set("Prefix.String", "§4&#9829;§f");
 				config.set("Version", 3);
 			break;
 			case 3: return false;
@@ -193,11 +193,6 @@ public class Config
 	public String GetPrefix()
 	{
 		return config.getString("Prefix.String");
-	}
-	
-	public void SetPrefixOff()
-	{
-		config.set("UsePrefix", false);
 	}
 	
 	public boolean UseEconomy()
