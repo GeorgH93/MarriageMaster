@@ -19,6 +19,7 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
@@ -31,21 +32,63 @@ public class Priester
 	{
 		marriageMaster = marriagemaster;
 	}
-
-	public boolean Marry(Player priester, String[] args)
+	
+	public void Marry(CommandSender priester, String[] args)
 	{
-		if(marriageMaster.IsPriester(priester))
+		Player player = Bukkit.getServer().getPlayer(args[0]);
+		if(player == null || (player != null && !player.isOnline()))
 		{
-			DoMarry(priester, args);
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), args[0]));
+			return;
+		}
+		Player otherPlayer = Bukkit.getServer().getPlayer(args[1]);
+		if(otherPlayer == null || (otherPlayer != null && !otherPlayer.isOnline()))
+		{
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), args[1]));
+			return;
+		}
+		if(player.getName().equalsIgnoreCase(otherPlayer.getName()))
+		{
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.NotWithHimself"),player.getName()));
 		}
 		else
 		{
-			priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotAPriest"));
+			String a1 = marriageMaster.DB.GetPartner(player.getName());
+			String a2 = marriageMaster.DB.GetPartner(otherPlayer.getName());
+			if((a1 != null && !a1.isEmpty()) || (a2 != null && !a2.isEmpty()))
+			{
+				priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyMarried"));
+				return;
+			}
+			if(marriageMaster.config.UseEconomy())
+			{
+				if(marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
+				{
+					marriageMaster.DB.MarryPlayers(player.getName(), otherPlayer.getName(), "Console");
+					priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
+					player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getName()));
+					otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getName()));
+					if(marriageMaster.config.GetAnnouncementEnabled())
+					{
+						marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getName(), otherPlayer.getName()));
+					}
+				}
+			}
+			else
+			{
+				marriageMaster.DB.MarryPlayers(player.getName(), otherPlayer.getName(), "Console");
+				priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getName()));
+				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getName()));
+				if(marriageMaster.config.GetAnnouncementEnabled())
+				{
+					marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getName(), otherPlayer.getName()));
+				}
+			}
 		}
-		return true;
 	}
 
-	private void DoMarry(Player priester, String[] args) 
+	public void Marry(Player priester, String[] args) 
 	{
 		Player player = Bukkit.getServer().getPlayer(args[0]);
 		if(player == null || (player != null && !player.isOnline()))
@@ -109,8 +152,32 @@ public class Priester
 	{
 		return marriageMaster.InRadius(player, priest, 25) && marriageMaster.InRadius(otherPlayer, priest, 25);
 	}
+	
+	public void setPriest(String[] args, CommandSender sender)
+	{
+		Player player = marriageMaster.getServer().getPlayer(args[1]);
+		if(player != null && player.isOnline())
+		{
+			if(marriageMaster.IsPriester(player))
+			{
+				marriageMaster.DB.DelPriest(player.getName());
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeYouAPriest"), sender.getName()));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getName()));
+			}
+			else
+			{
+				marriageMaster.DB.SetPriest(player.getName());
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeYouAPriest"), sender.getName()));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getName()));
+			}
+		}
+		else
+		{
+			sender.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), args[1]));
+		}
+	}
 
-	public void setPriester(String[] args, Player sender) 
+	public void setPriest(String[] args, Player sender) 
 	{
 		Player player = marriageMaster.getServer().getPlayer(args[1]);
 		if(player != null && player.isOnline())

@@ -43,6 +43,10 @@ public class MarriageMaster extends JavaPlugin
     
     public boolean setupPermissions()
     {
+    	if(getServer().getPluginManager().getPlugin("Vault") == null)
+    	{
+    		return false;
+    	}
         RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null)
         {
@@ -64,7 +68,7 @@ public class MarriageMaster extends JavaPlugin
 			if(!setupPermissions())
 			{
 				config.SetPermissionsOff();
-				log.info("No Permission Plugin found disable Permissions.");
+				log.info("No Permission Plugin found, using default permissions.");
 			}
 		}
 		if(config.UseEconomy())

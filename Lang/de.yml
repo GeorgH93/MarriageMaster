@@ -3,7 +3,6 @@ Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
         Disabled: Marriage Master wurde deaktiviert.
-        NotFromConsole: Du kannst diesen Befehl nicht von der Konsole aus verwenden.
         LangUpdated: Sprachdatei wurde aktualisiert.
     Description:
         Commands: Befehle
@@ -39,7 +38,7 @@ Language:
         ListHL: Liste verheirateter Spieler
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
     Economy:
-        NoEnough: Du hast nicht genug Geld
+        NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'

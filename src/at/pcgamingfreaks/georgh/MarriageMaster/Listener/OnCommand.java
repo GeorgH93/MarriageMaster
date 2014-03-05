@@ -37,7 +37,7 @@ public class OnCommand implements CommandExecutor
 	private MarriageMaster marriageMaster;
 
 	private MarryTp marryTp;
-	private Priester priester;
+	private Priester priest;
 	private Home home;
 	
 	public OnCommand(MarriageMaster marriagemaster) 
@@ -46,7 +46,37 @@ public class OnCommand implements CommandExecutor
 		
 		home = new Home(marriageMaster);
 		marryTp = new MarryTp(marriageMaster);
-		priester = new Priester(marriageMaster);
+		priest = new Priester(marriageMaster);
+	}
+	
+	private void reload()
+	{
+		marriageMaster.config.Reload();
+		marriageMaster.lang.Reload();
+		marriageMaster.DB.Recache();
+		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
+		{
+			marriageMaster.economy = new HEconomy(marriageMaster);
+		}
+		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
+		{
+			marriageMaster.economy = null;
+		}
+		
+		if(marriageMaster.perms == null && marriageMaster.config.UsePermissions())
+		{
+			if(!marriageMaster.setupPermissions())
+			{
+				marriageMaster.config.SetPermissionsOff();
+			}
+		}
+		else if(marriageMaster.perms != null && !marriageMaster.config.UsePermissions())
+		{
+			marriageMaster.perms = null;
+		}
+		PlayerInteractEvent.getHandlerList();
+		HandlerList.unregisterAll(marriageMaster);
+		marriageMaster.RegisterEvents();
 	}
 		
 	@Override
@@ -59,46 +89,67 @@ public class OnCommand implements CommandExecutor
 	    }
 		else
 		{
-			sender.sendMessage(marriageMaster.lang.Get("Console.NotFromConsole"));
+			if(args.length == 0)
+			{
+				ShowAvailableCmds(sender);
+			}
+			else if (args[0].equalsIgnoreCase("reload"))
+	        {
+				reload();
+				sender.sendMessage(ChatColor.BLUE + "Reloaded");
+	        }
+			else if (args[0].equalsIgnoreCase("list"))
+	        {
+	        	NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
+    			if(map.size() > 0)
+    			{
+    				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
+    				
+    				for(Map.Entry<String, String> item : map.entrySet())
+    				{
+    					sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
+    				}	
+    			}	
+    			else
+    			{
+    				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
+    			}
+	        }
+			else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
+	        {
+	        	priest.setPriest(args, sender);
+	        }
+	        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
+	        {
+	        	priest.Divorce(player, args);
+	        }
+	        else if (args.length == 2)
+	        {
+	        	priest.Marry(sender, args);
+	        }
+			else
+			{
+				ShowAvailableCmds(sender);
+			}
 			return true;
 		}
 		
-        if (args[0].equalsIgnoreCase("reload"))
+		if(args.length == 0)
+		{
+			ShowAvailableCmds(player);
+			return true;
+		}
+		else if (args[0].equalsIgnoreCase("reload"))
         {
-        	if(marriageMaster.config.CheckPerm(player, "marry.reload"))
-        	{
-        		marriageMaster.config.Reload();
-        		marriageMaster.lang.Reload();
-        		marriageMaster.DB.Recache();
-        		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
-        		{
-        			marriageMaster.economy = new HEconomy(marriageMaster);
-        		}
-        		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
-        		{
-        			marriageMaster.economy = null;
-        		}
-        		
-        		if(marriageMaster.perms == null && marriageMaster.config.UsePermissions())
-        		{
-        			if(!marriageMaster.setupPermissions())
-        			{
-        				marriageMaster.config.SetPermissionsOff();
-        			}
-        		}
-        		else if(marriageMaster.perms != null && !marriageMaster.config.UsePermissions())
-        		{
-        			marriageMaster.perms = null;
-        		}
-        		PlayerInteractEvent.getHandlerList();
-				HandlerList.unregisterAll(marriageMaster);
-        		marriageMaster.RegisterEvents();
-        		player.sendMessage(ChatColor.BLUE + "Reloaded");
-        	}
-        	else
+			if(marriageMaster.config.CheckPerm(player, "marry.reload", false))
 	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
+				reload();
+				player.sendMessage(ChatColor.BLUE + "Reloaded");
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+			}
         }
         else if (args[0].equalsIgnoreCase("list"))
         {
@@ -124,7 +175,7 @@ public class OnCommand implements CommandExecutor
 	    	{
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
-        }        
+        }
         else if (args[0].equalsIgnoreCase("pvpon")) 
         {
         	if(marriageMaster.HasPartner(player.getName()))
@@ -253,9 +304,9 @@ public class OnCommand implements CommandExecutor
         }
         else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
         {
-        	if(marriageMaster.config.CheckPerm(player, "marry.setpriest"))
+        	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
         	{
-        		priester.setPriester(args, player);
+        		priest.setPriest(args, sender);
         	}
         	else
         	{
@@ -266,7 +317,7 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.IsPriester(player))
         	{
-        		priester.Divorce(player, args);
+        		priest.Divorce(player, args);
         	}
         	else
         	{
@@ -275,10 +326,19 @@ public class OnCommand implements CommandExecutor
         }
         else if (args.length == 2)
         {
-        	marriageMaster.log.info("fail");
-        	priester.Marry(player, args);
+        	if(marriageMaster.IsPriester(player))
+    		{
+    			priest.Marry(player, args);
+    		}
+    		else
+    		{
+    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotAPriest"));
+    		}
         }
-        ShowAvailableCmds(player);
+        else
+        {
+        	ShowAvailableCmds(player);
+        }
         return true;
 	}
 	
@@ -323,5 +383,15 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Reload"));
 		}
+	}
+	
+	public void ShowAvailableCmds(CommandSender sender)
+	{
+		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + marriageMaster.lang.Get("Description.Commands"));
+		sender.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListAll"));
+		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Marry"));
+		sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Divorce"));
+		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
+		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Reload"));
 	}
 }

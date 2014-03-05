@@ -32,6 +32,10 @@ public class HEconomy
     
     private boolean setupEconomy()
     {
+    	if(marriageMaster.getServer().getPluginManager().getPlugin("Vault") == null)
+    	{
+    		return false;
+    	}
         RegisteredServiceProvider<Economy> economyProvider = marriageMaster.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null)
         {
@@ -62,7 +66,7 @@ public class HEconomy
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 			return false;
 		}
 	}
@@ -78,7 +82,7 @@ public class HEconomy
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 			return false;
 		}
 	}
@@ -94,7 +98,7 @@ public class HEconomy
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 			return false;
 		}
 	}
@@ -113,18 +117,18 @@ public class HEconomy
 		{
 			if(response.transactionSuccess())
 			{
-				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
+				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
+				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
-			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 			return false;
 		}
 	}
@@ -144,18 +148,18 @@ public class HEconomy
 		{
 			if(response.transactionSuccess())
 			{
-				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
+				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNoEnough")));
+				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
-			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
-			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NoEnough")));
+			otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 			return false;
 		}
 	}
