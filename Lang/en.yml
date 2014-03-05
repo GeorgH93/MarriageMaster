@@ -4,6 +4,8 @@ Language:
         Enabled: Marriage Master has been enabled!
         Disabled: Marriage Master has been disabled.
         LangUpdated: Language File has been updated.
+        NoPermPL: No Permission Plugin found, using default permissions.
+        NoEcoPL: No Economy Plugin found disable Economy.
     Description:
         Commands: commands
         ListAll: Lists all Married Players.

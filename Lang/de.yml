@@ -4,6 +4,8 @@ Language:
         Enabled: Marriage Master wurde aktiviert!
         Disabled: Marriage Master wurde deaktiviert.
         LangUpdated: Sprachdatei wurde aktualisiert.
+        NoPermPL: Kein Permission-Plugin gefunden, verwende standard rechte.
+        NoEcoPL: Kein Wirtschafts-Plugin gefunden, deaktiviere Geld-System.
     Description:
         Commands: Befehle
         ListAll: Liste aller verheirateten Spieler.
@@ -17,7 +19,7 @@ Language:
         TPHome: Teleportiert dich nachhause.
         Chat: Privater Chat mit deinem Partner.
         Reload: Lädt die Config des Plugins neu.
-        ListenChat: Zeigt alle Chatnachrichten die an partner gesendet werden an.
+        ListenChat: Zeigt alle Chatnachrichten die an Partner gesendet werden an.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.

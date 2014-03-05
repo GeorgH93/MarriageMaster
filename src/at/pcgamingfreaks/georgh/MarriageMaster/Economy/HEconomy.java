@@ -51,7 +51,7 @@ public class HEconomy
 		if(marriageMaster.config.UseEconomy() && !setupEconomy())
 		{
 			marriageMaster.config.SetEconomyOff();
-			marriageMaster.log.info("No Economy Plugin found disable Economy.");
+			marriageMaster.log.info("Console.NoEcoPL");
 		}
 	}
 

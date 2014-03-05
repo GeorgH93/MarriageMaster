@@ -71,7 +71,7 @@ public class MarriageMaster extends JavaPlugin
 			if(!setupPermissions())
 			{
 				config.SetPermissionsOff();
-				log.info("No Permission Plugin found, using default permissions.");
+				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
 		if(config.UseEconomy())
