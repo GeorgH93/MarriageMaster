@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 2;
+	private static final int LANG_VERSION = 3;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -64,7 +64,7 @@ public class Language
 	{
 		try
 		{
-			marriageMaster.saveResource("Lang" + File.separator + marriageMaster.config.GetLanguage() + ".yml", false);
+			marriageMaster.saveResource("Lang" + File.separator + marriageMaster.config.GetLanguage() + ".yml", true);
 		}
 		catch(Exception ex)
 		{
@@ -73,7 +73,7 @@ public class Language
 				File file_en = new File(marriageMaster.getDataFolder() + File.separator + "Lang", "en.yml");
 				if(!file_en.exists())
 				{
-					marriageMaster.saveResource("Lang" + File.separator + "en.yml", false);
+					marriageMaster.saveResource("Lang" + File.separator + "en.yml", true);
 				}
 				Files.copy(file_en, Target);
 			}
@@ -91,6 +91,8 @@ public class Language
 			if(marriageMaster.config.GetLanguageUpdateMode().equalsIgnoreCase("overwrite"))
 			{
 				ExtractLangFile(file);
+				LoadFile();
+				marriageMaster.log.info(Get("Console.LangUpdated"));
 				return true;
 			}
 			else

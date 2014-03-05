@@ -16,13 +16,13 @@ Language:
         SetHome: Setzt dein Zuhause.
         TPHome: Teleportiert dich nachhause.
         Chat: Privater Chat mit deinem Partner.
-        Reload: LÃ¤dt die Config des Plugins neu.
+        Reload: Lädt die Config des Plugins neu.
         ListenChat: Zeigt alle Chatnachrichten die an partner gesendet werden an.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
         NotAPriest: Du bist kein Priester.
-        NoPermission: Dir fehlen die Rechte dafÃ¼r.
+        NoPermission: Dir fehlen die Rechte dafür.
         PartnerOnline: Dein Partner ist Online.
         PartnerOffline: Dein Partner ist Offline.
         PartnerNowOnline: Dein Partner ist jetzt Online.
@@ -38,16 +38,16 @@ Language:
         TPto: Dein Partner teleportiert sich zu dir...
         ListHL: Liste verheirateter Spieler
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
-        ListeningStarted: Du hÃ¶rst nun denn Ehe-Chat mit.
-        ListeningStoped: Du hÃ¶rst nun denn Ehe-Chat nicht mehr mit.
+        ListeningStarted: Du hörst nun denn Ehe-Chat mit.
+        ListeningStoped: Du hörst nun denn Ehe-Chat nicht mehr mit.
     Economy:
         NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
         TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
-        DivorcePaid: 'Du hast %1$s fÃ¼r deine Scheidung gezahlt.'
-        MarriagePaid: 'Du hast %1$s fÃ¼eine EheschlieÃŸung gezahlt.'
+        DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
+        MarriagePaid: 'Du hast %1$s für deine EheschlieÃŸung gezahlt.'
     Priest:
         NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
         NotInRange: Die Spieler sind nicht in Reichweite.
