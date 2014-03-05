@@ -85,5 +85,6 @@ public class JoinLeave implements Listener
 				}
 			}
 		}
+		marriageMaster.pcl.remove(event.getPlayer());
 	}
 }

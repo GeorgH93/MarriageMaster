@@ -17,9 +17,10 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
@@ -36,10 +37,10 @@ public class MarriageMaster extends JavaPlugin
 	public Logger log;
     public HEconomy economy = null;
     public Permission perms = null;
-    public Chat chat = null;
     public Config config;
     public Language lang;
     public Database DB;
+    public List<Player> pcl;
     
     public boolean setupPermissions()
     {
@@ -63,6 +64,8 @@ public class MarriageMaster extends JavaPlugin
 		lang = new Language(this);
 		DB = new Database(this);
 		
+		pcl = new ArrayList<Player>();
+		
 		if(config.UsePermissions())
 		{
 			if(!setupPermissions())
@@ -85,10 +88,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public void RegisterEvents()
 	{
-		if(config.UsePrefix() || config.GetInformOnPartnerJoinEnabled())
-		{
-			getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
-		}
+		getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
 		if(config.GetAllowBlockPvP())
 		{
 			getServer().getPluginManager().registerEvents(new Damage(this), this);

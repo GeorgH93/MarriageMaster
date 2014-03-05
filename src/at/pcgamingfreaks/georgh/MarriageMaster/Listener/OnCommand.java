@@ -286,6 +286,10 @@ public class OnCommand implements CommandExecutor
         				}
         				otP.sendMessage(msg);
         				player.sendMessage(msg);
+        				for (Player play : marriageMaster.pcl)
+        				{
+        					play.sendMessage(msg);
+        				}
         			}
         			else
         			{
@@ -302,6 +306,26 @@ public class OnCommand implements CommandExecutor
         		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
         	}
         }
+        else if (args[0].equalsIgnoreCase("listenchat"))
+		{
+        	if(marriageMaster.config.CheckPerm(player, "marry.listenchat"))
+    		{
+        		if(!marriageMaster.pcl.contains(player))
+        		{
+        			marriageMaster.pcl.add(player);
+        			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListeningStarted"));
+        		}
+        		else
+        		{
+        			marriageMaster.pcl.remove(player);
+        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.ListeningStoped"));
+        		}
+			}
+	    	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+		}
         else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
@@ -378,6 +402,10 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
+		}
+		if(marriageMaster.config.CheckPerm(player, "marry.listenchat", false))
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry listenchat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListenChat"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.reload", false))
 		{

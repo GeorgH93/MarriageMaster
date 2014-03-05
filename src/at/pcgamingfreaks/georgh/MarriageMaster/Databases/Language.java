@@ -103,7 +103,11 @@ public class Language
 						lang.set("Priest.UnMadeAPriest", "You have fired %s as a priest.");
 						lang.set("Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
 					case 2:
+						lang.set("Ingame.ListeningStarted", "You are now listening to the marry chat.");
+						lang.set("Ingame.ListeningStoped", "You are no longer listening to the marry chat.");
+						lang.set("Description.ListenChat", "Shows all chatmessages sent from a married player to his partner.");
 						break;
+					case 3: return false;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
 				lang.set("Version", LANG_VERSION);

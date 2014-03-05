@@ -1,4 +1,4 @@
-Version: 2
+Version: 3
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -17,6 +17,7 @@ Language:
         TPHome: Teleports to your Home.
         Chat: Private chat with your partner.
         Reload: Reloads the config of the plugin.
+        ListenChat: Shows all chatmessages sent from a married player to his partner.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.
@@ -37,6 +38,8 @@ Language:
         TPto: Your Partner is teleporting to you...
         ListHL: Married Player List
         PvPIsOff: You can't hurt your Partner if you have PvP disabled.
+        ListeningStarted: You are now listening to the marry chat.
+        ListeningStoped: You are no longer listening to the marry chat.
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

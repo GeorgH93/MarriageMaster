@@ -1,4 +1,4 @@
-Version: 2
+Version: 3
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -16,12 +16,13 @@ Language:
         SetHome: Setzt dein Zuhause.
         TPHome: Teleportiert dich nachhause.
         Chat: Privater Chat mit deinem Partner.
-        Reload: L‰dt die Config des Plugins neu.
+        Reload: L√§dt die Config des Plugins neu.
+        ListenChat: Zeigt alle Chatnachrichten die an partner gesendet werden an.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
         NotAPriest: Du bist kein Priester.
-        NoPermission: Dir fehlen die Rechte daf¸r.
+        NoPermission: Dir fehlen die Rechte daf√ºr.
         PartnerOnline: Dein Partner ist Online.
         PartnerOffline: Dein Partner ist Offline.
         PartnerNowOnline: Dein Partner ist jetzt Online.
@@ -37,14 +38,16 @@ Language:
         TPto: Dein Partner teleportiert sich zu dir...
         ListHL: Liste verheirateter Spieler
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
+        ListeningStarted: Du h√∂rst nun denn Ehe-Chat mit.
+        ListeningStoped: Du h√∂rst nun denn Ehe-Chat nicht mehr mit.
     Economy:
         NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
         TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
-        DivorcePaid: 'Du hast %1$s f¸r deine Scheidung gezahlt.'
-        MarriagePaid: 'Du hast %1$s f¸r deine Eheschlieﬂung gezahlt.'
+        DivorcePaid: 'Du hast %1$s f√ºr deine Scheidung gezahlt.'
+        MarriagePaid: 'Du hast %1$s f√ºeine Eheschlie√üung gezahlt.'
     Priest:
         NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
         NotInRange: Die Spieler sind nicht in Reichweite.
