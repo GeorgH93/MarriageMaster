@@ -38,8 +38,8 @@ Language:
         ListHL: Married Player List
         PvPIsOff: You can't hurt your Partner if you have PvP disabled.
     Economy:
-        NotEnough: You dont have enough money
-        PartnerNotEnough: Your partner doesnt have enough money
+        NotEnough: You don't have enough money
+        PartnerNotEnough: Your partner doesn't have enough money
         HomeTPPaid: 'You paid %1$s for your home teleport. (%2$s left)'
         SetHomePaid: 'You paid %1$s to set your Home (%2$s left)'
         TPPaid: 'You paid %1$s for the Teleport (%1$s left)'
