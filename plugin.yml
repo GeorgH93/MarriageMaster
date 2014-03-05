@@ -54,7 +54,7 @@ permissions:
   marry.setpriest:
     description: Allows you to set a priest
     default: op
-  marry.listenchat
+  marry.listenchat:
     description: Allows to see the private chat
     default: op
   marry.reload:
