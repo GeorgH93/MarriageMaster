@@ -115,7 +115,7 @@ public class OnCommand implements CommandExecutor
     				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
     			}
 	        }
-			else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
+			else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
 	        {
 	        	priest.setPriest(args, sender);
 	        }
@@ -326,7 +326,7 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
 		}
-        else if(args.length == 2 && args[0].equalsIgnoreCase("priest"))
+        else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
         	{
@@ -401,7 +401,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
+			player.sendMessage(ChatColor.AQUA + "/marry " + marriageMaster.config.GetPriestCMD() + " <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.listenchat", false))
 		{

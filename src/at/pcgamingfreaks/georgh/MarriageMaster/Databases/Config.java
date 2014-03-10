@@ -59,7 +59,7 @@ public class Config
 	
 	private void NewConfig(File file)
 	{
-		FileConfiguration config = new YamlConfiguration();
+		config = new YamlConfiguration();
 		config.set("Permissions", false);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
@@ -84,7 +84,10 @@ public class Config
 		config.set("Database.MySQL.Database", "minecraft");
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
-		config.set("Version",3);
+		config.set("Confirmation.Enable", true);
+		config.set("Confirmation.AutoDialog", true);
+		config.set("PriestCMD", "priest");
+		config.set("Version",4);
 		
 		try 
 		{
@@ -107,9 +110,12 @@ public class Config
 			case 2:
 				config.set("Prefix.Enable", true);
 				config.set("Prefix.String", "<heart><partnername><heart>");
-				config.set("Version", 3);
+			case 3:
+				config.set("Confirmation.Enable", true);
+				config.set("Confirmation.AutoDialog", true);
+				config.set("Version", 4);
 			break;
-			case 3: return false;
+			case 4: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
 		}
 		try 
@@ -271,5 +277,10 @@ public class Config
 	public String GetMySQLPassword()
 	{
 		return config.getString("Database.MySQL.Password");
+	}
+	
+	public String GetPriestCMD()
+	{
+		return config.getString("PriestCMD");
 	}
 }
