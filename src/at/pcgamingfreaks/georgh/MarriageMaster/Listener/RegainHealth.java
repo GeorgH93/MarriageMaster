@@ -36,29 +36,20 @@ public class RegainHealth implements Listener
 	@EventHandler
 	public void onHeal(EntityRegainHealthEvent event) 
 	{
-		Player player = null;
-		
 		if (event.getEntity() instanceof Player)
 		{
-			player = (Player) event.getEntity();
-		}
-		
-		if(player != null)
-		{
-			int amount = marriageMaster.config.GetHealthRegainAmount();
-			
-			String partner = marriageMaster.DB.GetPartner(player.getName());
-			if(partner != null)
+			Player player = (Player) event.getEntity();
+			if(player != null)
 			{
-				Player otherPlayer = marriageMaster.getServer().getPlayer(partner);
-				
-				if(otherPlayer != null)
+				String partner = marriageMaster.DB.GetPartner(player.getName());
+				if(partner != null)
 				{
-					if(otherPlayer.isOnline())
+					Player otherPlayer = marriageMaster.getServer().getPlayer(partner);
+					if(otherPlayer != null && otherPlayer.isOnline())
 					{
 						if(marriageMaster.InRadius(player, otherPlayer,2))
 						{
-							event.setAmount((double)amount);
+							event.setAmount((double)marriageMaster.config.GetHealthRegainAmount());
 						}
 					}
 				}
