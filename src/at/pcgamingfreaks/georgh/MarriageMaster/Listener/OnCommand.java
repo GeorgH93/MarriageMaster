@@ -359,6 +359,36 @@ public class OnCommand implements CommandExecutor
     			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotAPriest"));
     		}
         }
+        else if(args[0].equalsIgnoreCase("accept"))
+        {
+        	priest.AcceptMarriage(player);
+        }
+        else if(args[0].equalsIgnoreCase("deny"))
+        {
+        	for (Marry_Requests m : marriageMaster.mr)
+    		{
+        		if(m.p1 == player || m.p2 == player)
+        		{
+        			marriageMaster.mr.remove(m);
+        			if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
+					{
+        				player.chat(marriageMaster.lang.Get("Dialog.NoIDontWant"));
+					}
+        			m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
+        			if(m.p1 == player)
+        			{
+        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        			}
+        			else
+        			{
+        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        			}
+        			return true;
+        		}
+    		}
+        	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
+        }
         else
         {
         	ShowAvailableCmds(player);

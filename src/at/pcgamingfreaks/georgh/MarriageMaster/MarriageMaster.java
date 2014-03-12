@@ -41,6 +41,7 @@ public class MarriageMaster extends JavaPlugin
     public Language lang;
     public Database DB;
     public List<Player> pcl;
+    public List<Marry_Requests> mr;
     
     public boolean setupPermissions()
     {
@@ -65,6 +66,7 @@ public class MarriageMaster extends JavaPlugin
 		DB = new Database(this);
 		
 		pcl = new ArrayList<Player>();
+		mr = new ArrayList<Marry_Requests>();
 		
 		if(config.UsePermissions())
 		{

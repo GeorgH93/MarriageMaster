@@ -283,4 +283,14 @@ public class Config
 	{
 		return config.getString("PriestCMD");
 	}
+	
+	public boolean UseConfirmation()
+	{
+		return config.getBoolean("Confirmation.Enable");
+	}
+	
+	public boolean UseConfirmationAutoDialog()
+	{
+		return config.getBoolean("Confirmation.AutoDialog");
+	}
 }

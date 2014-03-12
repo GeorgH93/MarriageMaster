@@ -26,6 +26,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
+import at.pcgamingfreaks.georgh.MarriageMaster.Marry_Requests;
 
 public class JoinLeave implements Listener 
 {
@@ -86,5 +87,26 @@ public class JoinLeave implements Listener
 			}
 		}
 		marriageMaster.pcl.remove(event.getPlayer());
+		for (Marry_Requests m : marriageMaster.mr)
+		{
+			if(m.p1 == event.getPlayer())
+			{
+				marriageMaster.mr.remove(m);
+				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p1));
+				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p1));
+			}
+			if(m.p2 == event.getPlayer())
+			{
+				marriageMaster.mr.remove(m);
+				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
+				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
+			}
+			if(m.priest == event.getPlayer())
+			{
+				marriageMaster.mr.remove(m);
+				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), m.priest));
+				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), m.priest));
+			}
+		}
 	}
 }

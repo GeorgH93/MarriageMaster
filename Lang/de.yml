@@ -42,6 +42,10 @@ Language:
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
         ListeningStarted: Du hörst nun denn Ehe-Chat mit.
         ListeningStoped: Du hörst nun denn Ehe-Chat nicht mehr mit.
+        PriestMarryOff: 'Euer Priester (%s) ist offline gegangen, Hochzeit abgebrochen.'
+        PlayerMarryOff: '%s ist offline gegangen, Hochzeit abgebrochen.'
+        PlayerCalledOff: '%s hat die Hochzeit abgebrochen.'
+        YouCalledOff: Du hast die Hochzeit abgebrochen.
     Economy:
         NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld
@@ -65,3 +69,12 @@ Language:
         PartnerOffline: "%1$s's Partner (%2$s) ist nicht Online."
         DivorcedPlayer: '%1$s hat dich von %2$s geschieden.'
         Divorced: 'Du hast %1$s von %2$s geschieden.'
+        Confirm: 'Bestätige die Eheschließung mit /marry accept oder lehne sie ab mit /marry deny'
+        AlreadyAccepted: 'Du hast die Eheschließung bereits bestätigt.'
+        NoRequest: 'Es liegt keine offene eheanfrage vor.'
+    Dialog:
+        DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
+        AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'
+        Married: 'Dann erkläre ich euch macht meines Amtes als verheiratet.'
+        YesIWant: 'Ja, ich will!'
+        NoIDontWant: 'Nein, ich will nicht!'

@@ -42,6 +42,10 @@ Language:
         PvPIsOff: You can't hurt your Partner if you have PvP disabled.
         ListeningStarted: You are now listening to the marry chat.
         ListeningStoped: You are no longer listening to the marry chat.
+        PriestMarryOff: 'Priest (%s) is now offline, wedding called off.'
+        PlayerMarryOff: '%s is now offline, wedding called off.'
+        PlayerCalledOff: '%s called the wedding off.'
+        YouCalledOff: You have called the wedding off.
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money
@@ -65,3 +69,12 @@ Language:
         PartnerOffline: "%1$s's partner (%2$s) is not Online."
         DivorcedPlayer: '%1$s has divorced your marriage with %2$s.'
         Divorced: 'You have divorced %1$s and %2$s.'
+        Confirm: 'Accept the marriage with /marry accept or deny it with /marry deny'
+        AlreadyAccepted: 'You have already accepted the marriage.'
+        NoRequest: 'There is no open marriage request.'
+    Dialog:
+        DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
+        AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'
+        Married: 'I now pronounce you husband and wife. You may now kiss .'
+        YesIWant: 'Yes, I will!'
+        NoIDontWant: 'No, I will not!'

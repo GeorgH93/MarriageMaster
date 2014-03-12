@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
+import at.pcgamingfreaks.georgh.MarriageMaster.Marry_Requests;
 
 public class Priester 
 {
@@ -135,16 +136,75 @@ public class Priester
 			}
 		}
 	}
-
-	private void MarryPlayer(Player priester, Player player, Player otherPlayer) 
+	
+	public void AcceptMarriage(Player player)
 	{
-		marriageMaster.DB.MarryPlayers(player.getName(), otherPlayer.getName(), priester.getName());
-		priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
-		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priester.getName(), otherPlayer.getName()));
-		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priester.getName(), player.getName()));
+		for (Marry_Requests m : marriageMaster.mr)
+		{
+    		if(m.p1 == player || m.p2 == player)
+    		{
+    			if(!m.HasAccepted(player))
+    			{
+    				marriageMaster.mr.remove(m);
+    				m.Accept(player);
+    				if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
+					{
+    					player.chat(marriageMaster.lang.Get("Dialog.YesIWant"));
+					}
+    				if(m.BothAcceoted(player))
+    				{
+    					SaveMarry(m.priest, m.p1, m.p2);
+    				}
+    				else
+    				{
+    					if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
+    					{
+    						m.priest.chat(String.format(marriageMaster.lang.Get("Dialog.AndDoYouWant"), m.p2.getName(), m.p1.getName()));
+    					}
+    					m.p2.sendMessage(marriageMaster.lang.Get("Priest.Confirm"));
+    					marriageMaster.mr.add(m);
+    				}
+    			}
+    			else
+    			{
+    				player.sendMessage(marriageMaster.lang.Get("Priest.AlreadyAccepted"));
+    			}
+    			return;
+    		}
+    	}
+    	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
+	}
+	
+	private void SaveMarry(Player priest, Player player, Player otherPlayer)
+	{
+		marriageMaster.DB.MarryPlayers(player.getName(), otherPlayer.getName(), priest.getName());
+		priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
+		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getName(), otherPlayer.getName()));
+		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getName(), player.getName()));
+		if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
+		{
+			priest.sendMessage(marriageMaster.lang.Get("Dialog.Married"));
+		}
 		if(marriageMaster.config.GetAnnouncementEnabled())
 		{
-			marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), priester.getName(), player.getName(), otherPlayer.getName()));
+			marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), priest.getName(), player.getName(), otherPlayer.getName()));
+		}
+	}
+
+	private void MarryPlayer(Player priest, Player player, Player otherPlayer) 
+	{
+		if(!marriageMaster.config.UseConfirmation())
+		{
+			SaveMarry(priest, player, otherPlayer);
+		}
+		else
+		{
+			marriageMaster.mr.add(new Marry_Requests(priest, player, otherPlayer));
+			if(marriageMaster.config.UseConfirmationAutoDialog())
+			{
+				priest.chat(String.format(marriageMaster.lang.Get("Dialog.DoYouWant"), player.getName(), otherPlayer.getName()));
+			}
+			player.sendMessage(marriageMaster.lang.Get("Priest.Confirm"));
 		}
 	}
 

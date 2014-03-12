@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 3;
+	private static final int LANG_VERSION = 4;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -108,8 +108,21 @@ public class Language
 						lang.set("Ingame.ListeningStarted", "You are now listening to the marry chat.");
 						lang.set("Ingame.ListeningStoped", "You are no longer listening to the marry chat.");
 						lang.set("Description.ListenChat", "Shows all chatmessages sent from a married player to his partner.");
+					case 3:
+						lang.set("Ingane.PriestMarryOff", "Priest (%s) is now offline, wedding called off.");
+						lang.set("Ingane.PlayerMarryOff", "%s is now offline, wedding called off.");
+						lang.set("Ingane.PlayerCalledOff", "%s called the wedding off.");
+						lang.set("Ingane.YouCalledOff", "You have called the wedding off.");
+						lang.set("Priest.Confirm", "Accept the marriage with /marry accept or deny it with /marry deny");
+						lang.set("Priest.AlreadyAccepted", "You have already accepted the marriage.");
+						lang.set("Priest.NoRequest", "There is no open marriage request.");
+						lang.set("Dialog.DoYouWant", "Do you %1$s, want to marry %2$s on this server?");
+						lang.set("Dialog.AndDoYouWant", "And do you %1$s, want to marry %2$s on this server?");
+						lang.set("Dialog.Married", "I now pronounce you husband and wife. You may now kiss .");
+						lang.set("Dialog.YesIWant", "Yes, I will!");
+						lang.set("Dialog.NoIDontWant", "No, I will not!");
 						break;
-					case 3: return false;
+					case LANG_VERSION: return false;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
 				lang.set("Version", LANG_VERSION);
