@@ -74,7 +74,6 @@ public class Config
 		config.set("AllowBlockPvP", false);
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
-		config.set("PriestEnable", true);
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
 		config.set("Language","en");
@@ -113,6 +112,7 @@ public class Config
 			case 3:
 				config.set("Confirmation.Enable", true);
 				config.set("Confirmation.AutoDialog", true);
+				config.set("PriestCMD", "priest");
 				config.set("Version", 4);
 			break;
 			case 4: return false;
@@ -139,11 +139,6 @@ public class Config
 	public String GetLanguageUpdateMode()
 	{
 		return config.getString("LanguageUpdateMode");
-	}
-	
-	public boolean GetPriestStatus()
-	{
-		return config.getBoolean("PriestEnable");
 	}
 	
 	public boolean GetAnnouncementEnabled()
