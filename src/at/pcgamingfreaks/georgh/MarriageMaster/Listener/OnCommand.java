@@ -121,7 +121,7 @@ public class OnCommand implements CommandExecutor
 	        }
 	        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
 	        {
-	        	priest.Divorce(player, args);
+	        	priest.Divorce(sender, args);
 	        }
 	        else if (args.length == 2)
 	        {

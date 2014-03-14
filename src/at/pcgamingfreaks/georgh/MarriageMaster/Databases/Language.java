@@ -122,7 +122,6 @@ public class Language
 						lang.set("Dialog.YesIWant", "Yes, I will!");
 						lang.set("Dialog.NoIDontWant", "No, I will not!");
 						break;
-					case LANG_VERSION: return false;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
 				lang.set("Version", LANG_VERSION);

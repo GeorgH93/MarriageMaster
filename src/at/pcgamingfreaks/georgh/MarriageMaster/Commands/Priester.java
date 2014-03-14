@@ -309,6 +309,56 @@ public class Priester
 			priester.sendMessage(ChatColor.RED + player.getName() + " is not married with " + otherPlayer.getName());
 		}
 	}
+	
+	public void Divorce(CommandSender priester, String[] args)
+	{
+		Player player = Bukkit.getServer().getPlayer(args[1]);
+		if(player == null || (player != null && !player.isOnline()))
+		{
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), args[1]));
+			return;
+		}
+		String otP = marriageMaster.DB.GetPartner(player.getName());
+		if(otP == null || otP.isEmpty())
+		{
+			priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.PlayerNotMarried"));
+			return;
+		}
+		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
+		if(otherPlayer == null || (otherPlayer != null && !otherPlayer.isOnline()))
+		{
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.PartnerOffline"), args[1],otP));
+			return;
+		}
+		String p1 = marriageMaster.DB.GetPartner(otherPlayer.getName());
+		String p2 = marriageMaster.DB.GetPartner(player.getName());
+		if(p1.equalsIgnoreCase(player.getName()) && p2.equalsIgnoreCase(otherPlayer.getName()))
+		{
+			if(marriageMaster.config.UseEconomy())
+			{
+				if(marriageMaster.economy.Divorce(player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
+				{
+					DivorcePlayer(priester, player, otherPlayer);
+				}
+			}
+			else
+			{
+				DivorcePlayer(priester, player, otherPlayer);
+			}
+		}	
+		else
+		{
+			priester.sendMessage(ChatColor.RED + player.getName() + " is not married with " + otherPlayer.getName());
+		}
+	}
+	
+	private void DivorcePlayer(CommandSender priester, Player player, Player otherPlayer) 
+	{
+		marriageMaster.DB.DivorcePlayer(player.getName(), otherPlayer.getName());
+		priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Divorced"), player.getName(),otherPlayer.getName()));
+		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), "Console", otherPlayer.getName()));
+		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), "Console", player.getName()));
+	}
 
 	private void DivorcePlayer(Player priester, Player player, Player otherPlayer) 
 	{

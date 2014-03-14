@@ -58,9 +58,8 @@ public class MarriageMaster extends JavaPlugin
     }
 
 	public void onEnable()
-	{			
+	{
 		log = getLogger();
-
 		config = new Config(this);
 		lang = new Language(this);
 		DB = new Database(this);
@@ -83,6 +82,7 @@ public class MarriageMaster extends JavaPlugin
 		
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
+		getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
 		RegisterEvents();
 
 		this.log.info(lang.Get("Console.Enabled"));
@@ -90,7 +90,6 @@ public class MarriageMaster extends JavaPlugin
 	
 	public void RegisterEvents()
 	{
-		getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
 		if(config.GetAllowBlockPvP())
 		{
 			getServer().getPluginManager().registerEvents(new Damage(this), this);
