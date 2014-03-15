@@ -1,4 +1,4 @@
-Version: 4
+Version: 5
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -72,6 +72,7 @@ Language:
         Confirm: 'Accept the marriage with /marry accept or deny it with /marry deny'
         AlreadyAccepted: 'You have already accepted the marriage.'
         NoRequest: 'There is no open marriage request.'
+        NotYourSelf: 'You are not allowed to marry yourself.'
     Dialog:
         DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
         AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'

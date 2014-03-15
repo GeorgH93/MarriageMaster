@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 4;
+	private static final int LANG_VERSION = 5;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -121,6 +121,8 @@ public class Language
 						lang.set("Dialog.Married", "I now pronounce you husband and wife. You may now kiss .");
 						lang.set("Dialog.YesIWant", "Yes, I will!");
 						lang.set("Dialog.NoIDontWant", "No, I will not!");
+					case 4:
+						lang.set("NotYourSelf", "You are not allowed to marry yourself.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
