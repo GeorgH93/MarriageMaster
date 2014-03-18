@@ -46,6 +46,10 @@ Language:
         PlayerMarryOff: '%s is now offline, wedding called off.'
         PlayerCalledOff: '%s called the wedding off.'
         YouCalledOff: You have called the wedding off.
+        NoItemInHand: You are not holding an item.
+        PartnerInvFull: Your partner have no empty space in his inventory.
+        ItemSent: 'You have sent your partner %1$s %2$s.'
+        ItemReceived: 'Your partner have sent you %1$s %2$s.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

@@ -20,13 +20,16 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Listener;
 import java.util.Map;
 import java.util.NavigableMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
@@ -326,6 +329,50 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
 		}
+        else if (args[0].equalsIgnoreCase("gift") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("send"))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.gift"))
+    		{
+        		if(marriageMaster.HasPartner(player.getName()))
+				{
+        			String Partner = marriageMaster.DB.GetPartner(player.getName());
+        			if(Partner == null || Partner.isEmpty())
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+        				return true;
+        			}
+        			Player partner = Bukkit.getServer().getPlayer(Partner);
+        			if(partner == null || !partner.isOnline())
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+        				return true;
+        			}
+        			ItemStack its = player.getInventory().getItemInHand();
+        			if(its == null || its.getType() == Material.AIR)
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoItemInHand"));
+        				return true;
+        			}
+        			if(partner.getInventory().firstEmpty() == -1)
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
+        				return true;
+        			}
+        			partner.getInventory().addItem(its);
+        			player.getInventory().remove(its);
+        			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
+        			partner.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+				}
+        		else
+        		{
+        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+        		}
+			}
+	    	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+        }
         else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))

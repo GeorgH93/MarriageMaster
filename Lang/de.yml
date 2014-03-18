@@ -46,6 +46,10 @@ Language:
         PlayerMarryOff: '%s ist offline gegangen, Hochzeit abgebrochen.'
         PlayerCalledOff: '%s hat die Hochzeit abgebrochen.'
         YouCalledOff: Du hast die Hochzeit abgebrochen.
+        NoItemInHand: Du hast kein Item in der hand.
+        PartnerInvFull: Dein Partner hat keinen platz in seinem Inventar.
+        ItemSent: 'Du hast deinem Partner %1$s %2$s geschickt.'
+        ItemReceived: 'Dein Partner hat dir %1$s %2$s geschickt.'
     Economy:
         NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld

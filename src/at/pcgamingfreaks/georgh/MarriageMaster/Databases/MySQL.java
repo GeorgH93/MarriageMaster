@@ -116,7 +116,13 @@ public class MySQL
 			pstmt.execute();
 			pstmt.close();
 		}
-		catch (SQLException e){}
+		catch (SQLException e)
+		{
+			if(e.getErrorCode() != 23000)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public void AddPriest(String priestname)

@@ -123,6 +123,10 @@ public class Language
 						lang.set("Dialog.NoIDontWant", "No, I will not!");
 					case 4:
 						lang.set("NotYourSelf", "You are not allowed to marry yourself.");
+						lang.set("NoItemInHand", "You are not holding an item.");
+						lang.set("PartnerInvFull", "Your partner have no empty space in his inventory.");
+						lang.set("ItemSent", "You have sent your partner %1$s %2$s.");
+						lang.set("ItemReceived", "Your partner have sent you %1$s %2$s.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
