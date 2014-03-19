@@ -20,6 +20,7 @@ Language:
         Chat: Private chat with your partner.
         Reload: Reloads the config of the plugin.
         ListenChat: Shows all chatmessages sent from a married player to his partner.
+        Gift: Gifts the item in your hand to your partner.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.

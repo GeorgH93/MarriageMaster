@@ -476,6 +476,10 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry pvpoff" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.PvPOff"));
 		}
+		if(marriageMaster.config.CheckPerm(player, "marry.gift"))
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Gift"));
+		}
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry " + marriageMaster.config.GetPriestCMD() + " <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));

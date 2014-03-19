@@ -20,6 +20,7 @@ Language:
         Chat: Privater Chat mit deinem Partner.
         Reload: Lädt die Config des Plugins neu.
         ListenChat: Zeigt alle Chatnachrichten die an Partner gesendet werden an.
+        Gift: Sendet deinem Partner das Item das du in der Hand häldst,
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
