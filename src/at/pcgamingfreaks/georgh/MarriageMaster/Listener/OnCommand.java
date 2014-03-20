@@ -22,6 +22,7 @@ import java.util.NavigableMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -329,12 +330,59 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
 		}
+        else if (args[0].equalsIgnoreCase("kiss") && marriageMaster.config.GetKissEnabled())
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.kiss"))
+    		{
+        		if(marriageMaster.kiss.CanKissAgain(player.getName()))
+        		{
+        			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
+        			return true;
+        		}
+        		if(marriageMaster.HasPartner(player.getName()))
+				{
+        			String Partner = marriageMaster.DB.GetPartner(player.getName());
+        			if(Partner == null || Partner.isEmpty())
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+        				return true;
+        			}
+        			Player partner = Bukkit.getServer().getPlayer(Partner);
+        			if(partner == null || !partner.isOnline())
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+        				return true;
+        			}
+        			if(marriageMaster.InRadius(player, partner, 2))
+        			{
+        				marriageMaster.kiss.kiss(player, partner);
+        			}
+        			else
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.TooFarToKiss"));
+        			}
+				}
+        		else
+        		{
+        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+        		}
+    		}
+        	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+        }
         else if (args[0].equalsIgnoreCase("gift") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("send"))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.gift"))
     		{
         		if(marriageMaster.HasPartner(player.getName()))
 				{
+        			if(!player.getGameMode().equals(GameMode.SURVIVAL))
+        			{
+        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.GiftsOnlyInSurvival"));
+        				return true;
+        			}
         			String Partner = marriageMaster.DB.GetPartner(player.getName());
         			if(Partner == null || Partner.isEmpty())
         			{
@@ -479,6 +527,10 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.gift"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Gift"));
+		}
+		if(marriageMaster.config.CheckPerm(player, "marry.kiss") && marriageMaster.config.GetKissEnabled())
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Kiss"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{

@@ -30,6 +30,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
+	private static final int CONFIG_VERSION = 5;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -86,7 +87,9 @@ public class Config
 		config.set("Confirmation.Enable", true);
 		config.set("Confirmation.AutoDialog", true);
 		config.set("PriestCMD", "priest");
-		config.set("Version",4);
+		config.set("Kiss.Enable", true);
+		config.set("Kiss.WaitTime", 10);
+		config.set("Version",CONFIG_VERSION);
 		
 		try 
 		{
@@ -113,9 +116,12 @@ public class Config
 				config.set("Confirmation.Enable", true);
 				config.set("Confirmation.AutoDialog", true);
 				config.set("PriestCMD", "priest");
-				config.set("Version", 4);
+			case 4:
+				config.set("Kiss.Enable", true);
+				config.set("Kiss.WaitTime", 10);
+				config.set("Version", CONFIG_VERSION);
 			break;
-			case 4: return false;
+			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
 		}
 		try 
@@ -287,5 +293,15 @@ public class Config
 	public boolean UseConfirmationAutoDialog()
 	{
 		return config.getBoolean("Confirmation.AutoDialog");
+	}
+	
+	public boolean GetKissEnabled()
+	{
+		return config.getBoolean("Kiss.Enable");
+	}
+	
+	public int GetKissWaitTime()
+	{
+		return config.getInt("Kiss.WaitTime") * 1000;
 	}
 }

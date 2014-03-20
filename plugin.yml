@@ -2,7 +2,7 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.3.3
+version: 1.3.4
 softdepend: [Vault]
 commands:
    marry:
@@ -54,6 +54,9 @@ permissions:
     default: true
   marry.gift:
     description: Allows you to gift items to your partner
+    default: true
+  marry.kiss:
+    description: Allows to kiss your partner
     default: true
   marry.setpriest:
     description: Allows you to set a priest

@@ -28,6 +28,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import at.pcgamingfreaks.georgh.MarriageMaster.Commands.Kiss;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
 import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
@@ -37,6 +38,7 @@ public class MarriageMaster extends JavaPlugin
 	public Logger log;
     public HEconomy economy = null;
     public Permission perms = null;
+    public Kiss kiss = null;
     public Config config;
     public Language lang;
     public Database DB;
@@ -101,6 +103,10 @@ public class MarriageMaster extends JavaPlugin
 		if(config.GetBonusXPEnabled())
 		{
 			getServer().getPluginManager().registerEvents(new Death(this), this);
+		}
+		if(config.GetKissEnabled())
+		{
+			getServer().getPluginManager().registerEvents(new InteractEntity(this),this);
 		}
 	}
 	 

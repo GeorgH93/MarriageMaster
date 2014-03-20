@@ -21,6 +21,7 @@ Language:
         Reload: Reloads the config of the plugin.
         ListenChat: Shows all chatmessages sent from a married player to his partner.
         Gift: Gifts the item in your hand to your partner.
+        Kiss: Kisses your partner.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.
@@ -51,6 +52,11 @@ Language:
         PartnerInvFull: Your partner have no empty space in his inventory.
         ItemSent: 'You have sent your partner %1$s %2$s.'
         ItemReceived: 'Your partner have sent you %1$s %2$s.'
+        GiftsOnlyInSurvival: You can only gift items to your partner when you are in survival mode.
+        YouKissed: You have kissed your partner!
+        YouGotKissed: Your partner has kissed you!
+        TooFarToKiss: You are too far away to kiss your partner. (Max 2 Blocks)
+        KissWait:'You have to wait %s seconds to kiss your partner again.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

@@ -20,7 +20,8 @@ Language:
         Chat: Privater Chat mit deinem Partner.
         Reload: Lädt die Config des Plugins neu.
         ListenChat: Zeigt alle Chatnachrichten die an Partner gesendet werden an.
-        Gift: Sendet deinem Partner das Item das du in der Hand häldst,
+        Gift: Sendet deinem Partner das Item das du in der Hand häldst.
+        Kiss: Küsse deinen Partner.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
@@ -51,6 +52,11 @@ Language:
         PartnerInvFull: Dein Partner hat keinen platz in seinem Inventar.
         ItemSent: 'Du hast deinem Partner %1$s %2$s geschickt.'
         ItemReceived: 'Dein Partner hat dir %1$s %2$s geschickt.'
+        GiftsOnlyInSurvival: Du kannst nur im Survival Modus Items an deinen Partner senden.
+        YouKissed: Du hast deinen Partner geküsst!
+        YouGotKissed: Dein Partner hat dich geküsst!
+        TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
+        KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
     Economy:
         NotEnough: Du hast nicht genug Geld
         PartnerNotEnough: Dein Partner hat nicht genug Geld

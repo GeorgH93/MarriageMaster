@@ -122,11 +122,18 @@ public class Language
 						lang.set("Dialog.YesIWant", "Yes, I will!");
 						lang.set("Dialog.NoIDontWant", "No, I will not!");
 					case 4:
-						lang.set("NotYourSelf", "You are not allowed to marry yourself.");
-						lang.set("NoItemInHand", "You are not holding an item.");
-						lang.set("PartnerInvFull", "Your partner have no empty space in his inventory.");
-						lang.set("ItemSent", "You have sent your partner %1$s %2$s.");
-						lang.set("ItemReceived", "Your partner have sent you %1$s %2$s.");
+						lang.set("Priest.NotYourSelf", "You are not allowed to marry yourself.");
+						lang.set("Ingame.NoItemInHand", "You are not holding an item.");
+						lang.set("Ingame.PartnerInvFull", "Your partner have no empty space in his inventory.");
+						lang.set("Ingame.ItemSent", "You have sent your partner %1$s %2$s.");
+						lang.set("Ingame.ItemReceived", "Your partner have sent you %1$s %2$s.");
+						lang.set("Ingame.GiftsOnlyInSurvival", "You can only gift items to your partner when you are in survival mode.");
+				        lang.set("Ingame.YouKissed", "You have kissed your partner!");
+				        lang.set("Ingame.YouGotKissed", "Your partner has kissed you!");
+				        lang.set("Ingame.TooFarToKiss", "You are too far away to kiss your partner. (Max 2 Blocks)");
+				        lang.set("Ingame.KissWait", "You have to wait %s seconds to kiss your partner again.");
+						lang.set("Description.Kiss", "Kisses your partner.");
+						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
