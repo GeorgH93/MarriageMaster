@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -510,15 +511,11 @@ public class Updater {
      */
     public boolean shouldUpdate(String localVersion, String remoteVersion)
     {
-    	String[] lv = localVersion.split("."), rv = remoteVersion.split(".");
+    	String[] lv = localVersion.split(Pattern.quote( "." )), rv = remoteVersion.split(Pattern.quote( "." ));
     	try
     	{
     		int i = 0, c = 0;
-    		if(lv.length == rv.length)
-    		{
-    			c = lv.length;
-    		}
-    		else if(lv.length > rv.length)
+    		if(lv.length >= rv.length)
     		{
     			c = lv.length;
     		}
