@@ -59,13 +59,14 @@ Language:
         TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
         KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
     Economy:
-        NotEnough: Du hast nicht genug Geld
-        PartnerNotEnough: Dein Partner hat nicht genug Geld
+        NotEnough: Du hast nicht genug Geld.
+        PartnerNotEnough: Dein Partner hat nicht genug Geld.
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
         TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
         DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
-        MarriagePaid: 'Du hast %1$s für deine EheschlieÃŸung gezahlt.'
+        MarriagePaid: 'Du hast %1$s für deine Eheschließung gezahlt.'
+        GiftPaid: 'Du hast %1$s gehzahlt um deinen Partner ein item zu senden.'
     Priest:
         NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
         NotInRange: Die Spieler sind nicht in Reichweite.

@@ -68,6 +68,7 @@ public class Config
 		config.set("Economy.Tp", 25.00);
 		config.set("Economy.HomeTp", 25.00);
 		config.set("Economy.SetHome", 100.00);
+		config.set("Economy.Gift", 10.00);
 		config.set("HealthRegain.Enable", true);
 		config.set("HealthRegain.Amount", 2);
 		config.set("BonusXp.Enable", true);
@@ -123,6 +124,7 @@ public class Config
 				config.set("Kiss.WaitTime", 10);
 				config.set("Misc.Metrics", true);
 				config.set("Misc.AutoUpdate", true);
+				config.set("Economy.Gift", 10.00);
 				config.set("Version", CONFIG_VERSION);
 			break;
 			case CONFIG_VERSION: return false;
@@ -239,6 +241,11 @@ public class Config
 	public double GetEconomySetHome()
 	{
 		return config.getDouble("Economy.SetHome");
+	}
+	
+	public double GetEconomyGift()
+	{
+		return config.getDouble("Economy.Gift");
 	}
 	
 	public String GetDatabaseType()

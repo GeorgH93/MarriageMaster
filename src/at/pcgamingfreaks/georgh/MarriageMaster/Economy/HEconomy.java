@@ -87,6 +87,22 @@ public class HEconomy
 		}
 	}
 	
+	public boolean Gift(Player player, double money)
+	{
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
+		
+		if(response.transactionSuccess()) 
+		{
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.GiftPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			return true;
+		} 
+		else 
+		{
+			player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
+			return false;
+		}
+	}
+	
 	public boolean Teleport(Player player, double money)
 	{
 		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);

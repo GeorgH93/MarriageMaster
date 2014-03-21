@@ -135,6 +135,7 @@ public class Language
 						lang.set("Description.Kiss", "Kisses your partner.");
 						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
 						lang.set("Console.MetricsOffline", "Metrics offline.");
+						lang.set("GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

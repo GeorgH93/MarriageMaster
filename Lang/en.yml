@@ -66,6 +66,7 @@ Language:
         TPPaid: 'You paid %1$s for the Teleport (%1$s left)'
         DivorcePaid: 'You paid %1$s for the annul of your marriage (%2$s left)'
         MarriagePaid: 'You paid %1$s for your marriage (%2$s left)'
+        GiftPaid: 'You have paid %1$s for gifting an item to your partner (%2$s left)'
     Priest:
         NotWithHimself: "You can't marry %s with himself."
         NotInRange: The players are not in range.

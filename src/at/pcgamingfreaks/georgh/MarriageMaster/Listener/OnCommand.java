@@ -406,10 +406,13 @@ public class OnCommand implements CommandExecutor
         				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
         				return true;
         			}
-        			partner.getInventory().addItem(its);
-        			player.getInventory().remove(its);
-        			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
-        			partner.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+        			if((marriageMaster.config.UseEconomy() && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || marriageMaster.config.UseEconomy())
+        			{
+	        			partner.getInventory().addItem(its);
+	        			player.getInventory().remove(its);
+	        			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
+	        			partner.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+        			}
 				}
         		else
         		{
