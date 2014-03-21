@@ -39,7 +39,7 @@ public class InteractEntity implements Listener
 	{
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		if(marriageMaster.kiss.CanKissAgain(playername) && player.isSneaking() && marriageMaster.HasPartner(playername))
+		if(player.isSneaking() && marriageMaster.HasPartner(playername) && marriageMaster.kiss.CanKissAgain(playername))
 		{
 			Entity entity = event.getRightClicked();
 			if(entity != null && entity instanceof Player)

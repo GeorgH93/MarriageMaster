@@ -43,6 +43,10 @@ public class Kiss
 	
 	public boolean CanKissAgain(String playername)
 	{
+		if(!wait.containsKey(playername))
+		{
+			return true;
+		}
 		if(wait.get(playername) + marriageMaster.config.GetKissWaitTime() < System.currentTimeMillis())
 		{
 			wait.remove(playername);
@@ -53,6 +57,10 @@ public class Kiss
 	
 	public int GetKissTimeOut(String playername)
 	{
+		if(!wait.containsKey(playername))
+		{
+			return 0;
+		}
 		return (int)((wait.get(playername) + marriageMaster.config.GetKissWaitTime() - System.currentTimeMillis())/1000);
 	}
 	
@@ -90,7 +98,7 @@ public class Kiss
 	    				setValue(packet, "f", 1F);
 	    				setValue(packet, "g", 1F);
 	    				setValue(packet, "h", 1F);
-	    				setValue(packet, "i", 200);
+	    				setValue(packet, "i", marriageMaster.config.GetKissHearthCount());
 	    				((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
     				}
     			}

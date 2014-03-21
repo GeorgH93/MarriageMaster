@@ -334,13 +334,13 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.kiss"))
     		{
-        		if(marriageMaster.kiss.CanKissAgain(player.getName()))
-        		{
-        			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
-        			return true;
-        		}
         		if(marriageMaster.HasPartner(player.getName()))
 				{
+        			if(!marriageMaster.kiss.CanKissAgain(player.getName()))
+            		{
+            			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
+            			return true;
+            		}
         			String Partner = marriageMaster.DB.GetPartner(player.getName());
         			if(Partner == null || Partner.isEmpty())
         			{

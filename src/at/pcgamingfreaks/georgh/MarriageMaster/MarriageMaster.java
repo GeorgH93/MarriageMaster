@@ -68,6 +68,7 @@ public class MarriageMaster extends JavaPlugin
 		config = new Config(this);
 		lang = new Language(this);
 		DB = new Database(this);
+		kiss = new Kiss(this);
 		
 		pcl = new ArrayList<Player>();
 		mr = new ArrayList<Marry_Requests>();

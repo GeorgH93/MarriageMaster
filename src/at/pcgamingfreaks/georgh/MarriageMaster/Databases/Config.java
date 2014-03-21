@@ -90,6 +90,7 @@ public class Config
 		config.set("PriestCMD", "priest");
 		config.set("Kiss.Enable", true);
 		config.set("Kiss.WaitTime", 10);
+		config.set("Kiss.HearthCount", 50);
 		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
 		config.set("Version",CONFIG_VERSION);
@@ -122,6 +123,7 @@ public class Config
 			case 4:
 				config.set("Kiss.Enable", true);
 				config.set("Kiss.WaitTime", 10);
+				config.set("Kiss.HearthCount", 50);
 				config.set("Misc.Metrics", true);
 				config.set("Misc.AutoUpdate", true);
 				config.set("Economy.Gift", 10.00);
@@ -314,6 +316,11 @@ public class Config
 	public int GetKissWaitTime()
 	{
 		return config.getInt("Kiss.WaitTime") * 1000;
+	}
+	
+	public int GetKissHearthCount()
+	{
+		return config.getInt("Kiss.HearthCount");
 	}
 	
 	public boolean UseMetrics()
