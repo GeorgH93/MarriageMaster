@@ -17,16 +17,19 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.gravitydevelopment.updater.Updater;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.Kiss;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
@@ -68,7 +71,23 @@ public class MarriageMaster extends JavaPlugin
 		
 		pcl = new ArrayList<Player>();
 		mr = new ArrayList<Marry_Requests>();
-		
+		if(config.UseMetrics())
+		{
+			try
+			{
+			    Metrics metrics = new Metrics(this);
+			    metrics.start();
+			}
+			catch (IOException e)
+			{
+			    log.info(lang.Get("Console.MetricsOffline"));
+			}
+		}
+		if(config.UseUpdater())
+		{
+			@SuppressWarnings("unused")
+			Updater updater = new Updater(this, 74734, this.getFile(), Updater.UpdateType.DEFAULT, true);
+		}
 		if(config.UsePermissions())
 		{
 			if(!setupPermissions())

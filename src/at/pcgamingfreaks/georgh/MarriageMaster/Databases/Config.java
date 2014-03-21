@@ -89,6 +89,8 @@ public class Config
 		config.set("PriestCMD", "priest");
 		config.set("Kiss.Enable", true);
 		config.set("Kiss.WaitTime", 10);
+		config.set("Misc.Metrics", true);
+		config.set("Misc.AutoUpdate", true);
 		config.set("Version",CONFIG_VERSION);
 		
 		try 
@@ -119,6 +121,8 @@ public class Config
 			case 4:
 				config.set("Kiss.Enable", true);
 				config.set("Kiss.WaitTime", 10);
+				config.set("Misc.Metrics", true);
+				config.set("Misc.AutoUpdate", true);
 				config.set("Version", CONFIG_VERSION);
 			break;
 			case CONFIG_VERSION: return false;
@@ -303,5 +307,15 @@ public class Config
 	public int GetKissWaitTime()
 	{
 		return config.getInt("Kiss.WaitTime") * 1000;
+	}
+	
+	public boolean UseMetrics()
+	{
+		return config.getBoolean("Misc.Metrics");
+	}
+	
+	public boolean UseUpdater()
+	{
+		return config.getBoolean("Misc.AutoUpdate");
 	}
 }

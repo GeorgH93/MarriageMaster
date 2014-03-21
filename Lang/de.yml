@@ -6,6 +6,7 @@ Language:
         LangUpdated: Sprachdatei wurde aktualisiert.
         NoPermPL: Kein Permission-Plugin gefunden, verwende standard rechte.
         NoEcoPL: Kein Wirtschafts-Plugin gefunden, deaktiviere Geld-System.
+        MetricsOffline: Metrics offline.
     Description:
         Commands: Befehle
         ListAll: Liste aller verheirateten Spieler.

@@ -6,6 +6,7 @@ Language:
         LangUpdated: Language File has been updated.
         NoPermPL: No Permission Plugin found, using default permissions.
         NoEcoPL: No Economy Plugin found disable Economy.
+        MetricsOffline: Metrics offline.
     Description:
         Commands: commands
         ListAll: Lists all Married Players.
@@ -56,7 +57,7 @@ Language:
         YouKissed: You have kissed your partner!
         YouGotKissed: Your partner has kissed you!
         TooFarToKiss: You are too far away to kiss your partner. (Max 2 Blocks)
-        KissWait:'You have to wait %s seconds to kiss your partner again.'
+        KissWait: 'You have to wait %s seconds to kiss your partner again.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

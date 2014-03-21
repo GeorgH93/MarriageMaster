@@ -180,7 +180,7 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
         }
-        else if (args[0].equalsIgnoreCase("pvpon")) 
+        else if (args[0].equalsIgnoreCase("pvpon") && marriageMaster.config.GetAllowBlockPvP()) 
         {
         	if(marriageMaster.HasPartner(player.getName()))
         	{
@@ -200,7 +200,7 @@ public class OnCommand implements CommandExecutor
     			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
     		}
         }
-        else if (args[0].equalsIgnoreCase("pvpoff"))
+        else if (args[0].equalsIgnoreCase("pvpoff") && marriageMaster.config.GetAllowBlockPvP())
         {
         	if(marriageMaster.HasPartner(player.getName()))
         	{
@@ -516,11 +516,11 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
 		}
-		if(marriageMaster.config.CheckPerm(player, "marry.pvpon"))
+		if(marriageMaster.config.CheckPerm(player, "marry.pvpon") && marriageMaster.config.GetAllowBlockPvP())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry pvpon" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.PvPOn"));
 		}
-		if(marriageMaster.config.CheckPerm(player, "marry.pvpoff"))
+		if(marriageMaster.config.CheckPerm(player, "marry.pvpoff") && marriageMaster.config.GetAllowBlockPvP())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry pvpoff" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.PvPOff"));
 		}

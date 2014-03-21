@@ -134,6 +134,7 @@ public class Language
 				        lang.set("Ingame.KissWait", "You have to wait %s seconds to kiss your partner again.");
 						lang.set("Description.Kiss", "Kisses your partner.");
 						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
+						lang.set("Console.MetricsOffline", "Metrics offline.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
