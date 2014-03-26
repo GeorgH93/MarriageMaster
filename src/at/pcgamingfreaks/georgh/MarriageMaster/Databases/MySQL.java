@@ -29,27 +29,36 @@ public class MySQL
 {
 	private MarriageMaster marriageMaster;
 
-	private Connection con = null;
+	private Connection conn = null;
 	
 	public MySQL(MarriageMaster marriagemaster) 
 	{
 		marriageMaster = marriagemaster;
+		
+		CheckDB();
+	}
+	
+	private Connection GetConnection()
+	{
 		try
 		{
-			con = DriverManager.getConnection("jdbc:mysql://" + marriageMaster.config.GetMySQLHost() + "/" + marriageMaster.config.GetMySQLDatabase(), marriageMaster.config.GetMySQLUser(), marriageMaster.config.GetMySQLPassword());
+			if(conn == null || conn.isClosed())
+			{
+				conn = DriverManager.getConnection("jdbc:mysql://" + marriageMaster.config.GetMySQLHost() + "/" + marriageMaster.config.GetMySQLDatabase(), marriageMaster.config.GetMySQLUser(), marriageMaster.config.GetMySQLPassword());
+			}
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-		CheckDB();
+		return conn;
 	}
 	
 	private void CheckDB()
 	{
 		try
 		{
-			Statement stmt = con.createStatement();
+			Statement stmt = GetConnection().createStatement();
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_priests (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_partners (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
@@ -67,7 +76,7 @@ public class MySQL
 		int id = -1;
 		try
 		{
-			PreparedStatement pstmt = con.prepareStatement("SELECT player_id FROM marry_players WHERE `name`=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT player_id FROM marry_players WHERE `name`=?");
 			pstmt.setString(1, player);
 			pstmt.executeQuery();
 			ResultSet rs = pstmt.getResultSet();
@@ -90,7 +99,7 @@ public class MySQL
 		String name = null;
 		try
 		{
-			Statement stmt = con.createStatement();
+			Statement stmt = GetConnection().createStatement();
 			stmt.executeQuery("SELECT `name` FROM marry_players WHERE `player_id`="+pid);
 			ResultSet rs = stmt.getResultSet();
 			if(rs.next())
@@ -111,7 +120,7 @@ public class MySQL
 	{
 		try
 		{
-			PreparedStatement pstmt = con.prepareStatement("INSERT INTO marry_players (`name`) VALUES (?);");
+			PreparedStatement pstmt = GetConnection().prepareStatement("INSERT INTO marry_players (`name`) VALUES (?);");
 			pstmt.setString(1, player);
 			pstmt.execute();
 			pstmt.close();
@@ -130,7 +139,7 @@ public class MySQL
 		AddPlayer(priestname);
 		try
 		{
-			Statement stmt = con.createStatement();
+			Statement stmt = GetConnection().createStatement();
 			stmt.execute("INSERT INTO marry_priests VALUES ("+GetPlayerID(priestname)+");");
 			stmt.close();
 		}
@@ -144,7 +153,7 @@ public class MySQL
 	{
 		try
 		{
-			Statement stmt = con.createStatement();
+			Statement stmt = GetConnection().createStatement();
 			stmt.execute("DELETE FROM marry_priests WHERE priest_id="+GetPlayerID(priestname)+";");
 			stmt.close();
 		}
@@ -158,7 +167,7 @@ public class MySQL
 	{
 		try
 		{
-			Statement stmt = con.createStatement();
+			Statement stmt = GetConnection().createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT priest_id FROM marry_priests WHERE priest_id="+GetPlayerID(priestname)+";");
 			if(rs.next())
 			{
@@ -180,7 +189,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername);
-			PreparedStatement pstmt = con.prepareStatement("SELECT pvp_state FROM marry_partners WHERE `player1`=? OR `player2`=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT pvp_state FROM marry_partners WHERE `player1`=? OR `player2`=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
@@ -205,7 +214,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername);
-			PreparedStatement pstmt = con.prepareStatement("SELECT player1,player2 FROM marry_partners WHERE player1=? OR player2=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT player1,player2 FROM marry_partners WHERE player1=? OR player2=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
@@ -237,7 +246,7 @@ public class MySQL
 		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
 		try
 		{
-			ResultSet rs = con.createStatement().executeQuery("SELECT mp1.name,mp2.name FROM marry_partners INNER JOIN marry_players AS mp1 ON player1=mp1.player_id INNER JOIN marry_players AS mp2 ON player2=mp2.player_id");
+			ResultSet rs = GetConnection().createStatement().executeQuery("SELECT mp1.name,mp2.name FROM marry_partners INNER JOIN marry_players AS mp1 ON player1=mp1.player_id INNER JOIN marry_players AS mp2 ON player2=mp2.player_id");
 			while(rs.next())
 			{
 				MarryMap_out.put(rs.getString(1), rs.getString(2));
@@ -257,7 +266,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername);
-			PreparedStatement pstmt = con.prepareStatement("SELECT home_x,home_y,home_z,home_world FROM marry_home INNER JOIN marry_partners ON marry_home.marry_id=marry_partners.marry_id WHERE `player1`=? OR `player2`=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT home_x,home_y,home_z,home_world FROM marry_home INNER JOIN marry_partners ON marry_home.marry_id=marry_partners.marry_id WHERE `player1`=? OR `player2`=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
@@ -281,7 +290,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername), mid = -1;
-			PreparedStatement pstmt = con.prepareStatement("SELECT marry_id FROM marry_partners WHERE player1=? OR player2=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT marry_id FROM marry_partners WHERE player1=? OR player2=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
@@ -289,7 +298,7 @@ public class MySQL
 			if(rs.next())
 			{
 				mid = rs.getInt(1);
-				pstmt = con.prepareStatement("REPLACE INTO marry_home (marry_id,home_x,home_y,home_z,home_world) VALUES ("+mid+",?,?,?,?);");
+				pstmt = GetConnection().prepareStatement("REPLACE INTO marry_home (marry_id,home_x,home_y,home_z,home_world) VALUES ("+mid+",?,?,?,?);");
 				pstmt.setDouble(1, loc.getX());
 				pstmt.setDouble(2, loc.getY());
 				pstmt.setDouble(3, loc.getZ());
@@ -312,7 +321,7 @@ public class MySQL
 		AddPlayer(priest);
 		try
 		{
-			PreparedStatement pstmt = con.prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			PreparedStatement pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
 			pstmt.setInt(1, GetPlayerID(playername));
 			pstmt.setInt(2, GetPlayerID(otherPlayer));
 			pstmt.setInt(3, GetPlayerID(priest));
@@ -331,7 +340,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername), mid = -1;
-			PreparedStatement pstmt = con.prepareStatement("SELECT marry_id FROM marry_partners WHERE player1=? OR player2=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT marry_id FROM marry_partners WHERE player1=? OR player2=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
@@ -339,10 +348,10 @@ public class MySQL
 			if(rs.next())
 			{
 				mid = rs.getInt(1);
-				pstmt = con.prepareStatement("DELETE FROM marry_partners WHERE marry_id=?;");
+				pstmt = GetConnection().prepareStatement("DELETE FROM marry_partners WHERE marry_id=?;");
 				pstmt.setInt(1, mid);
 				pstmt.execute();
-				pstmt = con.prepareStatement("DELETE FROM marry_home WHERE marry_id=?;");
+				pstmt = GetConnection().prepareStatement("DELETE FROM marry_home WHERE marry_id=?;");
 				pstmt.setInt(1, mid);
 				pstmt.execute();
 				pstmt.close();
@@ -359,7 +368,7 @@ public class MySQL
 		try
 		{
 			int pid = GetPlayerID(playername);
-			PreparedStatement pstmt = con.prepareStatement("UPDATE marry_partners SET pvp_state=? WHERE player1=? OR player2=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE marry_partners SET pvp_state=? WHERE player1=? OR player2=?");
 			pstmt.setBoolean(1,state);
 			pstmt.setInt(2, pid);
 			pstmt.setInt(3, pid);
