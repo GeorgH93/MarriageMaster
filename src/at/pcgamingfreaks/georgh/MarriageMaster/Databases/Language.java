@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 5;
+	private static final int LANG_VERSION = 6;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -136,6 +136,8 @@ public class Language
 						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
 						lang.set("Console.MetricsOffline", "Metrics offline.");
 						lang.set("GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
+					case 5:
+						lang.set("WorldNotAllowed", "Your partner is in a world where tp is not allowed.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

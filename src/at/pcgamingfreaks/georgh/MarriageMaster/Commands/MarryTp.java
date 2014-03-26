@@ -41,16 +41,23 @@ public class MarryTp
 			{
 				if(player.canSee(otherPlayer))
 				{
-					if(marriageMaster.config.UseEconomy())
+					if(!marriageMaster.config.GetBlacklistedWorlds().contains(otherPlayer.getWorld().getName()))
 					{
-						if(marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
+						if(marriageMaster.config.UseEconomy())
+						{
+							if(marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
+							{
+								DoTP(player, otherPlayer);
+							}
+						}
+						else
 						{
 							DoTP(player, otherPlayer);
 						}
 					}
 					else
 					{
-						DoTP(player, otherPlayer);
+						player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.WorldNotAllowed"));
 					}
 				}
 				else

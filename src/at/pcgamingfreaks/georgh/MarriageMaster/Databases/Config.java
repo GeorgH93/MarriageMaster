@@ -19,6 +19,8 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Databases;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -30,7 +32,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 5;
+	private static final int CONFIG_VERSION = 6;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -62,6 +64,12 @@ public class Config
 	{
 		config = new YamlConfiguration();
 		config.set("Permissions", false);
+		config.set("AllowBlockPvP", false);
+		config.set("Announcement", true);
+		config.set("InformOnPartnerJoin", true);
+		config.set("Language","en");
+		config.set("LanguageUpdateMode","Overwrite");
+		config.set("PriestCMD", "priest");
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -73,13 +81,8 @@ public class Config
 		config.set("HealthRegain.Amount", 2);
 		config.set("BonusXp.Enable", true);
 		config.set("BonusXp.Multiplier", 2);
-		config.set("AllowBlockPvP", false);
-		config.set("Announcement", true);
-		config.set("InformOnPartnerJoin", true);
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
-		config.set("Language","en");
-		config.set("LanguageUpdateMode","Overwrite");
 		config.set("Database.Type","Files");
 		config.set("Database.MySQL.Host", "localhost:3306");
 		config.set("Database.MySQL.Database", "minecraft");
@@ -87,12 +90,12 @@ public class Config
 		config.set("Database.MySQL.Password", "minecraft");
 		config.set("Confirmation.Enable", true);
 		config.set("Confirmation.AutoDialog", true);
-		config.set("PriestCMD", "priest");
 		config.set("Kiss.Enable", true);
 		config.set("Kiss.WaitTime", 10);
 		config.set("Kiss.HearthCount", 50);
 		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
+		config.set("TPBlacklistedWorlds", new ArrayList<String>());
 		config.set("Version",CONFIG_VERSION);
 		
 		try 
@@ -127,6 +130,8 @@ public class Config
 				config.set("Misc.Metrics", true);
 				config.set("Misc.AutoUpdate", true);
 				config.set("Economy.Gift", 10.00);
+			case 5:
+				config.set("TPBlacklistedWorlds", new ArrayList<String>());
 				config.set("Version", CONFIG_VERSION);
 			break;
 			case CONFIG_VERSION: return false;
@@ -331,5 +336,10 @@ public class Config
 	public boolean UseUpdater()
 	{
 		return config.getBoolean("Misc.AutoUpdate");
+	}
+	
+	public List<String> GetBlacklistedWorlds()
+	{
+		return config.getStringList("TPBlacklistedWorlds");
 	}
 }

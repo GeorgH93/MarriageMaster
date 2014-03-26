@@ -1,4 +1,4 @@
-Version: 5
+Version: 6
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -58,6 +58,7 @@ Language:
         YouGotKissed: Dein Partner hat dich geküsst!
         TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
         KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
+        WorldNotAllowed: Dein Partner ist in ein Welt in der TP nicht erlaubt ist.
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
