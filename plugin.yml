@@ -2,7 +2,7 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.4.4
+version: 1.4.5
 softdepend: [Vault]
 commands:
    marry:
@@ -25,6 +25,7 @@ permissions:
       marry.setpriest: true
       marry.reload: true
       marry.listenchat: true
+      marry.update: true
   marry.admin:
     description: Gives acces to all Marriage Admin commands
     children:
@@ -32,6 +33,7 @@ permissions:
       marry.setpriest: true
       marry.priest: true
       marry.listenchat: true
+      marry.update: true
   marry.list:
     description: Allows you to use the List command
     default: true
@@ -64,6 +66,9 @@ permissions:
     default: op
   marry.listenchat:
     description: Allows to see the private chat
+    default: op
+  marry.update:
+    description: Allows to update the plugin
     default: op
   marry.reload:
     description: Allows you to reload the config

@@ -23,6 +23,7 @@ Language:
         ListenChat: Shows all chatmessages sent from a married player to his partner.
         Gift: Gifts the item in your hand to your partner.
         Kiss: Kisses your partner.
+        Update: Checks if there is an update available and downloads it.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.
@@ -59,6 +60,8 @@ Language:
         TooFarToKiss: You are too far away to kiss your partner. (Max 2 Blocks)
         KissWait: 'You have to wait %s seconds to kiss your partner again.'
         WorldNotAllowed: Your partner is in a world where tp is not allowed.
+        Updated: 'Plugin updated, will be loaded on next restart/reload.'
+        NoUpdate: 'No plugin update available.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

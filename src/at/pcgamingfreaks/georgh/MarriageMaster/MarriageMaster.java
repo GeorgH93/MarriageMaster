@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import net.gravitydevelopment.updater.Updater;
+import net.gravitydevelopment.updater.Updater.UpdateResult;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
@@ -86,8 +87,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 		if(config.UseUpdater())
 		{
-			@SuppressWarnings("unused")
-			Updater updater = new Updater(this, 74734, this.getFile(), Updater.UpdateType.DEFAULT, true);
+			Update();
 		}
 		if(config.UsePermissions())
 		{
@@ -156,6 +156,16 @@ public class MarriageMaster extends JavaPlugin
 			return true;
 		}
 		
+		return false;
+	}
+	
+	public boolean Update()
+	{
+		Updater updater = new Updater(this, 74734, this.getFile(), Updater.UpdateType.DEFAULT, true);
+		if(updater.getResult() == UpdateResult.SUCCESS)
+		{
+			return true;
+		}
 		return false;
 	}
 }

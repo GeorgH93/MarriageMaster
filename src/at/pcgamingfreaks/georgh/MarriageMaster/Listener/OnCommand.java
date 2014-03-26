@@ -119,6 +119,10 @@ public class OnCommand implements CommandExecutor
     				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
     			}
 	        }
+			else if(args[0].equalsIgnoreCase("update") && marriageMaster.config.UseUpdater())
+			{
+				Update(sender);
+			}
 			else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
 	        {
 	        	priest.setPriest(args, sender);
@@ -324,6 +328,17 @@ public class OnCommand implements CommandExecutor
         			marriageMaster.pcl.remove(player);
         			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.ListeningStoped"));
         		}
+			}
+	    	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+		}
+        else if(args[0].equalsIgnoreCase("update") && marriageMaster.config.UseUpdater())
+		{
+        	if(marriageMaster.config.CheckPerm(player, "marry.update", false))
+    		{
+        		Update(sender);
 			}
 	    	else
 	    	{
@@ -543,19 +558,39 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry listenchat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListenChat"));
 		}
+		if(marriageMaster.config.UseUpdater() && marriageMaster.config.CheckPerm(player, "marry.update", false))
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Update"));
+		}
 		if(marriageMaster.config.CheckPerm(player, "marry.reload", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Reload"));
 		}
 	}
 	
-	public void ShowAvailableCmds(CommandSender sender)
+	private void Update(CommandSender sender)
+	{
+		if(marriageMaster.Update())
+		{
+			sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.Updated"));
+		}
+		else
+		{
+			sender.sendMessage(ChatColor.GOLD + marriageMaster.lang.Get("Ingame.NoUpdate"));
+		}
+	}
+	
+	private void ShowAvailableCmds(CommandSender sender)
 	{
 		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + marriageMaster.lang.Get("Description.Commands"));
 		sender.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListAll"));
 		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Marry"));
 		sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Divorce"));
 		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
+		if(marriageMaster.config.UseUpdater())
+		{
+			sender.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Update"));
+		}
 		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Reload"));
 	}
 }

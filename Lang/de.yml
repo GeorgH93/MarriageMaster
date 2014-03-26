@@ -23,6 +23,7 @@ Language:
         ListenChat: Zeigt alle Chatnachrichten die an Partner gesendet werden an.
         Gift: Sendet deinem Partner das Item das du in der Hand häldst.
         Kiss: Küsse deinen Partner.
+        Update: Prüft ob ein update verfügbar ist und lädt dieses herunter.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
@@ -59,6 +60,8 @@ Language:
         TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
         KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
         WorldNotAllowed: Dein Partner ist in ein Welt in der TP nicht erlaubt ist.
+        Updated: 'Plugin aktualisiert, wird bei nächsten restart/reload geladen.'
+        NoUpdate: 'Kein Plugin update verfügbar.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

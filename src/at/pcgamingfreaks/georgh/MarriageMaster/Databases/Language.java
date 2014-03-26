@@ -135,9 +135,13 @@ public class Language
 						lang.set("Description.Kiss", "Kisses your partner.");
 						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
 						lang.set("Console.MetricsOffline", "Metrics offline.");
-						lang.set("GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
+						lang.set("Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
 					case 5:
-						lang.set("WorldNotAllowed", "Your partner is in a world where tp is not allowed.");
+						lang.set("Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
+						lang.set("Ingame.WorldNotAllowed", "Your partner is in a world where tp is not allowed.");
+						lang.set("Ingame.Updated", "Plugin updated, will be loaded on next restart/reload.");
+						lang.set("Ingame.NoUpdate", "No plugin update available.");
+						lang.set("Description.Update", "Checks if there is an update available and downloads it.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
