@@ -518,8 +518,8 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.IsPriester(player))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Marry"));
-			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Divorce"));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Marry"), marriageMaster.config.GetRange("Marry")));
+			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Divorce"), marriageMaster.config.GetRange("Marry")));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.tp"))
 		{

@@ -142,6 +142,8 @@ public class Language
 						lang.set("Ingame.Updated", "Plugin updated, will be loaded on next restart/reload.");
 						lang.set("Ingame.NoUpdate", "No plugin update available.");
 						lang.set("Description.Update", "Checks if there is an update available and downloads it.");
+						lang.set("Description.Marry", "Marry two Persons in a range of %s blocks.");
+						lang.set("Description.Divorce", "Divorces two Persons in a range of %s blocks.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

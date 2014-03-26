@@ -10,8 +10,8 @@ Language:
     Description:
         Commands: Befehle
         ListAll: Liste aller verheirateten Spieler.
-        Marry: Verheiratet zwei Spieler in einem 25 Block Radius.
-        Divorce: Scheidet zwei Spieler in einem 25 Block Radius.
+        Marry: 'Verheiratet zwei Spieler in einem %s Block Radius.'
+        Divorce: 'Scheidet zwei Spieler in einem %s Block Radius.'
         Priest: Setzt einen Priester.
         TP: Teleportation zu deinem Partner.
         PvPOn: Aktiviert PvP mit deinem Partner.

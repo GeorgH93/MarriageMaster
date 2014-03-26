@@ -10,8 +10,8 @@ Language:
     Description:
         Commands: commands
         ListAll: Lists all Married Players.
-        Marry: Marry two Persons in a range of 25 blocks.
-        Divorce: Divorces two Persons in a range of 25 blocks.
+        Marry: 'Marry two Persons in a range of %s blocks.'
+        Divorce: 'Divorces two Persons in a range of %s blocks.'
         Priest: Sets a priest.
         TP: Teleport to Married Player.
         PvPOn: Enables PvP with Partner.
