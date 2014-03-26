@@ -47,7 +47,7 @@ public class RegainHealth implements Listener
 					Player otherPlayer = marriageMaster.getServer().getPlayer(partner);
 					if(otherPlayer != null && otherPlayer.isOnline())
 					{
-						if(marriageMaster.InRadius(player, otherPlayer,2))
+						if(marriageMaster.InRadius(player, otherPlayer, marriageMaster.config.GetRange("Heal")))
 						{
 							event.setAmount((double)marriageMaster.config.GetHealthRegainAmount());
 						}

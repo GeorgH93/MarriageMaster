@@ -87,7 +87,7 @@ public class Kiss
     		{
     			if(entity instanceof CraftPlayer)
     			{
-    				if(entity.getLocation().distance(loc) < 128)
+    				if(entity.getLocation().distance(loc) < marriageMaster.config.GetRange("HearthVisible"))
     				{
 	    				packet = new PacketPlayOutWorldParticles();
 	    				setValue(packet, "a", "heart");

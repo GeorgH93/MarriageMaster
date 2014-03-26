@@ -353,7 +353,7 @@ public class OnCommand implements CommandExecutor
         				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
         				return true;
         			}
-        			if(marriageMaster.InRadius(player, partner, 2))
+        			if(marriageMaster.InRadius(player, partner, marriageMaster.config.GetRange("Kiss")))
         			{
         				marriageMaster.kiss.kiss(player, partner);
         			}

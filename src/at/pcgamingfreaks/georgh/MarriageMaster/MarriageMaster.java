@@ -146,7 +146,7 @@ public class MarriageMaster extends JavaPlugin
 		return (P != null && !P.equalsIgnoreCase(""));
 	}
 	
-	public boolean InRadius(Player player, Player otherPlayer, int radius) 
+	public boolean InRadius(Player player, Player otherPlayer, double radius) 
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();

@@ -95,6 +95,12 @@ public class Config
 		config.set("Kiss.HearthCount", 50);
 		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
+		config.set("Range.Marry", 25.0F);
+		config.set("Range.Kiss", 2.0F);
+		config.set("Range.KissInteract", 25.0F);
+		config.set("Range.HearthVisible", 128.0F);
+		config.set("Range.Heal", 2.0F);
+		config.set("Range.BonusXP", 10.0F);
 		config.set("TPBlacklistedWorlds", new ArrayList<String>());
 		config.set("Version",CONFIG_VERSION);
 		
@@ -131,6 +137,12 @@ public class Config
 				config.set("Misc.AutoUpdate", true);
 				config.set("Economy.Gift", 10.00);
 			case 5:
+				config.set("Range.Marry", 25.0F);
+				config.set("Range.Kiss", 2.0F);
+				config.set("Range.KissInteract", 25.0F);
+				config.set("Range.HearthVisible", 128.0F);
+				config.set("Range.Heal", 2.0F);
+				config.set("Range.BonusXP", 10.0F);
 				config.set("TPBlacklistedWorlds", new ArrayList<String>());
 				config.set("Version", CONFIG_VERSION);
 			break;
@@ -341,5 +353,10 @@ public class Config
 	public List<String> GetBlacklistedWorlds()
 	{
 		return config.getStringList("TPBlacklistedWorlds");
+	}
+	
+	public double GetRange(String option)
+	{
+		return config.getDouble("Range." + option);
 	}
 }

@@ -213,7 +213,7 @@ public class Priester
 
 	private boolean InRadius(Player player, Player otherPlayer, Player priest) 
 	{
-		return marriageMaster.InRadius(player, priest, 25) && marriageMaster.InRadius(otherPlayer, priest, 25);
+		return marriageMaster.InRadius(player, priest, marriageMaster.config.GetRange("Marry")) && marriageMaster.InRadius(otherPlayer, priest, marriageMaster.config.GetRange("Marry"));
 	}
 	
 	public void setPriest(String[] args, CommandSender sender)

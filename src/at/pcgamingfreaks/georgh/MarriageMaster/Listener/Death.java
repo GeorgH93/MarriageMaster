@@ -49,7 +49,7 @@ public class Death implements Listener
 					
 					if(otherPlayer != null && otherPlayer.isOnline())
 					{
-						if(marriageMaster.InRadius(killer, otherPlayer,10))
+						if(marriageMaster.InRadius(killer, otherPlayer, marriageMaster.config.GetRange("BonusXP")))
 						{
 							int xp = (event.getDroppedExp() / 2) * marriageMaster.config.GetBonusXPAmount();
 							otherPlayer.giveExp(xp);
