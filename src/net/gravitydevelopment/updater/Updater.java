@@ -517,11 +517,11 @@ public class Updater {
     		int i = 0, c = 0;
     		if(lv.length >= rv.length)
     		{
-    			c = lv.length;
+    			c = rv.length;
     		}
     		else if(rv.length > lv.length)
     		{
-    			c = rv.length;
+    			c = lv.length;
     		}
     		for(i = 0; i < c; i++)
 			{
@@ -537,6 +537,7 @@ public class Updater {
     	}
     	catch (Exception e)
     	{
+    		e.printStackTrace();
     		return !localVersion.equalsIgnoreCase(remoteVersion);
     	}
     	return false;
