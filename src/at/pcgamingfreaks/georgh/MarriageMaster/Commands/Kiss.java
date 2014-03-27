@@ -17,28 +17,42 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.server.v1_7_R1.PacketPlayOutWorldParticles;
-import org.bukkit.craftbukkit.v1_7_R1.entity.CraftPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.*;
+import at.pcgamingfreaks.georgh.MarriageMaster.Network.*;
 
 public class Kiss
 {
 	private MarriageMaster marriageMaster;
 	private Map<String, Long> wait;
+	private EffectBase eb = null;
 
 	public Kiss(MarriageMaster marriagemaster) 
 	{
 		marriageMaster = marriagemaster;
 		wait = new HashMap<String, Long>();
+		try
+		{
+			eb = new Effect_1_7_R1();
+		}
+		catch (NoClassDefFoundError e)
+		{
+			try
+			{
+				eb = new Effect_1_7_R2();
+			}
+			catch (NoClassDefFoundError ex)
+			{
+				eb = null;
+				marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
+			}
+		}
 	}
 	
 	public boolean CanKissAgain(String playername)
@@ -75,45 +89,21 @@ public class Kiss
 	
 	public void DrawHearts(Player player)
 	{
-		Location loc = player.getLocation();
-		if(loc == null)
+		if(eb != null)
 		{
-    		return;
+			Location loc = player.getLocation();
+			if(loc == null)
+			{
+	    		return;
+			}
+	    	try
+	    	{
+	    		eb.SpawnParticle(loc, "heart", marriageMaster.config.GetRange("HearthVisible"), marriageMaster.config.GetKissHearthCount(), 1.0F, 1.0F, 1.0F, 1.0F);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		e.printStackTrace();
+	    	}
 		}
-    	try
-    	{
-    		PacketPlayOutWorldParticles packet;
-    		for(Entity entity : loc.getWorld().getEntities())
-    		{
-    			if(entity instanceof CraftPlayer)
-    			{
-    				if(entity.getLocation().distance(loc) < marriageMaster.config.GetRange("HearthVisible"))
-    				{
-	    				packet = new PacketPlayOutWorldParticles();
-	    				setValue(packet, "a", "heart");
-	    				setValue(packet, "b", (float) loc.getX());
-	    				setValue(packet, "c", (float) loc.getY());
-	    				setValue(packet, "d", (float) loc.getZ());
-	    				setValue(packet, "e", 1F);
-	    				setValue(packet, "f", 1F);
-	    				setValue(packet, "g", 1F);
-	    				setValue(packet, "h", 1F);
-	    				setValue(packet, "i", marriageMaster.config.GetKissHearthCount());
-	    				((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
-    				}
-    			}
-    		}
-    	}
-    	catch(Exception e)
-    	{
-    		e.printStackTrace();
-    	}
-	}
-	
-	private static void setValue(Object instance, String fieldName, Object value) throws Exception
-	{
-		Field field = instance.getClass().getDeclaredField(fieldName);
-		field.setAccessible(true);
-		field.set(instance, value);
 	}
 }

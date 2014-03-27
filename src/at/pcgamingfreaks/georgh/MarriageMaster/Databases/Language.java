@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 6;
+	private static final int LANG_VERSION = 7;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -144,6 +144,8 @@ public class Language
 						lang.set("Description.Update", "Checks if there is an update available and downloads it.");
 						lang.set("Description.Marry", "Marry two Persons in a range of %s blocks.");
 						lang.set("Description.Divorce", "Divorces two Persons in a range of %s blocks.");
+					case 6:
+						lang.set("NotSupportedNet", "Not supported MC version. Heart effect disabled.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

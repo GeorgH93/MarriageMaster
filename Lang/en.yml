@@ -1,4 +1,4 @@
-Version: 6
+Version: 7
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -7,6 +7,7 @@ Language:
         NoPermPL: No Permission Plugin found, using default permissions.
         NoEcoPL: No Economy Plugin found disable Economy.
         MetricsOffline: Metrics offline.
+        NotSupportedNet: Not supported MC version. Heart effect disabled.
     Description:
         Commands: commands
         ListAll: Lists all Married Players.

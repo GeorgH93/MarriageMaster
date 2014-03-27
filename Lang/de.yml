@@ -1,4 +1,4 @@
-Version: 6
+Version: 7
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -7,6 +7,7 @@ Language:
         NoPermPL: Kein Permission-Plugin gefunden, verwende standard rechte.
         NoEcoPL: Kein Wirtschafts-Plugin gefunden, deaktiviere Geld-System.
         MetricsOffline: Metrics offline.
+        NotSupportedNet: 'Keine unterstütste Version von Bukkit gefunden. Herz-Effekt Deaktiviert.'
     Description:
         Commands: Befehle
         ListAll: Liste aller verheirateten Spieler.
