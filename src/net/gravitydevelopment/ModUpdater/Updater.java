@@ -4,7 +4,7 @@
  * This class provides the means to safely and easily update a plugin, or check to see if it is updated using dev.bukkit.org
  */
 
-package net.gravitydevelopment.updater;
+package net.gravitydevelopment.ModUpdater;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -452,24 +452,32 @@ public class Updater {
         return false;
     }
 
+    
+    //Changed Version Checker by GeorgH93
     /**
      * Check to see if the program should continue by evaluating whether the plugin is already updated, or shouldn't be updated.
      *
      * @param title the plugin's title.
      * @return true if the version was located and is not the same as the remote's newest.
      */
-    private boolean versionCheck(String title) {
-        if (this.type != UpdateType.NO_VERSION_CHECK) {
+    private boolean versionCheck(String title)
+    {
+        if (this.type != UpdateType.NO_VERSION_CHECK)
+        {
             final String localVersion = this.plugin.getDescription().getVersion();
-            if (title.split(delimiter).length == 2) {
+            if (title.split(delimiter).length == 2)
+            {
                 final String remoteVersion = title.split(delimiter)[1].split(" ")[0]; // Get the newest file's version number
 
-                if (this.hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion)) {
+                if (this.hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion))
+                {
                     // We already have the latest version, or this build is tagged for no-update
                     this.result = Updater.UpdateResult.NO_UPDATE;
                     return false;
                 }
-            } else {
+            }
+            else
+            {
                 // The file's name did not contain the string 'vVersion'
                 final String authorInfo = this.plugin.getDescription().getAuthors().size() == 0 ? "" : " (" + this.plugin.getDescription().getAuthors().get(0) + ")";
                 this.plugin.getLogger().warning("The author of this plugin" + authorInfo + " has misconfigured their Auto Update system");

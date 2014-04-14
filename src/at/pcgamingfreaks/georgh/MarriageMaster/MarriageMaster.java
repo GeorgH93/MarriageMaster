@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import net.gravitydevelopment.updater.Updater;
-import net.gravitydevelopment.updater.Updater.UpdateResult;
+import net.gravitydevelopment.ModUpdater.Updater;
+import net.gravitydevelopment.ModUpdater.Updater.UpdateResult;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
