@@ -77,7 +77,7 @@ public class Database
 		String name = null;
 		try
 		{
-			URL url = new URL("[url]https://sessionserver.mojang.com/session/minecraft/profile/[/url]" + uuid);
+			URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid);
 			URLConnection connection = url.openConnection();
 			Scanner jsonScanner = new Scanner(connection.getInputStream(), "UTF-8");
 			String json = jsonScanner.next();
@@ -92,21 +92,22 @@ public class Database
 		}
 		return name;
 	}
-	 
+
 	protected static String getUUIDFromName(String name)
 	{
 		try
 		{
 			ProfileData profC = new ProfileData(name);
 			String UUID = null;
-			for (int i = 1; i <= 100; i++) {
-			PlayerProfile[] result = post(new URL("[url]https://api.mojang.com/profiles/page/[/url]" + i), Proxy.NO_PROXY, gson.toJson(profC).getBytes());
-			if (result.length == 0)
+			for (int i = 1; i <= 100; i++)
 			{
-				break;
+				PlayerProfile[] result = post(new URL("https://api.mojang.com/profiles/page/" + i), Proxy.NO_PROXY, gson.toJson(profC).getBytes());
+				if (result.length == 0)
+				{
+					break;
+				}
+				UUID = result[0].getId();
 			}
-			UUID = result[0].getId();
-		}
 		return UUID;
 		}
 		catch (Exception e)
@@ -115,7 +116,7 @@ public class Database
 		}
 		return null;
 	}
-	 
+
 	private static PlayerProfile[] post(URL url, Proxy proxy, byte[] bytes) throws IOException
 	{
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
@@ -123,12 +124,12 @@ public class Database
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
-		 
+	
 		DataOutputStream out = new DataOutputStream(connection.getOutputStream());
 		out.write(bytes);
 		out.flush();
 		out.close();
-		 
+	
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		StringBuffer response = new StringBuffer();
 		String line;
@@ -140,7 +141,7 @@ public class Database
 		reader.close();
 		return gson.fromJson(response.toString(), SearchResult.class).getProfiles();
 	}
-	 
+
 	private static class PlayerProfile
 	{
 		private String id;
@@ -149,7 +150,7 @@ public class Database
 			return id;
 		}
 	}
-	 
+
 	private static class SearchResult
 	{
 		private PlayerProfile[] profiles;
@@ -158,7 +159,7 @@ public class Database
 			return profiles;
 		}
 	}
-	 
+
 	private static class ProfileData
 	{ 
 		@SuppressWarnings("unused")

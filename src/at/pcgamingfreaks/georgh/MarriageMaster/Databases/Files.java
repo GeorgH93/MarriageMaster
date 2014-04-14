@@ -131,7 +131,6 @@ public class Files extends Database
 		{
 			if(string.length() != 32)
 			{
-				Priests.remove(string);
 				if(string.length() <= 16)
 				{
 					convert.add(string);
@@ -143,7 +142,6 @@ public class Files extends Database
 		{
 			if(entry.getKey().length() != 32)
 			{
-				MarryMap.remove(entry);
 				if(entry.getKey().length() <= 16)
 				{
 					CMarryMap.put(entry.getKey(),entry.getValue());
@@ -152,7 +150,6 @@ public class Files extends Database
 			}
 			if(entry.getValue().getString("MarriedStatus").equalsIgnoreCase("married") && entry.getValue().getString("MarriedToUUID") == null)
 			{
-				MarryMap.remove(entry);
 				CMarryMap.put(entry.getKey(),entry.getValue());
 			}
 		}
@@ -161,6 +158,7 @@ public class Files extends Database
 			marriageMaster.log.info(marriageMaster.lang.Get("Console.UpdateUUIDs"));
 			for(String s : convert)
 			{
+				Priests.remove(s);
 				s = getUUIDFromName(s);
 				if(s != null)
 				{
@@ -171,6 +169,7 @@ public class Files extends Database
 			FileConfiguration fchilf;
 			for (Entry<String, FileConfiguration> entry : CMarryMap.entrySet())
 			{
+				MarryMap.remove(entry.getKey());
 				fchilf = entry.getValue();
 				hilf = entry.getKey();
 				if(entry.getKey().length() != 32)
@@ -188,6 +187,7 @@ public class Files extends Database
 				MarryMap.put(hilf,fchilf);
 			}
 			ReSaveAll();
+			SavePriests();
 			marriageMaster.log.info(String.format(marriageMaster.lang.Get("Console.UpdatedUUIDs"), convert.size() + CMarryMap.size()));
 		}
 	}

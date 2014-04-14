@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 7;
+	private static final int LANG_VERSION = 8;
 
 	public Language(MarriageMaster marriagemaster) 
 	{

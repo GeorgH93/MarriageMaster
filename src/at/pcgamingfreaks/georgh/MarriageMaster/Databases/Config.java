@@ -146,11 +146,13 @@ public class Config
 				config.set("Range.Heal", 2.0F);
 				config.set("Range.BonusXP", 10.0F);
 				config.set("TPBlacklistedWorlds", new ArrayList<String>());
-				config.set("Version", CONFIG_VERSION);
+			case 6:
+				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && Integer.parseInt(Bukkit.getBukkitVersion().split("\\.")[1]) >= 7);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
 		}
+		config.set("Version", CONFIG_VERSION);
 		try 
 		{
 			config.save(file);
