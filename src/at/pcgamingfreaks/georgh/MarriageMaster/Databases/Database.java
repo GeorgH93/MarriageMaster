@@ -20,152 +20,154 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Databases;
 import java.util.TreeMap;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Scanner;
+import net.minecraft.util.com.google.gson.Gson;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 
 public class Database
 {
-	private MySQL mysql = null;
-	private Files files = null;
-	private String DBType = null;
-	private MarriageMaster marriageMaster;
+	protected MarriageMaster marriageMaster;
 	
-	public Database(MarriageMaster marriagemaster)
+	public Database(MarriageMaster marriagemaster) { marriageMaster = marriagemaster; }
+	
+	public void Recache() {}
+	
+	public void UpdatePlayer(Player player) {}
+	
+	public boolean GetPvPEnabled(Player player) { return false; }
+	
+	public void SetPvPEnabled(Player player, boolean state) {}
+	
+	public void DivorcePlayer(Player player) {}
+	
+	public void MarryPlayers(Player player1, Player player2, String priester) {}
+	
+	public void SetMarryHome(Location loc, Player player) {}
+	
+	public Location GetMarryHome(Player player) { return player.getLocation(); }
+	
+	public void SetPriest(Player player) {}
+	
+	public void DelPriest(Player player) {}
+	
+	public boolean IsPriester(Player player) { return false; }
+	
+	public String GetPartner(Player player) { return player.getName(); }
+	
+	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
+	
+	// UUID Converter
+	private static Gson gson = new Gson();
+	
+	protected static String getNameFromUUID(String uuid)
 	{
-		marriageMaster = marriagemaster;
-		DBType = marriageMaster.config.GetDatabaseType().toLowerCase();
-		switch(DBType)
+		String name = null;
+		try
 		{
-			case "mysql": mysql = new MySQL(marriageMaster); break;
-			default: files = new Files(marriageMaster); break;
+			URL url = new URL("[url]https://sessionserver.mojang.com/session/minecraft/profile/[/url]" + uuid);
+			URLConnection connection = url.openConnection();
+			Scanner jsonScanner = new Scanner(connection.getInputStream(), "UTF-8");
+			String json = jsonScanner.next();
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(json);
+			name = (String) ((JSONObject) obj).get("name");
+			jsonScanner.close();
 		}
-	}
-	
-	public void Recache()
-	{
-		if(marriageMaster.config.GetDatabaseType().toLowerCase() != DBType)
+		catch (Exception ex)
 		{
-			switch(DBType)
+			ex.printStackTrace();
+		}
+		return name;
+	}
+	 
+	protected static String getUUIDFromName(String name)
+	{
+		try
+		{
+			ProfileData profC = new ProfileData(name);
+			String UUID = null;
+			for (int i = 1; i <= 100; i++) {
+			PlayerProfile[] result = post(new URL("[url]https://api.mojang.com/profiles/page/[/url]" + i), Proxy.NO_PROXY, gson.toJson(profC).getBytes());
+			if (result.length == 0)
 			{
-				case "mysql": mysql = null; break;
-				default: files = null; break;
+				break;
 			}
-			DBType = marriageMaster.config.GetDatabaseType().toLowerCase();
-			switch(DBType)
-			{
-				case "mysql": mysql = new MySQL(marriageMaster); break;
-				default: files = new Files(marriageMaster); break;
-			}
+			UUID = result[0].getId();
 		}
-		switch(DBType)
+		return UUID;
+		}
+		catch (Exception e)
 		{
-			case "mysql": break;
-			default: files.Reload();
+			e.printStackTrace();
+		}
+		return null;
+	}
+	 
+	private static PlayerProfile[] post(URL url, Proxy proxy, byte[] bytes) throws IOException
+	{
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+		connection.setRequestMethod("POST");
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		 
+		DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+		out.write(bytes);
+		out.flush();
+		out.close();
+		 
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		StringBuffer response = new StringBuffer();
+		String line;
+		while ((line = reader.readLine()) != null)
+		{
+			response.append(line);
+			response.append('\r');
+		}
+		reader.close();
+		return gson.fromJson(response.toString(), SearchResult.class).getProfiles();
+	}
+	 
+	private static class PlayerProfile
+	{
+		private String id;
+		public String getId()
+		{
+			return id;
 		}
 	}
-	
-	public boolean GetPvPEnabled(String playername)
+	 
+	private static class SearchResult
 	{
-		switch(DBType)
+		private PlayerProfile[] profiles;
+		public PlayerProfile[] getProfiles()
 		{
-			case "mysql": return mysql.GetPvPState(playername);
-			default: return files.GetPvPState(playername);
+			return profiles;
 		}
 	}
-	
-	public void SetPvPEnabled(String player1, String player2, boolean state)
-	{
-		switch(DBType)
+	 
+	private static class ProfileData
+	{ 
+		@SuppressWarnings("unused")
+		private String name;
+		@SuppressWarnings("unused")
+		private String agent = "minecraft";
+		public ProfileData(String name)
 		{
-			case "mysql": mysql.SetPvPState(player1, state); break;
-			default: files.SetPvPState(player1, state); files.SetPvPState(player2, state); break;
-		}
-	}
-	
-	public void DivorcePlayer(String player1, String player2)
-	{
-		switch(DBType)
-		{
-			case "mysql": mysql.SaveMarriedPlayerDivorce(player1); break;
-			default: files.SaveMarriedPlayerDivorce(player1); files.SaveMarriedPlayerDivorce(player2); break;
-		}
-	}
-	
-	public void MarryPlayers(String player1, String player2, String priester)
-	{
-		switch(DBType)
-		{
-			case "mysql": mysql.SaveMarriedPlayer(player1, player2, priester); break;
-			default:
-				files.SaveMarriedPlayer(player1, player2, priester);
-				files.SaveMarriedPlayer(player2, player1, priester);
-			break;
-		}
-	}
-	
-	public void SetMarriedHome(Location loc, String player1, String player2)
-	{
-		switch(DBType)
-		{
-			case "mysql": mysql.SaveMarryHome(loc, player1); break;
-			default:
-				files.SaveMarriedHome(loc, player1);
-				files.SaveMarriedHome(loc, player2);
-			break;
-		}
-	}
-	
-	public Location GetMarryHome(String playername)
-	{
-		switch(DBType)
-		{
-			case "mysql": return mysql.GetMarriedHome(playername);
-			default: return files.GetMarriedHome(playername);
-		}
-	}
-	
-	public void SetPriest(String Player)
-	{
-		switch(DBType)
-		{
-			case "mysql": mysql.AddPriest(Player); break;
-			default: files.AddPriest(Player); break;
-		}
-	}
-	
-	public void DelPriest(String Player)
-	{
-		switch(DBType)
-		{
-			case "mysql": mysql.DelPriest(Player); break;
-			default: files.DelPriest(Player); break;
-		}
-	}
-	
-	public boolean IsPriester(String playername)
-	{
-		switch(DBType)
-		{
-			case "mysql": return mysql.IsPriest(playername);
-			default: return files.IsPriester(playername);
-		}
-	}
-	
-	public String GetPartner(String playername)
-	{
-		switch(DBType)
-		{
-			case "mysql": return mysql.GetPartner(playername);
-			default: return files.GetPartner(playername);
-		}
-	}
-	
-	public TreeMap<String, String> GetAllMarriedPlayers()
-	{
-		switch(DBType)
-		{
-			case "mysql": return mysql.GetAllMarriedPlayers();
-			default: return files.GetAllMarriedPlayers();
+			this.name = name;
 		}
 	}
 }

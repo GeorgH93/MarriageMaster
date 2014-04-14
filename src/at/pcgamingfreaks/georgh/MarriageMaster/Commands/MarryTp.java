@@ -33,7 +33,7 @@ public class MarryTp
 
 	public void TP(Player player)
 	{		
-		String partner = marriageMaster.DB.GetPartner(player.getName());
+		String partner = marriageMaster.DB.GetPartner(player);
 		if(partner != null && !partner.isEmpty())
 		{
 			Player otherPlayer = marriageMaster.getServer().getPlayer(partner);

@@ -46,6 +46,7 @@ public class MarriageMaster extends JavaPlugin
     public Config config;
     public Language lang;
     public Database DB;
+    public String DBType = "";
     public List<Player> pcl;
     public List<Marry_Requests> mr;
     
@@ -68,7 +69,12 @@ public class MarriageMaster extends JavaPlugin
 		log = getLogger();
 		config = new Config(this);
 		lang = new Language(this);
-		DB = new Database(this);
+		DBType = config.GetDatabaseType().toLowerCase();
+		switch(DBType)
+		{
+			case "mysql": DB = new MySQL(this); break;
+			default: DB = new Files(this); break;
+		}
 		kiss = new Kiss(this);
 		
 		pcl = new ArrayList<Player>();
@@ -137,12 +143,12 @@ public class MarriageMaster extends JavaPlugin
 	
 	public boolean IsPriester(Player player)
 	{
-		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriester(player.getName());
+		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriester(player);
 	}
 	
-	public boolean HasPartner(String Playername)
+	public boolean HasPartner(Player player)
 	{
-		String P = DB.GetPartner(Playername);
+		String P = DB.GetPartner(player);
 		return (P != null && !P.equalsIgnoreCase(""));
 	}
 	

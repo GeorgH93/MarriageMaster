@@ -52,14 +52,14 @@ public class Damage implements Listener
 		
 		if(player != null && otherPlayer != null)
 		{
-			String married1 = marriageMaster.DB.GetPartner(player.getName());
-			String married2 = marriageMaster.DB.GetPartner(otherPlayer.getName());
+			String married1 = marriageMaster.DB.GetPartner(player);
+			String married2 = marriageMaster.DB.GetPartner(otherPlayer);
 			
 			if(married1 != null && married2 != null)
 			{
 				if(married1.equalsIgnoreCase(otherPlayer.getName()) && married2.equalsIgnoreCase(player.getName()))
 				{
-					if(!marriageMaster.DB.GetPvPEnabled(player.getName()))
+					if(!marriageMaster.DB.GetPvPEnabled(player))
 					{
 						player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PvPIsOff"));
 						event.setCancelled(true);

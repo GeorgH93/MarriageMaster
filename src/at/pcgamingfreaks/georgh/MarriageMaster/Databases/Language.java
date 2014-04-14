@@ -145,7 +145,10 @@ public class Language
 						lang.set("Description.Marry", "Marry two Persons in a range of %s blocks.");
 						lang.set("Description.Divorce", "Divorces two Persons in a range of %s blocks.");
 					case 6:
-						lang.set("NotSupportedNet", "Not supported MC version. Heart effect disabled.");
+					case 7:
+						lang.set("Console.NotSupportedNet", "Not supported MC version. Heart effect disabled.");
+						lang.set("Console.UpdateUUIDs", "Start updating database to UUIDs ...");
+						lang.set("Console.UpdatedUUIDs", "Updated %s accounts to UUIDs.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

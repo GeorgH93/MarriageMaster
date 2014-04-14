@@ -33,6 +33,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
+import at.pcgamingfreaks.georgh.MarriageMaster.Databases.Files;
+import at.pcgamingfreaks.georgh.MarriageMaster.Databases.MySQL;
 import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
 import at.pcgamingfreaks.georgh.MarriageMaster.*;
 
@@ -57,7 +59,15 @@ public class OnCommand implements CommandExecutor
 	{
 		marriageMaster.config.Reload();
 		marriageMaster.lang.Reload();
-		marriageMaster.DB.Recache();
+		if(marriageMaster.config.GetDatabaseType().toLowerCase() != marriageMaster.DBType)
+		{
+			marriageMaster.DBType = marriageMaster.config.GetDatabaseType().toLowerCase();
+			switch(marriageMaster.DBType)
+			{
+				case "mysql": marriageMaster.DB = new MySQL(marriageMaster); break;
+				default: marriageMaster.DB = new Files(marriageMaster); break;
+			}
+		}
 		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
 		{
 			marriageMaster.economy = new HEconomy(marriageMaster);
@@ -186,12 +196,11 @@ public class OnCommand implements CommandExecutor
         }
         else if (args[0].equalsIgnoreCase("pvpon") && marriageMaster.config.GetAllowBlockPvP()) 
         {
-        	if(marriageMaster.HasPartner(player.getName()))
+        	if(marriageMaster.HasPartner(player))
         	{
     	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpon"))
     	    	{
-    	    		String partner = marriageMaster.DB.GetPartner(player.getName());
-    	    		marriageMaster.DB.SetPvPEnabled(player.getName(), partner, true);
+    	    		marriageMaster.DB.SetPvPEnabled(player, true);
     	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOn"));
     	    	}
     	    	else
@@ -206,12 +215,11 @@ public class OnCommand implements CommandExecutor
         }
         else if (args[0].equalsIgnoreCase("pvpoff") && marriageMaster.config.GetAllowBlockPvP())
         {
-        	if(marriageMaster.HasPartner(player.getName()))
+        	if(marriageMaster.HasPartner(player))
         	{
     	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpoff"))
     	    	{
-    	    		String partner = marriageMaster.DB.GetPartner(player.getName());
-    	    		marriageMaster.DB.SetPvPEnabled(player.getName(), partner, false);
+    	    		marriageMaster.DB.SetPvPEnabled(player, false);
     	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOff"));
     	    	}
     	    	else
@@ -226,7 +234,7 @@ public class OnCommand implements CommandExecutor
         }
         else if(args[0].equalsIgnoreCase("home"))
         {
-        	if(marriageMaster.HasPartner(player.getName()))
+        	if(marriageMaster.HasPartner(player))
         	{
     	    	if(marriageMaster.config.CheckPerm(player, "marry.home"))
     	    	{
@@ -244,7 +252,7 @@ public class OnCommand implements CommandExecutor
         }
         else if(args[0].equalsIgnoreCase("sethome"))
         {
-        	if(marriageMaster.HasPartner(player.getName()))
+        	if(marriageMaster.HasPartner(player))
         	{
     	    	if(marriageMaster.config.CheckPerm(player, "marry.home"))
     	    	{
@@ -262,7 +270,7 @@ public class OnCommand implements CommandExecutor
         }
         else if (args[0].equalsIgnoreCase("tp"))
         {
-        	if(marriageMaster.HasPartner(player.getName()) && marriageMaster.config.CheckPerm(player, "marry.tp"))
+        	if(marriageMaster.HasPartner(player) && marriageMaster.config.CheckPerm(player, "marry.tp"))
     		{
     	        marryTp.TP(player);
         	}
@@ -282,9 +290,9 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
     		{
-        		if(marriageMaster.HasPartner(player.getName()))
+        		if(marriageMaster.HasPartner(player))
         		{
-        			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player.getName()));
+        			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player));
         			if(otP != null && otP.isOnline())
         			{
         				String msg = player.getName() + " => " + otP.getName() + ":";
@@ -349,14 +357,14 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.kiss"))
     		{
-        		if(marriageMaster.HasPartner(player.getName()))
+        		if(marriageMaster.HasPartner(player))
 				{
         			if(!marriageMaster.kiss.CanKissAgain(player.getName()))
             		{
             			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
             			return true;
             		}
-        			String Partner = marriageMaster.DB.GetPartner(player.getName());
+        			String Partner = marriageMaster.DB.GetPartner(player);
         			if(Partner == null || Partner.isEmpty())
         			{
         				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
@@ -391,14 +399,14 @@ public class OnCommand implements CommandExecutor
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.gift"))
     		{
-        		if(marriageMaster.HasPartner(player.getName()))
+        		if(marriageMaster.HasPartner(player))
 				{
         			if(!player.getGameMode().equals(GameMode.SURVIVAL))
         			{
         				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.GiftsOnlyInSurvival"));
         				return true;
         			}
-        			String Partner = marriageMaster.DB.GetPartner(player.getName());
+        			String Partner = marriageMaster.DB.GetPartner(player);
         			if(Partner == null || Partner.isEmpty())
         			{
         				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));

@@ -41,7 +41,7 @@ public class RegainHealth implements Listener
 			Player player = (Player) event.getEntity();
 			if(player != null)
 			{
-				String partner = marriageMaster.DB.GetPartner(player.getName());
+				String partner = marriageMaster.DB.GetPartner(player);
 				if(partner != null)
 				{
 					Player otherPlayer = marriageMaster.getServer().getPlayer(partner);

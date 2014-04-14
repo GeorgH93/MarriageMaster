@@ -42,7 +42,7 @@ public class JoinLeave implements Listener
 	{
 		if(marriageMaster.config.GetInformOnPartnerJoinEnabled())
 		{
-			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
+			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer());
 			if(otherPlayer != null && !otherPlayer.isEmpty())
 			{
 				Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
@@ -58,14 +58,18 @@ public class JoinLeave implements Listener
 				}
 			}
 		}
+		if(marriageMaster.config.UseUUIDs())
+		{
+			marriageMaster.DB.UpdatePlayer(event.getPlayer());
+		}
 	}
 	
 	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent e)
+	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
-		if(marriageMaster.config.UsePrefix() && marriageMaster.HasPartner(e.getPlayer().getName()))
+		if(marriageMaster.config.UsePrefix() && marriageMaster.HasPartner(event.getPlayer()))
 		{
-			e.setFormat(marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE).replace("<partnername>", marriageMaster.DB.GetPartner(e.getPlayer().getName())) + " " + e.getFormat());
+			event.setFormat(marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE).replace("<partnername>", marriageMaster.DB.GetPartner(event.getPlayer())) + " " + event.getFormat());
 		}
 	}
 
@@ -74,7 +78,7 @@ public class JoinLeave implements Listener
 	{
 		if(marriageMaster.config.GetInformOnPartnerJoinEnabled())
 		{
-			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer().getName());
+			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer());
 			
 			if(otherPlayer != null)
 			{

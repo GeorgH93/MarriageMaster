@@ -42,7 +42,7 @@ public class Death implements Listener
 			Player killer = event.getEntity().getKiller();
 			if(killer != null)
 			{
-				String partner = marriageMaster.DB.GetPartner(killer.getName());
+				String partner = marriageMaster.DB.GetPartner(killer);
 				if(partner != null)
 				{
 					Player otherPlayer = marriageMaster.getServer().getPlayer(partner);

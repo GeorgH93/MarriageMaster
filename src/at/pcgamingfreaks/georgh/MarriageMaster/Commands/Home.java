@@ -34,7 +34,7 @@ public class Home
 
 	public void TP(Player player)
 	{
-		Location loc = marriageMaster.DB.GetMarryHome(player.getName());
+		Location loc = marriageMaster.DB.GetMarryHome(player);
 		
 		if(loc != null)
 		{
@@ -80,8 +80,7 @@ public class Home
 	
 	private void SetMarryHome(Player player, Location home)
 	{
-		String otherPlayer = marriageMaster.DB.GetPartner(player.getName());
-		marriageMaster.DB.SetMarriedHome(home, player.getName(), otherPlayer);
+		marriageMaster.DB.SetMarryHome(home, player);
 		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.HomeSet"));
 	}
 }

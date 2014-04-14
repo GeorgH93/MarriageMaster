@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 6;
+	private static final int CONFIG_VERSION = 7;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -63,13 +64,14 @@ public class Config
 	private void NewConfig(File file)
 	{
 		config = new YamlConfiguration();
-		config.set("Permissions", false);
+		config.set("Permissions", true);
 		config.set("AllowBlockPvP", false);
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
+		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && Integer.parseInt(Bukkit.getServer().getVersion().split(".")[1]) >= 7);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -358,5 +360,10 @@ public class Config
 	public double GetRange(String option)
 	{
 		return config.getDouble("Range." + option);
+	}
+	
+	public boolean UseUUIDs()
+	{
+		return config.getBoolean("UseUUIDs");
 	}
 }
