@@ -315,19 +315,10 @@ public class Files extends Database
 	{
 		String p1id = GetPlayerID(player1);
 		String p2id = GetPlayerID(player2);
-		
 		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(p1id).append(".yml").toString());
 		File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(p2id).append(".yml").toString());
 		try
 		{
-			if(!file.exists())
-			{
-				file.createNewFile();
-			}
-			if(!file2.exists())
-			{
-		        file2.createNewFile();
-			}
 			//Save P1
 			MarryMap.put(p1id,YamlConfiguration.loadConfiguration(file));
 	        MarryMap.get(p1id).set("MarriedStatus", "Married");
