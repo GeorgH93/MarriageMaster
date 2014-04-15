@@ -95,6 +95,17 @@ public class MySQL extends Database
 		{
 			Statement stmt = GetConnection().createStatement();
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, `uuid` VARCHAR(35) UNIQUE, PRIMARY KEY (`player_id`));");
+			try
+			{
+				stmt.execute("ALTER TABLE `minecraft`.`marry_players` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
+			}
+			catch(SQLException e)
+			{
+				if(e.getErrorCode() != 1060)
+				{
+					e.printStackTrace();
+				}
+			}
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_priests (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_partners (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_home (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");

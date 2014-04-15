@@ -68,6 +68,18 @@ public class Files extends Database
 		}
 	}
 	
+	private String GetPlayerID(Player player)
+	{
+		if(marriageMaster.config.UseUUIDs())
+		{
+			return player.getUniqueId().toString().replace("-", "");
+		}
+		else
+		{
+			return player.getName();
+		}
+	}
+	
 	public void Recache()
 	{
 		MarryMap.clear();
@@ -126,6 +138,10 @@ public class Files extends Database
 	
 	private void CheckUUIDs()
 	{
+		if(!marriageMaster.config.UseUUIDs())
+		{
+			return;
+		}
 		List<String> convert = new ArrayList<String>();
 		for (String string : Priests)
 		{
@@ -252,13 +268,13 @@ public class Files extends Database
 	
 	public boolean GetPvPEnabled(Player player)
 	{
-		return MarryMap.get(marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "")).getBoolean("PvP");
+		return MarryMap.get(GetPlayerID(player)).getBoolean("PvP");
 	}
 	
 	public void SetPvPEnabled(Player player, boolean state)
 	{
-		String partner = marriageMaster.config.UseUUIDs() ? GetPartner(player) : GetPartnerUUID(player);
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+		String pid = GetPlayerID(player);
 		MarryMap.get(pid).set("PvP", state);
 		MarryMap.get(partner).set("PvP", state);
 		try
@@ -276,8 +292,8 @@ public class Files extends Database
 	
 	public void DivorcePlayer(Player player)
 	{
-		String partner = marriageMaster.config.UseUUIDs() ? GetPartner(player) : GetPartnerUUID(player);
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+		String pid = GetPlayerID(player);
 		
 		MarryMap.remove(pid);
 		MarryMap.remove(partner);
@@ -297,8 +313,8 @@ public class Files extends Database
 	
 	public void MarryPlayers(Player player1, Player player2, String priester)
 	{
-		String p1id = marriageMaster.config.UseUUIDs() ? player1.getName() : player1.getUniqueId().toString().replace("-", "");
-		String p2id = marriageMaster.config.UseUUIDs() ? player2.getName() : player2.getUniqueId().toString().replace("-", "");
+		String p1id = GetPlayerID(player1);
+		String p2id = GetPlayerID(player2);
 		
 		File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(p1id).append(".yml").toString());
 		File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(p2id).append(".yml").toString());
@@ -339,7 +355,7 @@ public class Files extends Database
 	        MarryMap.get(p2id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p2id).set("MarriedHome", "");
 	        MarryMap.get(p2id).set("PvP", false);
-	        MarryMap.get(p2id).save(file);
+	        MarryMap.get(p2id).save(file2);
 		}
         catch(Exception e)
         {
@@ -349,10 +365,10 @@ public class Files extends Database
 	
 	public void SetMarryHome(Location loc, Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
 		{
-			String partner = marriageMaster.config.UseUUIDs() ? GetPartner(player) : GetPartnerUUID(player);
+			String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
 			File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(partner).append(".yml").toString());
 			
@@ -379,7 +395,7 @@ public class Files extends Database
 	
 	public Location GetMarryHome(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		try
 		{
 			World world = marriageMaster.getServer().getWorld(MarryMap.get(pid).getString("MarriedHome.location.World"));
@@ -397,7 +413,7 @@ public class Files extends Database
 	
 	public void SetPriest(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		Priests.add(pid);
 		SavePriests();
 	}
@@ -441,14 +457,14 @@ public class Files extends Database
 	
 	public void DelPriest(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		Priests.remove(pid);
 		SavePriests();
 	}
 	
 	public boolean IsPriester(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		if(Priests.contains(pid))
 		{
 			return true;
@@ -458,7 +474,7 @@ public class Files extends Database
 	
 	public String GetPartner(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid) != null)
 		{
 			String x = MarryMap.get(pid).getString("MarriedTo");
@@ -472,7 +488,7 @@ public class Files extends Database
 	
 	private String GetPartnerUUID(Player player)
 	{
-		String pid = marriageMaster.config.UseUUIDs() ? player.getName() : player.getUniqueId().toString().replace("-", "");
+		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid) != null)
 		{
 			String x = MarryMap.get(pid).getString("MarriedToUUID");
@@ -495,9 +511,9 @@ public class Files extends Database
 				marriedTo = entry.getValue().getString("MarriedTo");
 				if(marriedTo != null && !marriedTo.equalsIgnoreCase(""))
 				{
-					if(!MarryMap_out.containsKey(entry.getValue().get("Name")) && !MarryMap_out.containsKey(marriedTo) && !MarryMap_out.containsValue(marriedTo) && !MarryMap_out.containsValue(entry.getValue().get("Name")))
+					if(!MarryMap_out.containsKey(entry.getValue().getString("Name")) && !MarryMap_out.containsKey(marriedTo) && !MarryMap_out.containsValue(marriedTo) && !MarryMap_out.containsValue(entry.getValue().getString("Name")))
 					{
-						MarryMap_out.put(entry.getKey(), marriedTo);
+						MarryMap_out.put(entry.getValue().getString("Name"), marriedTo);
 					}
 				}
 			}

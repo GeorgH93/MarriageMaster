@@ -58,7 +58,27 @@ public class Config
 			config = YamlConfiguration.loadConfiguration(new File(marriageMaster.getDataFolder(), "config.yml"));
 			UpdateConfig(file);
 		}
-		
+	}
+	
+	private boolean UUIDComp()
+	{
+		try
+		{
+			String[] GameVersion = Bukkit.getBukkitVersion().split("-");
+			GameVersion = GameVersion[0].split("\\.");
+			if(Integer.parseInt(GameVersion[1]) > 7 || (Integer.parseInt(GameVersion[1]) == 7 && Integer.parseInt(GameVersion[2]) > 5))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 	
 	private void NewConfig(File file)
@@ -71,7 +91,7 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
-		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && Integer.parseInt(Bukkit.getServer().getVersion().split(".")[1]) >= 7);
+		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -147,7 +167,7 @@ public class Config
 				config.set("Range.BonusXP", 10.0F);
 				config.set("TPBlacklistedWorlds", new ArrayList<String>());
 			case 6:
-				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && Integer.parseInt(Bukkit.getBukkitVersion().split("\\.")[1]) >= 7);
+				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
