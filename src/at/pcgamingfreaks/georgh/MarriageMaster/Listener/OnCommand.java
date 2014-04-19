@@ -295,7 +295,7 @@ public class OnCommand implements CommandExecutor
         			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player));
         			if(otP != null && otP.isOnline())
         			{
-        				String msg = player.getName() + " => " + otP.getName() + ":";
+        				String msg = player.getDisplayName() + ChatColor.WHITE + " => " + otP.getDisplayName() + ChatColor.WHITE + ":";
         				for(int i = 1; i < args.length; i++)
         				{
         					msg += " " + args[i];
@@ -495,15 +495,15 @@ public class OnCommand implements CommandExecutor
 					{
         				player.chat(marriageMaster.lang.Get("Dialog.NoIDontWant"));
 					}
-        			m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        			m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
         			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
         			if(m.p1 == player)
         			{
-        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
         			}
         			else
         			{
-        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getName()));
+        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
         			}
         			return true;
         		}

@@ -55,7 +55,7 @@ public class Priester
 		}
 		if(player.getName().equalsIgnoreCase(otherPlayer.getName()))
 		{
-			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.NotWithHimself"),player.getName()));
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.NotWithHimself"),player.getDisplayName()+ChatColor.RED));
 			return;
 		}
 		String a1 = marriageMaster.DB.GetPartner(player);
@@ -70,24 +70,24 @@ public class Priester
 			if(marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
 			{
 				marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console");
-				priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
-				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getName()));
-				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getName()));
+				priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getDisplayName()+ChatColor.GREEN));
+				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getDisplayName()+ChatColor.GREEN));
 				if(marriageMaster.config.GetAnnouncementEnabled())
 				{
-					marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getName(), otherPlayer.getName()));
+					marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 				}
 			}
 		}
 		else
 		{
 			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console");
-			priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
-			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getName()));
-			otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getName()));
+			priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
+			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getDisplayName()+ChatColor.GREEN));
+			otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getDisplayName()+ChatColor.GREEN));
 			if(marriageMaster.config.GetAnnouncementEnabled())
 			{
-				marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getName(), otherPlayer.getName()));
+				marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 			}
 		}
 	}
@@ -108,7 +108,7 @@ public class Priester
 		}
 		if(player.getName().equalsIgnoreCase(otherPlayer.getName()))
 		{
-			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.NotWithHimself"),player.getName()));
+			priester.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.NotWithHimself"),player.getDisplayName()+ChatColor.RED));
 		}
 		else
 		{
@@ -181,16 +181,16 @@ public class Priester
 	private void SaveMarry(Player priest, Player player, Player otherPlayer)
 	{
 		marriageMaster.DB.MarryPlayers(player, otherPlayer, priest.getName());
-		priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getName(), otherPlayer.getName()));
-		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getName(), otherPlayer.getName()));
-		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getName(), player.getName()));
+		priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
+		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
+		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, player.getDisplayName()+ChatColor.GREEN));
 		if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
 		{
 			priest.chat(marriageMaster.lang.Get("Dialog.Married"));
 		}
 		if(marriageMaster.config.GetAnnouncementEnabled())
 		{
-			marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), priest.getName(), player.getName(), otherPlayer.getName()));
+			marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), priest.getDisplayName()+ChatColor.GREEN, player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 		}
 	}
 
@@ -225,13 +225,13 @@ public class Priester
 			{
 				marriageMaster.DB.DelPriest(player);
 				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeYouAPriest"), sender.getName()));
-				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getName()));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getDisplayName()+ChatColor.GREEN));
 			}
 			else
 			{
 				marriageMaster.DB.SetPriest(player);
 				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeYouAPriest"), sender.getName()));
-				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getName()));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getDisplayName()+ChatColor.GREEN));
 			}
 		}
 		else
@@ -248,14 +248,14 @@ public class Priester
 			if(marriageMaster.IsPriester(player))
 			{
 				marriageMaster.DB.DelPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeYouAPriest"), sender.getName()));
-				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getName()));
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeYouAPriest"), sender.getDisplayName()+ChatColor.GREEN));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.UnMadeAPriest"), player.getDisplayName()+ChatColor.GREEN));
 			}
 			else
 			{
 				marriageMaster.DB.SetPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeYouAPriest"), sender.getName()));
-				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getName()));
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeYouAPriest"), sender.getDisplayName()+ChatColor.GREEN));
+				sender.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.MadeAPriest"), player.getDisplayName()+ChatColor.GREEN));
 			}
 		}
 		else
@@ -336,8 +336,8 @@ public class Priester
 	private void DivorcePlayer(Player priester, Player player, Player otherPlayer) 
 	{
 		marriageMaster.DB.DivorcePlayer(player);
-		priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Divorced"), player.getName(),otherPlayer.getName()));
-		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), priester.getName(), otherPlayer.getName()));
-		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), priester.getName(), player.getName()));
+		priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Divorced"), player.getDisplayName()+ChatColor.GREEN,otherPlayer.getDisplayName()+ChatColor.GREEN));
+		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), priester.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
+		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), priester.getDisplayName()+ChatColor.GREEN, player.getDisplayName()+ChatColor.GREEN));
 	}
 }
