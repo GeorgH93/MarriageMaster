@@ -1,4 +1,4 @@
-Version: 8
+Version: 9
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -27,6 +27,7 @@ Language:
         Gift: Gifts the item in your hand to your partner.
         Kiss: Kisses your partner.
         Update: Checks if there is an update available and downloads it.
+        SelfMarry: Sends a marry request to a other player.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.
@@ -65,6 +66,9 @@ Language:
         WorldNotAllowed: Your partner is in a world where tp is not allowed.
         Updated: 'Plugin updated, will be loaded on next restart/reload.'
         NoUpdate: 'No plugin update available.'
+        MarryConfirm: '%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny'
+        HasMarried: 'You have married %s.'
+        BroadcastMarriage: '%1$s has married %2$s.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

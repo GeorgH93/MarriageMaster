@@ -105,7 +105,7 @@ public class JoinLeave implements Listener
 				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
 				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
 			}
-			if(m.priest == event.getPlayer())
+			if(m.priest != null && m.priest == event.getPlayer())
 			{
 				marriageMaster.mr.remove(m);
 				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), m.priest));

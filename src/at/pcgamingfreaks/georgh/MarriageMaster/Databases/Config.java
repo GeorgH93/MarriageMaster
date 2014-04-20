@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 7;
+	private static final int CONFIG_VERSION = 8;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -92,6 +92,7 @@ public class Config
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
+		config.set("AllowSelfMarry", false);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -168,6 +169,8 @@ public class Config
 				config.set("TPBlacklistedWorlds", new ArrayList<String>());
 			case 6:
 				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
+			case 7:
+				config.set("AllowSelfMarry", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -387,5 +390,10 @@ public class Config
 	public boolean UseUUIDs()
 	{
 		return config.getBoolean("UseUUIDs");
+	}
+	
+	public boolean AllowSelfMarry()
+	{
+		return config.getBoolean("AllowSelfMarry");
 	}
 }

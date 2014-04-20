@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 8;
+	private static final int LANG_VERSION = 9;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -100,55 +100,60 @@ public class Language
 				switch(lang.getInt("Version"))
 				{
 					case 1:
-						lang.set("Console.LangUpdated", "Language File has been updated.");
-						lang.set("Priest.UnMadeYouAPriest", "%s has fired you as a priest.");
-						lang.set("Priest.UnMadeAPriest", "You have fired %s as a priest.");
-						lang.set("Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
+						lang.set("Language.Console.LangUpdated", "Language File has been updated.");
+						lang.set("Language.Priest.UnMadeYouAPriest", "%s has fired you as a priest.");
+						lang.set("Language.Priest.UnMadeAPriest", "You have fired %s as a priest.");
+						lang.set("Language.Ingame.PvPIsOff", "You can't hurt your Partner if you have PvP disabled.");
 					case 2:
-						lang.set("Ingame.ListeningStarted", "You are now listening to the marry chat.");
-						lang.set("Ingame.ListeningStoped", "You are no longer listening to the marry chat.");
-						lang.set("Description.ListenChat", "Shows all chatmessages sent from a married player to his partner.");
+						lang.set("Language.Ingame.ListeningStarted", "You are now listening to the marry chat.");
+						lang.set("Language.Ingame.ListeningStoped", "You are no longer listening to the marry chat.");
+						lang.set("Language.Description.ListenChat", "Shows all chatmessages sent from a married player to his partner.");
 					case 3:
-						lang.set("Ingane.PriestMarryOff", "Priest (%s) is now offline, wedding called off.");
-						lang.set("Ingane.PlayerMarryOff", "%s is now offline, wedding called off.");
-						lang.set("Ingane.PlayerCalledOff", "%s called the wedding off.");
-						lang.set("Ingane.YouCalledOff", "You have called the wedding off.");
-						lang.set("Priest.Confirm", "Accept the marriage with /marry accept or deny it with /marry deny");
-						lang.set("Priest.AlreadyAccepted", "You have already accepted the marriage.");
-						lang.set("Priest.NoRequest", "There is no open marriage request.");
-						lang.set("Dialog.DoYouWant", "Do you %1$s, want to marry %2$s on this server?");
-						lang.set("Dialog.AndDoYouWant", "And do you %1$s, want to marry %2$s on this server?");
-						lang.set("Dialog.Married", "I now pronounce you husband and wife. You may now kiss .");
-						lang.set("Dialog.YesIWant", "Yes, I will!");
-						lang.set("Dialog.NoIDontWant", "No, I will not!");
+						lang.set("Language.Ingane.PriestMarryOff", "Priest (%s) is now offline, wedding called off.");
+						lang.set("Language.Ingane.PlayerMarryOff", "%s is now offline, wedding called off.");
+						lang.set("Language.Ingane.PlayerCalledOff", "%s called the wedding off.");
+						lang.set("Language.Ingane.YouCalledOff", "You have called the wedding off.");
+						lang.set("Language.Priest.Confirm", "Accept the marriage with /marry accept or deny it with /marry deny");
+						lang.set("Language.Priest.AlreadyAccepted", "You have already accepted the marriage.");
+						lang.set("Language.Priest.NoRequest", "There is no open marriage request.");
+						lang.set("Language.Dialog.DoYouWant", "Do you %1$s, want to marry %2$s on this server?");
+						lang.set("Language.Dialog.AndDoYouWant", "And do you %1$s, want to marry %2$s on this server?");
+						lang.set("Language.Dialog.Married", "I now pronounce you husband and wife. You may now kiss .");
+						lang.set("Language.Dialog.YesIWant", "Yes, I will!");
+						lang.set("Language.Dialog.NoIDontWant", "No, I will not!");
 					case 4:
-						lang.set("Priest.NotYourSelf", "You are not allowed to marry yourself.");
-						lang.set("Ingame.NoItemInHand", "You are not holding an item.");
-						lang.set("Ingame.PartnerInvFull", "Your partner have no empty space in his inventory.");
-						lang.set("Ingame.ItemSent", "You have sent your partner %1$s %2$s.");
-						lang.set("Ingame.ItemReceived", "Your partner have sent you %1$s %2$s.");
-						lang.set("Ingame.GiftsOnlyInSurvival", "You can only gift items to your partner when you are in survival mode.");
-				        lang.set("Ingame.YouKissed", "You have kissed your partner!");
-				        lang.set("Ingame.YouGotKissed", "Your partner has kissed you!");
-				        lang.set("Ingame.TooFarToKiss", "You are too far away to kiss your partner. (Max 2 Blocks)");
-				        lang.set("Ingame.KissWait", "You have to wait %s seconds to kiss your partner again.");
-						lang.set("Description.Kiss", "Kisses your partner.");
-						lang.set("Description.Gift", "Gifts the item in your hand to your partner.");
-						lang.set("Console.MetricsOffline", "Metrics offline.");
-						lang.set("Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
+						lang.set("Language.Priest.NotYourSelf", "You are not allowed to marry yourself.");
+						lang.set("Language.Ingame.NoItemInHand", "You are not holding an item.");
+						lang.set("Language.Ingame.PartnerInvFull", "Your partner have no empty space in his inventory.");
+						lang.set("Language.Ingame.ItemSent", "You have sent your partner %1$s %2$s.");
+						lang.set("Language.Ingame.ItemReceived", "Your partner have sent you %1$s %2$s.");
+						lang.set("Language.Ingame.GiftsOnlyInSurvival", "You can only gift items to your partner when you are in survival mode.");
+				        lang.set("Language.Ingame.YouKissed", "You have kissed your partner!");
+				        lang.set("Language.Ingame.YouGotKissed", "Your partner has kissed you!");
+				        lang.set("Language.Ingame.TooFarToKiss", "You are too far away to kiss your partner. (Max 2 Blocks)");
+				        lang.set("Language.Ingame.KissWait", "You have to wait %s seconds to kiss your partner again.");
+						lang.set("Language.Description.Kiss", "Kisses your partner.");
+						lang.set("Language.Description.Gift", "Gifts the item in your hand to your partner.");
+						lang.set("Language.Console.MetricsOffline", "Metrics offline.");
+						lang.set("Language.Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
 					case 5:
-						lang.set("Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
-						lang.set("Ingame.WorldNotAllowed", "Your partner is in a world where tp is not allowed.");
-						lang.set("Ingame.Updated", "Plugin updated, will be loaded on next restart/reload.");
-						lang.set("Ingame.NoUpdate", "No plugin update available.");
-						lang.set("Description.Update", "Checks if there is an update available and downloads it.");
-						lang.set("Description.Marry", "Marry two Persons in a range of %s blocks.");
-						lang.set("Description.Divorce", "Divorces two Persons in a range of %s blocks.");
+						lang.set("Language.Economy.GiftPaid", "You have paid %1$s for gifting an item to your partner (%2$s left)");
+						lang.set("Language.Ingame.WorldNotAllowed", "Your partner is in a world where tp is not allowed.");
+						lang.set("Language.Ingame.Updated", "Plugin updated, will be loaded on next restart/reload.");
+						lang.set("Language.Ingame.NoUpdate", "No plugin update available.");
+						lang.set("Language.Description.Update", "Checks if there is an update available and downloads it.");
+						lang.set("Language.Description.Marry", "Marry two Persons in a range of %s blocks.");
+						lang.set("Language.Description.Divorce", "Divorces two Persons in a range of %s blocks.");
 					case 6:
 					case 7:
-						lang.set("Console.NotSupportedNet", "Not supported MC version. Heart effect disabled.");
-						lang.set("Console.UpdateUUIDs", "Start updating database to UUIDs ...");
-						lang.set("Console.UpdatedUUIDs", "Updated %s accounts to UUIDs.");
+						lang.set("Language.Console.NotSupportedNet", "Not supported MC version. Heart effect disabled.");
+						lang.set("Language.Console.UpdateUUIDs", "Start updating database to UUIDs ...");
+						lang.set("Language.Console.UpdatedUUIDs", "Updated %s accounts to UUIDs.");
+					case 8:
+						lang.set("Language.Description.SelfMarry", "Sends a marry request to a other player.");
+						lang.set("Language.Ingame.MarryConfirm", "%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny");
+						lang.set("Language.Ingame.HasMarried", "You have married %s.");
+						lang.set("Language.Ingame.BroadcastMarriage", "%1$s has married %2$s.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

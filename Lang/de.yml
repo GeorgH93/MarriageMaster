@@ -27,6 +27,7 @@ Language:
         Gift: Sendet deinem Partner das Item das du in der Hand häldst.
         Kiss: Küsse deinen Partner.
         Update: Prüft ob ein update verfügbar ist und lädt dieses herunter.
+        SelfMarry: Sendet eine heiratsanfrage an einem Spieler.
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
@@ -65,6 +66,9 @@ Language:
         WorldNotAllowed: Dein Partner ist in ein Welt in der TP nicht erlaubt ist.
         Updated: 'Plugin aktualisiert, wird bei nächsten restart/reload geladen.'
         NoUpdate: 'Kein Plugin update verfügbar.'
+        MarryConfirm: '%s will dich heiraten. Akzeptiere mit /marry accept oder lehne mit /marry deny ab.'
+        HasMarried: 'Du hast %s geheiratet.'
+        BroadcastMarriage: '%1$s hat %2$s geheiratet.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

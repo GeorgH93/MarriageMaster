@@ -65,19 +65,9 @@ public class Priester
 			priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyMarried"));
 			return;
 		}
-		if(marriageMaster.config.UseEconomy())
+		if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
 		{
-			if(marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
-			{
-				marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console");
-				priester.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
-				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getDisplayName()+ChatColor.GREEN));
-				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getDisplayName()+ChatColor.GREEN));
-				if(marriageMaster.config.GetAnnouncementEnabled())
-				{
-					marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
-				}
-			}
+			return;
 		}
 		else
 		{
@@ -89,6 +79,33 @@ public class Priester
 			{
 				marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.BroadcastMarriage"), "Console", player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 			}
+		}
+	}
+	
+	public void SelfMarry(Player player, String otP)
+	{
+		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
+		if(player == null || (player != null && !player.isOnline()))
+		{
+			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), otP));
+			return;
+		}
+		if(marriageMaster.InRadius(player, otherPlayer, marriageMaster.config.GetRange("Marry")))
+		{
+			if(!marriageMaster.HasPartner(player) && !marriageMaster.HasPartner(otherPlayer))
+			{
+				marriageMaster.mr.add(new Marry_Requests(null, player, otherPlayer));
+				otherPlayer.sendMessage(String.format(marriageMaster.lang.Get("Ingame.MarryConfirm"),player.getDisplayName()+ChatColor.WHITE));
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.AlreadyMarried"));
+				return;
+			}
+		}
+		else
+		{
+			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.NotInRange"));
 		}
 	}
 
@@ -121,12 +138,9 @@ public class Priester
 					priester.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyMarried"));
 					return;
 				}
-				if(marriageMaster.config.UseEconomy())
+				if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
 				{
-					if(marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry()))
-					{
-						MarryPlayer(priester, player, otherPlayer);
-					}
+					return;
 				}
 				else
 				{
@@ -140,12 +154,36 @@ public class Priester
 		}
 	}
 	
+	private void SelfMarryAccept(Marry_Requests m)
+	{
+		if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(m.p1, m.p2, marriageMaster.config.GetEconomyMarry()))
+		{
+			return;
+		}
+		marriageMaster.DB.MarryPlayers(m.p1, m.p2, "none");
+		m.p1.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.HasMarried"), m.p2.getDisplayName()+ChatColor.GREEN));
+		m.p2.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.HasMarried"), m.p1.getDisplayName()+ChatColor.GREEN));
+		if(marriageMaster.config.GetAnnouncementEnabled())
+		{
+			marriageMaster.getServer().broadcastMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.BroadcastMarriage"), m.p1.getDisplayName()+ChatColor.GREEN, m.p2.getDisplayName()+ChatColor.GREEN));
+		}
+	}
+	
 	public void AcceptMarriage(Player player)
 	{
 		for (Marry_Requests m : marriageMaster.mr)
 		{
     		if(m.p1 == player || m.p2 == player)
     		{
+    			if(m.priest == null)
+    			{
+    				if(m.p2 == player)
+    				{
+    					marriageMaster.mr.remove(m);
+    					SelfMarryAccept(m);
+    				}
+    				return;
+    			}
     			if(!m.HasAccepted(player))
     			{
     				marriageMaster.mr.remove(m);
@@ -286,12 +324,9 @@ public class Priester
 		}
 		if(InRadius(player, otherPlayer, priester))
 		{ 
-			if(marriageMaster.config.UseEconomy())
+			if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Divorce(player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
 			{
-				if(marriageMaster.economy.Divorce(player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
-				{
-					DivorcePlayer(priester, player, otherPlayer);
-				}
+				return;
 			}
 			else
 			{

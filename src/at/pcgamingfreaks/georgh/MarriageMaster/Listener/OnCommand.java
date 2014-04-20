@@ -469,6 +469,10 @@ public class OnCommand implements CommandExecutor
         		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Description.NotAPriest"));
         	}
         }
+        else if(marriageMaster.config.AllowSelfMarry() && args.length == 2 && args[0].equalsIgnoreCase("me"))
+        {
+        	priest.SelfMarry(player, args[1]);
+        }
         else if (args.length == 2)
         {
         	if(marriageMaster.IsPriester(player))
@@ -491,11 +495,14 @@ public class OnCommand implements CommandExecutor
         		if(m.p1 == player || m.p2 == player)
         		{
         			marriageMaster.mr.remove(m);
-        			if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog())
+        			if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog() && m.priest!=null)
 					{
         				player.chat(marriageMaster.lang.Get("Dialog.NoIDontWant"));
 					}
-        			m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+        			if(m.priest != null)
+        			{
+        				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+        			}
         			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
         			if(m.p1 == player)
         			{
@@ -557,6 +564,10 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.kiss") && marriageMaster.config.GetKissEnabled())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Kiss"));
+		}
+		if(marriageMaster.config.AllowSelfMarry())
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry me <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{
