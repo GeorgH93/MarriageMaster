@@ -53,7 +53,9 @@ public class Database
 	
 	public void DivorcePlayer(Player player) {}
 	
-	public void MarryPlayers(Player player1, Player player2, String priester) {}
+	public void MarryPlayers(Player player1, Player player2, String priest) {}
+	
+	public void MarryPlayers(Player player1, Player player2, Player priest) { MarryPlayers(player1, player2, priest.getName()); }
 	
 	public void SetMarryHome(Location loc, Player player) {}
 	
@@ -63,7 +65,7 @@ public class Database
 	
 	public void DelPriest(Player player) {}
 	
-	public boolean IsPriester(Player player) { return false; }
+	public boolean IsPriest(Player player) { return false; }
 	
 	public String GetPartner(Player player) { return player.getName(); }
 	

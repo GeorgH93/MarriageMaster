@@ -453,7 +453,7 @@ public class Files extends Database
 		SavePriests();
 	}
 	
-	public boolean IsPriester(Player player)
+	public boolean IsPriest(Player player)
 	{
 		String pid = GetPlayerID(player);
 		if(Priests.contains(pid))

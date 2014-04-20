@@ -143,7 +143,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public boolean IsPriester(Player player)
 	{
-		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriester(player);
+		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriest(player);
 	}
 	
 	public boolean HasPartner(Player player)

@@ -180,7 +180,7 @@ public class Priester
 	
 	private void SaveMarry(Player priest, Player player, Player otherPlayer)
 	{
-		marriageMaster.DB.MarryPlayers(player, otherPlayer, priest.getName());
+		marriageMaster.DB.MarryPlayers(player, otherPlayer, priest);
 		priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, player.getDisplayName()+ChatColor.GREEN));

@@ -418,6 +418,59 @@ public class MySQL extends Database
 		}
 	}
 	
+	public void MarryPlayers(Player player, Player otherPlayer, String priest)
+	{
+		PreparedStatement pstmt;
+		AddPlayer(player);
+		AddPlayer(otherPlayer);
+		try
+		{
+			if(marriageMaster.config.UseUUIDs())
+			{
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_players (`name`, `uuid`) VALUES (?,?);");
+				pstmt.setString(2, (priest=="none")?"00000000000000000000000000000000":"00000000000000000000000000000001");
+			}
+			else
+			{
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_players (`name`) VALUES (?);");
+			}
+			pstmt.setString(1, priest);
+			pstmt.execute();
+			pstmt.close();
+		}
+		catch (SQLException e)
+		{
+			if(e.getErrorCode() != 23000)
+			{
+				e.printStackTrace();
+			}
+		}
+		int priestid = -1;
+		try
+		{
+			pstmt = GetConnection().prepareStatement("SELECT player_id FROM marry_players WHERE `name`=?");
+			pstmt.setString(1, priest);
+			pstmt.executeQuery();
+			ResultSet rs = pstmt.getResultSet();
+			if(rs.next())
+			{
+				priestid = rs.getInt(1);
+			}
+			rs.close();
+			pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			pstmt.setInt(1, GetPlayerID(player));
+			pstmt.setInt(2, GetPlayerID(otherPlayer));
+			pstmt.setInt(3, priestid);
+			pstmt.setTimestamp(4, new Timestamp(Calendar.getInstance().getTime().getTime()));
+			pstmt.execute();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void DivorcePlayer(Player player)
 	{
 		try
@@ -446,7 +499,7 @@ public class MySQL extends Database
 		}
 	}
 	
-	public void SetPvPEnable(Player player, boolean state)
+	public void SetPvPEnabled(Player player, boolean state)
 	{
 		try
 		{
