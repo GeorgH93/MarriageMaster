@@ -154,6 +154,8 @@ public class Language
 						lang.set("Language.Ingame.MarryConfirm", "%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny");
 						lang.set("Language.Ingame.HasMarried", "You have married %s.");
 						lang.set("Language.Ingame.BroadcastMarriage", "%1$s has married %2$s.");
+						lang.set("Language.Ingame.Divorced", "You left %s. You are free now.");
+						lang.set("Language.Ingame.DivorcedPlayer", "%s has left you. You are free now.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

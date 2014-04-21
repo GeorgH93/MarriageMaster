@@ -374,4 +374,40 @@ public class Priester
 			otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.DivorcedPlayer"), ChatColor.GRAY+"Console"+ChatColor.GRAY, player.getName()));
 		}
 	}
+
+	public void SelfDivorce(Player player)
+	{
+		String partner = marriageMaster.DB.GetPartner(player);
+		if(partner == null || partner.isEmpty())
+		{
+			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+			return;
+		}
+		Player otherPlayer = Bukkit.getServer().getPlayer(partner);
+		if(otherPlayer == null || !otherPlayer.isOnline())
+		{
+			if(marriageMaster.config.CheckPerm(player, "marry.offlinedivorce", false))
+			{
+				marriageMaster.DB.DivorcePlayer(player);
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.Divorced"), player.getDisplayName()+ChatColor.GREEN,partner));
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+			}
+		}
+		else
+		{
+			if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Divorce(player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
+			{
+				return;
+			}
+			else
+			{
+				marriageMaster.DB.DivorcePlayer(player);
+				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.Divorced"), otherPlayer.getDisplayName()+ChatColor.GREEN));
+				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.DivorcedPlayer"), player.getDisplayName()+ChatColor.GREEN));
+			}
+		}
+	}
 }

@@ -480,6 +480,17 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
         }
+        else if(marriageMaster.config.AllowSelfMarry() && args[0].equalsIgnoreCase("divorce"))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+        	{
+        		priest.SelfDivorce(player);
+        	}
+        	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+        }
         else if (args.length == 2)
         {
         	if(marriageMaster.IsPriester(player))

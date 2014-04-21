@@ -69,6 +69,8 @@ Language:
         MarryConfirm: '%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny'
         HasMarried: 'You have married %s.'
         BroadcastMarriage: '%1$s has married %2$s.'
+        Divorced: 'You left %s. You are free now.'
+        DivorcedPlayer: '%s has left you. You are free now.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

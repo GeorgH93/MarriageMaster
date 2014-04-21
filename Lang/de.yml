@@ -69,6 +69,8 @@ Language:
         MarryConfirm: '%s will dich heiraten. Akzeptiere mit /marry accept oder lehne mit /marry deny ab.'
         HasMarried: 'Du hast %s geheiratet.'
         BroadcastMarriage: '%1$s hat %2$s geheiratet.'
+        Divorced: 'Du hast dich von %s getrennt.'
+        DivorcedPlayer: '%s hat dich verlassen.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
