@@ -471,7 +471,14 @@ public class OnCommand implements CommandExecutor
         }
         else if(marriageMaster.config.AllowSelfMarry() && args.length == 2 && args[0].equalsIgnoreCase("me"))
         {
-        	priest.SelfMarry(player, args[1]);
+        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+        	{
+        		priest.SelfMarry(player, args[1]);
+        	}
+        	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
         }
         else if (args.length == 2)
         {
@@ -565,7 +572,7 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Kiss"));
 		}
-		if(marriageMaster.config.AllowSelfMarry())
+		if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry me <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
 		}

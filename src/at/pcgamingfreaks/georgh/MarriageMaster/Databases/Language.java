@@ -146,10 +146,10 @@ public class Language
 						lang.set("Language.Description.Divorce", "Divorces two Persons in a range of %s blocks.");
 					case 6:
 					case 7:
+					case 8:
 						lang.set("Language.Console.NotSupportedNet", "Not supported MC version. Heart effect disabled.");
 						lang.set("Language.Console.UpdateUUIDs", "Start updating database to UUIDs ...");
 						lang.set("Language.Console.UpdatedUUIDs", "Updated %s accounts to UUIDs.");
-					case 8:
 						lang.set("Language.Description.SelfMarry", "Sends a marry request to a other player.");
 						lang.set("Language.Ingame.MarryConfirm", "%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny");
 						lang.set("Language.Ingame.HasMarried", "You have married %s.");

@@ -2,7 +2,7 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.7.3
+version: 1.7.4
 softdepend: [Vault]
 commands:
    marry:
@@ -26,6 +26,8 @@ permissions:
       marry.reload: true
       marry.listenchat: true
       marry.update: true
+      marry.offlinedivorce: true
+      marry.selfmarry: true
   marry.admin:
     description: Gives acces to all Marriage Admin commands
     children:
@@ -34,6 +36,7 @@ permissions:
       marry.priest: true
       marry.listenchat: true
       marry.update: true
+      marry.offlinedivorce: true
   marry.list:
     description: Allows you to use the List command
     default: true
@@ -43,9 +46,6 @@ permissions:
   marry.pvpoff:
     description: Allows you to disable pvp with your partner
     default: true
-  marry.priest:
-    description: Allows you to marry two players
-    default: op
   marry.tp:
     description: Allows you to tp to your partner
     default: true
@@ -61,6 +61,15 @@ permissions:
   marry.kiss:
     description: Allows to kiss your partner
     default: true
+  marry.selfmarry:
+    description: Allows to marry an other player without a priest
+    defualt: true
+  marry.offlinedivorce:
+    description: Allows a priest to divorce players when only one of them is online.
+    default: op
+  marry.priest:
+    description: Allows you to marry two players
+    default: op
   marry.setpriest:
     description: Allows you to set a priest
     default: op
