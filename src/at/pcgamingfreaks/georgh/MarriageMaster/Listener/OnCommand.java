@@ -460,7 +460,7 @@ public class OnCommand implements CommandExecutor
         }
         else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
         {
-        	if(marriageMaster.IsPriester(player))
+        	if(marriageMaster.IsPriest(player))
         	{
         		priest.Divorce(player, args);
         	}
@@ -493,7 +493,7 @@ public class OnCommand implements CommandExecutor
         }
         else if (args.length == 2)
         {
-        	if(marriageMaster.IsPriester(player))
+        	if(marriageMaster.IsPriest(player))
     		{
     			priest.Marry(player, args);
     		}
@@ -549,7 +549,7 @@ public class OnCommand implements CommandExecutor
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListAll"));
 		}
-		if(marriageMaster.IsPriester(player))
+		if(marriageMaster.IsPriest(player))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Marry"), marriageMaster.config.GetRange("Marry")));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Divorce"), marriageMaster.config.GetRange("Marry")));

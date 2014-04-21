@@ -141,7 +141,7 @@ public class MarriageMaster extends JavaPlugin
 		this.log.info(lang.Get("Console.Disabled"));
 	}
 	
-	public boolean IsPriester(Player player)
+	public boolean IsPriest(Player player)
 	{
 		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriest(player);
 	}
