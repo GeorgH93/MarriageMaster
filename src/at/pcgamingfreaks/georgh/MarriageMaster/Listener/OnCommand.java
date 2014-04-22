@@ -43,7 +43,7 @@ public class OnCommand implements CommandExecutor
 	private MarriageMaster marriageMaster;
 
 	private MarryTp marryTp;
-	private Priester priest;
+	private Priest priest;
 	private Home home;
 	
 	public OnCommand(MarriageMaster marriagemaster) 
@@ -52,7 +52,7 @@ public class OnCommand implements CommandExecutor
 		
 		home = new Home(marriageMaster);
 		marryTp = new MarryTp(marriageMaster);
-		priest = new Priester(marriageMaster);
+		priest = new Priest(marriageMaster);
 	}
 	
 	private void reload()

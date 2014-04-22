@@ -25,11 +25,11 @@ import org.bukkit.entity.Player;
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 import at.pcgamingfreaks.georgh.MarriageMaster.Marry_Requests;
 
-public class Priester 
+public class Priest
 {
 	private MarriageMaster marriageMaster;
 	
-	public Priester(MarriageMaster marriagemaster) 
+	public Priest(MarriageMaster marriagemaster) 
 	{
 		marriageMaster = marriagemaster;
 	}
