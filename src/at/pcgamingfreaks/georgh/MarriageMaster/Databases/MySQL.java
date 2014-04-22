@@ -94,16 +94,19 @@ public class MySQL extends Database
 		try
 		{
 			Statement stmt = GetConnection().createStatement();
-			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, `uuid` VARCHAR(35) UNIQUE, PRIMARY KEY (`player_id`));");
-			try
+			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
+			if(marriageMaster.config.UseUUIDs())
 			{
-				stmt.execute("ALTER TABLE `minecraft`.`marry_players` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
-			}
-			catch(SQLException e)
-			{
-				if(e.getErrorCode() != 1060)
+				try
 				{
-					e.printStackTrace();
+					stmt.execute("ALTER TABLE `minecraft`.`marry_players` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
+				}
+				catch(SQLException e)
+				{
+					if(e.getErrorCode() != 1060)
+					{
+						e.printStackTrace();
+					}
 				}
 			}
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_priests (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");

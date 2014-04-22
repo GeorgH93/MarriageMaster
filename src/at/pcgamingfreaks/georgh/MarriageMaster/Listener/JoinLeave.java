@@ -17,6 +17,8 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Listener;
 
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,25 +93,28 @@ public class JoinLeave implements Listener
 			}
 		}
 		marriageMaster.pcl.remove(event.getPlayer());
-		for (Marry_Requests m : marriageMaster.mr)
+		Iterator<Marry_Requests> m = marriageMaster.mr.iterator();
+		Marry_Requests temp;
+		while (m.hasNext())
 		{
-			if(m.p1 == event.getPlayer())
+			temp = m.next();
+			if(temp.p1 == event.getPlayer())
 			{
-				marriageMaster.mr.remove(m);
-				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p1));
-				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p1));
+				m.remove();
+				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1));
+				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1));
 			}
-			if(m.p2 == event.getPlayer())
+			else if(temp.p2 == event.getPlayer())
 			{
-				marriageMaster.mr.remove(m);
-				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
-				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), m.p2));
+				m.remove();
+				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2));
+				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2));
 			}
-			if(m.priest != null && m.priest == event.getPlayer())
+			else if(temp.priest != null && temp.priest == event.getPlayer())
 			{
-				marriageMaster.mr.remove(m);
-				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), m.priest));
-				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), m.priest));
+				m.remove();
+				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest));
+				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest));
 			}
 		}
 	}
