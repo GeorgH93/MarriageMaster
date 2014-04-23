@@ -71,6 +71,10 @@ Language:
         BroadcastMarriage: '%1$s has married %2$s.'
         Divorced: 'You left %s. You are free now.'
         DivorcedPlayer: '%s has left you. You are free now.'
+        AlreadyMarried: You are already married!
+        OtherAlreadyMarried: '%s is already married.'
+        AlreadyOpenRequest: You have already one not answered marry request.
+        MarryRequestSent: Marriage request sent.
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money
@@ -99,6 +103,7 @@ Language:
         AlreadyAccepted: 'You have already accepted the marriage.'
         NoRequest: 'There is no open marriage request.'
         NotYourSelf: 'You are not allowed to marry yourself.'
+        AlreadyOpenRequest: '%s has already one not answered marry request.'
     Dialog:
         DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
         AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'

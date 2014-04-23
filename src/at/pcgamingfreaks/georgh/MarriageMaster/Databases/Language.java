@@ -151,11 +151,16 @@ public class Language
 						lang.set("Language.Console.UpdateUUIDs", "Start updating database to UUIDs ...");
 						lang.set("Language.Console.UpdatedUUIDs", "Updated %s accounts to UUIDs.");
 						lang.set("Language.Description.SelfMarry", "Sends a marry request to a other player.");
+						lang.set("Language.Priest.AlreadyOpenRequest", "%s has already one not answered marry request.");
 						lang.set("Language.Ingame.MarryConfirm", "%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny");
 						lang.set("Language.Ingame.HasMarried", "You have married %s.");
 						lang.set("Language.Ingame.BroadcastMarriage", "%1$s has married %2$s.");
 						lang.set("Language.Ingame.Divorced", "You left %s. You are free now.");
 						lang.set("Language.Ingame.DivorcedPlayer", "%s has left you. You are free now.");
+						lang.set("Language.Ingame.AlreadyMarried", "You are already married!");
+						lang.set("Language.Ingame.OtherAlreadyMarried", "%s is already married.");
+						lang.set("Language.Ingame.AlreadyOpenRequest", "You have already one not answered marry request.");
+						lang.set("Language.Ingame.MarryRequestSent", "Marriage request sent.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

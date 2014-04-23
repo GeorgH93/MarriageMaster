@@ -56,7 +56,7 @@ public class MySQL extends Database
 				{
 					marriageMaster.log.info(marriageMaster.lang.Get("Console.UpdateUUIDs"));
 				}
-				converter.add("UPDATE marry_players SET uuid='" + getUUIDFromName(res.getString(1)) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				converter.add("UPDATE marry_players SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1)) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
 			}
 			if(converter.size() > 0)
 			{

@@ -29,7 +29,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
@@ -57,6 +56,7 @@ public class OnCommand implements CommandExecutor
 	
 	private void reload()
 	{
+		HandlerList.unregisterAll(marriageMaster);
 		marriageMaster.config.Reload();
 		marriageMaster.lang.Reload();
 		if(marriageMaster.config.GetDatabaseType().toLowerCase() != marriageMaster.DBType)
@@ -88,8 +88,6 @@ public class OnCommand implements CommandExecutor
 		{
 			marriageMaster.perms = null;
 		}
-		PlayerInteractEvent.getHandlerList();
-		HandlerList.unregisterAll(marriageMaster);
 		marriageMaster.RegisterEvents();
 	}
 		

@@ -175,7 +175,7 @@ public class Files extends Database
 			for(String s : convert)
 			{
 				Priests.remove(s);
-				s = getUUIDFromName(s);
+				s = UUIDConverter.getUUIDFromName(s);
 				if(s != null)
 				{
 					Priests.add(s);
@@ -190,7 +190,7 @@ public class Files extends Database
 				hilf = entry.getKey();
 				if(entry.getKey().length() != 32)
 				{
-					hilf = getUUIDFromName(hilf);
+					hilf = UUIDConverter.getUUIDFromName(hilf);
 					if(hilf != null)
 					{
 						fchilf.set("Name", entry.getKey());					
@@ -198,7 +198,7 @@ public class Files extends Database
 				}
 				if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID") == null)
 				{
-					fchilf.set("MarriedToUUID", getUUIDFromName(fchilf.getString("MarriedTo")));
+					fchilf.set("MarriedToUUID", UUIDConverter.getUUIDFromName(fchilf.getString("MarriedTo")));
 				}
 				MarryMap.put(hilf,fchilf);
 			}

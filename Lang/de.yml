@@ -71,6 +71,10 @@ Language:
         BroadcastMarriage: '%1$s hat %2$s geheiratet.'
         Divorced: 'Du hast dich von %s getrennt.'
         DivorcedPlayer: '%s hat dich verlassen.'
+        AlreadyMarried: Du bist bereits verheiratet.
+        OtherAlreadyMarried: '%s ist bereits verheiratet.'
+        AlreadyOpenRequest: Du hast bereits einen offenen Heiratsantrag.
+        MarryRequestSent: Heiratsantrag gesendet.
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
@@ -99,6 +103,7 @@ Language:
         AlreadyAccepted: 'Du hast die Eheschließung bereits bestätigt.'
         NoRequest: 'Es liegt keine offene eheanfrage vor.'
         NotYourSelf: 'Du darfst dich nicht selbst heiraten.'
+        AlreadyOpenRequest: '%s hat bereits einen offenen Heiratsantrag.'
     Dialog:
         DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
         AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'
