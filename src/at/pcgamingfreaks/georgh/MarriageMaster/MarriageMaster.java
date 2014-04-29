@@ -112,7 +112,7 @@ public class MarriageMaster extends JavaPlugin
 		getCommand("marry").setExecutor(new OnCommand(this));
 		RegisterEvents();
 
-		this.log.info(lang.Get("Console.Enabled"));
+		log.info(lang.Get("Console.Enabled"));
 	}
 	
 	public void RegisterEvents()
@@ -138,7 +138,7 @@ public class MarriageMaster extends JavaPlugin
 	 
 	public void onDisable()
 	{ 
-		this.log.info(lang.Get("Console.Disabled"));
+		log.info(lang.Get("Console.Disabled"));
 	}
 	
 	public boolean IsPriest(Player player)

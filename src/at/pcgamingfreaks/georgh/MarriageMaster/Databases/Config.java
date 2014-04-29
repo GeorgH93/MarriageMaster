@@ -55,7 +55,7 @@ public class Config
 		}
 		else
 		{
-			config = YamlConfiguration.loadConfiguration(new File(marriageMaster.getDataFolder(), "config.yml"));
+			config = YamlConfiguration.loadConfiguration(file);
 			UpdateConfig(file);
 		}
 	}
