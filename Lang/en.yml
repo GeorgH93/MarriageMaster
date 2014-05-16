@@ -1,4 +1,4 @@
-Version: 9
+Version: 10
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -22,6 +22,7 @@ Language:
         SetHome: Sets your Home.
         TPHome: Teleports to your Home.
         Chat: Private chat with your partner.
+        ChatToggle: Toggles your chat to be private with your partner.
         Reload: Reloads the config of the plugin.
         ListenChat: Shows all chatmessages sent from a married player to his partner.
         Gift: Gifts the item in your hand to your partner.

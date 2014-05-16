@@ -34,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.Files;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.MySQL;
-import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
 import at.pcgamingfreaks.georgh.MarriageMaster.*;
 
 public class OnCommand implements CommandExecutor 
@@ -70,7 +69,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
 		{
-			marriageMaster.economy = new HEconomy(marriageMaster);
+			marriageMaster.economy = new MMEconomy(marriageMaster);
 		}
 		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
 		{
@@ -290,6 +289,18 @@ public class OnCommand implements CommandExecutor
     		{
         		if(marriageMaster.HasPartner(player))
         		{
+        			if(args.length == 2 && args[1].equalsIgnoreCase("toggle"))
+            		{
+        				if(marriageMaster.Marry_ChatDirect.contains(player))
+        				{
+        					marriageMaster.Marry_ChatDirect.remove(player);
+        				}
+        				else
+        				{
+        					marriageMaster.Marry_ChatDirect.add(player);
+        				}
+            			return true;
+            		}
         			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player));
         			if(otP != null && otP.isOnline())
         			{
@@ -564,6 +575,7 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.chat"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
+			player.sendMessage(ChatColor.AQUA + "/marry chat toggle" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.pvpon") && marriageMaster.config.GetAllowBlockPvP())
 		{

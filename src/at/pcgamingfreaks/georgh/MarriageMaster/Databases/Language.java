@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 9;
+	private static final int LANG_VERSION = 10;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -161,6 +161,8 @@ public class Language
 						lang.set("Language.Ingame.OtherAlreadyMarried", "%s is already married.");
 						lang.set("Language.Ingame.AlreadyOpenRequest", "You have already one not answered marry request.");
 						lang.set("Language.Ingame.MarryRequestSent", "Marriage request sent.");
+					case 9:
+						lang.set("Language.Description.ChatToggle", "Toggles your chat to be private with your partner.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

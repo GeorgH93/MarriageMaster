@@ -19,6 +19,7 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Databases;
 
 import java.util.TreeMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -55,6 +56,16 @@ public class Database
 	public boolean IsPriest(Player player) { return false; }
 	
 	public String GetPartner(Player player) { return player.getName(); }
+	
+	public Player GetPlayerPartner(Player player)
+	{
+		String partner = GetPartner(player);
+		if(partner != null && !partner.isEmpty())
+		{
+			return Bukkit.getPlayer(partner);
+		}
+		return null;
+	}
 	
 	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
 }

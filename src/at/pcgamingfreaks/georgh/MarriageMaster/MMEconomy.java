@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.georgh.MarriageMaster.Economy;
+package at.pcgamingfreaks.georgh.MarriageMaster;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,9 +23,8 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 
-public class HEconomy 
+public class MMEconomy 
 {
 	private MarriageMaster marriageMaster;
     public Economy econ = null;
@@ -44,7 +43,7 @@ public class HEconomy
         return (econ != null);
     }
 	
-	public HEconomy(MarriageMaster marriagemaster)
+	public MMEconomy(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
 		

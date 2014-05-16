@@ -103,7 +103,11 @@ public class MySQL extends Database
 				}
 				catch(SQLException e)
 				{
-					if(e.getErrorCode() != 1060)
+					if(e.getErrorCode() == 1142)
+					{
+						marriageMaster.log.warning(e.getMessage());
+					}
+					else if(e.getErrorCode() != 1060)
 					{
 						e.printStackTrace();
 					}

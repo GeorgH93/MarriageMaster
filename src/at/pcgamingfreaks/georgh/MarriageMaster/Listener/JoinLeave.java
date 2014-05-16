@@ -69,7 +69,28 @@ public class JoinLeave implements Listener
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
-		if(marriageMaster.config.UsePrefix() && marriageMaster.HasPartner(event.getPlayer()))
+		Player player = event.getPlayer();
+		String partner = marriageMaster.DB.GetPartner(player);
+		if(marriageMaster.Marry_ChatDirect.contains(player))
+		{
+			Player otP = marriageMaster.getServer().getPlayer(partner);
+			if(otP != null && otP.isOnline())
+			{
+				String msg = player.getDisplayName() + ChatColor.WHITE + " => " + otP.getDisplayName() + ChatColor.WHITE + ": " + event.getMessage();
+				otP.sendMessage(msg);
+				player.sendMessage(msg);
+				for (Player play : marriageMaster.pcl)
+				{
+					play.sendMessage(msg);
+				}
+			}
+			else
+			{
+				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+			}
+			event.setCancelled(false);
+		}
+		else if(marriageMaster.config.UsePrefix() && partner != null && !partner.isEmpty())
 		{
 			event.setFormat(marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE).replace("<partnername>", marriageMaster.DB.GetPartner(event.getPlayer())) + " " + event.getFormat());
 		}
@@ -93,6 +114,7 @@ public class JoinLeave implements Listener
 			}
 		}
 		marriageMaster.pcl.remove(event.getPlayer());
+		marriageMaster.Marry_ChatDirect.remove(event.getPlayer());
 		Iterator<Marry_Requests> m = marriageMaster.mr.iterator();
 		Marry_Requests temp;
 		while (m.hasNext())

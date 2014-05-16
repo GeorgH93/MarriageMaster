@@ -34,13 +34,12 @@ import org.mcstats.Metrics;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.Kiss;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
-import at.pcgamingfreaks.georgh.MarriageMaster.Economy.HEconomy;
 import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
 
 public class MarriageMaster extends JavaPlugin
 {
 	public Logger log;
-    public HEconomy economy = null;
+    public MMEconomy economy = null;
     public Permission perms = null;
     public Kiss kiss = null;
     public Config config;
@@ -49,6 +48,7 @@ public class MarriageMaster extends JavaPlugin
     public String DBType = "";
     public List<Player> pcl;
     public List<Marry_Requests> mr;
+    public List<Player> Marry_ChatDirect;
     
     public boolean setupPermissions()
     {
@@ -78,7 +78,9 @@ public class MarriageMaster extends JavaPlugin
 		kiss = new Kiss(this);
 		
 		pcl = new ArrayList<Player>();
+		Marry_ChatDirect = new ArrayList<Player>();
 		mr = new ArrayList<Marry_Requests>();
+		
 		if(config.UseMetrics())
 		{
 			try
@@ -105,7 +107,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 		if(config.UseEconomy())
 		{
-			economy = new HEconomy(this);
+			economy = new MMEconomy(this);
 		}
 		
 		// Events Registrieren
