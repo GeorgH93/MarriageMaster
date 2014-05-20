@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 8;
+	private static final int CONFIG_VERSION = 9;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -124,6 +124,8 @@ public class Config
 		config.set("Range.HearthVisible", 128.0F);
 		config.set("Range.Heal", 2.0F);
 		config.set("Range.BonusXP", 10.0F);
+		config.set("Teleport.Delay", false);
+		config.set("Teleport.DelayTime", 3);
 		config.set("TPBlacklistedWorlds", new ArrayList<String>());
 		config.set("Version",CONFIG_VERSION);
 		
@@ -171,6 +173,9 @@ public class Config
 				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 			case 7:
 				config.set("AllowSelfMarry", false);
+			case 8:
+				config.set("Teleport.Delay", false);
+				config.set("Teleport.DelayTime", 3);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -395,5 +400,15 @@ public class Config
 	public boolean AllowSelfMarry()
 	{
 		return config.getBoolean("AllowSelfMarry");
+	}
+	
+	public boolean DelayTP()
+	{
+		return config.getBoolean("Teleport.Delay");
+	}
+	
+	public int TPDelayTime()
+	{
+		return config.getInt("Teleport.DelayTime");
 	}
 }

@@ -163,6 +163,8 @@ public class Language
 						lang.set("Language.Ingame.MarryRequestSent", "Marriage request sent.");
 					case 9:
 						lang.set("Language.Description.ChatToggle", "Toggles your chat to be private with your partner.");
+						lang.set("Language.Ingame.TPMoved", "Teleport canceled! You have moved!");
+						lang.set("Language.Ingame.TPDontMove", "Teleport in %s sec! Don't Move!");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

@@ -17,7 +17,9 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
@@ -43,14 +45,7 @@ public class MarryTp
 				{
 					if(!marriageMaster.config.GetBlacklistedWorlds().contains(otherPlayer.getWorld().getName()))
 					{
-						if(marriageMaster.config.UseEconomy())
-						{
-							if(marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
-							{
-								DoTP(player, otherPlayer);
-							}
-						}
-						else
+						if(!marriageMaster.config.UseEconomy() || marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
 						{
 							DoTP(player, otherPlayer);
 						}
@@ -78,8 +73,37 @@ public class MarryTp
 
 	private void DoTP(Player player, Player otherPlayer) 
 	{
-		player.teleport(otherPlayer);
-		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TP"));
-		otherPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TPto"));		
+		if(marriageMaster.config.DelayTP() && !marriageMaster.config.CheckPerm(player, "marry.skiptpdelay", false))
+		{
+			final Location p_loc = player.getLocation();
+			final Player p = player, otp = otherPlayer;
+			p.sendMessage(ChatColor.GOLD + String.format(marriageMaster.lang.Get("Ingame.TPDontMove"), marriageMaster.config.TPDelayTime()));
+			Bukkit.getScheduler().runTaskLater(marriageMaster, new Runnable() { @Override public void run() {
+				if(p != null && p.isOnline())
+				{
+					if(otp != null && otp.isOnline())
+					{
+						if(p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+						{
+							p.teleport(otp);
+							p.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TP"));
+							otp.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TPto"));
+						}
+						else
+						{
+							p.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.TPMoved"));
+						}
+					}
+					else
+					{
+						p.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+				}}}}, marriageMaster.config.TPDelayTime() * 20L);
+		}
+		else
+		{
+			player.teleport(otherPlayer);
+			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TP"));
+			otherPlayer.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TPto"));
+		}
 	}
 }

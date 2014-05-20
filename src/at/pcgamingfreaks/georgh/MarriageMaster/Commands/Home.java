@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -38,14 +39,7 @@ public class Home
 		
 		if(loc != null)
 		{
-			if(marriageMaster.config.UseEconomy())
-			{
-				if(marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomyHomeTp()))
-				{
-					TPHome(player, loc);
-				}
-			}
-			else
+			if(!marriageMaster.config.UseEconomy() || marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomyHomeTp()))
 			{
 				TPHome(player, loc);
 			}
@@ -58,21 +52,35 @@ public class Home
 	
 	private void TPHome(Player player, Location loc)
 	{
-		player.teleport(loc);
-		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.HomeTP"));
+		if(marriageMaster.config.DelayTP() && !marriageMaster.config.CheckPerm(player, "marry.skiptpdelay", false))
+		{
+			final Location p_loc = player.getLocation(), toloc = loc;
+			final Player p = player;
+			p.sendMessage(ChatColor.GOLD + String.format(marriageMaster.lang.Get("Ingame.TPDontMove"), marriageMaster.config.TPDelayTime()));
+			Bukkit.getScheduler().runTaskLater(marriageMaster, new Runnable() { @Override public void run() {
+				if(p != null && p.isOnline())
+				{
+					if(p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+					{
+						p.teleport(toloc);
+						p.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.HomeTP"));
+					}
+					else
+					{
+						p.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.TPMoved"));
+					}}}}, marriageMaster.config.TPDelayTime() * 20L);
+		}
+		else
+		{
+			player.teleport(loc);
+			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.HomeTP"));
+		}
 	}
 
 	public void SetHome(Player player)
 	{
 		Location home = player.getLocation();
-		if(marriageMaster.config.UseEconomy())
-		{
-			if(marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomySetHome()))
-			{
-				SetMarryHome(player, home);
-			}
-		}
-		else
+		if(!marriageMaster.config.UseEconomy() || marriageMaster.economy.HomeTeleport(player, marriageMaster.config.GetEconomySetHome()))
 		{
 			SetMarryHome(player, home);
 		}

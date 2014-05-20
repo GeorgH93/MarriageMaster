@@ -76,6 +76,8 @@ Language:
         OtherAlreadyMarried: '%s is already married.'
         AlreadyOpenRequest: You have already one not answered marry request.
         MarryRequestSent: Marriage request sent.
+        TPMoved: Teleport canceled! You have moved!
+        TPDontMove: "Teleport in %s sec! Don't Move!"
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money
