@@ -77,13 +77,14 @@ public class MarryTp
 		{
 			final Location p_loc = player.getLocation();
 			final Player p = player, otp = otherPlayer;
+			final double p_hea = (double)player.getHealth();
 			p.sendMessage(ChatColor.GOLD + String.format(marriageMaster.lang.Get("Ingame.TPDontMove"), marriageMaster.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(marriageMaster, new Runnable() { @Override public void run() {
 				if(p != null && p.isOnline())
 				{
 					if(otp != null && otp.isOnline())
 					{
-						if(p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+						if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
 						{
 							p.teleport(otp);
 							p.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.TP"));
