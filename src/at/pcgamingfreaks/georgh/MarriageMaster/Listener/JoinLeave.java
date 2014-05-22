@@ -123,20 +123,20 @@ public class JoinLeave implements Listener
 			if(temp.p1 == event.getPlayer())
 			{
 				m.remove();
-				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1));
-				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1));
+				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
 			}
 			else if(temp.p2 == event.getPlayer())
 			{
 				m.remove();
-				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2));
-				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2));
+				temp.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
 			}
 			else if(temp.priest != null && temp.priest == event.getPlayer())
 			{
 				m.remove();
-				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest));
-				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest));
+				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
 			}
 		}
 	}
