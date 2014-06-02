@@ -45,7 +45,7 @@ public class MarryChat
 			msg = msg.replace('§', '&');
 			if(marriageMaster.config.CheckPerm(sender, "marry.chat.color"))
 			{
-				ChatColor.translateAlternateColorCodes('&', msg);
+				msg = ChatColor.translateAlternateColorCodes('&', msg);
 			}
 			if(marriageMaster.config.CheckPerm(sender, "marry.chat.format"))
 			{
@@ -55,7 +55,7 @@ public class MarryChat
 			{
 				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
 			}
-			if(marriageMaster.config.CheckPerm(sender, "marry.chat.magic"))
+			if(marriageMaster.config.CheckPerm(sender, "marry.chat.magic", false))
 			{
 				msg = msg.replaceAll("&k", "§k");
 			}
