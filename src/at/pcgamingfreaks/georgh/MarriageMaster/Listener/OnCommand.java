@@ -283,7 +283,7 @@ public class OnCommand implements CommandExecutor
     			}
     		}
         }
-        else if(args[0].equalsIgnoreCase(marriageMaster.config.ChatToggleCommand()))
+        else if(marriageMaster.config.UseAltChatToggleCommand() && args[0].equalsIgnoreCase(marriageMaster.config.ChatToggleCommand()))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
     		{
@@ -592,7 +592,7 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.chat"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
-			player.sendMessage(ChatColor.AQUA + "/marry " + marriageMaster.config.ChatToggleCommand() + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
+			player.sendMessage(ChatColor.AQUA + "/marry " + (marriageMaster.config.UseAltChatToggleCommand() ? marriageMaster.config.ChatToggleCommand() : "chat toggle") + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.pvpon") && marriageMaster.config.GetAllowBlockPvP())
 		{

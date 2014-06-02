@@ -91,6 +91,7 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
+		config.set("UseAltChatToggleCommand", false);
 		config.set("ChatToggleCommand", "chattoggle");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
@@ -178,6 +179,7 @@ public class Config
 				config.set("Teleport.Delay", false);
 				config.set("Teleport.DelayTime", 3);
 			case 9:
+				config.set("UseAltChatToggleCommand", false);
 				config.set("ChatToggleCommand", "chattoggle");
 			break;
 			case CONFIG_VERSION: return false;
@@ -398,6 +400,11 @@ public class Config
 	public boolean UseUUIDs()
 	{
 		return config.getBoolean("UseUUIDs");
+	}
+	
+	public boolean UseAltChatToggleCommand()
+	{
+		return config.getBoolean("UseAltChatToggleCommand");
 	}
 	
 	public String ChatToggleCommand()
