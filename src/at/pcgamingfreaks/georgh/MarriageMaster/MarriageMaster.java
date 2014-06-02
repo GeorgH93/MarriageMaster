@@ -33,6 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.Kiss;
+import at.pcgamingfreaks.georgh.MarriageMaster.Commands.MarryChat;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
 
@@ -42,11 +43,11 @@ public class MarriageMaster extends JavaPlugin
     public MMEconomy economy = null;
     public Permission perms = null;
     public Kiss kiss = null;
+    public MarryChat chat = null;
     public Config config;
     public Language lang;
     public Database DB;
     public String DBType = "";
-    public List<Player> pcl;
     public List<Marry_Requests> mr;
     public List<Player> Marry_ChatDirect;
     
@@ -76,8 +77,7 @@ public class MarriageMaster extends JavaPlugin
 			default: DB = new Files(this); break;
 		}
 		kiss = new Kiss(this);
-		
-		pcl = new ArrayList<Player>();
+		chat = new MarryChat(this);
 		Marry_ChatDirect = new ArrayList<Player>();
 		mr = new ArrayList<Marry_Requests>();
 		

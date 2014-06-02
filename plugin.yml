@@ -2,7 +2,7 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.9.1
+version: 1.9.2
 softdepend: [Vault]
 commands:
    marry:
@@ -19,7 +19,7 @@ permissions:
       marry.priest: true
       marry.tp: true
       marry.home: true
-      marry.chat: true
+      marry.chat.*: true
       marry.gift: true
       marry.kiss: true
       marry.setpriest: true
@@ -39,6 +39,13 @@ permissions:
       marry.update: true
       marry.offlinedivorce: true
       marry.skiptpdelay: true
+  marry.chat.*:
+    description: Gives acces to all private message formats
+    children:
+      marry.chat: ture
+      marry.chat.color: ture
+      marry.chat.format: ture
+      marry.chat.magic: ture
   marry.list:
     description: Allows you to use the List command
     default: true
@@ -57,6 +64,15 @@ permissions:
   marry.chat:
     description: Allows you to chat with your partner
     default: true
+  marry.chat.color:
+    description: Allows colors in private messages
+    default: true
+  marry.chat.format:
+    description: Allows formating private messages (except magic)
+    default: true
+  marry.chat.magic:
+    description: Allows magic format in private messages
+    default: false
   marry.gift:
     description: Allows you to gift items to your partner
     default: true

@@ -74,20 +74,7 @@ public class JoinLeave implements Listener
 		if(marriageMaster.Marry_ChatDirect.contains(player))
 		{
 			Player otP = marriageMaster.getServer().getPlayer(partner);
-			if(otP != null && otP.isOnline())
-			{
-				String msg = player.getDisplayName() + ChatColor.WHITE + " => " + otP.getDisplayName() + ChatColor.WHITE + ": " + event.getMessage();
-				otP.sendMessage(msg);
-				player.sendMessage(msg);
-				for (Player play : marriageMaster.pcl)
-				{
-					play.sendMessage(msg);
-				}
-			}
-			else
-			{
-				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-			}
+			marriageMaster.chat.Chat(player, otP, event.getMessage());
 			event.setCancelled(true);
 		}
 		else if(marriageMaster.config.UsePrefix() && partner != null && !partner.isEmpty())
@@ -113,7 +100,7 @@ public class JoinLeave implements Listener
 				}
 			}
 		}
-		marriageMaster.pcl.remove(event.getPlayer());
+		marriageMaster.chat.pcl.remove(event.getPlayer());
 		marriageMaster.Marry_ChatDirect.remove(event.getPlayer());
 		Iterator<Marry_Requests> m = marriageMaster.mr.iterator();
 		Marry_Requests temp;

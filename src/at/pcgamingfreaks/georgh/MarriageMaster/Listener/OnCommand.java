@@ -302,24 +302,12 @@ public class OnCommand implements CommandExecutor
             			return true;
             		}
         			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player));
-        			if(otP != null && otP.isOnline())
-        			{
-        				String msg = player.getDisplayName() + ChatColor.WHITE + " => " + otP.getDisplayName() + ChatColor.WHITE + ":";
-        				for(int i = 1; i < args.length; i++)
-        				{
-        					msg += " " + args[i];
-        				}
-        				otP.sendMessage(msg);
-        				player.sendMessage(msg);
-        				for (Player play : marriageMaster.pcl)
-        				{
-        					play.sendMessage(msg);
-        				}
-        			}
-        			else
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-        			}
+        			String msg = "";
+        			for(int i = 1; i < args.length; i++)
+    				{
+    					msg += args[i] + " ";
+    				}
+        			marriageMaster.chat.Chat(player, otP, msg);
         		}
         		else
         		{
@@ -335,14 +323,14 @@ public class OnCommand implements CommandExecutor
 		{
         	if(marriageMaster.config.CheckPerm(player, "marry.listenchat"))
     		{
-        		if(!marriageMaster.pcl.contains(player))
+        		if(!marriageMaster.chat.pcl.contains(player))
         		{
-        			marriageMaster.pcl.add(player);
+        			marriageMaster.chat.pcl.add(player);
         			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListeningStarted"));
         		}
         		else
         		{
-        			marriageMaster.pcl.remove(player);
+        			marriageMaster.chat.pcl.remove(player);
         			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.ListeningStoped"));
         		}
 			}
