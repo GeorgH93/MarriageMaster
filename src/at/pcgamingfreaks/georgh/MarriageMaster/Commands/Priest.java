@@ -127,6 +127,11 @@ public class Priest
 			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), otP));
 			return;
 		}
+		if(player.equals(otherPlayer))
+		{
+			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.NotYourSelf"), otP));
+			return;
+		}
 		if(marriageMaster.InRadius(player, otherPlayer, marriageMaster.config.GetRange("Marry")))
 		{
 			if(!marriageMaster.HasPartner(player))

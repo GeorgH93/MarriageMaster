@@ -1,4 +1,4 @@
-Version: 10
+Version: 11
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -78,6 +78,7 @@ Language:
         MarryRequestSent: Marriage request sent.
         TPMoved: Teleport canceled! You have moved!
         TPDontMove: "Teleport in %s sec! Don't Move!"
+        NotYourself: 'You cannot marry yourself.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

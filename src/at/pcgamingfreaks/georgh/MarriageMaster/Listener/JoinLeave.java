@@ -88,7 +88,7 @@ public class JoinLeave implements Listener
 			{
 				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
 			}
-			event.setCancelled(false);
+			event.setCancelled(true);
 		}
 		else if(marriageMaster.config.UsePrefix() && partner != null && !partner.isEmpty())
 		{

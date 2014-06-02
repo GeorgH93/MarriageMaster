@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 10;
+	private static final int LANG_VERSION = 11;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -165,6 +165,8 @@ public class Language
 						lang.set("Language.Description.ChatToggle", "Toggles your chat to be private with your partner.");
 						lang.set("Language.Ingame.TPMoved", "Teleport canceled! You have moved!");
 						lang.set("Language.Ingame.TPDontMove", "Teleport in %s sec! Don't Move!");
+					case 10:
+						lang.set("Language.Ingame.NotYourself", "You cannot marry yourself.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

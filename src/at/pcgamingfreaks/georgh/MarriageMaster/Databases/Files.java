@@ -94,6 +94,11 @@ public class Files extends Database
 		if(file.exists())
 		{
 			MarryMap.put(player, YamlConfiguration.loadConfiguration(file));
+			if(MarryMap.get(player).getString("MarriedTo") == player)
+			{
+				MarryMap.remove(player);
+				file.delete();
+			}
 		}
 	}
 	
