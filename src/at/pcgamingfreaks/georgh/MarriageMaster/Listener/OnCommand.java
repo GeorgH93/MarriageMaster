@@ -283,6 +283,33 @@ public class OnCommand implements CommandExecutor
     			}
     		}
         }
+        else if(args[0].equalsIgnoreCase(marriageMaster.config.ChatToggleCommand()))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
+    		{
+        		if(marriageMaster.HasPartner(player))
+        		{
+    				if(marriageMaster.chat.Marry_ChatDirect.contains(player))
+    				{
+    					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatLeft"));
+    					marriageMaster.chat.Marry_ChatDirect.remove(player);
+    				}
+    				else
+    				{
+    					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatJoined"));
+    					marriageMaster.chat.Marry_ChatDirect.add(player);
+    				}
+        		}
+        		else
+        		{
+        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+        		}
+    		}
+        	else
+        	{
+        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+        	}
+        }
         else if(args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c"))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
@@ -291,13 +318,15 @@ public class OnCommand implements CommandExecutor
         		{
         			if(args.length == 2 && args[1].equalsIgnoreCase("toggle"))
             		{
-        				if(marriageMaster.Marry_ChatDirect.contains(player))
+        				if(marriageMaster.chat.Marry_ChatDirect.contains(player))
         				{
-        					marriageMaster.Marry_ChatDirect.remove(player);
+        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatLeft"));
+        					marriageMaster.chat.Marry_ChatDirect.remove(player);
         				}
         				else
         				{
-        					marriageMaster.Marry_ChatDirect.add(player);
+        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatJoined"));
+        					marriageMaster.chat.Marry_ChatDirect.add(player);
         				}
             			return true;
             		}
@@ -563,7 +592,7 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.chat"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
-			player.sendMessage(ChatColor.AQUA + "/marry chat toggle" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
+			player.sendMessage(ChatColor.AQUA + "/marry " + marriageMaster.config.ChatToggleCommand() + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.pvpon") && marriageMaster.config.GetAllowBlockPvP())
 		{

@@ -29,11 +29,13 @@ public class MarryChat
 {
 	private MarriageMaster marriageMaster;
 	public List<Player> pcl;
+	public List<Player> Marry_ChatDirect;
 	
 	public MarryChat(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
 		pcl = new ArrayList<Player>();
+		Marry_ChatDirect = new ArrayList<Player>();
 	}
 
 	public void Chat(Player sender, Player reciver, String msg)

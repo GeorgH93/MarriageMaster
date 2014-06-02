@@ -49,7 +49,6 @@ public class MarriageMaster extends JavaPlugin
     public Database DB;
     public String DBType = "";
     public List<Marry_Requests> mr;
-    public List<Player> Marry_ChatDirect;
     
     public boolean setupPermissions()
     {
@@ -78,7 +77,6 @@ public class MarriageMaster extends JavaPlugin
 		}
 		kiss = new Kiss(this);
 		chat = new MarryChat(this);
-		Marry_ChatDirect = new ArrayList<Player>();
 		mr = new ArrayList<Marry_Requests>();
 		
 		if(config.UseMetrics())

@@ -71,7 +71,7 @@ public class JoinLeave implements Listener
 	{
 		Player player = event.getPlayer();
 		String partner = marriageMaster.DB.GetPartner(player);
-		if(marriageMaster.Marry_ChatDirect.contains(player))
+		if(marriageMaster.chat.Marry_ChatDirect.contains(player))
 		{
 			Player otP = marriageMaster.getServer().getPlayer(partner);
 			marriageMaster.chat.Chat(player, otP, event.getMessage());
@@ -101,7 +101,7 @@ public class JoinLeave implements Listener
 			}
 		}
 		marriageMaster.chat.pcl.remove(event.getPlayer());
-		marriageMaster.Marry_ChatDirect.remove(event.getPlayer());
+		marriageMaster.chat.Marry_ChatDirect.remove(event.getPlayer());
 		Iterator<Marry_Requests> m = marriageMaster.mr.iterator();
 		Marry_Requests temp;
 		while (m.hasNext())

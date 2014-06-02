@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 9;
+	private static final int CONFIG_VERSION = 10;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -91,6 +91,7 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
+		config.set("ChatToggleCommand", "chattoggle");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
 		config.set("Economy.Enable", false);
@@ -176,6 +177,8 @@ public class Config
 			case 8:
 				config.set("Teleport.Delay", false);
 				config.set("Teleport.DelayTime", 3);
+			case 9:
+				config.set("ChatToggleCommand", "chattoggle");
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -395,6 +398,11 @@ public class Config
 	public boolean UseUUIDs()
 	{
 		return config.getBoolean("UseUUIDs");
+	}
+	
+	public String ChatToggleCommand()
+	{
+		return config.getString("ChatToggleCommand").replace(' ', '_');
 	}
 	
 	public boolean AllowSelfMarry()

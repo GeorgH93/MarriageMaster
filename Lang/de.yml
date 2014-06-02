@@ -79,6 +79,8 @@ Language:
         TPMoved: Teleport abgebrochen! Du hast dich bewegt!
         TPDontMove: 'Teleport in %s sek, bewege dich nicht!'
         NotYourself: 'Du kannst dich nicht selbst heiraten.'
+        ChatJoined: 'Du hat deinen Chat auf den private Chat umgeschalten.'
+        ChatLeft: 'Du hat deinen Chat auf den öffentlichen Chat umgeschalten.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

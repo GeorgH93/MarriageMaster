@@ -167,6 +167,8 @@ public class Language
 						lang.set("Language.Ingame.TPDontMove", "Teleport in %s sec! Don't Move!");
 					case 10:
 						lang.set("Language.Ingame.NotYourself", "You cannot marry yourself.");
+						lang.set("ChatJoined", "You have set your chat to the private marry chat.");
+						lang.set("ChatLeft", "You have set your chat to public chat.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
