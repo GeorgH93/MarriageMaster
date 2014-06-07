@@ -157,7 +157,7 @@ public class MarriageMaster extends JavaPlugin
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
 		
-		if(pl.getWorld().equals(opl.getWorld()) && pl.distance(opl) <= radius)
+		if(pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0))
 		{
 			return true;
 		}
