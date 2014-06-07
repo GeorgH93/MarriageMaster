@@ -473,61 +473,6 @@ public class OnCommand implements CommandExecutor
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
         }
-        else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
-        	{
-        		priest.setPriest(args, sender);
-        	}
-        	else
-        	{
-        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-        	}
-        }
-        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
-        {
-        	if(marriageMaster.IsPriest(player))
-        	{
-        		priest.Divorce(player, args);
-        	}
-        	else
-        	{
-        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Description.NotAPriest"));
-        	}
-        }
-        else if(marriageMaster.config.AllowSelfMarry() && args.length == 2 && args[0].equalsIgnoreCase("me"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
-        	{
-        		priest.SelfMarry(player, args[1]);
-        	}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if(marriageMaster.config.AllowSelfMarry() && args[0].equalsIgnoreCase("divorce"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
-        	{
-        		priest.SelfDivorce(player);
-        	}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if (args.length == 2)
-        {
-        	if(marriageMaster.IsPriest(player))
-    		{
-    			priest.Marry(player, args);
-    		}
-    		else
-    		{
-    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotAPriest"));
-    		}
-        }
         else if(args[0].equalsIgnoreCase("accept"))
         {
         	priest.AcceptMarriage(player);
@@ -560,6 +505,61 @@ public class OnCommand implements CommandExecutor
         		}
     		}
         	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
+        }
+        else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
+        	{
+        		priest.setPriest(args, sender);
+        	}
+        	else
+        	{
+        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+        	}
+        }
+        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
+        {
+        	if(marriageMaster.IsPriest(player))
+        	{
+        		priest.Divorce(player, args);
+        	}
+        	else
+        	{
+        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Description.NotAPriest"));
+        	}
+        }
+        else if(marriageMaster.config.AllowSelfMarry() && ((args.length == 2 && args[0].equalsIgnoreCase("me")) || args.length == 1))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+        	{
+        		priest.SelfMarry(player, (args.length == 1) ? args[0] : args[1]);
+        	}
+        	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+        }
+        else if(marriageMaster.config.AllowSelfMarry() && args[0].equalsIgnoreCase("divorce"))
+        {
+        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+        	{
+        		priest.SelfDivorce(player);
+        	}
+        	else
+	    	{
+	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	    	}
+        }
+        else if (args.length == 2)
+        {
+        	if(marriageMaster.IsPriest(player))
+    		{
+    			priest.Marry(player, args);
+    		}
+    		else
+    		{
+    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotAPriest"));
+    		}
         }
         else
         {
@@ -612,7 +612,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry me <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
 		{
