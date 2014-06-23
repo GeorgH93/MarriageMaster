@@ -1,4 +1,4 @@
-Version: 11
+Version: 12
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -29,6 +29,8 @@ Language:
         Kiss: Kisses your partner.
         Update: Checks if there is an update available and downloads it.
         SelfMarry: Sends a marry request to a other player.
+        SelfDivorce: To leave your partner.
+        Surname: Changes the surname of a couple.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.

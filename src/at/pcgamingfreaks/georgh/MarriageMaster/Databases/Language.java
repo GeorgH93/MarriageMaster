@@ -170,6 +170,7 @@ public class Language
 					case 11:
 						lang.set("Language.Ingame.ChatJoined", "You have set your chat to the private marry chat.");
 						lang.set("Language.Ingame.ChatLeft", "You have set your chat to public chat.");
+						lang.set("Language.Description.SelfDivorce", "To leave your partner.");
 						lang.set("Language.Description.Surname", "Changes the surname of a couple.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
