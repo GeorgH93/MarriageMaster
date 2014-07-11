@@ -85,6 +85,7 @@ Language:
         ChatJoined: 'Du hat deinen Chat auf den private Chat umgeschalten.'
         ChatLeft: 'Du hat deinen Chat auf den öffentlichen Chat umgeschalten.'
         NaN: 'Keine gültige Zahl eingegeben.'
+        NotInRange: 'Dein Partner ist zu weit Weg.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

@@ -85,6 +85,7 @@ Language:
         ChatJoined: 'You have set your chat to the private marry chat.'
         ChatLeft: 'You have set your chat to public chat.'
         NaN: 'Entered value is not a number!'
+        NotInRange: 'Your partner is to far away.'
     Economy:
         NotEnough: You don't have enough money
         PartnerNotEnough: Your partner doesn't have enough money

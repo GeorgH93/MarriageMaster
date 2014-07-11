@@ -427,6 +427,11 @@ public class OnCommand implements CommandExecutor
 	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
 	        				return true;
 	        			}
+	        			if(!marriageMaster.InRadiusAllWorlds(player, partner, marriageMaster.config.GetRange("Gift")))
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotInRange"));
+	        				return true;
+	        			}
 	        			ItemStack its = player.getInventory().getItemInHand();
 	        			if(its == null || its.getType() == Material.AIR)
 	        			{

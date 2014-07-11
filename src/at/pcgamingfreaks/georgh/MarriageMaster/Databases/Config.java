@@ -127,6 +127,7 @@ public class Config
 		config.set("Range.HearthVisible", 128.0F);
 		config.set("Range.Heal", 2.0F);
 		config.set("Range.BonusXP", 10.0F);
+		config.set("Range.Gift", 0);
 		config.set("Teleport.Delay", false);
 		config.set("Teleport.DelayTime", 3);
 		config.set("TPBlacklistedWorlds", new ArrayList<String>());
@@ -184,6 +185,7 @@ public class Config
 				config.set("ChatToggleCommand", "chattoggle");
 			case 10:
 				config.set("Surname", false);
+				config.set("Range.Gift", 0);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
