@@ -25,14 +25,6 @@ public class Marry_Requests
 	private boolean p1a = false, p2a = false;
 	public String surname;
 	
-	public Marry_Requests(Player Priest, Player P1, Player P2)
-	{
-		priest = Priest;
-		p1 = P1;
-		p2 = P2;
-		surname = null;
-	}
-	
 	public Marry_Requests(Player Priest, Player P1, Player P2, String Surname)
 	{
 		priest = Priest;

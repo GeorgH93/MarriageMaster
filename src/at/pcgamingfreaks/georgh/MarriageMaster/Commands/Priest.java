@@ -147,7 +147,7 @@ public class Priest
 					{
 						if(!HasOpenRequest(otherPlayer))
 						{
-							marriageMaster.mr.add(new Marry_Requests(null, player, otherPlayer));
+							marriageMaster.mr.add(new Marry_Requests(null, player, otherPlayer, Surname));
 							player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.MarryRequestSent"));
 							otherPlayer.sendMessage(String.format(marriageMaster.lang.Get("Ingame.MarryConfirm"),player.getDisplayName()+ChatColor.WHITE));
 						}
