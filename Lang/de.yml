@@ -50,6 +50,7 @@ Language:
         TP: Teleportiere zu deinem Partner...
         TPto: Dein Partner teleportiert sich zu dir...
         ListHL: Liste verheirateter Spieler
+        ListHLMP: 'Zeige Seite %1$d/%2$d - /marry list <Seite>'
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
         ListeningStarted: Du hörst nun denn Ehe-Chat mit.
         ListeningStoped: Du hörst nun denn Ehe-Chat nicht mehr mit.
@@ -83,6 +84,7 @@ Language:
         NotYourself: 'Du kannst dich nicht selbst heiraten.'
         ChatJoined: 'Du hat deinen Chat auf den private Chat umgeschalten.'
         ChatLeft: 'Du hat deinen Chat auf den öffentlichen Chat umgeschalten.'
+        NaN: 'Keine gültige Zahl eingegeben.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

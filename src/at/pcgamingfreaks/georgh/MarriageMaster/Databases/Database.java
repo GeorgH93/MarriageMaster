@@ -41,9 +41,9 @@ public class Database
 	
 	public void DivorcePlayer(Player player) {}
 	
-	public void MarryPlayers(Player player1, Player player2, String priest) {}
+	public void MarryPlayers(Player player1, Player player2, String priest, String surname) {}
 	
-	public void MarryPlayers(Player player1, Player player2, Player priest) { MarryPlayers(player1, player2, priest.getName()); }
+	public void MarryPlayers(Player player1, Player player2, Player priest, String surname) { MarryPlayers(player1, player2, priest.getName(), surname); }
 	
 	public void SetMarryHome(Location loc, Player player) {}
 	
@@ -66,6 +66,10 @@ public class Database
 		}
 		return null;
 	}
+	
+	public String GetSurname(Player player) { return null; }
+	
+	public void SetSurname(Player player, String Surname) {}
 	
 	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
 }

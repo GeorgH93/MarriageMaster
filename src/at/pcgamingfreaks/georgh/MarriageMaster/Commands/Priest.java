@@ -67,7 +67,7 @@ public class Priest
 		}
 		if(!(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
 		{
-			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console");
+			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console", args[2]);
 			priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getDisplayName()+ChatColor.GREEN));
 			otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getDisplayName()+ChatColor.GREEN));
@@ -109,7 +109,7 @@ public class Priest
 				}
 				if(!(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
 				{
-					MarryPlayer(priest, player, otherPlayer);
+					MarryPlayer(priest, player, otherPlayer, args[2]);
 				}
 			}
 			else
@@ -120,6 +120,11 @@ public class Priest
 	}
 	
 	public void SelfMarry(Player player, String otP)
+	{
+		SelfMarry(player, otP, null);
+	}
+	
+	public void SelfMarry(Player player, String otP, String Surname)
 	{
 		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
 		if(player == null || (player != null && !player.isOnline()))
@@ -190,7 +195,7 @@ public class Priest
 		{
 			return;
 		}
-		marriageMaster.DB.MarryPlayers(m.p1, m.p2, "none");
+		marriageMaster.DB.MarryPlayers(m.p1, m.p2, "none", m.surname);
 		m.p1.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.HasMarried"), m.p2.getDisplayName()+ChatColor.GREEN));
 		m.p2.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.HasMarried"), m.p1.getDisplayName()+ChatColor.GREEN));
 		if(marriageMaster.config.GetAnnouncementEnabled())
@@ -224,7 +229,7 @@ public class Priest
 					}
     				if(m.BothAcceoted(player))
     				{
-    					SaveMarry(m.priest, m.p1, m.p2);
+    					SaveMarry(m.priest, m.p1, m.p2, m.surname);
     				}
     				else
     				{
@@ -246,9 +251,9 @@ public class Priest
     	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
 	}
 	
-	private void SaveMarry(Player priest, Player player, Player otherPlayer)
+	private void SaveMarry(Player priest, Player player, Player otherPlayer, String surname)
 	{
-		marriageMaster.DB.MarryPlayers(player, otherPlayer, priest);
+		marriageMaster.DB.MarryPlayers(player, otherPlayer, priest, surname);
 		priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 		player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 		otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), priest.getDisplayName()+ChatColor.GREEN, player.getDisplayName()+ChatColor.GREEN));
@@ -262,15 +267,15 @@ public class Priest
 		}
 	}
 
-	private void MarryPlayer(Player priest, Player player, Player otherPlayer) 
+	private void MarryPlayer(Player priest, Player player, Player otherPlayer, String surname) 
 	{
 		if(!marriageMaster.config.UseConfirmation())
 		{
-			SaveMarry(priest, player, otherPlayer);
+			SaveMarry(priest, player, otherPlayer, surname);
 		}
 		else
 		{
-			marriageMaster.mr.add(new Marry_Requests(priest, player, otherPlayer));
+			marriageMaster.mr.add(new Marry_Requests(priest, player, otherPlayer, surname));
 			if(marriageMaster.config.UseConfirmationAutoDialog())
 			{
 				priest.chat(String.format(marriageMaster.lang.Get("Dialog.DoYouWant"), player.getName(), otherPlayer.getName()));
@@ -438,6 +443,26 @@ public class Priest
 				player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.Divorced"), otherPlayer.getDisplayName()+ChatColor.GREEN));
 				otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.DivorcedPlayer"), player.getDisplayName()+ChatColor.GREEN));
 			}
+		}
+	}
+	
+	public void SetSurname(CommandSender sender, String p, String surname)
+	{
+		Player player = Bukkit.getPlayer(p);
+		if(player != null && player.isOnline())
+		{
+			if(marriageMaster.HasPartner(player))
+			{
+				marriageMaster.DB.SetSurname(player, surname);
+			}
+			else
+			{
+				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+			}
+		}
+		else
+		{
+			sender.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), p));
 		}
 	}
 }

@@ -39,13 +39,13 @@ public class InteractEntity implements Listener
 	{
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		if(marriageMaster.config.CheckPerm(player, "marry.kiss") && player.isSneaking() && marriageMaster.HasPartner(player) && marriageMaster.kiss.CanKissAgain(playername))
+		if(marriageMaster.config.CheckPerm(player, "marry.kiss") && player.isSneaking())
 		{
 			Entity entity = event.getRightClicked();
 			if(entity != null && entity instanceof Player)
 			{
 				Player otherPlayer = (Player) entity;
-				if(marriageMaster.DB.GetPartner(player).equalsIgnoreCase(otherPlayer.getName()))
+				if(marriageMaster.kiss.CanKissAgain(playername) && marriageMaster.DB.GetPartner(player).equalsIgnoreCase(otherPlayer.getName()))
 				{
 					if(marriageMaster.InRadius(player, otherPlayer, marriageMaster.config.GetRange("KissInteract")))
         			{

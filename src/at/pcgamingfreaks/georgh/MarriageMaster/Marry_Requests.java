@@ -23,12 +23,22 @@ public class Marry_Requests
 {
 	public Player priest = null, p1 = null, p2 = null;
 	private boolean p1a = false, p2a = false;
+	public String surname;
 	
 	public Marry_Requests(Player Priest, Player P1, Player P2)
 	{
 		priest = Priest;
 		p1 = P1;
 		p2 = P2;
+		surname = null;
+	}
+	
+	public Marry_Requests(Player Priest, Player P1, Player P2, String Surname)
+	{
+		priest = Priest;
+		p1 = P1;
+		p2 = P2;
+		surname = Surname;
 	}
 	
 	public boolean Accept(Player p)

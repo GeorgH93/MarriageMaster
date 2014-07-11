@@ -104,186 +104,514 @@ public class OnCommand implements CommandExecutor
 			{
 				ShowAvailableCmds(sender);
 			}
-			else if (args[0].equalsIgnoreCase("reload"))
-	        {
-				reload();
-				sender.sendMessage(ChatColor.BLUE + "Reloaded");
-	        }
-			else if (args[0].equalsIgnoreCase("list"))
-	        {
-	        	NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
-    			if(map.size() > 0)
-    			{
-    				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
-    				
-    				for(Map.Entry<String, String> item : map.entrySet())
-    				{
-    					sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
-    				}	
-    			}	
-    			else
-    			{
-    				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
-    			}
-	        }
-			else if(args[0].equalsIgnoreCase("update") && marriageMaster.config.UseUpdater())
+			switch(args[0].toLowerCase())
 			{
-				Update(sender);
-			}
-			else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
-	        {
-	        	priest.setPriest(args, sender);
-	        }
-	        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
-	        {
-	        	priest.Divorce(sender, args);
-	        }
-	        else if (args.length == 2)
-	        {
-	        	priest.Marry(sender, args);
-	        }
-			else
-			{
-				ShowAvailableCmds(sender);
+				case "reload":
+					reload();
+					sender.sendMessage(ChatColor.BLUE + "Reloaded");
+					break;
+				case "list":
+		        	NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
+	    			if(map.size() > 0)
+	    			{
+	    				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
+	    				
+	    				for(Map.Entry<String, String> item : map.entrySet())
+	    				{
+	    					sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
+	    				}	
+	    			}	
+	    			else
+	    			{
+	    				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
+	    			}
+	    			break;
+				case "update":
+					if(marriageMaster.config.UseUpdater())
+					{
+						Update(sender);
+					}
+					break;
+				case "surname":
+					if(marriageMaster.config.getSurname())
+					{
+						if(args.length == 3)
+		        		{
+			        		priest.SetSurname(sender, args[1], args[2]);
+		        		}
+		        		else
+		        		{
+		        			sender.sendMessage("/marry surname <Playername> <Surname>");
+		        		}
+					}
+					break;
+				default:
+					if(args.length == 2)
+					{
+						if(args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
+						{
+							priest.setPriest(args, sender);
+						}
+						else if(args[0].equalsIgnoreCase("divorce"))
+				        {
+				        	priest.Divorce(sender, args);
+				        }
+				        else
+				        {
+				        	priest.Marry(sender, args);
+				        }
+					}
+					else if(args.length == 3 && marriageMaster.config.getSurname())
+					{
+						priest.Marry(sender, args);
+					}
+					else
+					{
+						ShowAvailableCmds(sender);
+					}
+					break;
 			}
 			return true;
 		}
 		
-		if(args.length == 0)
+		if(args.length == 0 || args.length > 3)
 		{
 			ShowAvailableCmds(player);
 			return true;
 		}
-		else if (args[0].equalsIgnoreCase("reload"))
-        {
-			if(marriageMaster.config.CheckPerm(player, "marry.reload", false))
-	    	{
-				reload();
-				player.sendMessage(ChatColor.BLUE + "Reloaded");
-			}
-			else
-			{
-				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-			}
-        }
-        else if (args[0].equalsIgnoreCase("list"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.list"))
-    		{
-    			NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
+		switch(args[0].toLowerCase())
+		{
+			case "reload":
+				if(marriageMaster.config.CheckPerm(player, "marry.reload", false))
+		    	{
+					reload();
+					player.sendMessage(ChatColor.BLUE + "Reloaded");
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+				}
+				return true;
+			case "list":
+				if(marriageMaster.config.CheckPerm(player, "marry.list"))
+	    		{
+					int page = 0, avpages = 0;
+					if(args.length == 2)
+					{
+						try
+						{
+							page = Integer.parseInt(args[1])-1;
+							if(page < 0)
+							{
+								page = 0;
+							}
+						}
+						catch(Exception e)
+						{
+							player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NaN"));
+							return true;
+						}
+					}
+	    			NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
 
-    			if(map.size() > 0)
+	    			if(map.size() > 0)
+	    			{
+	    				avpages = (int)Math.ceil(map.size() / 7.0);
+	    				if(page >= avpages)
+	    				{
+	    					page = avpages - 1;
+	    				}
+	    				player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL") + ChatColor.WHITE + " - "
+	    						+ ChatColor.GREEN + ((avpages > 1) ? String.format(marriageMaster.lang.Get("Ingame.ListHLMP"), page + 1, avpages) : ""));
+	    				int c = 7, c2 = page*7;
+	    				for(Map.Entry<String, String> item : map.entrySet())
+	    				{
+	    					if(c2 > 0)
+	    					{
+	    						c2--;
+	    					}
+	    					else
+	    					{
+	    						player.sendMessage(ChatColor.GREEN + item.getKey() + ChatColor.RED + " + " + ChatColor.GREEN + item.getValue());
+	    						c--;
+	    						if(c <= 0)
+	    						{
+	    							return true;
+	    						}
+	    					}
+	    				}	
+	    			}	
+	    			else
+	    			{
+	    				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
+	    			}
+	    		}
+	        	else
+		    	{
+		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	}
+				return true;
+			case "pvpon":
+				if(marriageMaster.config.GetAllowBlockPvP()) 
+		        {
+		        	if(marriageMaster.HasPartner(player))
+		        	{
+		    	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpon"))
+		    	    	{
+		    	    		marriageMaster.DB.SetPvPEnabled(player, true);
+		    	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOn"));
+		    	    	}
+		    	    	else
+		    	    	{
+		    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	    	}
+		        	}
+		    		else
+		    		{
+		    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+		    		}
+		        }
+				else
+				{
+					ShowAvailableCmds(player);
+				}
+				return true;
+			case "pvpoff":
+				if (marriageMaster.config.GetAllowBlockPvP())
+		        {
+		        	if(marriageMaster.HasPartner(player))
+		        	{
+		    	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpoff"))
+		    	    	{
+		    	    		marriageMaster.DB.SetPvPEnabled(player, false);
+		    	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOff"));
+		    	    	}
+		    	    	else
+		    	    	{
+		    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	    	}
+		        	}
+		    		else
+		    		{
+		    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+		    		}
+		        }
+				else
+				{
+					ShowAvailableCmds(player);
+				}
+				return true;
+			case "home":
+				if(marriageMaster.config.CheckPerm(player, "marry.home"))
+    	    	{
+					if(marriageMaster.HasPartner(player))
+		        	{
+						home.TP(player);
+		        	}
+					else
+					{
+						player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+					}
+    	    	}
+    	    	else
+    	    	{
+    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+    	    	}
+				return true;
+			case "sethome":
+				if(marriageMaster.config.CheckPerm(player, "marry.home"))
+    	    	{
+					if(marriageMaster.HasPartner(player))
+		        	{
+						home.SetHome(player);
+		        	}
+					else
+		    		{
+		    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+		    		}
+    	    	}
+    	    	else
+    	    	{
+    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+    	    	}
+				return true;
+			case "tp":
+				if(marriageMaster.config.CheckPerm(player, "marry.tp"))
     			{
-    				player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
-    				
-    				for(Map.Entry<String, String> item : map.entrySet())
-    				{
-    					player.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
-    				}	
-    			}	
-    			else
-    			{
-    				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
+					marryTp.TP(player);
     			}
-    		}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if (args[0].equalsIgnoreCase("pvpon") && marriageMaster.config.GetAllowBlockPvP()) 
-        {
-        	if(marriageMaster.HasPartner(player))
-        	{
-    	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpon"))
-    	    	{
-    	    		marriageMaster.DB.SetPvPEnabled(player, true);
-    	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOn"));
-    	    	}
-    	    	else
-    	    	{
-    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-    	    	}
-        	}
-    		else
-    		{
-    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-    		}
-        }
-        else if (args[0].equalsIgnoreCase("pvpoff") && marriageMaster.config.GetAllowBlockPvP())
-        {
-        	if(marriageMaster.HasPartner(player))
-        	{
-    	    	if(marriageMaster.config.CheckPerm(player, "marry.pvpoff"))
-    	    	{
-    	    		marriageMaster.DB.SetPvPEnabled(player, false);
-    	    		player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.PvPOff"));
-    	    	}
-    	    	else
-    	    	{
-    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-    	    	}
-        	}
-    		else
-    		{
-    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-    		}
-        }
-        else if(args[0].equalsIgnoreCase("home"))
-        {
-        	if(marriageMaster.HasPartner(player))
-        	{
-    	    	if(marriageMaster.config.CheckPerm(player, "marry.home"))
-    	    	{
-    	        	home.TP(player);
-    	    	}
-    	    	else
-    	    	{
-    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-    	    	}
-        	}
-    		else
-    		{
-    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-    		}
-        }
-        else if(args[0].equalsIgnoreCase("sethome"))
-        {
-        	if(marriageMaster.HasPartner(player))
-        	{
-    	    	if(marriageMaster.config.CheckPerm(player, "marry.home"))
-    	    	{
-    	        	home.SetHome(player);
-    	    	}
-    	    	else
-    	    	{
-    	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-    	    	}
-        	}
-    		else
-    		{
-    			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-    		}
-        }
-        else if (args[0].equalsIgnoreCase("tp"))
-        {
-        	if(marriageMaster.HasPartner(player) && marriageMaster.config.CheckPerm(player, "marry.tp"))
-    		{
-    	        marryTp.TP(player);
-        	}
-    		else
-    		{
-    			if(marriageMaster.config.CheckPerm(player, "marry.tp"))
-    			{
-    				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-    			}
-    			else
-    			{
-    				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-    			}
-    		}
-        }
-        else if(marriageMaster.config.UseAltChatToggleCommand() && args[0].equalsIgnoreCase(marriageMaster.config.ChatToggleCommand()))
+				else
+				{
+					player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+				}
+				return true;
+			case "c":
+			case "chat":
+				if(marriageMaster.config.CheckPerm(player, "marry.chat"))
+	    		{
+					String partner = marriageMaster.DB.GetPartner(player);
+	        		if(partner != null && !partner.isEmpty())
+	        		{
+	        			if(args.length == 2 && args[1].equalsIgnoreCase("toggle"))
+	            		{
+	        				if(marriageMaster.chat.Marry_ChatDirect.contains(player))
+	        				{
+	        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatLeft"));
+	        					marriageMaster.chat.Marry_ChatDirect.remove(player);
+	        				}
+	        				else
+	        				{
+	        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatJoined"));
+	        					marriageMaster.chat.Marry_ChatDirect.add(player);
+	        				}
+	            			return true;
+	            		}
+	        			Player otP = Bukkit.getPlayer(partner);
+	        			String msg = "";
+	        			for(int i = 1; i < args.length; i++)
+	    				{
+	    					msg += args[i] + " ";
+	    				}
+	        			marriageMaster.chat.Chat(player, otP, msg);
+	        		}
+	        		else
+	        		{
+	        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+	        		}
+	    		}
+	        	else
+	        	{
+	        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+	        	}
+				return true;
+			case "listenchat":
+				if(marriageMaster.config.CheckPerm(player, "marry.listenchat"))
+	    		{
+	        		if(!marriageMaster.chat.pcl.contains(player))
+	        		{
+	        			marriageMaster.chat.pcl.add(player);
+	        			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListeningStarted"));
+	        		}
+	        		else
+	        		{
+	        			marriageMaster.chat.pcl.remove(player);
+	        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.ListeningStoped"));
+	        		}
+				}
+		    	else
+		    	{
+		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	}
+				return true;
+			case "gift":
+			case "give":
+			case "send":
+				if(marriageMaster.config.CheckPerm(player, "marry.gift"))
+	    		{
+	        		if(marriageMaster.HasPartner(player))
+					{
+	        			if(!player.getGameMode().equals(GameMode.SURVIVAL))
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.GiftsOnlyInSurvival"));
+	        				return true;
+	        			}
+	        			String Partner = marriageMaster.DB.GetPartner(player);
+	        			if(Partner == null || Partner.isEmpty())
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+	        				return true;
+	        			}
+	        			Player partner = Bukkit.getServer().getPlayer(Partner);
+	        			if(partner == null || !partner.isOnline())
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+	        				return true;
+	        			}
+	        			ItemStack its = player.getInventory().getItemInHand();
+	        			if(its == null || its.getType() == Material.AIR)
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoItemInHand"));
+	        				return true;
+	        			}
+	        			if(partner.getInventory().firstEmpty() == -1)
+	        			{
+	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
+	        				return true;
+	        			}
+	        			if((marriageMaster.config.UseEconomy() && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || !marriageMaster.config.UseEconomy())
+	        			{
+		        			partner.getInventory().addItem(its);
+		        			player.getInventory().removeItem(its);
+		        			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
+		        			partner.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+	        			}
+					}
+	        		else
+	        		{
+	        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+	        		}
+				}
+		    	else
+		    	{
+		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	}
+				return true;
+			case "accept": priest.AcceptMarriage(player); return true;
+			case "deny":
+				for (Marry_Requests m : marriageMaster.mr)
+	    		{
+	        		if(m.p1 == player || m.p2 == player)
+	        		{
+	        			marriageMaster.mr.remove(m);
+	        			if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog() && m.priest!=null)
+						{
+	        				player.chat(marriageMaster.lang.Get("Dialog.NoIDontWant"));
+						}
+	        			if(m.priest != null)
+	        			{
+	        				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        			}
+	        			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
+	        			if(m.p1 == player)
+	        			{
+	        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        			}
+	        			else
+	        			{
+	        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        			}
+	        			return true;
+	        		}
+	    		}
+	        	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
+	        	return true;
+			case "update":
+				if(marriageMaster.config.UseUpdater())
+				{
+		        	if(marriageMaster.config.CheckPerm(player, "marry.update", false))
+		    		{
+		        		Update(sender);
+					}
+			    	else
+			    	{
+			    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+			    	}
+				}
+				else
+				{
+					ShowAvailableCmds(player);
+				}
+				return true;
+			case "kiss":
+				if (marriageMaster.config.GetKissEnabled())
+		        {
+		        	if(marriageMaster.config.CheckPerm(player, "marry.kiss"))
+		    		{
+		        		if(marriageMaster.HasPartner(player))
+						{
+		        			if(!marriageMaster.kiss.CanKissAgain(player.getName()))
+		            		{
+		            			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
+		            			return true;
+		            		}
+		        			String Partner = marriageMaster.DB.GetPartner(player);
+		        			if(Partner == null || Partner.isEmpty())
+		        			{
+		        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+		        				return true;
+		        			}
+		        			Player partner = Bukkit.getServer().getPlayer(Partner);
+		        			if(partner == null || !partner.isOnline())
+		        			{
+		        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+		        				return true;
+		        			}
+		        			if(marriageMaster.InRadius(player, partner, marriageMaster.config.GetRange("Kiss")))
+		        			{
+		        				marriageMaster.kiss.kiss(player, partner);
+		        			}
+		        			else
+		        			{
+		        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.TooFarToKiss"));
+		        			}
+						}
+		        		else
+		        		{
+		        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+		        		}
+		    		}
+		        	else
+			    	{
+			    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+			    	}
+		        }
+				else
+				{
+					ShowAvailableCmds(player);
+				}
+				return true;
+			case "surname":
+				if(marriageMaster.config.getSurname())
+		        {
+		        	if((marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.changesurname") && marriageMaster.config.CheckPerm(player, "marry.selfmarry")) || marriageMaster.IsPriest(player))
+		        	{
+		        		if((args.length == 2 && marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry") || (args.length == 3 && marriageMaster.IsPriest(player))))
+		        		{
+			        		priest.SetSurname(sender, args[args.length - 2], args[args.length - 1]);
+		        		}
+		        		else
+		        		{
+		        			if(marriageMaster.IsPriest(player))
+		        			{
+		        				player.sendMessage("/marry surname <Playername> <Surname>");
+		        			}
+		        			else
+		        			{
+		        				player.sendMessage("/marry surname <Surname>");
+		        			}
+		        		}
+		        	}
+		        	else
+			    	{
+			    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+			    	}
+		        }
+				else
+				{
+					ShowAvailableCmds(player);
+				}
+				return true;
+			case "divorce":
+				if (args.length == 2)
+		        {
+		        	if(marriageMaster.IsPriest(player))
+		        	{
+		        		priest.Divorce(player, args);
+		        	}
+		        	else
+		        	{
+		        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Description.NotAPriest"));
+		        	}
+		        }
+		        else if(marriageMaster.config.AllowSelfMarry() && args.length == 1)
+		        {
+		        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+		        	{
+		        		priest.SelfDivorce(player);
+		        	}
+		        	else
+			    	{
+			    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+			    	}
+		        }
+		        else
+		        {
+		        	ShowAvailableCmds(player);
+		        }
+				return true;
+		}
+		// Other commands
+		if(marriageMaster.config.UseAltChatToggleCommand() && args[0].equalsIgnoreCase(marriageMaster.config.ChatToggleCommand()))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
     		{
@@ -310,227 +638,6 @@ public class OnCommand implements CommandExecutor
         		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
         	}
         }
-        else if(args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.chat"))
-    		{
-        		if(marriageMaster.HasPartner(player))
-        		{
-        			if(args.length == 2 && args[1].equalsIgnoreCase("toggle"))
-            		{
-        				if(marriageMaster.chat.Marry_ChatDirect.contains(player))
-        				{
-        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatLeft"));
-        					marriageMaster.chat.Marry_ChatDirect.remove(player);
-        				}
-        				else
-        				{
-        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ChatJoined"));
-        					marriageMaster.chat.Marry_ChatDirect.add(player);
-        				}
-            			return true;
-            		}
-        			Player otP = marriageMaster.getServer().getPlayer(marriageMaster.DB.GetPartner(player));
-        			String msg = "";
-        			for(int i = 1; i < args.length; i++)
-    				{
-    					msg += args[i] + " ";
-    				}
-        			marriageMaster.chat.Chat(player, otP, msg);
-        		}
-        		else
-        		{
-        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-        		}
-    		}
-        	else
-        	{
-        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-        	}
-        }
-        else if (args[0].equalsIgnoreCase("listenchat"))
-		{
-        	if(marriageMaster.config.CheckPerm(player, "marry.listenchat"))
-    		{
-        		if(!marriageMaster.chat.pcl.contains(player))
-        		{
-        			marriageMaster.chat.pcl.add(player);
-        			player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListeningStarted"));
-        		}
-        		else
-        		{
-        			marriageMaster.chat.pcl.remove(player);
-        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.ListeningStoped"));
-        		}
-			}
-	    	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-		}
-        else if(args[0].equalsIgnoreCase("update") && marriageMaster.config.UseUpdater())
-		{
-        	if(marriageMaster.config.CheckPerm(player, "marry.update", false))
-    		{
-        		Update(sender);
-			}
-	    	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-		}
-        else if (args[0].equalsIgnoreCase("kiss") && marriageMaster.config.GetKissEnabled())
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.kiss"))
-    		{
-        		if(marriageMaster.HasPartner(player))
-				{
-        			if(!marriageMaster.kiss.CanKissAgain(player.getName()))
-            		{
-            			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.KissWait"),marriageMaster.kiss.GetKissTimeOut(player.getName())));
-            			return true;
-            		}
-        			String Partner = marriageMaster.DB.GetPartner(player);
-        			if(Partner == null || Partner.isEmpty())
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-        				return true;
-        			}
-        			Player partner = Bukkit.getServer().getPlayer(Partner);
-        			if(partner == null || !partner.isOnline())
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-        				return true;
-        			}
-        			if(marriageMaster.InRadius(player, partner, marriageMaster.config.GetRange("Kiss")))
-        			{
-        				marriageMaster.kiss.kiss(player, partner);
-        			}
-        			else
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.TooFarToKiss"));
-        			}
-				}
-        		else
-        		{
-        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-        		}
-    		}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if (args[0].equalsIgnoreCase("gift") || args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("send"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.gift"))
-    		{
-        		if(marriageMaster.HasPartner(player))
-				{
-        			if(!player.getGameMode().equals(GameMode.SURVIVAL))
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.GiftsOnlyInSurvival"));
-        				return true;
-        			}
-        			String Partner = marriageMaster.DB.GetPartner(player);
-        			if(Partner == null || Partner.isEmpty())
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-        				return true;
-        			}
-        			Player partner = Bukkit.getServer().getPlayer(Partner);
-        			if(partner == null || !partner.isOnline())
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
-        				return true;
-        			}
-        			ItemStack its = player.getInventory().getItemInHand();
-        			if(its == null || its.getType() == Material.AIR)
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoItemInHand"));
-        				return true;
-        			}
-        			if(partner.getInventory().firstEmpty() == -1)
-        			{
-        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
-        				return true;
-        			}
-        			if((marriageMaster.config.UseEconomy() && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || !marriageMaster.config.UseEconomy())
-        			{
-	        			partner.getInventory().addItem(its);
-	        			player.getInventory().removeItem(its);
-	        			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
-	        			partner.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
-        			}
-				}
-        		else
-        		{
-        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
-        		}
-			}
-	    	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if(args[0].equalsIgnoreCase("accept"))
-        {
-        	priest.AcceptMarriage(player);
-        }
-        else if(args[0].equalsIgnoreCase("deny"))
-        {
-        	for (Marry_Requests m : marriageMaster.mr)
-    		{
-        		if(m.p1 == player || m.p2 == player)
-        		{
-        			marriageMaster.mr.remove(m);
-        			if(marriageMaster.config.UseConfirmation() && marriageMaster.config.UseConfirmationAutoDialog() && m.priest!=null)
-					{
-        				player.chat(marriageMaster.lang.Get("Dialog.NoIDontWant"));
-					}
-        			if(m.priest != null)
-        			{
-        				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
-        			}
-        			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
-        			if(m.p1 == player)
-        			{
-        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
-        			}
-        			else
-        			{
-        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
-        			}
-        			return true;
-        		}
-    		}
-        	player.sendMessage(marriageMaster.lang.Get("Priest.NoRequest"));
-        }
-        else if(marriageMaster.config.getSurname() && args[0].equalsIgnoreCase("surname"))
-        {
-        	if((marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry")) || marriageMaster.IsPriest(player))
-        	{
-        		if((args.length == 2 && marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry") || (args.length == 3 && marriageMaster.IsPriest(player))))
-        		{
-	        		
-        		}
-        		else
-        		{
-        			if(marriageMaster.IsPriest(player))
-        			{
-        				player.sendMessage("/marry surname <Playername> <Surname>");
-        			}
-        			else
-        			{
-        				player.sendMessage("/marry surname <Surname>");
-        			}
-        		}
-        	}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
         else if(args.length == 2 && args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.setpriest", false))
@@ -542,40 +649,25 @@ public class OnCommand implements CommandExecutor
         		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
         	}
         }
-        else if (args.length == 2 && args[0].equalsIgnoreCase("divorce"))
-        {
-        	if(marriageMaster.IsPriest(player))
-        	{
-        		priest.Divorce(player, args);
-        	}
-        	else
-        	{
-        		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Description.NotAPriest"));
-        	}
-        }
-        else if(marriageMaster.config.AllowSelfMarry() && ((args.length == 2 && args[0].equalsIgnoreCase("me")) || args.length == 1))
+        else if(marriageMaster.config.AllowSelfMarry() && ((args[0].equalsIgnoreCase("me") && (args.length == 2 || args.length == 3)) || args.length == 1))
         {
         	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
         	{
-        		priest.SelfMarry(player, (args.length == 1) ? args[0] : args[1]);
+        		switch(args.length)
+        		{
+        			case 1:
+        			case 2:
+        				priest.SelfMarry(player, args[args.length-1]); break;
+        			case 3:
+        				priest.SelfMarry(player, args[1], args[2]);
+        		}
         	}
         	else
 	    	{
 	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 	    	}
         }
-        else if(marriageMaster.config.AllowSelfMarry() && args[0].equalsIgnoreCase("divorce"))
-        {
-        	if(marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
-        	{
-        		priest.SelfDivorce(player);
-        	}
-        	else
-	    	{
-	    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
-	    	}
-        }
-        else if (args.length == 2)
+        else if (args.length == 2 || (args.length == 3 && marriageMaster.config.getSurname()))
         {
         	if(marriageMaster.IsPriest(player))
     		{
@@ -595,6 +687,11 @@ public class OnCommand implements CommandExecutor
 	
 	public void ShowAvailableCmds(Player player)
 	{
+		String Surname = " <Surname>";
+		if(!marriageMaster.config.getSurname())
+		{
+			Surname = "";
+		}
 		player.sendMessage(ChatColor.YELLOW + "Marriage Master - " + marriageMaster.lang.Get("Description.Commands"));
 		if(marriageMaster.config.CheckPerm(player, "marry.list"))
 		{
@@ -602,7 +699,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.IsPriest(player))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Marry"), marriageMaster.config.GetRange("Marry")));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Marry"), marriageMaster.config.GetRange("Marry")));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(marriageMaster.lang.Get("Description.Divorce"), marriageMaster.config.GetRange("Marry")));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.tp"))
@@ -637,7 +734,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + Surname + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfDivorce"));
 		}
 		if(marriageMaster.config.getSurname())
@@ -648,7 +745,7 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
+				if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry") && marriageMaster.config.CheckPerm(player, "marry.changesurname"))
 				{
 					player.sendMessage(ChatColor.AQUA + "/marry Surname <Surname>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Surname"));
 				}
@@ -686,9 +783,14 @@ public class OnCommand implements CommandExecutor
 	
 	private void ShowAvailableCmds(CommandSender sender)
 	{
+		String Surname = " <Surname>";
+		if(!marriageMaster.config.getSurname())
+		{
+			Surname = "";
+		}
 		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + marriageMaster.lang.Get("Description.Commands"));
-		sender.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListAll"));
-		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Marry"));
+		sender.sendMessage(ChatColor.AQUA + "/marry list <Page>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ListAll"));
+		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Marry"));
 		sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Divorce"));
 		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Priest"));
 		if(marriageMaster.config.getSurname())

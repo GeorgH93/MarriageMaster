@@ -117,7 +117,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public void RegisterEvents()
 	{
-		getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
+		getServer().getPluginManager().registerEvents(new JoinLeaveChat(this), this);
 		if(config.GetAllowBlockPvP())
 		{
 			getServer().getPluginManager().registerEvents(new Damage(this), this);

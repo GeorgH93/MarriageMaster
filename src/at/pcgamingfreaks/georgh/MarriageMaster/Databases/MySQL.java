@@ -49,10 +49,9 @@ public class MySQL extends Database
 			List<String> converter = new ArrayList<String>();
 			Statement stmt = GetConnection().createStatement();
 			ResultSet res = stmt.executeQuery("SELECT name FROM marry_players WHERE uuid IS NULL");
-			boolean first = true;
 			while(res.next())
 			{
-				if(first)
+				if(res.isFirst())
 				{
 					marriageMaster.log.info(marriageMaster.lang.Get("Console.UpdateUUIDs"));
 				}
@@ -94,12 +93,12 @@ public class MySQL extends Database
 		try
 		{
 			Statement stmt = GetConnection().createStatement();
-			stmt.execute("CREATE TABLE IF NOT EXISTS marry_players (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_players` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
 			if(marriageMaster.config.UseUUIDs())
 			{
 				try
 				{
-					stmt.execute("ALTER TABLE `minecraft`.`marry_players` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
+					stmt.execute("ALTER TABLE `marry_players` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
 				}
 				catch(SQLException e)
 				{
@@ -113,8 +112,26 @@ public class MySQL extends Database
 					}
 				}
 			}
-			stmt.execute("CREATE TABLE IF NOT EXISTS marry_priests (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
-			stmt.execute("CREATE TABLE IF NOT EXISTS marry_partners (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_priests` (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_partners` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
+			if(marriageMaster.config.getSurname())
+			{
+				try
+				{
+					stmt.execute("ALTER TABLE `marry_partners` ADD COLUMN `Surname` VARCHAR(35) UNIQUE;");
+				}
+				catch(SQLException e)
+				{
+					if(e.getErrorCode() == 1142)
+					{
+						marriageMaster.log.warning(e.getMessage());
+					}
+					else if(e.getErrorCode() != 1060)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
 			stmt.execute("CREATE TABLE IF NOT EXISTS marry_home (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
 			stmt.execute("DELETE FROM marry_partners WHERE player1=player2");
 			stmt.close();
@@ -404,15 +421,24 @@ public class MySQL extends Database
 			e.printStackTrace();
 		}
 	}
-	
-	public void MarryPlayers(Player player, Player otherPlayer, Player priest)
+
+	public void MarryPlayers(Player player, Player otherPlayer, Player priest, String surname)
 	{
 		AddPlayer(player);
 		AddPlayer(otherPlayer);
 		AddPlayer(priest);
 		try
 		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			PreparedStatement pstmt;
+			if(marriageMaster.config.getSurname())
+			{
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`, surname) VALUES (?,?,?,?,?);");
+				pstmt.setString(5, LimitText(surname, 34));
+			}
+			else
+			{
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			}
 			pstmt.setInt(1, GetPlayerID(player));
 			pstmt.setInt(2, GetPlayerID(otherPlayer));
 			pstmt.setInt(3, GetPlayerID(priest));
@@ -426,7 +452,7 @@ public class MySQL extends Database
 		}
 	}
 	
-	public void MarryPlayers(Player player, Player otherPlayer, String priest)
+	public void MarryPlayers(Player player, Player otherPlayer, String priest, String surname)
 	{
 		PreparedStatement pstmt;
 		AddPlayer(player);
@@ -465,7 +491,17 @@ public class MySQL extends Database
 				priestid = rs.getInt(1);
 			}
 			rs.close();
-			pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			pstmt.close();
+			if(marriageMaster.config.getSurname())
+			{
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`, surname) VALUES (?,?,?,?,?);");
+				pstmt.setString(5, LimitText(surname, 34));
+			}
+			else
+			{
+				pstmt.close();
+				pstmt = GetConnection().prepareStatement("INSERT INTO marry_partners (player1, player2, priest, `date`) VALUES (?,?,?,?);");
+			}
 			pstmt.setInt(1, GetPlayerID(player));
 			pstmt.setInt(2, GetPlayerID(otherPlayer));
 			pstmt.setInt(3, priestid);
@@ -523,5 +559,54 @@ public class MySQL extends Database
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public String GetSurname(Player player)
+	{
+		try
+		{
+			int pid = GetPlayerID(player);
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT surname FROM marry_partners WHERE `player1`=? OR `player2`=?");
+			pstmt.setInt(1, pid);
+			pstmt.setInt(2, pid);
+			pstmt.executeQuery();
+			ResultSet rs = pstmt.getResultSet();
+			if(rs.next())
+			{
+				return rs.getString(1);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void SetSurname(Player player, String surname)
+	{
+		try
+		{
+			int pid = GetPlayerID(player);
+			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE marry_partners SET surname=? WHERE player1=? OR player2=?");
+			pstmt.setString(1, LimitText(surname, 34));
+			pstmt.setInt(2, pid);
+			pstmt.setInt(3, pid);
+			pstmt.execute();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public String LimitText(String text, int len)
+	{
+		if(text != null && text.length() > len)
+		{
+			return text.substring(0, len);
+		}
+		return text;
 	}
 }

@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 10;
+	private static final int CONFIG_VERSION = 11;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -95,6 +95,7 @@ public class Config
 		config.set("ChatToggleCommand", "chattoggle");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
+		config.set("Surname", false);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -181,6 +182,8 @@ public class Config
 			case 9:
 				config.set("UseAltChatToggleCommand", false);
 				config.set("ChatToggleCommand", "chattoggle");
+			case 10:
+				config.set("Surname", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -425,5 +428,10 @@ public class Config
 	public int TPDelayTime()
 	{
 		return config.getInt("Teleport.DelayTime");
+	}
+	
+	public boolean getSurname()
+	{
+		return config.getBoolean("Surname");
 	}
 }

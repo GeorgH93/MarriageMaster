@@ -316,7 +316,7 @@ public class Files extends Database
         }
 	}
 	
-	public void MarryPlayers(Player player1, Player player2, String priester)
+	public void MarryPlayers(Player player1, Player player2, String priester, String surname)
 	{
 		String p1id = GetPlayerID(player1);
 		String p2id = GetPlayerID(player2);
@@ -333,6 +333,10 @@ public class Files extends Database
 	        	MarryMap.get(p1id).set("Name", player1.getName());
 	        	MarryMap.get(p1id).set("MarriedToUUID", player2.getUniqueId().toString().replace("-", ""));
 	        }
+	        if(marriageMaster.config.getSurname() && surname != null)
+	        {
+	        	MarryMap.get(p1id).set("Surname", surname);
+	        }
 	        MarryMap.get(p1id).set("MarriedBy", priester);
 	        MarryMap.get(p1id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p1id).set("MarriedHome", "");
@@ -346,6 +350,10 @@ public class Files extends Database
 	        {
 	        	MarryMap.get(p2id).set("Name", player2.getName());
 	        	MarryMap.get(p2id).set("MarriedToUUID", player1.getUniqueId().toString().replace("-", ""));
+	        }
+	        if(marriageMaster.config.getSurname() && surname != null)
+	        {
+	        	MarryMap.get(p2id).set("Surname", surname);
 	        }
 	        MarryMap.get(p2id).set("MarriedBy", priester);
 	        MarryMap.get(p2id).set("MarriedDay", Calendar.getInstance().getTime());
@@ -494,6 +502,38 @@ public class Files extends Database
 			}
 		}
 		return null;
+	}
+	
+	public String GetSurname(Player player)
+	{
+		String pid = GetPlayerID(player);
+		if(MarryMap.get(pid) != null)
+		{
+			String x = MarryMap.get(pid).getString("Surname");
+			if(x != null && !x.isEmpty())
+			{
+				return x;
+			}
+		}
+		return null;
+	}
+	
+	public void SetSurname(Player player, String Surname)
+	{
+		String pid = GetPlayerID(player);
+		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
+		{
+			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
+			MarryMap.get(pid).set("Surname", Surname);
+			try
+	        {
+				MarryMap.get(pid).save(file);
+	        }
+	        catch(Exception e)
+	        {
+	            e.printStackTrace();
+	        }
+		}
 	}
 	
 	public TreeMap<String, String> GetAllMarriedPlayers()

@@ -2,7 +2,7 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.11
+version: 1.11.2
 softdepend: [Vault]
 commands:
    marry:
@@ -16,18 +16,19 @@ permissions:
       marry.list: true
       marry.pvpon: true  
       marry.pvpoff: true 
-      marry.priest: true
       marry.tp: true
       marry.home: true
       marry.chat.*: true
       marry.gift: true
       marry.kiss: true
+      marry.selfmarry: true
+      marry.changesurname: true
+      marry.priest: true
       marry.setpriest: true
       marry.reload: true
       marry.listenchat: true
       marry.update: true
       marry.offlinedivorce: true
-      marry.selfmarry: true
       marry.skiptpdelay: true
   marry.admin:
     description: Gives acces to all Marriage Admin commands
@@ -39,6 +40,19 @@ permissions:
       marry.update: true
       marry.offlinedivorce: true
       marry.skiptpdelay: true
+  marry.user:
+    description: Gives acces to all user functions
+    children:
+      marry.list: true
+      marry.pvpon: true  
+      marry.pvpoff: true 
+      marry.tp: true
+      marry.home: true
+      marry.chat.*: true
+      marry.gift: true
+      marry.kiss: true
+      marry.selfmarry: true
+      marry.changesurname: true
   marry.chat.*:
     description: Gives acces to all private message formats
     children:
@@ -82,6 +96,9 @@ permissions:
   marry.selfmarry:
     description: Allows to marry an other player without a priest
     defualt: true
+  marry.changesurname:
+    description: Allows to change the surname when self marry is on.
+    default: true
   marry.skiptpdelay:
     description: Allows to skip the delay on tps
     default: op

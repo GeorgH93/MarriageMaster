@@ -34,7 +34,7 @@ public class MarryTp
 	}
 
 	public void TP(Player player)
-	{		
+	{
 		String partner = marriageMaster.DB.GetPartner(player);
 		if(partner != null && !partner.isEmpty())
 		{
@@ -67,7 +67,7 @@ public class MarryTp
 		}
 		else
 		{
-			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
 		}
 	}
 

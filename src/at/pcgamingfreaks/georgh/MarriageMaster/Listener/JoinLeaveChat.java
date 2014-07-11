@@ -30,13 +30,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 import at.pcgamingfreaks.georgh.MarriageMaster.Marry_Requests;
 
-public class JoinLeave implements Listener 
+public class JoinLeaveChat implements Listener 
 {
 	private MarriageMaster marriageMaster;
+	private String prefix = null;
 
-	public JoinLeave(MarriageMaster marriagemaster) 
+	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
 		marriageMaster = marriagemaster;
+		if(marriageMaster.config.UsePrefix())
+		{
+			prefix = marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+		}
 	}
 	
 	@EventHandler
@@ -77,9 +82,22 @@ public class JoinLeave implements Listener
 			marriageMaster.chat.Chat(player, otP, event.getMessage());
 			event.setCancelled(true);
 		}
-		else if(marriageMaster.config.UsePrefix() && partner != null && !partner.isEmpty())
+		else if(partner != null && !partner.isEmpty())
 		{
-			event.setFormat(marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE).replace("<partnername>", marriageMaster.DB.GetPartner(event.getPlayer())) + " " + event.getFormat());
+			String format = event.getFormat();
+			if(prefix != null)
+			{
+				format = format.replaceFirst("%1$s", prefix.replace("<partnername>", partner) + " %1$s");
+			}
+			if(marriageMaster.config.getSurname())
+			{
+				String Surname = marriageMaster.DB.GetSurname(event.getPlayer());
+				if(Surname != null && !Surname.isEmpty())
+				{
+					format = format.replaceFirst("%1$s", "%1$s " + Surname);
+				}
+			}
+			event.setFormat(format);
 		}
 	}
 
