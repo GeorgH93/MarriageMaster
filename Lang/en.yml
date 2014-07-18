@@ -87,12 +87,14 @@ Language:
         NaN: 'Entered value is not a number!'
         NotInRange: 'Your partner is to far away.'
     Economy:
-        NotEnough: You don't have enough money
-        PartnerNotEnough: Your partner doesn't have enough money
+        NotEnough: You don't have enough money!
+        PartnerNotEnough: Your partner doesn't have enough money!
+        NotEnoughPriestInfo: The players you are trying to marry don't have enough money.
         HomeTPPaid: 'You paid %1$s for your home teleport. (%2$s left)'
         SetHomePaid: 'You paid %1$s to set your Home (%2$s left)'
         TPPaid: 'You paid %1$s for the Teleport (%1$s left)'
         DivorcePaid: 'You paid %1$s for the annul of your marriage (%2$s left)'
+        DivNotEnoPriestI: The players you are trying to divorce don't have enough money.
         MarriagePaid: 'You paid %1$s for your marriage (%2$s left)'
         GiftPaid: 'You have paid %1$s for gifting an item to your partner (%2$s left)'
     Priest:

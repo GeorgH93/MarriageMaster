@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.georgh.MarriageMaster;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -118,7 +119,7 @@ public class MMEconomy
 		}
 	}
 	
-	public boolean Divorce(Player player, Player otherPlayer, double money)
+	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer, double money)
 	{
 		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
 		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
@@ -130,14 +131,20 @@ public class MMEconomy
 		} 
 		else 
 		{
+			if(priest != null)
+			{
+				priest.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Economy.DivNotEnoPriestI"));
+			}
 			if(response.transactionSuccess())
 			{
+				econ.depositPlayer(player.getName(), money/2);
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
+				econ.depositPlayer(otherPlayer.getName(), money/2);
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
@@ -148,7 +155,7 @@ public class MMEconomy
 		}
 	}
 	
-	public boolean Marry(Player player, Player otherPlayer, double money)
+	public boolean Marry(CommandSender priest, Player player, Player otherPlayer, double money)
 	{
 		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
 		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
@@ -161,14 +168,20 @@ public class MMEconomy
 		} 
 		else 
 		{
+			if(priest != null)
+			{
+				priest.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnoughPriestInfo"));
+			}
 			if(response.transactionSuccess())
 			{
+				econ.depositPlayer(player.getName(), money/2);
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
+				econ.depositPlayer(otherPlayer.getName(), money/2);
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;

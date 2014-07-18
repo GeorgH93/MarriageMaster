@@ -175,6 +175,8 @@ public class Language
 						lang.set("Language.Ingame.ListHLMP",			"Showing page %1$d/%2$d - /marry list <page>");
 						lang.set("Language.Description.SelfDivorce",	"To leave your partner.");
 						lang.set("Language.Description.Surname",		"Changes the surname of a couple.");
+						lang.set("Language.Economy.NotEnoughPriestInfo","The players you are trying to marry don't have enough money.");
+						lang.set("Language.Economy.DivNotEnoPriestI",	"The players you are trying to divorce don't have enough money.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

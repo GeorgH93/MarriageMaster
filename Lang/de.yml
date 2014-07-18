@@ -89,10 +89,12 @@ Language:
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
+        NotEnoughPriestInfo: Die Spieler welche du verheiraten möchtest haben nicht genug Geld.
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
         TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
         DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
+        DivNotEnoPriestI: Die Spieler welche du scheiden möchtest haben nicht genug Geld.
         MarriagePaid: 'Du hast %1$s für deine Eheschließung gezahlt.'
         GiftPaid: 'Du hast %1$s gehzahlt um deinen Partner ein item zu senden.'
     Priest:
