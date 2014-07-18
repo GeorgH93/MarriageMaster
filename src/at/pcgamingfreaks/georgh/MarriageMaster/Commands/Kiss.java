@@ -55,8 +55,15 @@ public class Kiss
 				}
 				catch (NoClassDefFoundError exc)
 				{
-					eb = null;
-					marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
+					try
+					{
+						eb = new Effect_1_7_R4();
+					}
+					catch (NoClassDefFoundError e2)
+					{
+						eb = null;
+						marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
+					}
 				}
 			}
 		}
