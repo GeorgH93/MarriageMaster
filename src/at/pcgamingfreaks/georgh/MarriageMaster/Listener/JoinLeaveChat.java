@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.georgh.MarriageMaster.Listener;
 
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -142,6 +143,22 @@ public class JoinLeaveChat implements Listener
 				m.remove();
 				temp.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
 				temp.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+			}
+		}
+		Iterator<Entry<Player, Player>> d = marriageMaster.dr.entrySet().iterator();
+		Entry<Player, Player> e;
+		while(d.hasNext())
+		{
+			e = d.next();
+			if(event.getPlayer().equals(e.getKey()))
+			{
+				e.getValue().sendMessage(String.format(marriageMaster.lang.Get("Priest.DivPlayerOff"), e.getKey().getName()));
+				d.remove();
+			}
+			else if(event.getPlayer().equals(e.getValue()))
+			{
+				e.getKey().sendMessage(String.format(marriageMaster.lang.Get("Priest.DivPriestOff"), e.getValue().getName()));
+				d.remove();
 			}
 		}
 	}

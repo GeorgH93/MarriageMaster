@@ -177,6 +177,11 @@ public class Language
 						lang.set("Language.Description.Surname",		"Changes the surname of a couple.");
 						lang.set("Language.Economy.NotEnoughPriestInfo","The players you are trying to marry don't have enough money.");
 						lang.set("Language.Economy.DivNotEnoPriestI",	"The players you are trying to divorce don't have enough money.");
+						lang.set("Language.Priest.DivPlayerOff",		"%s is now offline, divorce canceled.");
+						lang.set("Language.Priest.DivPriestOff",		"Priest (%s) is now offline, divorce canceled.");
+						lang.set("Language.Priest.PlayerCanceled",		"%s has denied the divorce.");
+						lang.set("Language.Priest.DivorceCanceled",		"You have denied the divorce.");
+						lang.set("Language.Priest.DivorceConfirm",		"Accept the divorce with /marry accept or deny it with /marry deny.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

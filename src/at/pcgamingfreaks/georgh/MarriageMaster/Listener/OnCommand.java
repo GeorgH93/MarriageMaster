@@ -17,8 +17,12 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Listener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Map.Entry;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,6 +92,8 @@ public class OnCommand implements CommandExecutor
 			marriageMaster.perms = null;
 		}
 		marriageMaster.RegisterEvents();
+		marriageMaster.mr = new ArrayList<Marry_Requests>();
+		marriageMaster.dr = new HashMap<Player, Player>();
 	}
 		
 	@Override
@@ -463,6 +469,18 @@ public class OnCommand implements CommandExecutor
 				return true;
 			case "accept": priest.AcceptMarriage(player); return true;
 			case "deny":
+				Iterator<Entry<Player, Player>> d = marriageMaster.dr.entrySet().iterator();
+				Entry<Player, Player> e;
+				while(d.hasNext())
+				{
+					e = d.next();
+					if(player.equals(e.getKey()))
+					{
+						e.getValue().sendMessage(String.format(marriageMaster.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						d.remove();
+						return true;
+					}
+				}
 				for (Marry_Requests m : marriageMaster.mr)
 	    		{
 	        		if(m.p1 == player || m.p2 == player)
@@ -474,16 +492,16 @@ public class OnCommand implements CommandExecutor
 						}
 	        			if(m.priest != null)
 	        			{
-	        				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        				m.priest.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 	        			}
 	        			player.sendMessage(marriageMaster.lang.Get("Ingame.YouCalledOff"));
 	        			if(m.p1 == player)
 	        			{
-	        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        				m.p2.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 	        			}
 	        			else
 	        			{
-	        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName()+ChatColor.WHITE));
+	        				m.p1.sendMessage(String.format(marriageMaster.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 	        			}
 	        			return true;
 	        		}

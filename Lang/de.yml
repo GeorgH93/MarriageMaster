@@ -117,6 +117,11 @@ Language:
         NoRequest: 'Es liegt keine offene eheanfrage vor.'
         NotYourSelf: 'Du darfst dich nicht selbst heiraten.'
         AlreadyOpenRequest: '%s hat bereits einen offenen Heiratsantrag.'
+        DivPlayerOff: '%s ist offline gegangen, Scheidung abgebrochen.'
+        DivPriestOff: 'Priest (%s) ist offline gegangen, Scheidung abgebrochen.'
+        PlayerCanceled: '%s hat die Scheidung abgelehnt.'
+        DivorceCanceled: Du hast die Scheidung abgelehnt.
+        DivorceConfirm: 'Bestätige die Scheidung mit /marry accept oder lehne sie ab mit /marry deny'
     Dialog:
         DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
         AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'

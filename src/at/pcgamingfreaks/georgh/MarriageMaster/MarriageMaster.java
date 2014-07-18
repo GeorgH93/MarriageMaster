@@ -19,6 +19,7 @@ package at.pcgamingfreaks.georgh.MarriageMaster;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -49,6 +50,7 @@ public class MarriageMaster extends JavaPlugin
     public Database DB;
     public String DBType = "";
     public List<Marry_Requests> mr;
+    public HashMap<Player, Player> dr;
     
     public boolean setupPermissions()
     {
@@ -78,6 +80,7 @@ public class MarriageMaster extends JavaPlugin
 		kiss = new Kiss(this);
 		chat = new MarryChat(this);
 		mr = new ArrayList<Marry_Requests>();
+		dr = new HashMap<Player, Player>();
 		
 		if(config.UseMetrics())
 		{
