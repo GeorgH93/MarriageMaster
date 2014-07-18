@@ -122,6 +122,7 @@ Language:
         PlayerCanceled: '%s hat die Scheidung abgelehnt.'
         DivorceCanceled: Du hast die Scheidung abgelehnt.
         DivorceConfirm: 'Bestätige die Scheidung mit /marry accept oder lehne sie ab mit /marry deny'
+        SurnameSet: 'Nachname geändert.'
     Dialog:
         DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
         AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'

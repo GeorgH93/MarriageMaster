@@ -69,7 +69,7 @@ public class Priest
 		}
 		if(!(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(priest, player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
 		{
-			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console", args[2]);
+			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console", (args.length == 3) ? args[2] : null);
 			priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
 			player.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", otherPlayer.getDisplayName()+ChatColor.GREEN));
 			otherPlayer.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.HasMarried"), "Console", player.getDisplayName()+ChatColor.GREEN));
@@ -286,12 +286,23 @@ public class Priest
 		}
 		else
 		{
-			marriageMaster.mr.add(new Marry_Requests(priest, player, otherPlayer, surname));
-			if(marriageMaster.config.UseConfirmationAutoDialog())
+			if(HasOpenRequest(player))
 			{
-				priest.chat(String.format(marriageMaster.lang.Get("Dialog.DoYouWant"), player.getName(), otherPlayer.getName()));
+				priest.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyOpenRequest"), player.getDisplayName() + ChatColor.RED));
 			}
-			player.sendMessage(marriageMaster.lang.Get("Priest.Confirm"));
+			else if(HasOpenRequest(otherPlayer))
+			{
+				priest.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyOpenRequest"), otherPlayer.getDisplayName() + ChatColor.RED));
+			}
+			else
+			{
+				marriageMaster.mr.add(new Marry_Requests(priest, player, otherPlayer, surname));
+				if(marriageMaster.config.UseConfirmationAutoDialog())
+				{
+					priest.chat(String.format(marriageMaster.lang.Get("Dialog.DoYouWant"), player.getName(), otherPlayer.getName()));
+				}
+				player.sendMessage(marriageMaster.lang.Get("Priest.Confirm"));
+			}
 		}
 	}
 
@@ -381,12 +392,19 @@ public class Priest
 		{ 
 			if(!marriageMaster.config.UseConfirmation())
 			{
-				SaveDivorce(priest, player);
+				SaveDivorce(player, priest);
 			}
 			else
 			{
-				marriageMaster.dr.put(player, priest);
-				player.sendMessage(marriageMaster.lang.Get("Priest.DivorceConfirm"));
+				if(marriageMaster.dr.containsKey(player))
+				{
+					priest.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyOpenRequest"), player.getDisplayName() + ChatColor.RED));
+				}
+				else
+				{
+					marriageMaster.dr.put(player, priest);
+					player.sendMessage(marriageMaster.lang.Get("Priest.DivorceConfirm"));
+				}
 			}
 		}
 		else
@@ -419,7 +437,7 @@ public class Priest
 		}
 	}
 	
-	private void SaveDivorce(Player priest, Player player)
+	private void SaveDivorce(Player player, Player priest)
 	{
 		String otP = marriageMaster.DB.GetPartner(player);
 		if(otP == null || otP.isEmpty())
@@ -486,6 +504,7 @@ public class Priest
 			if(marriageMaster.HasPartner(player))
 			{
 				marriageMaster.DB.SetSurname(player, surname);
+				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Priest.SurnameSet"));
 			}
 			else
 			{

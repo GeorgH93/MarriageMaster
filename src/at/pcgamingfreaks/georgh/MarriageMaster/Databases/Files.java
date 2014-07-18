@@ -495,11 +495,7 @@ public class Files extends Database
 		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid) != null)
 		{
-			String x = MarryMap.get(pid).getString("MarriedToUUID");
-			if(x != null && !x.isEmpty())
-			{
-				return x;
-			}
+			return MarryMap.get(pid).getString("MarriedToUUID");
 		}
 		return null;
 	}
@@ -509,11 +505,7 @@ public class Files extends Database
 		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid) != null)
 		{
-			String x = MarryMap.get(pid).getString("Surname");
-			if(x != null && !x.isEmpty())
-			{
-				return x;
-			}
+			return MarryMap.get(pid).getString("Surname");
 		}
 		return null;
 	}
@@ -523,11 +515,15 @@ public class Files extends Database
 		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
 		{
+			String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
+			File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(partner).append(".yml").toString());
 			MarryMap.get(pid).set("Surname", Surname);
+			MarryMap.get(partner).set("Surname", Surname);
 			try
 	        {
 				MarryMap.get(pid).save(file);
+				MarryMap.get(partner).save(file2);
 	        }
 	        catch(Exception e)
 	        {

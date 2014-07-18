@@ -182,6 +182,7 @@ public class Language
 						lang.set("Language.Priest.PlayerCanceled",		"%s has denied the divorce.");
 						lang.set("Language.Priest.DivorceCanceled",		"You have denied the divorce.");
 						lang.set("Language.Priest.DivorceConfirm",		"Accept the divorce with /marry accept or deny it with /marry deny.");
+						lang.set("Language.Priest.SurnameSet",			"Surname changed.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

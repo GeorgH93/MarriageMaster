@@ -88,14 +88,14 @@ public class JoinLeaveChat implements Listener
 			String format = event.getFormat();
 			if(prefix != null)
 			{
-				format = format.replaceFirst("%1$s", prefix.replace("<partnername>", partner) + " %1$s");
+				format = prefix.replace("<partnername>", partner) + " " + format;
 			}
 			if(marriageMaster.config.getSurname())
 			{
 				String Surname = marriageMaster.DB.GetSurname(event.getPlayer());
 				if(Surname != null && !Surname.isEmpty())
 				{
-					format = format.replaceFirst("%1$s", "%1$s " + Surname);
+					format = format.replace("%1$s", "%1$s " + Surname);
 				}
 			}
 			event.setFormat(format);

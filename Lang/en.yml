@@ -122,6 +122,7 @@ Language:
         PlayerCanceled: '%s has denied the divorce.'
         DivorceCanceled: You have denied the divorce.
         DivorceConfirm: 'Accept the divorce with /marry accept or deny it with /marry deny'
+        SurnameSet: Surname changed.
     Dialog:
         DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
         AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'

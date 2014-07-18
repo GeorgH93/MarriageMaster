@@ -227,8 +227,8 @@ public class OnCommand implements CommandExecutor
 	    				{
 	    					page = avpages - 1;
 	    				}
-	    				player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL") + ChatColor.WHITE + " - "
-	    						+ ChatColor.GREEN + ((avpages > 1) ? String.format(marriageMaster.lang.Get("Ingame.ListHLMP"), page + 1, avpages) : ""));
+	    				player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL") + ((avpages > 1) ? 
+	    				  (ChatColor.WHITE + " - " + ChatColor.GREEN + String.format(marriageMaster.lang.Get("Ingame.ListHLMP"), page + 1, avpages)) : ""));
 	    				int c = 7, c2 = page*7;
 	    				for(Map.Entry<String, String> item : map.entrySet())
 	    				{
@@ -574,9 +574,9 @@ public class OnCommand implements CommandExecutor
 				}
 				return true;
 			case "surname":
-				if(marriageMaster.config.getSurname())
+				if(marriageMaster.config.getSurname() && marriageMaster.config.CheckPerm(player, "marry.changesurname"))
 		        {
-		        	if((marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.changesurname") && marriageMaster.config.CheckPerm(player, "marry.selfmarry")) || marriageMaster.IsPriest(player))
+		        	if((marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry")) || marriageMaster.IsPriest(player))
 		        	{
 		        		if((args.length == 2 && marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry") || (args.length == 3 && marriageMaster.IsPriest(player))))
 		        		{
@@ -760,7 +760,7 @@ public class OnCommand implements CommandExecutor
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + Surname + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfMarry"));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.SelfDivorce"));
 		}
-		if(marriageMaster.config.getSurname())
+		if(marriageMaster.config.getSurname() && marriageMaster.config.CheckPerm(player, "marry.changesurname"))
 		{
 			if(marriageMaster.IsPriest(player))
 			{
@@ -768,7 +768,7 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry") && marriageMaster.config.CheckPerm(player, "marry.changesurname"))
+				if(marriageMaster.config.AllowSelfMarry() && marriageMaster.config.CheckPerm(player, "marry.selfmarry"))
 				{
 					player.sendMessage(ChatColor.AQUA + "/marry Surname <Surname>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Surname"));
 				}
