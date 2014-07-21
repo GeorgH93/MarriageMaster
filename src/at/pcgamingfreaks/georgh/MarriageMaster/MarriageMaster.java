@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import net.gravitydevelopment.ModUpdater.Updater;
 import net.gravitydevelopment.ModUpdater.Updater.UpdateResult;
@@ -36,12 +37,13 @@ import org.mcstats.Metrics;
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.Kiss;
 import at.pcgamingfreaks.georgh.MarriageMaster.Commands.MarryChat;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
+import at.pcgamingfreaks.georgh.MarriageMaster.Economy.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
 
 public class MarriageMaster extends JavaPlugin
 {
 	public Logger log;
-    public MMEconomy economy = null;
+    public BaseEconomy economy = null;
     public Permission perms = null;
     public Kiss kiss = null;
     public MarryChat chat = null;
@@ -106,16 +108,33 @@ public class MarriageMaster extends JavaPlugin
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
-		if(config.UseEconomy())
-		{
-			economy = new MMEconomy(this);
-		}
+		RegisterEconomy();
 		
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
 		RegisterEvents();
 
 		log.info(lang.Get("Console.Enabled"));
+	}
+	
+	public void RegisterEconomy()
+	{
+		if(config.UseEconomy() && getServer().getPluginManager().getPlugin("Vault") != null)
+		{
+			String[] vaultV = getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion().split(Pattern.quote( "." ));
+			try
+			{
+				if(Integer.parseInt(vaultV[0]) > 1 || (Integer.parseInt(vaultV[0]) == 1 && Integer.parseInt(vaultV[1]) >= 4))
+				{
+					economy = new Economy(this);
+				}
+				else
+				{
+					economy = new EconomyOld(this);
+				}
+			}
+			catch(Exception e){}
+		}
 	}
 	
 	public void RegisterEvents()

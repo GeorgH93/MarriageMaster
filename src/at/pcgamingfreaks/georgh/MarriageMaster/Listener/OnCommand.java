@@ -73,7 +73,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
 		{
-			marriageMaster.economy = new MMEconomy(marriageMaster);
+			marriageMaster.RegisterEconomy();
 		}
 		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
 		{
