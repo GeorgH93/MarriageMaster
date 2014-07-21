@@ -15,53 +15,29 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.georgh.MarriageMaster;
+package at.pcgamingfreaks.georgh.MarriageMaster.Economy;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
 
-import net.milkbowl.vault.economy.Economy;
+import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 import net.milkbowl.vault.economy.EconomyResponse;
 
-public class MMEconomy 
-{
-	private MarriageMaster marriageMaster;
-    public Economy econ = null;
-    
-    private boolean setupEconomy()
-    {
-    	if(marriageMaster.getServer().getPluginManager().getPlugin("Vault") == null)
-    	{
-    		return false;
-    	}
-        RegisteredServiceProvider<Economy> economyProvider = marriageMaster.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null)
-        {
-        	econ = economyProvider.getProvider();
-        }
-        return (econ != null);
-    }
-	
-	public MMEconomy(MarriageMaster marriagemaster)
+public class Economy extends BaseEconomy
+{	
+	public Economy(MarriageMaster marriagemaster)
 	{
-		marriageMaster = marriagemaster;
-		
-		if(marriageMaster.config.UseEconomy() && !setupEconomy())
-		{
-			marriageMaster.config.SetEconomyOff();
-			marriageMaster.log.info("Console.NoEcoPL");
-		}
+		super(marriagemaster);
 	}
 
 	public boolean HomeTeleport(Player player, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
+		EconomyResponse response = econ.withdrawPlayer(player, money);
 		
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.HomeTPPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.HomeTPPaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -73,11 +49,11 @@ public class MMEconomy
 	
 	public boolean SetHome(Player player, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
+		EconomyResponse response = econ.withdrawPlayer(player, money);
 		
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.SetHomePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.SetHomePaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -89,11 +65,11 @@ public class MMEconomy
 	
 	public boolean Gift(Player player, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
+		EconomyResponse response = econ.withdrawPlayer(player, money);
 		
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.GiftPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.GiftPaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -105,11 +81,11 @@ public class MMEconomy
 	
 	public boolean Teleport(Player player, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
+		EconomyResponse response = econ.withdrawPlayer(player, money);
 		
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("TPPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("TPPaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -121,12 +97,12 @@ public class MMEconomy
 	
 	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
-		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
+		EconomyResponse response = econ.withdrawPlayer(player, money/2);
+		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer, money/2);
 		if(response.transactionSuccess() && response2.transactionSuccess()) 
 		{
-			otherPlayer.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			otherPlayer.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(otherPlayer)));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -137,14 +113,14 @@ public class MMEconomy
 			}
 			if(response.transactionSuccess())
 			{
-				econ.depositPlayer(player.getName(), money/2);
+				econ.depositPlayer(player, money/2);
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				econ.depositPlayer(otherPlayer.getName(), money/2);
+				econ.depositPlayer(otherPlayer, money/2);
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
@@ -157,13 +133,13 @@ public class MMEconomy
 	
 	public boolean Marry(CommandSender priest, Player player, Player otherPlayer, double money)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
-		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
+		EconomyResponse response = econ.withdrawPlayer(player, money/2);
+		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer, money/2);
 		
 		if(response.transactionSuccess() && response2.transactionSuccess()) 
 		{
-			otherPlayer.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
-			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			otherPlayer.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(otherPlayer)));
+			player.sendMessage(String.format(ChatColor.GREEN + marriageMaster.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(player)));
 			return true;
 		} 
 		else 
@@ -174,14 +150,14 @@ public class MMEconomy
 			}
 			if(response.transactionSuccess())
 			{
-				econ.depositPlayer(player.getName(), money/2);
+				econ.depositPlayer(player, money/2);
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				econ.depositPlayer(otherPlayer.getName(), money/2);
+				econ.depositPlayer(otherPlayer, money/2);
 				player.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.NotEnough")));
 				otherPlayer.sendMessage(String.format(ChatColor.RED + marriageMaster.lang.Get("Economy.PartnerNotEnough")));
 				return false;
