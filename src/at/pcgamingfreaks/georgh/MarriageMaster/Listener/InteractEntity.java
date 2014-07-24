@@ -45,7 +45,8 @@ public class InteractEntity implements Listener
 			if(entity != null && entity instanceof Player)
 			{
 				Player otherPlayer = (Player) entity;
-				if(marriageMaster.kiss.CanKissAgain(playername) && marriageMaster.DB.GetPartner(player).equalsIgnoreCase(otherPlayer.getName()))
+				String partner = marriageMaster.DB.GetPartner(player);
+				if(partner != null && marriageMaster.kiss.CanKissAgain(playername) && partner.equalsIgnoreCase(otherPlayer.getName()))
 				{
 					if(marriageMaster.InRadius(player, otherPlayer, marriageMaster.config.GetRange("KissInteract")))
         			{
