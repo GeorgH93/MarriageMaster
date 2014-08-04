@@ -36,7 +36,7 @@ public class MySQL extends Database
 	{
 		super(marriagemaster);
 		CheckDB();
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			CheckUUIDs();
 		}
@@ -94,7 +94,7 @@ public class MySQL extends Database
 		{
 			Statement stmt = GetConnection().createStatement();
 			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_players` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
-			if(marriageMaster.config.UseUUIDs())
+			if(marriageMaster.UseUUIDs)
 			{
 				try
 				{
@@ -112,8 +112,26 @@ public class MySQL extends Database
 					}
 				}
 			}
+			if(marriageMaster.config.getUseMinepacks())
+			{
+				try
+				{
+					stmt.execute("ALTER TABLE `marry_players` ADD COLUMN `sharebackpack` TINYINT(1) NOT NULL DEFAULT false;");
+				}
+				catch(SQLException e)
+				{
+					if(e.getErrorCode() == 1142)
+					{
+						marriageMaster.log.warning(e.getMessage());
+					}
+					else if(e.getErrorCode() != 1060)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
 			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_priests` (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
-			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_partners` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL,  `pvp_state` TINYINT(1)  NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `marry_partners` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL, `pvp_state` TINYINT(1) NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
 			if(marriageMaster.config.getSurname())
 			{
 				try
@@ -148,7 +166,7 @@ public class MySQL extends Database
 		try
 		{
 			PreparedStatement pstmt;
-			if(marriageMaster.config.UseUUIDs())
+			if(marriageMaster.UseUUIDs)
 			{
 				pstmt = GetConnection().prepareStatement("SELECT player_id FROM marry_players WHERE `uuid`=?");
 				pstmt.setString(1, player.getUniqueId().toString().replace("-", ""));
@@ -201,7 +219,7 @@ public class MySQL extends Database
 		try
 		{
 			PreparedStatement pstmt;
-			if(marriageMaster.config.UseUUIDs())
+			if(marriageMaster.UseUUIDs)
 			{
 				pstmt = GetConnection().prepareStatement("INSERT INTO marry_players (`name`, `uuid`) VALUES (?,?);");
 				pstmt.setString(2, player.getUniqueId().toString().replace("-", ""));
@@ -225,7 +243,7 @@ public class MySQL extends Database
 	
 	public void UpdatePlayer(Player player)
 	{
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			try
 			{
@@ -459,7 +477,7 @@ public class MySQL extends Database
 		AddPlayer(otherPlayer);
 		try
 		{
-			if(marriageMaster.config.UseUUIDs())
+			if(marriageMaster.UseUUIDs)
 			{
 				pstmt = GetConnection().prepareStatement("INSERT INTO marry_players (`name`, `uuid`) VALUES (?,?);");
 				pstmt.setString(2, (priest=="none")?"00000000000000000000000000000000":"00000000000000000000000000000001");
@@ -608,5 +626,57 @@ public class MySQL extends Database
 			return text.substring(0, len);
 		}
 		return text;
+	}
+	
+	public void SetShareBackpack(Player player, boolean allow)
+	{
+		try
+		{
+			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE `marry_players` SET `sharebackpack`=? WHERE " + ((marriageMaster.UseUUIDs) ? "`uuid`" : "`name`") + "=?;");
+			if(marriageMaster.UseUUIDs)
+			{
+				pstmt.setString(2, player.getUniqueId().toString().replace("-", ""));
+			}
+			else
+			{
+				pstmt.setString(2, player.getName());
+			}
+			pstmt.setBoolean(1, allow);
+			pstmt.execute();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean GetPartnerShareBackpack(Player player)
+	{
+		boolean result = false;
+		try
+		{
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `sharebackpack` FROM `marry_players` WHERE " + ((marriageMaster.UseUUIDs) ? "`uuid`" : "`name`") + "=?;");
+			if(marriageMaster.UseUUIDs)
+			{
+				pstmt.setString(1, player.getUniqueId().toString().replace("-", ""));
+			}
+			else
+			{
+				pstmt.setString(1, player.getName());
+			}
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next())
+			{
+				result = rs.getBoolean(1);
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

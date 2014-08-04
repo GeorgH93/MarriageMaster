@@ -1,4 +1,4 @@
-Version: 12
+Version: 13
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -81,11 +81,16 @@ Language:
         MarryRequestSent: Heiratsantrag gesendet.
         TPMoved: Teleport abgebrochen! Du hast dich bewegt!
         TPDontMove: 'Teleport in %s sek, bewege dich nicht!'
-        NotYourself: 'Du kannst dich nicht selbst heiraten.'
-        ChatJoined: 'Du hat deinen Chat auf den private Chat umgeschalten.'
-        ChatLeft: 'Du hat deinen Chat auf den öffentlichen Chat umgeschalten.'
+        NotYourself: Du kannst dich nicht selbst heiraten.
+        ChatJoined: Du hast deinen Chat auf den private Chat umgeschalten.
+        ChatLeft: 'Du hast deinen Chat auf den öffentlichen Chat umgeschalten.'
         NaN: 'Keine gültige Zahl eingegeben.'
-        NotInRange: 'Dein Partner ist zu weit Weg.'
+        NotInRange: Dein Partner ist zu weit Weg.
+        BackpackOnlyInSurvival: Du kannst nur im Survival Modus auf den Rucksack von deinen Partner zugreifen.
+        BackpackShareOn: Du teilst jetzt deinen Rucksack mit deinem Partner.
+        BackpackShareOff: Du teilst deinen Rucksack nicht mehr mit deinem Partner.
+        BackpackOpend: 'Dein Partner hat deinen Rucksack geöffnet.'
+        BackpackShareDenied: 'Dein Partner erlaubt dir nicht das du auf seinen Rucksack zugreifst.'
     Economy:
         NotEnough: Du hast nicht genug Geld.
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 11;
+	private static final int CONFIG_VERSION = 12;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -96,6 +96,7 @@ public class Config
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
 		config.set("Surname", false);
+		config.set("UseMinepacks", false);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -128,6 +129,7 @@ public class Config
 		config.set("Range.Heal", 2.0F);
 		config.set("Range.BonusXP", 10.0F);
 		config.set("Range.Gift", 0);
+		config.set("Range.Backpack", 5);
 		config.set("Teleport.Delay", false);
 		config.set("Teleport.DelayTime", 3);
 		config.set("TPBlacklistedWorlds", new ArrayList<String>());
@@ -186,6 +188,9 @@ public class Config
 			case 10:
 				config.set("Surname", false);
 				config.set("Range.Gift", 0);
+			case 11:
+				config.set("UseMinepacks", false);
+				config.set("Range.Backpack", 5);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -249,14 +254,9 @@ public class Config
 		return config.getBoolean("AllowBlockPvP");
 	}
 	
-	public boolean UsePermissions()
+	public boolean getUsePermissions()
 	{
 		return config.getBoolean("Permissions");	
-	}
-	
-	public void SetPermissionsOff()
-	{
-		config.set("Permissions", false);
 	}
 	
 	public boolean UsePrefix()
@@ -325,7 +325,7 @@ public class Config
 		{
 			return true;
 		}
-		if(UsePermissions())
+		if(marriageMaster.perms != null)
 		{
 			return marriageMaster.perms.has(player, Perm);
 		}
@@ -402,7 +402,7 @@ public class Config
 		return config.getDouble("Range." + option);
 	}
 	
-	public boolean UseUUIDs()
+	public boolean getUseUUIDs()
 	{
 		return config.getBoolean("UseUUIDs");
 	}
@@ -434,6 +434,11 @@ public class Config
 	
 	public boolean getSurname()
 	{
-		return config.getBoolean("Surname");
+		return config.getBoolean("Surname", false);
+	}
+	
+	public boolean getUseMinepacks()
+	{
+		return config.getBoolean("UseMinepacks", false);
 	}
 }

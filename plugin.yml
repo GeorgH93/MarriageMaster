@@ -2,8 +2,8 @@ name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
-version: 1.12.2
-softdepend: [Vault]
+version: 1.12.3
+softdepend: [Vault,MinePacks]
 commands:
    marry:
       description: Main command
@@ -20,6 +20,7 @@ permissions:
       marry.home: true
       marry.chat.*: true
       marry.gift: true
+      marry.backpack: true
       marry.kiss: true
       marry.selfmarry: true
       marry.changesurname: true
@@ -50,6 +51,7 @@ permissions:
       marry.home: true
       marry.chat.*: true
       marry.gift: true
+      marry.backpack: true
       marry.kiss: true
       marry.selfmarry: true
       marry.changesurname: true
@@ -89,6 +91,9 @@ permissions:
     default: false
   marry.gift:
     description: Allows you to gift items to your partner
+    default: true
+  marry.backpack:
+    description: Allows to share the backpacks (requires Minepacks)
     default: true
   marry.kiss:
     description: Allows to kiss your partner

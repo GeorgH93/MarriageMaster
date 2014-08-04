@@ -34,6 +34,7 @@ public class Death implements Listener
 		marriageMaster = marriagemaster;
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
     {

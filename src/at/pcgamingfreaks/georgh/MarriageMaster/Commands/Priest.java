@@ -36,6 +36,7 @@ public class Priest
 		marriageMaster = marriagemaster;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void Marry(CommandSender priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[0]);
@@ -80,6 +81,7 @@ public class Priest
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void Marry(Player priest, String[] args) 
 	{
 		Player player = Bukkit.getServer().getPlayer(args[0]);
@@ -123,6 +125,7 @@ public class Priest
 		SelfMarry(player, otP, null);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void SelfMarry(Player player, String otP, String Surname)
 	{
 		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
@@ -313,6 +316,7 @@ public class Priest
 	
 	public void setPriest(String[] args, CommandSender sender)
 	{
+		@SuppressWarnings("deprecation")
 		Player player = marriageMaster.getServer().getPlayer(args[1]);
 		if(player != null && player.isOnline())
 		{
@@ -335,6 +339,7 @@ public class Priest
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setPriest(String[] args, Player sender) 
 	{
 		Player player = marriageMaster.getServer().getPlayer(args[1]);
@@ -359,6 +364,7 @@ public class Priest
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void Divorce(Player priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -413,6 +419,7 @@ public class Priest
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void Divorce(CommandSender priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[1]);
@@ -437,6 +444,7 @@ public class Priest
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void SaveDivorce(Player player, Player priest)
 	{
 		String otP = marriageMaster.DB.GetPartner(player);
@@ -460,6 +468,7 @@ public class Priest
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void SelfDivorce(Player player)
 	{
 		String partner = marriageMaster.DB.GetPartner(player);
@@ -496,6 +505,7 @@ public class Priest
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void SetSurname(CommandSender sender, String p, String surname)
 	{
 		Player player = Bukkit.getPlayer(p);

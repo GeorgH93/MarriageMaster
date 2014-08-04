@@ -45,6 +45,7 @@ public class JoinLeaveChat implements Listener
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void PlayerLoginEvent(PlayerJoinEvent event) 
 	{
@@ -66,12 +67,13 @@ public class JoinLeaveChat implements Listener
 				}
 			}
 		}
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			marriageMaster.DB.UpdatePlayer(event.getPlayer());
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
@@ -102,6 +104,7 @@ public class JoinLeaveChat implements Listener
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void PlayerLeaveEvent(PlayerQuitEvent event)
 	{

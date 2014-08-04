@@ -80,22 +80,31 @@ public class OnCommand implements CommandExecutor
 			marriageMaster.economy = null;
 		}
 		
-		if(marriageMaster.perms == null && marriageMaster.config.UsePermissions())
+		if(marriageMaster.perms == null && marriageMaster.config.getUsePermissions())
 		{
 			if(!marriageMaster.setupPermissions())
 			{
-				marriageMaster.config.SetPermissionsOff();
+				marriageMaster.log.info(marriageMaster.lang.Get("Console.NoPermPL"));
 			}
 		}
-		else if(marriageMaster.perms != null && !marriageMaster.config.UsePermissions())
+		else if(marriageMaster.perms != null && !marriageMaster.config.getUsePermissions())
 		{
 			marriageMaster.perms = null;
+		}
+		if(marriageMaster.minepacks == null && marriageMaster.config.getUseMinepacks())
+		{
+			marriageMaster.setupMinePacks();
+		}
+		else if(marriageMaster.minepacks != null && !marriageMaster.config.getUseMinepacks())
+		{
+			marriageMaster.minepacks = null;
 		}
 		marriageMaster.RegisterEvents();
 		marriageMaster.mr = new ArrayList<Marry_Requests>();
 		marriageMaster.dr = new HashMap<Player, Player>();
 	}
 		
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) 
 	{
@@ -414,17 +423,12 @@ public class OnCommand implements CommandExecutor
 			case "send":
 				if(marriageMaster.config.CheckPerm(player, "marry.gift"))
 	    		{
-	        		if(marriageMaster.HasPartner(player))
+					String Partner = marriageMaster.DB.GetPartner(player);
+	        		if(Partner != null && !Partner.isEmpty())
 					{
 	        			if(!player.getGameMode().equals(GameMode.SURVIVAL))
 	        			{
 	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.GiftsOnlyInSurvival"));
-	        				return true;
-	        			}
-	        			String Partner = marriageMaster.DB.GetPartner(player);
-	        			if(Partner == null || Partner.isEmpty())
-	        			{
-	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
 	        				return true;
 	        			}
 	        			Player partner = Bukkit.getServer().getPlayer(Partner);
@@ -467,6 +471,66 @@ public class OnCommand implements CommandExecutor
 		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 		    	}
 				return true;
+			case "backpack":
+				if(marriageMaster.config.CheckPerm(player, "marry.backpack"))
+	    		{
+					String Partner = marriageMaster.DB.GetPartner(player);
+	        		if(Partner != null && !Partner.isEmpty())
+					{
+	        			if(args.length == 2)
+	        			{
+	        				// Set backpack parameter
+	        				if(args[1].equalsIgnoreCase("on"))
+	        				{
+	        					marriageMaster.DB.SetShareBackpack(player, true);
+	        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.BackpackShareOn"));
+	        				}
+	        				else if(args[1].equalsIgnoreCase("off"))
+	        				{
+	        					marriageMaster.DB.SetShareBackpack(player, false);
+	        					player.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.BackpackShareOff"));
+	        				}
+	        			}
+	        			else
+	        			{
+	        				// Open backpack
+	        				if(!player.getGameMode().equals(GameMode.SURVIVAL))
+		        			{
+		        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.BackpackOnlyInSurvival"));
+		        				return true;
+		        			}
+		        			Player partner = Bukkit.getServer().getPlayer(Partner);
+		        			if(partner == null || !partner.isOnline())
+		        			{
+		        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerOffline"));
+		        				return true;
+		        			}
+	        				if(marriageMaster.DB.GetPartnerShareBackpack(partner))
+	        				{
+	        					if(!marriageMaster.InRadius(player, partner, marriageMaster.config.GetRange("Backpack")))
+	    	        			{
+	    	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotInRange"));
+	    	        				return true;
+	    	        			}
+	        					marriageMaster.minepacks.OpenBackpack(player, partner, true);
+	        					partner.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.BackpackOpend"));
+	        				}
+	        				else
+	        				{
+	        					partner.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.BackpackShareDenied"));
+	        				}
+	        			}
+					}
+	        		else
+	        		{
+	        			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
+	        		}
+				}
+		    	else
+		    	{
+		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
+		    	}
+				break;
 			case "accept": priest.AcceptMarriage(player); return true;
 			case "deny":
 				Iterator<Entry<Player, Player>> d = marriageMaster.dr.entrySet().iterator();

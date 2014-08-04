@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 12;
+	private static final int LANG_VERSION = 13;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -183,11 +183,17 @@ public class Language
 						lang.set("Language.Priest.DivorceCanceled",		"You have denied the divorce.");
 						lang.set("Language.Priest.DivorceConfirm",		"Accept the divorce with /marry accept or deny it with /marry deny.");
 						lang.set("Language.Priest.SurnameSet",			"Surname changed.");
+					case 12:
+						lang.set("Language.Ingame.BackpackOnlyInSurvival","You can only access your partners backpack when you are in survival mode.");
+						lang.set("Language.Ingame.BackpackShareOn",		"You now share your backpack with your partner.");
+						lang.set("Language.Ingame.BackpackShareOff",	"You now don't share your backpack with your partner.");
+						lang.set("Language.Ingame.BackpackOpend",		"Your partner has opend your backpack.");
+						lang.set("Language.Ingame.BackpackShareDenied",	"Your partner doesn't give you access to his backpack.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}
 				lang.set("Version", LANG_VERSION);
-				try 
+				try
 				{
 					lang.save(file);
 					marriageMaster.log.info(Get("Console.LangUpdated"));

@@ -33,6 +33,7 @@ public class RegainHealth implements Listener
 		marriageMaster = marriagemaster;
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onHeal(EntityRegainHealthEvent event) 
 	{

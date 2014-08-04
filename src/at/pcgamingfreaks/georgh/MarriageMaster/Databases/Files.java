@@ -70,7 +70,7 @@ public class Files extends Database
 	
 	private String GetPlayerID(Player player)
 	{
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			return player.getUniqueId().toString().replace("-", "");
 		}
@@ -143,7 +143,7 @@ public class Files extends Database
 	
 	private void CheckUUIDs()
 	{
-		if(!marriageMaster.config.UseUUIDs())
+		if(!marriageMaster.UseUUIDs)
 		{
 			return;
 		}
@@ -239,7 +239,7 @@ public class Files extends Database
 	
 	public void UpdatePlayer(Player player)
 	{
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			FileConfiguration dat = MarryMap.get(player.getUniqueId().toString().replace("-", "")), dat2 = null;
 			if(dat != null)
@@ -278,7 +278,7 @@ public class Files extends Database
 	
 	public void SetPvPEnabled(Player player, boolean state)
 	{
-		String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+		String partner = marriageMaster.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 		String pid = GetPlayerID(player);
 		MarryMap.get(pid).set("PvP", state);
 		MarryMap.get(partner).set("PvP", state);
@@ -297,7 +297,7 @@ public class Files extends Database
 	
 	public void DivorcePlayer(Player player)
 	{
-		String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+		String partner = marriageMaster.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 		String pid = GetPlayerID(player);
 		
 		MarryMap.remove(pid);
@@ -328,7 +328,7 @@ public class Files extends Database
 			MarryMap.put(p1id,YamlConfiguration.loadConfiguration(file));
 	        MarryMap.get(p1id).set("MarriedStatus", "Married");
 	        MarryMap.get(p1id).set("MarriedTo", player2.getName());
-	        if(marriageMaster.config.UseUUIDs())
+	        if(marriageMaster.UseUUIDs)
 	        {
 	        	MarryMap.get(p1id).set("Name", player1.getName());
 	        	MarryMap.get(p1id).set("MarriedToUUID", player2.getUniqueId().toString().replace("-", ""));
@@ -341,12 +341,13 @@ public class Files extends Database
 	        MarryMap.get(p1id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p1id).set("MarriedHome", "");
 	        MarryMap.get(p1id).set("PvP", false);
+	        MarryMap.get(p1id).set("ShareBackpack", false);
 	        MarryMap.get(p1id).save(file);
 	        //Save P2
 	        MarryMap.put(p2id,YamlConfiguration.loadConfiguration(file));
 	        MarryMap.get(p2id).set("MarriedStatus", "Married");
 	        MarryMap.get(p2id).set("MarriedTo", player1.getName());
-	        if(marriageMaster.config.UseUUIDs())
+	        if(marriageMaster.UseUUIDs)
 	        {
 	        	MarryMap.get(p2id).set("Name", player2.getName());
 	        	MarryMap.get(p2id).set("MarriedToUUID", player1.getUniqueId().toString().replace("-", ""));
@@ -359,6 +360,7 @@ public class Files extends Database
 	        MarryMap.get(p2id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p2id).set("MarriedHome", "");
 	        MarryMap.get(p2id).set("PvP", false);
+	        MarryMap.get(p2id).set("ShareBackpack", false);
 	        MarryMap.get(p2id).save(file2);
 		}
         catch(Exception e)
@@ -372,7 +374,7 @@ public class Files extends Database
 		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
 		{
-			String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+			String partner = marriageMaster.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
 			File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(partner).append(".yml").toString());
 			
@@ -515,7 +517,7 @@ public class Files extends Database
 		String pid = GetPlayerID(player);
 		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
 		{
-			String partner = marriageMaster.config.UseUUIDs() ? GetPartnerUUID(player) : GetPartner(player);
+			String partner = marriageMaster.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
 			File file2 = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(partner).append(".yml").toString());
 			MarryMap.get(pid).set("Surname", Surname);
@@ -532,11 +534,31 @@ public class Files extends Database
 		}
 	}
 	
+	public void SetShareBackpack(Player player, boolean allow)
+	{
+		String pid = GetPlayerID(player);
+		try
+		{
+			MarryMap.get(pid).set("ShareBackpack", allow);
+			File file = new File((new StringBuilder()).append(marriageMaster.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
+			MarryMap.get(pid).save(file);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean GetPartnerShareBackpack(Player player)
+	{
+		return MarryMap.get(GetPlayerID(player)).getBoolean("ShareBackpack", false);
+	}
+	
 	public TreeMap<String, String> GetAllMarriedPlayers()
 	{
 		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
 		String marriedTo;
-		if(marriageMaster.config.UseUUIDs())
+		if(marriageMaster.UseUUIDs)
 		{
 			for(Entry<String, FileConfiguration> entry : MarryMap.entrySet())
 			{

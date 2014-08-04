@@ -33,6 +33,7 @@ public class MarryTp
 		marriageMaster = marriagemaster;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void TP(Player player)
 	{
 		String partner = marriageMaster.DB.GetPartner(player);

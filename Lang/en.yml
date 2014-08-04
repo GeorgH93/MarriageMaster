@@ -1,4 +1,4 @@
-Version: 12
+Version: 13
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -81,11 +81,16 @@ Language:
         MarryRequestSent: Marriage request sent.
         TPMoved: Teleport canceled! You have moved!
         TPDontMove: "Teleport in %s sec! Don't Move!"
-        NotYourself: 'You cannot marry yourself.'
-        ChatJoined: 'You have set your chat to the private marry chat.'
-        ChatLeft: 'You have set your chat to public chat.'
-        NaN: 'Entered value is not a number!'
-        NotInRange: 'Your partner is to far away.'
+        NotYourself: You cannot marry yourself.
+        ChatJoined: You have set your chat to the private marry chat.
+        ChatLeft: You have set your chat to public chat.
+        NaN: Entered value is not a number!
+        NotInRange: Your partner is to far away.
+        BackpackOnlyInSurvival: You can only access your partners backpack when you are in survival mode.
+        BackpackShareOn: You now share your backpack with your partner.
+        BackpackShareOff: You now don't share your backpack with your partner.
+        BackpackOpend: Your partner has opend your backpack.
+        BackpackShareDenied: Your partner doesn't give you access to his backpack.
     Economy:
         NotEnough: You don't have enough money!
         PartnerNotEnough: Your partner doesn't have enough money!

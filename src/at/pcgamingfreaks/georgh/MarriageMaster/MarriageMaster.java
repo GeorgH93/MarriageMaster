@@ -39,6 +39,7 @@ import at.pcgamingfreaks.georgh.MarriageMaster.Commands.MarryChat;
 import at.pcgamingfreaks.georgh.MarriageMaster.Databases.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Economy.*;
 import at.pcgamingfreaks.georgh.MarriageMaster.Listener.*;
+import at.pcgamingfreaks.georgh.MinePacks.MinePacks;
 
 public class MarriageMaster extends JavaPlugin
 {
@@ -49,31 +50,20 @@ public class MarriageMaster extends JavaPlugin
     public MarryChat chat = null;
     public Config config;
     public Language lang;
+    public boolean UseUUIDs = false;
     public Database DB;
     public String DBType = "";
     public List<Marry_Requests> mr;
     public HashMap<Player, Player> dr;
+    public MinePacks minepacks = null;
     
-    public boolean setupPermissions()
-    {
-    	if(getServer().getPluginManager().getPlugin("Vault") == null)
-    	{
-    		return false;
-    	}
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null)
-        {
-        	perms = permissionProvider.getProvider();
-        }
-        return (perms != null);
-    }
-
-	public void onEnable()
+    public void onEnable()
 	{
 		log = getLogger();
 		config = new Config(this);
 		lang = new Language(this);
 		DBType = config.GetDatabaseType().toLowerCase();
+		UseUUIDs = config.getUseUUIDs();
 		switch(DBType)
 		{
 			case "mysql": DB = new MySQL(this); break;
@@ -100,22 +90,52 @@ public class MarriageMaster extends JavaPlugin
 		{
 			Update();
 		}
-		if(config.UsePermissions())
+		if(config.getUsePermissions())
 		{
 			if(!setupPermissions())
 			{
-				config.SetPermissionsOff();
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
 		RegisterEconomy();
-		
+		if(config.getUseMinepacks())
+		{
+			setupMinePacks();
+		}
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
 		RegisterEvents();
 
 		log.info(lang.Get("Console.Enabled"));
 	}
+    
+    public boolean setupPermissions()
+    {
+    	if(getServer().getPluginManager().getPlugin("Vault") == null)
+    	{
+    		return false;
+    	}
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null)
+        {
+        	perms = permissionProvider.getProvider();
+        }
+        return (perms != null);
+    }
+    
+    public boolean setupMinePacks()
+    {
+    	if(getServer().getPluginManager().getPlugin("MinePacks") == null)
+    	{
+    		return false;
+    	}
+        RegisteredServiceProvider<MinePacks> mpProvider = getServer().getServicesManager().getRegistration(at.pcgamingfreaks.georgh.MinePacks.MinePacks.class);
+        if (mpProvider != null)
+        {
+        	minepacks = mpProvider.getProvider();
+        }
+        return (minepacks != null);
+    }
 	
 	public void RegisterEconomy()
 	{

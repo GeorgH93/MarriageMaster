@@ -57,6 +57,7 @@ public class Database
 	
 	public String GetPartner(Player player) { return player.getName(); }
 	
+	@SuppressWarnings("deprecation")
 	public Player GetPlayerPartner(Player player)
 	{
 		String partner = GetPartner(player);
@@ -70,6 +71,10 @@ public class Database
 	public String GetSurname(Player player) { return null; }
 	
 	public void SetSurname(Player player, String Surname) {}
+	
+	public void SetShareBackpack(Player player, boolean allow) {}
+	
+	public boolean GetPartnerShareBackpack(Player player) { return false; }
 	
 	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
 }
