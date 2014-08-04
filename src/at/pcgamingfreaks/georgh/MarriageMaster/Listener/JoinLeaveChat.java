@@ -67,10 +67,7 @@ public class JoinLeaveChat implements Listener
 				}
 			}
 		}
-		if(marriageMaster.UseUUIDs)
-		{
-			marriageMaster.DB.UpdatePlayer(event.getPlayer());
-		}
+		marriageMaster.DB.UpdatePlayer(event.getPlayer());
 	}
 	
 	@SuppressWarnings("deprecation")

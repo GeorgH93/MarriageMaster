@@ -111,10 +111,15 @@ public class Config
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
 		config.set("Database.Type","Files");
+		config.set("Database.UpdatePlayer", true);
 		config.set("Database.MySQL.Host", "localhost:3306");
 		config.set("Database.MySQL.Database", "minecraft");
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
+		config.set("Database.Tables.User", "marry_players");
+		config.set("Database.Tables.Home", "marry_home");
+		config.set("Database.Tables.Priests", "marry_priests");
+		config.set("Database.Tables.Partner", "marry_partners");
 		config.set("Confirmation.Enable", true);
 		config.set("Confirmation.AutoDialog", true);
 		config.set("Kiss.Enable", true);
@@ -191,6 +196,11 @@ public class Config
 			case 11:
 				config.set("UseMinepacks", false);
 				config.set("Range.Backpack", 5);
+				config.set("Database.UpdatePlayer", true);
+				config.set("Database.Tables.User", "marry_players");
+				config.set("Database.Tables.Home", "marry_home");
+				config.set("Database.Tables.Priests", "marry_priests");
+				config.set("Database.Tables.Partner", "marry_partners");
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -350,6 +360,31 @@ public class Config
 	public String GetMySQLPassword()
 	{
 		return config.getString("Database.MySQL.Password");
+	}
+	
+	public String getUserTable()
+	{
+		return config.getString("Database.Tables.User", "marry_players");
+	}
+	
+	public String getHomesTable()
+	{
+		return config.getString("Database.Tables.Home", "marry_home");
+	}
+	
+	public String getPriestsTable()
+	{
+		return config.getString("Database.Tables.Priests", "marry_priests");
+	}
+	
+	public String getPartnersTable()
+	{
+		return config.getString("Database.Tables.Partner", "marry_partners");
+	}
+	
+	public boolean getUpdatePlayer()
+	{
+		return config.getBoolean("Database.UpdatePlayer", true);
 	}
 	
 	public String GetPriestCMD()
