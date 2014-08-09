@@ -28,6 +28,7 @@ public class BaseEconomy
 {
 	protected MarriageMaster marriageMaster;
     public Economy econ = null;
+    public boolean on = false;
     
     private boolean setupEconomy()
     {
@@ -49,8 +50,12 @@ public class BaseEconomy
 		
 		if(marriageMaster.config.UseEconomy() && !setupEconomy())
 		{
-			marriageMaster.config.SetEconomyOff();
+			on = false;
 			marriageMaster.log.info("Console.NoEcoPL");
+		}
+		else
+		{
+			on = true;
 		}
 	}
 

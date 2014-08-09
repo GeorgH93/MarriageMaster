@@ -31,6 +31,9 @@ Language:
         SelfMarry: Sends a marry request to a other player.
         SelfDivorce: To leave your partner.
         Surname: Changes the surname of a couple.
+        Backpack: 'Opens the backpack of your partner.'
+        BackpackOn: 'Allows your partner to use your backpack.'
+        BackpackOff: 'Disallows your partner to use your backpack.'
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.

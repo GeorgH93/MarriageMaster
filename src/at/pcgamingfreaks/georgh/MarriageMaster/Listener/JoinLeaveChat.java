@@ -76,28 +76,31 @@ public class JoinLeaveChat implements Listener
 	{
 		Player player = event.getPlayer();
 		String partner = marriageMaster.DB.GetPartner(player);
-		if(marriageMaster.chat.Marry_ChatDirect.contains(player))
+		if(partner != null && !partner.isEmpty())
 		{
-			Player otP = marriageMaster.getServer().getPlayer(partner);
-			marriageMaster.chat.Chat(player, otP, event.getMessage());
-			event.setCancelled(true);
-		}
-		else if(partner != null && !partner.isEmpty())
-		{
-			String format = event.getFormat();
-			if(prefix != null)
+			if(marriageMaster.chat.Marry_ChatDirect.contains(player))
 			{
-				format = prefix.replace("<partnername>", partner) + " " + format;
+				Player otP = marriageMaster.getServer().getPlayer(partner);
+				marriageMaster.chat.Chat(player, otP, event.getMessage());
+				event.setCancelled(true);
 			}
-			if(marriageMaster.config.getSurname())
+			else
 			{
-				String Surname = marriageMaster.DB.GetSurname(event.getPlayer());
-				if(Surname != null && !Surname.isEmpty())
+				String format = event.getFormat();
+				if(prefix != null)
 				{
-					format = format.replace("%1$s", "%1$s " + Surname);
+					format = prefix.replace("<partnername>", partner) + " " + format;
 				}
+				if(marriageMaster.config.getSurname())
+				{
+					String Surname = marriageMaster.DB.GetSurname(event.getPlayer());
+					if(Surname != null && !Surname.isEmpty())
+					{
+						format = format.replace("%1$s", "%1$s " + Surname);
+					}
+				}
+				event.setFormat(format);
 			}
-			event.setFormat(format);
 		}
 	}
 

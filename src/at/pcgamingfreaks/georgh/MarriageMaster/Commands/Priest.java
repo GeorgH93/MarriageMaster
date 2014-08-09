@@ -68,7 +68,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.AlreadyMarried"));
 			return;
 		}
-		if(!(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(priest, player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
+		if(!(marriageMaster.economy.on && !marriageMaster.economy.Marry(priest, player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
 		{
 			marriageMaster.DB.MarryPlayers(player, otherPlayer, "Console", (args.length == 3) ? args[2] : null);
 			priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -193,7 +193,7 @@ public class Priest
 	
 	private void SelfMarryAccept(Marry_Requests m)
 	{
-		if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(null, m.p1, m.p2, marriageMaster.config.GetEconomyMarry()))
+		if(marriageMaster.economy.on && !marriageMaster.economy.Marry(null, m.p1, m.p2, marriageMaster.config.GetEconomyMarry()))
 		{
 			return;
 		}
@@ -264,7 +264,7 @@ public class Priest
 	
 	private void SaveMarry(Player priest, Player player, Player otherPlayer, String surname)
 	{
-		if(!(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Marry(priest, player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
+		if(!(marriageMaster.economy.on && !marriageMaster.economy.Marry(priest, player, otherPlayer, marriageMaster.config.GetEconomyMarry())))
 		{
 			marriageMaster.DB.MarryPlayers(player, otherPlayer, priest, surname);
 			priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -459,7 +459,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.PartnerOffline"), player.getName(), otP));
 			return;
 		}
-		if(!marriageMaster.config.UseEconomy() || marriageMaster.economy.Divorce(priest, player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
+		if(!marriageMaster.economy.on || marriageMaster.economy.Divorce(priest, player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
 		{
 			marriageMaster.DB.DivorcePlayer(player);
 			priest.sendMessage(ChatColor.GREEN + String.format(marriageMaster.lang.Get("Priest.Divorced"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -492,7 +492,7 @@ public class Priest
 		}
 		else
 		{
-			if(marriageMaster.config.UseEconomy() && !marriageMaster.economy.Divorce(null ,player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
+			if(marriageMaster.economy.on && !marriageMaster.economy.Divorce(null ,player, otherPlayer, marriageMaster.config.GetEconomyDivorce()))
 			{
 				return;
 			}

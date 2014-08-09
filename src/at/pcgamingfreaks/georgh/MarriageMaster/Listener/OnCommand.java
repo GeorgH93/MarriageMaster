@@ -71,14 +71,7 @@ public class OnCommand implements CommandExecutor
 				default: marriageMaster.DB = new Files(marriageMaster); break;
 			}
 		}
-		if(marriageMaster.economy == null && marriageMaster.config.UseEconomy())
-		{
-			marriageMaster.RegisterEconomy();
-		}
-		else if(marriageMaster.economy != null && !marriageMaster.config.UseEconomy())
-		{
-			marriageMaster.economy = null;
-		}
+		marriageMaster.RegisterEconomy();
 		
 		if(marriageMaster.perms == null && marriageMaster.config.getUsePermissions())
 		{
@@ -93,7 +86,10 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.minepacks == null && marriageMaster.config.getUseMinepacks())
 		{
-			marriageMaster.setupMinePacks();
+			if(!marriageMaster.setupMinePacks())
+			{
+				marriageMaster.minepacks = null;
+			}
 		}
 		else if(marriageMaster.minepacks != null && !marriageMaster.config.getUseMinepacks())
 		{
@@ -381,13 +377,20 @@ public class OnCommand implements CommandExecutor
 	        				}
 	            			return true;
 	            		}
-	        			Player otP = Bukkit.getPlayer(partner);
-	        			String msg = "";
-	        			for(int i = 1; i < args.length; i++)
-	    				{
-	    					msg += args[i] + " ";
-	    				}
-	        			marriageMaster.chat.Chat(player, otP, msg);
+	        			else if(args.length == 2)
+	        			{
+		        			Player otP = Bukkit.getPlayer(partner);
+		        			String msg = "";
+		        			for(int i = 1; i < args.length; i++)
+		    				{
+		    					msg += args[i] + " ";
+		    				}
+		        			marriageMaster.chat.Chat(player, otP, msg);
+	        			}
+	        			else
+	        			{
+	        				player.sendMessage("/marry chat <Message>");
+	        			}
 	        		}
 	        		else
 	        		{
@@ -453,7 +456,7 @@ public class OnCommand implements CommandExecutor
 	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
 	        				return true;
 	        			}
-	        			if((marriageMaster.config.UseEconomy() && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || !marriageMaster.config.UseEconomy())
+	        			if((marriageMaster.economy.on && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || !marriageMaster.economy.on)
 	        			{
 		        			partner.getInventory().addItem(its);
 		        			player.getInventory().removeItem(its);
@@ -472,6 +475,11 @@ public class OnCommand implements CommandExecutor
 		    	}
 				return true;
 			case "backpack":
+				if(marriageMaster.minepacks == null)
+				{
+					ShowAvailableCmds(player);
+					return true;
+				}
 				if(marriageMaster.config.CheckPerm(player, "marry.backpack"))
 	    		{
 					String Partner = marriageMaster.DB.GetPartner(player);
@@ -517,7 +525,7 @@ public class OnCommand implements CommandExecutor
 	        				}
 	        				else
 	        				{
-	        					partner.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.BackpackShareDenied"));
+	        					player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.BackpackShareDenied"));
 	        				}
 	        			}
 					}
@@ -530,7 +538,7 @@ public class OnCommand implements CommandExecutor
 		    	{
 		    		player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoPermission"));
 		    	}
-				break;
+				return true;
 			case "accept": priest.AcceptMarriage(player); return true;
 			case "deny":
 				Iterator<Entry<Player, Player>> d = marriageMaster.dr.entrySet().iterator();
@@ -800,7 +808,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.chat"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry chat" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
+			player.sendMessage(ChatColor.AQUA + "/marry chat <Message>" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Chat"));
 			player.sendMessage(ChatColor.AQUA + "/marry " + (marriageMaster.config.UseAltChatToggleCommand() ? marriageMaster.config.ChatToggleCommand() : "chat toggle") + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.ChatToggle"));
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.pvpon") && marriageMaster.config.GetAllowBlockPvP())
@@ -814,6 +822,18 @@ public class OnCommand implements CommandExecutor
 		if(marriageMaster.config.CheckPerm(player, "marry.gift"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Gift"));
+		}
+		if(marriageMaster.minepacks != null && marriageMaster.config.CheckPerm(player, "marry.backpack"))
+		{
+			player.sendMessage(ChatColor.AQUA + "/marry backpack" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.Backpack"));
+			if(marriageMaster.DB.GetPartnerShareBackpack(player))
+			{
+				player.sendMessage(ChatColor.AQUA + "/marry backpack off" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.BackpackOff"));
+			}
+			else
+			{
+				player.sendMessage(ChatColor.AQUA + "/marry backpack on" + ChatColor.WHITE + " - " + marriageMaster.lang.Get("Description.BackpackOn"));
+			}
 		}
 		if(marriageMaster.config.CheckPerm(player, "marry.kiss") && marriageMaster.config.GetKissEnabled())
 		{

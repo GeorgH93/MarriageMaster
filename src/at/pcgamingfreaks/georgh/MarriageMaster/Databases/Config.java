@@ -284,11 +284,6 @@ public class Config
 		return config.getBoolean("Economy.Enable");
 	}
 	
-	public void SetEconomyOff()
-	{
-		config.set("Economy.Enable", false);
-	}
-	
 	public double GetEconomyDivorce()
 	{
 		return config.getDouble("Economy.Divorce");

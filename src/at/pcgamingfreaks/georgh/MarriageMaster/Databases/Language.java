@@ -189,6 +189,9 @@ public class Language
 						lang.set("Language.Ingame.BackpackShareOff",	"You now don't share your backpack with your partner.");
 						lang.set("Language.Ingame.BackpackOpend",		"Your partner has opend your backpack.");
 						lang.set("Language.Ingame.BackpackShareDenied",	"Your partner doesn't give you access to his backpack.");
+						lang.set("Language.Description.Backpack",		"Opens the backpack of your partner.");
+						lang.set("Language.Description.BackpackOn",		"Allows your partner to use your backpack.");
+						lang.set("Language.Description.BackpackOff",	"Disallows your partner to use your backpack.");
 						break;
 					default: marriageMaster.log.warning("Language File Version newer than expected!"); return false;
 				}

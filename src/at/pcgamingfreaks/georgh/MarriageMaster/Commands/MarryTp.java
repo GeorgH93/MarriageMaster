@@ -46,7 +46,7 @@ public class MarryTp
 				{
 					if(!marriageMaster.config.GetBlacklistedWorlds().contains(otherPlayer.getWorld().getName()))
 					{
-						if(!marriageMaster.config.UseEconomy() || marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
+						if(!marriageMaster.economy.on || marriageMaster.economy.Teleport(player, marriageMaster.config.GetEconomyTp()))
 						{
 							DoTP(player, otherPlayer);
 						}

@@ -31,6 +31,9 @@ Language:
         SelfMarry: Sendet eine heiratsanfrage an einem Spieler.
         SelfDivorce: Trennt dich von deinem Partner.
         Surname: 'Ändert den Nachnamen eines Paares.'
+        Backpack: 'Öffnet den Rucksack deines Partners.'
+        BackpackOn: 'Gibt deinem Partner das Recht deinen Rucksack zu öffnen.'
+        BackpackOff: 'Nimmt deinem Partner das Recht deinen Rucksack zu öffnen.'
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
