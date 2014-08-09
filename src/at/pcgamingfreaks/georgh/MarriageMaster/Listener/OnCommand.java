@@ -456,7 +456,7 @@ public class OnCommand implements CommandExecutor
 	        				player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.PartnerInvFull"));
 	        				return true;
 	        			}
-	        			if((marriageMaster.economy.on && marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift())) || !marriageMaster.economy.on)
+	        			if(marriageMaster.economy == null || marriageMaster.economy.Gift(player, marriageMaster.config.GetEconomyGift()))
 	        			{
 		        			partner.getInventory().addItem(its);
 		        			player.getInventory().removeItem(its);
