@@ -551,7 +551,12 @@ public class Files extends Database
 	
 	public boolean GetPartnerShareBackpack(Player player)
 	{
-		return MarryMap.get(GetPlayerID(player)).getBoolean("ShareBackpack", false);
+		String pid = GetPlayerID(player);
+		if(MarryMap.get(pid) != null)
+		{
+			return MarryMap.get(pid).getBoolean("ShareBackpack", false);
+		}
+		return false;
 	}
 	
 	public TreeMap<String, String> GetAllMarriedPlayers()

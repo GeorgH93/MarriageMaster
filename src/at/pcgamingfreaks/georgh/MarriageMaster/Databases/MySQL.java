@@ -113,7 +113,7 @@ public class MySQL extends Database
 			{
 				try
 				{
-					stmt.execute("ALTER TABLE `" + Table_Players + "` ADD COLUMN `uuid` VARCHAR(35) UNIQUE;");
+					stmt.execute("ALTER TABLE `" + Table_Players + "` ADD COLUMN `uuid` CHAR(32) UNIQUE;");
 				}
 				catch(SQLException e)
 				{
