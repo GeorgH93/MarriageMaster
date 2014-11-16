@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
@@ -497,9 +498,14 @@ public class MySQL extends Database
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
 			ResultSet rs = pstmt.getResultSet();
+			World world = marriageMaster.getServer().getWorld(rs.getString(4));
+			if(world == null)
+			{
+				return null;
+			}
 			if(rs.next())
 			{
-				loc = new Location(marriageMaster.getServer().getWorld(rs.getString(4)), rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
+				loc = new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
 			}
 			rs.close();
 			pstmt.close();

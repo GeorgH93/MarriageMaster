@@ -405,6 +405,10 @@ public class Files extends Database
 		try
 		{
 			World world = marriageMaster.getServer().getWorld(MarryMap.get(pid).getString("MarriedHome.location.World"));
+			if(world == null)
+			{
+				return null;
+			}
 			double x = (Double) MarryMap.get(pid).get("MarriedHome.location.X");
 			double y = (Double) MarryMap.get(pid).get("MarriedHome.location.Y");
 			double z = (Double) MarryMap.get(pid).get("MarriedHome.location.Z");
