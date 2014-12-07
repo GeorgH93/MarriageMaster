@@ -508,6 +508,10 @@ public class Priest
 		{
 			if(marriageMaster.HasPartner(player))
 			{
+				if(surname.equalsIgnoreCase("null") || surname.equalsIgnoreCase("none") || surname.equalsIgnoreCase("remove"))
+				{
+					surname = null;
+				}
 				marriageMaster.DB.SetSurname(player, surname);
 				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Priest.SurnameSet"));
 			}
