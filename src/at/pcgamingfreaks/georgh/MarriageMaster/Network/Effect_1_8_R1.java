@@ -17,16 +17,23 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Network;
 
-import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
+import net.minecraft.server.v1_8_R1.PacketPlayOutWorldParticles;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 
-public class Effect_1_7_R4 extends EffectBase
+public class Effect_1_8_R1 extends EffectBase
 {
+	private static Class<?>	nmsEnumParticle;
+	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
 	{
+		if (nmsEnumParticle == null)
+		{
+			nmsEnumParticle = getNMSClass("EnumParticle");
+		}
+		
 		PacketPlayOutWorldParticles packet;
 		for(Entity entity : loc.getWorld().getEntities())
 		{
@@ -35,7 +42,7 @@ public class Effect_1_7_R4 extends EffectBase
 				if(entity.getLocation().distance(loc) < visrange)
 				{
 					packet = new PacketPlayOutWorldParticles();
-					setValue(packet, "a", type.getName());
+					setValue(packet, "a", getEnum(nmsEnumParticle.getName() + "." + (type.getName().toUpperCase())));
 					setValue(packet, "b", (float) loc.getX());
 					setValue(packet, "c", (float) loc.getY());
 					setValue(packet, "d", (float) loc.getZ());
@@ -44,9 +51,38 @@ public class Effect_1_7_R4 extends EffectBase
 					setValue(packet, "g", random3);
 					setValue(packet, "h", random4);
 					setValue(packet, "i", count);
+					setValue(packet, "j", false);
+					setValue(packet, "k", new int[]{});
 					((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
 				}
 			}
 		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private static Enum<?> getEnum(String enumFullName) {
+		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
+		if (x.length == 2) {
+			String enumClassName = x[0];
+			String enumName = x[1];
+			try {
+				Class<Enum> cl = (Class<Enum>) Class.forName(enumClassName);
+				return Enum.valueOf(cl, enumName);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	public static Class<?> getNMSClass(String className) {
+		String fullName = "net.minecraft.server.v1_8_R1." + className;
+		Class<?> clazz = null;
+		try {
+			clazz = Class.forName(fullName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return clazz;
 	}
 }

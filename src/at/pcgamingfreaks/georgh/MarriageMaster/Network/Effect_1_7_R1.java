@@ -25,7 +25,7 @@ import org.bukkit.entity.Entity;
 
 public class Effect_1_7_R1 extends EffectBase
 {
-	public void SpawnParticle(Location loc, String type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
+	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
 	{
 		PacketPlayOutWorldParticles packet;
 		for(Entity entity : loc.getWorld().getEntities())
@@ -35,7 +35,7 @@ public class Effect_1_7_R1 extends EffectBase
 				if(entity.getLocation().distance(loc) < visrange)
 				{
 					packet = new PacketPlayOutWorldParticles();
-					setValue(packet, "a", type);
+					setValue(packet, "a", type.getName());
 					setValue(packet, "b", (float) loc.getX());
 					setValue(packet, "c", (float) loc.getY());
 					setValue(packet, "d", (float) loc.getZ());

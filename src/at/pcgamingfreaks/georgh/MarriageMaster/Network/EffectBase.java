@@ -23,7 +23,7 @@ import org.bukkit.Location;
 
 public class EffectBase
 {
-	public void SpawnParticle(Location loc, String type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception {}
+	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception {}
 	
 	protected static void setValue(Object instance, String fieldName, Object value) throws Exception
 	{

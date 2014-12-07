@@ -20,6 +20,7 @@ package at.pcgamingfreaks.georgh.MarriageMaster.Commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -39,33 +40,45 @@ public class Kiss
 		wait = new HashMap<String, Long>();
 		try
 		{
-			eb = new Effect_1_7_R1();
-		}
-		catch (NoClassDefFoundError e)
-		{
-			try
+			String name = Bukkit.getServer().getClass().getPackage().getName();
+			String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
+			if(version[0].equals("1"))
 			{
-				eb = new Effect_1_7_R2();
-			}
-			catch (NoClassDefFoundError ex)
-			{
-				try
+				if(version[1].equals("7"))
 				{
-					eb = new Effect_1_7_R3();
-				}
-				catch (NoClassDefFoundError exc)
-				{
-					try
+					if(version[2].equals("R1"))
+					{
+						eb = new Effect_1_7_R1();
+					}
+					else if(version[2].equals("R2"))
+					{
+						eb = new Effect_1_7_R2();
+					}
+					else if(version[2].equals("R3"))
+					{
+						eb = new Effect_1_7_R3();
+					}
+					else if(version[2].equals("R4"))
 					{
 						eb = new Effect_1_7_R4();
 					}
-					catch (NoClassDefFoundError e2)
+				}
+				else if(version[1].equals("8"))
+				{
+					if(version[2].equals("R1"))
 					{
-						eb = null;
-						marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
+						eb = new Effect_1_8_R1();
 					}
 				}
 			}
+		}
+		catch (NoClassDefFoundError e)
+		{
+			eb = null;
+		}
+		if(eb == null)
+		{
+			marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
 		}
 	}
 	
@@ -112,7 +125,7 @@ public class Kiss
 			}
 	    	try
 	    	{
-	    		eb.SpawnParticle(loc, "heart", marriageMaster.config.GetRange("HearthVisible"), marriageMaster.config.GetKissHearthCount(), 1.0F, 1.0F, 1.0F, 1.0F);
+	    		eb.SpawnParticle(loc, Effects.Heart, marriageMaster.config.GetRange("HearthVisible"), marriageMaster.config.GetKissHearthCount(), 1.0F, 1.0F, 1.0F, 1.0F);
 	    	}
 	    	catch(Exception e)
 	    	{
