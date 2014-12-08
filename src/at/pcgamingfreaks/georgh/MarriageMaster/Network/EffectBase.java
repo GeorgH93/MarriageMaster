@@ -17,18 +17,11 @@
 
 package at.pcgamingfreaks.georgh.MarriageMaster.Network;
 
-import java.lang.reflect.Field;
-
 import org.bukkit.Location;
 
 public class EffectBase
 {
-	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception {}
+	protected static Class<?>	PacketPlayOutParticle = NMS.getNMSClass("PacketPlayOutWorldParticles");
 	
-	protected static void setValue(Object instance, String fieldName, Object value) throws Exception
-	{
-		Field field = instance.getClass().getDeclaredField(fieldName);
-		field.setAccessible(true);
-		field.set(instance, value);
-	}
+	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
 }

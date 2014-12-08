@@ -46,33 +46,19 @@ public class Kiss
 			{
 				if(version[1].equals("7"))
 				{
-					if(version[2].equals("R1"))
-					{
-						eb = new Effect_1_7_R1();
-					}
-					else if(version[2].equals("R2"))
-					{
-						eb = new Effect_1_7_R2();
-					}
-					else if(version[2].equals("R3"))
-					{
-						eb = new Effect_1_7_R3();
-					}
-					else if(version[2].equals("R4"))
-					{
-						eb = new Effect_1_7_R4();
-					}
+					eb = new Effect_1_7();
 				}
 				else if(version[1].equals("8"))
 				{
-					if(version[2].equals("R1"))
-					{
-						eb = new Effect_1_8_R1();
-					}
+					eb = new Effect_1_8();
 				}
 			}
 		}
 		catch (NoClassDefFoundError e)
+		{
+			eb = null;
+		}
+		catch (Exception e)
 		{
 			eb = null;
 		}
