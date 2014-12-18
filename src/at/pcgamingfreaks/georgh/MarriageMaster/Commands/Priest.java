@@ -452,7 +452,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Priest.PlayerNotMarried"));
 			return;
 		}
-		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
+		Player otherPlayer = Bukkit.getServer().getPlayerExact(otP);
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Priest.PartnerOffline"), player.getName(), otP));
@@ -476,7 +476,7 @@ public class Priest
 			player.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NotMarried"));
 			return;
 		}
-		Player otherPlayer = Bukkit.getServer().getPlayer(partner);
+		Player otherPlayer = Bukkit.getServer().getPlayerExact(partner);
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			if(marriageMaster.config.CheckPerm(player, "marry.offlinedivorce", false))

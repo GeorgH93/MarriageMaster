@@ -334,6 +334,10 @@ public class Config
 		{
 			return marriageMaster.perms.has(player, Perm);
 		}
+		else if(getUsePermissions())
+		{
+			return player.hasPermission(Perm);
+		}
 		return def;
 	}
 	
