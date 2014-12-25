@@ -129,7 +129,7 @@ public class Priest
 	public void SelfMarry(Player player, String otP, String Surname)
 	{
 		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
-		if(player == null || (player != null && !player.isOnline()))
+		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			player.sendMessage(ChatColor.RED + String.format(marriageMaster.lang.Get("Ingame.PlayerNotOn"), otP));
 			return;
