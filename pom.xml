@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>at.pcgamingfreaks</groupId>
   <artifactId>MarriageMaster</artifactId>
-  <version>14.0.0</version>
+  <version>14.3.0</version>
   <name>MarriageMaster</name>
   <repositories>
       <repository>
@@ -63,6 +63,41 @@
 	  	<version>1.1</version>
 	  	<scope>system</scope>
 	  	<systemPath>${project.basedir}/libs/MinePacks.jar</systemPath>
+	</dependency>
+	<dependency>
+	  	<groupId>net.minecraft</groupId>
+	  	<artifactId>Minecraft</artifactId>
+	  	<version>1.7.2</version>
+	  	<scope>system</scope>
+	  	<systemPath>${project.basedir}/libs/net172.jar</systemPath>
+	</dependency>
+	<dependency>
+	  	<groupId>net.minecraft</groupId>
+	  	<artifactId>Minecraft</artifactId>
+	  	<version>1.7.5</version>
+	  	<scope>system</scope>
+	  	<systemPath>${project.basedir}/libs/net175.jar</systemPath>
+	</dependency>
+	<dependency>
+	  	<groupId>net.minecraft</groupId>
+	  	<artifactId>Minecraft</artifactId>
+	  	<version>1.7.9</version>
+	  	<scope>system</scope>
+	  	<systemPath>${project.basedir}/libs/net179.jar</systemPath>
+	</dependency>
+	<dependency>
+	  	<groupId>net.minecraft</groupId>
+	  	<artifactId>Minecraft</artifactId>
+	  	<version>1.7.10</version>
+	  	<scope>system</scope>
+	  	<systemPath>${project.basedir}/libs/net1710.jar</systemPath>
+	</dependency>
+	<dependency>
+	  	<groupId>net.minecraft</groupId>
+	  	<artifactId>Minecraft</artifactId>
+	  	<version>1.8</version>
+	  	<scope>system</scope>
+	  	<systemPath>${project.basedir}/libs/net18.jar</systemPath>
 	</dependency>
   </dependencies>
 </project>

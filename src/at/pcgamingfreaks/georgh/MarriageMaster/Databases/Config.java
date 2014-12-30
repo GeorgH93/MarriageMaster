@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster marriageMaster;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 12;
+	private static final int CONFIG_VERSION = 13;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -125,6 +125,7 @@ public class Config
 		config.set("Kiss.Enable", true);
 		config.set("Kiss.WaitTime", 10);
 		config.set("Kiss.HearthCount", 50);
+		config.set("Kiss.CompatibilityMode", false);
 		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
 		config.set("Range.Marry", 25.0F);
@@ -201,6 +202,8 @@ public class Config
 				config.set("Database.Tables.Home", "marry_home");
 				config.set("Database.Tables.Priests", "marry_priests");
 				config.set("Database.Tables.Partner", "marry_partners");
+			case 12:
+				config.set("Kiss.CompatibilityMode", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -409,6 +412,11 @@ public class Config
 	public int GetKissWaitTime()
 	{
 		return config.getInt("Kiss.WaitTime") * 1000;
+	}
+	
+	public boolean GetKissCompMode()
+	{
+		return config.getBoolean("Kiss.CompatibilityMode", false);
 	}
 	
 	public int GetKissHearthCount()

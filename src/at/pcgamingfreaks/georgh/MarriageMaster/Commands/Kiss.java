@@ -26,7 +26,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.georgh.MarriageMaster.*;
-import at.pcgamingfreaks.georgh.MarriageMaster.Network.*;
+import at.pcgamingfreaks.georgh.MarriageMaster.Network.EffectBase;
+import at.pcgamingfreaks.georgh.MarriageMaster.Network.Effects;
 
 public class Kiss
 {
@@ -38,30 +39,7 @@ public class Kiss
 	{
 		marriageMaster = marriagemaster;
 		wait = new HashMap<String, Long>();
-		try
-		{
-			String name = Bukkit.getServer().getClass().getPackage().getName();
-			String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
-			if(version[0].equals("1"))
-			{
-				if(version[1].equals("7"))
-				{
-					eb = new Effect_1_7();
-				}
-				else if(version[1].equals("8"))
-				{
-					eb = new Effect_1_8();
-				}
-			}
-		}
-		catch (NoClassDefFoundError e)
-		{
-			eb = null;
-		}
-		catch (Exception e)
-		{
-			eb = null;
-		}
+		eb = EffectBase.getEffect(marriagemaster.config.GetKissCompMode());
 		if(eb == null)
 		{
 			marriageMaster.log.warning(marriageMaster.lang.Get("Console.NotSupportedNet"));
@@ -115,6 +93,7 @@ public class Kiss
 	    	}
 	    	catch(Exception e)
 	    	{
+	    		marriageMaster.log.warning("Failed spawning heart! Bukkit: " + Bukkit.getVersion());
 	    		e.printStackTrace();
 	    	}
 		}
