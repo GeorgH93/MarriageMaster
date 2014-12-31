@@ -115,72 +115,75 @@ public class OnCommand implements CommandExecutor
 			{
 				ShowAvailableCmds(sender);
 			}
-			switch(args[0].toLowerCase())
+			else
 			{
-				case "reload":
-					reload();
-					sender.sendMessage(ChatColor.BLUE + "Reloaded");
-					break;
-				case "list":
-		        	NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
-	    			if(map.size() > 0)
-	    			{
-	    				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
-	    				
-	    				for(Map.Entry<String, String> item : map.entrySet())
-	    				{
-	    					sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
-	    				}	
-	    			}	
-	    			else
-	    			{
-	    				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
-	    			}
-	    			break;
-				case "update":
-					if(marriageMaster.config.UseUpdater())
-					{
-						Update(sender);
-					}
-					break;
-				case "surname":
-					if(marriageMaster.config.getSurname())
-					{
-						if(args.length == 3)
-		        		{
-			        		priest.SetSurname(sender, args[1], args[2]);
-		        		}
-		        		else
-		        		{
-		        			sender.sendMessage("/marry surname <Playername> <Surname>");
-		        		}
-					}
-					break;
-				default:
-					if(args.length == 2)
-					{
-						if(args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
+				switch(args[0].toLowerCase())
+				{
+					case "reload":
+						reload();
+						sender.sendMessage(ChatColor.BLUE + "Reloaded");
+						break;
+					case "list":
+			        	NavigableMap<String, String> map = marriageMaster.DB.GetAllMarriedPlayers();
+		    			if(map.size() > 0)
+		    			{
+		    				sender.sendMessage(ChatColor.GREEN + marriageMaster.lang.Get("Ingame.ListHL"));
+		    				
+		    				for(Map.Entry<String, String> item : map.entrySet())
+		    				{
+		    					sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
+		    				}	
+		    			}	
+		    			else
+		    			{
+		    				sender.sendMessage(ChatColor.RED + marriageMaster.lang.Get("Ingame.NoMarriedPlayers"));
+		    			}
+		    			break;
+					case "update":
+						if(marriageMaster.config.UseUpdater())
 						{
-							priest.setPriest(args, sender);
+							Update(sender);
 						}
-						else if(args[0].equalsIgnoreCase("divorce"))
-				        {
-				        	priest.Divorce(sender, args);
-				        }
-				        else
-				        {
-				        	priest.Marry(sender, args);
-				        }
-					}
-					else if(args.length == 3 && marriageMaster.config.getSurname())
-					{
-						priest.Marry(sender, args);
-					}
-					else
-					{
-						ShowAvailableCmds(sender);
-					}
-					break;
+						break;
+					case "surname":
+						if(marriageMaster.config.getSurname())
+						{
+							if(args.length == 3)
+			        		{
+				        		priest.SetSurname(sender, args[1], args[2]);
+			        		}
+			        		else
+			        		{
+			        			sender.sendMessage("/marry surname <Playername> <Surname>");
+			        		}
+						}
+						break;
+					default:
+						if(args.length == 2)
+						{
+							if(args[0].equalsIgnoreCase(marriageMaster.config.GetPriestCMD()))
+							{
+								priest.setPriest(args, sender);
+							}
+							else if(args[0].equalsIgnoreCase("divorce"))
+					        {
+					        	priest.Divorce(sender, args);
+					        }
+					        else
+					        {
+					        	priest.Marry(sender, args);
+					        }
+						}
+						else if(args.length == 3 && marriageMaster.config.getSurname())
+						{
+							priest.Marry(sender, args);
+						}
+						else
+						{
+							ShowAvailableCmds(sender);
+						}
+						break;
+				}
 			}
 			return true;
 		}

@@ -63,7 +63,7 @@ public class Database
 		String partner = GetPartner(player);
 		if(partner != null && !partner.isEmpty())
 		{
-			return Bukkit.getPlayer(partner);
+			return Bukkit.getPlayerExact(partner);
 		}
 		return null;
 	}

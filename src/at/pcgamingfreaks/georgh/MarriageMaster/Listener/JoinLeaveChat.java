@@ -54,7 +54,7 @@ public class JoinLeaveChat implements Listener
 			String otherPlayer = marriageMaster.DB.GetPartner(event.getPlayer());
 			if(otherPlayer != null && !otherPlayer.isEmpty())
 			{
-				Player oPlayer = marriageMaster.getServer().getPlayer(otherPlayer);
+				Player oPlayer = marriageMaster.getServer().getPlayerExact(otherPlayer);
 				
 				if(oPlayer != null)
 				{
@@ -80,7 +80,7 @@ public class JoinLeaveChat implements Listener
 		{
 			if(marriageMaster.chat.Marry_ChatDirect.contains(player))
 			{
-				Player otP = marriageMaster.getServer().getPlayer(partner);
+				Player otP = marriageMaster.getServer().getPlayerExact(partner);
 				marriageMaster.chat.Chat(player, otP, event.getMessage());
 				event.setCancelled(true);
 			}
