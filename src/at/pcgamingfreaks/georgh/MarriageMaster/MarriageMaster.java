@@ -90,7 +90,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			Update();
 		}
-		if(config.getUsePermissions())
+		if(config.getUseVaultPermissions())
 		{
 			if(!setupPermissions())
 			{

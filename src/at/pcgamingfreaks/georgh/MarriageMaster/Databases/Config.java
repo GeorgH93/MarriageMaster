@@ -35,15 +35,21 @@ public class Config
 	private FileConfiguration config;
 	private static final int CONFIG_VERSION = 13;
 	
+	private boolean UsePerms = false;
+	
 	public Config(MarriageMaster marriagemaster)
 	{
 		marriageMaster = marriagemaster;
 		LoadConfig();
+		
+		UsePerms = config.getBoolean("Permissions");
 	}
 	
 	public void Reload()
 	{
 		LoadConfig();
+		
+		UsePerms = config.getBoolean("Permissions");
 	}
 	
 	private void LoadConfig()
@@ -85,6 +91,7 @@ public class Config
 	{
 		config = new YamlConfiguration();
 		config.set("Permissions", true);
+		config.set("VaultPermissions", true);
 		config.set("AllowBlockPvP", false);
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
@@ -204,6 +211,7 @@ public class Config
 				config.set("Database.Tables.Partner", "marry_partners");
 			case 12:
 				config.set("Kiss.CompatibilityMode", false);
+				config.set("VaultPermissions", true);
 			break;
 			case CONFIG_VERSION: return false;
 			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
@@ -267,9 +275,9 @@ public class Config
 		return config.getBoolean("AllowBlockPvP");
 	}
 	
-	public boolean getUsePermissions()
+	public boolean getUseVaultPermissions()
 	{
-		return config.getBoolean("Permissions");	
+		return UsePerms && config.getBoolean("VaultPermissions", true);
 	}
 	
 	public boolean UsePrefix()
@@ -337,7 +345,7 @@ public class Config
 		{
 			return marriageMaster.perms.has(player, Perm);
 		}
-		else if(getUsePermissions())
+		else if(UsePerms)
 		{
 			return player.hasPermission(Perm);
 		}

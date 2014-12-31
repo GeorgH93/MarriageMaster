@@ -73,14 +73,14 @@ public class OnCommand implements CommandExecutor
 		}
 		marriageMaster.RegisterEconomy();
 		
-		if(marriageMaster.perms == null && marriageMaster.config.getUsePermissions())
+		if(marriageMaster.perms == null && marriageMaster.config.getUseVaultPermissions())
 		{
 			if(!marriageMaster.setupPermissions())
 			{
 				marriageMaster.log.info(marriageMaster.lang.Get("Console.NoPermPL"));
 			}
 		}
-		else if(marriageMaster.perms != null && !marriageMaster.config.getUsePermissions())
+		else if(marriageMaster.perms != null && !marriageMaster.config.getUseVaultPermissions())
 		{
 			marriageMaster.perms = null;
 		}
