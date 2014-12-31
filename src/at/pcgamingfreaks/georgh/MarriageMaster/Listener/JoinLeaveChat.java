@@ -41,7 +41,7 @@ public class JoinLeaveChat implements Listener
 		marriageMaster = marriagemaster;
 		if(marriageMaster.config.UsePrefix())
 		{
-			prefix = marriageMaster.config.GetPrefix().replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			prefix = ChatColor.translateAlternateColorCodes('&', marriageMaster.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
 	}
 	
