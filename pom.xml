@@ -5,38 +5,59 @@
   <version>14.7.0</version>
   <name>MarriageMaster</name>
   <repositories>
-      <repository>
+  	  <repository>
           <id>bukkit-repo</id>
           <url>http://repo.bukkit.org/content/groups/public</url>
       </repository>
+      <repository>
+		<id>sonatype-snapshot</id>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	  </repository>
+	  <repository>
+		<id>spigot-nexus</id>
+		<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
+	  </repository>
+	  <repository>
+		<id>md5-snapshot</id>
+		<url>http://repo.md-5.net/content/repositories/snapshots/</url>
+	  </repository>
       <repository>
           <id>vault-repo</id>
           <url>http://nexus.theyeticave.net/content/repositories/pub_releases</url>
       </repository>
       <repository>
-		  <id>in-project</id>
-		  <name>In Project Repo</name>
-		  <url>file://${project.basedir}/libs</url>
-	  </repository>
+          <id>pcgf-repo</id>
+          <url>http://ci.pcgamingfreaks.at/plugin/repository/everything/</url>
+      </repository>
   </repositories>
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-        </configuration>
-      </plugin>
-    </plugins>
+	<defaultGoal>clean install</defaultGoal>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<plugins>
+	      <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.1</version>
+	        <configuration>
+	          <source>1.7</source>
+	          <target>1.7</target>
+	        </configuration>
+	      </plugin>
+	    </plugins>
   </build>
   <dependencies>
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>bukkit</artifactId>
-  		<version>LATEST</version>
+  		<version>1.7.9-R0.2</version>
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
@@ -45,6 +66,44 @@
   		<version>LATEST</version>
   		<scope>provided</scope>
   	</dependency>
+  	<dependency>
+  		<groupId>net.md-5</groupId>
+  		<artifactId>bungeecord-api</artifactId>
+  		<version>LATEST</version>
+  		<scope>provided</scope>
+  	</dependency>
+  	
+  	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.7.2-R0.4-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.7.5-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.7.9-R0.3-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.7.10-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+  	<dependency>
+		<groupId>org.spigotmc</groupId>
+		<artifactId>spigot</artifactId>
+		<version>1.8-R0.1-SNAPSHOT</version>
+		<scope>provided</scope>
+	</dependency>
+  	
   	<dependency>
   		<groupId>net.milkbowl.vault</groupId>
   		<artifactId>VaultAPI</artifactId>
@@ -58,46 +117,10 @@
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
-	  	<groupId>at.pcgamingfreaks</groupId>
-	  	<artifactId>MinePacks</artifactId>
-	  	<version>1.1</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/MinePacks.jar</systemPath>
-	</dependency>
-	<dependency>
-	  	<groupId>net.minecraft</groupId>
-	  	<artifactId>Minecraft</artifactId>
-	  	<version>1.7.2</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/net172.jar</systemPath>
-	</dependency>
-	<dependency>
-	  	<groupId>net.minecraft</groupId>
-	  	<artifactId>Minecraft</artifactId>
-	  	<version>1.7.5</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/net175.jar</systemPath>
-	</dependency>
-	<dependency>
-	  	<groupId>net.minecraft</groupId>
-	  	<artifactId>Minecraft</artifactId>
-	  	<version>1.7.9</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/net179.jar</systemPath>
-	</dependency>
-	<dependency>
-	  	<groupId>net.minecraft</groupId>
-	  	<artifactId>Minecraft</artifactId>
-	  	<version>1.7.10</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/net1710.jar</systemPath>
-	</dependency>
-	<dependency>
-	  	<groupId>net.minecraft</groupId>
-	  	<artifactId>Minecraft</artifactId>
-	  	<version>1.8</version>
-	  	<scope>system</scope>
-	  	<systemPath>${project.basedir}/libs/net18.jar</systemPath>
-	</dependency>
+  		<groupId>at.pcgamingfreaks</groupId>
+  		<artifactId>MinePacks</artifactId>
+  		<version>1.1</version>
+  		<scope>provided</scope>
+  	</dependency>
   </dependencies>
 </project>
