@@ -61,6 +61,12 @@ public class MarriageMaster extends JavaPlugin
 	{
 		log = getLogger();
 		config = new Config(this);
+		if(!config.Loaded())
+		{
+			this.setEnabled(false);
+			log.warning("Failed loading config! Disabling Plugin.");
+			return;
+		}
 		lang = new Language(this);
 		DBType = config.GetDatabaseType().toLowerCase();
 		UseUUIDs = config.getUseUUIDs();

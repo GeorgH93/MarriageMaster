@@ -39,31 +39,46 @@ public class Config
 	
 	public Config(MarriageMaster marriagemaster)
 	{
-		marriageMaster = marriagemaster;
-		LoadConfig();
-		
-		UsePerms = config.getBoolean("Permissions");
+		plugin = marriagemaster;
+		if(LoadConfig())
+		{
+			UsePerms = config.getBoolean("Permissions");
+		}
+	}
+	
+	public boolean Loaded()
+	{
+		return config != null;
 	}
 	
 	public void Reload()
 	{
-		LoadConfig();
-		
-		UsePerms = config.getBoolean("Permissions");
+		if(LoadConfig())
+		{
+			UsePerms = config.getBoolean("Permissions");
+		}
 	}
 	
-	private void LoadConfig()
+	private boolean LoadConfig()
 	{
-		File file = new File(marriageMaster.getDataFolder(), "config.yml");
+		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
 		{
 			NewConfig(file);
 		}
 		else
 		{
-			config = YamlConfiguration.loadConfiguration(file);
-			UpdateConfig(file);
+			try
+			{
+				config = YamlConfiguration.loadConfiguration(file);
+				UpdateConfig(file);
+			}
+			catch(Exception e)
+			{
+				config = null;
+			}
 		}
+		return config != null;
 	}
 	
 	private boolean UUIDComp()
@@ -151,11 +166,12 @@ public class Config
 		try 
 		{
 			config.save(file);
-			marriageMaster.log.info("Config File has been generated.");
+			plugin.log.info("Config File has been generated.");
 		}
   	  	catch (IOException e) 
   	  	{
   	  		e.printStackTrace();
+  	  		config = null;
   	  	}
 	}
 	
@@ -214,17 +230,18 @@ public class Config
 				config.set("VaultPermissions", true);
 			break;
 			case CONFIG_VERSION: return false;
-			default: marriageMaster.log.info("Config File Version newer than expected!"); return false;
+			default: plugin.log.info("Config File Version newer than expected!"); return false;
 		}
 		config.set("Version", CONFIG_VERSION);
 		try 
 		{
 			config.save(file);
-			marriageMaster.log.info("Config File has been updated.");
+			plugin.log.info("Config File has been updated.");
 		}
   	  	catch (IOException e) 
   	  	{
   	  		e.printStackTrace();
+  	  		config = null;
   	  		return false;
   	  	}
 		return true;
