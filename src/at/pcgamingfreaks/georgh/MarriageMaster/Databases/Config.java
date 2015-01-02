@@ -31,7 +31,7 @@ import at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster;
 
 public class Config
 {
-	private MarriageMaster marriageMaster;
+	private MarriageMaster plugin;
 	private FileConfiguration config;
 	private static final int CONFIG_VERSION = 13;
 	
@@ -358,9 +358,9 @@ public class Config
 		{
 			return true;
 		}
-		if(marriageMaster.perms != null)
+		if(plugin.perms != null)
 		{
-			return marriageMaster.perms.has(player, Perm);
+			return plugin.perms.has(player, Perm);
 		}
 		else if(UsePerms)
 		{

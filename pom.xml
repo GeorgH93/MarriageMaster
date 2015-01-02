@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>at.pcgamingfreaks</groupId>
   <artifactId>MarriageMaster</artifactId>
-  <version>14.7.0</version>
+  <version>14.7</version>
   <name>MarriageMaster</name>
   <repositories>
   	  <repository>
@@ -91,12 +91,24 @@
   		<artifactId>VaultAPI</artifactId>
   		<version>1.3.2</version>
   		<scope>provided</scope>
+  		<exclusions>
+  			<exclusion>
+  				<artifactId>bukkit</artifactId>
+  				<groupId>org.bukkit</groupId>
+  			</exclusion>
+  		</exclusions>
   	</dependency>
   	<dependency>
   		<groupId>net.milkbowl.vault</groupId>
   		<artifactId>Vault</artifactId>
   		<version>1.4.1</version>
   		<scope>provided</scope>
+  		<exclusions>
+        	<exclusion>
+          		<groupId>org.bukkit</groupId>
+          		<artifactId>bukkit</artifactId>
+        	</exclusion>
+      	</exclusions> 
   	</dependency>
   	<dependency>
   		<groupId>at.pcgamingfreaks</groupId>
