@@ -1,7 +1,7 @@
 name: MarriageMaster
 author: GeorgH93
 website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
-main: at.pcgamingfreaks.georgh.MarriageMaster.MarriageMaster
+main: at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster
 version: ${version}
 softdepend: [Vault,MinePacks]
 commands:
