@@ -17,8 +17,12 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Economy;
 
+import java.util.regex.Pattern;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -64,4 +68,26 @@ public class BaseEconomy
 	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer, double money) { return true; }
 	
 	public boolean Marry(CommandSender priest, Player player, Player otherPlayer, double money) { return true; }
+	
+	public static BaseEconomy GetEconomy(MarriageMaster pl)
+	{
+		Plugin vault = Bukkit.getServer().getPluginManager().getPlugin("Vault");
+		if(pl != null)
+		{
+			String[] vaultV = vault.getDescription().getVersion().split(Pattern.quote( "." ));
+			try
+			{
+				if(Integer.parseInt(vaultV[0]) > 1 || (Integer.parseInt(vaultV[0]) == 1 && Integer.parseInt(vaultV[1]) >= 4))
+				{
+					return new at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.Economy(pl);
+				}
+				else
+				{
+					return new EconomyOld(pl);
+				}
+			}
+			catch(Exception e){}
+		}
+		return null;
+	}
 }

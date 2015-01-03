@@ -25,7 +25,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
@@ -35,15 +34,10 @@ public class Config
 	private FileConfiguration config;
 	private static final int CONFIG_VERSION = 13;
 	
-	private boolean UsePerms = false;
-	
 	public Config(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		if(LoadConfig())
-		{
-			UsePerms = config.getBoolean("Permissions");
-		}
+		LoadConfig();
 	}
 	
 	public boolean Loaded()
@@ -53,10 +47,7 @@ public class Config
 	
 	public void Reload()
 	{
-		if(LoadConfig())
-		{
-			UsePerms = config.getBoolean("Permissions");
-		}
+		LoadConfig();
 	}
 	
 	private boolean LoadConfig()
@@ -292,9 +283,14 @@ public class Config
 		return config.getBoolean("AllowBlockPvP");
 	}
 	
+	public boolean getUsePermissions()
+	{
+		return config.getBoolean("Permissions");
+	}
+	
 	public boolean getUseVaultPermissions()
 	{
-		return UsePerms && config.getBoolean("VaultPermissions", true);
+		return getUsePermissions() && config.getBoolean("VaultPermissions", true);
 	}
 	
 	public boolean UsePrefix()
@@ -344,29 +340,7 @@ public class Config
 	
 	public String GetDatabaseType()
 	{
-		return config.getString("Database.Type");
-	}
-	
-	public boolean CheckPerm(Player player, String Perm)
-	{
-		return CheckPerm(player,Perm, true);
-	}
-	
-	public boolean CheckPerm(Player player,String Perm, boolean def)
-	{
-		if(player.isOp())
-		{
-			return true;
-		}
-		if(plugin.perms != null)
-		{
-			return plugin.perms.has(player, Perm);
-		}
-		else if(UsePerms)
-		{
-			return player.hasPermission(Perm);
-		}
-		return def;
+		return config.getString("Database.Type").toLowerCase();
 	}
 	
 	public String GetMySQLHost()

@@ -77,4 +77,14 @@ public class Database
 	public boolean GetPartnerShareBackpack(Player player) { return false; }
 	
 	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
+
+
+	public static Database getDatabase(String DBType, MarriageMaster pl)
+	{
+		switch(DBType)
+		{
+			case "mysql": return new MySQL(pl);
+			default: return new Files(pl);
+		}
+	}
 }

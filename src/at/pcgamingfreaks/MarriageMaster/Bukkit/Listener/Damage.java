@@ -48,10 +48,6 @@ public class Damage implements Listener
         {
         	player = (Player)event.getDamager();
         	otherPlayer = (Player) event.getEntity();
-        }
-		
-		if(player != null && otherPlayer != null)
-		{
 			String married1 = plugin.DB.GetPartner(player);
 			String married2 = plugin.DB.GetPartner(otherPlayer);
 			

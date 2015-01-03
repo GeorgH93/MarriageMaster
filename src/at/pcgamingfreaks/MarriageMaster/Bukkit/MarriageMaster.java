@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import net.gravitydevelopment.Updater.Bukkit_Updater;
 import net.gravitydevelopment.Updater.UpdateResult;
@@ -52,6 +51,7 @@ public class MarriageMaster extends JavaPlugin
     public Config config;
     public Language lang;
     public boolean UseUUIDs = false;
+    public boolean UsePerms = true;
     public Database DB;
     public String DBType = "";
     public List<Marry_Requests> mr;
@@ -69,13 +69,9 @@ public class MarriageMaster extends JavaPlugin
 			return;
 		}
 		lang = new Language(this);
-		DBType = config.GetDatabaseType().toLowerCase();
+		DBType = config.GetDatabaseType();
 		UseUUIDs = config.getUseUUIDs();
-		switch(DBType)
-		{
-			case "mysql": DB = new MySQL(this); break;
-			default: DB = new Files(this); break;
-		}
+		DB = Database.getDatabase(DBType, this);
 		kiss = new Kiss(this);
 		chat = new MarryChat(this);
 		mr = new ArrayList<Marry_Requests>();
@@ -97,6 +93,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			Update();
 		}
+		UsePerms = config.getUsePermissions();
 		if(config.getUseVaultPermissions())
 		{
 			if(!setupPermissions())
@@ -104,7 +101,10 @@ public class MarriageMaster extends JavaPlugin
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
-		RegisterEconomy();
+		if(config.UseEconomy())
+		{
+			economy = BaseEconomy.GetEconomy(this);
+		}
 		if(config.getUseMinepacks())
 		{
 			setupMinePacks();
@@ -144,26 +144,6 @@ public class MarriageMaster extends JavaPlugin
         return (minepacks != null);
     }
 	
-	public void RegisterEconomy()
-	{
-		if(config.UseEconomy() && getServer().getPluginManager().getPlugin("Vault") != null)
-		{
-			String[] vaultV = getServer().getPluginManager().getPlugin("Vault").getDescription().getVersion().split(Pattern.quote( "." ));
-			try
-			{
-				if(Integer.parseInt(vaultV[0]) > 1 || (Integer.parseInt(vaultV[0]) == 1 && Integer.parseInt(vaultV[1]) >= 4))
-				{
-					economy = new Economy(this);
-				}
-				else
-				{
-					economy = new EconomyOld(this);
-				}
-			}
-			catch(Exception e){}
-		}
-	}
-	
 	public void RegisterEvents()
 	{
 		getServer().getPluginManager().registerEvents(new JoinLeaveChat(this), this);
@@ -192,7 +172,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public boolean IsPriest(Player player)
 	{
-		return config.CheckPerm(player, "marry.priest", false) || DB.IsPriest(player);
+		return CheckPerm(player, "marry.priest", false) || DB.IsPriest(player);
 	}
 	
 	public boolean HasPartner(Player player)
@@ -231,5 +211,27 @@ public class MarriageMaster extends JavaPlugin
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean CheckPerm(Player player, String Perm)
+	{
+		return CheckPerm(player,Perm, true);
+	}
+	
+	public boolean CheckPerm(Player player,String Perm, boolean def)
+	{
+		if(player.isOp())
+		{
+			return true;
+		}
+		if(perms != null)
+		{
+			return perms.has(player, Perm);
+		}
+		if(UsePerms)
+		{
+			return player.hasPermission(Perm);
+		}
+		return def;
 	}
 }

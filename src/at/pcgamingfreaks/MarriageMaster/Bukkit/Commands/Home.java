@@ -52,7 +52,7 @@ public class Home
 	
 	private void TPHome(Player player, Location loc)
 	{
-		if(plugin.config.DelayTP() && !plugin.config.CheckPerm(player, "marry.skiptpdelay", false))
+		if(plugin.config.DelayTP() && !plugin.CheckPerm(player, "marry.skiptpdelay", false))
 		{
 			final Location p_loc = player.getLocation(), toloc = loc;
 			final Player p = player;

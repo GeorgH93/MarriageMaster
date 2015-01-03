@@ -381,7 +381,7 @@ public class Priest
 		Player otherPlayer = Bukkit.getServer().getPlayerExact(otP);
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
-			if(plugin.config.CheckPerm(priest, "marry.offlinedivorce", false))
+			if(plugin.CheckPerm(priest, "marry.offlinedivorce", false))
 			{
 				plugin.DB.DivorcePlayer(player);
 				priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName()+ChatColor.GREEN,otP));
@@ -478,7 +478,7 @@ public class Priest
 		Player otherPlayer = Bukkit.getServer().getPlayerExact(partner);
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
-			if(plugin.config.CheckPerm(player, "marry.offlinedivorce", false))
+			if(plugin.CheckPerm(player, "marry.offlinedivorce", false))
 			{
 				plugin.DB.DivorcePlayer(player);
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.Divorced"), player.getDisplayName()+ChatColor.GREEN,partner));

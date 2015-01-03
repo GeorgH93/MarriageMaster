@@ -39,7 +39,7 @@ public class InteractEntity implements Listener
 	{
 		Player player = event.getPlayer();
 		String playername = player.getName();
-		if(plugin.config.CheckPerm(player, "marry.kiss") && player.isSneaking())
+		if(player.isSneaking() && plugin.CheckPerm(player, "marry.kiss"))
 		{
 			Entity entity = event.getRightClicked();
 			if(entity != null && entity instanceof Player)

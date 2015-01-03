@@ -34,7 +34,6 @@ public class Death implements Listener
 		plugin = marriagemaster;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event)
     {
@@ -43,20 +42,15 @@ public class Death implements Listener
 			Player killer = event.getEntity().getKiller();
 			if(killer != null)
 			{
-				String partner = plugin.DB.GetPartner(killer);
-				if(partner != null)
+				Player otherPlayer = plugin.DB.GetPlayerPartner(killer);
+				if(otherPlayer != null && otherPlayer.isOnline())
 				{
-					Player otherPlayer = plugin.getServer().getPlayer(partner);
-					
-					if(otherPlayer != null && otherPlayer.isOnline())
+					if(plugin.InRadius(killer, otherPlayer, plugin.config.GetRange("BonusXP")))
 					{
-						if(plugin.InRadius(killer, otherPlayer, plugin.config.GetRange("BonusXP")))
-						{
-							int xp = (event.getDroppedExp() / 2) * plugin.config.GetBonusXPAmount();
-							otherPlayer.giveExp(xp);
-							killer.giveExp(xp);
-							event.setDroppedExp(0);
-						}
+						int xp = (event.getDroppedExp() / 2) * plugin.config.GetBonusXPAmount();
+						otherPlayer.giveExp(xp);
+						killer.giveExp(xp);
+						event.setDroppedExp(0);
 					}
 				}
 			}

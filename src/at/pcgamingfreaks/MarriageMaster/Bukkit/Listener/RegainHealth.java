@@ -33,7 +33,6 @@ public class RegainHealth implements Listener
 		plugin = marriagemaster;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onHeal(EntityRegainHealthEvent event) 
 	{
@@ -42,16 +41,12 @@ public class RegainHealth implements Listener
 			Player player = (Player) event.getEntity();
 			if(player != null)
 			{
-				String partner = plugin.DB.GetPartner(player);
-				if(partner != null)
+				Player otherPlayer = plugin.DB.GetPlayerPartner(player);
+				if(otherPlayer != null && otherPlayer.isOnline())
 				{
-					Player otherPlayer = plugin.getServer().getPlayer(partner);
-					if(otherPlayer != null && otherPlayer.isOnline())
+					if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("Heal")))
 					{
-						if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("Heal")))
-						{
-							event.setAmount((double)plugin.config.GetHealthRegainAmount());
-						}
+						event.setAmount((double)plugin.config.GetHealthRegainAmount());
 					}
 				}
 			}

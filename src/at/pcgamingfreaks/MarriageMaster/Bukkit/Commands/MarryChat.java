@@ -43,11 +43,11 @@ public class MarryChat
 		if(reciver != null && reciver.isOnline())
 		{
 			msg = msg.replace('§', '&');
-			if(plugin.config.CheckPerm(sender, "marry.chat.color"))
+			if(plugin.CheckPerm(sender, "marry.chat.color"))
 			{
 				msg = ChatColor.translateAlternateColorCodes('&', msg);
 			}
-			if(plugin.config.CheckPerm(sender, "marry.chat.format"))
+			if(plugin.CheckPerm(sender, "marry.chat.format"))
 			{
 				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
 			}
@@ -55,7 +55,7 @@ public class MarryChat
 			{
 				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
 			}
-			if(plugin.config.CheckPerm(sender, "marry.chat.magic", false))
+			if(plugin.CheckPerm(sender, "marry.chat.magic", false))
 			{
 				msg = msg.replaceAll("&k", "§k");
 			}

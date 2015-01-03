@@ -74,7 +74,7 @@ public class MarryTp
 
 	private void DoTP(Player player, Player otherPlayer) 
 	{
-		if(plugin.config.DelayTP() && !plugin.config.CheckPerm(player, "marry.skiptpdelay", false))
+		if(plugin.config.DelayTP() && !plugin.CheckPerm(player, "marry.skiptpdelay", false))
 		{
 			final Location p_loc = player.getLocation();
 			final Player p = player, otp = otherPlayer;

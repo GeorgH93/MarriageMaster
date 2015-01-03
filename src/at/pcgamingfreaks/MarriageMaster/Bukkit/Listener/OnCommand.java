@@ -38,8 +38,8 @@ import org.bukkit.inventory.ItemStack;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.*;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Files;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.MySQL;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Database;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.BaseEconomy;
 
 public class OnCommand implements CommandExecutor 
 {
@@ -66,14 +66,19 @@ public class OnCommand implements CommandExecutor
 		if(plugin.config.GetDatabaseType().toLowerCase() != plugin.DBType)
 		{
 			plugin.DBType = plugin.config.GetDatabaseType().toLowerCase();
-			switch(plugin.DBType)
+			plugin.DB = Database.getDatabase(plugin.DBType, plugin);
+		}
+		if(plugin.config.UseEconomy())
+		{
+			if(plugin.economy == null)
 			{
-				case "mysql": plugin.DB = new MySQL(plugin); break;
-				default: plugin.DB = new Files(plugin); break;
+				plugin.economy = BaseEconomy.GetEconomy(plugin);
 			}
 		}
-		plugin.RegisterEconomy();
-		
+		else
+		{
+			plugin.economy = null;
+		}
 		if(plugin.perms == null && plugin.config.getUseVaultPermissions())
 		{
 			if(!plugin.setupPermissions())
@@ -197,7 +202,7 @@ public class OnCommand implements CommandExecutor
 		switch(args[0].toLowerCase())
 		{
 			case "reload":
-				if(plugin.config.CheckPerm(player, "marry.reload", false))
+				if(plugin.CheckPerm(player, "marry.reload", false))
 		    	{
 					reload();
 					player.sendMessage(ChatColor.BLUE + "Reloaded");
@@ -208,7 +213,7 @@ public class OnCommand implements CommandExecutor
 				}
 				return true;
 			case "list":
-				if(plugin.config.CheckPerm(player, "marry.list"))
+				if(plugin.CheckPerm(player, "marry.list"))
 	    		{
 					int page = 0, avpages = 0;
 					if(args.length == 2)
@@ -271,7 +276,7 @@ public class OnCommand implements CommandExecutor
 		        {
 		        	if(plugin.HasPartner(player))
 		        	{
-		    	    	if(plugin.config.CheckPerm(player, "marry.pvpon"))
+		    	    	if(plugin.CheckPerm(player, "marry.pvpon"))
 		    	    	{
 		    	    		plugin.DB.SetPvPEnabled(player, true);
 		    	    		player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PvPOn"));
@@ -296,7 +301,7 @@ public class OnCommand implements CommandExecutor
 		        {
 		        	if(plugin.HasPartner(player))
 		        	{
-		    	    	if(plugin.config.CheckPerm(player, "marry.pvpoff"))
+		    	    	if(plugin.CheckPerm(player, "marry.pvpoff"))
 		    	    	{
 		    	    		plugin.DB.SetPvPEnabled(player, false);
 		    	    		player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PvPOff"));
@@ -317,7 +322,7 @@ public class OnCommand implements CommandExecutor
 				}
 				return true;
 			case "home":
-				if(plugin.config.CheckPerm(player, "marry.home"))
+				if(plugin.CheckPerm(player, "marry.home"))
     	    	{
 					if(plugin.HasPartner(player))
 		        	{
@@ -334,7 +339,7 @@ public class OnCommand implements CommandExecutor
     	    	}
 				return true;
 			case "sethome":
-				if(plugin.config.CheckPerm(player, "marry.home"))
+				if(plugin.CheckPerm(player, "marry.home"))
     	    	{
 					if(plugin.HasPartner(player))
 		        	{
@@ -351,7 +356,7 @@ public class OnCommand implements CommandExecutor
     	    	}
 				return true;
 			case "tp":
-				if(plugin.config.CheckPerm(player, "marry.tp"))
+				if(plugin.CheckPerm(player, "marry.tp"))
     			{
 					marryTp.TP(player);
     			}
@@ -362,7 +367,7 @@ public class OnCommand implements CommandExecutor
 				return true;
 			case "c":
 			case "chat":
-				if(plugin.config.CheckPerm(player, "marry.chat"))
+				if(plugin.CheckPerm(player, "marry.chat"))
 	    		{
 					String partner = plugin.DB.GetPartner(player);
 	        		if(partner != null && !partner.isEmpty())
@@ -407,7 +412,7 @@ public class OnCommand implements CommandExecutor
 	        	}
 				return true;
 			case "listenchat":
-				if(plugin.config.CheckPerm(player, "marry.listenchat"))
+				if(plugin.CheckPerm(player, "marry.listenchat"))
 	    		{
 	        		if(!plugin.chat.pcl.contains(player))
 	        		{
@@ -428,7 +433,7 @@ public class OnCommand implements CommandExecutor
 			case "gift":
 			case "give":
 			case "send":
-				if(plugin.config.CheckPerm(player, "marry.gift"))
+				if(plugin.CheckPerm(player, "marry.gift"))
 	    		{
 					String Partner = plugin.DB.GetPartner(player);
 	        		if(Partner != null && !Partner.isEmpty())
@@ -484,7 +489,7 @@ public class OnCommand implements CommandExecutor
 					ShowAvailableCmds(player);
 					return true;
 				}
-				if(plugin.config.CheckPerm(player, "marry.backpack"))
+				if(plugin.CheckPerm(player, "marry.backpack"))
 	    		{
 					String Partner = plugin.DB.GetPartner(player);
 	        		if(Partner != null && !Partner.isEmpty())
@@ -587,7 +592,7 @@ public class OnCommand implements CommandExecutor
 			case "update":
 				if(plugin.config.UseUpdater())
 				{
-		        	if(plugin.config.CheckPerm(player, "marry.update", false))
+		        	if(plugin.CheckPerm(player, "marry.update", false))
 		    		{
 		        		Update(sender);
 					}
@@ -604,7 +609,7 @@ public class OnCommand implements CommandExecutor
 			case "kiss":
 				if (plugin.config.GetKissEnabled())
 		        {
-		        	if(plugin.config.CheckPerm(player, "marry.kiss"))
+		        	if(plugin.CheckPerm(player, "marry.kiss"))
 		    		{
 		        		if(plugin.HasPartner(player))
 						{
@@ -650,11 +655,11 @@ public class OnCommand implements CommandExecutor
 				}
 				return true;
 			case "surname":
-				if(plugin.config.getSurname() && plugin.config.CheckPerm(player, "marry.changesurname"))
+				if(plugin.config.getSurname() && plugin.CheckPerm(player, "marry.changesurname"))
 		        {
-		        	if((plugin.config.AllowSelfMarry() && plugin.config.CheckPerm(player, "marry.selfmarry")) || plugin.IsPriest(player))
+		        	if((plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry")) || plugin.IsPriest(player))
 		        	{
-		        		if((args.length == 2 && plugin.config.AllowSelfMarry() && plugin.config.CheckPerm(player, "marry.selfmarry") || (args.length == 3 && plugin.IsPriest(player))))
+		        		if((args.length == 2 && plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry") || (args.length == 3 && plugin.IsPriest(player))))
 		        		{
 			        		priest.SetSurname(sender, args[args.length - 2], args[args.length - 1]);
 		        		}
@@ -694,7 +699,7 @@ public class OnCommand implements CommandExecutor
 		        }
 		        else if(plugin.config.AllowSelfMarry() && args.length == 1)
 		        {
-		        	if(plugin.config.CheckPerm(player, "marry.selfmarry"))
+		        	if(plugin.CheckPerm(player, "marry.selfmarry"))
 		        	{
 		        		priest.SelfDivorce(player);
 		        	}
@@ -712,7 +717,7 @@ public class OnCommand implements CommandExecutor
 		// Other commands
 		if(plugin.config.UseAltChatToggleCommand() && args[0].equalsIgnoreCase(plugin.config.ChatToggleCommand()))
         {
-        	if(plugin.config.CheckPerm(player, "marry.chat"))
+        	if(plugin.CheckPerm(player, "marry.chat"))
     		{
         		if(plugin.HasPartner(player))
         		{
@@ -739,7 +744,7 @@ public class OnCommand implements CommandExecutor
         }
         else if(args.length == 2 && args[0].equalsIgnoreCase(plugin.config.GetPriestCMD()))
         {
-        	if(plugin.config.CheckPerm(player, "marry.setpriest", false))
+        	if(plugin.CheckPerm(player, "marry.setpriest", false))
         	{
         		priest.setPriest(args, sender);
         	}
@@ -750,7 +755,7 @@ public class OnCommand implements CommandExecutor
         }
         else if(plugin.config.AllowSelfMarry() && ((args[0].equalsIgnoreCase("me") && (args.length == 2 || args.length == 3)) || args.length == 1))
         {
-        	if(plugin.config.CheckPerm(player, "marry.selfmarry"))
+        	if(plugin.CheckPerm(player, "marry.selfmarry"))
         	{
         		switch(args.length)
         		{
@@ -792,7 +797,7 @@ public class OnCommand implements CommandExecutor
 			Surname = "";
 		}
 		player.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.Get("Description.Commands"));
-		if(plugin.config.CheckPerm(player, "marry.list"))
+		if(plugin.CheckPerm(player, "marry.list"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListAll"));
 		}
@@ -801,33 +806,33 @@ public class OnCommand implements CommandExecutor
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Marry"), plugin.config.GetRange("Marry")));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
 		}
-		if(plugin.config.CheckPerm(player, "marry.tp"))
+		if(plugin.CheckPerm(player, "marry.tp"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry tp" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TP"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.home"))
+		if(plugin.CheckPerm(player, "marry.home"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry home" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHome"));
 			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SetHome"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.chat"))
+		if(plugin.CheckPerm(player, "marry.chat"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat <Message>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Chat"));
 			player.sendMessage(ChatColor.AQUA + "/marry " + (plugin.config.UseAltChatToggleCommand() ? plugin.config.ChatToggleCommand() : "chat toggle") + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ChatToggle"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.pvpon") && plugin.config.GetAllowBlockPvP())
+		if(plugin.CheckPerm(player, "marry.pvpon") && plugin.config.GetAllowBlockPvP())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry pvpon" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.PvPOn"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.pvpoff") && plugin.config.GetAllowBlockPvP())
+		if(plugin.CheckPerm(player, "marry.pvpoff") && plugin.config.GetAllowBlockPvP())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry pvpoff" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.PvPOff"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.gift"))
+		if(plugin.CheckPerm(player, "marry.gift"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Gift"));
 		}
-		if(plugin.minepacks != null && plugin.config.CheckPerm(player, "marry.backpack"))
+		if(plugin.minepacks != null && plugin.CheckPerm(player, "marry.backpack"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry backpack" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Backpack"));
 			if(plugin.DB.GetPartnerShareBackpack(player))
@@ -839,16 +844,16 @@ public class OnCommand implements CommandExecutor
 				player.sendMessage(ChatColor.AQUA + "/marry backpack on" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.BackpackOn"));
 			}
 		}
-		if(plugin.config.CheckPerm(player, "marry.kiss") && plugin.config.GetKissEnabled())
+		if(plugin.CheckPerm(player, "marry.kiss") && plugin.config.GetKissEnabled())
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Kiss"));
 		}
-		if(plugin.config.AllowSelfMarry() && plugin.config.CheckPerm(player, "marry.selfmarry"))
+		if(plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SelfMarry"));
 			player.sendMessage(ChatColor.AQUA + "/marry divorce" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SelfDivorce"));
 		}
-		if(plugin.config.getSurname() && plugin.config.CheckPerm(player, "marry.changesurname"))
+		if(plugin.config.getSurname() && plugin.CheckPerm(player, "marry.changesurname"))
 		{
 			if(plugin.IsPriest(player))
 			{
@@ -856,25 +861,25 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				if(plugin.config.AllowSelfMarry() && plugin.config.CheckPerm(player, "marry.selfmarry"))
+				if(plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry"))
 				{
 					player.sendMessage(ChatColor.AQUA + "/marry Surname <Surname>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Surname"));
 				}
 			}
 		}
-		if(plugin.config.CheckPerm(player, "marry.setpriest", false))
+		if(plugin.CheckPerm(player, "marry.setpriest", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry " + plugin.config.GetPriestCMD() + " <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Priest"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.listenchat", false))
+		if(plugin.CheckPerm(player, "marry.listenchat", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry listenchat" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListenChat"));
 		}
-		if(plugin.config.UseUpdater() && plugin.config.CheckPerm(player, "marry.update", false))
+		if(plugin.config.UseUpdater() && plugin.CheckPerm(player, "marry.update", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Update"));
 		}
-		if(plugin.config.CheckPerm(player, "marry.reload", false))
+		if(plugin.CheckPerm(player, "marry.reload", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Reload"));
 		}
