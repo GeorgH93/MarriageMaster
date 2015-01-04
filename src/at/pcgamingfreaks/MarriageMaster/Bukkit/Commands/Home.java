@@ -39,7 +39,7 @@ public class Home
 		
 		if(loc != null)
 		{
-			if(plugin.economy == null || plugin.economy.HomeTeleport(player, plugin.config.GetEconomyHomeTp()))
+			if(plugin.economy == null || plugin.economy.HomeTeleport(player))
 			{
 				TPHome(player, loc);
 			}
@@ -81,7 +81,7 @@ public class Home
 	public void SetHome(Player player)
 	{
 		Location home = player.getLocation();
-		if(plugin.economy == null || plugin.economy.HomeTeleport(player, plugin.config.GetEconomySetHome()))
+		if(plugin.economy == null || plugin.economy.HomeTeleport(player))
 		{
 			SetMarryHome(player, home);
 		}

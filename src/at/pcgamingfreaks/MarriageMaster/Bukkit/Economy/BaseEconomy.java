@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Economy;
 import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -31,7 +32,10 @@ import net.milkbowl.vault.economy.Economy;
 public class BaseEconomy 
 {
 	protected MarriageMaster plugin;
-    public Economy econ = null;
+	protected double Costs_TP, Costs_SetHome, Costs_Home, Costs_Gift, Costs_Marry, Costs_Divorce;
+	protected String Message_NotEnough, Message_PartnerNotEnough, Message_MarriagePaid, Message_DivorcePaid, Message_DivNotEnoPriestI, Message_NotEnoughPriestInfo;
+	protected String Message_HomeTPPaid, Message_SetHomePaid, Message_GiftPaid, Message_TPPaid;
+    protected Economy econ = null;
     
     private boolean setupEconomy()
     {
@@ -54,23 +58,48 @@ public class BaseEconomy
 		if(plugin.config.UseEconomy() && !setupEconomy())
 		{
 			plugin.log.info("Console.NoEcoPL");
+			plugin.economy = null;
+			return;
 		}
+		
+		// Load Costs
+		Costs_Divorce	= plugin.config.GetEconomy("Divorce");
+		Costs_Marry		= plugin.config.GetEconomy("Marry");
+		Costs_Gift		= plugin.config.GetEconomy("Gift");
+		Costs_Home		= plugin.config.GetEconomy("HomeTp");
+		Costs_SetHome	= plugin.config.GetEconomy("SetHome");
+		Costs_TP = plugin.config.GetEconomy("Tp");
+		// Load Messages
+		Message_NotEnough			= ChatColor.RED   + plugin.lang.Get("Economy.NotEnough");
+		Message_PartnerNotEnough 	= ChatColor.RED   + plugin.lang.Get("Economy.PartnerNotEnough");
+		Message_DivorcePaid			= ChatColor.GREEN + plugin.lang.Get("Economy.DivorcePaid");
+		Message_MarriagePaid		= ChatColor.GREEN + plugin.lang.Get("Economy.MarriagePaid");
+		Message_DivNotEnoPriestI	= ChatColor.RED   + plugin.lang.Get("Economy.DivNotEnoPriestI");
+		Message_NotEnoughPriestInfo	= ChatColor.RED   + plugin.lang.Get("Economy.NotEnoughPriestInfo");
+		Message_HomeTPPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.HomeTPPaid");
+		Message_SetHomePaid			= ChatColor.GREEN + plugin.lang.Get("Economy.SetHomePaid");
+		Message_GiftPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.GiftPaid");
+		Message_TPPaid				= ChatColor.GREEN + plugin.lang.Get("TPPaid");
 	}
 
-	public boolean HomeTeleport(Player player, double money) { return true; }
+	public boolean HomeTeleport(Player player) { return true; }
 	
-	public boolean SetHome(Player player, double money) { return true; }
+	public boolean SetHome(Player player) { return true; }
 	
-	public boolean Gift(Player player, double money) { return true; }
+	public boolean Gift(Player player) { return true; }
 	
-	public boolean Teleport(Player player, double money) { return true; }
+	public boolean Teleport(Player player) { return true; }
 	
-	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer, double money) { return true; }
+	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer) { return true; }
 	
-	public boolean Marry(CommandSender priest, Player player, Player otherPlayer, double money) { return true; }
+	public boolean Marry(CommandSender priest, Player player, Player otherPlayer) { return true; }
 	
 	public static BaseEconomy GetEconomy(MarriageMaster pl)
 	{
+		if(!pl.config.UseEconomy())
+		{
+			return null;
+		}
 		Plugin vault = Bukkit.getServer().getPluginManager().getPlugin("Vault");
 		if(pl != null)
 		{

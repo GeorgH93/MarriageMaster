@@ -68,17 +68,7 @@ public class OnCommand implements CommandExecutor
 			plugin.DBType = plugin.config.GetDatabaseType().toLowerCase();
 			plugin.DB = Database.getDatabase(plugin.DBType, plugin);
 		}
-		if(plugin.config.UseEconomy())
-		{
-			if(plugin.economy == null)
-			{
-				plugin.economy = BaseEconomy.GetEconomy(plugin);
-			}
-		}
-		else
-		{
-			plugin.economy = null;
-		}
+		plugin.economy = BaseEconomy.GetEconomy(plugin);
 		if(plugin.perms == null && plugin.config.getUseVaultPermissions())
 		{
 			if(!plugin.setupPermissions())
@@ -465,7 +455,7 @@ public class OnCommand implements CommandExecutor
 	        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerInvFull"));
 	        				return true;
 	        			}
-	        			if(plugin.economy == null || plugin.economy.Gift(player, plugin.config.GetEconomyGift()))
+	        			if(plugin.economy == null || plugin.economy.Gift(player))
 	        			{
 		        			partner.getInventory().addItem(its);
 		        			player.getInventory().removeItem(its);

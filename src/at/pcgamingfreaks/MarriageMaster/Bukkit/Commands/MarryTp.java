@@ -46,7 +46,7 @@ public class MarryTp
 				{
 					if(!plugin.config.GetBlacklistedWorlds().contains(otherPlayer.getWorld().getName()))
 					{
-						if(plugin.economy == null || plugin.economy.Teleport(player, plugin.config.GetEconomyTp()))
+						if(plugin.economy == null || plugin.economy.Teleport(player))
 						{
 							DoTP(player, otherPlayer);
 						}

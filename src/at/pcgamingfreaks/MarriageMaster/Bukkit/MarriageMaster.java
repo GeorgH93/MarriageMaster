@@ -101,10 +101,7 @@ public class MarriageMaster extends JavaPlugin
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
-		if(config.UseEconomy())
-		{
-			economy = BaseEconomy.GetEconomy(this);
-		}
+		economy = BaseEconomy.GetEconomy(this);
 		if(config.getUseMinepacks())
 		{
 			setupMinePacks();

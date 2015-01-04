@@ -17,7 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Economy;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -32,139 +31,158 @@ public class EconomyOld extends BaseEconomy
 		super(marriagemaster);
 	}
 
-	public boolean HomeTeleport(Player player, double money)
+	public boolean HomeTeleport(Player player)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
-		
+		if(Costs_Home == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_Home);
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.HomeTPPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(Message_HomeTPPaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Home)));
 			return false;
 		}
 	}
 	
-	public boolean SetHome(Player player, double money)
+	public boolean SetHome(Player player)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
-		
+		if(Costs_SetHome == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_SetHome);
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.SetHomePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(Message_SetHomePaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_SetHome)));
 			return false;
 		}
 	}
 	
-	public boolean Gift(Player player, double money)
+	public boolean Gift(Player player)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
-		
+		if(Costs_Gift == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_Gift);
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.GiftPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(Message_GiftPaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Gift)));
 			return false;
 		}
 	}
 	
-	public boolean Teleport(Player player, double money)
+	public boolean Teleport(Player player)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money);
-		
+		if(Costs_TP == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_TP);
 		if(response.transactionSuccess()) 
 		{
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("TPPaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			player.sendMessage(String.format(Message_TPPaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_TP)));
 			return false;
 		}
 	}
 	
-	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer, double money)
+	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
-		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
+		if(Costs_Divorce == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_Divorce/2);
+		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), Costs_Divorce/2);
 		if(response.transactionSuccess() && response2.transactionSuccess()) 
 		{
-			otherPlayer.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.DivorcePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			otherPlayer.sendMessage(String.format(Message_DivorcePaid, econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
+			player.sendMessage(String.format(Message_DivorcePaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
 			if(priest != null)
 			{
-				priest.sendMessage(ChatColor.RED + plugin.lang.Get("Economy.DivNotEnoPriestI"));
+				priest.sendMessage(Message_DivNotEnoPriestI);
 			}
 			if(response.transactionSuccess())
 			{
-				econ.depositPlayer(player.getName(), money/2);
-				otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-				player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.PartnerNotEnough")));
+				econ.depositPlayer(player.getName(), Costs_Divorce/2);
+				otherPlayer.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Divorce/2)));
+				player.sendMessage(Message_PartnerNotEnough);
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				econ.depositPlayer(otherPlayer.getName(), money/2);
-				player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-				otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.PartnerNotEnough")));
+				econ.depositPlayer(otherPlayer.getName(), Costs_Divorce/2);
+				player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Divorce/2)));
+				otherPlayer.sendMessage(Message_PartnerNotEnough);
 				return false;
 			}
-			otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			otherPlayer.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Divorce/2)));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Divorce/2)));
 			return false;
 		}
 	}
 	
-	public boolean Marry(CommandSender priest, Player player, Player otherPlayer, double money)
+	public boolean Marry(CommandSender priest, Player player, Player otherPlayer)
 	{
-		EconomyResponse response = econ.withdrawPlayer(player.getName(), money/2);
-		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), money/2);
-		
+		if(Costs_Marry == 0)
+		{
+			return true;
+		}
+		EconomyResponse response = econ.withdrawPlayer(player.getName(), Costs_Marry/2);
+		EconomyResponse response2 = econ.withdrawPlayer(otherPlayer.getName(), Costs_Marry/2);
 		if(response.transactionSuccess() && response2.transactionSuccess()) 
 		{
-			otherPlayer.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
-			player.sendMessage(String.format(ChatColor.GREEN + plugin.lang.Get("Economy.MarriagePaid"), econ.format(response.amount), econ.getBalance(player.getName())));
+			otherPlayer.sendMessage(String.format(Message_MarriagePaid, econ.format(response.amount), econ.getBalance(otherPlayer.getName())));
+			player.sendMessage(String.format(Message_MarriagePaid, econ.format(response.amount), econ.getBalance(player.getName())));
 			return true;
 		} 
 		else 
 		{
 			if(priest != null)
 			{
-				priest.sendMessage(ChatColor.RED + plugin.lang.Get("Economy.NotEnoughPriestInfo"));
+				priest.sendMessage(Message_NotEnoughPriestInfo);
 			}
 			if(response.transactionSuccess())
 			{
-				econ.depositPlayer(player.getName(), money/2);
-				otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-				player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.PartnerNotEnough")));
+				econ.depositPlayer(player.getName(), Costs_Marry/2);
+				otherPlayer.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Marry/2)));
+				player.sendMessage(Message_PartnerNotEnough);
 				return false;
 			}
 			if(response2.transactionSuccess())
 			{
-				econ.depositPlayer(otherPlayer.getName(), money/2);
-				player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-				otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.PartnerNotEnough")));
+				econ.depositPlayer(otherPlayer.getName(), Costs_Marry/2);
+				player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Marry/2)));
+				otherPlayer.sendMessage(Message_PartnerNotEnough);
 				return false;
 			}
-			otherPlayer.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
-			player.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Economy.NotEnough")));
+			otherPlayer.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Marry/2)));
+			player.sendMessage(String.format(Message_NotEnough, econ.format(Costs_Marry/2)));
 			return false;
 		}
 	}

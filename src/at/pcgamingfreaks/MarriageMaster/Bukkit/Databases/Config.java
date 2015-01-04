@@ -308,34 +308,9 @@ public class Config
 		return config.getBoolean("Economy.Enable");
 	}
 	
-	public double GetEconomyDivorce()
+	public double GetEconomy(String str)
 	{
-		return config.getDouble("Economy.Divorce");
-	}
-	
-	public double GetEconomyMarry()
-	{
-		return config.getDouble("Economy.Marry");
-	}
-	
-	public double GetEconomyTp()
-	{
-		return config.getDouble("Economy.Tp");
-	}
-	
-	public double GetEconomyHomeTp()
-	{
-		return config.getDouble("Economy.HomeTp");
-	}
-	
-	public double GetEconomySetHome()
-	{
-		return config.getDouble("Economy.SetHome");
-	}
-	
-	public double GetEconomyGift()
-	{
-		return config.getDouble("Economy.Gift");
+		return config.getDouble("Economy." + str);
 	}
 	
 	public String GetDatabaseType()

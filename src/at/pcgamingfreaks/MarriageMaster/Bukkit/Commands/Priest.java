@@ -68,7 +68,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + plugin.lang.Get("Priest.AlreadyMarried"));
 			return;
 		}
-		if(plugin.economy == null || plugin.economy.Marry(priest, player, otherPlayer, plugin.config.GetEconomyMarry()))
+		if(plugin.economy == null || plugin.economy.Marry(priest, player, otherPlayer))
 		{
 			plugin.DB.MarryPlayers(player, otherPlayer, "Console", (args.length == 3) ? args[2] : null);
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -193,7 +193,7 @@ public class Priest
 	
 	private void SelfMarryAccept(Marry_Requests m)
 	{
-		if(plugin.economy == null || plugin.economy.Marry(null, m.p1, m.p2, plugin.config.GetEconomyMarry()))
+		if(plugin.economy == null || plugin.economy.Marry(null, m.p1, m.p2))
 		{
 			plugin.DB.MarryPlayers(m.p1, m.p2, "none", m.surname);
 			m.p1.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.HasMarried"), m.p2.getDisplayName()+ChatColor.GREEN));
@@ -263,7 +263,7 @@ public class Priest
 	
 	private void SaveMarry(Player priest, Player player, Player otherPlayer, String surname)
 	{
-		if(plugin.economy == null || plugin.economy.Marry(priest, player, otherPlayer, plugin.config.GetEconomyMarry()))
+		if(plugin.economy == null || plugin.economy.Marry(priest, player, otherPlayer))
 		{
 			plugin.DB.MarryPlayers(player, otherPlayer, priest, surname);
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Married"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -457,7 +457,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Priest.PartnerOffline"), player.getName(), otP));
 			return;
 		}
-		if(plugin.economy == null || plugin.economy.Divorce(priest, player, otherPlayer, plugin.config.GetEconomyDivorce()))
+		if(plugin.economy == null || plugin.economy.Divorce(priest, player, otherPlayer))
 		{
 			plugin.DB.DivorcePlayer(player);
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName()+ChatColor.GREEN, otherPlayer.getDisplayName()+ChatColor.GREEN));
@@ -490,7 +490,7 @@ public class Priest
 		}
 		else
 		{
-			if(plugin.economy == null || plugin.economy.Divorce(null ,player, otherPlayer, plugin.config.GetEconomyDivorce()))
+			if(plugin.economy == null || plugin.economy.Divorce(null ,player, otherPlayer))
 			{
 				plugin.DB.DivorcePlayer(player);
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.Divorced"), otherPlayer.getDisplayName()+ChatColor.GREEN));
