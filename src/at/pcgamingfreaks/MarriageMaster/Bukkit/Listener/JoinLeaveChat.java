@@ -45,20 +45,25 @@ public class JoinLeaveChat implements Listener
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void PlayerLoginEvent(PlayerJoinEvent event) 
 	{
 		if(plugin.config.GetInformOnPartnerJoinEnabled())
 		{
-			Player otherPlayer = plugin.DB.GetPlayerPartner(event.getPlayer());
-			if(otherPlayer != null && otherPlayer.isOnline())
+			String partner = plugin.DB.GetPartner(event.getPlayer());
+			if(partner != null)
 			{
-				event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
-				otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerNowOnline"));
-			}
-			else
-			{
-				event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOffline"));
+				Player otherPlayer = plugin.getServer().getPlayer(partner);
+				if(otherPlayer != null && otherPlayer.isOnline())
+				{
+					event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
+					otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerNowOnline"));
+				}
+				else
+				{
+					event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOffline"));
+				}
 			}
 		}
 		plugin.DB.UpdatePlayer(event.getPlayer());
