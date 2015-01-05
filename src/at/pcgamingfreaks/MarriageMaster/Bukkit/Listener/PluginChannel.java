@@ -17,39 +17,47 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-public class RegainHealth implements Listener
+public class PluginChannel implements PluginMessageListener
 {
 	private MarriageMaster plugin;
-
-	public RegainHealth(MarriageMaster marriagemaster) 
+	
+	public PluginChannel(MarriageMaster MM)
 	{
-		plugin = marriagemaster;
+		plugin = MM;
 	}
 
-	@EventHandler
-	public void onHeal(EntityRegainHealthEvent event) 
+	@Override
+	public void onPluginMessageReceived(String channel, Player player, byte[] bytes)
 	{
-		if (event.getEntity() instanceof Player)
-		{
-			Player player = (Player) event.getEntity();
-			if(player != null)
+		try
+	    {
+			if (!channel.equals("MarriageMaster"))
 			{
-				Player otherPlayer = plugin.DB.GetPlayerPartner(player);
-				if(otherPlayer != null && otherPlayer.isOnline())
-				{
-					if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("Heal")))
-					{
-						event.setAmount((double)plugin.config.GetHealthRegainAmount());
-					}
-				}
+	            return;
+	        }
+			ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+		    DataInputStream in = new DataInputStream(stream);
+		    String data = in.readUTF();
+		    String[] args = data.split("\\|");
+			String cmd = args[0].toLowerCase();
+			switch(cmd)
+			{
+				case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
+				case "reload": plugin.reload(); break;
 			}
+		}
+		catch (Exception e)
+		{
+			plugin.log.warning("Faild reading message from the bungee!");
+			e.printStackTrace();
 		}
 	}
 }

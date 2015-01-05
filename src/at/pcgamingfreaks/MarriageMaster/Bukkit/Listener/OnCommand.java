@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014 GeorgH93
+ *   Copyright (C) 2014-2015 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -32,14 +30,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.*;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Database;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.BaseEconomy;
 
 public class OnCommand implements CommandExecutor 
 {
@@ -56,44 +51,6 @@ public class OnCommand implements CommandExecutor
 		home = new Home(plugin);
 		marryTp = new MarryTp(plugin);
 		priest = new Priest(plugin);
-	}
-	
-	private void reload()
-	{
-		HandlerList.unregisterAll(plugin);
-		plugin.config.Reload();
-		plugin.lang.Reload();
-		if(plugin.config.GetDatabaseType().toLowerCase() != plugin.DBType)
-		{
-			plugin.DBType = plugin.config.GetDatabaseType().toLowerCase();
-			plugin.DB = Database.getDatabase(plugin.DBType, plugin);
-		}
-		plugin.economy = BaseEconomy.GetEconomy(plugin);
-		if(plugin.perms == null && plugin.config.getUseVaultPermissions())
-		{
-			if(!plugin.setupPermissions())
-			{
-				plugin.log.info(plugin.lang.Get("Console.NoPermPL"));
-			}
-		}
-		else if(plugin.perms != null && !plugin.config.getUseVaultPermissions())
-		{
-			plugin.perms = null;
-		}
-		if(plugin.minepacks == null && plugin.config.getUseMinepacks())
-		{
-			if(!plugin.setupMinePacks())
-			{
-				plugin.minepacks = null;
-			}
-		}
-		else if(plugin.minepacks != null && !plugin.config.getUseMinepacks())
-		{
-			plugin.minepacks = null;
-		}
-		plugin.RegisterEvents();
-		plugin.mr = new ArrayList<Marry_Requests>();
-		plugin.dr = new HashMap<Player, Player>();
 	}
 		
 	@SuppressWarnings("deprecation")
@@ -116,7 +73,7 @@ public class OnCommand implements CommandExecutor
 				switch(args[0].toLowerCase())
 				{
 					case "reload":
-						reload();
+						plugin.reload();
 						sender.sendMessage(ChatColor.BLUE + "Reloaded");
 						break;
 					case "list":
@@ -138,7 +95,7 @@ public class OnCommand implements CommandExecutor
 					case "update":
 						if(plugin.config.UseUpdater())
 						{
-							Update(sender);
+							plugin.AsyncUpdate(sender);
 						}
 						break;
 					case "surname":
@@ -194,7 +151,7 @@ public class OnCommand implements CommandExecutor
 			case "reload":
 				if(plugin.CheckPerm(player, "marry.reload", false))
 		    	{
-					reload();
+					plugin.reload();
 					player.sendMessage(ChatColor.BLUE + "Reloaded");
 				}
 				else
@@ -584,7 +541,7 @@ public class OnCommand implements CommandExecutor
 				{
 		        	if(plugin.CheckPerm(player, "marry.update", false))
 		    		{
-		        		Update(sender);
+		        		plugin.AsyncUpdate(sender);
 					}
 			    	else
 			    	{
@@ -872,18 +829,6 @@ public class OnCommand implements CommandExecutor
 		if(plugin.CheckPerm(player, "marry.reload", false))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Reload"));
-		}
-	}
-	
-	private void Update(CommandSender sender)
-	{
-		if(plugin.Update())
-		{
-			sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.Updated"));
-		}
-		else
-		{
-			sender.sendMessage(ChatColor.GOLD + plugin.lang.Get("Ingame.NoUpdate"));
 		}
 	}
 	

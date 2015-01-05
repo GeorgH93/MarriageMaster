@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
+package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,11 +23,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
 public class MySQL extends Database
 {
@@ -39,6 +35,7 @@ public class MySQL extends Database
 	public MySQL(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
+	}/*
 		// Load Settings
 		Table_Players = plugin.config.getUserTable();
 		Table_Priests = plugin.config.getPriestsTable();
@@ -102,18 +99,6 @@ public class MySQL extends Database
 			e.printStackTrace();
 		}
 		return conn;
-	}
-	
-	public void Disable()
-	{
-		try
-		{
-			GetConnection().close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	private void CheckDB()
@@ -767,5 +752,5 @@ public class MySQL extends Database
 			e.printStackTrace();
 		}
 		return result;
-	}
+	}*/
 }

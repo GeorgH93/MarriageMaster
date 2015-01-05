@@ -1,0 +1,18 @@
+Version: 1
+Language:
+  Console:
+    Enabled: Marriage Master has been enabled!
+    Disabled: Marriage Master has been disabled.
+    LangUpdated: Language File has been updated.
+    MetricsOffline: Metrics offline.
+    UpdateUUIDs: Start updating database to UUIDs ...
+    UpdatedUUIDs: 'Updated %s accounts to UUIDs.'
+  Ingame:
+    PartnerOnline: '&aYour Partner is online.'
+    PartnerOffline: '&aYour Partner is offline.'
+    PartnerNowOnline: '&aYour Partner is now online.'
+    PartnerNowOffline: '&aYour Partner is now offline.'
+    NoPermission: "You don't have the Permission to do that."
+    CheckingForUpdates: '&1Checking for updates ...'
+    Updated: '&aPlugin updated downloaded.'
+    NoUpdate: '&2No plugin update available.'

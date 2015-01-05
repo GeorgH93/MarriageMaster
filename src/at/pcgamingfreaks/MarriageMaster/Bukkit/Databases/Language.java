@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014 GeorgH93
+ *   Copyright (C) 2014-2015 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster plugin;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 13;
+	private static final int LANG_VERSION = 14;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -192,6 +192,8 @@ public class Language
 						lang.set("Language.Description.Backpack",		"Opens the backpack of your partner.");
 						lang.set("Language.Description.BackpackOn",		"Allows your partner to use your backpack.");
 						lang.set("Language.Description.BackpackOff",	"Disallows your partner to use your backpack.");
+					case 13:
+						lang.set("Language.Ingame.CheckingForUpdates",	"Checking for updates ...");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

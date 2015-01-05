@@ -1,0 +1,42 @@
+# MarriageMaster BungeeCord Config File.
+
+# Language Settings
+Language: en
+LanguageUpdateMode: Overwrite
+
+# Send join info to pardner on player join/leave
+InformOnPartnerJoin: true
+# Alternative chat toggle command
+ChatToggleCommand: 'ctoggle'
+
+Chat:
+  # If turned off the marry chat function will be handeld by the bukkit server (Private chat will only work if both players are on the same server)
+  Global: true
+  # Alternativ command to set the default chat to the marry chat
+  ChatToggleCommand: chattoggle
+
+Database:
+  # Disable UpdatePlayer in the plugin config of your bukkit server!!!
+  UpdatePlayer: true
+  # Recomanded for online mode. You can disable them in the bukkits plugin config if you use them on the Bungee.
+  UseUUIDs: true
+  # MySQL Settings must match the settings in your bukkit plugin config.
+  MySQL:
+    Host: localhost:3306
+    Database: minecraft
+    User: minecraft
+    Password: minecraft
+  Tables:
+    User: marry_players
+    Home: marry_home
+    Priests: marry_priests
+    Partner: marry_partners
+
+Misc:
+  Metrics: true
+  # Only Downloads the update to the "updates" folder. You will have to move it manualy or let you system move it in the startup script.
+  # If turned off you still can use /marry update to download the update
+  AutoUpdate: true
+
+# Config File Version. Don't touch it!
+Version: 1

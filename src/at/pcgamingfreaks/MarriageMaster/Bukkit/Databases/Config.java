@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014 GeorgH93
+ *   Copyright (C) 2014-2015 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 13;
+	private static final int CONFIG_VERSION = 14;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -110,6 +110,7 @@ public class Config
 		config.set("AllowSelfMarry", false);
 		config.set("Surname", false);
 		config.set("UseMinepacks", false);
+		config.set("UseBungeeCord", false);
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -151,7 +152,7 @@ public class Config
 		config.set("Range.Backpack", 5);
 		config.set("Teleport.Delay", false);
 		config.set("Teleport.DelayTime", 3);
-		config.set("TPBlacklistedWorlds", new ArrayList<String>());
+		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
 		config.set("Version",CONFIG_VERSION);
 		
 		try 
@@ -194,7 +195,6 @@ public class Config
 				config.set("Range.HearthVisible", 128.0F);
 				config.set("Range.Heal", 2.0F);
 				config.set("Range.BonusXP", 10.0F);
-				config.set("TPBlacklistedWorlds", new ArrayList<String>());
 			case 6:
 				config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 			case 7:
@@ -219,6 +219,16 @@ public class Config
 			case 12:
 				config.set("Kiss.CompatibilityMode", false);
 				config.set("VaultPermissions", true);
+			case 13:
+				if(config.getInt("Version") > 5)
+				{
+					config.set("Teleport.BlacklistedWorlds", config.getStringList("TPBlacklistedWorlds"));
+				}
+				else
+				{
+					config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
+				}
+				config.set("UseBungeeCord", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -410,7 +420,7 @@ public class Config
 	
 	public List<String> GetBlacklistedWorlds()
 	{
-		return config.getStringList("TPBlacklistedWorlds");
+		return config.getStringList("Teleport.BlacklistedWorlds");
 	}
 	
 	public double GetRange(String option)

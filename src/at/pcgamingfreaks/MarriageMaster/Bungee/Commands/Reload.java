@@ -15,63 +15,34 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit;
+package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class Marry_Requests
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+
+public class Reload extends BaseCommand
 {
-	public Player priest = null, p1 = null, p2 = null;
-	private boolean p1a = false, p2a = false;
-	public String surname;
-	
-	public Marry_Requests(Player Priest, Player P1, Player P2, String Surname)
+	public Reload(MarriageMaster MM)
 	{
-		priest = Priest;
-		p1 = P1;
-		p2 = P2;
-		surname = Surname;
+		super(MM);
 	}
 	
-	public boolean Accept(Player p)
+	public boolean execute(ProxiedPlayer sender, String cmd, String[] args)
 	{
-		if(p == p1)
+		if(sender.hasPermission("marry.reload"))
 		{
-			p1a = true;
-		}
-		else if(p == p2)
-		{
-			p2a = true;
+			plugin.Disable();
+			plugin.PluginLoad();
+			plugin.broadcastPluginMessage("reload"); // Send reload throu plugin channel to all servers
+			sender.sendMessage(new TextComponent(ChatColor.BLUE + "Reloaded!"));
 		}
 		else
 		{
-			return false;
+			sender.sendMessage(plugin.Message_NoPermission);
 		}
 		return true;
-	}
-	
-	public boolean HasAccepted(Player p)
-	{
-		if(p1 == p)
-		{
-			return p1a;
-		}
-		else if(p2 == p)
-		{
-			return p2a;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	public boolean BothAcceoted(Player p)
-	{
-		if(p1a && p2a)
-		{
-			return true;
-		}
-		return false;
 	}
 }

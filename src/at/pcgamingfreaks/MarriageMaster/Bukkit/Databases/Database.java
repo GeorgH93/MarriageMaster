@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014 GeorgH93
+ *   Copyright (C) 2014-2015 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@ public class Database
 	
 	public void Recache() {}
 	
+	public void Disable() {}
+	
 	public void UpdatePlayer(Player player) {}
 	
 	public boolean GetPvPEnabled(Player player) { return false; }
@@ -61,7 +63,7 @@ public class Database
 	public Player GetPlayerPartner(Player player)
 	{
 		String partner = GetPartner(player);
-		if(partner != null && !partner.isEmpty())
+		if(partner != null)
 		{
 			return Bukkit.getPlayerExact(partner);
 		}

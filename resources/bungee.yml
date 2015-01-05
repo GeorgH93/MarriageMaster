@@ -1,0 +1,5 @@
+name: MarriageMaster
+author: GeorgH93
+website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
+main: at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster
+version: ${version}

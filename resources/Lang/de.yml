@@ -1,4 +1,4 @@
-Version: 13
+Version: 14
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -38,7 +38,7 @@ Language:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
         NotAPriest: Du bist kein Priester.
-        NoPermission: Dir fehlen die Rechte dafür.
+        NoPermission: 'Dir fehlen die Rechte dafür.'
         PartnerOnline: Dein Partner ist Online.
         PartnerOffline: Dein Partner ist Offline.
         PartnerNowOnline: Dein Partner ist jetzt Online.
@@ -71,6 +71,7 @@ Language:
         TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
         KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
         WorldNotAllowed: Dein Partner ist in ein Welt in der TP nicht erlaubt ist.
+        CheckingForUpdates: '&1Plugin update wird gesucht.'
         Updated: 'Plugin aktualisiert, wird bei nächsten restart/reload geladen.'
         NoUpdate: 'Kein Plugin update verfügbar.'
         MarryConfirm: '%s will dich heiraten. Akzeptiere mit /marry accept oder lehne mit /marry deny ab.'
@@ -95,7 +96,7 @@ Language:
         BackpackOpend: 'Dein Partner hat deinen Rucksack geöffnet.'
         BackpackShareDenied: 'Dein Partner erlaubt dir nicht das du auf seinen Rucksack zugreifst.'
     Economy:
-        NotEnough: Du hast nicht genug Geld.
+        NotEnough: 'Du hast nicht genug Geld. Du brauchst %1$s.'
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
         NotEnoughPriestInfo: Die Spieler welche du verheiraten möchtest haben nicht genug Geld.
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'

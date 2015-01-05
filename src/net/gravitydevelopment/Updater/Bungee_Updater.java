@@ -1,7 +1,8 @@
 /*
- * Updater for Bukkit.
+ * Updater for BungeeCord. Based on Gravity's Bukkit updater!
  *
  * This class provides the means to safely and easily update a plugin, or check to see if it is updated using dev.bukkit.org
+ * Yes, still downloading from bukkit since this plugin work on bungee and bukkit!
  */
 
 package net.gravitydevelopment.Updater;
@@ -16,11 +17,9 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import com.google.gson.*;
+
+import net.md_5.bungee.api.plugin.Plugin;
 
 /**
  * Check dev.bukkit.org to find updates for a given plugin, and download the updates if needed.
@@ -39,7 +38,7 @@ import org.json.simple.JSONValue;
  * @version 2.1
  */
 
-public class Bukkit_Updater {
+public class Bungee_Updater {
 
     private Plugin plugin;
     private UpdateType type;
@@ -55,7 +54,6 @@ public class Bukkit_Updater {
     private Thread thread; // Updater thread
 
     private int id = -1; // Project's Curse ID
-    private String apiKey = null; // BukkitDev ServerMods API key
     private static final String TITLE_VALUE = "name"; // Gets remote file's title
     private static final String LINK_VALUE = "downloadUrl"; // Gets remote file's download link
     private static final String TYPE_VALUE = "releaseType"; // Gets remote file's release type
@@ -67,8 +65,7 @@ public class Bukkit_Updater {
     private static final String delimiter = "^V|[\\s_-]V"; // Used for locating version numbers in file names
     private static final String[] NO_UPDATE_TAG = { "-DEV", "-PRE", "-SNAPSHOT" }; // If the version number contains one of these, don't update.
     private static final int BYTE_SIZE = 1024; // Used for downloading files
-    private final YamlConfiguration config = new YamlConfiguration(); // Config file
-    private String updateFolder;// The folder that downloads will be placed in
+    private final String updateFolder = "updates";// The folder that downloads will be placed in
     private UpdateResult result = UpdateResult.SUCCESS; // Used for determining the outcome of the update process
 
     /**
@@ -80,67 +77,21 @@ public class Bukkit_Updater {
      * @param type     Specify the type of update this will be. See {@link UpdateType}
      * @param announce True if the program should announce the progress of new updates in console.
      */
-    public Bukkit_Updater(Plugin plugin, int id, File file, UpdateType type, boolean announce) {
+    public Bungee_Updater(Plugin plugin, int id, File file, UpdateType type, boolean announce) {
         this.plugin = plugin;
         this.type = type;
         this.announce = announce;
         this.file = file;
         this.id = id;
-        this.updateFolder = plugin.getServer().getUpdateFolder();
-
-        final File pluginFile = plugin.getDataFolder().getParentFile();
-        final File updaterFile = new File(pluginFile, "Updater");
-        final File updaterConfigFile = new File(updaterFile, "config.yml");
-
-        this.config.options().header("This configuration file affects all plugins using the Updater system (version 2+ - http://forums.bukkit.org/threads/96681/ )" + '\n'
-                + "If you wish to use your API key, read http://wiki.bukkit.org/ServerMods_API and place it below." + '\n'
-                + "Some updating systems will not adhere to the disabled value, but these may be turned off in their plugin's configuration.");
-        this.config.addDefault("api-key", "PUT_API_KEY_HERE");
-        this.config.addDefault("disable", false);
-
-        if (!updaterFile.exists()) {
-            updaterFile.mkdir();
-        }
-
-        boolean createFile = !updaterConfigFile.exists();
-        try {
-            if (createFile) {
-                updaterConfigFile.createNewFile();
-                this.config.options().copyDefaults(true);
-                this.config.save(updaterConfigFile);
-            } else {
-                this.config.load(updaterConfigFile);
-            }
-        } catch (final Exception e) {
-            if (createFile) {
-                plugin.getLogger().severe("The updater could not create configuration at " + updaterFile.getAbsolutePath());
-            } else {
-                plugin.getLogger().severe("The updater could not load configuration at " + updaterFile.getAbsolutePath());
-            }
-            plugin.getLogger().log(Level.SEVERE, null, e);
-        }
-
-        if (this.config.getBoolean("disable")) {
-            this.result = UpdateResult.DISABLED;
-            return;
-        }
-
-        String key = this.config.getString("api-key");
-        if (key.equalsIgnoreCase("PUT_API_KEY_HERE") || key.equals("")) {
-            key = null;
-        }
-
-        this.apiKey = key;
 
         try {
-            this.url = new URL(Bukkit_Updater.HOST + Bukkit_Updater.QUERY + id);
+            this.url = new URL(Bungee_Updater.HOST + Bungee_Updater.QUERY + id);
         } catch (final MalformedURLException e) {
             plugin.getLogger().log(Level.SEVERE, "The project ID provided for updating, " + id + " is invalid.", e);
             this.result = UpdateResult.FAIL_BADID;
         }
-
-        this.thread = new Thread(new UpdateRunnable());
-        this.thread.start();
+        
+        plugin.getProxy().getScheduler().runAsync(plugin, new UpdateRunnable());
     }
 
     /**
@@ -236,13 +187,13 @@ public class Bukkit_Updater {
             in = new BufferedInputStream(url.openStream());
             fout = new FileOutputStream(folder.getAbsolutePath() + File.separator + file);
 
-            final byte[] data = new byte[Bukkit_Updater.BYTE_SIZE];
+            final byte[] data = new byte[Bungee_Updater.BYTE_SIZE];
             int count;
             if (this.announce) {
                 this.plugin.getLogger().info("About to download a new update: " + this.versionName);
             }
             long downloaded = 0;
-            while ((count = in.read(data, 0, Bukkit_Updater.BYTE_SIZE)) != -1) {
+            while ((count = in.read(data, 0, Bungee_Updater.BYTE_SIZE)) != -1) {
                 downloaded += count;
                 fout.write(data, 0, count);
                 final int percent = (int) ((downloaded * 100) / fileLength);
@@ -301,10 +252,10 @@ public class Bukkit_Updater {
                 } else {
                     final BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
                     int b;
-                    final byte buffer[] = new byte[Bukkit_Updater.BYTE_SIZE];
+                    final byte buffer[] = new byte[Bungee_Updater.BYTE_SIZE];
                     final FileOutputStream fos = new FileOutputStream(destinationFilePath);
-                    final BufferedOutputStream bos = new BufferedOutputStream(fos, Bukkit_Updater.BYTE_SIZE);
-                    while ((b = bis.read(buffer, 0, Bukkit_Updater.BYTE_SIZE)) != -1) {
+                    final BufferedOutputStream bos = new BufferedOutputStream(fos, Bungee_Updater.BYTE_SIZE);
+                    while ((b = bis.read(buffer, 0, Bungee_Updater.BYTE_SIZE)) != -1) {
                         bos.write(buffer, 0, b);
                     }
                     bos.flush();
@@ -401,7 +352,7 @@ public class Bukkit_Updater {
             else
             {
                 // The file's name did not contain the string 'vVersion'
-                final String authorInfo = this.plugin.getDescription().getAuthors().size() == 0 ? "" : " (" + this.plugin.getDescription().getAuthors().get(0) + ")";
+                final String authorInfo = this.plugin.getDescription().getAuthor();
                 this.plugin.getLogger().warning("The author of this plugin" + authorInfo + " has misconfigured their Auto Update system");
                 this.plugin.getLogger().warning("File versions should follow the format 'PluginName vVERSION'");
                 this.plugin.getLogger().warning("Please notify the author of this error.");
@@ -480,7 +431,7 @@ public class Bukkit_Updater {
      * @return true if updating should be disabled.
      */
     private boolean hasTag(String version) {
-        for (final String string : Bukkit_Updater.NO_UPDATE_TAG) {
+        for (final String string : Bungee_Updater.NO_UPDATE_TAG) {
             if (version.contains(string)) {
                 return true;
             }
@@ -498,17 +449,14 @@ public class Bukkit_Updater {
             final URLConnection conn = this.url.openConnection();
             conn.setConnectTimeout(5000);
 
-            if (this.apiKey != null) {
-                conn.addRequestProperty("X-API-Key", this.apiKey);
-            }
-            conn.addRequestProperty("User-Agent", Bukkit_Updater.USER_AGENT);
+            conn.addRequestProperty("User-Agent", Bungee_Updater.USER_AGENT);
 
             conn.setDoOutput(true);
 
             final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             final String response = reader.readLine();
-
-            final JSONArray array = (JSONArray) JSONValue.parse(response);
+            
+            final JsonArray array = (new JsonParser()).parse(response).getAsJsonArray();
 
             if (array.size() == 0) {
                 this.plugin.getLogger().warning("The updater could not find any files for the project id " + this.id);
@@ -516,10 +464,10 @@ public class Bukkit_Updater {
                 return false;
             }
 
-            this.versionName = (String) ((JSONObject) array.get(array.size() - 1)).get(Bukkit_Updater.TITLE_VALUE);
-            this.versionLink = (String) ((JSONObject) array.get(array.size() - 1)).get(Bukkit_Updater.LINK_VALUE);
-            this.versionType = (String) ((JSONObject) array.get(array.size() - 1)).get(Bukkit_Updater.TYPE_VALUE);
-            this.versionGameVersion = (String) ((JSONObject) array.get(array.size() - 1)).get(Bukkit_Updater.VERSION_VALUE);
+            this.versionName = ((JsonObject) array.get(array.size() - 1)).get(Bungee_Updater.TITLE_VALUE).toString().replace("\"", "");
+            this.versionLink = ((JsonObject) array.get(array.size() - 1)).get(Bungee_Updater.LINK_VALUE).toString().replace("\"", "");
+            this.versionType = ((JsonObject) array.get(array.size() - 1)).get(Bungee_Updater.TYPE_VALUE).toString().replace("\"", "");
+            this.versionGameVersion = ((JsonObject) array.get(array.size() - 1)).get(Bungee_Updater.VERSION_VALUE).toString().replace("\"", "");
 
             return true;
         } catch (final IOException e) {
@@ -541,20 +489,20 @@ public class Bukkit_Updater {
 
         @Override
         public void run() {
-            if (Bukkit_Updater.this.url != null) {
+            if (Bungee_Updater.this.url != null) {
                 // Obtain the results of the project's file feed
-                if (Bukkit_Updater.this.read()) {
-                    if (Bukkit_Updater.this.versionCheck(Bukkit_Updater.this.versionName)) {
-                        if ((Bukkit_Updater.this.versionLink != null) && (Bukkit_Updater.this.type != UpdateType.NO_DOWNLOAD)) {
-                            String name = Bukkit_Updater.this.file.getName();
+                if (Bungee_Updater.this.read()) {
+                    if (Bungee_Updater.this.versionCheck(Bungee_Updater.this.versionName)) {
+                        if ((Bungee_Updater.this.versionLink != null) && (Bungee_Updater.this.type != UpdateType.NO_DOWNLOAD)) {
+                            String name = Bungee_Updater.this.file.getName();
                             // If it's a zip file, it shouldn't be downloaded as the plugin's name
-                            if (Bukkit_Updater.this.versionLink.endsWith(".zip")) {
-                                final String[] split = Bukkit_Updater.this.versionLink.split("/");
+                            if (Bungee_Updater.this.versionLink.endsWith(".zip")) {
+                                final String[] split = Bungee_Updater.this.versionLink.split("/");
                                 name = split[split.length - 1];
                             }
-                            Bukkit_Updater.this.saveFile(new File(Bukkit_Updater.this.plugin.getDataFolder().getParent(), Bukkit_Updater.this.updateFolder), name, Bukkit_Updater.this.versionLink);
+                            Bungee_Updater.this.saveFile(new File(Bungee_Updater.this.plugin.getDataFolder().getParent(), Bungee_Updater.this.updateFolder), name, Bungee_Updater.this.versionLink);
                         } else {
-                            Bukkit_Updater.this.result = UpdateResult.UPDATE_AVAILABLE;
+                            Bungee_Updater.this.result = UpdateResult.UPDATE_AVAILABLE;
                         }
                     }
                 }

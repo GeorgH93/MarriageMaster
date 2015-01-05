@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014 GeorgH93
+ *   Copyright (C) 2014-2015 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +30,11 @@ import net.gravitydevelopment.Updater.UpdateResult;
 import net.gravitydevelopment.Updater.UpdateType;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -61,7 +66,13 @@ public class MarriageMaster extends JavaPlugin
     public void onEnable()
 	{
 		log = getLogger();
-		config = new Config(this);
+		Load();
+		log.info(lang.Get("Console.Enabled"));
+	}
+    
+    public void Load()
+    {
+    	config = new Config(this);
 		if(!config.Loaded())
 		{
 			this.setEnabled(false);
@@ -109,9 +120,19 @@ public class MarriageMaster extends JavaPlugin
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
 		RegisterEvents();
-
-		log.info(lang.Get("Console.Enabled"));
+    }
+    
+    public void reload()
+	{
+		Disable();
+		Load();
 	}
+    
+    public void Disable()
+    {
+    	HandlerList.unregisterAll(this);
+    	DB.Disable();
+    }
     
     public boolean setupPermissions()
     {
@@ -158,14 +179,39 @@ public class MarriageMaster extends JavaPlugin
 		}
 		if(config.GetKissEnabled())
 		{
-			getServer().getPluginManager().registerEvents(new InteractEntity(this),this);
+			getServer().getPluginManager().registerEvents(new InteractEntity(this), this);
 		}
+		getServer().getMessenger().registerIncomingPluginChannel(this, "MarriageMaster", new PluginChannel(this));
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "MarriageMaster");
 	}
 	 
 	public void onDisable()
-	{ 
+	{
+		if(config.UseUpdater())
+		{
+			Update();
+		}
+		Disable();
 		log.info(lang.Get("Console.Disabled"));
 	}
+	
+	public void sendMessage(String message)
+	{
+		try
+		{
+	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	        DataOutputStream out = new DataOutputStream(stream);
+	        out.writeUTF(message);
+	        out.flush();
+	        getServer().getOnlinePlayers()[0].sendPluginMessage(this, "MarriageMaster", stream.toByteArray());
+	        out.close();
+		}
+		catch(Exception e)
+		{
+			log.warning("Faild sending data to bungee!");
+			e.printStackTrace();
+		}
+    }
 	
 	public boolean IsPriest(Player player)
 	{
@@ -198,6 +244,26 @@ public class MarriageMaster extends JavaPlugin
 			return true;
 		}
 		return false;
+	}
+	
+	public void AsyncUpdate(final CommandSender sender)
+	{
+		sender.sendMessage(ChatColor.BLUE + lang.Get("Ingame.CheckingForUpdates"));
+		getServer().getScheduler().runTaskAsynchronously(this, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					if(Update())
+					{
+						sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
+					}
+					else
+					{
+						sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
+					}
+				}
+			});
 	}
 	
 	public boolean Update()
