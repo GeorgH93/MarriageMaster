@@ -17,18 +17,179 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
 public class Chat extends BaseCommand
 {
+	private String tcc, format;
+	
+	private BaseComponent[] Message_ChatJoined, Message_ChatLeft, Message_ChatListeningStarted, Message_ChatListeningStoped;
+	
+	public ArrayList<ProxiedPlayer> DirectChat = new ArrayList<ProxiedPlayer>();
+	public ArrayList<ProxiedPlayer> ChatListener = new ArrayList<ProxiedPlayer>();
+	
 	public Chat(MarriageMaster MM)
 	{
 		super(MM);
+		
+		tcc = plugin.config.getChatToggleCommand();
+		format = plugin.config.getChatFormat();
+		
+		// Load Messages
+		Message_ChatJoined			 = plugin.lang.getReady("ChatJoined");
+		Message_ChatLeft			 = plugin.lang.getReady("ChatLeft");
+		Message_ChatListeningStarted = plugin.lang.getReady("ChatListeningStarted");
+		Message_ChatListeningStoped  = plugin.lang.getReady("ChatListeningStoped");
 	}
 	
-	public boolean execute(ProxiedPlayer sender, String cmd, String[] args)
+	public boolean execute(ProxiedPlayer player, String cmd, String[] args)
 	{
+		if(player.hasPermission("marry.chat"))
+		{
+			if(cmd.equals("ctoggle") || cmd.equals("chattoggle") || cmd.equals(tcc) || (args.length > 0 && args[0].equalsIgnoreCase("toggle")))
+			{
+				UUID partner = plugin.DB.GetPartnerUUID(player);
+				if(partner != null)
+	    		{
+					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
+					if(partnerPlayer != null)
+					{
+						if(DirectChat.contains(player))
+						{
+							player.sendMessage(Message_ChatLeft);
+	    					plugin.chat.DirectChat.remove(player);
+						}
+						else
+						{
+							player.sendMessage(Message_ChatJoined);
+	    					plugin.chat.DirectChat.add(player);
+						}
+					}
+					else
+					{
+						player.sendMessage(plugin.Message_PartnerOffline);
+					}
+	    		}
+				else
+	    		{
+	    			player.sendMessage(plugin.Message_NotMarried);
+	    		}
+			}
+			else if(cmd.equals("listenchat"))
+			{
+				if(player.hasPermission("marry.listenchat"))
+	    		{
+	        		if(!ChatListener.contains(player))
+	        		{
+	        			ChatListener.add(player);
+	        			player.sendMessage(Message_ChatListeningStarted);
+	        		}
+	        		else
+	        		{
+	        			ChatListener.remove(player);
+	        			player.sendMessage(Message_ChatListeningStoped);
+	        		}
+				}
+		    	else
+		    	{
+		    		player.sendMessage(plugin.Message_NoPermission);
+		    	}
+			}
+			else if(args.length >= 1)
+			{
+				UUID partner = plugin.DB.GetPartnerUUID(player);
+				if(partner != null)
+	    		{
+					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
+					if(partnerPlayer != null)
+					{
+						String msg = "";
+	        			for(int i = 1; i < args.length; i++)
+	    				{
+	    					msg += args[i] + " ";
+	    				}
+	        			SendChat(player, partnerPlayer, msg);
+					}
+					else
+					{
+						player.sendMessage(plugin.Message_PartnerOffline);
+					}
+				}
+				else
+	    		{
+	    			player.sendMessage(plugin.Message_NotMarried);
+	    		}
+    		}
+			else
+			{
+				player.sendMessage(new TextComponent("/marry chat <Message>"));
+			}
+		}
+		else
+		{
+			player.sendMessage(plugin.Message_NoPermission);
+		}
 		return true;
+	}
+	
+	public void SendChat(ProxiedPlayer sender, ProxiedPlayer reciver, String msg)
+	{
+		if(reciver != null)
+		{
+			msg = msg.replace('§', '&');
+			if(sender.hasPermission("marry.chat.color"))
+			{
+				msg = ChatColor.translateAlternateColorCodes('&', msg);
+			}
+			if(sender.hasPermission("marry.chat.format"))
+			{
+				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
+			}
+			else
+			{
+				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
+			}
+			if(sender.hasPermission("marry.chat.magic"))
+			{
+				msg = msg.replaceAll("&k", "§k");
+			}
+			else
+			{
+				msg = msg.replaceAll("§k", "&k");
+			}
+			BaseComponent[] sendmsg = TextComponent.fromLegacyText(String.format(format, sender.getDisplayName(), reciver.getDisplayName(), msg));
+			reciver.sendMessage(sendmsg);
+			sender.sendMessage(sendmsg);
+			for (ProxiedPlayer player : ChatListener)
+			{
+				player.sendMessage(sendmsg);
+			}
+		}
+		else
+		{
+			sender.sendMessage(plugin.Message_PartnerOffline);
+		}
+	}
+	
+	public void PlayerLeave(ProxiedPlayer player)
+	{
+		DirectChat.remove(player);
+		ChatListener.remove(player);
+	}
+	
+	public boolean CheckDirectChat(ProxiedPlayer player, String text)
+	{
+		if(DirectChat.contains(player))
+		{
+			return true;
+		}
+		return false;
 	}
 }

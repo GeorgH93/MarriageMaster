@@ -140,11 +140,16 @@ public class Config
 	
 	public String getChatToggleCommand()
 	{
-		String cmd = config.getString("ChatToggleCommand").toLowerCase();
+		String cmd = config.getString("Chat.ToggleCommand").toLowerCase();
 		if(cmd.equals("chattoggle"))
 		{
 			return "ctoggle";
 		}
 		return cmd;
+	}
+	
+	public String getChatFormat()
+	{
+		return config.getString("Chat.PrivateFormat");
 	}
 }

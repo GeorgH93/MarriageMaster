@@ -22,13 +22,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import net.gravitydevelopment.Updater.Bungee_Updater;
 import net.gravitydevelopment.Updater.UpdateResult;
 import net.gravitydevelopment.Updater.UpdateType;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import org.mcstats.Bungee_Metrics;
@@ -50,7 +54,7 @@ public class MarriageMaster extends Plugin
     public EventListener listener;
     
     // Global Messages
-    public BaseComponent[] Message_NoPermission;
+    public BaseComponent[] Message_NoPermission, Message_NotMarried, Message_PartnerOffline;
     
     public void onEnable()
 	{
@@ -84,7 +88,9 @@ public class MarriageMaster extends Plugin
 			Update();
 		}
 		// Load Global Messages
-		Message_NoPermission = lang.getReady("Ingame.NoPermission");
+		Message_NoPermission	= lang.getReady("Ingame.NoPermission");
+		Message_NotMarried		= lang.getReady("NotMarried");
+		Message_PartnerOffline	= lang.getReady("Ingame.PartnerOffline");
 		// Load Worker
 		chat = new Chat(this);
 		
@@ -94,14 +100,26 @@ public class MarriageMaster extends Plugin
 		// Register Commands
 			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
 			// Register sub Commands for /marry
-		listener.RegisterMarrySubcommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand());
+		listener.RegisterMarrySubcommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
 		listener.RegisterMarrySubcommand(new Update(this), "update");
 		listener.RegisterMarrySubcommand(new Reload(this), "reload");
     }
     
+    public void doReload(final ProxiedPlayer sender)
+    {
+    	getProxy().getScheduler().schedule(this, new Runnable() {
+			@Override
+			public void run()
+			{
+				Disable();
+				PluginLoad();
+				broadcastPluginMessage("reload"); // Send reload throu plugin channel to all servers
+				sender.sendMessage(new TextComponent(ChatColor.BLUE + "Reloaded!"));
+			}}, 1L, TimeUnit.SECONDS);
+    }
+    
     public void Disable()
     {
-    	String disabled = lang.getString("Console.Disabled");
     	DB.Disable();
     	DB = null;
     	lang = null;
@@ -109,7 +127,6 @@ public class MarriageMaster extends Plugin
     	listener = null;
     	getProxy().getPluginManager().unregisterListeners(this);
     	getProxy().getPluginManager().unregisterCommands(this);
-    	log.info(disabled);
     }
 	 
 	public void onDisable()

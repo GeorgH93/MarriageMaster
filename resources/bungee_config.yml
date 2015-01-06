@@ -6,8 +6,11 @@ LanguageUpdateMode: Overwrite
 
 # Send join info to pardner on player join/leave
 InformOnPartnerJoin: true
-# Alternative chat toggle command
-ChatToggleCommand: 'ctoggle'
+
+Chat:
+  # Alternative chat toggle command
+  ToggleCommand: 'ctoggle'
+  PrivateFormat: '%1$s&r => %2$s: %3$s'
 
 Chat:
   # If turned off the marry chat function will be handeld by the bukkit server (Private chat will only work if both players are on the same server)

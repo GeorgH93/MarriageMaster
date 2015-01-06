@@ -333,7 +333,7 @@ public class OnCommand implements CommandExecutor
 	        				}
 	            			return true;
 	            		}
-	        			else if(args.length == 2)
+	        			else if(args.length >= 2)
 	        			{
 		        			Player otP = Bukkit.getPlayer(partner);
 		        			String msg = "";

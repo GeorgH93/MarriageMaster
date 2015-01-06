@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import java.util.TreeMap;
+import java.util.UUID;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
@@ -48,10 +49,12 @@ public class Database
 	
 	public String GetPartner(ProxiedPlayer player) { return null; }
 	
+	public UUID GetPartnerUUID(ProxiedPlayer player) { return null; }
+	
 	public ProxiedPlayer GetPlayerPartner(ProxiedPlayer player)
 	{
-		String partner = GetPartner(player);
-		if(partner != null && !partner.isEmpty())
+		UUID partner = GetPartnerUUID(player);
+		if(partner != null)
 		{
 			return plugin.getProxy().getPlayer(partner);
 		}

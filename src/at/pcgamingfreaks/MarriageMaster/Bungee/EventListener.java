@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.UUID;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -38,7 +39,7 @@ public class EventListener implements Listener
 {
 	private MarriageMaster plugin;
 	
-	private BaseComponent[] Message_PartnerOffline, Message_PartnerOnline, Message_PartnerNowOffline, Message_PartnerNowOnline;
+	private BaseComponent[] Message_PartnerOnline, Message_PartnerNowOffline, Message_PartnerNowOnline;
 	private boolean JLInfo = true;
 	
 	// Subcommand map
@@ -52,7 +53,6 @@ public class EventListener implements Listener
 		
 		// Load Messages
 		Message_PartnerOnline = plugin.lang.getReady("Ingame.PartnerOnline");
-		Message_PartnerOffline = plugin.lang.getReady("Ingame.PartnerOffline");
 		Message_PartnerNowOnline = plugin.lang.getReady("Ingame.PartnerNowOnline");
 		Message_PartnerNowOffline = plugin.lang.getReady("Ingame.PartnerNowOffline");
 	}
@@ -88,6 +88,7 @@ public class EventListener implements Listener
 			else
 			{
 				// Direct chat worker
+				event.setCancelled(plugin.chat.CheckDirectChat((ProxiedPlayer)event.getSender(), event.getMessage()));
 			}
 		}
     }
@@ -97,7 +98,7 @@ public class EventListener implements Listener
     {
 		if(JLInfo)
 		{
-			String partner = plugin.DB.GetPartner(event.getPlayer());
+			UUID partner = plugin.DB.GetPartnerUUID(event.getPlayer());
 			if(partner != null)
 			{
 				ProxiedPlayer otherPlayer = plugin.getProxy().getPlayer(partner);
@@ -108,7 +109,7 @@ public class EventListener implements Listener
 				}
 				else
 				{
-					event.getPlayer().sendMessage(Message_PartnerOffline);
+					event.getPlayer().sendMessage(plugin.Message_PartnerOffline);
 				}
 			}
 		}
@@ -127,6 +128,7 @@ public class EventListener implements Listener
 				otherPlayer.sendMessage(Message_PartnerNowOffline);
 			}
 		}
+		plugin.chat.PlayerLeave(event.getPlayer());
     }
 	
 	@EventHandler(priority=EventPriority.NORMAL)

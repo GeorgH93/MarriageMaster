@@ -12,7 +12,12 @@ Language:
     PartnerOffline: '&aYour Partner is offline.'
     PartnerNowOnline: '&aYour Partner is now online.'
     PartnerNowOffline: '&aYour Partner is now offline.'
-    NoPermission: "You don't have the Permission to do that."
+    NoPermission: "&cYou don't have the Permission to do that."
+    NoMarriedPlayers: '&cThere are no Married Players.'
     CheckingForUpdates: '&1Checking for updates ...'
     Updated: '&aPlugin updated downloaded.'
     NoUpdate: '&2No plugin update available.'
+    ChatJoined: '&aYou have set your chat to the private marry chat.'
+    ChatLeft: '&aYou have set your chat to public chat.'
+    ChatListeningStarted: '&aYou are now listening to the marry chat.'
+    ChatListeningStoped: '&aYou are no longer listening to the marry chat.'

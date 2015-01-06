@@ -17,8 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
@@ -34,10 +32,7 @@ public class Reload extends BaseCommand
 	{
 		if(sender.hasPermission("marry.reload"))
 		{
-			plugin.Disable();
-			plugin.PluginLoad();
-			plugin.broadcastPluginMessage("reload"); // Send reload throu plugin channel to all servers
-			sender.sendMessage(new TextComponent(ChatColor.BLUE + "Reloaded!"));
+			plugin.doReload(sender);
 		}
 		else
 		{
