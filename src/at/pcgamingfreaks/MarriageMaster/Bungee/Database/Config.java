@@ -22,6 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashSet;
+
+import org.bukkit.ChatColor;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
@@ -138,6 +141,11 @@ public class Config
 		return config.getBoolean("InformOnPartnerJoin");
 	}
 	
+	public boolean getChatGlobal()
+	{
+		return config.getBoolean("Chat.Global");
+	}
+	
 	public String getChatToggleCommand()
 	{
 		String cmd = config.getString("Chat.ToggleCommand").toLowerCase();
@@ -150,6 +158,46 @@ public class Config
 	
 	public String getChatFormat()
 	{
-		return config.getString("Chat.PrivateFormat");
+		return config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+	}
+	
+	public boolean getHomeGlobal()
+	{
+		return config.getBoolean("Home.Global");
+	}
+	
+	public boolean getHomeDelayed()
+	{
+		return config.getBoolean("Home.Delayed");
+	}
+	
+	public HashSet<String> getHomeFromServersBlocked()
+	{
+		HashSet<String> blockFrom = new HashSet<String>();
+		for(String s : config.getStringList("Home.FromServersBlocked"))
+		{
+			blockFrom.add(s.toLowerCase());
+		}
+		return blockFrom;
+	}
+	
+	public boolean getTPGlobal()
+	{
+		return config.getBoolean("TP.Global");
+	}
+	
+	public boolean getTPDelayed()
+	{
+		return config.getBoolean("TP.Delayed");
+	}
+	
+	public HashSet<String> getTPFromServersBlocked()
+	{
+		HashSet<String> blockFrom = new HashSet<String>();
+		for(String s : config.getStringList("TP.FromServersBlocked"))
+		{
+			blockFrom.add(s.toLowerCase());
+		}
+		return blockFrom;
 	}
 }

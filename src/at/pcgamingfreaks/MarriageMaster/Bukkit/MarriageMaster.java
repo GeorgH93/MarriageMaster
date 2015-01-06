@@ -17,8 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,8 +37,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Kiss;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.MarryChat;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.MarryTp;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
@@ -51,7 +51,10 @@ public class MarriageMaster extends JavaPlugin
 	public Logger log;
     public BaseEconomy economy = null;
     public Permission perms = null;
+    public PluginChannel pluginchannel;
     public Kiss kiss = null;
+    public Home home = null;
+    public MarryTp tp = null;
     public MarryChat chat = null;
     public Config config;
     public Language lang;
@@ -84,6 +87,8 @@ public class MarriageMaster extends JavaPlugin
 		UseUUIDs = config.getUseUUIDs();
 		DB = Database.getDatabase(DBType, this);
 		kiss = new Kiss(this);
+		home = new Home(this);
+		tp = new MarryTp(this);
 		chat = new MarryChat(this);
 		mr = new ArrayList<Marry_Requests>();
 		dr = new HashMap<Player, Player>();
@@ -116,6 +121,10 @@ public class MarriageMaster extends JavaPlugin
 		if(config.getUseMinepacks())
 		{
 			setupMinePacks();
+		}
+		if(config.getUseBungeeCord())
+		{
+			pluginchannel = new PluginChannel(this);
 		}
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
@@ -181,8 +190,11 @@ public class MarriageMaster extends JavaPlugin
 		{
 			getServer().getPluginManager().registerEvents(new InteractEntity(this), this);
 		}
-		getServer().getMessenger().registerIncomingPluginChannel(this, "MarriageMaster", new PluginChannel(this));
-		getServer().getMessenger().registerOutgoingPluginChannel(this, "MarriageMaster");
+		if(config.getUseBungeeCord())
+		{
+			getServer().getMessenger().registerIncomingPluginChannel(this, "MarriageMaster", pluginchannel);
+			getServer().getMessenger().registerOutgoingPluginChannel(this, "MarriageMaster");
+		}
 	}
 	 
 	public void onDisable()
@@ -194,24 +206,6 @@ public class MarriageMaster extends JavaPlugin
 		Disable();
 		log.info(lang.Get("Console.Disabled"));
 	}
-	
-	public void sendMessage(String message)
-	{
-		try
-		{
-	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	        DataOutputStream out = new DataOutputStream(stream);
-	        out.writeUTF(message);
-	        out.flush();
-	        getServer().getOnlinePlayers()[0].sendPluginMessage(this, "MarriageMaster", stream.toByteArray());
-	        out.close();
-		}
-		catch(Exception e)
-		{
-			log.warning("Faild sending data to bungee!");
-			e.printStackTrace();
-		}
-    }
 	
 	public boolean IsPriest(Player player)
 	{

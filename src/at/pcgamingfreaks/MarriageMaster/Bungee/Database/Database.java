@@ -17,7 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import java.util.TreeMap;
 import java.util.UUID;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -35,23 +34,11 @@ public class Database
 	
 	public void UpdatePlayer(ProxiedPlayer player) {}
 	
-	public void DivorcePlayer(ProxiedPlayer player) {}
-	
-	public void MarryPlayers(ProxiedPlayer player1, ProxiedPlayer player2, String priest, String surname) {}
-	
-	public void MarryPlayers(ProxiedPlayer player1, ProxiedPlayer player2, ProxiedPlayer priest, String surname) { MarryPlayers(player1, player2, priest.getName(), surname); }
-	
-	public void SetPriest(ProxiedPlayer player) {}
-	
-	public void DelPriest(ProxiedPlayer player) {}
-	
-	public boolean IsPriest(ProxiedPlayer player) { return false; }
-	
 	public String GetPartner(ProxiedPlayer player) { return null; }
 	
 	public UUID GetPartnerUUID(ProxiedPlayer player) { return null; }
 	
-	public ProxiedPlayer GetPlayerPartner(ProxiedPlayer player)
+	public ProxiedPlayer GetPartnerPlayer(ProxiedPlayer player)
 	{
 		UUID partner = GetPartnerUUID(player);
 		if(partner != null)
@@ -61,13 +48,5 @@ public class Database
 		return null;
 	}
 	
-	public String GetSurname(ProxiedPlayer player) { return null; }
-	
-	public void SetSurname(ProxiedPlayer player, String Surname) {}
-	
-	public void SetShareBackpack(ProxiedPlayer player, boolean allow) {}
-	
-	public boolean GetPartnerShareBackpack(ProxiedPlayer player) { return false; }
-	
-	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
+	public String getHomeServer(ProxiedPlayer player) { return null; }
 }

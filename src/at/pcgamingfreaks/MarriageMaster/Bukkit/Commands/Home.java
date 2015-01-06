@@ -27,10 +27,14 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 public class Home 
 {
 	private MarriageMaster plugin;
+	
+	private long delaytime;
 
 	public Home(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
+		
+		delaytime = plugin.config.TPDelayTime() * 20L;
 	}
 
 	public void TP(Player player)
@@ -69,12 +73,39 @@ public class Home
 					else
 					{
 						p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
-					}}}}, plugin.config.TPDelayTime() * 20L);
+					}}}}, delaytime);
 		}
 		else
 		{
 			player.teleport(loc);
 			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
+		}
+	}
+	
+	public void BungeeHomeDelay(final Player p)
+	{
+		if(p != null)
+		{
+			final double p_hea = p.getHealth();
+			final Location p_loc = p.getLocation();
+			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						if(p != null && p.isOnline())
+						{
+							if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+							{
+								plugin.pluginchannel.sendMessage("home|" + p.getName());
+							}
+							else
+							{
+								p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+							}
+						}
+					}}, delaytime);
 		}
 	}
 

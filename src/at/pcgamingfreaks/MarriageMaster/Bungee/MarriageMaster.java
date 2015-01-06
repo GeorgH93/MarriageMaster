@@ -48,7 +48,9 @@ public class MarriageMaster extends Plugin
     public Database DB;
     
     // Worker
-    public Chat chat;
+    public Chat chat = null;
+    public Home home = null;
+    public TP tp = null;
     
     // EventListener
     public EventListener listener;
@@ -92,17 +94,38 @@ public class MarriageMaster extends Plugin
 		Message_NotMarried		= lang.getReady("NotMarried");
 		Message_PartnerOffline	= lang.getReady("Ingame.PartnerOffline");
 		// Load Worker
-		chat = new Chat(this);
-		
+		if(config.getChatGlobal())
+		{
+			chat = new Chat(this);
+		}
+		if(config.getHomeGlobal())
+		{
+			home = new Home(this);
+		}
+		if(config.getTPGlobal())
+		{
+			tp = new TP(this);
+		}
 		// Register Listener
 		listener = new EventListener(this);
 		getProxy().getPluginManager().registerListener(this, listener);
 		// Register Commands
 			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
 			// Register sub Commands for /marry
-		listener.RegisterMarrySubcommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
+		if(config.getChatGlobal())
+		{
+			listener.RegisterMarrySubcommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
+		}
 		listener.RegisterMarrySubcommand(new Update(this), "update");
 		listener.RegisterMarrySubcommand(new Reload(this), "reload");
+		if(config.getHomeGlobal())
+		{
+			listener.RegisterMarrySubcommand(home, "home");
+		}
+		if(config.getTPGlobal())
+		{
+			listener.RegisterMarrySubcommand(tp, "tp");
+		}
     }
     
     public void doReload(final ProxiedPlayer sender)
@@ -113,7 +136,7 @@ public class MarriageMaster extends Plugin
 			{
 				Disable();
 				PluginLoad();
-				broadcastPluginMessage("reload"); // Send reload throu plugin channel to all servers
+				broadcastPluginMessage("reload"); // Send reload through plugin channel to all servers
 				sender.sendMessage(new TextComponent(ChatColor.BLUE + "Reloaded!"));
 			}}, 1L, TimeUnit.SECONDS);
     }

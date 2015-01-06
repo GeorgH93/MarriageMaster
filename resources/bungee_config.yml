@@ -8,15 +8,27 @@ LanguageUpdateMode: Overwrite
 InformOnPartnerJoin: true
 
 Chat:
-  # Alternative chat toggle command
-  ToggleCommand: 'ctoggle'
-  PrivateFormat: '%1$s&r => %2$s: %3$s'
-
-Chat:
   # If turned off the marry chat function will be handeld by the bukkit server (Private chat will only work if both players are on the same server)
   Global: true
   # Alternativ command to set the default chat to the marry chat
-  ChatToggleCommand: chattoggle
+  ToggleCommand: 'ctoggle'
+  PrivateFormat: '<heart> %1$s&r => %2$s: %3$s'
+
+Home:
+  # If turned off the marry home function will be handeld by the bukkit server (homes will only work if the player is on the same server as his home)
+  Global: true
+  # Disable delay on the bukkit server!
+  Delayed: false
+  # List of Servers where it's not posible to teleport from
+  FromServersBlocked: []
+
+TP:
+  # If turned off the marry tp function will be handeld by the bukkit server (tp will only work if both players are on the same server)
+  Global: true
+  # Disable delay on the bukkit server!
+  Delayed: false
+  # List of Servers where it's not posible to teleport from
+  FromServersBlocked: []
 
 Database:
   # Disable UpdatePlayer in the plugin config of your bukkit server!!!

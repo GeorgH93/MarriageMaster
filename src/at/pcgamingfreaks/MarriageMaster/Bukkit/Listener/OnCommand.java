@@ -40,16 +40,12 @@ public class OnCommand implements CommandExecutor
 {
 	private MarriageMaster plugin;
 
-	private MarryTp marryTp;
 	private Priest priest;
-	private Home home;
 	
 	public OnCommand(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
 		
-		home = new Home(plugin);
-		marryTp = new MarryTp(plugin);
 		priest = new Priest(plugin);
 	}
 		
@@ -273,7 +269,7 @@ public class OnCommand implements CommandExecutor
     	    	{
 					if(plugin.HasPartner(player))
 		        	{
-						home.TP(player);
+						plugin.home.TP(player);
 		        	}
 					else
 					{
@@ -290,7 +286,7 @@ public class OnCommand implements CommandExecutor
     	    	{
 					if(plugin.HasPartner(player))
 		        	{
-						home.SetHome(player);
+						plugin.home.SetHome(player);
 		        	}
 					else
 		    		{
@@ -305,7 +301,7 @@ public class OnCommand implements CommandExecutor
 			case "tp":
 				if(plugin.CheckPerm(player, "marry.tp"))
     			{
-					marryTp.TP(player);
+					plugin.tp.TP(player);
     			}
 				else
 				{
@@ -662,7 +658,7 @@ public class OnCommand implements CommandExecutor
 				return true;
 		}
 		// Other commands
-		if(plugin.config.UseAltChatToggleCommand() && args[0].equalsIgnoreCase(plugin.config.ChatToggleCommand()))
+		if(args[0].equalsIgnoreCase(plugin.config.getChatToggleCommand()))
         {
         	if(plugin.CheckPerm(player, "marry.chat"))
     		{
@@ -765,7 +761,7 @@ public class OnCommand implements CommandExecutor
 		if(plugin.CheckPerm(player, "marry.chat"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry chat <Message>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Chat"));
-			player.sendMessage(ChatColor.AQUA + "/marry " + (plugin.config.UseAltChatToggleCommand() ? plugin.config.ChatToggleCommand() : "chat toggle") + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ChatToggle"));
+			player.sendMessage(ChatColor.AQUA + "/marry chat toggle" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ChatToggle"));
 		}
 		if(plugin.CheckPerm(player, "marry.pvpon") && plugin.config.GetAllowBlockPvP())
 		{

@@ -46,7 +46,7 @@ public class Update extends BaseCommand
 					if(plugin.Update())
 					{
 						sender.sendMessage(Message_Updated);
-						plugin.broadcastPluginMessage("update"); // Send update throu plugin channel to all servers
+						plugin.broadcastPluginMessage("update"); // Send update through plugin channel to all servers
 					}
 					else
 					{

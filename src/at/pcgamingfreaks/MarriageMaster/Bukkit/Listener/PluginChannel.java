@@ -18,7 +18,9 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -34,6 +36,7 @@ public class PluginChannel implements PluginMessageListener
 		plugin = MM;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes)
 	{
@@ -45,13 +48,15 @@ public class PluginChannel implements PluginMessageListener
 	        }
 			ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 		    DataInputStream in = new DataInputStream(stream);
-		    String data = in.readUTF();
-		    String[] args = data.split("\\|");
-			String cmd = args[0].toLowerCase();
-			switch(cmd)
+		    String[] args = in.readUTF().split("\\|");
+			switch(args[0].toLowerCase())
 			{
 				case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
 				case "reload": plugin.reload(); break;
+				case "home": if(args.length == 2) { plugin.home.TP(plugin.getServer().getPlayerExact(args[1])); } break;
+				case "delayHome": if(args.length == 2) { plugin.home.BungeeHomeDelay(plugin.getServer().getPlayerExact(args[1])); } break;
+				case "TP": if(args.length == 2) { plugin.tp.TP(plugin.getServer().getPlayerExact(args[1])); } break;
+				case "delayTP": if(args.length == 2) { plugin.tp.BungeeTPDelay(plugin.getServer().getPlayerExact(args[1])); } break;
 			}
 		}
 		catch (Exception e)
@@ -60,4 +65,22 @@ public class PluginChannel implements PluginMessageListener
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendMessage(String message)
+	{
+		try
+		{
+	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	        DataOutputStream out = new DataOutputStream(stream);
+	        out.writeUTF(message);
+	        out.flush();
+	        plugin.getServer().getOnlinePlayers()[0].sendPluginMessage(plugin, "MarriageMaster", stream.toByteArray());
+	        out.close();
+		}
+		catch(Exception e)
+		{
+			plugin.log.warning("Faild sending data to bungee!");
+			e.printStackTrace();
+		}
+    }
 }

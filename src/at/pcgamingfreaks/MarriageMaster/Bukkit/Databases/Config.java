@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -104,8 +105,8 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
-		config.set("UseAltChatToggleCommand", false);
-		config.set("ChatToggleCommand", "chattoggle");
+		config.set("Chat.ToggleCommand", "chattoggle");
+		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
 		config.set("Surname", false);
@@ -203,8 +204,6 @@ public class Config
 				config.set("Teleport.Delay", false);
 				config.set("Teleport.DelayTime", 3);
 			case 9:
-				config.set("UseAltChatToggleCommand", false);
-				config.set("ChatToggleCommand", "chattoggle");
 			case 10:
 				config.set("Surname", false);
 				config.set("Range.Gift", 0);
@@ -228,7 +227,16 @@ public class Config
 				{
 					config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
 				}
+				if(config.getInt("Version") > 9)
+				{
+					config.set("Chat.ToggleCommand", config.getString("ChatToggleCommand"));
+				}
+				else
+				{
+					config.set("Chat.ToggleCommand", "chattoggle");
+				}
 				config.set("UseBungeeCord", false);
+				config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -246,6 +254,11 @@ public class Config
   	  		return false;
   	  	}
 		return true;
+	}
+	
+	public boolean getUseBungeeCord()
+	{
+		return config.getBoolean("UseBungeeCord", false);
 	}
 	
 	public String GetLanguage()
@@ -433,14 +446,14 @@ public class Config
 		return config.getBoolean("UseUUIDs");
 	}
 	
-	public boolean UseAltChatToggleCommand()
+	public String getChatToggleCommand()
 	{
-		return config.getBoolean("UseAltChatToggleCommand");
+		return config.getString("Chat.ToggleCommand").replace(' ', '_');
 	}
 	
-	public String ChatToggleCommand()
+	public String getChatPrivateFormat()
 	{
-		return config.getString("ChatToggleCommand").replace(' ', '_');
+		return config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 	}
 	
 	public boolean AllowSelfMarry()

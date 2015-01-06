@@ -21,3 +21,6 @@ Language:
     ChatLeft: '&aYou have set your chat to public chat.'
     ChatListeningStarted: '&aYou are now listening to the marry chat.'
     ChatListeningStoped: '&aYou are no longer listening to the marry chat.'
+    HomeBlocked: '&cYou are not allowed to teleport home from here.'
+    NoHome: '&cYou have no home yet.'
+    TPBlocked: '&cYou are not allowed to teleport home from here.'

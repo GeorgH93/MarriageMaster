@@ -21,3 +21,6 @@ Language:
     ChatLeft: '&aDu hast deinen Chat auf den öffentlichen Chat umgeschalten.'
     ChatListeningStarted: '&aDu hörst nun denn Ehe-Chat mit.'
     ChatListeningStoped: '&aDu hörst nun denn Ehe-Chat nicht mehr mit.'
+    HomeBlocked: '&cDu darfst dich von hier nicht Nachhause teleportieren.'
+    NoHome: '&cDu hast noch kein Zuhause.'
+    TPBlocked: '&cDu darfst dich von hier nicht Nachhause teleportieren.'

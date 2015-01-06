@@ -108,19 +108,12 @@ public class Chat extends BaseCommand
 				if(partner != null)
 	    		{
 					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
-					if(partnerPlayer != null)
-					{
-						String msg = "";
-	        			for(int i = 1; i < args.length; i++)
-	    				{
-	    					msg += args[i] + " ";
-	    				}
-	        			SendChat(player, partnerPlayer, msg);
-					}
-					else
-					{
-						player.sendMessage(plugin.Message_PartnerOffline);
-					}
+					String msg = "";
+        			for(int i = 1; i < args.length; i++)
+    				{
+    					msg += args[i] + " ";
+    				}
+        			SendChat(player, partnerPlayer, msg);
 				}
 				else
 	    		{
@@ -188,7 +181,12 @@ public class Chat extends BaseCommand
 	{
 		if(DirectChat.contains(player))
 		{
-			return true;
+			ProxiedPlayer partner = plugin.DB.GetPartnerPlayer(player);
+			if(partner != null)
+			{
+				SendChat(player, partner, text);
+				return true;
+			}
 		}
 		return false;
 	}

@@ -88,7 +88,10 @@ public class EventListener implements Listener
 			else
 			{
 				// Direct chat worker
-				event.setCancelled(plugin.chat.CheckDirectChat((ProxiedPlayer)event.getSender(), event.getMessage()));
+				if(plugin.chat != null)
+				{
+					event.setCancelled(plugin.chat.CheckDirectChat((ProxiedPlayer)event.getSender(), event.getMessage()));
+				}
 			}
 		}
     }
@@ -121,14 +124,17 @@ public class EventListener implements Listener
     {
 		if(JLInfo)
 		{
-			ProxiedPlayer otherPlayer = plugin.DB.GetPlayerPartner(event.getPlayer());
+			ProxiedPlayer otherPlayer = plugin.DB.GetPartnerPlayer(event.getPlayer());
 			
 			if(otherPlayer != null)
 			{
 				otherPlayer.sendMessage(Message_PartnerNowOffline);
 			}
 		}
-		plugin.chat.PlayerLeave(event.getPlayer());
+		if(plugin.chat != null)
+		{
+			plugin.chat.PlayerLeave(event.getPlayer());
+		}
     }
 	
 	@EventHandler(priority=EventPriority.NORMAL)
@@ -142,7 +148,12 @@ public class EventListener implements Listener
 		    }
 		    ByteArrayInputStream stream = new ByteArrayInputStream(ev.getData());
 		    DataInputStream in = new DataInputStream(stream);
-		    plugin.log.info(in.readUTF());
+		    String[] args = in.readUTF().split("\\|");
+			switch(args[0].toLowerCase())
+			{
+				case "home": if(plugin.home != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
+				case "tp": if(plugin.tp != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
+			}
 		}
 		catch(Exception e)
 		{

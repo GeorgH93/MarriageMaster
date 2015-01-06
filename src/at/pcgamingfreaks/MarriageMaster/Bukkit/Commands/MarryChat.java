@@ -30,12 +30,14 @@ public class MarryChat
 	private MarriageMaster plugin;
 	public List<Player> pcl;
 	public List<Player> Marry_ChatDirect;
+	private String format;
 	
 	public MarryChat(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 		pcl = new ArrayList<Player>();
 		Marry_ChatDirect = new ArrayList<Player>();
+		format = plugin.config.getChatPrivateFormat();
 	}
 
 	public void Chat(Player sender, Player reciver, String msg)
@@ -63,7 +65,7 @@ public class MarryChat
 			{
 				msg = msg.replaceAll("§k", "&k");
 			}
-			msg = sender.getDisplayName() + ChatColor.WHITE + " => " + reciver.getDisplayName() + ChatColor.WHITE + ": " + msg;
+			msg = String.format(format, sender.getDisplayName(), reciver.getDisplayName(), msg);
 			reciver.sendMessage(msg);
 			sender.sendMessage(msg);
 			for (Player play : pcl)

@@ -510,13 +510,13 @@ public class MySQL extends Database
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
 			ResultSet rs = pstmt.getResultSet();
-			World world = plugin.getServer().getWorld(rs.getString(4));
-			if(world == null)
-			{
-				return null;
-			}
 			if(rs.next())
 			{
+				World world = plugin.getServer().getWorld(rs.getString(4));
+				if(world == null)
+				{
+					return null;
+				}
 				loc = new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
 			}
 			rs.close();
