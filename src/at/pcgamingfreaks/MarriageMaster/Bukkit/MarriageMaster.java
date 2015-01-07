@@ -51,7 +51,7 @@ public class MarriageMaster extends JavaPlugin
 	public Logger log;
     public BaseEconomy economy = null;
     public Permission perms = null;
-    public PluginChannel pluginchannel;
+    public PluginChannel pluginchannel = null;
     public Kiss kiss = null;
     public Home home = null;
     public MarryTp tp = null;
@@ -65,6 +65,7 @@ public class MarriageMaster extends JavaPlugin
     public List<Marry_Requests> mr;
     public HashMap<Player, Player> dr;
     public MinePacks minepacks = null;
+    public String HomeServer = null;
     
     public void onEnable()
 	{
@@ -194,6 +195,8 @@ public class MarriageMaster extends JavaPlugin
 		{
 			getServer().getMessenger().registerIncomingPluginChannel(this, "MarriageMaster", pluginchannel);
 			getServer().getMessenger().registerOutgoingPluginChannel(this, "MarriageMaster");
+			getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", pluginchannel);
+			getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
 	}
 	 

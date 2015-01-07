@@ -33,8 +33,6 @@ TP:
 Database:
   # Disable UpdatePlayer in the plugin config of your bukkit server!!!
   UpdatePlayer: true
-  # Recomanded for online mode. You can disable them in the bukkits plugin config if you use them on the Bungee.
-  UseUUIDs: true
   # MySQL Settings must match the settings in your bukkit plugin config.
   MySQL:
     Host: localhost:3306
@@ -44,7 +42,6 @@ Database:
   Tables:
     User: marry_players
     Home: marry_home
-    Priests: marry_priests
     Partner: marry_partners
 
 Misc:

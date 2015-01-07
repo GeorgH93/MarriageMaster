@@ -179,6 +179,21 @@ public class MySQL extends Database
 				}
 			}
 			stmt.execute("CREATE TABLE IF NOT EXISTS " + Table_Home + " (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
+			try
+			{
+				stmt.execute("ALTER TABLE `" + Table_Home + "` ADD COLUMN `home_server` VARCHAR(45) UNIQUE;");
+			}
+			catch(SQLException e)
+			{
+				if(e.getErrorCode() == 1142)
+				{
+					plugin.log.warning(e.getMessage());
+				}
+				else if(e.getErrorCode() != 1060)
+				{
+					e.printStackTrace();
+				}
+			}
 			stmt.execute("DELETE FROM " + Table_Partners + " WHERE player1=player2");
 			stmt.close();
 		}
@@ -542,11 +557,12 @@ public class MySQL extends Database
 			if(rs.next())
 			{
 				mid = rs.getInt(1);
-				pstmt = GetConnection().prepareStatement("REPLACE INTO `" + Table_Home + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`) VALUES ("+mid+",?,?,?,?);");
+				pstmt = GetConnection().prepareStatement("REPLACE INTO `" + Table_Home + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`,`home_server`) VALUES ("+mid+",?,?,?,?,?);");
 				pstmt.setDouble(1, loc.getX());
 				pstmt.setDouble(2, loc.getY());
 				pstmt.setDouble(3, loc.getZ());
 				pstmt.setString(4, loc.getWorld().getName());
+				pstmt.setString(5, plugin.HomeServer);
 				pstmt.execute();
 			}
 			rs.close();

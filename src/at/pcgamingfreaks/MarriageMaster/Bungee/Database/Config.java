@@ -200,4 +200,45 @@ public class Config
 		}
 		return blockFrom;
 	}
+	
+	// DB Settings
+	public String getMySQLHost()
+	{
+		return config.getString("Database.MySQL.Host");
+	}
+	
+	public String getMySQLDatabase()
+	{
+		return config.getString("Database.MySQL.Database");
+	}
+	
+	public String getMySQLUser()
+	{
+		return config.getString("Database.MySQL.User");
+	}
+	
+	public String getMySQLPassword()
+	{
+		return config.getString("Database.MySQL.Password");
+	}
+	
+	public String getUserTable()
+	{
+		return config.getString("Database.Tables.User", "marry_players");
+	}
+	
+	public String getHomesTable()
+	{
+		return config.getString("Database.Tables.Home", "marry_home");
+	}
+	
+	public String getPartnersTable()
+	{
+		return config.getString("Database.Tables.Partner", "marry_partners");
+	}
+	
+	public boolean getUpdatePlayer()
+	{
+		return config.getBoolean("Database.UpdatePlayer", true);
+	}
 }

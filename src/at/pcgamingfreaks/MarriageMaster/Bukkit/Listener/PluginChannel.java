@@ -42,21 +42,26 @@ public class PluginChannel implements PluginMessageListener
 	{
 		try
 	    {
-			if (!channel.equals("MarriageMaster"))
+			if (channel.equals("MarriageMaster"))
 			{
-	            return;
+				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+			    DataInputStream in = new DataInputStream(stream);
+			    String[] args = in.readUTF().split("\\|");
+				switch(args[0].toLowerCase())
+				{
+					case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
+					case "reload": plugin.reload(); break;
+					case "home": if(args.length == 2) { plugin.home.TP(plugin.getServer().getPlayerExact(args[1])); } break;
+					case "delayHome": if(args.length == 2) { plugin.home.BungeeHomeDelay(plugin.getServer().getPlayerExact(args[1])); } break;
+					case "TP": if(args.length == 2) { plugin.tp.TP(plugin.getServer().getPlayerExact(args[1])); } break;
+					case "delayTP": if(args.length == 2) { plugin.tp.BungeeTPDelay(plugin.getServer().getPlayerExact(args[1])); } break;
+				}
 	        }
-			ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-		    DataInputStream in = new DataInputStream(stream);
-		    String[] args = in.readUTF().split("\\|");
-			switch(args[0].toLowerCase())
+			else if (channel.equals("BungeeCord"))
 			{
-				case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
-				case "reload": plugin.reload(); break;
-				case "home": if(args.length == 2) { plugin.home.TP(plugin.getServer().getPlayerExact(args[1])); } break;
-				case "delayHome": if(args.length == 2) { plugin.home.BungeeHomeDelay(plugin.getServer().getPlayerExact(args[1])); } break;
-				case "TP": if(args.length == 2) { plugin.tp.TP(plugin.getServer().getPlayerExact(args[1])); } break;
-				case "delayTP": if(args.length == 2) { plugin.tp.BungeeTPDelay(plugin.getServer().getPlayerExact(args[1])); } break;
+				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
+			    DataInputStream in = new DataInputStream(stream);
+			    plugin.HomeServer = in.readUTF();
 			}
 		}
 		catch (Exception e)
@@ -83,4 +88,22 @@ public class PluginChannel implements PluginMessageListener
 			e.printStackTrace();
 		}
     }
+	
+	public void requestServerName()
+	{
+		try
+		{
+	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	        DataOutputStream out = new DataOutputStream(stream);
+	        out.writeUTF("GetServer");
+	        out.flush();
+	        plugin.getServer().getOnlinePlayers()[0].sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+	        out.close();
+		}
+		catch(Exception e)
+		{
+			plugin.log.warning("Faild sending request to bungee!");
+			e.printStackTrace();
+		}
+	}
 }
