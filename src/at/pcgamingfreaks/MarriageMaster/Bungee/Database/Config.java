@@ -24,12 +24,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
 
-import org.bukkit.ChatColor;
-
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
 import com.google.common.io.ByteStreams;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
