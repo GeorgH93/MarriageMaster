@@ -73,7 +73,7 @@ public class Config
 		return config != null;
 	}
 	
-	private boolean UUIDComp()
+	public boolean UUIDComp()
 	{
 		try
 		{

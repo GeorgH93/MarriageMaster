@@ -157,7 +157,7 @@ public class Config
 	
 	public String getChatFormat()
 	{
-		return config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+		return ChatColor.translateAlternateColorCodes('&', config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
 	}
 	
 	public boolean getHomeGlobal()

@@ -724,15 +724,6 @@ public class MySQL extends Database
 		}
 	}
 	
-	public String LimitText(String text, int len)
-	{
-		if(text != null && text.length() > len)
-		{
-			return text.substring(0, len);
-		}
-		return text;
-	}
-	
 	public void SetShareBackpack(Player player, boolean allow)
 	{
 		try

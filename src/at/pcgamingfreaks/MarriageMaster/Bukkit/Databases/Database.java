@@ -89,4 +89,13 @@ public class Database
 			default: return new Files(pl);
 		}
 	}
+	
+	public String LimitText(String text, int len)
+	{
+		if(text != null && text.length() > len)
+		{
+			return text.substring(0, len);
+		}
+		return text;
+	}
 }

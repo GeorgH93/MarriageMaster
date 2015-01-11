@@ -43,10 +43,10 @@ public class Chat extends BaseCommand
 		format = plugin.config.getChatFormat();
 		
 		// Load Messages
-		Message_ChatJoined			 = plugin.lang.getReady("ChatJoined");
-		Message_ChatLeft			 = plugin.lang.getReady("ChatLeft");
-		Message_ChatListeningStarted = plugin.lang.getReady("ChatListeningStarted");
-		Message_ChatListeningStoped  = plugin.lang.getReady("ChatListeningStoped");
+		Message_ChatJoined			 = plugin.lang.getReady("Ingame.ChatJoined");
+		Message_ChatLeft			 = plugin.lang.getReady("Ingame.ChatLeft");
+		Message_ChatListeningStarted = plugin.lang.getReady("Ingame.ChatListeningStarted");
+		Message_ChatListeningStoped  = plugin.lang.getReady("Ingame.ChatListeningStoped");
 	}
 	
 	public boolean execute(ProxiedPlayer player, String cmd, String[] args)
@@ -109,7 +109,7 @@ public class Chat extends BaseCommand
 	    		{
 					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
 					String msg = "";
-        			for(int i = 1; i < args.length; i++)
+        			for(int i = 0; i < args.length; i++)
     				{
     					msg += args[i] + " ";
     				}

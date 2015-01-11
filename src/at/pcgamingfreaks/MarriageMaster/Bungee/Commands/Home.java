@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -111,12 +112,17 @@ public class Home extends BaseCommand
 		}
 	}
 	
-	public void SendHome(ProxiedPlayer player, ServerInfo homeServer)
+	public void SendHome(final ProxiedPlayer player, final ServerInfo homeServer)
 	{
-		if(player.getServer().getInfo().equals(homeServer))
+		if(!player.getServer().getInfo().getName().equals(homeServer.getName()))
 		{
 			player.connect(homeServer);
+			plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+				@Override public void run() { plugin.sendPluginMessage("home|" + player.getName(), homeServer); }}, 1L, TimeUnit.SECONDS);
 		}
-		plugin.sendPluginMessage("home|" + player.getName(), homeServer);
+		else
+		{
+			plugin.sendPluginMessage("home|" + player.getName(), homeServer);
+		}
 	}
 }

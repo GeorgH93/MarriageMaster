@@ -273,11 +273,12 @@ public class MySQL extends Database
 		try
 		{
 			Statement stmt = GetConnection().createStatement();
-			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
+			stmt.executeQuery("SELECT `uuid` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
 			ResultSet rs = stmt.getResultSet();
 			if(rs.next())
 			{
-				uuid = UUID.fromString(rs.getString(1));
+				String hexStringWithInsertedHyphens = rs.getString(1).replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
+				uuid = UUID.fromString(hexStringWithInsertedHyphens);
 			}
 			rs.close();
 			stmt.close();

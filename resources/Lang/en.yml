@@ -46,7 +46,7 @@ Language:
         PvPOn: You have now enabled PvP with your Partner.
         PvPOff: You have now disabled PvP with your Partner.
         NoHome: You have no Home yet.
-        HomeTP: You have been teleported to your Home.
+        HomeTP: You have been teleported to your home.
         HomeSet: Your home has been saved.
         PlayerNotOn: '%s is not Online.'
         NoTPInVanish: You cant use teleport if your Partner is Vanished.

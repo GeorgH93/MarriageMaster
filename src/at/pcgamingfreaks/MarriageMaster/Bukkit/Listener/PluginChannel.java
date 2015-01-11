@@ -47,7 +47,7 @@ public class PluginChannel implements PluginMessageListener
 				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 			    DataInputStream in = new DataInputStream(stream);
 			    String[] args = in.readUTF().split("\\|");
-				switch(args[0].toLowerCase())
+				switch(args[0])
 				{
 					case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
 					case "reload": plugin.reload(); break;
@@ -61,7 +61,10 @@ public class PluginChannel implements PluginMessageListener
 			{
 				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
 			    DataInputStream in = new DataInputStream(stream);
-			    plugin.HomeServer = in.readUTF();
+			    switch(in.readUTF())
+			    {
+			    	case "GetServer": plugin.HomeServer = in.readUTF(); break;
+			    }
 			}
 		}
 		catch (Exception e)

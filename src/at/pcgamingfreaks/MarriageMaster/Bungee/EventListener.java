@@ -80,7 +80,7 @@ public class EventListener implements Listener
 					try
 					{
 						event.setCancelled(marrycommandmap.get(cmd).execute((ProxiedPlayer)event.getSender(), cmd,
-								((args.length - 1) > 2) ? Arrays.copyOfRange(args, 2, args.length-1) : (new String[0])));
+							((args.length) > 2) ? Arrays.copyOfRange(args, 2, args.length) : (new String[0])));
 					}
 					catch(Exception e) {}
 				}

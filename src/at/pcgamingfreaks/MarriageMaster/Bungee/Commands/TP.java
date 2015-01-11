@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -51,7 +52,7 @@ public class TP extends BaseCommand
 				ProxiedPlayer Partner = plugin.getProxy().getPlayer(partner);
 				if(Partner != null)
 				{
-					if(blocked.contains(Partner.getServer().getInfo().getName().toLowerCase()))
+					if(!blocked.contains(Partner.getServer().getInfo().getName().toLowerCase()))
 					{
 						if(delayed)
 						{
@@ -97,12 +98,17 @@ public class TP extends BaseCommand
 		}
 	}
 	
-	public void SendTP(ProxiedPlayer player, ProxiedPlayer partner)
+	public void SendTP(final ProxiedPlayer player, final ProxiedPlayer partner)
 	{
-		if(!player.getServer().equals(partner.getServer()))
+		if(!player.getServer().getInfo().getName().equals(partner.getServer().getInfo().getName()))
 		{
 			player.connect(partner.getServer().getInfo());
+			plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+				@Override public void run() { plugin.sendPluginMessage("TP|" + player.getName(), partner.getServer().getInfo()); }}, 1L, TimeUnit.SECONDS);
 		}
-		plugin.sendPluginMessage("TP|" + player.getName(), partner.getServer().getInfo());
+		else
+		{
+			plugin.sendPluginMessage("TP|" + player.getName(), partner.getServer().getInfo());
+		}
 	}
 }
