@@ -127,21 +127,27 @@ public class JoinLeaveChat implements Listener
 			temp = m.next();
 			if(temp.p1 == event.getPlayer())
 			{
-				m.remove();
-				temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				if(temp.priest != null)
+				{
+					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				}
 				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				m.remove();
 			}
 			else if(temp.p2 == event.getPlayer())
 			{
-				m.remove();
-				temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				if(temp.priest != null)
+				{
+					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				}
 				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				m.remove();
 			}
 			else if(temp.priest != null && temp.priest == event.getPlayer())
 			{
-				m.remove();
 				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
 				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				m.remove();
 			}
 		}
 		Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
