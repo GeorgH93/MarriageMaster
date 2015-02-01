@@ -56,6 +56,7 @@ public class Config
 		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
 		{
+			plugin.log.info("No config found. Create new one ...");
 			NewConfig(file);
 		}
 		else
@@ -67,6 +68,7 @@ public class Config
 			}
 			catch(Exception e)
 			{
+				e.printStackTrace();
 				config = null;
 			}
 		}
@@ -154,7 +156,7 @@ public class Config
 		config.set("Teleport.Delay", false);
 		config.set("Teleport.DelayTime", 3);
 		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
-		config.set("Version",CONFIG_VERSION);
+		config.set("Version", CONFIG_VERSION);
 		
 		try 
 		{
@@ -170,6 +172,7 @@ public class Config
 	
 	private boolean UpdateConfig(File file)
 	{
+		plugin.log.info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
 		switch(config.getInt("Version"))
 		{
 			case 1:
@@ -219,23 +222,13 @@ public class Config
 				config.set("Kiss.CompatibilityMode", false);
 				config.set("VaultPermissions", true);
 			case 13:
-				if(config.getInt("Version") > 5)
-				{
-					config.set("Teleport.BlacklistedWorlds", config.getStringList("TPBlacklistedWorlds"));
-				}
-				else
-				{
-					config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
-				}
-				if(config.getInt("Version") > 9)
-				{
-					config.set("Chat.ToggleCommand", config.getString("ChatToggleCommand"));
-				}
-				else
-				{
-					config.set("Chat.ToggleCommand", "chattoggle");
-				}
+				plugin.log.info("Update TP Blacklist");
+				config.set("Teleport.BlacklistedWorlds", (config.getInt("Version") > 5) ? config.getStringList("TPBlacklistedWorlds") : new ArrayList<String>());
+				plugin.log.info("Update Chat ToggleCommand");
+				config.set("Chat.ToggleCommand", (config.getInt("Version") > 9) ? config.getString("ChatToggleCommand") : "chattoggle");
+				plugin.log.info("Add BungeeCord Option");
 				config.set("UseBungeeCord", false);
+				plugin.log.info("Add Private Chat Format");
 				config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 			break;
 			case CONFIG_VERSION: return false;

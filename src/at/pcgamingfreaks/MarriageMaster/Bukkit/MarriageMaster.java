@@ -76,6 +76,7 @@ public class MarriageMaster extends JavaPlugin
     
     public void Load()
     {
+    	log.info("Loading config");
     	config = new Config(this);
 		if(!config.Loaded())
 		{
@@ -83,6 +84,7 @@ public class MarriageMaster extends JavaPlugin
 			log.warning("Failed loading config! Disabling Plugin.");
 			return;
 		}
+		log.info("Config loaded");
 		lang = new Language(this);
 		DBType = config.GetDatabaseType();
 		UseUUIDs = config.getUseUUIDs();
