@@ -76,7 +76,6 @@ public class MarriageMaster extends JavaPlugin
     
     public void Load()
     {
-    	log.info("Loading config");
     	config = new Config(this);
 		if(!config.Loaded())
 		{
@@ -142,7 +141,10 @@ public class MarriageMaster extends JavaPlugin
     
     public void Disable()
     {
+    	
     	HandlerList.unregisterAll(this);
+    	getServer().getMessenger().unregisterIncomingPluginChannel(this);
+    	getServer().getMessenger().unregisterOutgoingPluginChannel(this);
     	DB.Disable();
     }
     

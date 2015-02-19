@@ -161,7 +161,7 @@ public class Config
 		try 
 		{
 			config.save(file);
-			plugin.log.info("Config File has been generated.");
+			plugin.log.info("Config file has been generated.");
 		}
   	  	catch (IOException e) 
   	  	{
@@ -222,13 +222,9 @@ public class Config
 				config.set("Kiss.CompatibilityMode", false);
 				config.set("VaultPermissions", true);
 			case 13:
-				plugin.log.info("Update TP Blacklist");
 				config.set("Teleport.BlacklistedWorlds", (config.getInt("Version") > 5) ? config.getStringList("TPBlacklistedWorlds") : new ArrayList<String>());
-				plugin.log.info("Update Chat ToggleCommand");
 				config.set("Chat.ToggleCommand", (config.getInt("Version") > 9) ? config.getString("ChatToggleCommand") : "chattoggle");
-				plugin.log.info("Add BungeeCord Option");
 				config.set("UseBungeeCord", false);
-				plugin.log.info("Add Private Chat Format");
 				config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 			break;
 			case CONFIG_VERSION: return false;
@@ -431,7 +427,7 @@ public class Config
 	
 	public double GetRange(String option)
 	{
-		return config.getDouble("Range." + option);
+		return config.getDouble("Range." + option, 25.0);
 	}
 	
 	public boolean getUseUUIDs()

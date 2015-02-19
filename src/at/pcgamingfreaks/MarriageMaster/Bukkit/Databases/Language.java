@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -57,6 +58,11 @@ public class Language
 			ExtractLangFile(file);
 		}
 		lang = YamlConfiguration.loadConfiguration(file);
+		Set<String> s = lang.getKeys(true);
+		for(String s2 : s)
+		{
+			plugin.log.info(s2);
+		}
 		UpdateLangFile(file);
 	}
 	
@@ -86,6 +92,7 @@ public class Language
 	
 	private boolean UpdateLangFile(File file)
 	{
+		plugin.log.info("Language Version: " + lang.getInt("Version") + " => " + ((lang.getInt("Version") == LANG_VERSION) ? "no updated needed" : "update needed"));
 		if(lang.getInt("Version") != LANG_VERSION)
 		{
 			if(plugin.config.GetLanguageUpdateMode().equalsIgnoreCase("overwrite"))
