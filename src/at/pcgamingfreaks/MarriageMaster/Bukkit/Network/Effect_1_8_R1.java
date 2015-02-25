@@ -34,25 +34,24 @@ public class Effect_1_8_R1 extends EffectBase
 			nmsEnumParticle = getNMSClass("EnumParticle");
 		}
 		
-		PacketPlayOutWorldParticles packet;
+		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
+		NMS.setValue(packet, "a", getEnum(nmsEnumParticle.getName() + "." + (type.getName().toUpperCase())));
+		NMS.setValue(packet, "b", (float) loc.getX());
+		NMS.setValue(packet, "c", (float) loc.getY());
+		NMS.setValue(packet, "d", (float) loc.getZ());
+		NMS.setValue(packet, "e", random1);
+		NMS.setValue(packet, "f", random2);
+		NMS.setValue(packet, "g", random3);
+		NMS.setValue(packet, "h", random4);
+		NMS.setValue(packet, "i", count);
+		NMS.setValue(packet, "j", false);
+		NMS.setValue(packet, "k", new int[]{});
 		for(Entity entity : loc.getWorld().getEntities())
 		{
 			if(entity instanceof CraftPlayer)
 			{
-				if(entity.getLocation().distance(loc) < visrange)
+				if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
-					packet = new PacketPlayOutWorldParticles();
-					NMS.setValue(packet, "a", getEnum(nmsEnumParticle.getName() + "." + (type.getName().toUpperCase())));
-					NMS.setValue(packet, "b", (float) loc.getX());
-					NMS.setValue(packet, "c", (float) loc.getY());
-					NMS.setValue(packet, "d", (float) loc.getZ());
-					NMS.setValue(packet, "e", random1);
-					NMS.setValue(packet, "f", random2);
-					NMS.setValue(packet, "g", random3);
-					NMS.setValue(packet, "h", random4);
-					NMS.setValue(packet, "i", count);
-					NMS.setValue(packet, "j", false);
-					NMS.setValue(packet, "k", new int[]{});
 					((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
 				}
 			}

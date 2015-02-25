@@ -27,23 +27,22 @@ public class Effect_1_7_R3 extends EffectBase
 {
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
 	{
-		PacketPlayOutWorldParticles packet;
+		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
+		NMS.setValue(packet, "a", type.getName());
+		NMS.setValue(packet, "b", (float) loc.getX());
+		NMS.setValue(packet, "c", (float) loc.getY());
+		NMS.setValue(packet, "d", (float) loc.getZ());
+		NMS.setValue(packet, "e", random1);
+		NMS.setValue(packet, "f", random2);
+		NMS.setValue(packet, "g", random3);
+		NMS.setValue(packet, "h", random4);
+		NMS.setValue(packet, "i", count);
 		for(Entity entity : loc.getWorld().getEntities())
 		{
 			if(entity instanceof CraftPlayer)
 			{
-				if(entity.getLocation().distance(loc) < visrange)
+				if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
-					packet = new PacketPlayOutWorldParticles();
-					NMS.setValue(packet, "a", type.getName());
-					NMS.setValue(packet, "b", (float) loc.getX());
-					NMS.setValue(packet, "c", (float) loc.getY());
-					NMS.setValue(packet, "d", (float) loc.getZ());
-					NMS.setValue(packet, "e", random1);
-					NMS.setValue(packet, "f", random2);
-					NMS.setValue(packet, "g", random3);
-					NMS.setValue(packet, "h", random4);
-					NMS.setValue(packet, "i", count);
 					((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
 				}
 			}

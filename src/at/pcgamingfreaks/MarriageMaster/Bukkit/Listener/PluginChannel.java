@@ -42,10 +42,9 @@ public class PluginChannel implements PluginMessageListener
 	{
 		try
 	    {
+			DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 			if (channel.equals("MarriageMaster"))
 			{
-				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-			    DataInputStream in = new DataInputStream(stream);
 			    String[] args = in.readUTF().split("\\|");
 				switch(args[0])
 				{
@@ -56,15 +55,15 @@ public class PluginChannel implements PluginMessageListener
 					case "TP": if(args.length == 2) { plugin.tp.TP(plugin.getServer().getPlayerExact(args[1])); } break;
 					case "delayTP": if(args.length == 2) { plugin.tp.BungeeTPDelay(plugin.getServer().getPlayerExact(args[1])); } break;
 				}
+				in.close();
 	        }
 			else if (channel.equals("BungeeCord"))
 			{
-				ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-			    DataInputStream in = new DataInputStream(stream);
 			    switch(in.readUTF())
 			    {
 			    	case "GetServer": plugin.HomeServer = in.readUTF(); break;
 			    }
+			    in.close();
 			}
 		}
 		catch (Exception e)

@@ -27,16 +27,17 @@ public class Effect_1_7 extends EffectBase
 	{
 		try
 		{
+			Object packet = PacketPlayOutParticle.getConstructor(new Class[] { String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class })
+					.newInstance(type.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), offsetX, offsetY, offsetZ, speed, count);
+			Object handle, connection;
 			for(Entity entity : loc.getWorld().getEntities())
 			{
 				if(entity instanceof Player)
 				{
-					if(entity.getLocation().distance(loc) < visrange)
+					if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 					{
-						Object packet = PacketPlayOutParticle.getConstructor(new Class[] { String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class })
-								.newInstance(type.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), offsetX, offsetY, offsetZ, speed, count);
-						Object handle = NMS.getHandle(entity);
-						Object connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
+						handle = NMS.getHandle(entity);
+						connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
 						NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
 					}
 				}

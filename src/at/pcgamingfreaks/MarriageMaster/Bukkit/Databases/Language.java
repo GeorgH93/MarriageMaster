@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -58,11 +57,6 @@ public class Language
 			ExtractLangFile(file);
 		}
 		lang = YamlConfiguration.loadConfiguration(file);
-		Set<String> s = lang.getKeys(true);
-		for(String s2 : s)
-		{
-			plugin.log.info(s2);
-		}
 		UpdateLangFile(file);
 	}
 	
