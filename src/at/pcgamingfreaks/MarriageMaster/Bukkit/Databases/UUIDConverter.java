@@ -28,7 +28,7 @@ import java.net.URLConnection;
 import java.util.Scanner;
 import java.util.UUID;
 
-import net.minecraft.util.com.google.gson.Gson;
+import com.google.gson.Gson;
 
 import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
