@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-
+import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
 public class MySQL extends Database
@@ -65,7 +65,7 @@ public class MySQL extends Database
 				{
 					plugin.log.info(plugin.lang.getString("Console.UpdateUUIDs"));
 				}
-				converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1)) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), plugin.getProxy().getConfigurationAdapter().getBoolean("online_mode", true)) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
 			}
 			if(converter.size() > 0)
 			{

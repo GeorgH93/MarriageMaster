@@ -36,6 +36,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 public class Files extends Database
@@ -180,7 +181,7 @@ public class Files extends Database
 			for(String s : convert)
 			{
 				Priests.remove(s);
-				s = UUIDConverter.getUUIDFromName(s);
+				s = UUIDConverter.getUUIDFromName(s, plugin.getServer().getOnlineMode());
 				if(s != null)
 				{
 					Priests.add(s);
@@ -195,7 +196,7 @@ public class Files extends Database
 				hilf = entry.getKey();
 				if(entry.getKey().length() != 32)
 				{
-					hilf = UUIDConverter.getUUIDFromName(hilf);
+					hilf = UUIDConverter.getUUIDFromName(hilf, plugin.getServer().getOnlineMode());
 					if(hilf != null)
 					{
 						fchilf.set("Name", entry.getKey());					
@@ -203,7 +204,7 @@ public class Files extends Database
 				}
 				if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID") == null)
 				{
-					fchilf.set("MarriedToUUID", UUIDConverter.getUUIDFromName(fchilf.getString("MarriedTo")));
+					fchilf.set("MarriedToUUID", UUIDConverter.getUUIDFromName(fchilf.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
 				}
 				MarryMap.put(hilf,fchilf);
 			}

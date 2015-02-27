@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
+package at.pcgamingfreaks;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -28,19 +28,16 @@ import java.net.URLConnection;
 import java.util.Scanner;
 import java.util.UUID;
 
-import com.google.gson.Gson;
-
-import org.bukkit.Bukkit;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import com.google.common.base.Charsets;
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
 public class UUIDConverter
 {
 	private static Gson gson = new Gson();
 	
-	protected static String getNameFromUUID(String uuid)
+	public static String getNameFromUUID(String uuid)
 	{
 		String name = null;
 		try
@@ -49,9 +46,9 @@ public class UUIDConverter
 			URLConnection connection = url.openConnection();
 			Scanner jsonScanner = new Scanner(connection.getInputStream(), "UTF-8");
 			String json = jsonScanner.next();
-			JSONParser parser = new JSONParser();
+			JsonParser parser = new JsonParser();
 			Object obj = parser.parse(json);
-			name = (String) ((JSONObject) obj).get("name");
+			name = (((JsonObject)obj).get("name")).toString();
 			jsonScanner.close();
 		}
 		catch (Exception ex)
@@ -61,9 +58,9 @@ public class UUIDConverter
 		return name;
 	}
 
-	protected static String getUUIDFromName(String name)
+	public static String getUUIDFromName(String name, boolean onlinemode)
 	{
-		if(Bukkit.getServer().getOnlineMode())
+		if(onlinemode)
 		{
 			try
 			{
@@ -78,7 +75,7 @@ public class UUIDConverter
 					}
 					UUID = result[0].getId();
 				}
-				return UUID;
+				return UUID.replace("-", "");
 			}
 			catch (Exception e)
 			{
