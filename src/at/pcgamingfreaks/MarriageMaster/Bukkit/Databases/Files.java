@@ -153,10 +153,7 @@ public class Files extends Database
 		{
 			if(string.length() != 32)
 			{
-				if(string.length() <= 16)
-				{
-					convert.add(string);
-				}
+				convert.add(string);
 			}
 		}
 		Map<String, FileConfiguration> CMarryMap = new HashMap<String, FileConfiguration>();
@@ -167,10 +164,9 @@ public class Files extends Database
 				if(entry.getKey().length() <= 16)
 				{
 					CMarryMap.put(entry.getKey(),entry.getValue());
-					continue;
 				}
 			}
-			if(entry.getValue().getString("MarriedStatus").equalsIgnoreCase("married") && entry.getValue().getString("MarriedToUUID") == null)
+			else if(entry.getValue().getString("MarriedStatus").equalsIgnoreCase("married") && (entry.getValue().getString("MarriedToUUID") == null || entry.getValue().getString("MarriedToUUID").contains("-")))
 			{
 				CMarryMap.put(entry.getKey(),entry.getValue());
 			}
@@ -181,10 +177,17 @@ public class Files extends Database
 			for(String s : convert)
 			{
 				Priests.remove(s);
-				s = UUIDConverter.getUUIDFromName(s, plugin.getServer().getOnlineMode());
-				if(s != null)
+				if(s.length() <= 16)
 				{
-					Priests.add(s);
+					s = UUIDConverter.getUUIDFromName(s, plugin.getServer().getOnlineMode());
+					if(s != null)
+					{
+						Priests.add(s);
+					}
+				}
+				else
+				{
+					Priests.add(s.replace("-", ""));
 				}
 			}
 			String hilf;
@@ -194,17 +197,26 @@ public class Files extends Database
 				MarryMap.remove(entry.getKey());
 				fchilf = entry.getValue();
 				hilf = entry.getKey();
-				if(entry.getKey().length() != 32)
+				if(hilf.length() <= 16)
 				{
 					hilf = UUIDConverter.getUUIDFromName(hilf, plugin.getServer().getOnlineMode());
-					if(hilf != null)
+					if(hilf == null)
 					{
-						fchilf.set("Name", entry.getKey());					
+						continue;
 					}
+					fchilf.set("Name", entry.getKey());
+				}
+				else if(hilf.length() > 32)
+				{
+					hilf = hilf.replace("-", "");
 				}
 				if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID") == null)
 				{
 					fchilf.set("MarriedToUUID", UUIDConverter.getUUIDFromName(fchilf.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
+				}
+				else if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID").length() > 32)
+				{
+					fchilf.set("MarriedToUUID", fchilf.getString("MarriedToUUID").replace("-", ""));
 				}
 				MarryMap.put(hilf,fchilf);
 			}

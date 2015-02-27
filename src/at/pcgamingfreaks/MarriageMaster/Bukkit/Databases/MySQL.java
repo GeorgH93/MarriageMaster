@@ -65,7 +65,7 @@ public class MySQL extends Database
 		{
 			List<String> converter = new ArrayList<String>();
 			Statement stmt = GetConnection().createStatement();
-			ResultSet res = stmt.executeQuery("SELECT name FROM " + Table_Players + " WHERE uuid IS NULL");
+			ResultSet res = stmt.executeQuery("SELECT name FROM " + Table_Players + " WHERE uuid IS NULL or uuid LIKE '%-%'");
 			while(res.next())
 			{
 				if(res.isFirst())
