@@ -161,10 +161,7 @@ public class Files extends Database
 		{
 			if(entry.getKey().length() != 32)
 			{
-				if(entry.getKey().length() <= 16)
-				{
-					CMarryMap.put(entry.getKey(),entry.getValue());
-				}
+				CMarryMap.put(entry.getKey(),entry.getValue());
 			}
 			else if(entry.getValue().getString("MarriedStatus").equalsIgnoreCase("married") && (entry.getValue().getString("MarriedToUUID") == null || entry.getValue().getString("MarriedToUUID").contains("-")))
 			{
