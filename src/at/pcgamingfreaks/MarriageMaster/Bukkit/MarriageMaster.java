@@ -63,6 +63,7 @@ public class MarriageMaster extends JavaPlugin
     public Database DB;
     public String DBType = "";
     public List<Marry_Requests> mr;
+    public List<Marry_Requests> bdr;
     public HashMap<Player, Player> dr;
     public MinePacks minepacks = null;
     public String HomeServer = null;
@@ -93,8 +94,14 @@ public class MarriageMaster extends JavaPlugin
 		tp = new MarryTp(this);
 		chat = new MarryChat(this);
 		mr = new ArrayList<Marry_Requests>();
-		dr = new HashMap<Player, Player>();
-		
+		if(config.getConfirmationBothDivorce())
+		{
+			bdr = new ArrayList<Marry_Requests>();
+		}
+		else
+		{
+			dr = new HashMap<Player, Player>();
+		}
 		if(config.UseMetrics())
 		{
 			try

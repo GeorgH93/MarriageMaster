@@ -150,20 +150,55 @@ public class JoinLeaveChat implements Listener
 				m.remove();
 			}
 		}
-		Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
-		Entry<Player, Player> e;
-		while(d.hasNext())
+		if(!plugin.config.getConfirmationBothDivorce())
 		{
-			e = d.next();
-			if(event.getPlayer().equals(e.getKey()))
+			Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
+			Entry<Player, Player> e;
+			while(d.hasNext())
 			{
-				e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.DivPlayerOff"), e.getKey().getName()));
-				d.remove();
+				e = d.next();
+				if(event.getPlayer().equals(e.getKey()))
+				{
+					e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.DivPlayerOff"), e.getKey().getName()));
+					d.remove();
+				}
+				else if(event.getPlayer().equals(e.getValue()))
+				{
+					e.getKey().sendMessage(String.format(plugin.lang.Get("Priest.DivPriestOff"), e.getValue().getName()));
+					d.remove();
+				}
 			}
-			else if(event.getPlayer().equals(e.getValue()))
+		}
+		else
+		{
+			m = plugin.bdr.iterator();
+			while (m.hasNext())
 			{
-				e.getKey().sendMessage(String.format(plugin.lang.Get("Priest.DivPriestOff"), e.getValue().getName()));
-				d.remove();
+				temp = m.next();
+				if(temp.p1 == event.getPlayer())
+				{
+					if(temp.priest != null)
+					{
+						temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+					}
+					temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+					m.remove();
+				}
+				else if(temp.p2 == event.getPlayer())
+				{
+					if(temp.priest != null)
+					{
+						temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+					}
+					temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+					m.remove();
+				}
+				else if(temp.priest != null && temp.priest == event.getPlayer())
+				{
+					temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+					temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+					m.remove();
+				}
 			}
 		}
 	}

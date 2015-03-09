@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 14;
+	private static final int CONFIG_VERSION = 15;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -139,6 +139,7 @@ public class Config
 		config.set("Database.Tables.Partner", "marry_partners");
 		config.set("Confirmation.Enable", true);
 		config.set("Confirmation.AutoDialog", true);
+		config.set("Confirmation.BothPlayersOnDivorce", false);
 		config.set("Kiss.Enable", true);
 		config.set("Kiss.WaitTime", 10);
 		config.set("Kiss.HearthCount", 50);
@@ -226,6 +227,8 @@ public class Config
 				config.set("Chat.ToggleCommand", (config.getInt("Version") > 9) ? config.getString("ChatToggleCommand") : "chattoggle");
 				config.set("UseBungeeCord", false);
 				config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
+			case 14:
+				config.set("Confirmation.BothPlayersOnDivorce", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -383,6 +386,11 @@ public class Config
 	public boolean UseConfirmation()
 	{
 		return config.getBoolean("Confirmation.Enable");
+	}
+	
+	public boolean getConfirmationBothDivorce()
+	{
+		return config.getBoolean("Confirmation.BothPlayersOnDivorce");
 	}
 	
 	public boolean UseConfirmationAutoDialog()
