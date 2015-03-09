@@ -1,4 +1,4 @@
-Version: 14
+Version: 16
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -77,6 +77,7 @@ Language:
         MarryConfirm: '%s want to marry you. Accept the marriage with /marry accept or deny it with /marry deny'
         HasMarried: 'You have married %s.'
         BroadcastMarriage: '%1$s has married %2$s.'
+        BroadcastDivorce: '%1$s has left %2$s.'
         Divorced: 'You left %s. You are free now.'
         DivorcedPlayer: '%s has left you. You are free now.'
         AlreadyMarried: You are already married!
@@ -111,6 +112,7 @@ Language:
         NotInRange: The players are not in range.
         AlreadyMarried: You can't marry people that are already married.
         BroadcastMarriage: '%1$s has married %2$s with %3$s.'
+        BroadcastDivorce: '%1$s has divorced %2$s from %3$s.'
         Married: 'You have married %1$s with %2$s.'
         HasMarried: '%1$s has married you with %2$s.'
         MadeYouAPriest: '%s has made you a priest.'

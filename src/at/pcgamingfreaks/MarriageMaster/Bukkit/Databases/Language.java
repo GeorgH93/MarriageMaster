@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster plugin;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 14;
+	private static final int LANG_VERSION = 15;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -195,6 +195,9 @@ public class Language
 						lang.set("Language.Description.BackpackOff",	"Disallows your partner to use your backpack.");
 					case 13:
 						lang.set("Language.Ingame.CheckingForUpdates",	"Checking for updates ...");
+					case 14:
+						lang.set("Language.Ingame.BroadcastDivorce",	"%1$s has left %2$s.");
+						lang.set("Language.Priest.BroadcastDivorce",	"%1$s has divorced %2$s from %3$s.");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

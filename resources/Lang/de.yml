@@ -1,4 +1,4 @@
-Version: 14
+Version: 15
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -77,6 +77,7 @@ Language:
         MarryConfirm: '%s will dich heiraten. Akzeptiere mit /marry accept oder lehne mit /marry deny ab.'
         HasMarried: 'Du hast %s geheiratet.'
         BroadcastMarriage: '%1$s hat %2$s geheiratet.'
+        BroadcastDivorce: '%1$s hat sich von %2$s getrennt.'
         Divorced: 'Du hast dich von %s getrennt.'
         DivorcedPlayer: '%s hat dich verlassen.'
         AlreadyMarried: Du bist bereits verheiratet.
@@ -111,6 +112,7 @@ Language:
         NotInRange: Die Spieler sind nicht in Reichweite.
         AlreadyMarried: Du kannst niemanden verheiraten der schon verheiratet ist.
         BroadcastMarriage: '%1$s hat %2$s mit %3$s verheiratet.'
+        BroadcastDivorce: '%1$s hat %2$s von %3$s geschieden.'
         Married: 'Du hast %1$s mit %2$s verheiratet.'
         HasMarried: '%1$s hat dich mit %2$s verheiratet.'
         MadeYouAPriest: '%s hat dich zu einem Priester gemacht.'
