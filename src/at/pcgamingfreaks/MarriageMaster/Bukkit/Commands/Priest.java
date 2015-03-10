@@ -458,6 +458,7 @@ public class Priest
 						plugin.dr.put(player, priest);
 					}
 					player.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
+					priest.sendMessage(plugin.lang.Get("Priest.DivorceRequestSent"));
 				}
 			}
 		}

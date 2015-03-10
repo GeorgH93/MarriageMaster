@@ -198,6 +198,7 @@ public class Language
 					case 14:
 						lang.set("Language.Ingame.BroadcastDivorce",	"%1$s has left %2$s.");
 						lang.set("Language.Priest.BroadcastDivorce",	"%1$s has divorced %2$s from %3$s.");
+						lang.set("Language.Priest.DivorceRequestSent",	"Divorce request sent.");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

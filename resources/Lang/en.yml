@@ -134,6 +134,7 @@ Language:
         DivorceCanceled: You have denied the divorce.
         DivorceConfirm: 'Accept the divorce with /marry accept or deny it with /marry deny'
         SurnameSet: Surname changed.
+        DivorceRequestSent: 'Divorce request sent.'
     Dialog:
         DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
         AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'
