@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 
 public class Effect_1_8 extends EffectBase
 {
-	private static Class<?>	EParticle = NMS.getNMSClass("EnumParticle");
+	private static final Class<?>	EParticle = NMS.getNMSClass("EnumParticle");
 	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
@@ -47,7 +47,8 @@ public class Effect_1_8 extends EffectBase
 		}
 		catch (Exception e)
 		{
-			throw new IllegalArgumentException("Unable to send Particle " + type.getName() + ". (Version 1.8): " + e.getMessage());
+			System.out.println("Unable to send Particle " + type.getName() + ". (Version 1.8)");
+			e.printStackTrace();
 		}
 	}
 }

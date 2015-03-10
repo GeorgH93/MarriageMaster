@@ -22,7 +22,7 @@ import org.bukkit.Location;
 
 public class EffectBase
 {
-	protected static Class<?>	PacketPlayOutParticle = NMS.getNMSClass("PacketPlayOutWorldParticles");
+	protected static Class<?> PacketPlayOutParticle = NMS.getNMSClass("PacketPlayOutWorldParticles");
 	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
 	

@@ -45,7 +45,8 @@ public class Effect_1_7 extends EffectBase
 		}
 		catch (Exception e)
 		{
-			throw new IllegalArgumentException("Unable to send Particle " + type.getName() + ". (Version 1.7): " + e.getMessage());
+			System.out.println("Unable to send Particle " + type.getName() + ". (Version 1.7)");
+			e.printStackTrace();
 		}
 	}
 }

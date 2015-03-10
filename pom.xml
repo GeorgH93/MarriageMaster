@@ -8,7 +8,7 @@
   	  <repository>
 		  <id>in-project</id>
 		  <name>In Project Repo</name>
-		  <url>file://${project.basedir}/libs</url>
+		  <url>file://${project.basedir}/jar_libs</url>
 	  </repository>
   	  <repository>
           <id>bukkit-repo</id>
@@ -37,7 +37,7 @@
   </repositories>
   <build>
 	<defaultGoal>clean install</defaultGoal>
-	<sourceDirectory>src</sourceDirectory>
+	<sourceDirectory>src, libs</sourceDirectory>
 	<resources>
 		<resource>
 			<directory>resources</directory>
@@ -110,7 +110,7 @@
 		<artifactId>Minecraft</artifactId>
 		<version>1</version>
 		<scope>system</scope>
-		<systemPath>${project.basedir}/libs/net.jar</systemPath>
+		<systemPath>${project.basedir}/jar_libs/net.jar</systemPath>
 	</dependency>
   	
   	<dependency>
