@@ -37,7 +37,7 @@
   </repositories>
   <build>
 	<defaultGoal>clean install</defaultGoal>
-	<sourceDirectory>src, libs</sourceDirectory>
+	<sourceDirectory>src</sourceDirectory>
 	<resources>
 		<resource>
 			<directory>resources</directory>
@@ -56,6 +56,25 @@
           <target>1.7</target>
         </configuration>
       </plugin>
+      <plugin>
+	    <groupId>org.codehaus.mojo</groupId>
+	    <artifactId>build-helper-maven-plugin</artifactId>
+	    <version>1.4</version>
+	    <executions>
+		  <execution>
+		    <id>add-wsdl-source</id>
+		    <phase>generate-sources</phase>
+		    <goals>
+		      <goal>add-source</goal>
+		    </goals>
+		    <configuration>
+		      <sources>
+		        <source>${basedir}/libs</source>
+		      </sources>
+		    </configuration>
+		  </execution>
+	    </executions>
+	  </plugin>
       <plugin>
        <groupId>org.apache.maven.plugins</groupId>
        <artifactId>maven-shade-plugin</artifactId>
