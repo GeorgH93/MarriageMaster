@@ -139,7 +139,7 @@ public class Priest
 			player.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.NotYourSelf"), otP));
 			return;
 		}
-		if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("Marry")))
+		if(plugin.InRadiusAllWorlds(player, otherPlayer, plugin.config.GetRange("Marry")))
 		{
 			if(!plugin.HasPartner(player))
 			{
@@ -353,7 +353,7 @@ public class Priest
 
 	private boolean InRadius(Player player, Player otherPlayer, Player priest) 
 	{
-		return plugin.InRadius(player, priest, plugin.config.GetRange("Marry")) && plugin.InRadius(otherPlayer, priest, plugin.config.GetRange("Marry"));
+		return plugin.InRadiusAllWorlds(player, priest, plugin.config.GetRange("Marry")) && plugin.InRadiusAllWorlds(otherPlayer, priest, plugin.config.GetRange("Marry"));
 	}
 	
 	public void setPriest(String[] args, CommandSender sender)
