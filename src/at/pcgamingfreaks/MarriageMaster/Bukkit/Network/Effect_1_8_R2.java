@@ -59,27 +59,36 @@ public class Effect_1_8_R2 extends EffectBase
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static Enum<?> getEnum(String enumFullName) {
+	private static Enum<?> getEnum(String enumFullName)
+	{
 		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
-		if (x.length == 2) {
+		if (x.length == 2)
+		{
 			String enumClassName = x[0];
 			String enumName = x[1];
-			try {
+			try
+			{
 				Class<Enum> cl = (Class<Enum>) Class.forName(enumClassName);
 				return Enum.valueOf(cl, enumName);
-			} catch (ClassNotFoundException e) {
+			}
+			catch (ClassNotFoundException e)
+			{
 				e.printStackTrace();
 			}
 		}
 		return null;
 	}
 	
-	public static Class<?> getNMSClass(String className) {
-		String fullName = "net.minecraft.server.v1_8_R1." + className;
+	public static Class<?> getNMSClass(String className)
+	{
+		String fullName = "net.minecraft.server.v1_8_R2." + className;
 		Class<?> clazz = null;
-		try {
+		try
+		{
 			clazz = Class.forName(fullName);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 		return clazz;
