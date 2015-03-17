@@ -136,7 +136,7 @@ public class Priest
 		}
 		if(player.equals(otherPlayer))
 		{
-			player.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.NotYourSelf"), otP));
+			player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotYourSelf"));
 			return;
 		}
 		if(plugin.InRadiusAllWorlds(player, otherPlayer, plugin.config.GetRange("Marry")))
