@@ -236,7 +236,7 @@ public class MarriageMaster extends JavaPlugin
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0))
+		if(pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false)))
 		{
 			return true;
 		}
@@ -247,7 +247,7 @@ public class MarriageMaster extends JavaPlugin
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(radius < 0 || (pl.getWorld().equals(opl.getWorld()) && pl.distance(opl) <= radius) || (pl.getWorld().equals(opl.getWorld()) && radius == 0))
+		if(radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false))))
 		{
 			return true;
 		}

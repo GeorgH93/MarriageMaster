@@ -353,7 +353,7 @@ public class Priest
 
 	private boolean InRadius(Player player, Player otherPlayer, Player priest) 
 	{
-		return plugin.InRadiusAllWorlds(player, priest, plugin.config.GetRange("Marry")) && plugin.InRadiusAllWorlds(otherPlayer, priest, plugin.config.GetRange("Marry"));
+		return plugin.InRadiusAllWorlds(priest, player, plugin.config.GetRange("Marry")) && plugin.InRadiusAllWorlds(priest, otherPlayer, plugin.config.GetRange("Marry"));
 	}
 	
 	public void setPriest(String[] args, CommandSender sender)

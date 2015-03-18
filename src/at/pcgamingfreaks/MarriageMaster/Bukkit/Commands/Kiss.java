@@ -75,7 +75,10 @@ public class Kiss
 		otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.YouGotKissed"));
 		DrawHearts(otherPlayer);
 		DrawHearts(player);
-		wait.put(player.getName(), System.currentTimeMillis());
+		if(!plugin.CheckPerm(player, "marry.skiptpdelay", false))
+		{
+			wait.put(player.getName(), System.currentTimeMillis());
+		}
 	}
 	
 	public void DrawHearts(Player player)

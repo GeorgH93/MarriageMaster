@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 15;
+	private static final int CONFIG_VERSION = 16;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -112,6 +112,7 @@ public class Config
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
 		config.set("Surname", false);
+		config.set("AllowGiftsInCreative", false);
 		config.set("UseMinepacks", false);
 		config.set("UseBungeeCord", false);
 		config.set("Economy.Enable", false);
@@ -229,6 +230,8 @@ public class Config
 				config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 			case 14:
 				config.set("Confirmation.BothPlayersOnDivorce", false);
+			case 15:
+				config.set("AllowGiftsInCreative", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -466,6 +469,11 @@ public class Config
 	public int TPDelayTime()
 	{
 		return config.getInt("Teleport.DelayTime");
+	}
+	
+	public boolean getAllowGiftsInCreative()
+	{
+		return config.getBoolean("AllowGiftsInCreative");
 	}
 	
 	public boolean getSurname()

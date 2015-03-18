@@ -31,8 +31,10 @@ permissions:
       marry.update: true
       marry.offlinedivorce: true
       marry.skiptpdelay: true
+      marry.bypassrangelimit: true
+      marry.bypassgiftgamemode: true
   marry.admin:
-    description: Gives acces to all Marriage Admin commands
+    description: Gives access to all Marriage Admin commands
     children:
       marry.reload: true
       marry.setpriest: true
@@ -40,7 +42,13 @@ permissions:
       marry.listenchat: true
       marry.update: true
       marry.offlinedivorce: true
+      marry.bypass: true
+  marry.bypass:
+    description: Gives all bypassing permissions
+    children:
       marry.skiptpdelay: true
+      marry.bypassrangelimit: true
+      marry.bypassgiftgamemode: true
   marry.user:
     description: Gives acces to all user functions
     children:
@@ -106,6 +114,12 @@ permissions:
     default: true
   marry.skiptpdelay:
     description: Allows to skip the delay on tps
+    default: op
+  marry.bypassrangelimit:
+    description: Allows to bypass the range limits
+    default: op
+  marry.bypassgiftgamemode:
+    description: Allows to bypass gamemode check for item gifting
     default: op
   marry.offlinedivorce:
     description: Allows a priest to divorce players when only one of them is online.
