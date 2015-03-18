@@ -148,7 +148,7 @@ public class Config
 		config.set("Misc.AutoUpdate", true);
 		config.set("Range.Marry", 25.0F);
 		config.set("Range.Kiss", 2.0F);
-		config.set("Range.KissInteract", 25.0F);
+		config.set("Range.KissInteract", 2.0F);
 		config.set("Range.HearthVisible", 128.0F);
 		config.set("Range.Heal", 2.0F);
 		config.set("Range.BonusXP", 10.0F);
@@ -450,7 +450,7 @@ public class Config
 	
 	public String getChatPrivateFormat()
 	{
-		return config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+		return ChatColor.translateAlternateColorCodes('&', config.getString("Chat.PrivateFormat")).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 	}
 	
 	public boolean AllowSelfMarry()
