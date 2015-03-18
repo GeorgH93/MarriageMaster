@@ -137,7 +137,7 @@ public class OnCommand implements CommandExecutor
 			return true;
 		}
 		
-		if(args.length == 0 || args.length > 3)
+		if(args.length == 0 || (args.length > 3 && !(args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("chat"))))
 		{
 			ShowAvailableCmds(player);
 			return true;
@@ -660,7 +660,7 @@ public class OnCommand implements CommandExecutor
 		        	}
 		        	else
 		        	{
-		        		player.sendMessage(ChatColor.RED + plugin.lang.Get("Description.NotAPriest"));
+		        		player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotAPriest"));
 		        	}
 		        }
 		        else if(plugin.config.AllowSelfMarry() && args.length == 1)
