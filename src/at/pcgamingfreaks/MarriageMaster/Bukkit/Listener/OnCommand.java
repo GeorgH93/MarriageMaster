@@ -381,7 +381,7 @@ public class OnCommand implements CommandExecutor
 					String Partner = plugin.DB.GetPartner(player);
 	        		if(Partner != null && !Partner.isEmpty())
 					{
-	        			if(!plugin.config.getAllowGiftsInCreative() || !player.getGameMode().equals(GameMode.SURVIVAL) || !plugin.CheckPerm(player, "marry.bypassgiftgamemode", false))
+	        			if(!(player.getGameMode().equals(GameMode.SURVIVAL) || plugin.config.getAllowGiftsInCreative() || plugin.CheckPerm(player, "marry.bypassgiftgamemode", false)))
 	        			{
 	        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.GiftsOnlyInSurvival"));
 	        				return true;
