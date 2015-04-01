@@ -65,7 +65,8 @@ public class UUIDConverter
 	    	}
 	    	catch (Exception e)
 	    	{
-	    		e.printStackTrace();
+	    		System.out.println("Unable to get UUID for: " + name + "! Giving offline UUID!");
+	    		//e.printStackTrace();
 	    		uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)).toString();
 	    	}
 		}
