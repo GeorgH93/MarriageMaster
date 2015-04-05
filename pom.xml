@@ -11,10 +11,6 @@
       <url>file://${project.basedir}/jar_libs</url>
     </repository>
     <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/groups/public</url>
-    </repository>
-    <repository>
       <id>sonatype-snapshot</id>
       <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
@@ -23,8 +19,8 @@
       <url>https://hub.spigotmc.org/nexus/content/groups/public</url>
     </repository>
     <repository>
-      <id>md5-snapshot</id>
-      <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+      <id>md5-public</id>
+      <url>http://repo.md-5.net/content/groups/public/</url>
     </repository>
     <repository>
       <id>vault-repo</id>
