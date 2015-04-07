@@ -109,6 +109,7 @@ public class MarriageMaster extends Plugin
 		// Register Listener
 		listener = new EventListener(this);
 		getProxy().getPluginManager().registerListener(this, listener);
+		getProxy().registerChannel("MarriageMaster");
 		// Register Commands
 			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
 			// Register sub Commands for /marry
