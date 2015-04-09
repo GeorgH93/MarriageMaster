@@ -6,7 +6,7 @@ version: ${version}
 softdepend: [Vault,MinePacks]
 commands:
    marry:
-      description: Main command
+      description: Marry main command
       usage: /marry
       
 permissions:
