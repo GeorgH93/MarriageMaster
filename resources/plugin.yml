@@ -8,7 +8,6 @@ commands:
    marry:
       description: Marry main command
       usage: /marry
-      
 permissions:
   marry.*:
     description: Gives access to all MarriageMaster commands
