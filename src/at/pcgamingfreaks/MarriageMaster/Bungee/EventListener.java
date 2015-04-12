@@ -152,7 +152,7 @@ public class EventListener implements Listener
 			switch(args[0].toLowerCase())
 			{
 				case "home": if(plugin.home != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
-				case "tp": if(plugin.tp != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
+				case "tp": if(plugin.tp != null && args.length == 2) { plugin.tp.SendTP(args[1]); } break;
 			}
 		}
 		catch(Exception e)
