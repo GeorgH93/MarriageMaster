@@ -503,7 +503,7 @@ public class OnCommand implements CommandExecutor
 		    		{
 		        		if(m.p1 == player || m.p2 == player)
 		        		{
-		        			plugin.mr.remove(m);
+		        			plugin.bdr.remove(m);
 		        			if(m.p1 == player)
 		        			{
 		        				m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
@@ -660,6 +660,7 @@ public class OnCommand implements CommandExecutor
 		        {
 		        	if(plugin.IsPriest(player))
 		        	{
+		        		plugin.log.info("Priest " + player.getName() + "want to divorce " + args[1]);
 		        		priest.Divorce(player, args);
 		        	}
 		        	else
