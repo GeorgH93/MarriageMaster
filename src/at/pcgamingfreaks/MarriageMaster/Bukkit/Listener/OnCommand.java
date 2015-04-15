@@ -267,7 +267,11 @@ public class OnCommand implements CommandExecutor
 			case "home":
 				if(plugin.CheckPerm(player, "marry.home"))
     	    	{
-					if(plugin.HasPartner(player))
+					if(args.length == 2 && plugin.CheckPerm(player, "marry.home.others", false))
+					{
+						plugin.home.TPAdmin(player, args[1]);
+					}
+					else if(plugin.HasPartner(player))
 		        	{
 						plugin.home.TP(player);
 		        	}
@@ -779,6 +783,10 @@ public class OnCommand implements CommandExecutor
 		if(plugin.CheckPerm(player, "marry.home"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry home" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHome"));
+			if(plugin.CheckPerm(player, "marry.home.others", false))
+			{
+				player.sendMessage(ChatColor.AQUA + "/marry home <player>" + ChatColor.WHITE);
+			}
 			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SetHome"));
 		}
 		if(plugin.CheckPerm(player, "marry.chat"))

@@ -36,6 +36,19 @@ public class Home
 		
 		delaytime = plugin.config.TPDelayTime() * 20L;
 	}
+	
+	public void TPAdmin(Player admin, String player)
+	{
+		Location loc = plugin.DB.GetMarryHome(player);
+		if(loc != null)
+		{
+			admin.teleport(loc);
+		}
+		else
+		{
+			admin.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PlayerNoHome"));
+		}
+	}
 
 	public void TP(Player player)
 	{
@@ -50,7 +63,7 @@ public class Home
 		}
 		else
 		{
-			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.NoHome"));
+			player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoHome"));
 		}
 	}
 	

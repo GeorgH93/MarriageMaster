@@ -338,6 +338,29 @@ public class MySQL extends Database
 		return id;
 	}
 	
+	private int GetPlayerID(String player)
+	{
+		int id = -1;
+		try
+		{
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?");
+			pstmt.setString(1, player);
+			pstmt.executeQuery();
+			ResultSet rs = pstmt.getResultSet();
+			if(rs.next())
+			{
+				id = rs.getInt(1);
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	private String GetPlayerName(int pid)
 	{
 		String name = null;
@@ -513,6 +536,36 @@ public class MySQL extends Database
 			e.printStackTrace();
 		}
 		return MarryMap_out;
+	}
+	
+	public Location GetMarryHome(String player)
+	{
+		Location loc = null;
+		try
+		{
+			int pid = GetPlayerID(player);
+			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?");
+			pstmt.setInt(1, pid);
+			pstmt.setInt(2, pid);
+			pstmt.executeQuery();
+			ResultSet rs = pstmt.getResultSet();
+			if(rs.next())
+			{
+				World world = plugin.getServer().getWorld(rs.getString(4));
+				if(world == null)
+				{
+					return null;
+				}
+				loc = new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return loc;
 	}
 	
 	public Location GetMarryHome(Player player)

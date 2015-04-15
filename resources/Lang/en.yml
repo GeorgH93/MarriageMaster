@@ -1,4 +1,4 @@
-Version: 15
+Version: 16
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -45,7 +45,8 @@ Language:
         PartnerNowOffline: Your Partner is now offline.
         PvPOn: You have now enabled PvP with your Partner.
         PvPOff: You have now disabled PvP with your Partner.
-        NoHome: You have no Home yet.
+        PlayerNoHome: "The player doesn't have a home yet."
+        NoHome: You have no home yet.
         HomeTP: You have been teleported to your home.
         HomeSet: Your home has been saved.
         PlayerNotOn: '%s is not Online.'

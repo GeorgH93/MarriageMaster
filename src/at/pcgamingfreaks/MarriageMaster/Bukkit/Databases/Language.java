@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster plugin;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 15;
+	private static final int LANG_VERSION = 16;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -199,6 +199,8 @@ public class Language
 						lang.set("Language.Ingame.BroadcastDivorce",	"%1$s has left %2$s.");
 						lang.set("Language.Priest.BroadcastDivorce",	"%1$s has divorced %2$s from %3$s.");
 						lang.set("Language.Priest.DivorceRequestSent",	"Divorce request sent.");
+					case 15:
+						lang.set("Language.Ingame.PlayerNoHome", "The player doesn't have a home yet.");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}
