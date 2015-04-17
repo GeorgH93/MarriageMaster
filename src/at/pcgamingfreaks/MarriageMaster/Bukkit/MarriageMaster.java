@@ -293,22 +293,16 @@ public class MarriageMaster extends JavaPlugin
 	{
 		if(player.isOp())
 		{
-			log.info(player.getName() + " is op -> so he has the '" + Perm + "' permission");
 			return true;
 		}
 		if(UsePerms)
 		{
 			if(perms != null)
 			{
-				log.info("Using vault permissions.");
-				log.info(player.getName() + " - Permission: '" + Perm + "' = " + perms.has(player, Perm));
 				return perms.has(player, Perm);
 			}
-			log.info("Using bukkits permission system.");
-			log.info(player.getName() + " - Permission: '" + Perm + "' = " + player.hasPermission(Perm));
 			return player.hasPermission(Perm);
 		}
-		log.info("Permissions are disabled!");
 		return def;
 	}
 }
