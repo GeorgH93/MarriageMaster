@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.json.simple.JSONArray;
@@ -455,6 +456,20 @@ public class Bukkit_Updater {
     		}
     		for(i = 0; i < c; i++)
 			{
+    			if(i == 0 && Integer.parseInt(rv[i]) == 2)
+    			{
+    				try
+    				{
+    					String[] GameVersion = Bukkit.getBukkitVersion().split("-");
+    					GameVersion = GameVersion[0].split("\\.");
+    					if(Integer.parseInt(GameVersion[1]) > 7)
+    					{
+    						return true;
+    					}
+    				}
+    				catch(Exception e){}
+    				return false;
+    			}
 				if(Integer.parseInt(rv[i]) > Integer.parseInt(lv[i]))
 				{
 					return true;
