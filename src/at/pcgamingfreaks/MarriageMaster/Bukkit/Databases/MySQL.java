@@ -538,42 +538,47 @@ public class MySQL extends Database
 		return MarryMap_out;
 	}
 	
-	public Location GetMarryHome(String player)
+	public void DelMarryHome(Player player)
 	{
-		Location loc = null;
+		DelMarryHome(GetPlayerID(player));
+	}
+	
+	public void DelMarryHome(String player)
+	{
+		DelMarryHome(GetPlayerID(player));
+	}
+	
+	private void DelMarryHome(int pid)
+	{
 		try
 		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?");
+			PreparedStatement pstmt = GetConnection().prepareStatement("DELETE FROM `" + Table_Home + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?);");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				World world = plugin.getServer().getWorld(rs.getString(4));
-				if(world == null)
-				{
-					return null;
-				}
-				loc = new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
-			}
-			rs.close();
+			pstmt.execute();
 			pstmt.close();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		return loc;
+	}
+	
+	public Location GetMarryHome(String player)
+	{
+		return GetMarryHome(GetPlayerID(player));
 	}
 	
 	public Location GetMarryHome(Player player)
 	{
+		return GetMarryHome(GetPlayerID(player));
+	}
+	
+	private Location GetMarryHome(int pid)
+	{
 		Location loc = null;
 		try
 		{
-			int pid = GetPlayerID(player);
 			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);

@@ -127,13 +127,8 @@ public class Home
 		Location home = player.getLocation();
 		if(plugin.economy == null || plugin.economy.HomeTeleport(player))
 		{
-			SetMarryHome(player, home);
+			plugin.DB.SetMarryHome(home, player);
+			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeSet"));
 		}
-	}
-	
-	private void SetMarryHome(Player player, Location home)
-	{
-		plugin.DB.SetMarryHome(home, player);
-		player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeSet"));
 	}
 }

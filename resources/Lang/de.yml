@@ -1,4 +1,4 @@
-Version: 16
+Version: 17
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -34,6 +34,9 @@ Language:
         Backpack: 'Öffnet den Rucksack deines Partners.'
         BackpackOn: 'Gibt deinem Partner das Recht deinen Rucksack zu öffnen.'
         BackpackOff: 'Nimmt deinem Partner das Recht deinen Rucksack zu öffnen.'
+        DelHome: 'Löscht dein Zuhause.'
+        TPHomeOther: 'Teleportiert dich zu dem Zuhause eines verheirateten Spielers.'
+        DelHomeOther: 'Löscht das Zuhause eines verheirateten Spielers.'
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
@@ -97,6 +100,7 @@ Language:
         BackpackShareOff: Du teilst deinen Rucksack nicht mehr mit deinem Partner.
         BackpackOpend: 'Dein Partner hat deinen Rucksack geöffnet.'
         BackpackShareDenied: 'Dein Partner erlaubt dir nicht das du auf seinen Rucksack zugreifst.'
+        HomeDeleted: 'Zuhause gelöscht.'
     Economy:
         NotEnough: 'Du hast nicht genug Geld. Du brauchst %1$s.'
         PartnerNotEnough: Dein Partner hat nicht genug Geld.

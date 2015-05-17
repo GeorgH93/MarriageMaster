@@ -1,4 +1,4 @@
-Version: 16
+Version: 17
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -19,8 +19,8 @@ Language:
         TP: Teleport to Married Player.
         PvPOn: Enables PvP with Partner.
         PvPOff: Disables PvP with Partner.
-        SetHome: Sets your Home.
-        TPHome: Teleports to your Home.
+        SetHome: Sets your homepoint.
+        TPHome: Teleports to your homepoint.
         Chat: Private chat with your partner.
         ChatToggle: Toggles your chat to be private with your partner.
         Reload: Reloads the config of the plugin.
@@ -31,9 +31,12 @@ Language:
         SelfMarry: Sends a marry request to a other player.
         SelfDivorce: To leave your partner.
         Surname: Changes the surname of a couple.
-        Backpack: 'Opens the backpack of your partner.'
-        BackpackOn: 'Allows your partner to use your backpack.'
-        BackpackOff: 'Disallows your partner to use your backpack.'
+        Backpack: Opens the backpack of your partner.
+        BackpackOn: Allows your partner to use your backpack.
+        BackpackOff: Disallows your partner to use your backpack.
+        DelHome: Deletes your homepoint.
+        TPHomeOther: Teleports you to a married players home.
+        DelHomeOther: Deletes the home of a married player.
     Ingame:
         NotMarried: You are not Married.
         NoMarriedPlayers: There are no Married Players.
@@ -97,6 +100,7 @@ Language:
         BackpackShareOff: You now don't share your backpack with your partner.
         BackpackOpend: Your partner has opend your backpack.
         BackpackShareDenied: Your partner doesn't give you access to his backpack.
+        HomeDeleted: Homepoint deleted.
     Economy:
         NotEnough: "You don't have enough money! You need %1$s."
         PartnerNotEnough: Your partner doesn't have enough money!

@@ -302,6 +302,29 @@ public class OnCommand implements CommandExecutor
     	    		player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
     	    	}
 				return true;
+			case "delhome":
+				if(plugin.CheckPerm(player, "marry.home"))
+    	    	{
+					if(args.length == 2 && plugin.CheckPerm(player, "marry.home.others", false))
+					{
+						plugin.DB.DelMarryHome(args[1]);
+						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeDeleted"));
+					}
+					else if(plugin.HasPartner(player))
+					{
+						plugin.DB.DelMarryHome(player);
+						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeDeleted"));
+					}
+					else
+		    		{
+		    			player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+		    		}
+    	    	}
+    	    	else
+    	    	{
+    	    		player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+    	    	}
+				return true;
 			case "tp":
 				if(plugin.CheckPerm(player, "marry.tp"))
     			{
@@ -783,11 +806,13 @@ public class OnCommand implements CommandExecutor
 		if(plugin.CheckPerm(player, "marry.home"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry home" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHome"));
+			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SetHome"));
+			player.sendMessage(ChatColor.AQUA + "/marry delhome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.DelHome"));
 			if(plugin.CheckPerm(player, "marry.home.others", false))
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry home <player>" + ChatColor.WHITE);
+				player.sendMessage(ChatColor.AQUA + "/marry home <player>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHomeOther"));
+				player.sendMessage(ChatColor.AQUA + "/marry delhome <player>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.DelHomeOther"));
 			}
-			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SetHome"));
 		}
 		if(plugin.CheckPerm(player, "marry.chat"))
 		{

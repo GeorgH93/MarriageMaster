@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster plugin;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 16;
+	private static final int LANG_VERSION = 17;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -200,7 +200,12 @@ public class Language
 						lang.set("Language.Priest.BroadcastDivorce",	"%1$s has divorced %2$s from %3$s.");
 						lang.set("Language.Priest.DivorceRequestSent",	"Divorce request sent.");
 					case 15:
-						lang.set("Language.Ingame.PlayerNoHome", "The player doesn't have a home yet.");
+						lang.set("Language.Ingame.PlayerNoHome",		"The player doesn't have a home yet.");
+					case 16:
+						lang.set("Language.Ingame.HomeDeleted",			"Homepoint deleted.");
+						lang.set("Language.Description.DelHome",		"Deletes your homepoint.");
+						lang.set("Language.Description.TPHomeOther",	"Teleports you to a married players home.");
+						lang.set("Language.Description.DelHomeOther",	"Deletes the home of a married player.");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

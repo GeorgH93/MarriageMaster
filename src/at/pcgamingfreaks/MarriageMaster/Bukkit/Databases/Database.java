@@ -47,6 +47,10 @@ public class Database
 	
 	public void MarryPlayers(Player player1, Player player2, Player priest, String surname) { MarryPlayers(player1, player2, priest.getName(), surname); }
 	
+	public void DelMarryHome(Player player) {}
+	
+	public void DelMarryHome(String player) {}
+	
 	public void SetMarryHome(Location loc, Player player) {}
 	
 	public Location GetMarryHome(String player) { return null; }

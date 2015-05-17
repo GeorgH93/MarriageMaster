@@ -410,6 +410,43 @@ public class Files extends Database
 		}
 	}
 	
+	private void DelHome(String pid)
+	{
+		try
+		{
+			MarryMap.get(pid).set("MarriedHome.location.World", null);
+			MarryMap.get(pid).set("MarriedHome.location.X", null);
+			MarryMap.get(pid).set("MarriedHome.location.Y", null);
+			MarryMap.get(pid).set("MarriedHome.location.Z", null);
+		}
+		catch(Exception e) {}
+	}
+	
+	public void DelMarryHome(Player player)
+	{
+		DelHome(GetPlayerID(player));
+	}
+	
+	public void DelMarryHome(String player)
+	{
+		String pid = player;
+		if(plugin.UseUUIDs)
+		{
+			Iterator<Entry<String, FileConfiguration>> it = MarryMap.entrySet().iterator();
+			Entry<String, FileConfiguration> e;
+			while(it.hasNext())
+			{
+				e = it.next();
+				if(e.getValue().getString("Name").equalsIgnoreCase(player))
+				{
+					pid = e.getKey();
+					break;
+				}
+			}
+		}
+		DelHome(pid);
+	}
+	
 	public Location GetMarryHome(String player)
 	{
 		String pid = player;
@@ -427,28 +464,16 @@ public class Files extends Database
 				}
 			}
 		}
-		try
-		{
-			World world = plugin.getServer().getWorld(MarryMap.get(pid).getString("MarriedHome.location.World"));
-			if(world == null)
-			{
-				return null;
-			}
-			double x = (Double) MarryMap.get(pid).get("MarriedHome.location.X");
-			double y = (Double) MarryMap.get(pid).get("MarriedHome.location.Y");
-			double z = (Double) MarryMap.get(pid).get("MarriedHome.location.Z");
-			
-			return(new Location(world, x, y, z));
-		}
-		catch(Exception e)
-		{
-			return null;			
-		}
+		return GetHome(pid);
 	}
 	
 	public Location GetMarryHome(Player player)
 	{
-		String pid = GetPlayerID(player);
+		return GetHome(GetPlayerID(player));
+	}
+	
+	private Location GetHome(String pid)
+	{
 		try
 		{
 			World world = plugin.getServer().getWorld(MarryMap.get(pid).getString("MarriedHome.location.World"));
