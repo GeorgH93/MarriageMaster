@@ -66,6 +66,10 @@ public class EffectBase
 						{
 							eb = new Effect_1_8_R2();
 						}
+						else if(version[2].equals("R3"))
+						{
+							eb = new Effect_1_8_R2();
+						}
 					}
 				}
 			}
