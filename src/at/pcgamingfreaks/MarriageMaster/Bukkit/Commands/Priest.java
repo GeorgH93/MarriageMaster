@@ -227,14 +227,18 @@ public class Priest
 	    		{
 	    			if(!m.HasAccepted(player))
 	    			{
+	    				plugin.log.info(player.getName() + " has accepted the divorce!");
 	    				plugin.bdr.remove(m);
 	    				m.Accept(player);
 	    				if(m.BothAcceoted(player))
 	    				{
+	    					plugin.log.info("both players now have accepted the divorce!");
 	    					SaveDivorce(m.p1, m.priest);
+	    					plugin.log.info("divorced");
 	    				}
 	    				else
 	    				{
+	    					plugin.log.info("Other player has to accept");
 	    					m.p2.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
 	    					plugin.bdr.add(m);
 	    				}
@@ -421,11 +425,14 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + plugin.lang.Get("Priest.PlayerNotMarried"));
 			return;
 		}
+		plugin.log.info("Priest " + priest.getName() + " want to divorce " + otP + " and " + player.getName());
 		Player otherPlayer = Bukkit.getServer().getPlayerExact(otP);
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
+			plugin.log.info(otP + " is offline!");
 			if(plugin.CheckPerm(priest, "marry.offlinedivorce", false))
 			{
+				plugin.log.info(priest.getName() + " can divorce players if one is offline!");
 				plugin.DB.DivorcePlayer(player);
 				priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
@@ -433,32 +440,41 @@ public class Priest
 				{
 					plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 				}
+				plugin.log.info("divorced");
 			}
 			else
 			{
+				plugin.log.info(priest.getName() + " can't divorce players if one is offline!");
 				priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Priest.PartnerOffline"), args[1], otP));
 			}
 		}
 		else if(InRadius(player, otherPlayer, priest))
 		{
+			plugin.log.info("The players are in an range where the priest can divorce them");
 			if(!plugin.config.UseConfirmation())
 			{
+				plugin.log.info("The use of confirmation is disabled!");
 				SaveDivorce(player, priest);
+				plugin.log.info("divorced");
 			}
 			else
 			{
+				plugin.log.info("Players need to confirm the divorce");
 				if((!plugin.config.getConfirmationBothDivorce() && plugin.dr.containsKey(player)) || (plugin.config.getConfirmationBothDivorce() && HasOpenDivorceRequest(player)))
 				{
+					plugin.log.info("There is already an open request");
 					priest.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Priest.AlreadyOpenRequest"), player.getDisplayName() + ChatColor.RED));
 				}
 				else
 				{
 					if(plugin.config.getConfirmationBothDivorce())
 					{
+						plugin.log.info("Bothe Players have to confirm the divorce");
 						plugin.bdr.add(new Marry_Requests(priest, player, otherPlayer, null));
 					}
 					else
 					{
+						plugin.log.info(player.getName() + " has to confirm the divorce");
 						plugin.dr.put(player, priest);
 					}
 					player.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
@@ -468,6 +484,7 @@ public class Priest
 		}
 		else
 		{
+			plugin.log.info("The players are to far away for the priest to divorce them");
 			priest.sendMessage(ChatColor.RED + plugin.lang.Get("Priest.NotInRange"));
 		}
 	}
@@ -475,6 +492,7 @@ public class Priest
 	@SuppressWarnings("deprecation")
 	public void Divorce(CommandSender priest, String[] args)
 	{
+		plugin.log.info("Console tryes to divorce " + args[1]);
 		Player player = Bukkit.getServer().getPlayer(args[1]);
 		if(player == null || (player != null && !player.isOnline()))
 		{

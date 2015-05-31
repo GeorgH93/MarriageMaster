@@ -683,6 +683,7 @@ public class OnCommand implements CommandExecutor
 		        {
 		        	if(plugin.IsPriest(player))
 		        	{
+		        		plugin.log.info("Priest " + player.getName() + " want to divorce " + args[1]);
 		        		priest.Divorce(player, args);
 		        	}
 		        	else
