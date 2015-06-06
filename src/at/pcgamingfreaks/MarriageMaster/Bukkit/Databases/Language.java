@@ -31,7 +31,7 @@ public class Language
 {
 	private MarriageMaster plugin;
 	private FileConfiguration lang;
-	private static final int LANG_VERSION = 17;
+	private static final int LANG_VERSION = 18;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -206,6 +206,9 @@ public class Language
 						lang.set("Language.Description.DelHome",		"Deletes your homepoint.");
 						lang.set("Language.Description.TPHomeOther",	"Teleports you to a married players home.");
 						lang.set("Language.Description.DelHomeOther",	"Deletes the home of a married player.");
+					case 17:
+						lang.set("Language.Ingame.TPUnsafe",			"Teleport cancled! You would not survive it!");
+						lang.set("Language.Ingame.TPtoUnsafe",			"Your partner was about to teleport to you, but would not survive it!");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

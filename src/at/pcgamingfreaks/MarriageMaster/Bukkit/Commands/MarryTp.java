@@ -20,6 +20,9 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -91,9 +94,27 @@ public class MarryTp
 					{
 						if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
 						{
-							p.teleport(otp);
-							p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
-							otp.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+							if(!plugin.config.getCheckTPSafety() || p.isFlying() || !otp.isFlying())
+							{
+								p.teleport(otp);
+								p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
+								otp.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+							}
+							else
+							{
+								Location l = getSaveLoc(otp.getLocation());
+								if(l != null)
+								{
+									p.teleport(l);
+									p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
+									otp.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+								}
+								else
+								{
+									p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPUnsafe"));
+									otp.sendMessage(ChatColor.GOLD + plugin.lang.Get("Ingame.TPtoUnsafe"));
+								}
+							}
 						}
 						else
 						{
@@ -111,6 +132,35 @@ public class MarryTp
 			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
 			otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
 		}
+	}
+	
+	private Location getSaveLoc(Location loc)
+	{
+		World w = loc.getWorld();
+		Material mat;
+		int x = loc.getBlockX(), y = loc.getBlockY() - 1, z = loc.getBlockZ(), miny = -1;
+		Block b, b1 = w.getBlockAt(x, y + 1, z), b2 = w.getBlockAt(x, y + 2, z);
+		loc = null;
+		for(; y > 0 && y > miny && loc == null; y--)
+		{
+			b = w.getBlockAt(x, y, z);
+			if(b != null && !b.isEmpty())
+			{
+				if(miny == -1)
+				{
+					miny = y - 10;
+				}
+				mat = b.getType();
+				if(!(mat.equals(Material.FIRE) || mat.equals(Material.AIR) || mat.equals(Material.LAVA) || mat.equals(Material.CACTUS)) && ((b1 == null || b1.isEmpty()) && (b2 == null || b2.isEmpty())))
+				{
+					loc = b.getLocation();
+					loc.setY(loc.getY() + 1);
+				}
+			}
+			b2 = b1;
+			b1 = b;
+		}
+		return loc;
 	}
 	
 	public void BungeeTPDelay(final Player p)

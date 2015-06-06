@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 16;
+	private static final int CONFIG_VERSION = 17;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -157,6 +157,7 @@ public class Config
 		config.set("Range.Backpack", 5);
 		config.set("Teleport.Delay", false);
 		config.set("Teleport.DelayTime", 3);
+		config.set("Teleport.CheckSafety", true);
 		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
 		config.set("Version", CONFIG_VERSION);
 		
@@ -232,6 +233,8 @@ public class Config
 				config.set("Confirmation.BothPlayersOnDivorce", false);
 			case 15:
 				config.set("AllowGiftsInCreative", false);
+			case 16:
+				config.set("Teleport.CheckSafety", true);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -464,6 +467,11 @@ public class Config
 	public boolean DelayTP()
 	{
 		return config.getBoolean("Teleport.Delay");
+	}
+	
+	public boolean getCheckTPSafety()
+	{
+		return config.getBoolean("Teleport.CheckSafety", true);
 	}
 	
 	public int TPDelayTime()
