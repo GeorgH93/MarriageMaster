@@ -219,44 +219,38 @@ public class Priest
 	
 	public void AcceptMarriage(Player player)
 	{
-		if(plugin.config.getConfirmationBothDivorce())
+		for (Marry_Requests m : plugin.bdr)
 		{
-			for (Marry_Requests m : plugin.bdr)
-			{
-	    		if(m.p1 == player || m.p2 == player)
-	    		{
-	    			if(!m.HasAccepted(player))
-	    			{
-	    				plugin.bdr.remove(m);
-	    				m.Accept(player);
-	    				if(m.BothAcceoted(player))
-	    				{
-	    					SaveDivorce(m.p1, m.priest);
-	    				}
-	    				else
-	    				{
-	    					m.p2.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
-	    					plugin.bdr.add(m);
-	    				}
-	    			}
-	    			else
-	    			{
-	    				player.sendMessage(plugin.lang.Get("Priest.AlreadyAccepted"));
-	    			}
-	    			return;
-	    		}
-	    	}
-		}
-		else
+    		if(m.p1 == player || m.p2 == player)
+    		{
+    			if(!m.HasAccepted(player))
+    			{
+    				plugin.bdr.remove(m);
+    				m.Accept(player);
+    				if(m.BothAcceoted(player))
+    				{
+    					SaveDivorce(m.p1, m.priest);
+    				}
+    				else
+    				{
+    					m.p2.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
+    					plugin.bdr.add(m);
+    				}
+    			}
+    			else
+    			{
+    				player.sendMessage(plugin.lang.Get("Priest.AlreadyAccepted"));
+    			}
+    			return;
+    		}
+    	}
+		for(Map.Entry<Player, Player> entry : plugin.dr.entrySet())
 		{
-			for(Map.Entry<Player, Player> entry : plugin.dr.entrySet())
+			if(entry.getKey().equals(player))
 			{
-				if(entry.getKey().equals(player))
-				{
-					SaveDivorce(entry.getKey(), entry.getValue());
-					plugin.dr.remove(player);
-					return;
-				}
+				SaveDivorce(entry.getKey(), entry.getValue());
+				plugin.dr.remove(player);
+				return;
 			}
 		}
 		for (Marry_Requests m : plugin.mr)
@@ -422,16 +416,30 @@ public class Priest
 			return;
 		}
 		Player otherPlayer = Bukkit.getServer().getPlayerExact(otP);
+		if(plugin.config.UseConfirmation() && (plugin.dr.containsKey(player) || (plugin.config.getConfirmationBothDivorce() && HasOpenDivorceRequest(player))))
+		{
+			priest.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Priest.AlreadyOpenRequest"), player.getDisplayName() + ChatColor.RED));
+			return;
+		}
 		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			if(plugin.CheckPerm(priest, "marry.offlinedivorce", false))
 			{
-				plugin.DB.DivorcePlayer(player);
-				priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
-				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
-				if(plugin.config.GetAnnouncementEnabled())
+				if(!plugin.config.UseConfirmation())
 				{
-					plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
+					plugin.DB.DivorcePlayer(player);
+					priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
+					player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
+					if(plugin.config.GetAnnouncementEnabled())
+					{
+						plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
+					}
+				}
+				else
+				{
+					plugin.dr.put(player, priest);
+					player.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
+					priest.sendMessage(plugin.lang.Get("Priest.DivorceRequestSent"));
 				}
 			}
 			else
@@ -447,23 +455,16 @@ public class Priest
 			}
 			else
 			{
-				if((!plugin.config.getConfirmationBothDivorce() && plugin.dr.containsKey(player)) || (plugin.config.getConfirmationBothDivorce() && HasOpenDivorceRequest(player)))
+				if(plugin.config.getConfirmationBothDivorce())
 				{
-					priest.sendMessage(String.format(ChatColor.RED + plugin.lang.Get("Priest.AlreadyOpenRequest"), player.getDisplayName() + ChatColor.RED));
+					plugin.bdr.add(new Marry_Requests(priest, player, otherPlayer, null));
 				}
 				else
 				{
-					if(plugin.config.getConfirmationBothDivorce())
-					{
-						plugin.bdr.add(new Marry_Requests(priest, player, otherPlayer, null));
-					}
-					else
-					{
-						plugin.dr.put(player, priest);
-					}
-					player.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
-					priest.sendMessage(plugin.lang.Get("Priest.DivorceRequestSent"));
+					plugin.dr.put(player, priest);
 				}
+				player.sendMessage(plugin.lang.Get("Priest.DivorceConfirm"));
+				priest.sendMessage(plugin.lang.Get("Priest.DivorceRequestSent"));
 			}
 		}
 		else

@@ -520,39 +520,33 @@ public class OnCommand implements CommandExecutor
 				return true;
 			case "accept": priest.AcceptMarriage(player); return true;
 			case "deny":
-				if(plugin.config.getConfirmationBothDivorce())
+				for (Marry_Requests m : plugin.bdr)
+	    		{
+	        		if(m.p1 == player || m.p2 == player)
+	        		{
+	        			plugin.bdr.remove(m);
+	        			if(m.p1 == player)
+	        			{
+	        				m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+	        			}
+	        			else
+	        			{
+	        				m.p1.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+	        			}
+	        			m.priest.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+	        			return true;
+	        		}
+	    		}
+				Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
+				Entry<Player, Player> e;
+				while(d.hasNext())
 				{
-					for (Marry_Requests m : plugin.bdr)
-		    		{
-		        		if(m.p1 == player || m.p2 == player)
-		        		{
-		        			plugin.bdr.remove(m);
-		        			if(m.p1 == player)
-		        			{
-		        				m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
-		        			}
-		        			else
-		        			{
-		        				m.p1.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
-		        			}
-		        			m.priest.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
-		        			return true;
-		        		}
-		    		}
-				}
-				else
-				{
-					Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
-					Entry<Player, Player> e;
-					while(d.hasNext())
+					e = d.next();
+					if(player.equals(e.getKey()))
 					{
-						e = d.next();
-						if(player.equals(e.getKey()))
-						{
-							e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
-							d.remove();
-							return true;
-						}
+						e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						d.remove();
+						return true;
 					}
 				}
 				for (Marry_Requests m : plugin.mr)
