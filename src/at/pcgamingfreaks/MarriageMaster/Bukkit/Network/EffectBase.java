@@ -68,7 +68,7 @@ public class EffectBase
 						}
 						else if(version[2].equals("R3"))
 						{
-							eb = new Effect_1_8_R2();
+							eb = new Effect_1_8_R3();
 						}
 					}
 				}
@@ -88,10 +88,10 @@ public class EffectBase
 				}
 			}
 		}
-		catch (NoClassDefFoundError e)
+		/*catch (NoClassDefFoundError e)
 		{
 			eb = null;
-		}
+		}*/
 		catch (Exception e)
 		{
 			eb = null;
