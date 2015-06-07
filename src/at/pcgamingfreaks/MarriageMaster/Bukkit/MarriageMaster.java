@@ -94,14 +94,8 @@ public class MarriageMaster extends JavaPlugin
 		tp = new MarryTp(this);
 		chat = new MarryChat(this);
 		mr = new ArrayList<Marry_Requests>();
-		if(config.getConfirmationBothDivorce())
-		{
-			bdr = new ArrayList<Marry_Requests>();
-		}
-		else
-		{
-			dr = new HashMap<Player, Player>();
-		}
+		bdr = new ArrayList<Marry_Requests>();
+		dr = new HashMap<Player, Player>();
 		if(config.UseMetrics())
 		{
 			try
