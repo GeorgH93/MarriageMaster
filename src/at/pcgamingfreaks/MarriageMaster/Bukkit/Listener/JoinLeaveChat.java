@@ -39,7 +39,7 @@ public class JoinLeaveChat implements Listener
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		if(plugin.config.UsePrefix())
+		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
 		{
 			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
