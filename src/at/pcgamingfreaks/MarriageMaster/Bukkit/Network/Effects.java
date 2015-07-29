@@ -56,13 +56,14 @@ public enum Effects
 	Barrier(35, "barrier", "BARRIER");
 	
 	private final int id;
-	private final String name, newName;
+	private final String name, nameUpperCase, newName;
 	private final Enum<?> nmsEnumParticle;
 	
 	private Effects(int ID, String NAME, String NEWNAME)
 	{
 		id = ID;
 		name = NAME;
+		nameUpperCase = name.toUpperCase();
 		newName = NEWNAME;
 		if(NMS.getVersion().contains("1_8"))
 		{
@@ -77,6 +78,11 @@ public enum Effects
 	public String getName()
 	{
 		return name;
+	}
+	
+	public String getNameUpperCase()
+	{
+		return nameUpperCase;
 	}
 	
 	public String getNewName()

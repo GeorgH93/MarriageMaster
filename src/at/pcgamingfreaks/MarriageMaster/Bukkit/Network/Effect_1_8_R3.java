@@ -25,17 +25,12 @@ import org.bukkit.entity.Entity;
 
 public class Effect_1_8_R3 extends EffectBase
 {
-	private static Class<?>	nmsEnumParticle;
+	private static Class<?>	nmsEnumParticle = NMS.getNMSClass("EnumParticle");
 	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
 	{
-		if (nmsEnumParticle == null)
-		{
-			nmsEnumParticle = getNMSClass("EnumParticle");
-		}
-		
 		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
-		NMS.setValue(packet, "a", getEnum(nmsEnumParticle.getName() + "." + (type.getName().toUpperCase())));
+		NMS.setValue(packet, "a", NMS.getEnum(nmsEnumParticle.getName() + "." + type.getNameUpperCase()));
 		NMS.setValue(packet, "b", (float) loc.getX());
 		NMS.setValue(packet, "c", (float) loc.getY());
 		NMS.setValue(packet, "d", (float) loc.getZ());
@@ -48,49 +43,10 @@ public class Effect_1_8_R3 extends EffectBase
 		NMS.setValue(packet, "k", new int[]{});
 		for(Entity entity : loc.getWorld().getEntities())
 		{
-			if(entity instanceof CraftPlayer)
+			if(entity instanceof CraftPlayer && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 			{
-				if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
-				{
-					((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
-				}
+				((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
 			}
 		}
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static Enum<?> getEnum(String enumFullName)
-	{
-		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
-		if (x.length == 2)
-		{
-			String enumClassName = x[0];
-			String enumName = x[1];
-			try
-			{
-				Class<Enum> cl = (Class<Enum>) Class.forName(enumClassName);
-				return Enum.valueOf(cl, enumName);
-			}
-			catch (ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-	
-	public static Class<?> getNMSClass(String className)
-	{
-		String fullName = "net.minecraft.server.v1_8_R3." + className;
-		Class<?> clazz = null;
-		try
-		{
-			clazz = Class.forName(fullName);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return clazz;
 	}
 }

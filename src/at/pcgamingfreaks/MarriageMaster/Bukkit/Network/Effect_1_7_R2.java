@@ -39,12 +39,9 @@ public class Effect_1_7_R2 extends EffectBase
 		NMS.setValue(packet, "i", count);
 		for(Entity entity : loc.getWorld().getEntities())
 		{
-			if(entity instanceof CraftPlayer)
+			if(entity instanceof CraftPlayer && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 			{
-				if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
-				{
-					((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
-				}
+				((CraftPlayer)entity).getHandle().playerConnection.sendPacket(packet);
 			}
 		}
 	}
