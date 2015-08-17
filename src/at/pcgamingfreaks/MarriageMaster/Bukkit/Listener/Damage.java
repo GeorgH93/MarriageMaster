@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,16 +38,23 @@ public class Damage implements Listener
 	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event)
     {
-        Entity defender = event.getEntity();
-        Entity attacker = event.getDamager();
-        
-		Player player = null;
-		Player otherPlayer = null;
-		
-        if(attacker instanceof Player && defender instanceof Player)
+        if(event.getEntity() instanceof Player && (event.getDamager() instanceof Player || event.getDamager() instanceof Arrow))
         {
-        	player = (Player)event.getDamager();
-        	otherPlayer = (Player) event.getEntity();
+        	Player otherPlayer = (Player) event.getEntity(), player;
+        	if(event.getDamager() instanceof Player)
+        	{
+        		player = (Player) event.getEntity();
+        	}
+        	else
+        	{
+        		Arrow arrow = (Arrow) event.getDamager();
+        		if(!(arrow.getShooter() instanceof Player))
+        		{
+        			return;
+        		}
+        		player = (Player) arrow.getShooter();
+        	}
+        	
 			String married1 = plugin.DB.GetPartner(player);
 			String married2 = plugin.DB.GetPartner(otherPlayer);
 			
@@ -62,6 +69,6 @@ public class Damage implements Listener
 					}
 				}
 			}
-		}
+        }
     }
 }
