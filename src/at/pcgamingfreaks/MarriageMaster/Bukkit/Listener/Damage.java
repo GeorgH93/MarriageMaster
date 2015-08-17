@@ -43,7 +43,7 @@ public class Damage implements Listener
         	Player otherPlayer = (Player) event.getEntity(), player;
         	if(event.getDamager() instanceof Player)
         	{
-        		player = (Player) event.getEntity();
+        		player = (Player) event.getDamager();
         	}
         	else
         	{
