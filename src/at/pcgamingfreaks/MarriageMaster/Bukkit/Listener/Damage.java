@@ -38,22 +38,10 @@ public class Damage implements Listener
 	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event)
     {
-        if(event.getEntity() instanceof Player && (event.getDamager() instanceof Player || event.getDamager() instanceof Arrow))
+        if(event.getEntity() instanceof Player && (event.getDamager() instanceof Player || (event.getDamager() instanceof Arrow && ((Arrow)event.getDamager()).getShooter() instanceof Player)))
         {
-        	Player otherPlayer = (Player) event.getEntity(), player;
-        	if(event.getDamager() instanceof Player)
-        	{
-        		player = (Player) event.getDamager();
-        	}
-        	else
-        	{
-        		Arrow arrow = (Arrow) event.getDamager();
-        		if(!(arrow.getShooter() instanceof Player))
-        		{
-        			return;
-        		}
-        		player = (Player) arrow.getShooter();
-        	}
+        	Player player = (Player)((event.getDamager() instanceof Player) ? event.getDamager() : ((Arrow)event.getDamager()).getShooter());
+        	Player otherPlayer = (Player) event.getEntity();
         	
 			String married1 = plugin.DB.GetPartner(player);
 			String married2 = plugin.DB.GetPartner(otherPlayer);
