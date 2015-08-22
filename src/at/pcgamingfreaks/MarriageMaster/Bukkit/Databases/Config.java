@@ -33,7 +33,7 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 17;
+	private static final int CONFIG_VERSION = 18;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -111,6 +111,7 @@ public class Config
 		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
+		config.set("AllowSelfDivorce", "auto");
 		config.set("Surname", false);
 		config.set("AllowGiftsInCreative", false);
 		config.set("UseMinepacks", false);
@@ -235,6 +236,8 @@ public class Config
 				config.set("AllowGiftsInCreative", false);
 			case 16:
 				config.set("Teleport.CheckSafety", true);
+			case 17:
+				config.set("AllowSelfDivorce", "auto");
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -462,6 +465,28 @@ public class Config
 	public boolean AllowSelfMarry()
 	{
 		return config.getBoolean("AllowSelfMarry");
+	}
+	
+	public boolean AllowSelfDivorce()
+	{
+		switch(config.getString("AllowSelfDivorce").toLowerCase())
+		{
+			case "1":
+			case "on":
+			case "t":
+			case "true":
+			case "yes":
+			case "y":
+				return true;
+			case "0":
+			case "off":
+			case "f":
+			case "false":
+			case "no":
+			case "n":
+				return false;
+			default: return config.getBoolean("AllowSelfMarry");
+		}
 	}
 	
 	public boolean DelayTP()
