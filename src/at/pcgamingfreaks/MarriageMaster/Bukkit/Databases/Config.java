@@ -107,8 +107,6 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
-		config.set("Chat.ToggleCommand", "chattoggle");
-		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
 		config.set("AllowSelfDivorce", "auto");
@@ -116,6 +114,8 @@ public class Config
 		config.set("AllowGiftsInCreative", false);
 		config.set("UseMinepacks", false);
 		config.set("UseBungeeCord", false);
+		config.set("Chat.ToggleCommand", "chattoggle");
+		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -129,6 +129,8 @@ public class Config
 		config.set("BonusXp.Multiplier", 2);
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
+		config.set("Suffix.Enable", false);
+		config.set("Suffix.String", " (<heart><partnername><heart>)");
 		config.set("Database.Type","Files");
 		config.set("Database.UpdatePlayer", true);
 		config.set("Database.MySQL.Host", "localhost:3306");
@@ -161,7 +163,6 @@ public class Config
 		config.set("Teleport.CheckSafety", true);
 		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
 		config.set("Version", CONFIG_VERSION);
-		
 		try 
 		{
 			config.save(file);
@@ -238,6 +239,8 @@ public class Config
 				config.set("Teleport.CheckSafety", true);
 			case 17:
 				config.set("AllowSelfDivorce", "auto");
+				config.set("Suffix.Enable", false);
+				config.set("Suffix.String", " (<heart><partnername><heart>)");
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -325,6 +328,16 @@ public class Config
 	public String GetPrefix()
 	{
 		return config.getString("Prefix.String");
+	}
+	
+	public boolean UseSuffix()
+	{
+		return config.getBoolean("Suffix.Enable");	
+	}
+	
+	public String GetSuffix()
+	{
+		return config.getString("Suffix.String");
 	}
 	
 	public boolean UseEconomy()

@@ -34,7 +34,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 public class JoinLeaveChat implements Listener 
 {
 	private MarriageMaster plugin;
-	private String prefix = null;
+	private String prefix = null, suffix = null;
 
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
@@ -42,6 +42,10 @@ public class JoinLeaveChat implements Listener
 		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
 		{
 			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+		}
+		if(plugin.config.UseSuffix() && plugin.config.GetSuffix() != null)
+		{
+			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
 	}
 
@@ -93,6 +97,10 @@ public class JoinLeaveChat implements Listener
 				if(prefix != null)
 				{
 					format = prefix.replace("<partnername>", partner) + " " + format;
+				}
+				if(suffix != null)
+				{
+					format = format.replace("%1$s", "%1$s " + suffix);
 				}
 				if(plugin.config.getSurname())
 				{
