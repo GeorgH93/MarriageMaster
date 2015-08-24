@@ -430,7 +430,7 @@ public class Priest
 					plugin.DB.DivorcePlayer(player);
 					priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 					player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
-					if(plugin.config.GetAnnouncementEnabled())
+					if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Priest.BroadcastDivorce") != null)
 					{
 						plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 					}
@@ -495,7 +495,7 @@ public class Priest
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), ChatColor.GRAY + "Console" + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			otherPlayer.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), ChatColor.GRAY + "Console" + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN));
-			if(plugin.config.GetAnnouncementEnabled())
+			if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Priest.BroadcastDivorce") != null)
 			{
 				plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), ChatColor.GRAY + "Console" + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			}
@@ -504,7 +504,7 @@ public class Priest
 		{
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 			player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), ChatColor.GRAY + "Console" + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
-			if(plugin.config.GetAnnouncementEnabled())
+			if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Priest.BroadcastDivorce") != null)
 			{
 				plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), ChatColor.GRAY + "Console" + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 			}
@@ -528,7 +528,7 @@ public class Priest
 				plugin.DB.DivorcePlayer(player);
 				priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
-				if(plugin.config.GetAnnouncementEnabled())
+				if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Priest.BroadcastDivorce") != null)
 				{
 					plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, ChatColor.GRAY + otP + ChatColor.GREEN));
 				}
@@ -545,7 +545,7 @@ public class Priest
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			otherPlayer.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.DivorcedPlayer"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN));
-			if(plugin.config.GetAnnouncementEnabled())
+			if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Priest.BroadcastDivorce") != null)
 			{
 				plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.BroadcastDivorce"), priest.getDisplayName() + ChatColor.GREEN, player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 			}
@@ -568,7 +568,7 @@ public class Priest
 			{
 				plugin.DB.DivorcePlayer(player);
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.Divorced"),  ChatColor.GRAY + partner + ChatColor.GREEN));
-				if(plugin.config.GetAnnouncementEnabled())
+				if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Ingame.BroadcastDivorce") != null)
 				{
 					plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.BroadcastDivorce"), player.getDisplayName() + ChatColor.GREEN, partner + ChatColor.GREEN));
 				}
@@ -585,7 +585,7 @@ public class Priest
 				plugin.DB.DivorcePlayer(player);
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.Divorced"), otherPlayer.getDisplayName() + ChatColor.GREEN));
 				otherPlayer.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.DivorcedPlayer"), player.getDisplayName() + ChatColor.GREEN));
-				if(plugin.config.GetAnnouncementEnabled())
+				if(plugin.config.GetAnnouncementEnabled() && plugin.lang.Get("Ingame.BroadcastDivorce") != null)
 				{
 					plugin.getServer().broadcastMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.BroadcastDivorce"), player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));
 				}
