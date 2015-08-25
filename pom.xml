@@ -155,7 +155,7 @@
     <dependency>
       <groupId>at.pcgamingfreaks</groupId>
       <artifactId>MinePacks</artifactId>
-      <version>1.8</version>
+      <version>1.12.2</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
