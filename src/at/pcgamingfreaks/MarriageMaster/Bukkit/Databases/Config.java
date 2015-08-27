@@ -26,18 +26,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private MarriageMaster plugin;
+	private JavaPlugin plugin;
 	private FileConfiguration config;
 	private static final int CONFIG_VERSION = 18;
 	
-	public Config(MarriageMaster marriagemaster)
+	public Config(JavaPlugin pl)
 	{
-		plugin = marriagemaster;
+		plugin = pl;
 		LoadConfig();
 	}
 	
@@ -56,7 +55,7 @@ public class Config
 		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
 		{
-			plugin.log.info("No config found. Create new one ...");
+			plugin.getLogger().info("No config found. Create new one ...");
 			NewConfig(file);
 		}
 		else
@@ -166,7 +165,7 @@ public class Config
 		try 
 		{
 			config.save(file);
-			plugin.log.info("Config file has been generated.");
+			plugin.getLogger().info("Config file has been generated.");
 		}
   	  	catch (IOException e) 
   	  	{
@@ -177,7 +176,7 @@ public class Config
 	
 	private boolean UpdateConfig(File file)
 	{
-		plugin.log.info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
+		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
 		switch(config.getInt("Version"))
 		{
 			case 1:
@@ -243,13 +242,13 @@ public class Config
 				config.set("Suffix.String", " (<heart><partnername><heart>)");
 			break;
 			case CONFIG_VERSION: return false;
-			default: plugin.log.info("Config File Version newer than expected!"); return false;
+			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
 		}
 		config.set("Version", CONFIG_VERSION);
 		try 
 		{
 			config.save(file);
-			plugin.log.info("Config File has been updated.");
+			plugin.getLogger().info("Config File has been updated.");
 		}
   	  	catch (IOException e) 
   	  	{
