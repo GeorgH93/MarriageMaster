@@ -71,11 +71,11 @@ public class MarriageMaster extends JavaPlugin
     public void onEnable()
 	{
 		log = getLogger();
-		Load();
+		load();
 		log.info(lang.Get("Console.Enabled"));
 	}
     
-    public void Load()
+    public void load()
     {
     	config = new Config(this);
 		if(!config.Loaded())
@@ -131,16 +131,16 @@ public class MarriageMaster extends JavaPlugin
 		}
 		// Events Registrieren
 		getCommand("marry").setExecutor(new OnCommand(this));
-		RegisterEvents();
+		registerEvents();
     }
     
     public void reload()
 	{
-		Disable();
-		Load();
+		disable();
+		load();
 	}
     
-    public void Disable()
+    public void disable()
     {
     	
     	HandlerList.unregisterAll(this);
@@ -177,7 +177,7 @@ public class MarriageMaster extends JavaPlugin
         return (minepacks != null);
     }
 	
-	public void RegisterEvents()
+	public void registerEvents()
 	{
 		getServer().getPluginManager().registerEvents(new JoinLeaveChat(this), this);
 		if(config.GetAllowBlockPvP())
@@ -211,7 +211,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			Update();
 		}
-		Disable();
+		disable();
 		log.info(lang.Get("Console.Disabled"));
 	}
 	
