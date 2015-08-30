@@ -34,16 +34,13 @@ public class Effect_1_7 extends EffectBase
 			Object handle, connection;
 			for(Entity entity : loc.getWorld().getEntities())
 			{
-				if(entity instanceof Player)
+				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
-					if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
+					handle = NMS.getHandle(entity);
+					if(handle != null)
 					{
-						handle = NMS.getHandle(entity);
-						if(handle != null)
-						{
-							connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
-							NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
-						}
+						connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
+						NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
 					}
 				}
 			}
