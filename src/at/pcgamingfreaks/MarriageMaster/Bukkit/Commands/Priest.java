@@ -31,9 +31,49 @@ public class Priest
 {
 	private MarriageMaster plugin;
 	
+	private String AllowedSurnameCharactersRegEx;
+	
 	public Priest(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
+		
+		AllowedSurnameCharactersRegEx = plugin.config.getAllowedSurnameCharacters();
+		if(AllowedSurnameCharactersRegEx.equalsIgnoreCase("all"))
+		{
+			if(plugin.config.getAllowSurnameColors())
+			{
+				AllowedSurnameCharactersRegEx = null;
+			}
+			else
+			{
+				AllowedSurnameCharactersRegEx = "§";
+			}
+		}
+		else
+		{
+			if(plugin.config.getAllowSurnameColors())
+			{
+				AllowedSurnameCharactersRegEx += "&§";
+			}
+			AllowedSurnameCharactersRegEx = "[^" + AllowedSurnameCharactersRegEx + "]";
+		}
+	}
+	
+	private String cleanupSurname(String surname)
+	{
+		if(surname == null)
+		{
+			return null;
+		}
+		if(AllowedSurnameCharactersRegEx != null)
+		{
+			surname = surname.replaceAll(AllowedSurnameCharactersRegEx, "");
+		}
+		if(plugin.config.getAllowSurnameColors())
+		{
+			surname = ChatColor.translateAlternateColorCodes('&', surname.replace('§', '&').replaceAll("&k", ""));
+		}
+		return surname;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -149,7 +189,7 @@ public class Priest
 					{
 						if(!HasOpenRequest(otherPlayer))
 						{
-							plugin.mr.add(new Marry_Requests(null, player, otherPlayer, Surname));
+							plugin.mr.add(new Marry_Requests(null, player, otherPlayer, cleanupSurname(Surname)));
 							player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.MarryRequestSent"));
 							otherPlayer.sendMessage(String.format(plugin.lang.Get("Ingame.MarryConfirm"), player.getDisplayName() + ChatColor.WHITE));
 						}
@@ -321,7 +361,7 @@ public class Priest
 	{
 		if(!plugin.config.UseConfirmation())
 		{
-			SaveMarry(priest, player, otherPlayer, surname);
+			SaveMarry(priest, player, otherPlayer, cleanupSurname(surname));
 		}
 		else
 		{
@@ -335,7 +375,7 @@ public class Priest
 			}
 			else
 			{
-				plugin.mr.add(new Marry_Requests(priest, player, otherPlayer, surname));
+				plugin.mr.add(new Marry_Requests(priest, player, otherPlayer, cleanupSurname(surname)));
 				if(plugin.config.UseConfirmationAutoDialog())
 				{
 					priest.chat(String.format(plugin.lang.Get("Dialog.DoYouWant"), player.getName(), otherPlayer.getName()));
@@ -604,6 +644,10 @@ public class Priest
 				if(surname.equalsIgnoreCase("null") || surname.equalsIgnoreCase("none") || surname.equalsIgnoreCase("remove"))
 				{
 					surname = null;
+				}
+				else
+				{
+					surname = cleanupSurname(surname);
 				}
 				plugin.DB.SetSurname(player, surname);
 				sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Priest.SurnameSet"));

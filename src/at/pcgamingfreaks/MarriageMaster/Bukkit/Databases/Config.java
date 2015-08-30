@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 18;
+	private static final int CONFIG_VERSION = 19;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -110,6 +110,8 @@ public class Config
 		config.set("AllowSelfMarry", false);
 		config.set("AllowSelfDivorce", "auto");
 		config.set("Surname", false);
+		config.set("AllowSurnameColors", false);
+		config.set("AllowedSurnameCharacters", "A-Za-z");
 		config.set("AllowGiftsInCreative", false);
 		config.set("UseMinepacks", false);
 		config.set("UseBungeeCord", false);
@@ -240,6 +242,9 @@ public class Config
 				config.set("AllowSelfDivorce", "auto");
 				config.set("Suffix.Enable", false);
 				config.set("Suffix.String", " (<heart><partnername><heart>)");
+			case 18:
+				config.set("AllowSurnameColors", false);
+				config.set("AllowedSurnameCharacters", "A-Za-z");
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -524,6 +529,16 @@ public class Config
 	public boolean getSurname()
 	{
 		return config.getBoolean("Surname", false);
+	}
+	
+	public boolean getAllowSurnameColors()
+	{
+		return config.getBoolean("AllowSurnameColors", false);
+	}
+	
+	public String getAllowedSurnameCharacters()
+	{
+		return config.getString("AllowedSurnameCharacters", "all");
 	}
 	
 	public boolean getUseMinepacks()
