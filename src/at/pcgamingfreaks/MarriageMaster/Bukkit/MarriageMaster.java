@@ -56,7 +56,7 @@ public class MarriageMaster extends JavaPlugin
     public Home home = null;
     public MarryTp tp = null;
     public MarryChat chat = null;
-    public Config config;
+    public final Config config = new Config(this);
     public Language lang;
     public boolean UseUUIDs = false;
     public boolean UsePerms = true;
@@ -77,7 +77,6 @@ public class MarriageMaster extends JavaPlugin
     
     public void load()
     {
-    	config = new Config(this);
 		if(!config.Loaded())
 		{
 			this.setEnabled(false);
@@ -137,6 +136,7 @@ public class MarriageMaster extends JavaPlugin
     public void reload()
 	{
 		disable();
+		config.Reload();
 		load();
 	}
     
