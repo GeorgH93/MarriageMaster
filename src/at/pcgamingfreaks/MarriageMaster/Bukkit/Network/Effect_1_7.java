@@ -37,7 +37,7 @@ public class Effect_1_7 extends EffectBase
 				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
 					handle = NMS.getHandle(entity);
-					if(handle != null)
+					if(handle != null && handle.getClass().getName().endsWith(".EntityPlayer"))
 					{
 						connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
 						NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
