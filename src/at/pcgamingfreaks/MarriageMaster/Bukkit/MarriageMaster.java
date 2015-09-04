@@ -229,22 +229,14 @@ public class MarriageMaster extends JavaPlugin
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false)))
-		{
-			return true;
-		}
-		return false;
+		return pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false));
 	}
 	
 	public boolean InRadiusAllWorlds(Player player, Player otherPlayer, double radius)
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false))))
-		{
-			return true;
-		}
-		return false;
+		return radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false)));
 	}
 	
 	public void AsyncUpdate(final CommandSender sender)
@@ -270,11 +262,7 @@ public class MarriageMaster extends JavaPlugin
 	public boolean Update()
 	{
 		Bukkit_Updater updater = new Bukkit_Updater(this, 74734, this.getFile(), UpdateType.DEFAULT, true);
-		if(updater.getResult() == UpdateResult.SUCCESS)
-		{
-			return true;
-		}
-		return false;
+		return updater.getResult() == UpdateResult.SUCCESS;
 	}
 	
 	public boolean CheckPerm(Player player, String Perm)
