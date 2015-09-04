@@ -48,7 +48,7 @@ import at.pcgamingfreaks.georgh.MinePacks.MinePacks;
 
 public class MarriageMaster extends JavaPlugin
 {
-	public Logger log;
+	public Logger log = getLogger();
     public BaseEconomy economy = null;
     public Permission perms = null;
     public PluginChannel pluginchannel = null;
@@ -70,7 +70,6 @@ public class MarriageMaster extends JavaPlugin
     
     public void onEnable()
 	{
-		log = getLogger();
 		load();
 		log.info(lang.Get("Console.Enabled"));
 	}
@@ -79,7 +78,7 @@ public class MarriageMaster extends JavaPlugin
     {
 		if(!config.Loaded())
 		{
-			this.setEnabled(false);
+			setEnabled(false);
 			log.warning("Failed loading config! Disabling Plugin.");
 			return;
 		}
@@ -92,9 +91,9 @@ public class MarriageMaster extends JavaPlugin
 		home = new Home(this);
 		tp = new MarryTp(this);
 		chat = new MarryChat(this);
-		mr = new ArrayList<Marry_Requests>();
-		bdr = new ArrayList<Marry_Requests>();
-		dr = new HashMap<Player, Player>();
+		mr = new ArrayList<>();
+		bdr = new ArrayList<>();
+		dr = new HashMap<>();
 		if(config.UseMetrics())
 		{
 			try
