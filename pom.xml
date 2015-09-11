@@ -28,7 +28,7 @@
     </repository>
     <repository>
       <id>pcgf-repo</id>
-      <url>http://ci.pcgamingfreaks.at/plugin/repository/everything/</url>
+      <url>http://repo.pcgamingfreaks.at/repository/everything/</url>
     </repository>
   </repositories>
   <build>
