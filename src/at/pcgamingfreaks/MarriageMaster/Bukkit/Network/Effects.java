@@ -65,9 +65,9 @@ public enum Effects
 		name = NAME;
 		nameUpperCase = name.toUpperCase();
 		newName = NEWNAME;
-		if(NMS.getVersion().contains("1_8"))
+		if(Reflection.getVersion().contains("1_8"))
 		{
-			nmsEnumParticle = NMS.getEnum(NMS.getNMSClass("EnumParticle").getName() + "." + (newName));
+			nmsEnumParticle = Reflection.getEnum(Reflection.getNMSClass("EnumParticle").getName() + "." + (newName));
 		}
 		else
 		{

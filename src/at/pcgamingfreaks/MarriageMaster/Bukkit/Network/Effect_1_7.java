@@ -23,7 +23,7 @@ import org.bukkit.entity.Player;
 
 public class Effect_1_7 extends EffectBase
 {
-	private static Class<?> PacketPlayOutParticle = NMS.getNMSClass("PacketPlayOutWorldParticles");
+	private static Class<?> PacketPlayOutParticle = Reflection.getNMSClass("PacketPlayOutWorldParticles");
 	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
@@ -36,11 +36,11 @@ public class Effect_1_7 extends EffectBase
 			{
 				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
-					handle = NMS.getHandle(entity);
+					handle = Reflection.getHandle(entity);
 					if(handle != null && handle.getClass().getName().endsWith(".EntityPlayer"))
 					{
-						connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
-						NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
+						connection = Reflection.getField(handle.getClass(), "playerConnection").get(handle);
+						Reflection.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
 					}
 				}
 			}

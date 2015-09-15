@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.23.3</version>
+	<version>1.24-SNAPSHOT</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -159,7 +159,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MinePacks</artifactId>
-			<version>1.12.2</version>
+			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

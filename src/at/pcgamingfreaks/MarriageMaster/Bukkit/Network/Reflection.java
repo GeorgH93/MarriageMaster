@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 
-public class NMS
+public class Reflection
 {
 	public static void setValue(Object instance, String fieldName, Object value) throws Exception
 	{

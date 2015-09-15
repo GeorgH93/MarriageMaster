@@ -25,22 +25,22 @@ import org.bukkit.entity.Entity;
 
 public class Effect_1_8_R3 extends EffectBase
 {
-	private static Class<?>	nmsEnumParticle = NMS.getNMSClass("EnumParticle");
+	private static Class<?>	nmsEnumParticle = Reflection.getNMSClass("EnumParticle");
 	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float random1, float random2, float random3, float random4) throws Exception
 	{
 		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
-		NMS.setValue(packet, "a", NMS.getEnum(nmsEnumParticle.getName() + "." + type.getNameUpperCase()));
-		NMS.setValue(packet, "b", (float) loc.getX());
-		NMS.setValue(packet, "c", (float) loc.getY());
-		NMS.setValue(packet, "d", (float) loc.getZ());
-		NMS.setValue(packet, "e", random1);
-		NMS.setValue(packet, "f", random2);
-		NMS.setValue(packet, "g", random3);
-		NMS.setValue(packet, "h", random4);
-		NMS.setValue(packet, "i", count);
-		NMS.setValue(packet, "j", false);
-		NMS.setValue(packet, "k", new int[]{});
+		Reflection.setValue(packet, "a", Reflection.getEnum(nmsEnumParticle.getName() + "." + type.getNameUpperCase()));
+		Reflection.setValue(packet, "b", (float) loc.getX());
+		Reflection.setValue(packet, "c", (float) loc.getY());
+		Reflection.setValue(packet, "d", (float) loc.getZ());
+		Reflection.setValue(packet, "e", random1);
+		Reflection.setValue(packet, "f", random2);
+		Reflection.setValue(packet, "g", random3);
+		Reflection.setValue(packet, "h", random4);
+		Reflection.setValue(packet, "i", count);
+		Reflection.setValue(packet, "j", false);
+		Reflection.setValue(packet, "k", new int[]{});
 		for(Entity entity : loc.getWorld().getEntities())
 		{
 			if(entity instanceof CraftPlayer && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
