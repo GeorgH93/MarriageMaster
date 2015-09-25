@@ -94,14 +94,14 @@ public class BaseEconomy
 	
 	public boolean Marry(CommandSender priest, Player player, Player otherPlayer) { return true; }
 	
-	public static BaseEconomy GetEconomy(MarriageMaster pl)
+	public static BaseEconomy getEconomy(MarriageMaster pl)
 	{
 		if(!pl.config.UseEconomy())
 		{
 			return null;
 		}
 		Plugin vault = Bukkit.getServer().getPluginManager().getPlugin("Vault");
-		if(pl != null)
+		if(vault != null)
 		{
 			String[] vaultV = vault.getDescription().getVersion().split(Pattern.quote( "." ));
 			try

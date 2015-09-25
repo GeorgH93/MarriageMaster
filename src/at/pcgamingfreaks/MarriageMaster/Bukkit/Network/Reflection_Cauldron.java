@@ -44,12 +44,12 @@ public class Reflection_Cauldron
 		if(isForge)
 		{
 			// Initialize the maps by reading the srg file
-			ForgeClassMappings = new HashMap<String, String>();
-			ForgeFieldMappings = new HashMap<String, Map<String, String>>();
-			ForgeMethodMappings = new HashMap<String, Map<String, Map<String, String>>>();
+			ForgeClassMappings = new HashMap<>();
+			ForgeFieldMappings = new HashMap<>();
+			ForgeMethodMappings = new HashMap<>();
 			try
 			{
-				InputStream stream = Class.forName("net.minecraftforge.common.MinecraftForge").getClassLoader().getResourceAsStream("mappings/" + getVersion() + "/cb2numpkg.srg");
+				InputStream stream = Class.forName("net.minecraftforge.common.MinecraftForge").getClassLoader().getResourceAsStream("mappings/" + bukkitVersion + "/cb2numpkg.srg");
 				BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 
 				// 1: cb-simpleName
@@ -87,7 +87,7 @@ public class Reflection_Cauldron
 						Map<String, String> innerMap = ForgeFieldMappings.get(fieldMatcher.group(3).replaceAll("/", "."));
 						if(innerMap == null)
 						{
-							innerMap = new HashMap<String, String>();
+							innerMap = new HashMap<>();
 							ForgeFieldMappings.put(fieldMatcher.group(3).replaceAll("/", "."), innerMap);
 						}
 						// by CB field name to Forge field name
@@ -101,14 +101,14 @@ public class Reflection_Cauldron
 						Map<String, Map<String, String>> middleMap = ForgeMethodMappings.get(methodMatcher.group(5).replaceAll("/", "."));
 						if(middleMap == null)
 						{
-							middleMap = new HashMap<String, Map<String, String>>();
+							middleMap = new HashMap<>();
 							ForgeMethodMappings.put(methodMatcher.group(5).replaceAll("/", "."), middleMap);
 						}
 						// get by CB method name
 						Map<String, String> innerMap = middleMap.get(methodMatcher.group(2));
 						if(innerMap == null)
 						{
-							innerMap = new HashMap<String, String>();
+							innerMap = new HashMap<>();
 							middleMap.put(methodMatcher.group(2), innerMap);
 						}
 						// store the parameter strings
@@ -117,12 +117,7 @@ public class Reflection_Cauldron
 					}
 				}
 			}
-			catch(ClassNotFoundException e)
-			{
-				e.printStackTrace();
-				System.err.println("Warning: Running on Cauldron server, but couldn't load mappings file.");
-			}
-			catch(IOException e)
+			catch(ClassNotFoundException | IOException e)
 			{
 				e.printStackTrace();
 				System.err.println("Warning: Running on Cauldron server, but couldn't load mappings file.");
@@ -133,13 +128,6 @@ public class Reflection_Cauldron
 	public static String getVersion()
 	{
 		return bukkitVersion;
-	}
-
-	public static void setValue(Object instance, String fieldName, Object value) throws Exception
-	{
-		Field field = instance.getClass().getDeclaredField(fieldName);
-		field.setAccessible(true);
-		field.set(instance, value);
 	}
 
 	public static Class<?> getNMSClass(String className)
@@ -166,43 +154,12 @@ public class Reflection_Cauldron
 			}
 			else
 			{
-				return Class.forName("net.minecraft.server." + getVersion() + "." + className);
+				return Class.forName("net.minecraft.server." + bukkitVersion + "." + className);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static Class<?> getOBCClass(String className)
-	{
-		try
-		{
-			return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + className);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static Enum<?> getEnum(String enumFullName)
-	{
-		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
-		if(x.length == 2)
-		{
-			try
-			{
-				return Enum.valueOf((Class<Enum>) Class.forName(x[0]), x[1]);
-			}
-			catch(ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
@@ -211,22 +168,8 @@ public class Reflection_Cauldron
 	{
 		try
 		{
-			return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj, new Object[0]);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static Field getField(Class<?> clazz, String name)
-	{
-		try
-		{
-			Field field = clazz.getDeclaredField(name);
-			field.setAccessible(true);
-			return field;
+			//noinspection ConstantConditions
+			return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj);
 		}
 		catch(Exception e)
 		{
@@ -239,7 +182,7 @@ public class Reflection_Cauldron
 	{
 		for(Method m : clazz.getMethods())
 		{
-			if(m.getName().equals(name) && (args.length == 0 || ClassListEqual(args, m.getParameterTypes())))
+			if(m.getName().equals(name) && (args.length == 0 || classListEqual(args, m.getParameterTypes())))
 			{
 				m.setAccessible(true);
 				return m;
@@ -248,7 +191,7 @@ public class Reflection_Cauldron
 		return null;
 	}
 
-	public static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2)
+	public static boolean classListEqual(Class<?>[] l1, Class<?>[] l2)
 	{
 		boolean equal = true;
 		if(l1.length != l2.length)

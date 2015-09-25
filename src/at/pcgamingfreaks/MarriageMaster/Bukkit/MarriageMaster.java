@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Minepacks.MinePacksIntegrationBase;
 import net.gravitydevelopment.Updater.Bukkit_Updater;
 import net.gravitydevelopment.Updater.UpdateResult;
 import net.gravitydevelopment.Updater.UpdateType;
@@ -44,7 +45,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.MarryTp;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
-import at.pcgamingfreaks.georgh.MinePacks.MinePacks;
 
 public class MarriageMaster extends JavaPlugin
 {
@@ -65,7 +65,7 @@ public class MarriageMaster extends JavaPlugin
     public List<Marry_Requests> mr;
     public List<Marry_Requests> bdr;
     public HashMap<Player, Player> dr;
-    public MinePacks minepacks = null;
+    public MinePacksIntegrationBase minepacks = null;
     public String HomeServer = null;
     
     public void onEnable()
@@ -118,7 +118,7 @@ public class MarriageMaster extends JavaPlugin
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
-		economy = BaseEconomy.GetEconomy(this);
+		economy = BaseEconomy.getEconomy(this);
 		if(config.getUseMinepacks())
 		{
 			setupMinePacks();
@@ -127,7 +127,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			pluginchannel = new PluginChannel(this);
 		}
-		// Events Registrieren
+		// Register events
 		getCommand("marry").setExecutor(new OnCommand(this));
 		registerEvents();
     }
@@ -164,16 +164,8 @@ public class MarriageMaster extends JavaPlugin
     
     public boolean setupMinePacks()
     {
-    	if(getServer().getPluginManager().getPlugin("MinePacks") == null)
-    	{
-    		return false;
-    	}
-        RegisteredServiceProvider<MinePacks> mpProvider = getServer().getServicesManager().getRegistration(at.pcgamingfreaks.georgh.MinePacks.MinePacks.class);
-        if (mpProvider != null)
-        {
-        	minepacks = mpProvider.getProvider();
-        }
-        return (minepacks != null);
+	    minepacks = MinePacksIntegrationBase.getIntegration();
+		return minepacks != null;
     }
 	
 	public void registerEvents()

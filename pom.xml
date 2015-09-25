@@ -131,6 +131,13 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/jar_libs/net.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MinePacksOld</artifactId>
+			<version>1.13</version>
+			<scope>system</scope>
+			<systemPath>jar_libs/MinePacks-1_13.jar</systemPath>
+		</dependency>
 
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
@@ -159,7 +166,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MinePacks</artifactId>
-			<version>LATEST</version>
+			<version>1.14-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

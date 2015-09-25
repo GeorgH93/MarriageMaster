@@ -37,7 +37,6 @@ public class Effect_1_7_Cauldron extends EffectBase
 				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
 					handle = Reflection_Cauldron.getHandle(entity);
-					String name = handle.getClass().getName();
 					if(handle != null && handle.getClass().getName().endsWith(".EntityPlayerMP"))
 					{
 						connection = Reflection_Cauldron.getNMSField(handle.getClass(), "playerConnection").get(handle);
