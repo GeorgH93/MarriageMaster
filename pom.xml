@@ -136,7 +136,7 @@
 			<artifactId>MinePacksOld</artifactId>
 			<version>1.13</version>
 			<scope>system</scope>
-			<systemPath>jar_libs/MinePacks-1_13.jar</systemPath>
+			<systemPath>${project.basedir}/jar_libs/MinePacks-1_13.jar</systemPath>
 		</dependency>
 
 		<dependency>
