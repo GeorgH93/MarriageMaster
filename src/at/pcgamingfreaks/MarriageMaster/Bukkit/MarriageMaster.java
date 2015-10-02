@@ -48,7 +48,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 
 public class MarriageMaster extends JavaPlugin
 {
-	public Logger log = getLogger();
+	public Logger log;
     public BaseEconomy economy = null;
     public Permission perms = null;
     public PluginChannel pluginchannel = null;
@@ -56,7 +56,7 @@ public class MarriageMaster extends JavaPlugin
     public Home home = null;
     public MarryTp tp = null;
     public MarryChat chat = null;
-    public final Config config = new Config(this);
+    public final Config config;
     public Language lang;
     public boolean UseUUIDs = false;
     public boolean UsePerms = true;
@@ -70,6 +70,8 @@ public class MarriageMaster extends JavaPlugin
     
     public void onEnable()
 	{
+		log = getLogger();
+		config = new Config(this);
 		load();
 		log.info(lang.Get("Console.Enabled"));
 	}
