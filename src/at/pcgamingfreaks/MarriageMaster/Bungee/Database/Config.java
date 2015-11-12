@@ -38,7 +38,7 @@ public class Config
 	private MarriageMaster plugin;
 	private Configuration config;
 	private ConfigurationProvider configprovider;
-	private static final int CONFIG_VERSION = 1;
+	private static final int CONFIG_VERSION = 2;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -95,7 +95,8 @@ public class Config
 	{
 		switch(config.getInt("Version"))
 		{
-			case 0: break;
+			case 1: config.set("DelayMessageForJoiningPlayer", 1);
+				break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
 		}
@@ -138,6 +139,11 @@ public class Config
 	public boolean getInformOnPartnerJoinEnabled()
 	{
 		return config.getBoolean("InformOnPartnerJoin");
+	}
+
+	public int getDelayMessageForJoiningPlayer()
+	{
+		return config.getInt("DelayMessageForJoiningPlayer", 1);
 	}
 	
 	public boolean getChatGlobal()

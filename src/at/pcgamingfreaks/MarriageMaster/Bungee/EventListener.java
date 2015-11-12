@@ -22,6 +22,7 @@ import java.io.DataInputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -41,6 +42,7 @@ public class EventListener implements Listener
 	
 	private BaseComponent[] Message_PartnerOnline, Message_PartnerNowOffline, Message_PartnerNowOnline;
 	private boolean JLInfo = true;
+	private int delay = 1;
 	
 	// Subcommand map
 	private HashMap<String, BaseCommand> marrycommandmap = new HashMap<String, BaseCommand>();
@@ -50,6 +52,7 @@ public class EventListener implements Listener
 		plugin = MM;
 		
 		JLInfo = plugin.config.getInformOnPartnerJoinEnabled();
+		delay = plugin.config.getDelayMessageForJoiningPlayer();
 		
 		// Load Messages
 		Message_PartnerOnline = plugin.lang.getReady("Ingame.PartnerOnline");
@@ -101,19 +104,30 @@ public class EventListener implements Listener
     {
 		if(JLInfo)
 		{
-			UUID partner = plugin.DB.GetPartnerUUID(event.getPlayer());
+			final UUID partner = plugin.DB.GetPartnerUUID(event.getPlayer());
 			if(partner != null)
 			{
 				ProxiedPlayer otherPlayer = plugin.getProxy().getPlayer(partner);
+				final ProxiedPlayer player = event.getPlayer();
 				if(otherPlayer != null)
 				{
-					event.getPlayer().sendMessage(Message_PartnerOnline);
 					otherPlayer.sendMessage(Message_PartnerNowOnline);
 				}
-				else
-				{
-					event.getPlayer().sendMessage(plugin.Message_PartnerOffline);
-				}
+				plugin.getProxy().getScheduler().schedule(plugin, new Runnable() {
+					@Override
+					public void run()
+					{
+						ProxiedPlayer otherPlayer = plugin.getProxy().getPlayer(partner);
+						if(otherPlayer != null)
+						{
+							player.sendMessage(Message_PartnerOnline);
+						}
+						else
+						{
+							player.sendMessage(plugin.Message_PartnerOffline);
+						}
+					}
+				}, delay, TimeUnit.SECONDS);
 			}
 		}
 		plugin.DB.UpdatePlayer(event.getPlayer());

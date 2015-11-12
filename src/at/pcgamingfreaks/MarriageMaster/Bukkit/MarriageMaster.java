@@ -48,34 +48,36 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 
 public class MarriageMaster extends JavaPlugin
 {
-	public Logger log = getLogger();
-    public BaseEconomy economy = null;
-    public Permission perms = null;
-    public PluginChannel pluginchannel = null;
-    public Kiss kiss = null;
-    public Home home = null;
-    public MarryTp tp = null;
-    public MarryChat chat = null;
-    public final Config config = new Config(this);
-    public Language lang;
-    public boolean UseUUIDs = false;
-    public boolean UsePerms = true;
-    public Database DB;
-    public String DBType = "";
-    public List<Marry_Requests> mr;
-    public List<Marry_Requests> bdr;
-    public HashMap<Player, Player> dr;
-    public MinePacksIntegrationBase minepacks = null;
-    public String HomeServer = null;
-    
-    public void onEnable()
+	public Logger log;
+	public BaseEconomy economy = null;
+	public Permission perms = null;
+	public PluginChannel pluginchannel = null;
+	public Kiss kiss = null;
+	public Home home = null;
+	public MarryTp tp = null;
+	public MarryChat chat = null;
+	public Config config;
+	public Language lang;
+	public boolean UseUUIDs = false;
+	public boolean UsePerms = true;
+	public Database DB;
+	public String DBType = "";
+	public List<Marry_Requests> mr;
+	public List<Marry_Requests> bdr;
+	public HashMap<Player, Player> dr;
+	public MinePacksIntegrationBase minepacks = null;
+	public String HomeServer = null;
+
+	public void onEnable()
 	{
+		log = getLogger();
+		config = new Config(this);
 		load();
 		log.info(lang.Get("Console.Enabled"));
 	}
-    
-    public void load()
-    {
+
+	public void load()
+	{
 		if(!config.Loaded())
 		{
 			setEnabled(false);
@@ -98,12 +100,12 @@ public class MarriageMaster extends JavaPlugin
 		{
 			try
 			{
-			    Metrics metrics = new Metrics(this);
-			    metrics.start();
+				Metrics metrics = new Metrics(this);
+				metrics.start();
 			}
-			catch (IOException e)
+			catch(IOException e)
 			{
-			    log.info(lang.Get("Console.MetricsOffline"));
+				log.info(lang.Get("Console.MetricsOffline"));
 			}
 		}
 		if(config.UseUpdater())
@@ -130,44 +132,44 @@ public class MarriageMaster extends JavaPlugin
 		// Register events
 		getCommand("marry").setExecutor(new OnCommand(this));
 		registerEvents();
-    }
-    
-    public void reload()
+	}
+
+	public void reload()
 	{
 		disable();
 		config.Reload();
 		load();
 	}
-    
-    public void disable()
-    {
-    	
-    	HandlerList.unregisterAll(this);
-    	getServer().getMessenger().unregisterIncomingPluginChannel(this);
-    	getServer().getMessenger().unregisterOutgoingPluginChannel(this);
-    	DB.Disable();
-    }
-    
-    public boolean setupPermissions()
-    {
-    	if(getServer().getPluginManager().getPlugin("Vault") == null)
-    	{
-    		return false;
-    	}
-        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if (permissionProvider != null)
-        {
-        	perms = permissionProvider.getProvider();
-        }
-        return (perms != null);
-    }
-    
-    public boolean setupMinePacks()
-    {
-	    minepacks = MinePacksIntegrationBase.getIntegration();
+
+	public void disable()
+	{
+
+		HandlerList.unregisterAll(this);
+		getServer().getMessenger().unregisterIncomingPluginChannel(this);
+		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+		DB.Disable();
+	}
+
+	public boolean setupPermissions()
+	{
+		if(getServer().getPluginManager().getPlugin("Vault") == null)
+		{
+			return false;
+		}
+		RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+		if(permissionProvider != null)
+		{
+			perms = permissionProvider.getProvider();
+		}
+		return (perms != null);
+	}
+
+	public boolean setupMinePacks()
+	{
+		minepacks = MinePacksIntegrationBase.getIntegration();
 		return minepacks != null;
-    }
-	
+	}
+
 	public void registerEvents()
 	{
 		getServer().getPluginManager().registerEvents(new JoinLeaveChat(this), this);
@@ -195,7 +197,7 @@ public class MarriageMaster extends JavaPlugin
 			getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
 	}
-	 
+
 	public void onDisable()
 	{
 		if(config.UseUpdater())
@@ -205,64 +207,64 @@ public class MarriageMaster extends JavaPlugin
 		disable();
 		log.info(lang.Get("Console.Disabled"));
 	}
-	
+
 	public boolean IsPriest(Player player)
 	{
 		return CheckPerm(player, "marry.priest", false) || DB.IsPriest(player);
 	}
-	
+
 	public boolean HasPartner(Player player)
 	{
 		String P = DB.GetPartner(player);
 		return (P != null && !P.equalsIgnoreCase(""));
 	}
-	
-	public boolean InRadius(Player player, Player otherPlayer, double radius) 
+
+	public boolean InRadius(Player player, Player otherPlayer, double radius)
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
 		return pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false));
 	}
-	
+
 	public boolean InRadiusAllWorlds(Player player, Player otherPlayer, double radius)
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
 		return radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false)));
 	}
-	
+
 	public void AsyncUpdate(final CommandSender sender)
 	{
 		sender.sendMessage(ChatColor.BLUE + lang.Get("Ingame.CheckingForUpdates"));
 		getServer().getScheduler().runTaskAsynchronously(this, new Runnable()
+		{
+			@Override
+			public void run()
 			{
-				@Override
-				public void run()
+				if(Update())
 				{
-					if(Update())
-					{
-						sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
-					}
+					sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
 				}
-			});
+				else
+				{
+					sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
+				}
+			}
+		});
 	}
-	
+
 	public boolean Update()
 	{
 		Bukkit_Updater updater = new Bukkit_Updater(this, 74734, this.getFile(), UpdateType.DEFAULT, true);
 		return updater.getResult() == UpdateResult.SUCCESS;
 	}
-	
+
 	public boolean CheckPerm(Player player, String Perm)
 	{
-		return CheckPerm(player,Perm, true);
+		return CheckPerm(player, Perm, true);
 	}
-	
-	public boolean CheckPerm(Player player,String Perm, boolean def)
+
+	public boolean CheckPerm(Player player, String Perm, boolean def)
 	{
 		if(player.isOp())
 		{

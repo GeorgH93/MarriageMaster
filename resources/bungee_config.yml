@@ -6,6 +6,8 @@ LanguageUpdateMode: Overwrite
 
 # Send join info to pardner on player join/leave
 InformOnPartnerJoin: true
+# Delay in seconds
+DelayMessageForJoiningPlayer: 1
 
 Chat:
   # If turned off the marry chat function will be handeld by the bukkit server (Private chat will only work if both players are on the same server)
@@ -51,4 +53,4 @@ Misc:
   AutoUpdate: true
 
 # Config File Version. Don't touch it!
-Version: 1
+Version: 2
