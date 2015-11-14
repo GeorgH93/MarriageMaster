@@ -48,7 +48,7 @@ public class JoinLeaveChat implements Listener
 		{
 			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
-		delay = plugin.config.getDelayMessageForJoiningPlayer();
+		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
 	}
 
 	@SuppressWarnings("deprecation")
