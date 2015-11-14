@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 19;
+	private static final int CONFIG_VERSION = 20;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -103,6 +103,7 @@ public class Config
 		config.set("AllowBlockPvP", false);
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
+		config.set("DelayMessageForJoiningPlayer", 0);
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
@@ -245,6 +246,8 @@ public class Config
 			case 18:
 				config.set("AllowSurnameColors", false);
 				config.set("AllowedSurnameCharacters", "A-Za-z");
+			case 19:
+				config.set("DelayMessageForJoiningPlayer", 0);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -544,5 +547,10 @@ public class Config
 	public boolean getUseMinepacks()
 	{
 		return config.getBoolean("UseMinepacks", false);
+	}
+
+	public int getDelayMessageForJoiningPlayer()
+	{
+		return config.getInt("DelayMessageForJoiningPlayer", 0);
 	}
 }
