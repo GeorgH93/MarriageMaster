@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Minepacks.MinePacksIntegrationBase;
 import net.gravitydevelopment.Updater.Bukkit_Updater;
 import net.gravitydevelopment.Updater.UpdateResult;
 import net.gravitydevelopment.Updater.UpdateType;
@@ -44,11 +45,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.MarryTp;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
-import at.pcgamingfreaks.georgh.MinePacks.MinePacks;
 
 public class MarriageMaster extends JavaPlugin
 {
-	public Logger log;
+    public Logger log;
     public BaseEconomy economy = null;
     public Permission perms = null;
     public PluginChannel pluginchannel = null;
@@ -65,22 +65,22 @@ public class MarriageMaster extends JavaPlugin
     public List<Marry_Requests> mr;
     public List<Marry_Requests> bdr;
     public HashMap<Player, Player> dr;
-    public MinePacks minepacks = null;
+    public MinePacksIntegrationBase minepacks = null;
     public String HomeServer = null;
     
     public void onEnable()
 	{
 		log = getLogger();
-		Load();
+		config = new Config(this);
+		load();
 		log.info(lang.Get("Console.Enabled"));
 	}
     
-    public void Load()
+    public void load()
     {
-    	config = new Config(this);
 		if(!config.Loaded())
 		{
-			this.setEnabled(false);
+			setEnabled(false);
 			log.warning("Failed loading config! Disabling Plugin.");
 			return;
 		}
@@ -93,15 +93,9 @@ public class MarriageMaster extends JavaPlugin
 		home = new Home(this);
 		tp = new MarryTp(this);
 		chat = new MarryChat(this);
-		mr = new ArrayList<Marry_Requests>();
-		if(config.getConfirmationBothDivorce())
-		{
-			bdr = new ArrayList<Marry_Requests>();
-		}
-		else
-		{
-			dr = new HashMap<Player, Player>();
-		}
+		mr = new ArrayList<>();
+		bdr = new ArrayList<>();
+		dr = new HashMap<>();
 		if(config.UseMetrics())
 		{
 			try
@@ -126,7 +120,7 @@ public class MarriageMaster extends JavaPlugin
 				log.info(lang.Get("Console.NoPermPL"));
 			}
 		}
-		economy = BaseEconomy.GetEconomy(this);
+		economy = BaseEconomy.getEconomy(this);
 		if(config.getUseMinepacks())
 		{
 			setupMinePacks();
@@ -135,18 +129,19 @@ public class MarriageMaster extends JavaPlugin
 		{
 			pluginchannel = new PluginChannel(this);
 		}
-		// Events Registrieren
+		// Register events
 		getCommand("marry").setExecutor(new OnCommand(this));
-		RegisterEvents();
+		registerEvents();
     }
     
     public void reload()
 	{
-		Disable();
-		Load();
+		disable();
+		config.Reload();
+		load();
 	}
     
-    public void Disable()
+    public void disable()
     {
     	
     	HandlerList.unregisterAll(this);
@@ -171,19 +166,11 @@ public class MarriageMaster extends JavaPlugin
     
     public boolean setupMinePacks()
     {
-    	if(getServer().getPluginManager().getPlugin("MinePacks") == null)
-    	{
-    		return false;
-    	}
-        RegisteredServiceProvider<MinePacks> mpProvider = getServer().getServicesManager().getRegistration(at.pcgamingfreaks.georgh.MinePacks.MinePacks.class);
-        if (mpProvider != null)
-        {
-        	minepacks = mpProvider.getProvider();
-        }
-        return (minepacks != null);
+	    minepacks = MinePacksIntegrationBase.getIntegration();
+		return minepacks != null;
     }
 	
-	public void RegisterEvents()
+	public void registerEvents()
 	{
 		getServer().getPluginManager().registerEvents(new JoinLeaveChat(this), this);
 		if(config.GetAllowBlockPvP())
@@ -217,7 +204,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			Update();
 		}
-		Disable();
+		disable();
 		log.info(lang.Get("Console.Disabled"));
 	}
 	
@@ -236,22 +223,14 @@ public class MarriageMaster extends JavaPlugin
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false)))
-		{
-			return true;
-		}
-		return false;
+		return pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius <= 0 || CheckPerm(player, "marry.bypassrangelimit", false));
 	}
 	
 	public boolean InRadiusAllWorlds(Player player, Player otherPlayer, double radius)
 	{
 		Location pl = player.getLocation();
 		Location opl = otherPlayer.getLocation();
-		if(radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false))))
-		{
-			return true;
-		}
-		return false;
+		return radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false)));
 	}
 	
 	public void AsyncUpdate(final CommandSender sender)
@@ -277,11 +256,7 @@ public class MarriageMaster extends JavaPlugin
 	public boolean Update()
 	{
 		Bukkit_Updater updater = new Bukkit_Updater(this, 74734, this.getFile(), UpdateType.DEFAULT, true);
-		if(updater.getResult() == UpdateResult.SUCCESS)
-		{
-			return true;
-		}
-		return false;
+		return updater.getResult() == UpdateResult.SUCCESS;
 	}
 	
 	public boolean CheckPerm(Player player, String Perm)

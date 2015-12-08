@@ -684,7 +684,7 @@ public class OnCommand implements CommandExecutor
 		        		player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotAPriest"));
 		        	}
 		        }
-		        else if(plugin.config.AllowSelfMarry() && args.length == 1)
+		        else if(plugin.config.AllowSelfDivorce() && args.length == 1)
 		        {
 		        	if(plugin.CheckPerm(player, "marry.selfmarry"))
 		        	{

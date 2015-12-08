@@ -34,35 +34,52 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 public class JoinLeaveChat implements Listener 
 {
 	private MarriageMaster plugin;
-	private String prefix = null;
+	private String prefix = null, suffix = null;
+	private int delay = 0;
 
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		if(plugin.config.UsePrefix())
+		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
 		{
 			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
+		if(plugin.config.UseSuffix() && plugin.config.GetSuffix() != null)
+		{
+			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+		}
+		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
 	}
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void PlayerLoginEvent(PlayerJoinEvent event) 
+	public void onPlayerLoginEvent(PlayerJoinEvent event)
 	{
 		if(plugin.config.GetInformOnPartnerJoinEnabled())
 		{
-			String partner = plugin.DB.GetPartner(event.getPlayer());
+			final String partner = plugin.DB.GetPartner(event.getPlayer());
 			if(partner != null)
 			{
 				Player otherPlayer = plugin.getServer().getPlayer(partner);
+				final Player sender = event.getPlayer();
+				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
+					@Override
+					public void run()
+					{
+						Player otherPlayer = plugin.getServer().getPlayer(partner);
+						if(otherPlayer != null && otherPlayer.isOnline())
+						{
+							sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
+						}
+						else
+						{
+							sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOffline"));
+						}
+					}
+				}, delay);
 				if(otherPlayer != null && otherPlayer.isOnline())
 				{
-					event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
 					otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerNowOnline"));
-				}
-				else
-				{
-					event.getPlayer().sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOffline"));
 				}
 			}
 		}
@@ -93,6 +110,10 @@ public class JoinLeaveChat implements Listener
 				if(prefix != null)
 				{
 					format = prefix.replace("<partnername>", partner) + " " + format;
+				}
+				if(suffix != null)
+				{
+					format = format.replace("%1$s", "%1$s " + suffix);
 				}
 				if(plugin.config.getSurname())
 				{

@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 
-public class NMS
+public class Reflection
 {
 	public static void setValue(Object instance, String fieldName, Object value) throws Exception
 	{
@@ -31,10 +31,15 @@ public class NMS
 		field.set(instance, value);
 	}
 
+	private static String version = null;
+	
 	public static String getVersion()
 	{
-		String name = Bukkit.getServer().getClass().getPackage().getName();
-		String version = name.substring(name.lastIndexOf('.') + 1);
+		if(version == null)
+		{
+			String name = Bukkit.getServer().getClass().getPackage().getName();
+			version = name.substring(name.lastIndexOf('.') + 1);
+		}
 		return version;
 	}
 	
@@ -44,12 +49,9 @@ public class NMS
 		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
 		if (x.length == 2)
 		{
-			String enumClassName = x[0];
-			String enumName = x[1];
 			try
 			{
-				Class<Enum> cl = (Class<Enum>) Class.forName(enumClassName);
-				return Enum.valueOf(cl, enumName);
+				return Enum.valueOf((Class<Enum>) Class.forName(x[0]), x[1]);
 			}
 			catch (ClassNotFoundException e)
 			{
@@ -61,32 +63,28 @@ public class NMS
 
 	public static Class<?> getNMSClass(String className)
 	{
-		String fullName = "net.minecraft.server." + getVersion() + "." + className;
-		Class<?> clazz = null;
 		try
 		{
-			clazz = Class.forName(fullName);
+			return Class.forName("net.minecraft.server." + getVersion() + "." + className);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		return clazz;
+		return null;
 	}
 	
 	public static Class<?> getOBCClass(String className)
 	{
-		String fullName = "org.bukkit.craftbukkit." + getVersion() + "." + className;
-		Class<?> clazz = null;
 		try
 		{
-			clazz = Class.forName(fullName);
+			return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + className);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		return clazz;
+		return null;
 	}
 	
 	public static Object getHandle(Object obj)

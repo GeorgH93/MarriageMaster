@@ -22,8 +22,6 @@ import org.bukkit.Location;
 
 public class EffectBase
 {
-	protected static Class<?> PacketPlayOutParticle = NMS.getNMSClass("PacketPlayOutWorldParticles");
-	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
 	
 	public static EffectBase getEffect(boolean compMode)
@@ -33,7 +31,11 @@ public class EffectBase
 		String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
 		try
 		{
-			if(compMode)
+			if(Bukkit.getServer().getName().toLowerCase().contains("cauldron"))
+			{
+				eb = new Effect_1_7_Cauldron();
+			}
+			else if(compMode)
 			{
 				if(version[0].equals("1"))
 				{
@@ -88,10 +90,10 @@ public class EffectBase
 				}
 			}
 		}
-		/*catch (NoClassDefFoundError e)
+		catch (NoClassDefFoundError e)
 		{
 			eb = null;
-		}*/
+		}
 		catch (Exception e)
 		{
 			eb = null;

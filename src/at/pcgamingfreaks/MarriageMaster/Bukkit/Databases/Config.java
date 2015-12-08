@@ -26,18 +26,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private MarriageMaster plugin;
+	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 17;
+	private static final int CONFIG_VERSION = 20;
 	
-	public Config(MarriageMaster marriagemaster)
+	public Config(JavaPlugin pl)
 	{
-		plugin = marriagemaster;
+		plugin = pl;
 		LoadConfig();
 	}
 	
@@ -56,7 +55,7 @@ public class Config
 		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
 		{
-			plugin.log.info("No config found. Create new one ...");
+			plugin.getLogger().info("No config found. Create new one ...");
 			NewConfig(file);
 		}
 		else
@@ -104,17 +103,21 @@ public class Config
 		config.set("AllowBlockPvP", false);
 		config.set("Announcement", true);
 		config.set("InformOnPartnerJoin", true);
+		config.set("DelayMessageForJoiningPlayer", 0);
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
-		config.set("Chat.ToggleCommand", "chattoggle");
-		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
 		config.set("AllowSelfMarry", false);
+		config.set("AllowSelfDivorce", "auto");
 		config.set("Surname", false);
+		config.set("AllowSurnameColors", false);
+		config.set("AllowedSurnameCharacters", "A-Za-z");
 		config.set("AllowGiftsInCreative", false);
 		config.set("UseMinepacks", false);
 		config.set("UseBungeeCord", false);
+		config.set("Chat.ToggleCommand", "chattoggle");
+		config.set("Chat.PrivateFormat", "<heart> %1$s&r => %2$s: %3$s");
 		config.set("Economy.Enable", false);
 		config.set("Economy.Divorce", 100.00);
 		config.set("Economy.Marry", 100.00);
@@ -128,6 +131,8 @@ public class Config
 		config.set("BonusXp.Multiplier", 2);
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
+		config.set("Suffix.Enable", false);
+		config.set("Suffix.String", " (<heart><partnername><heart>)");
 		config.set("Database.Type","Files");
 		config.set("Database.UpdatePlayer", true);
 		config.set("Database.MySQL.Host", "localhost:3306");
@@ -160,11 +165,10 @@ public class Config
 		config.set("Teleport.CheckSafety", true);
 		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
 		config.set("Version", CONFIG_VERSION);
-		
 		try 
 		{
 			config.save(file);
-			plugin.log.info("Config file has been generated.");
+			plugin.getLogger().info("Config file has been generated.");
 		}
   	  	catch (IOException e) 
   	  	{
@@ -175,7 +179,7 @@ public class Config
 	
 	private boolean UpdateConfig(File file)
 	{
-		plugin.log.info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
+		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
 		switch(config.getInt("Version"))
 		{
 			case 1:
@@ -235,15 +239,24 @@ public class Config
 				config.set("AllowGiftsInCreative", false);
 			case 16:
 				config.set("Teleport.CheckSafety", true);
+			case 17:
+				config.set("AllowSelfDivorce", "auto");
+				config.set("Suffix.Enable", false);
+				config.set("Suffix.String", " (<heart><partnername><heart>)");
+			case 18:
+				config.set("AllowSurnameColors", false);
+				config.set("AllowedSurnameCharacters", "A-Za-z");
+			case 19:
+				config.set("DelayMessageForJoiningPlayer", 0);
 			break;
 			case CONFIG_VERSION: return false;
-			default: plugin.log.info("Config File Version newer than expected!"); return false;
+			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
 		}
 		config.set("Version", CONFIG_VERSION);
 		try 
 		{
 			config.save(file);
-			plugin.log.info("Config File has been updated.");
+			plugin.getLogger().info("Config File has been updated.");
 		}
   	  	catch (IOException e) 
   	  	{
@@ -322,6 +335,16 @@ public class Config
 	public String GetPrefix()
 	{
 		return config.getString("Prefix.String");
+	}
+	
+	public boolean UseSuffix()
+	{
+		return config.getBoolean("Suffix.Enable");	
+	}
+	
+	public String GetSuffix()
+	{
+		return config.getString("Suffix.String");
 	}
 	
 	public boolean UseEconomy()
@@ -464,6 +487,28 @@ public class Config
 		return config.getBoolean("AllowSelfMarry");
 	}
 	
+	public boolean AllowSelfDivorce()
+	{
+		switch(config.getString("AllowSelfDivorce").toLowerCase())
+		{
+			case "1":
+			case "on":
+			case "t":
+			case "true":
+			case "yes":
+			case "y":
+				return true;
+			case "0":
+			case "off":
+			case "f":
+			case "false":
+			case "no":
+			case "n":
+				return false;
+			default: return config.getBoolean("AllowSelfMarry");
+		}
+	}
+	
 	public boolean DelayTP()
 	{
 		return config.getBoolean("Teleport.Delay");
@@ -489,8 +534,23 @@ public class Config
 		return config.getBoolean("Surname", false);
 	}
 	
+	public boolean getAllowSurnameColors()
+	{
+		return config.getBoolean("AllowSurnameColors", false);
+	}
+	
+	public String getAllowedSurnameCharacters()
+	{
+		return config.getString("AllowedSurnameCharacters", "all");
+	}
+	
 	public boolean getUseMinepacks()
 	{
 		return config.getBoolean("UseMinepacks", false);
+	}
+
+	public int getDelayMessageForJoiningPlayer()
+	{
+		return config.getInt("DelayMessageForJoiningPlayer", 0);
 	}
 }

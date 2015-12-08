@@ -23,6 +23,8 @@ import org.bukkit.entity.Player;
 
 public class Effect_1_7 extends EffectBase
 {
+	private static Class<?> PacketPlayOutParticle = Reflection.getNMSClass("PacketPlayOutWorldParticles");
+	
 	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
 		try
@@ -32,20 +34,20 @@ public class Effect_1_7 extends EffectBase
 			Object handle, connection;
 			for(Entity entity : loc.getWorld().getEntities())
 			{
-				if(entity instanceof Player)
+				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
 				{
-					if(entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
+					handle = Reflection.getHandle(entity);
+					if(handle != null && handle.getClass().getName().endsWith(".EntityPlayer"))
 					{
-						handle = NMS.getHandle(entity);
-						connection = NMS.getField(handle.getClass(), "playerConnection").get(handle);
-						NMS.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
+						connection = Reflection.getField(handle.getClass(), "playerConnection").get(handle);
+						Reflection.getMethod(connection.getClass(), "sendPacket", new Class[0]).invoke(connection, new Object[] { packet });
 					}
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("Unable to send Particle " + type.getName() + ". (Version 1.7)");
+			System.out.println("Unable to spawn particle " + type.getName() + ". (Version 1.7)");
 			e.printStackTrace();
 		}
 	}
