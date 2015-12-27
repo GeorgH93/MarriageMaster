@@ -46,14 +46,14 @@ public class Priest
 			}
 			else
 			{
-				AllowedSurnameCharactersRegEx = "§";
+				AllowedSurnameCharactersRegEx = "ï¿½";
 			}
 		}
 		else
 		{
 			if(plugin.config.getAllowSurnameColors())
 			{
-				AllowedSurnameCharactersRegEx += "&§";
+				AllowedSurnameCharactersRegEx += "&ï¿½";
 			}
 			AllowedSurnameCharactersRegEx = "[^" + AllowedSurnameCharactersRegEx + "]";
 		}
@@ -71,7 +71,7 @@ public class Priest
 		}
 		if(plugin.config.getAllowSurnameColors())
 		{
-			surname = ChatColor.translateAlternateColorCodes('&', surname.replace('§', '&').replaceAll("&k", ""));
+			surname = ChatColor.translateAlternateColorCodes('&', surname.replace('ï¿½', '&').replaceAll("&k", ""));
 		}
 		return surname;
 	}
@@ -80,13 +80,13 @@ public class Priest
 	public void Marry(CommandSender priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[0]);
-		if(player == null || (player != null && !player.isOnline()))
+		if(player == null || !player.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[0]));
 			return;
 		}
 		Player otherPlayer = Bukkit.getServer().getPlayer(args[1]);
-		if(otherPlayer == null || (otherPlayer != null && !otherPlayer.isOnline()))
+		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
 			return;
@@ -125,13 +125,13 @@ public class Priest
 	public void Marry(Player priest, String[] args) 
 	{
 		Player player = Bukkit.getServer().getPlayer(args[0]);
-		if(player == null || (player != null && !player.isOnline()))
+		if(player == null || !player.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[0]));
 			return;
 		}
 		Player otherPlayer = Bukkit.getServer().getPlayer(args[1]);
-		if(otherPlayer == null || (otherPlayer != null && !otherPlayer.isOnline()))
+		if(otherPlayer == null || !otherPlayer.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
 			return;
@@ -396,41 +396,17 @@ public class Priest
 		Player player = plugin.getServer().getPlayer(args[1]);
 		if(player != null && player.isOnline())
 		{
+			String senderName = ((sender instanceof Player) ? ((Player) sender).getDisplayName() : ChatColor.GRAY + sender.getName()) + ChatColor.GREEN;
 			if(plugin.IsPriest(player))
 			{
 				plugin.DB.DelPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.UnMadeYouAPriest"), sender.getName()));
+				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.UnMadeYouAPriest"), senderName));
 				sender.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.UnMadeAPriest"), player.getDisplayName() + ChatColor.GREEN));
 			}
 			else
 			{
 				plugin.DB.SetPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.MadeYouAPriest"), sender.getName()));
-				sender.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.MadeAPriest"), player.getDisplayName() + ChatColor.GREEN));
-			}
-		}
-		else
-		{
-			sender.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
-		}
-	}
-
-	@SuppressWarnings("deprecation")
-	public void setPriest(String[] args, Player sender) 
-	{
-		Player player = plugin.getServer().getPlayer(args[1]);
-		if(player != null && player.isOnline())
-		{
-			if(plugin.IsPriest(player))
-			{
-				plugin.DB.DelPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.UnMadeYouAPriest"), sender.getDisplayName() + ChatColor.GREEN));
-				sender.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.UnMadeAPriest"), player.getDisplayName() + ChatColor.GREEN));
-			}
-			else
-			{
-				plugin.DB.SetPriest(player);
-				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.MadeYouAPriest"), sender.getDisplayName() + ChatColor.GREEN));
+				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.MadeYouAPriest"), senderName));
 				sender.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.MadeAPriest"), player.getDisplayName() + ChatColor.GREEN));
 			}
 		}
@@ -444,7 +420,7 @@ public class Priest
 	public void Divorce(Player priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[1]);
-		if(player == null || (player != null && !player.isOnline()))
+		if(player == null || !player.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
 			return;
@@ -517,7 +493,7 @@ public class Priest
 	public void Divorce(CommandSender priest, String[] args)
 	{
 		Player player = Bukkit.getServer().getPlayer(args[1]);
-		if(player == null || (player != null && !player.isOnline()))
+		if(player == null || !player.isOnline())
 		{
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
 			return;

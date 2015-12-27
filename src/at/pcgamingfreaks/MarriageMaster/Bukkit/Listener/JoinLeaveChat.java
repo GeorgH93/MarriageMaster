@@ -141,36 +141,7 @@ public class JoinLeaveChat implements Listener
 		}
 		plugin.chat.pcl.remove(event.getPlayer());
 		plugin.chat.Marry_ChatDirect.remove(event.getPlayer());
-		Iterator<Marry_Requests> m = plugin.mr.iterator();
-		Marry_Requests temp;
-		while (m.hasNext())
-		{
-			temp = m.next();
-			if(temp.p1 == event.getPlayer())
-			{
-				if(temp.priest != null)
-				{
-					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
-				}
-				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
-				m.remove();
-			}
-			else if(temp.p2 == event.getPlayer())
-			{
-				if(temp.priest != null)
-				{
-					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
-				}
-				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
-				m.remove();
-			}
-			else if(temp.priest != null && temp.priest == event.getPlayer())
-			{
-				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
-				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
-				m.remove();
-			}
-		}
+		playerWentOffline(plugin.mr.iterator(), event.getPlayer());
 		if(!plugin.config.getConfirmationBothDivorce())
 		{
 			Iterator<Entry<Player, Player>> d = plugin.dr.entrySet().iterator();
@@ -192,34 +163,39 @@ public class JoinLeaveChat implements Listener
 		}
 		else
 		{
-			m = plugin.bdr.iterator();
-			while (m.hasNext())
+			playerWentOffline(plugin.bdr.iterator(), event.getPlayer());
+		}
+	}
+
+	public void playerWentOffline(Iterator<Marry_Requests> m, Player player)
+	{
+		Marry_Requests temp;
+		while (m.hasNext())
+		{
+			temp = m.next();
+			if(temp.p1 == player)
 			{
-				temp = m.next();
-				if(temp.p1 == event.getPlayer())
+				if(temp.priest != null)
 				{
-					if(temp.priest != null)
-					{
-						temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
-					}
-					temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
-					m.remove();
+					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
 				}
-				else if(temp.p2 == event.getPlayer())
+				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				m.remove();
+			}
+			else if(temp.p2 == player)
+			{
+				if(temp.priest != null)
 				{
-					if(temp.priest != null)
-					{
-						temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
-					}
-					temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
-					m.remove();
+					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
 				}
-				else if(temp.priest != null && temp.priest == event.getPlayer())
-				{
-					temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
-					temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
-					m.remove();
-				}
+				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				m.remove();
+			}
+			else if(temp.priest != null && temp.priest == player)
+			{
+				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				m.remove();
 			}
 		}
 	}
