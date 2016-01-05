@@ -31,7 +31,7 @@ public class Database
 	
 	public Database(MarriageMaster marriagemaster) { plugin = marriagemaster; }
 	
-	public void Recache() {}
+	public void recache() {}
 	
 	public void Disable() {}
 	

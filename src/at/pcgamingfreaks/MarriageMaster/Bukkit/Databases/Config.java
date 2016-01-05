@@ -80,14 +80,7 @@ public class Config
 		{
 			String[] GameVersion = Bukkit.getBukkitVersion().split("-");
 			GameVersion = GameVersion[0].split("\\.");
-			if(Integer.parseInt(GameVersion[1]) > 7 || (Integer.parseInt(GameVersion[1]) == 7 && Integer.parseInt(GameVersion[2]) > 5))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return (Integer.parseInt(GameVersion[1]) > 7 || (Integer.parseInt(GameVersion[1]) == 7 && Integer.parseInt(GameVersion[2]) > 5));
 		}
 		catch(Exception e)
 		{

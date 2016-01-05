@@ -48,8 +48,8 @@ public class Files extends Database
 	public Files(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
-		MarryMap = new HashMap<String, FileConfiguration>();
-		Priests = new ArrayList<String>();
+		MarryMap = new HashMap<>();
+		Priests = new ArrayList<>();
 		LoadAllPlayers();
 		LoadPriests();
 		CheckUUIDs();
@@ -62,10 +62,13 @@ public class Files extends Database
 		if(file.exists())
 		{
 			File[] allFiles = file.listFiles();
-			for (File item : allFiles)
+			if(allFiles != null && allFiles.length > 0)
 			{
-				temp = item.getName();
-				LoadPlayer(temp.substring(0, temp.length()-4));
+				for(File item : allFiles)
+				{
+					temp = item.getName();
+					LoadPlayer(temp.substring(0, temp.length() - 4));
+				}
 			}
 		}
 	}
@@ -82,7 +85,7 @@ public class Files extends Database
 		}
 	}
 	
-	public void Recache()
+	public void recache()
 	{
 		MarryMap.clear();
 		LoadAllPlayers();
@@ -96,10 +99,10 @@ public class Files extends Database
 		if(file.exists())
 		{
 			MarryMap.put(player, YamlConfiguration.loadConfiguration(file));
-			if(MarryMap.get(player).getString("MarriedTo") == player)
+			if(MarryMap.get(player).getString("MarriedTo").equalsIgnoreCase(player))
 			{
 				MarryMap.remove(player);
-				file.delete();
+				if(!file.delete()) { plugin.log.warning("Failed deleting " + file.getName()); }
 			}
 		}
 	}
@@ -110,12 +113,8 @@ public class Files extends Database
 		Priests.clear();
 		if(file.exists())
 		{
-			BufferedReader in = null;
-	        FileReader fr = null;
-			try
+			try(BufferedReader in = new BufferedReader(new FileReader(file)))
 			{
-	            fr = new FileReader(file);
-	            in = new BufferedReader(fr);
 	            String str;
 	            while ((str = in.readLine()) != null)
 	            {
@@ -129,17 +128,6 @@ public class Files extends Database
 			{
 	            e.printStackTrace();
 	        }
-			finally
-			{
-				try
-				{
-					in.close();
-	            	fr.close();
-				}
-				catch (Exception e)
-				{
-				}
-	        }
 		}
 	}
 	
@@ -149,7 +137,7 @@ public class Files extends Database
 		{
 			return;
 		}
-		List<String> convert = new ArrayList<String>();
+		List<String> convert = new ArrayList<>();
 		for (String string : Priests)
 		{
 			if(string.length() != 32)
@@ -157,7 +145,7 @@ public class Files extends Database
 				convert.add(string);
 			}
 		}
-		Map<String, FileConfiguration> CMarryMap = new HashMap<String, FileConfiguration>();
+		Map<String, FileConfiguration> CMarryMap = new HashMap<>();
 		for (Entry<String, FileConfiguration> entry : MarryMap.entrySet())
 		{
 			if(entry.getKey().length() != 32)
@@ -188,35 +176,35 @@ public class Files extends Database
 					Priests.add(s.replace("-", ""));
 				}
 			}
-			String hilf;
-			FileConfiguration fchilf;
+			String temp;
+			FileConfiguration tempFileConfig;
 			for (Entry<String, FileConfiguration> entry : CMarryMap.entrySet())
 			{
 				MarryMap.remove(entry.getKey());
-				fchilf = entry.getValue();
-				hilf = entry.getKey();
-				if(hilf.length() <= 16)
+				tempFileConfig = entry.getValue();
+				temp = entry.getKey();
+				if(temp.length() <= 16)
 				{
-					hilf = UUIDConverter.getUUIDFromName(hilf, plugin.getServer().getOnlineMode());
-					if(hilf == null)
+					temp = UUIDConverter.getUUIDFromName(temp, plugin.getServer().getOnlineMode());
+					if(temp == null)
 					{
 						continue;
 					}
-					fchilf.set("Name", entry.getKey());
+					tempFileConfig.set("Name", entry.getKey());
 				}
-				else if(hilf.length() > 32)
+				else if(temp.length() > 32)
 				{
-					hilf = hilf.replace("-", "");
+					temp = temp.replace("-", "");
 				}
-				if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID") == null)
+				if(tempFileConfig.getString("MarriedStatus").equalsIgnoreCase("married") && tempFileConfig.getString("MarriedToUUID") == null)
 				{
-					fchilf.set("MarriedToUUID", UUIDConverter.getUUIDFromName(fchilf.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
+					tempFileConfig.set("MarriedToUUID", UUIDConverter.getUUIDFromName(tempFileConfig.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
 				}
-				else if(fchilf.getString("MarriedStatus").equalsIgnoreCase("married") && fchilf.getString("MarriedToUUID").length() > 32)
+				else if(tempFileConfig.getString("MarriedStatus").equalsIgnoreCase("married") && tempFileConfig.getString("MarriedToUUID").length() > 32)
 				{
-					fchilf.set("MarriedToUUID", fchilf.getString("MarriedToUUID").replace("-", ""));
+					tempFileConfig.set("MarriedToUUID", tempFileConfig.getString("MarriedToUUID").replace("-", ""));
 				}
-				MarryMap.put(hilf,fchilf);
+				MarryMap.put(temp,tempFileConfig);
 			}
 			ReSaveAll();
 			SavePriests();
@@ -230,9 +218,15 @@ public class Files extends Database
 		if(file.exists())
 		{
 			File[] allFiles = file.listFiles();
-			for (File item : allFiles)
+			if(allFiles != null && allFiles.length > 0)
 			{
-				item.delete();
+				for(File item : allFiles)
+				{
+					if(!item.delete())
+					{
+						plugin.log.warning("Failed deleting " + item.getName());
+					}
+				}
 			}
 		}
 		for (Entry<String, FileConfiguration> entry : MarryMap.entrySet())
@@ -317,9 +311,9 @@ public class Files extends Database
 		try
         {
 			File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
-			file.delete();
+	        if(!file.delete()) { plugin.log.warning("Failed deleting " + file.getName()); }
 			file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").append(File.separator).append(partner).append(".yml").toString());
-			file.delete();
+	        if(!file.delete()) { plugin.log.warning("Failed deleting " + file.getName()); }
         }
         catch(Exception e)
         {
@@ -327,7 +321,7 @@ public class Files extends Database
         }
 	}
 	
-	public void MarryPlayers(Player player1, Player player2, String priester, String surname)
+	public void MarryPlayers(Player player1, Player player2, String priest, String surname)
 	{
 		String p1id = GetPlayerID(player1);
 		String p2id = GetPlayerID(player2);
@@ -348,7 +342,7 @@ public class Files extends Database
 	        {
 	        	MarryMap.get(p1id).set("Surname", surname);
 	        }
-	        MarryMap.get(p1id).set("MarriedBy", priester);
+	        MarryMap.get(p1id).set("MarriedBy", priest);
 	        MarryMap.get(p1id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p1id).set("MarriedHome", "");
 	        MarryMap.get(p1id).set("PvP", false);
@@ -367,7 +361,7 @@ public class Files extends Database
 	        {
 	        	MarryMap.get(p2id).set("Surname", surname);
 	        }
-	        MarryMap.get(p2id).set("MarriedBy", priester);
+	        MarryMap.get(p2id).set("MarriedBy", priest);
 	        MarryMap.get(p2id).set("MarriedDay", Calendar.getInstance().getTime());
 	        MarryMap.get(p2id).set("MarriedHome", "");
 	        MarryMap.get(p2id).set("PvP", false);
@@ -419,15 +413,15 @@ public class Files extends Database
 			MarryMap.get(pid).set("MarriedHome.location.Y", null);
 			MarryMap.get(pid).set("MarriedHome.location.Z", null);
 		}
-		catch(Exception e) {}
+		catch(Exception ignored) {}
 	}
 	
 	public void DelMarryHome(Player player)
 	{
 		DelHome(GetPlayerID(player));
 	}
-	
-	public void DelMarryHome(String player)
+
+	private String getPlayerID(String player)
 	{
 		String pid = player;
 		if(plugin.UseUUIDs)
@@ -444,27 +438,17 @@ public class Files extends Database
 				}
 			}
 		}
-		DelHome(pid);
+		return pid;
+	}
+
+	public void DelMarryHome(String player)
+	{
+		DelHome(getPlayerID(player));
 	}
 	
 	public Location GetMarryHome(String player)
 	{
-		String pid = player;
-		if(plugin.UseUUIDs)
-		{
-			Iterator<Entry<String, FileConfiguration>> it = MarryMap.entrySet().iterator();
-			Entry<String, FileConfiguration> e;
-			while(it.hasNext())
-			{
-				e = it.next();
-				if(e.getValue().getString("Name").equalsIgnoreCase(player))
-				{
-					pid = e.getKey();
-					break;
-				}
-			}
-		}
-		return GetHome(pid);
+		return GetHome(getPlayerID(player));
 	}
 	
 	public Location GetMarryHome(Player player)
@@ -503,10 +487,8 @@ public class Files extends Database
 	public void SavePriests()
 	{
 		File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("priests.yml").toString());
-		FileWriter writer = null;
-		try
+		try(FileWriter writer = new FileWriter(file,false))
 		{
-			writer = new FileWriter(file,false);
 			boolean first = true;
 			for(String str: Priests)
 			{
@@ -525,16 +507,6 @@ public class Files extends Database
   	  	{
   	  		e.printStackTrace();
   	  	}
-		finally
-		{
-			try
-			{
-				writer.close();
-			}
-			catch (IOException e)
-			{
-			}
-		}
 	}
 	
 	public void DelPriest(Player player)
@@ -547,11 +519,7 @@ public class Files extends Database
 	public boolean IsPriest(Player player)
 	{
 		String pid = GetPlayerID(player);
-		if(Priests.contains(pid))
-		{
-			return true;
-		}
-		return false;
+		return Priests.contains(pid);
 	}
 	
 	public String GetPartner(Player player)
@@ -628,16 +596,12 @@ public class Files extends Database
 	public boolean GetPartnerShareBackpack(Player player)
 	{
 		String pid = GetPlayerID(player);
-		if(MarryMap.get(pid) != null)
-		{
-			return MarryMap.get(pid).getBoolean("ShareBackpack", false);
-		}
-		return false;
+		return MarryMap.get(pid) != null && MarryMap.get(pid).getBoolean("ShareBackpack", false);
 	}
 	
 	public TreeMap<String, String> GetAllMarriedPlayers()
 	{
-		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
+		TreeMap<String, String> MarryMap_out = new TreeMap<>();
 		String marriedTo;
 		if(plugin.UseUUIDs)
 		{
