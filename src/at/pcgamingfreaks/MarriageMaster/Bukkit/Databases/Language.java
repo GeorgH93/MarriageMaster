@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -41,7 +42,7 @@ public class Language
 	
 	public String Get(String Option)
 	{
-		return lang.getString("Language." + Option);
+		return ChatColor.translateAlternateColorCodes('&', lang.getString("Language." + Option));
 	}
 	
 	public void Reload()
