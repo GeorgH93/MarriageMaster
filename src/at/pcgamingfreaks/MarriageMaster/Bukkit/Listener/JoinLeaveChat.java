@@ -113,7 +113,7 @@ public class JoinLeaveChat implements Listener
 				}
 				if(suffix != null)
 				{
-					format = format.replace("%1$s", "%1$s " + suffix);
+					format = format.replace("%1$s", "%1$s " + suffix).replace("<partnername>", partner);
 				}
 				if(plugin.config.getSurname())
 				{
