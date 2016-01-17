@@ -442,7 +442,35 @@ public class Bukkit_Updater {
      */
     public boolean shouldUpdate(String localVersion, String remoteVersion)
     {
-    	String[] lv = localVersion.split(Pattern.quote( "." )), rv = remoteVersion.split(Pattern.quote( "." ));
+	    localVersion = localVersion.toLowerCase();
+	    remoteVersion = remoteVersion.toLowerCase();
+    	String[] lv = localVersion.split("-")[0].split(Pattern.quote( "." )), rv = remoteVersion.split("-")[0].split(Pattern.quote( "." ));
+	    try
+	    {
+		    if(localVersion.contains("snapshot") || localVersion.contains("alpha") || localVersion.contains("beta"))
+		    {
+			    for(int i = lv.length - 1; i >= 0; i--)
+			    {
+				    if(Integer.parseInt(lv[i]) > 0)
+				    {
+					    lv[i] = (Integer.parseInt(lv[i]) - 1) + "";
+					    break;
+				    }
+			    }
+		    }
+		    if(remoteVersion.contains("snapshot") || remoteVersion.contains("alpha") || remoteVersion.contains("beta"))
+		    {
+			    for(int i = rv.length - 1; i >= 0; i--)
+			    {
+				    if(Integer.parseInt(rv[i]) > 0)
+				    {
+					    rv[i] = (Integer.parseInt(rv[i]) - 1) + "";
+					    break;
+				    }
+			    }
+		    }
+	    }
+	    catch(Exception ignored){}
     	try
     	{
     		int i = 0, c = 0;
@@ -456,20 +484,7 @@ public class Bukkit_Updater {
     		}
     		for(i = 0; i < c; i++)
 			{
-    			if(i == 0 && Integer.parseInt(rv[i]) == 2)
-    			{
-    				try
-    				{
-    					String[] GameVersion = Bukkit.getBukkitVersion().split("-");
-    					GameVersion = GameVersion[0].split("\\.");
-    					if(Integer.parseInt(GameVersion[1]) > 7)
-    					{
-    						return true;
-    					}
-    				}
-    				catch(Exception e){}
-    				return false;
-    			}
+    			if(i == 0 && Integer.parseInt(rv[i]) == 2) { try { if(Integer.parseInt(Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1]) > 7) return true; } catch(Exception ignored){} return false; }
 				if(Integer.parseInt(rv[i]) > Integer.parseInt(lv[i]))
 				{
 					return true;
