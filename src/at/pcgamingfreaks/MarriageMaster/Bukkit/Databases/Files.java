@@ -148,13 +148,18 @@ public class Files extends Database
 		Map<String, FileConfiguration> CMarryMap = new HashMap<>();
 		for (Entry<String, FileConfiguration> entry : MarryMap.entrySet())
 		{
+			if(entry.getValue() == null)
+			{
+				plugin.log.warning("Failed loading data for \"" + entry.getKey() + "\"");
+				continue;
+			}
 			if(entry.getKey().length() != 32)
 			{
-				CMarryMap.put(entry.getKey(),entry.getValue());
+				CMarryMap.put(entry.getKey(), entry.getValue());
 			}
-			else if(entry.getValue().getString("MarriedStatus").equalsIgnoreCase("married") && (entry.getValue().getString("MarriedToUUID") == null || entry.getValue().getString("MarriedToUUID").contains("-")))
+			else if("married".equalsIgnoreCase(entry.getValue().getString("MarriedStatus")) && (entry.getValue().getString("MarriedToUUID") == null || entry.getValue().getString("MarriedToUUID").isEmpty() || entry.getValue().getString("MarriedToUUID").contains("-")))
 			{
-				CMarryMap.put(entry.getKey(),entry.getValue());
+				CMarryMap.put(entry.getKey(), entry.getValue());
 			}
 		}
 		if(convert.size() > 0 || CMarryMap.size() > 0)
@@ -196,11 +201,11 @@ public class Files extends Database
 				{
 					temp = temp.replace("-", "");
 				}
-				if(tempFileConfig.getString("MarriedStatus").equalsIgnoreCase("married") && tempFileConfig.getString("MarriedToUUID") == null)
+				if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID") == null)
 				{
 					tempFileConfig.set("MarriedToUUID", UUIDConverter.getUUIDFromName(tempFileConfig.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
 				}
-				else if(tempFileConfig.getString("MarriedStatus").equalsIgnoreCase("married") && tempFileConfig.getString("MarriedToUUID").length() > 32)
+				else if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID").length() > 32)
 				{
 					tempFileConfig.set("MarriedToUUID", tempFileConfig.getString("MarriedToUUID").replace("-", ""));
 				}
@@ -252,7 +257,7 @@ public class Files extends Database
 				if(!dat.getString("Name").equalsIgnoreCase(player.getName()))
 				{
 					dat.set("Name", player.getName());
-					if(dat.getString("MarriedStatus").equalsIgnoreCase("married"))
+					if("married".equalsIgnoreCase(dat.getString("MarriedStatus")))
 					{
 						dat2 = MarryMap.get(dat.getString("MarriedToUUID"));
 						dat2.set("MarriedTo", player.getName());
@@ -377,7 +382,7 @@ public class Files extends Database
 	public void SetMarryHome(Location loc, Player player)
 	{
 		String pid = GetPlayerID(player);
-		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
+		if("married".equalsIgnoreCase(MarryMap.get(pid).getString("MarriedStatus")))
 		{
 			String partner = plugin.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
@@ -559,7 +564,7 @@ public class Files extends Database
 	public void SetSurname(Player player, String Surname)
 	{
 		String pid = GetPlayerID(player);
-		if(MarryMap.get(pid).getString("MarriedStatus").equalsIgnoreCase("Married"))
+		if("married".equalsIgnoreCase(MarryMap.get(pid).getString("MarriedStatus")))
 		{
 			String partner = plugin.UseUUIDs ? GetPartnerUUID(player) : GetPartner(player);
 			File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").append(File.separator).append(pid).append(".yml").toString());
