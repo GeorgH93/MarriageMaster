@@ -179,7 +179,7 @@ public class MarriageMaster extends Plugin
 		}
 		catch (Exception e)
 		{
-			log.warning("Faild sending message!");
+			log.warning("Failed sending message!");
 			e.printStackTrace();
 		}
 		Set<Entry<String, ServerInfo>> serverlist = getProxy().getServers().entrySet();
@@ -202,7 +202,7 @@ public class MarriageMaster extends Plugin
 		}
 		catch (Exception e)
 		{
-			log.warning("Faild sending message to server: " + server.getName());
+			log.warning("Failed sending message to server: " + server.getName());
 			e.printStackTrace();
 		}
     }

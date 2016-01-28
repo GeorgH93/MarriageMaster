@@ -171,7 +171,7 @@ public class EventListener implements Listener
 		}
 		catch(Exception e)
 		{
-			plugin.log.warning("Faild reading message from bukkit server!");
+			plugin.log.warning("Failed reading message from bukkit server!");
 			e.printStackTrace();
 		}
 	}

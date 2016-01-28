@@ -68,7 +68,7 @@ public class PluginChannel implements PluginMessageListener
 		}
 		catch (Exception e)
 		{
-			plugin.log.warning("Faild reading message from the bungee!");
+			plugin.log.warning("Failed reading message from the bungee!");
 			e.printStackTrace();
 		}
 	}
@@ -86,7 +86,7 @@ public class PluginChannel implements PluginMessageListener
 		}
 		catch(Exception e)
 		{
-			plugin.log.warning("Faild sending data to bungee!");
+			plugin.log.warning("Failed sending data to bungee!");
 			e.printStackTrace();
 		}
     }
@@ -104,7 +104,7 @@ public class PluginChannel implements PluginMessageListener
 		}
 		catch(Exception e)
 		{
-			plugin.log.warning("Faild sending request to bungee!");
+			plugin.log.warning("Failed sending request to bungee!");
 			e.printStackTrace();
 		}
 	}
