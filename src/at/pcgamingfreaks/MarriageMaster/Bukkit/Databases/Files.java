@@ -17,11 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -58,16 +54,20 @@ public class Files extends Database
 	private void LoadAllPlayers()
 	{
 		File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").toString());
-		String temp;
 		if(file.exists())
 		{
-			File[] allFiles = file.listFiles();
+			File[] allFiles = file.listFiles(new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String name)
+				{
+					return name.toLowerCase().endsWith(".yml");
+				}
+			});
 			if(allFiles != null && allFiles.length > 0)
 			{
 				for(File item : allFiles)
 				{
-					temp = item.getName();
-					LoadPlayer(temp.substring(0, temp.length() - 4));
+					LoadPlayer(item.getName().substring(0, item.getName().length() - 4));
 				}
 			}
 		}
