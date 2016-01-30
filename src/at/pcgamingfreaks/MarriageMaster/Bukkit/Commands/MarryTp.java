@@ -46,7 +46,7 @@ public class MarryTp
 		String partner = plugin.DB.GetPartner(player);
 		if(partner != null && !partner.isEmpty())
 		{
-			Player otherPlayer = plugin.getServer().getPlayer(partner);
+			Player otherPlayer = plugin.getServer().getPlayerExact(partner);
 			if(otherPlayer != null && otherPlayer.isOnline())
 			{
 				if(player.canSee(otherPlayer))
