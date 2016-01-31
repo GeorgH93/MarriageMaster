@@ -358,7 +358,7 @@ public class OnCommand implements CommandExecutor
 	            		}
 	        			else if(args.length >= 2)
 	        			{
-		        			Player otP = Bukkit.getPlayer(partner);
+		        			Player otP = Bukkit.getPlayerExact(partner);
 		        			String msg = "";
 		        			for(int i = 1; i < args.length; i++)
 		    				{
@@ -413,7 +413,7 @@ public class OnCommand implements CommandExecutor
 	        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.GiftsOnlyInSurvival"));
 	        				return true;
 	        			}
-	        			Player partner = Bukkit.getServer().getPlayer(Partner);
+	        			Player partner = Bukkit.getServer().getPlayerExact(Partner);
 	        			if(partner == null || !partner.isOnline())
 	        			{
 	        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
@@ -486,7 +486,7 @@ public class OnCommand implements CommandExecutor
 		        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.BackpackOnlyInSurvival"));
 		        				return true;
 		        			}
-		        			Player partner = Bukkit.getServer().getPlayer(Partner);
+		        			Player partner = Bukkit.getServer().getPlayerExact(Partner);
 		        			if(partner == null || !partner.isOnline())
 		        			{
 		        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
@@ -611,7 +611,7 @@ public class OnCommand implements CommandExecutor
 		        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
 		        				return true;
 		        			}
-		        			Player partner = Bukkit.getServer().getPlayer(Partner);
+		        			Player partner = Bukkit.getServer().getPlayerExact(Partner);
 		        			if(partner == null || !partner.isOnline())
 		        			{
 		        				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));

@@ -505,7 +505,7 @@ public class Priest
 			return;
 		}
 		plugin.DB.DivorcePlayer(player);
-		Player otherPlayer = Bukkit.getServer().getPlayer(otP);
+		Player otherPlayer = Bukkit.getServer().getPlayerExact(otP);
 		if(otherPlayer != null && otherPlayer.isOnline())
 		{
 			priest.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Priest.Divorced"), player.getDisplayName() + ChatColor.GREEN, otherPlayer.getDisplayName() + ChatColor.GREEN));

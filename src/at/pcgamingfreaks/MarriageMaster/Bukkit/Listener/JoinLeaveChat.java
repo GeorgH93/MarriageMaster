@@ -60,13 +60,13 @@ public class JoinLeaveChat implements Listener
 			final String partner = plugin.DB.GetPartner(event.getPlayer());
 			if(partner != null)
 			{
-				Player otherPlayer = plugin.getServer().getPlayer(partner);
+				Player otherPlayer = plugin.getServer().getPlayerExact(partner);
 				final Player sender = event.getPlayer();
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 					@Override
 					public void run()
 					{
-						Player otherPlayer = plugin.getServer().getPlayer(partner);
+						Player otherPlayer = plugin.getServer().getPlayerExact(partner);
 						if(otherPlayer != null && otherPlayer.isOnline())
 						{
 							sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
