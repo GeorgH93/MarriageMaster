@@ -56,7 +56,7 @@ Language:
         NoTPInVanish: You cant use teleport if your Partner is Vanished.
         TP: Teleporting to partner...
         TPto: Your partner is teleporting to you...
-        TPUnsafe: "Teleport cancled! You would not survive it!"
+        TPUnsafe: "Teleport cancelled! You would not survive it!"
         TPtoUnsafe: "Your partner was about to teleport to you, but would not survive it!"
         ListHL: Married Player List
         ListHLMP: 'Showing page %1$d/%2$d - /marry list <page>'

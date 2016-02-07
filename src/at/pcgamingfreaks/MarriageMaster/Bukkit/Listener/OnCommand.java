@@ -53,7 +53,7 @@ public class OnCommand implements CommandExecutor
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) 
 	{
-		Player player = null;
+		Player player;
 		if (sender instanceof Player) 
 		{
 			player = (Player) sender;
@@ -158,7 +158,7 @@ public class OnCommand implements CommandExecutor
 			case "list":
 				if(plugin.CheckPerm(player, "marry.list"))
 	    		{
-					int page = 0, avpages = 0;
+					int page = 0, avpages;
 					if(args.length == 2)
 					{
 						try
@@ -576,6 +576,67 @@ public class OnCommand implements CommandExecutor
 	    		}
 	        	player.sendMessage(plugin.lang.Get("Priest.NoRequest"));
 	        	return true;
+			case "cancel":
+			case "close":
+			case "clear":
+				for (Marry_Requests m : plugin.bdr)
+				{
+					if(m.p1 == player || m.p2 == player)
+					{
+						plugin.bdr.remove(m);
+						if(m.p1 == player)
+						{
+							m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						}
+						else
+						{
+							m.p1.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						}
+						m.priest.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						return true;
+					}
+				}
+				Iterator<Entry<Player, Player>> d2 = plugin.dr.entrySet().iterator();
+				Entry<Player, Player> e2;
+				while(d2.hasNext())
+				{
+					e2 = d2.next();
+					if(player.equals(e2.getKey()))
+					{
+						e2.getValue().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						d2.remove();
+						return true;
+					}
+					else if(player.equals(e2.getValue()))
+					{
+						e2.getKey().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						d2.remove();
+						return true;
+					}
+				}
+				for (Marry_Requests m : plugin.mr)
+				{
+					if(m.p1 == player || m.p2 == player)
+					{
+						plugin.mr.remove(m);
+						if(m.priest != null)
+						{
+							m.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+						}
+						player.sendMessage(plugin.lang.Get("Ingame.YouCalledOff"));
+						if(m.p1 == player)
+						{
+							m.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+						}
+						else
+						{
+							m.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+						}
+						return true;
+					}
+				}
+				player.sendMessage(plugin.lang.Get("Priest.NoRequest"));
+				return true;
 			case "update":
 				if(plugin.config.UseUpdater())
 				{
