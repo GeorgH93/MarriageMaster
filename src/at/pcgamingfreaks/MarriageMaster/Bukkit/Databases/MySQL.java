@@ -307,6 +307,7 @@ public class MySQL extends Database implements Listener
 		}
 		catch(SQLException e)
 		{
+			System.out.print("Query: " + query);
 			e.printStackTrace();
 		}
 	}
@@ -553,7 +554,7 @@ public class MySQL extends Database implements Listener
 	public void SetMarryHome(Location loc, Player player)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("REPLACE INTO " + Table_Home + " (marry_id,home_x,home_y,home_z,home_world,home_server) SELECT (marry_id,?,?,?,?,?) FROM " + Table_Partners + " WHERE player1=? OR player2=?;", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName(), plugin.HomeServer, pid, pid);
+		runStatementAsync("REPLACE INTO `" + Table_Home + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`,`home_server`) SELECT `marry_id`,?,?,?,?,? FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?;", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName(), plugin.HomeServer, pid, pid);
 	}
 
 	public void MarryPlayers(Player player, Player otherPlayer, Player priest, String surname)
@@ -595,7 +596,7 @@ public class MySQL extends Database implements Listener
 	public void DivorcePlayer(Player player)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("DELETE " + Table_Partners + ", " + Table_Home + " FROM " + Table_Partners + " JOIN " + Table_Home + " USING (marry_id) WHERE marry_id= (SELECT marry_id FROM " + Table_Partners + " WHERE player1=? OR player2=?);", pid, pid);
+		runStatementAsync("DELETE `p`,`h` FROM `" + Table_Partners + "` AS `p` JOIN `" + Table_Home + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
 	}
 
 	public void SetPvPEnabled(Player player, boolean state)
