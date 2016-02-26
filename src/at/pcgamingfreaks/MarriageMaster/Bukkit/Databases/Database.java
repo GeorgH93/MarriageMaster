@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@ public class Database
 	
 	public boolean GetPartnerShareBackpack(Player player) { return false; }
 	
-	public TreeMap<String, String> GetAllMarriedPlayers() { return null;}
+	public void GetAllMarriedPlayers(Callback<TreeMap<String, String>> loaded) {}
 
 
 	public static Database getDatabase(String DBType, MarriageMaster pl)
@@ -96,12 +96,17 @@ public class Database
 		}
 	}
 	
-	public String LimitText(String text, int len)
+	protected static String LimitText(String text, int len)
 	{
 		if(text != null && text.length() > len)
 		{
 			return text.substring(0, len);
 		}
 		return text;
+	}
+
+	public interface Callback<T>
+	{
+		void onResult(T result);
 	}
 }

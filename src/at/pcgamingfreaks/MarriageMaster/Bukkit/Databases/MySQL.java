@@ -471,23 +471,34 @@ public class MySQL extends Database implements Listener
 		return partner;
 	}
 
-	public TreeMap<String, String> GetAllMarriedPlayers()
+	public void GetAllMarriedPlayers(final Callback<TreeMap<String, String>> finished)
 	{
-		TreeMap<String, String> MarryMap_out = new TreeMap<>();
-		try(Connection connection = getConnection(); Statement statement = connection.createStatement();
-		    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
-		{
-			while(rs.next())
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run()
 			{
-				MarryMap_out.put(rs.getString(1), rs.getString(2));
+				final TreeMap<String, String> MarryMap_out = new TreeMap<>();
+				try(Connection connection = getConnection(); Statement statement = connection.createStatement();
+				    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
+				{
+					while(rs.next())
+					{
+						MarryMap_out.put(rs.getString(1), rs.getString(2));
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				Bukkit.getScheduler().runTask(plugin, new Runnable() {
+					@Override
+					public void run()
+					{
+						finished.onResult(MarryMap_out);
+					}
+				});
 			}
-			rs.close();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return MarryMap_out;
+		});
 	}
 
 	public void DelMarryHome(Player player)
