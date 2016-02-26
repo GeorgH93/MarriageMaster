@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,55 +17,97 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.TreeMap;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.UUIDConverter;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-import at.pcgamingfreaks.UUIDConverter;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class MySQL extends Database
+@SuppressWarnings("SqlResolve")
+public class MySQL extends Database implements Listener
 {
-	private Connection conn = null;
-	
-	private String Table_Players, Table_Priests, Table_Partners, Table_Home, Host, User, Password;
-	private boolean UpdatePlayer;
-	
+	private HikariDataSource dataSource;
+
+	private final String Table_Players, Table_Priests, Table_Partners, Table_Home, uuidOrName;
+	private final boolean UpdatePlayer;
+
+	private Map<String, Integer> namesToID = new ConcurrentHashMap<>();
+	private Map<Player, Integer> playersToID = new ConcurrentHashMap<>();
+
 	public MySQL(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
+
 		// Load Settings
 		Table_Players = plugin.config.getUserTable();
 		Table_Priests = plugin.config.getPriestsTable();
 		Table_Partners = plugin.config.getPartnersTable();
 		Table_Home = plugin.config.getHomesTable();
 		UpdatePlayer = plugin.config.getUpdatePlayer();
-		Host = plugin.config.GetMySQLHost() + "/" + plugin.config.GetMySQLDatabase();
-		User = plugin.config.GetMySQLUser();
-		Password = plugin.config.GetMySQLPassword();
+
+		HikariConfig poolConfig = new HikariConfig();
+		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.GetMySQLHost() + "/" + plugin.config.GetMySQLDatabase() + "?allowMultiQueries=true");
+		poolConfig.setUsername(plugin.config.GetMySQLUser());
+		poolConfig.setPassword(plugin.config.GetMySQLPassword());
+		poolConfig.setMinimumIdle(1);
+		poolConfig.setMaximumPoolSize(8);
+		dataSource = new HikariDataSource(poolConfig);
+
+		uuidOrName = (plugin.UseUUIDs) ? "uuid" : "name";
 		// Finished Loading Settings
 		CheckDB();
 		if(plugin.UseUUIDs)
 		{
 			CheckUUIDs();
+			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);", "none", "00000000000000000000000000000000");
+			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);", "Console", "00000000000000000000000000000001");
 		}
-		AddPlayer("none", "00000000000000000000000000000000");
-		AddPlayer("Console", "00000000000000000000000000000001");
+		else
+		{
+			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`) VALUES (?);", "none");
+			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`) VALUES (?);", "Console");
+		}
+
+		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
-	
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onPlayerQuit(PlayerQuitEvent event)
+	{
+		unload(event.getPlayer());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onPlayerKick(PlayerKickEvent event)
+	{
+		unload(event.getPlayer());
+	}
+
+	private void unload(Player player)
+	{
+		playersToID.remove(player);
+	}
+
 	private void CheckUUIDs()
 	{
-		try
+		List<String> converter = new ArrayList<>();
+		try(Connection connection = getConnection(); Statement stmt = connection.createStatement();
+		    ResultSet res = stmt.executeQuery("SELECT `name` FROM " + Table_Players + " WHERE `uuid` IS NULL or `uuid` NOT LIKE '%-%'"))
 		{
-			List<String> converter = new ArrayList<String>();
-			Statement stmt = GetConnection().createStatement();
-			ResultSet res = stmt.executeQuery("SELECT name FROM " + Table_Players + " WHERE uuid IS NULL or uuid LIKE '%-%'");
 			while(res.next())
 			{
 				if(res.isFirst())
@@ -74,54 +116,38 @@ public class MySQL extends Database
 				}
 				converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), true) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
 			}
-			if(converter.size() > 0)
-			{
-				for (String string : converter)
-				{
-					stmt.execute(string);
-				}
-				plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"),converter.size()));
-			}
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
+		if(converter.size() > 0)
+		{
+			for(String string : converter)
+			{
+				runStatement(string);
+			}
+			plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"), converter.size()));
+		}
+
 	}
-	
-	private Connection GetConnection()
+
+	private Connection getConnection() throws SQLException
 	{
-		try
-		{
-			if(conn == null || conn.isClosed())
-			{
-				conn = DriverManager.getConnection("jdbc:mysql://" + Host + "?allowMultiQueries=true", User, Password);
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return conn;
+		return dataSource.getConnection();
 	}
-	
+
 	public void Disable()
 	{
-		try
-		{
-			GetConnection().close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		dataSource.close();
+		namesToID.clear();
+		playersToID.clear();
 	}
-	
+
 	private void CheckDB()
 	{
-		try
+		try(Connection connection = getConnection(); Statement stmt = connection.createStatement())
 		{
-			Statement stmt = GetConnection().createStatement();
 			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Players + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
 			if(plugin.UseUUIDs)
 			{
@@ -196,14 +222,13 @@ public class MySQL extends Database
 				}
 			}
 			stmt.execute("DELETE FROM " + Table_Partners + " WHERE player1=player2");
-			stmt.close();
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void UpdatePlayer(final Player player)
 	{
 		if(!UpdatePlayer)
@@ -214,621 +239,410 @@ public class MySQL extends Database
 		{
 			@Override
 			public void run()
-		    {
-				try
+			{
+				try(Connection con = getConnection(); PreparedStatement ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
 				{
-					PreparedStatement ps;
-					Connection con = DriverManager.getConnection("jdbc:mysql://" + Host, User, Password);
-					ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE " + ((plugin.UseUUIDs) ? "`uuid`=?;" : "`name`=?;"));
-					if(plugin.UseUUIDs)
+					ps.setString(1, getUUIDorName(player));
+					try(ResultSet rs = ps.executeQuery())
 					{
-						ps.setString(1, player.getUniqueId().toString().replace("-", ""));
-					}
-					else
-					{
-						ps.setString(1, player.getName());
-					}
-					ResultSet rs = ps.executeQuery();
-					if(rs.next())
-					{
-						rs.close();
-						ps.close();
-						if(!plugin.UseUUIDs)
+						if(rs.next())
 						{
-							con.close();
-							return;
+							playersToID.put(player, rs.getInt(1));
+							if(plugin.UseUUIDs)
+							{
+								runStatementAsync("UPDATE `" + Table_Players + "` SET `name`=? WHERE `uuid`=?;", player.getName(), player.getUniqueId().toString().replace("-", ""));
+							}
 						}
-						ps = con.prepareStatement("UPDATE `" + Table_Players + "` SET `name`=? WHERE `uuid`=?;");
-						ps.setString(1, player.getName());
-						ps.setString(2, player.getUniqueId().toString().replace("-", ""));
-					}
-					else
-					{
-						rs.close();
-						ps.close();
-						ps = con.prepareStatement("INSERT INTO `" + Table_Players + "` (`name`" + ((plugin.UseUUIDs) ? ",`uuid`" : "") + ") VALUES (?" + ((plugin.UseUUIDs) ? ",?" : "") + ");");
-						ps.setString(1, player.getName());
-						if(plugin.UseUUIDs)
+						else
 						{
-							ps.setString(2, player.getUniqueId().toString().replace("-", ""));
+							try(PreparedStatement ps2 = con.prepareStatement("INSERT INTO `" + Table_Players + "` (`name`" + ((plugin.UseUUIDs) ? ",`uuid`" : "") + ") VALUES (?" + ((plugin.UseUUIDs) ? ",?" : "") + ");", Statement.RETURN_GENERATED_KEYS))
+							{
+								ps2.setString(1, player.getName());
+								if(plugin.UseUUIDs)
+								{
+									ps2.setString(2, player.getUniqueId().toString().replace("-", ""));
+								}
+								ps2.executeUpdate();
+								try(ResultSet generatedKeys = ps2.getGeneratedKeys())
+								{
+									if(generatedKeys.next())
+									{
+										playersToID.put(player, generatedKeys.getInt(1));
+									}
+								}
+							}
 						}
 					}
-					ps.execute();
-					ps.close();
-					con.close();
 				}
-				catch (SQLException e)
-			    {
+				catch(SQLException e)
+				{
 					plugin.log.info("Failed to add user: " + player.getName());
-			        e.printStackTrace();
-			    }
-		    }});
-	}
-	
-	public void AddPlayer(String player, String UUID)
-	{
-		try
-		{
-			PreparedStatement ps = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE " + ((plugin.UseUUIDs) ? "`uuid`=?;" : "`name`=?;"));
-			if(plugin.UseUUIDs)
-			{
-				ps.setString(1, UUID);
-			}
-			else
-			{
-				ps.setString(1, player);
-			}
-			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-			{
-				rs.close();
-				ps.close();
-				return;
-			}
-			else
-			{
-				rs.close();
-				ps.close();
-				ps = GetConnection().prepareStatement("INSERT INTO `" + Table_Players + "` (`name`" + ((plugin.UseUUIDs) ? ",`uuid`" : "") + ") VALUES (?" + ((plugin.UseUUIDs) ? ",?" : "") + ");");
-				ps.setString(1, player);
-				if(plugin.UseUUIDs)
-				{
-					ps.setString(2, UUID);
+					e.printStackTrace();
 				}
 			}
-			ps.execute();
-			ps.close();
-		}
-		catch (SQLException e)
-	    {
-			plugin.log.info("Failed to add user: " + player);
-	        e.printStackTrace();
-	    }
+		});
 	}
-	
+
+	private void runStatementAsync(final String query, final Object... args)
+	{
+		Bukkit.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				runStatement(query, args);
+			}
+		});
+	}
+
+	private void runStatement(final String query, final Object... args)
+	{
+		try(Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query))
+		{
+			for(int i = 0; args != null && i < args.length; i++)
+			{
+				preparedStatement.setObject(i + 1, args[i]);
+			}
+			preparedStatement.execute();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
 	private int GetPlayerID(Player player)
 	{
 		int id = -1;
-		try
+		Integer ID = playersToID.get(player);
+		if(ID != null)
 		{
-			PreparedStatement pstmt;
-			if(plugin.UseUUIDs)
-			{
-				pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?");
-				pstmt.setString(1, player.getUniqueId().toString().replace("-", ""));
-			}
-			else
-			{
-				pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?");
-				pstmt.setString(1, player.getName());
-			}
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				id = rs.getInt(1);
-			}
-			rs.close();
-			pstmt.close();
+			return ID;
 		}
-		catch (Exception e)
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?"))
+		{
+			ps.setString(1, getUUIDorName(player));
+			try(ResultSet rs = ps.executeQuery())
+			{
+				if(rs.next())
+				{
+					id = rs.getInt(1);
+					playersToID.put(player, id);
+				}
+			}
+		}
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return id;
 	}
-	
+
 	private int GetPlayerID(String player)
 	{
 		int id = -1;
-		try
+		Integer ID = namesToID.get(player);
+		if(ID != null)
 		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?");
-			pstmt.setString(1, player);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				id = rs.getInt(1);
-			}
-			rs.close();
-			pstmt.close();
+			return ID;
 		}
-		catch (Exception e)
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?"))
+		{
+			ps.setString(1, player);
+			ps.executeQuery();
+			try(ResultSet rs = ps.getResultSet())
+			{
+				if(rs.next())
+				{
+					id = rs.getInt(1);
+					namesToID.put(player, id);
+				}
+			}
+		}
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return id;
 	}
-	
+
 	private String GetPlayerName(int pid)
 	{
 		String name = null;
-		try
+		try(Connection connection = getConnection(); Statement stmt = connection.createStatement())
 		{
-			Statement stmt = GetConnection().createStatement();
-			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`="+pid);
-			ResultSet rs = stmt.getResultSet();
-			if(rs.next())
+			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
+			try(ResultSet rs = stmt.getResultSet())
 			{
-				name = rs.getString(1);
+				if(rs.next())
+				{
+					name = rs.getString(1);
+				}
 			}
-			rs.close();
-			stmt.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return name;
 	}
 
+	private String getUUIDorName(Player player)
+	{
+		return (plugin.UseUUIDs) ? player.getUniqueId().toString().replace("-", "") : player.getName();
+	}
+
 	public void SetPriest(Player priest)
 	{
-		try
-		{
-			PreparedStatement pstmt;
-			if(plugin.UseUUIDs)
-			{
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Priests + "` SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?");
-				pstmt.setString(1, priest.getUniqueId().toString().replace("-", ""));
-			}
-			else
-			{
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Priests + "` SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?");
-				pstmt.setString(1, priest.getName());
-			}
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		runStatementAsync("INSERT INTO `" + Table_Priests + "` SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;", getUUIDorName(priest));
 	}
-	
+
 	public void DelPriest(Player priest)
 	{
-		try
-		{
-			PreparedStatement pstmt;
-			if(plugin.UseUUIDs)
-			{
-				pstmt = GetConnection().prepareStatement("DELETE FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?);");
-				pstmt.setString(1, priest.getUniqueId().toString().replace("-", ""));
-			}
-			else
-			{
-				pstmt = GetConnection().prepareStatement("DELETE FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?);");
-				pstmt.setString(1, priest.getName());
-			}
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
+		runStatementAsync("DELETE FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?);", getUUIDorName(priest));
 	}
-	
+
 	public boolean IsPriest(Player priest)
 	{
-		try
+		try(Connection connection = getConnection();
+		    PreparedStatement ps = connection.prepareStatement("SELECT priest_id FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?);"))
 		{
-			PreparedStatement pstmt;
-			if(plugin.UseUUIDs)
+			ps.setString(1, getUUIDorName(priest));
+			try(ResultSet rs = ps.executeQuery())
 			{
-				pstmt = GetConnection().prepareStatement("SELECT priest_id FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?);");
-				pstmt.setString(1, priest.getUniqueId().toString().replace("-", ""));
+				if(rs.next())
+				{
+					return true;
+				}
 			}
-			else
-			{
-				pstmt = GetConnection().prepareStatement("SELECT priest_id FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?);");
-				pstmt.setString(1, priest.getName());
-			}
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next())
-			{
-				return true;
-			}
-			rs.close();
-			pstmt.close();
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 		return false;
 	}
-	
+
 	public boolean GetPvPEnabled(Player player)
 	{
 		boolean res = false;
-		try
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `pvp_state` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `pvp_state` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
+			ps.setInt(1, pid);
+			ps.setInt(2, pid);
+			ps.executeQuery();
+			try(ResultSet rs = ps.getResultSet())
 			{
-				res = rs.getBoolean(1);
+				if(rs.next())
+				{
+					res = rs.getBoolean(1);
+				}
 			}
-			rs.close();
-			pstmt.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return res;
 	}
-	
+
 	public String GetPartner(Player player)
 	{
 		String partner = null;
-		try
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next ())
+			ps.setInt(1, pid);
+			ps.setInt(2, pid);
+			ps.executeQuery();
+			ResultSet rs = ps.getResultSet();
+			if(rs.next())
 			{
-				if(rs.getInt(1) == pid)
-				{
-					pid = rs.getInt(2);
-				}
-				else
-				{
-					pid = rs.getInt(1);
-				}
-				partner = GetPlayerName(pid);
+				partner = GetPlayerName((rs.getInt(1) == pid) ? rs.getInt(2) : rs.getInt(1));
 			}
 			rs.close();
-			pstmt.close();
+			ps.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return partner;
 	}
-	
+
 	public TreeMap<String, String> GetAllMarriedPlayers()
 	{
-		TreeMap<String, String> MarryMap_out = new TreeMap<String, String>();
-		try
+		TreeMap<String, String> MarryMap_out = new TreeMap<>();
+		try(Connection connection = getConnection(); Statement statement = connection.createStatement();
+		    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
 		{
-			ResultSet rs = GetConnection().createStatement().executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`");
 			while(rs.next())
 			{
 				MarryMap_out.put(rs.getString(1), rs.getString(2));
 			}
 			rs.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return MarryMap_out;
 	}
-	
+
 	public void DelMarryHome(Player player)
 	{
 		DelMarryHome(GetPlayerID(player));
 	}
-	
+
 	public void DelMarryHome(String player)
 	{
 		DelMarryHome(GetPlayerID(player));
 	}
-	
+
 	private void DelMarryHome(int pid)
 	{
-		try
-		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("DELETE FROM `" + Table_Home + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?);");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		runStatementAsync("DELETE FROM `" + Table_Home + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?);", pid, pid);
 	}
-	
+
 	public Location GetMarryHome(String player)
 	{
 		return GetMarryHome(GetPlayerID(player));
 	}
-	
+
 	public Location GetMarryHome(Player player)
 	{
 		return GetMarryHome(GetPlayerID(player));
 	}
-	
+
 	private Location GetMarryHome(int pid)
 	{
 		Location loc = null;
-		try
+		try(Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
 		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
+			try(ResultSet rs = pstmt.getResultSet())
 			{
-				World world = plugin.getServer().getWorld(rs.getString(4));
-				if(world == null)
+				if(rs.next())
 				{
-					return null;
+					World world = plugin.getServer().getWorld(rs.getString(4));
+					loc = (world == null) ? null : new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
 				}
-				loc = new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
 			}
-			rs.close();
-			pstmt.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return loc;
 	}
-	
+
 	public void SetMarryHome(Location loc, Player player)
 	{
-		try
-		{
-			int pid = GetPlayerID(player), mid = -1;
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `marry_id` FROM " + Table_Partners + " WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				mid = rs.getInt(1);
-				pstmt = GetConnection().prepareStatement("REPLACE INTO `" + Table_Home + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`,`home_server`) VALUES ("+mid+",?,?,?,?,?);");
-				pstmt.setDouble(1, loc.getX());
-				pstmt.setDouble(2, loc.getY());
-				pstmt.setDouble(3, loc.getZ());
-				pstmt.setString(4, loc.getWorld().getName());
-				pstmt.setString(5, plugin.HomeServer);
-				pstmt.execute();
-			}
-			rs.close();
-			pstmt.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		int pid = GetPlayerID(player);
+		runStatementAsync("REPLACE INTO " + Table_Home + " (marry_id,home_x,home_y,home_z,home_world,home_server) SELECT (marry_id,?,?,?,?,?) FROM " + Table_Partners + " WHERE player1=? OR player2=?;", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName(), plugin.HomeServer, pid, pid);
 	}
 
 	public void MarryPlayers(Player player, Player otherPlayer, Player priest, String surname)
 	{
-		try
+		Object[] args = new Object[(plugin.config.getSurname()) ? 5 : 4];
+		args[0] = GetPlayerID(player);
+		args[1] = GetPlayerID(otherPlayer);
+		args[2] = GetPlayerID(priest);
+		args[3] = new Timestamp(Calendar.getInstance().getTime().getTime());
+		if(plugin.config.getSurname())
 		{
-			PreparedStatement pstmt;
-			if(plugin.config.getSurname())
-			{
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
-				pstmt.setString(5, LimitText(surname, 34));
-			}
-			else
-			{
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);");
-			}
-			pstmt.setInt(1, GetPlayerID(player));
-			pstmt.setInt(2, GetPlayerID(otherPlayer));
-			pstmt.setInt(3, GetPlayerID(priest));
-			pstmt.setTimestamp(4, new Timestamp(Calendar.getInstance().getTime().getTime()));
-			pstmt.execute();
-			pstmt.close();
+			args[4] = LimitText(surname, 34);
+			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
 		}
 	}
-	
+
 	public void MarryPlayers(Player player, Player otherPlayer, String priest, String surname)
 	{
-		PreparedStatement pstmt;
-		int priestid = -1;
-		try
+		Object[] args = new Object[(plugin.config.getSurname()) ? 5 : 4];
+		args[0] = GetPlayerID(player);
+		args[1] = GetPlayerID(otherPlayer);
+		args[2] = GetPlayerID(priest);
+		args[3] = new Timestamp(Calendar.getInstance().getTime().getTime());
+		if(plugin.config.getSurname())
 		{
-			pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?");
-			pstmt.setString(1, priest);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				priestid = rs.getInt(1);
-			}
-			rs.close();
-			pstmt.close();
-			if(plugin.config.getSurname())
-			{
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
-				pstmt.setString(5, LimitText(surname, 34));
-			}
-			else
-			{
-				pstmt.close();
-				pstmt = GetConnection().prepareStatement("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);");
-			}
-			pstmt.setInt(1, GetPlayerID(player));
-			pstmt.setInt(2, GetPlayerID(otherPlayer));
-			pstmt.setInt(3, priestid);
-			pstmt.setTimestamp(4, new Timestamp(Calendar.getInstance().getTime().getTime()));
-			pstmt.execute();
-			pstmt.close();
+			args[4] = LimitText(surname, 34);
+			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
 		}
-		catch (Exception e)
+		else
 		{
-			e.printStackTrace();
+			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
 		}
 	}
-	
+
 	public void DivorcePlayer(Player player)
 	{
-		try
-		{
-			int pid = GetPlayerID(player), mid = -1;
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
-			{
-				mid = rs.getInt(1);
-				pstmt = GetConnection().prepareStatement("DELETE FROM `" + Table_Partners + "` WHERE `marry_id`=?; DELETE FROM `" + Table_Home + "` WHERE `marry_id`=?;");
-				pstmt.setInt(1, mid);
-				pstmt.setInt(2, mid);
-				pstmt.execute();
-				pstmt.close();
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		int pid = GetPlayerID(player);
+		runStatementAsync("DELETE " + Table_Partners + ", " + Table_Home + " FROM " + Table_Partners + " JOIN " + Table_Home + " USING (marry_id) WHERE marry_id= (SELECT marry_id FROM " + Table_Partners + " WHERE player1=? OR player2=?);", pid, pid);
 	}
-	
+
 	public void SetPvPEnabled(Player player, boolean state)
 	{
-		try
-		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE `" + Table_Partners + "` SET `pvp_state`=? WHERE `player1`=? OR `player2`=?");
-			pstmt.setBoolean(1,state);
-			pstmt.setInt(2, pid);
-			pstmt.setInt(3, pid);
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		int pid = GetPlayerID(player);
+		runStatementAsync("UPDATE `" + Table_Partners + "` SET `pvp_state`=? WHERE `player1`=? OR `player2`=?", state, pid, pid);
 	}
-	
+
 	public String GetSurname(Player player)
 	{
-		try
+		String surname = null;
+		try(Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `surname` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `surname` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
 			pstmt.setInt(1, pid);
 			pstmt.setInt(2, pid);
 			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
+			try(ResultSet rs = pstmt.getResultSet())
 			{
-				return rs.getString(1);
+				if(rs.next())
+				{
+					surname = rs.getString(1);
+				}
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return surname;
 	}
-	
+
 	public void SetSurname(Player player, String surname)
 	{
-		try
-		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE `" + Table_Partners + "` SET `surname`=? WHERE `player1`=? OR `player2`=?");
-			pstmt.setString(1, LimitText(surname, 34));
-			pstmt.setInt(2, pid);
-			pstmt.setInt(3, pid);
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		int pid = GetPlayerID(player);
+		runStatementAsync("UPDATE `" + Table_Partners + "` SET `surname`=? WHERE `player1`=? OR `player2`=?", LimitText(surname, 34), pid, pid);
 	}
-	
+
 	public void SetShareBackpack(Player player, boolean allow)
 	{
-		try
-		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("UPDATE `" + Table_Players + "` SET `sharebackpack`=? WHERE " + ((plugin.UseUUIDs) ? "`uuid`" : "`name`") + "=?;");
-			if(plugin.UseUUIDs)
-			{
-				pstmt.setString(2, player.getUniqueId().toString().replace("-", ""));
-			}
-			else
-			{
-				pstmt.setString(2, player.getName());
-			}
-			pstmt.setBoolean(1, allow);
-			pstmt.execute();
-			pstmt.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		runStatementAsync("UPDATE `" + Table_Players + "` SET `sharebackpack`=? WHERE `" + uuidOrName + "`=?;", allow, getUUIDorName(player));
 	}
-	
+
 	public boolean GetPartnerShareBackpack(Player player)
 	{
 		boolean result = false;
-		try
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `sharebackpack` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
 		{
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `sharebackpack` FROM `" + Table_Players + "` WHERE " + ((plugin.UseUUIDs) ? "`uuid`" : "`name`") + "=?;");
-			if(plugin.UseUUIDs)
+			ps.setString(1, getUUIDorName(player));
+			try(ResultSet rs = ps.executeQuery())
 			{
-				pstmt.setString(1, player.getUniqueId().toString().replace("-", ""));
+				if(rs.next())
+				{
+					result = rs.getBoolean(1);
+				}
 			}
-			else
-			{
-				pstmt.setString(1, player.getName());
-			}
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next())
-			{
-				result = rs.getBoolean(1);
-			}
-			rs.close();
-			pstmt.close();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}

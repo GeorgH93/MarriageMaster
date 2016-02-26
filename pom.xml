@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.25</version>
+	<version>1.26-SNAPSHOT</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -90,6 +90,8 @@
 							<artifactSet>
 								<includes>
 									<include>com.google.code.gson:gson</include>
+									<include>com.zaxxer:HikariCP</include>
+									<include>org.slf4j:*</include>
 								</includes>
 							</artifactSet>
 						</configuration>
@@ -122,6 +124,17 @@
 			<artifactId>bungeecord-api</artifactId>
 			<version>LATEST</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>2.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.4</version>
 		</dependency>
 
 		<dependency>
