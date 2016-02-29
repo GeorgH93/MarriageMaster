@@ -596,7 +596,7 @@ public class MySQL extends Database implements Listener
 	public void DivorcePlayer(Player player)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("DELETE `p`,`h` FROM `" + Table_Partners + "` AS `p` JOIN `" + Table_Home + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
+		runStatementAsync("DELETE `p`,`h` FROM `" + Table_Partners + "` AS `p` LEFT OUTER JOIN `" + Table_Home + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
 	}
 
 	public void SetPvPEnabled(Player player, boolean state)
