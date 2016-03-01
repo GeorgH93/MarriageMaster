@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ public enum Effects
 		name = NAME;
 		nameUpperCase = name.toUpperCase();
 		newName = NEWNAME;
-		if(Reflection.getVersion().contains("1_8"))
+		if(Reflection.getVersion().contains("1_8") || Reflection.getVersion().contains("1_9"))
 		{
 			nmsEnumParticle = Reflection.getEnum(Reflection.getNMSClass("EnumParticle").getName() + "." + (newName));
 		}

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,46 +35,6 @@ public class EffectBase
 			{
 				eb = new Effect_1_7_Cauldron();
 			}
-			else if(compMode)
-			{
-				if(version[0].equals("1"))
-				{
-					if(version[1].equals("7"))
-					{
-						if(version[2].equals("R1"))
-						{
-							eb = new Effect_1_7_R1();
-						}
-						else if(version[2].equals("R2"))
-						{
-							eb = new Effect_1_7_R2();
-						}
-						else if(version[2].equals("R3"))
-						{
-							eb = new Effect_1_7_R3();
-						}
-						else if(version[2].equals("R4"))
-						{
-							eb = new Effect_1_7_R4();
-						}
-					}
-					else if(version[1].equals("8"))
-					{
-						if(version[2].equals("R1"))
-						{
-							eb = new Effect_1_8_R1();
-						}
-						else if(version[2].equals("R2"))
-						{
-							eb = new Effect_1_8_R2();
-						}
-						else if(version[2].equals("R3"))
-						{
-							eb = new Effect_1_8_R3();
-						}
-					}
-				}
-			}
 			else
 			{
 				if(version[0].equals("1"))
@@ -86,6 +46,10 @@ public class EffectBase
 					else if(version[1].equals("8"))
 					{
 						eb = new Effect_1_8();
+					}
+					else if(version[1].equals("9"))
+					{
+						eb = new Effect_1_9();
 					}
 				}
 			}
@@ -100,7 +64,7 @@ public class EffectBase
 		}
 		if(eb == null)
 		{
-			Bukkit.getServer().getLogger().warning("Could not initialize effect spawner. Runing: " + name + ":" + Bukkit.getVersion());
+			Bukkit.getServer().getLogger().warning("Could not initialize effect spawner. Running: " + name + ":" + Bukkit.getVersion());
 		}
 		return eb;
 	}
