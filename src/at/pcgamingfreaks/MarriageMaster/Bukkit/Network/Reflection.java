@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,13 +17,24 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Network;
 
+import org.bukkit.Bukkit;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.Bukkit;
-
+@SuppressWarnings("unused")
 public class Reflection
 {
+	private static final String BUKKIT_VERSION = Bukkit.getServer().getClass().getName().split("\\.")[3];
+	private static final String NMS_CLASS_PATH = "net.minecraft.server." + BUKKIT_VERSION + ".";
+	private static final String OBC_CLASS_PATH = "org.bukkit.craftbukkit." + BUKKIT_VERSION + ".";
+
+	public static String getVersion()
+	{
+		return BUKKIT_VERSION;
+	}
+
 	public static void setValue(Object instance, String fieldName, Object value) throws Exception
 	{
 		Field field = instance.getClass().getDeclaredField(fieldName);
@@ -31,29 +42,43 @@ public class Reflection
 		field.set(instance, value);
 	}
 
-	private static String version = null;
-	
-	public static String getVersion()
+	public static Class<?> getNMSClass(String className)
 	{
-		if(version == null)
+		try
 		{
-			String name = Bukkit.getServer().getClass().getPackage().getName();
-			version = name.substring(name.lastIndexOf('.') + 1);
+			return Class.forName(NMS_CLASS_PATH + className);
 		}
-		return version;
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
+	public static Class<?> getOBCClass(String className)
+	{
+		try
+		{
+			return Class.forName(OBC_CLASS_PATH + className);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static Enum<?> getEnum(String enumFullName)
 	{
 		String[] x = enumFullName.split("\\.(?=[^\\.]+$)");
-		if (x.length == 2)
+		if(x.length == 2)
 		{
 			try
 			{
 				return Enum.valueOf((Class<Enum>) Class.forName(x[0]), x[1]);
 			}
-			catch (ClassNotFoundException e)
+			catch(ClassNotFoundException e)
 			{
 				e.printStackTrace();
 			}
@@ -61,45 +86,38 @@ public class Reflection
 		return null;
 	}
 
-	public static Class<?> getNMSClass(String className)
+	public static Enum<?> getEnum(Class clazz, String enumName)
 	{
 		try
 		{
-			return Class.forName("net.minecraft.server." + getVersion() + "." + className);
+			return Enum.valueOf(clazz, enumName);
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public static Class<?> getOBCClass(String className)
+
+	public static Enum<?> getNMSEnum(String enumClassAndEnumName)
 	{
-		try
-		{
-			return Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + className);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		return getEnum(NMS_CLASS_PATH + enumClassAndEnumName);
 	}
-	
+
 	public static Object getHandle(Object obj)
 	{
 		try
 		{
-			return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj, new Object[0]);
+			//noinspection ConstantConditions
+			return getMethod(obj.getClass(), "getHandle", new Class[0]).invoke(obj);
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public static Field getField(Class<?> clazz, String name)
 	{
 		try
@@ -108,18 +126,40 @@ public class Reflection
 			field.setAccessible(true);
 			return field;
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
+	public static Field getFieldIncludeParents(Class<?> clazz, String name)
+	{
+		try
+		{
+			Field field = clazz.getDeclaredField(name);
+			field.setAccessible(true);
+			return field;
+		}
+		catch(NoSuchFieldException ignored)
+		{
+			if(clazz.getSuperclass() != null)
+			{
+				getFieldIncludeParents(clazz.getSuperclass(), name);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static Method getMethod(Class<?> clazz, String name, Class<?>... args)
 	{
-		for (Method m : clazz.getMethods())
+		for(Method m : clazz.getMethods())
 		{
-			if ((m.getName().equals(name)) && ((args.length == 0) || (ClassListEqual(args, m.getParameterTypes()))))
+			if(m.getName().equals(name) && (args.length == 0 || ClassListEqual(args, m.getParameterTypes())))
 			{
 				m.setAccessible(true);
 				return m;
@@ -127,17 +167,30 @@ public class Reflection
 		}
 		return null;
 	}
-	
+
+	public static Constructor<?> getConstructor(Class<?> clazz, Class<?>... args)
+	{
+		try
+		{
+			return clazz.getConstructor(args);
+		}
+		catch(NoSuchMethodException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2)
 	{
 		boolean equal = true;
-		if (l1.length != l2.length)
+		if(l1.length != l2.length)
 		{
 			return false;
 		}
-		for (int i = 0; i < l1.length; i++)
+		for(int i = 0; i < l1.length; i++)
 		{
-			if (l1[i] != l2[i])
+			if(l1[i] != l2[i])
 			{
 				equal = false;
 				break;

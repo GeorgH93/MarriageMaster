@@ -21,22 +21,22 @@ import org.bukkit.Location;
 
 import java.lang.reflect.Constructor;
 
-public class Effect_1_7 extends Effect_Bukkit
+public class Effect_1_8_AND_1_9 extends Effect_Bukkit
 {
-	private final static Constructor PACKET_CONSTRUCTOR = at.pcgamingfreaks.Bukkit.Reflection.getConstructor(at.pcgamingfreaks.Bukkit.Reflection.getNMSClass("PacketPlayOutWorldParticles"),
-			String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class);
+	private static final Constructor PACKET_CONSTRUCTOR = Reflection.getConstructor(Reflection.getNMSClass("PacketPlayOutWorldParticles"), Reflection.getNMSClass("EnumParticle"),
+			boolean.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class, int[].class);
 
 	@Override
-	public void SpawnParticle(Location location, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed)
+	public void SpawnParticle(Location location, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
 		try
 		{
 			//noinspection ConstantConditions
-			spawnParticle(location, visibleRange, PACKET_CONSTRUCTOR.newInstance(type.getName(), (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, count));
+			spawnParticle(location, visibleRange, PACKET_CONSTRUCTOR.newInstance(type.getEnum(), false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, count, new int[]{}));
 		}
 		catch(Exception e)
 		{
-			System.out.println("Unable to spawn particle " + type.getName() + ". (Version 1.7)");
+			System.out.println("Unable to spawn particle " + type.getName() + ". (Version 1.8/1.9)");
 			e.printStackTrace();
 		}
 	}

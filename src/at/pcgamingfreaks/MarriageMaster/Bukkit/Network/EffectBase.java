@@ -22,9 +22,9 @@ import org.bukkit.Location;
 
 public class EffectBase
 {
-	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
+	public void SpawnParticle(Location loc, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
 	
-	public static EffectBase getEffect(boolean compMode)
+	public static EffectBase getEffect()
 	{
 		EffectBase eb = null;
 		String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -43,22 +43,14 @@ public class EffectBase
 					{
 						eb = new Effect_1_7();
 					}
-					else if(version[1].equals("8"))
+					else if(version[1].equals("8") || version[1].equals("9"))
 					{
-						eb = new Effect_1_8();
-					}
-					else if(version[1].equals("9"))
-					{
-						eb = new Effect_1_9();
+						eb = new Effect_1_8_AND_1_9();
 					}
 				}
 			}
 		}
-		catch (NoClassDefFoundError e)
-		{
-			eb = null;
-		}
-		catch (Exception e)
+		catch (NoClassDefFoundError | Exception e)
 		{
 			eb = null;
 		}
