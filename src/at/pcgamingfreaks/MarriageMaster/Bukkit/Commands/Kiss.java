@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ public class Kiss
 	public Kiss(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		wait = new HashMap<String, Long>();
-		eb = EffectBase.getEffect(marriagemaster.config.GetKissCompMode());
+		wait = new HashMap<>();
+		eb = EffectBase.getEffect();
 		if(eb == null)
 		{
 			plugin.log.warning(plugin.lang.Get("Console.NotSupportedNet"));
