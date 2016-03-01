@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,19 +21,47 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-public class PluginChannel implements PluginMessageListener
+public class PluginChannel implements PluginMessageListener, Listener
 {
 	private MarriageMaster plugin;
 	
 	public PluginChannel(MarriageMaster MM)
 	{
 		plugin = MM;
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+	}
+
+	@EventHandler
+	public void onPlayerLoginEvent(PlayerJoinEvent event)
+	{
+		if(plugin.HomeServer == null)
+		{
+			try
+			{
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				DataOutputStream out = new DataOutputStream(stream);
+				out.writeUTF("GetServer");
+				out.flush();
+				event.getPlayer().sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+				out.close();
+			}
+			catch(Exception e)
+			{
+				plugin.log.warning("Failed sending request to bungee!");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -81,7 +109,11 @@ public class PluginChannel implements PluginMessageListener
 	        DataOutputStream out = new DataOutputStream(stream);
 	        out.writeUTF(message);
 	        out.flush();
-	        plugin.getServer().getOnlinePlayers()[0].sendPluginMessage(plugin, "MarriageMaster", stream.toByteArray());
+			Player sendWith = getPlayerToSendWith();
+			if(sendWith!=null)
+			{
+				sendWith.sendPluginMessage(plugin, "MarriageMaster", stream.toByteArray());
+			}
 	        out.close();
 		}
 		catch(Exception e)
@@ -90,22 +122,19 @@ public class PluginChannel implements PluginMessageListener
 			e.printStackTrace();
 		}
     }
-	
-	public void requestServerName()
+
+	private Player getPlayerToSendWith()
 	{
 		try
 		{
-	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	        DataOutputStream out = new DataOutputStream(stream);
-	        out.writeUTF("GetServer");
-	        out.flush();
-	        plugin.getServer().getOnlinePlayers()[0].sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
-	        out.close();
+			Object onlinePlayers = Bukkit.getServer().getClass().getMethod("getOnlinePlayers").invoke(Bukkit.getServer());
+			if(onlinePlayers instanceof Player[]) return ((Player[]) onlinePlayers)[0];
+			else if(onlinePlayers instanceof Collection<?>) return (Player)((Collection<?>) onlinePlayers).iterator().next();
 		}
 		catch(Exception e)
 		{
-			plugin.log.warning("Failed sending request to bungee!");
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

@@ -36,7 +36,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
+import org.mcstats.Metrics_MultiVersion;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Kiss;
@@ -100,8 +100,8 @@ public class MarriageMaster extends JavaPlugin
 		{
 			try
 			{
-			    Metrics metrics = new Metrics(this);
-			    metrics.start();
+				Metrics_MultiVersion metrics = new Metrics_MultiVersion(this);
+				metrics.start();
 			}
 			catch (IOException e)
 			{

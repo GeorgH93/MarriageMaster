@@ -136,26 +136,26 @@ public class Chat extends BaseCommand
 	{
 		if(reciver != null)
 		{
-			msg = msg.replace('§', '&');
+			msg = msg.replace('Â§', '&');
 			if(sender.hasPermission("marry.chat.color"))
 			{
 				msg = ChatColor.translateAlternateColorCodes('&', msg);
 			}
 			if(sender.hasPermission("marry.chat.format"))
 			{
-				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
+				msg = msg.replaceAll("&l", "Â§l").replaceAll("&m", "Â§m").replaceAll("&n", "Â§n").replaceAll("&o", "Â§o").replaceAll("&r", "Â§r");
 			}
 			else
 			{
-				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
+				msg = msg.replaceAll("Â§l", "&l").replaceAll("Â§m", "&m").replaceAll("Â§n", "&n").replaceAll("Â§o", "&o").replaceAll("Â§r", "&r");
 			}
 			if(sender.hasPermission("marry.chat.magic"))
 			{
-				msg = msg.replaceAll("&k", "§k");
+				msg = msg.replaceAll("&k", "Â§k");
 			}
 			else
 			{
-				msg = msg.replaceAll("§k", "&k");
+				msg = msg.replaceAll("Â§k", "&k");
 			}
 			BaseComponent[] sendmsg = TextComponent.fromLegacyText(String.format(format, sender.getDisplayName(), reciver.getDisplayName(), msg));
 			reciver.sendMessage(sendmsg);

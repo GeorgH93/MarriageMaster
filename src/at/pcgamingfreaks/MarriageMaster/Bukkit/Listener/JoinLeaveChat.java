@@ -84,10 +84,6 @@ public class JoinLeaveChat implements Listener
 			}
 		}
 		plugin.DB.UpdatePlayer(event.getPlayer());
-		if(plugin.HomeServer == null && plugin.pluginchannel != null)
-		{
-			plugin.pluginchannel.requestServerName();
-		}
 	}
 	
 	@SuppressWarnings("deprecation")

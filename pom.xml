@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.26-SNAPSHOT</version>
+	<version>1.26</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.7.9-R0.2</version>
+			<version>1.9-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -137,13 +137,6 @@
 			<version>1.6.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>net.minecraft</groupId>
-			<artifactId>Minecraft</artifactId>
-			<version>1</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/jar_libs/net.jar</systemPath>
-		</dependency>
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MinePacksOld</artifactId>
