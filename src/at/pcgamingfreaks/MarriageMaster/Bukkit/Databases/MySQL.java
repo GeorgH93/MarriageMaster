@@ -106,7 +106,7 @@ public class MySQL extends Database implements Listener
 	{
 		List<String> converter = new ArrayList<>();
 		try(Connection connection = getConnection(); Statement stmt = connection.createStatement();
-		    ResultSet res = stmt.executeQuery("SELECT `name` FROM " + Table_Players + " WHERE `uuid` IS NULL or `uuid` NOT LIKE '%-%'"))
+		    ResultSet res = stmt.executeQuery("SELECT `name`,`uuid` FROM " + Table_Players + " WHERE `uuid` IS NULL or `uuid` LIKE '%-%'"))
 		{
 			while(res.next())
 			{
@@ -114,7 +114,14 @@ public class MySQL extends Database implements Listener
 				{
 					plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
 				}
-				converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), true) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				if(res.getString(2) != null && res.getString(2).isEmpty())
+				{
+					converter.add("UPDATE " + Table_Players + " SET uuid='" + res.getString(2).replaceAll("-", "") + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				}
+				else
+				{
+					converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), true) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				}
 			}
 		}
 		catch(SQLException e)
