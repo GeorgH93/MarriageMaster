@@ -23,7 +23,7 @@ import java.lang.reflect.Constructor;
 
 public class Effect_1_7 extends Effect_Bukkit
 {
-	private final static Constructor PACKET_CONSTRUCTOR = at.pcgamingfreaks.Bukkit.Reflection.getConstructor(at.pcgamingfreaks.Bukkit.Reflection.getNMSClass("PacketPlayOutWorldParticles"),
+	private final static Constructor PACKET_CONSTRUCTOR = Reflection.getConstructor(Reflection.getNMSClass("PacketPlayOutWorldParticles"),
 			String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class);
 
 	@Override

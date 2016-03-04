@@ -27,9 +27,9 @@ import java.lang.reflect.Method;
 
 public class Effect_Bukkit extends EffectBase
 {
-	private final static Class<?> ENTITY_PLAYER = at.pcgamingfreaks.Bukkit.Reflection.getNMSClass("EntityPlayer");
-	private final static Method SEND_PACKET = at.pcgamingfreaks.Bukkit.Reflection.getMethod(at.pcgamingfreaks.Bukkit.Reflection.getNMSClass("PlayerConnection"), "sendPacket");
-	private final static Field PLAYER_CONNECTION = at.pcgamingfreaks.Bukkit.Reflection.getField(ENTITY_PLAYER, "playerConnection");
+	private final static Class<?> ENTITY_PLAYER = Reflection.getNMSClass("EntityPlayer");
+	private final static Method SEND_PACKET = Reflection.getMethod(Reflection.getNMSClass("PlayerConnection"), "sendPacket");
+	private final static Field PLAYER_CONNECTION = Reflection.getField(ENTITY_PLAYER, "playerConnection");
 
 	public static void sendPacket(Player player, Object packet) throws IllegalAccessException, InvocationTargetException
 	{

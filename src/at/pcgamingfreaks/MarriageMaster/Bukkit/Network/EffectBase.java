@@ -28,9 +28,9 @@ public class EffectBase
 	{
 		EffectBase eb = null;
 		String name = Bukkit.getServer().getClass().getPackage().getName();
-		String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
 		try
 		{
+			String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
 			if(Bukkit.getServer().getName().toLowerCase().contains("cauldron"))
 			{
 				eb = new Effect_1_7_Cauldron();
@@ -56,7 +56,7 @@ public class EffectBase
 		}
 		if(eb == null)
 		{
-			Bukkit.getServer().getLogger().warning("Could not initialize effect spawner. Running: " + name + ":" + Bukkit.getVersion());
+			Bukkit.getServer().getLogger().warning("Could not initialize effect spawner. Running: " + name + ": " + Bukkit.getVersion());
 		}
 		return eb;
 	}
