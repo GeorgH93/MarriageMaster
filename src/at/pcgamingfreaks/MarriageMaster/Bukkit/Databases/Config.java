@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 20;
+	private static final int CONFIG_VERSION = 21;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -132,6 +132,7 @@ public class Config
 		config.set("Database.MySQL.Database", "minecraft");
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
+		config.set("Database.MySQL.MaxConnections", 4);
 		config.set("Database.Tables.User", "marry_players");
 		config.set("Database.Tables.Home", "marry_home");
 		config.set("Database.Tables.Priests", "marry_priests");
@@ -241,6 +242,8 @@ public class Config
 				config.set("AllowedSurnameCharacters", "A-Za-z");
 			case 19:
 				config.set("DelayMessageForJoiningPlayer", 0);
+			case 20:
+				config.set("Database.MySQL.MaxConnections", 4);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -355,24 +358,29 @@ public class Config
 		return config.getString("Database.Type").toLowerCase();
 	}
 	
-	public String GetMySQLHost()
+	public String getMySQLHost()
 	{
 		return config.getString("Database.MySQL.Host");
 	}
 	
-	public String GetMySQLDatabase()
+	public String getMySQLDatabase()
 	{
 		return config.getString("Database.MySQL.Database");
 	}
 	
-	public String GetMySQLUser()
+	public String getMySQLUser()
 	{
 		return config.getString("Database.MySQL.User");
 	}
 	
-	public String GetMySQLPassword()
+	public String getMySQLPassword()
 	{
 		return config.getString("Database.MySQL.Password");
+	}
+
+	public int getMySQLMaxConnections()
+	{
+		return config.getInt("Database.MySQL.MaxConnections", 4);
 	}
 	
 	public String getUserTable()
@@ -428,11 +436,6 @@ public class Config
 	public int GetKissWaitTime()
 	{
 		return config.getInt("Kiss.WaitTime") * 1000;
-	}
-	
-	public boolean GetKissCompMode()
-	{
-		return config.getBoolean("Kiss.CompatibilityMode", false);
 	}
 	
 	public int GetKissHearthCount()

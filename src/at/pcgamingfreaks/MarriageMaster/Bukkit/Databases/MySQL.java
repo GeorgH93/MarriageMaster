@@ -60,13 +60,12 @@ public class MySQL extends Database implements Listener
 		UpdatePlayer = plugin.config.getUpdatePlayer();
 
 		HikariConfig poolConfig = new HikariConfig();
-		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.GetMySQLHost() + "/" + plugin.config.GetMySQLDatabase() + "?allowMultiQueries=true");
-		poolConfig.setUsername(plugin.config.GetMySQLUser());
-		poolConfig.setPassword(plugin.config.GetMySQLPassword());
+		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase() + "?allowMultiQueries=true");
+		poolConfig.setUsername(plugin.config.getMySQLUser());
+		poolConfig.setPassword(plugin.config.getMySQLPassword());
 		poolConfig.setMinimumIdle(1);
-		poolConfig.setMaximumPoolSize(8);
+		poolConfig.setMaximumPoolSize(plugin.config.getMySQLMaxConnections());
 		dataSource = new HikariDataSource(poolConfig);
-
 		uuidOrName = (plugin.UseUUIDs) ? "uuid" : "name";
 		// Finished Loading Settings
 		CheckDB();
@@ -105,7 +104,7 @@ public class MySQL extends Database implements Listener
 	private void CheckUUIDs()
 	{
 		List<String> converter = new ArrayList<>();
-		try(Connection connection = getConnection(); Statement stmt = connection.createStatement();
+		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement();
 		    ResultSet res = stmt.executeQuery("SELECT `name`,`uuid` FROM " + Table_Players + " WHERE `uuid` IS NULL or `uuid` LIKE '%-%'"))
 		{
 			while(res.next())
@@ -139,11 +138,6 @@ public class MySQL extends Database implements Listener
 
 	}
 
-	private Connection getConnection() throws SQLException
-	{
-		return dataSource.getConnection();
-	}
-
 	public void Disable()
 	{
 		dataSource.close();
@@ -153,9 +147,9 @@ public class MySQL extends Database implements Listener
 
 	private void CheckDB()
 	{
-		try(Connection connection = getConnection(); Statement stmt = connection.createStatement())
+		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Players + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Players + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL" + ((plugin.UseUUIDs) ? "" : " UNIQUE") +", PRIMARY KEY (`player_id`));");
 			if(plugin.UseUUIDs)
 			{
 				try
@@ -247,7 +241,7 @@ public class MySQL extends Database implements Listener
 			@Override
 			public void run()
 			{
-				try(Connection con = getConnection(); PreparedStatement ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
+				try(Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
 				{
 					ps.setString(1, getUUIDorName(player));
 					try(ResultSet rs = ps.executeQuery())
@@ -304,7 +298,7 @@ public class MySQL extends Database implements Listener
 
 	private void runStatement(final String query, final Object... args)
 	{
-		try(Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query))
 		{
 			for(int i = 0; args != null && i < args.length; i++)
 			{
@@ -327,7 +321,7 @@ public class MySQL extends Database implements Listener
 		{
 			return ID;
 		}
-		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?"))
 		{
 			ps.setString(1, getUUIDorName(player));
 			try(ResultSet rs = ps.executeQuery())
@@ -354,7 +348,7 @@ public class MySQL extends Database implements Listener
 		{
 			return ID;
 		}
-		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?"))
 		{
 			ps.setString(1, player);
 			ps.executeQuery();
@@ -377,7 +371,7 @@ public class MySQL extends Database implements Listener
 	private String GetPlayerName(int pid)
 	{
 		String name = null;
-		try(Connection connection = getConnection(); Statement stmt = connection.createStatement())
+		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
 			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
 			try(ResultSet rs = stmt.getResultSet())
@@ -412,7 +406,7 @@ public class MySQL extends Database implements Listener
 
 	public boolean IsPriest(Player priest)
 	{
-		try(Connection connection = getConnection();
+		try(Connection connection = dataSource.getConnection();
 		    PreparedStatement ps = connection.prepareStatement("SELECT priest_id FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?);"))
 		{
 			ps.setString(1, getUUIDorName(priest));
@@ -434,7 +428,7 @@ public class MySQL extends Database implements Listener
 	public boolean GetPvPEnabled(Player player)
 	{
 		boolean res = false;
-		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `pvp_state` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `pvp_state` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			ps.setInt(1, pid);
@@ -458,7 +452,7 @@ public class MySQL extends Database implements Listener
 	public String GetPartner(Player player)
 	{
 		String partner = null;
-		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			ps.setInt(1, pid);
@@ -486,7 +480,7 @@ public class MySQL extends Database implements Listener
 			public void run()
 			{
 				final TreeMap<String, String> MarryMap_out = new TreeMap<>();
-				try(Connection connection = getConnection(); Statement statement = connection.createStatement();
+				try(Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement();
 				    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
 				{
 					while(rs.next())
@@ -524,38 +518,47 @@ public class MySQL extends Database implements Listener
 		runStatementAsync("DELETE FROM `" + Table_Home + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?);", pid, pid);
 	}
 
-	public Location GetMarryHome(String player)
+	public void GetMarryHome(String player, Callback<Location> result)
 	{
-		return GetMarryHome(GetPlayerID(player));
+		GetMarryHome(GetPlayerID(player), result);
 	}
 
-	public Location GetMarryHome(Player player)
+	public void GetMarryHome(Player player, Callback<Location> result)
 	{
-		return GetMarryHome(GetPlayerID(player));
+		GetMarryHome(GetPlayerID(player), result);
 	}
 
-	private Location GetMarryHome(int pid)
+	private void GetMarryHome(final int pid, final Callback<Location> result)
 	{
-		Location loc = null;
-		try(Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable()
 		{
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			try(ResultSet rs = pstmt.getResultSet())
+			@Override
+			public void run()
 			{
-				if(rs.next())
+				try(Connection connection = dataSource.getConnection();
+						PreparedStatement pstmt = connection.prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
 				{
-					World world = plugin.getServer().getWorld(rs.getString(4));
-					loc = (world == null) ? null : new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
+					pstmt.setInt(1, pid);
+					pstmt.setInt(2, pid);
+					pstmt.executeQuery();
+					try(ResultSet rs = pstmt.getResultSet())
+					{
+						if(rs.next())
+						{
+							World world = plugin.getServer().getWorld(rs.getString(4));
+							final Location loc = (world == null) ? null : new Location(world, rs.getDouble(1), rs.getDouble(2), rs.getDouble(3));
+							Bukkit.getScheduler().runTask(plugin, new Runnable() { @Override public void run() { result.onResult(loc); }});
+							return;
+						}
+					}
 				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				Bukkit.getScheduler().runTask(plugin, new Runnable() { @Override public void run() { result.onResult(null); }});
 			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return loc;
+		});
 	}
 
 	public void SetMarryHome(Location loc, Player player)
@@ -615,7 +618,7 @@ public class MySQL extends Database implements Listener
 	public String GetSurname(Player player)
 	{
 		String surname = null;
-		try(Connection connection = getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `surname` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `surname` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			pstmt.setInt(1, pid);
@@ -650,7 +653,7 @@ public class MySQL extends Database implements Listener
 	public boolean GetPartnerShareBackpack(Player player)
 	{
 		boolean result = false;
-		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `sharebackpack` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `sharebackpack` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
 		{
 			ps.setString(1, getUUIDorName(player));
 			try(ResultSet rs = ps.executeQuery())

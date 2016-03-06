@@ -53,9 +53,9 @@ public class Database
 	
 	public void SetMarryHome(Location loc, Player player) {}
 	
-	public Location GetMarryHome(String player) { return null; }
+	public void GetMarryHome(String player, Callback<Location> result) { result.onResult(null); }
 	
-	public Location GetMarryHome(Player player) { return player.getLocation(); }
+	public void GetMarryHome(Player player, Callback<Location> result) { result.onResult(null); }
 	
 	public void SetPriest(Player player) {}
 	

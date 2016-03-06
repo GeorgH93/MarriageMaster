@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,76 +17,96 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Database;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-
-public class Home 
+public class Home
 {
 	private MarriageMaster plugin;
-	
+
 	private long delaytime;
 
-	public Home(MarriageMaster marriagemaster) 
+	public Home(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		
+
 		delaytime = plugin.config.TPDelayTime() * 20L;
 	}
-	
-	public void TPAdmin(Player admin, String player)
+
+	public void TPAdmin(final Player admin, String player)
 	{
-		Location loc = plugin.DB.GetMarryHome(player);
-		if(loc != null)
+		plugin.DB.GetMarryHome(player, new Database.Callback<Location>()
 		{
-			admin.teleport(loc);
-		}
-		else
-		{
-			admin.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PlayerNoHome"));
-		}
+			@Override
+			public void onResult(Location loc)
+			{
+				if(loc != null)
+				{
+					admin.teleport(loc);
+				}
+				else
+				{
+					admin.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PlayerNoHome"));
+				}
+			}
+		});
 	}
 
-	public void TP(Player player)
+	public void TP(final Player player)
 	{
-		Location loc = plugin.DB.GetMarryHome(player);
-		
-		if(loc != null)
+		plugin.DB.GetMarryHome(player, new Database.Callback<Location>()
 		{
-			if(plugin.economy == null || plugin.economy.HomeTeleport(player))
+			@Override
+			public void onResult(Location loc)
 			{
-				TPHome(player, loc);
+				if(loc != null)
+				{
+					if(plugin.economy == null || plugin.economy.HomeTeleport(player))
+					{
+						TPHome(player, loc);
+					}
+				}
+				else
+				{
+					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoHome"));
+				}
 			}
-		}
-		else
-		{
-			player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoHome"));
-		}
+		});
+
+
 	}
-	
-	private void TPHome(Player player, Location loc)
+
+	private void TPHome(final Player player, Location loc)
 	{
 		if(plugin.config.DelayTP() && !plugin.CheckPerm(player, "marry.skiptpdelay", false))
 		{
 			final Location p_loc = player.getLocation(), toloc = loc;
-			final Player p = player;
-			final double p_hea = (double)player.getHealth();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() { @Override public void run() {
-				if(p != null && p.isOnline())
+			final double p_hea = (double) player.getHealth();
+			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
+			{
+				@Override
+				public void run()
 				{
-					if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+					if(player != null && player.isOnline())
 					{
-						p.teleport(toloc);
-						p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
+						if(p_hea <= player.getHealth() && p_loc.getX() == player.getLocation().getX() && p_loc.getY() == player.getLocation().getY() && p_loc.getZ() == player.getLocation().getZ() && p_loc.getWorld().equals(player.getLocation().getWorld()))
+						{
+							player.teleport(toloc);
+							player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
+						}
+						else
+						{
+							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+						}
 					}
-					else
-					{
-						p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
-					}}}}, delaytime);
+				}
+			}, delaytime);
 		}
 		else
 		{
@@ -94,7 +114,7 @@ public class Home
 			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
 		}
 	}
-	
+
 	public void BungeeHomeDelay(final Player p)
 	{
 		if(p != null)
@@ -103,22 +123,23 @@ public class Home
 			final Location p_loc = p.getLocation();
 			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
+			{
+				@Override
+				public void run()
 				{
-					@Override
-					public void run()
+					if(p != null && p.isOnline())
 					{
-						if(p != null && p.isOnline())
+						if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
 						{
-							if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
-							{
-								plugin.pluginchannel.sendMessage("home|" + p.getName());
-							}
-							else
-							{
-								p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
-							}
+							plugin.pluginchannel.sendMessage("home|" + p.getName());
 						}
-					}}, delaytime);
+						else
+						{
+							p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+						}
+					}
+				}
+			}, delaytime);
 		}
 	}
 

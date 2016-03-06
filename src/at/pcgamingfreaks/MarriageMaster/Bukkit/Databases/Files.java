@@ -457,35 +457,32 @@ public class Files extends Database
 		DelHome(getPlayerID(player));
 	}
 
-	public Location GetMarryHome(String player)
+	public void GetMarryHome(String player, Callback<Location> result)
 	{
-		return GetHome(getPlayerID(player));
+		GetHome(getPlayerID(player), result);
 	}
 
-	public Location GetMarryHome(Player player)
+	public void GetMarryHome(Player player, Callback<Location> result)
 	{
-		return GetHome(GetPlayerID(player));
+		GetHome(GetPlayerID(player), result);
 	}
 
-	private Location GetHome(String pid)
+	private void GetHome(String pid, Callback<Location> result)
 	{
 		try
 		{
 			World world = plugin.getServer().getWorld(MarryMap.get(pid).getString("MarriedHome.location.World"));
-			if(world == null)
+			if(world != null)
 			{
-				return null;
+				double x = (Double) MarryMap.get(pid).get("MarriedHome.location.X");
+				double y = (Double) MarryMap.get(pid).get("MarriedHome.location.Y");
+				double z = (Double) MarryMap.get(pid).get("MarriedHome.location.Z");
+				result.onResult(new Location(world, x, y, z));
+				return;
 			}
-			double x = (Double) MarryMap.get(pid).get("MarriedHome.location.X");
-			double y = (Double) MarryMap.get(pid).get("MarriedHome.location.Y");
-			double z = (Double) MarryMap.get(pid).get("MarriedHome.location.Z");
-
-			return (new Location(world, x, y, z));
 		}
-		catch(Exception e)
-		{
-			return null;
-		}
+		catch(Exception ignored) {}
+		result.onResult(null);
 	}
 
 	public void SetPriest(Player player)
