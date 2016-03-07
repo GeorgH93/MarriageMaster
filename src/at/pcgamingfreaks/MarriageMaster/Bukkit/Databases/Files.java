@@ -45,6 +45,13 @@ public class Files extends Database
 		CheckUUIDs();
 	}
 
+	@Override
+	public void Disable()
+	{
+		MarryMap.clear();
+		Priests.clear();
+	}
+
 	private void LoadAllPlayers()
 	{
 		File file = new File((new StringBuilder()).append(plugin.getDataFolder()).append(File.separator).append("players").toString());
@@ -78,14 +85,6 @@ public class Files extends Database
 		{
 			return player.getName();
 		}
-	}
-
-	public void recache()
-	{
-		MarryMap.clear();
-		LoadAllPlayers();
-		LoadPriests();
-		CheckUUIDs();
 	}
 
 	private void LoadPlayer(String player)

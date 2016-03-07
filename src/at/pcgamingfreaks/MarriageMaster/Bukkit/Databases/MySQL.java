@@ -66,6 +66,7 @@ public class MySQL extends Database implements Listener
 		poolConfig.setMinimumIdle(1);
 		poolConfig.setMaximumPoolSize(plugin.config.getMySQLMaxConnections());
 		dataSource = new HikariDataSource(poolConfig);
+
 		uuidOrName = (plugin.UseUUIDs) ? "uuid" : "name";
 		// Finished Loading Settings
 		CheckDB();

@@ -25,45 +25,43 @@ import org.bukkit.entity.Player;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-public class Database
+public abstract class Database
 {
 	protected MarriageMaster plugin;
 	
 	public Database(MarriageMaster marriagemaster) { plugin = marriagemaster; }
 	
-	public void recache() {}
+	public abstract void Disable();
 	
-	public void Disable() {}
+	public abstract void UpdatePlayer(Player player);
 	
-	public void UpdatePlayer(Player player) {}
+	public abstract boolean GetPvPEnabled(Player player);
 	
-	public boolean GetPvPEnabled(Player player) { return false; }
+	public abstract void SetPvPEnabled(Player player, boolean state);
 	
-	public void SetPvPEnabled(Player player, boolean state) {}
+	public abstract void DivorcePlayer(Player player);
 	
-	public void DivorcePlayer(Player player) {}
-	
-	public void MarryPlayers(Player player1, Player player2, String priest, String surname) {}
+	public abstract void MarryPlayers(Player player1, Player player2, String priest, String surname);
 	
 	public void MarryPlayers(Player player1, Player player2, Player priest, String surname) { MarryPlayers(player1, player2, priest.getName(), surname); }
 	
-	public void DelMarryHome(Player player) {}
+	public abstract void DelMarryHome(Player player);
 	
-	public void DelMarryHome(String player) {}
+	public abstract void DelMarryHome(String player);
 	
-	public void SetMarryHome(Location loc, Player player) {}
+	public abstract void SetMarryHome(Location loc, Player player);
 	
-	public void GetMarryHome(String player, Callback<Location> result) { result.onResult(null); }
+	public abstract void GetMarryHome(String player, Callback<Location> result);
 	
-	public void GetMarryHome(Player player, Callback<Location> result) { result.onResult(null); }
+	public abstract void GetMarryHome(Player player, Callback<Location> result);
 	
-	public void SetPriest(Player player) {}
+	public abstract void SetPriest(Player player);
 	
-	public void DelPriest(Player player) {}
+	public abstract void DelPriest(Player player);
 	
-	public boolean IsPriest(Player player) { return false; }
+	public abstract boolean IsPriest(Player player);
 	
-	public String GetPartner(Player player) { return player.getName(); }
+	public abstract String GetPartner(Player player);
 	
 	@SuppressWarnings("deprecation")
 	public Player GetPlayerPartner(Player player)
@@ -76,15 +74,15 @@ public class Database
 		return null;
 	}
 	
-	public String GetSurname(Player player) { return null; }
+	public abstract String GetSurname(Player player);
 	
-	public void SetSurname(Player player, String Surname) {}
+	public abstract void SetSurname(Player player, String Surname);
 	
-	public void SetShareBackpack(Player player, boolean allow) {}
+	public abstract void SetShareBackpack(Player player, boolean allow);
 	
-	public boolean GetPartnerShareBackpack(Player player) { return false; }
+	public abstract boolean GetPartnerShareBackpack(Player player);
 	
-	public void GetAllMarriedPlayers(Callback<TreeMap<String, String>> loaded) {}
+	public abstract void GetAllMarriedPlayers(Callback<TreeMap<String, String>> loaded);
 
 
 	public static Database getDatabase(String DBType, MarriageMaster pl)
