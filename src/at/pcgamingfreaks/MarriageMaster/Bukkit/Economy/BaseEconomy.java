@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import net.milkbowl.vault.economy.Economy;
 
-public class BaseEconomy 
+public abstract class BaseEconomy
 {
 	protected MarriageMaster plugin;
 	protected double Costs_TP, Costs_SetHome, Costs_Home, Costs_Gift, Costs_Marry, Costs_Divorce;
@@ -82,17 +82,17 @@ public class BaseEconomy
 		Message_TPPaid				= ChatColor.GREEN + plugin.lang.Get("TPPaid");
 	}
 
-	public boolean HomeTeleport(Player player) { return true; }
+	public abstract boolean SetHome(Player player);
+
+	public abstract boolean HomeTeleport(Player player);
 	
-	public boolean SetHome(Player player) { return true; }
+	public abstract boolean Gift(Player player);
 	
-	public boolean Gift(Player player) { return true; }
+	public abstract boolean Teleport(Player player);
 	
-	public boolean Teleport(Player player) { return true; }
+	public abstract boolean Divorce(CommandSender priest, Player player, Player otherPlayer);
 	
-	public boolean Divorce(CommandSender priest, Player player, Player otherPlayer) { return true; }
-	
-	public boolean Marry(CommandSender priest, Player player, Player otherPlayer) { return true; }
+	public abstract boolean Marry(CommandSender priest, Player player, Player otherPlayer);
 	
 	public static BaseEconomy getEconomy(MarriageMaster pl)
 	{
@@ -115,7 +115,10 @@ public class BaseEconomy
 					return new EconomyOld(pl);
 				}
 			}
-			catch(Exception e){}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

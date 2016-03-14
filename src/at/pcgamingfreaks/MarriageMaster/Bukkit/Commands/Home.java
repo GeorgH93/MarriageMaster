@@ -29,13 +29,13 @@ public class Home
 {
 	private MarriageMaster plugin;
 
-	private long delaytime;
+	private long delayTime;
 
 	public Home(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 
-		delaytime = plugin.config.TPDelayTime() * 20L;
+		delayTime = plugin.config.TPDelayTime() * 20L;
 	}
 
 	public void TPAdmin(final Player admin, String player)
@@ -86,7 +86,7 @@ public class Home
 		if(plugin.config.DelayTP() && !plugin.CheckPerm(player, "marry.skiptpdelay", false))
 		{
 			final Location p_loc = player.getLocation(), toloc = loc;
-			final double p_hea = (double) player.getHealth();
+			final double p_hea = player.getHealth();
 			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
 			{
@@ -106,7 +106,7 @@ public class Home
 						}
 					}
 				}
-			}, delaytime);
+			}, delayTime);
 		}
 		else
 		{
@@ -139,14 +139,14 @@ public class Home
 						}
 					}
 				}
-			}, delaytime);
+			}, delayTime);
 		}
 	}
 
 	public void SetHome(Player player)
 	{
 		Location home = player.getLocation();
-		if(plugin.economy == null || plugin.economy.HomeTeleport(player))
+		if(plugin.economy == null || plugin.economy.SetHome(player))
 		{
 			plugin.DB.SetMarryHome(home, player);
 			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeSet"));

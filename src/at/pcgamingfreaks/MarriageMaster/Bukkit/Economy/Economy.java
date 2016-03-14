@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -48,8 +48,8 @@ public class Economy extends BaseEconomy
 			return false;
 		}
 	}
-	
-	public boolean SetHome(Player player, double money)
+
+	public boolean SetHome(Player player)
 	{
 		if(Costs_SetHome == 0)
 		{
