@@ -173,7 +173,7 @@ public class Config
 	
 	private boolean UpdateConfig(File file)
 	{
-		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") == CONFIG_VERSION) ? "no updated needed" : "update needed"));
+		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") < CONFIG_VERSION) ? "no updated needed" : "update needed"));
 		switch(config.getInt("Version"))
 		{
 			case 1:
