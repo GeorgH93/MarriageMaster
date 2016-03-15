@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,7 +42,12 @@ public class Language
 	
 	public String Get(String Option)
 	{
-		return ChatColor.translateAlternateColorCodes('&', lang.getString("Language." + Option));
+		String msg = lang.getString("Language." + Option);
+		if(msg != null)
+		{
+			msg = ChatColor.translateAlternateColorCodes('&', msg);
+		}
+		return msg;
 	}
 	
 	public void Reload()
