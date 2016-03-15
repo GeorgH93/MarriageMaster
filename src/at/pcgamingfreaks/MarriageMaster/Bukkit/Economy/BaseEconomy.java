@@ -63,12 +63,12 @@ public abstract class BaseEconomy
 		}
 		
 		// Load Costs
-		Costs_Divorce	= plugin.config.GetEconomy("Divorce");
-		Costs_Marry		= plugin.config.GetEconomy("Marry");
-		Costs_Gift		= plugin.config.GetEconomy("Gift");
-		Costs_Home		= plugin.config.GetEconomy("HomeTp");
-		Costs_SetHome	= plugin.config.GetEconomy("SetHome");
-		Costs_TP = plugin.config.GetEconomy("Tp");
+		Costs_Divorce = plugin.config.GetEconomy("Divorce");
+		Costs_Marry	  = plugin.config.GetEconomy("Marry");
+		Costs_Gift	  = plugin.config.GetEconomy("Gift");
+		Costs_Home	  = plugin.config.GetEconomy("HomeTp");
+		Costs_SetHome = plugin.config.GetEconomy("SetHome");
+		Costs_TP      = plugin.config.GetEconomy("Tp");
 		// Load Messages
 		Message_NotEnough			= ChatColor.RED   + plugin.lang.Get("Economy.NotEnough");
 		Message_PartnerNotEnough 	= ChatColor.RED   + plugin.lang.Get("Economy.PartnerNotEnough");
@@ -79,7 +79,7 @@ public abstract class BaseEconomy
 		Message_HomeTPPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.HomeTPPaid");
 		Message_SetHomePaid			= ChatColor.GREEN + plugin.lang.Get("Economy.SetHomePaid");
 		Message_GiftPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.GiftPaid");
-		Message_TPPaid				= ChatColor.GREEN + plugin.lang.Get("TPPaid");
+		Message_TPPaid				= ChatColor.GREEN + plugin.lang.Get("Economy.TPPaid");
 	}
 
 	public abstract boolean SetHome(Player player);
@@ -117,6 +117,7 @@ public abstract class BaseEconomy
 			}
 			catch(Exception e)
 			{
+				pl.log.warning("Failed to link with vault!");
 				e.printStackTrace();
 			}
 		}
