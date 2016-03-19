@@ -73,8 +73,8 @@ public class MySQL extends Database implements Listener
 		if(plugin.UseUUIDs)
 		{
 			CheckUUIDs();
-			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);", "none", "00000000000000000000000000000000");
-			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);", "Console", "00000000000000000000000000000001");
+			runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
+			runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
 		}
 		else
 		{

@@ -48,24 +48,48 @@ public class MySQL extends Database
 		// Finished Loading Settings
 		CheckDB();
 		CheckUUIDs();
-		AddPlayer("none", "00000000000000000000000000000000");
-		AddPlayer("Console", "00000000000000000000000000000001");
+		runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
+		runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
+	}
+
+	private void runStatement(final String query, final Object... args)
+	{
+		try(PreparedStatement preparedStatement = GetConnection().prepareStatement(query))
+		{
+			for(int i = 0; args != null && i < args.length; i++)
+			{
+				preparedStatement.setObject(i + 1, args[i]);
+			}
+			preparedStatement.execute();
+		}
+		catch(SQLException e)
+		{
+			System.out.print("Query: " + query);
+			e.printStackTrace();
+		}
 	}
 	
 	private void CheckUUIDs()
 	{
 		try
 		{
-			List<String> converter = new ArrayList<String>();
+			List<String> converter = new ArrayList<>();
 			Statement stmt = GetConnection().createStatement();
-			ResultSet res = stmt.executeQuery("SELECT name FROM " + Table_Players + " WHERE uuid IS NULL or uuid LIKE '%-%'");
+			ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + Table_Players + "` WHERE `uuid` IS NULL or `uuid` LIKE '%-%'");
 			while(res.next())
 			{
 				if(res.isFirst())
 				{
 					plugin.log.info(plugin.lang.getString("Console.UpdateUUIDs"));
 				}
-				converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), plugin.getProxy().getConfigurationAdapter().getBoolean("online_mode", true)) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+				if(res.getString("uuid") != null)
+				{
+					converter.add("UPDATE " + Table_Players + " SET uuid='" + res.getString("uuid").replaceAll("-", "") + "' WHERE `player_id`=" + res.getInt("player_id") + ";");
+				}
+				else
+				{
+					converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString("name"), plugin.getProxy().getConfigurationAdapter().getBoolean("online_mode", true)) + "' WHERE `player_id`=" + res.getInt("player_id") + ";");
+				}
 			}
 			if(converter.size() > 0)
 			{
@@ -188,37 +212,6 @@ public class MySQL extends Database
 				        e.printStackTrace();
 				    }
 			    }});
-	}
-	
-	public void AddPlayer(String player, String UUID)
-	{
-		try
-		{
-			PreparedStatement ps = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?;");
-			ps.setString(1, UUID);
-			ResultSet rs = ps.executeQuery();
-			if(rs.next())
-			{
-				rs.close();
-				ps.close();
-				return;
-			}
-			else
-			{
-				rs.close();
-				ps.close();
-				ps = GetConnection().prepareStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);");
-				ps.setString(1, player);
-				ps.setString(2, UUID);
-			}
-			ps.execute();
-			ps.close();
-		}
-		catch (SQLException e)
-	    {
-			plugin.log.info("Failed to add user: " + player);
-	        e.printStackTrace();
-	    }
 	}
 	
 	private int GetPlayerID(ProxiedPlayer player)

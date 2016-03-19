@@ -80,7 +80,7 @@ public class UUIDConverter
     		{
     			if(!uuid.contains("-"))
     			{
-    				return uuid = uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
+    				return uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5");
     			}
     		}
     		else
