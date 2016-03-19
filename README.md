@@ -5,7 +5,7 @@ It overs an outstanding compatibility with older Minecraft versions and gets upd
 
 
 # Links
-[Spigot](https://www.spigotmc.org/resources/marriage-master.19273/)
-[Dev Bukkit](http://dev.bukkit.org/bukkit-plugins/marriage-master/)
-[Issue tracker](https://github.com/GeorgH93/Bukkit_MarriageMaster/issues)
+[Spigot](https://www.spigotmc.org/resources/marriage-master.19273/)</br>
+[Dev Bukkit](http://dev.bukkit.org/bukkit-plugins/marriage-master/)</br>
+[Issue tracker](https://github.com/GeorgH93/Bukkit_MarriageMaster/issues)</br>
 [Build Server ![Build Status](http://ci.pcgamingfreaks.at/job/Bukkit_MarriageMaster_V1/badge/icon)](http://ci.pcgamingfreaks.at/job/Bukkit_MarriageMaster_V1/)
