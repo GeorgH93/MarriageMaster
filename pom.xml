@@ -172,7 +172,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MinePacks</artifactId>
-			<version>1.16-SNAPSHOT</version>
+			<version>LATEST</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

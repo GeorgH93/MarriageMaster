@@ -42,8 +42,8 @@ public class MySQL extends Database implements Listener
 {
 	private HikariDataSource dataSource;
 
-	private final String Table_Players, Table_Priests, Table_Partners, Table_Home, uuidOrName;
-	private final boolean UpdatePlayer;
+	private final String tablePlayers, tablePriests, tablePartners, tableHome, uuidOrName;
+	private final boolean updatePlayer;
 
 	private Map<String, Integer> namesToID = new ConcurrentHashMap<>();
 	private Map<Player, Integer> playersToID = new ConcurrentHashMap<>();
@@ -53,11 +53,11 @@ public class MySQL extends Database implements Listener
 		super(marriagemaster);
 
 		// Load Settings
-		Table_Players = plugin.config.getUserTable();
-		Table_Priests = plugin.config.getPriestsTable();
-		Table_Partners = plugin.config.getPartnersTable();
-		Table_Home = plugin.config.getHomesTable();
-		UpdatePlayer = plugin.config.getUpdatePlayer();
+		tablePlayers = plugin.config.getUserTable();
+		tablePriests = plugin.config.getPriestsTable();
+		tablePartners = plugin.config.getPartnersTable();
+		tableHome = plugin.config.getHomesTable();
+		updatePlayer = plugin.config.getUpdatePlayer();
 
 		HikariConfig poolConfig = new HikariConfig();
 		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase() + "?allowMultiQueries=true");
@@ -72,14 +72,14 @@ public class MySQL extends Database implements Listener
 		CheckDB();
 		if(plugin.UseUUIDs)
 		{
-			CheckUUIDs();
-			runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
-			runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
+			checkUUIDs();
+			runStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
+			runStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
 		}
 		else
 		{
-			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`) VALUES (?);", "none");
-			runStatement("INSERT IGNORE INTO `" + Table_Players + "` (`name`) VALUES (?);", "Console");
+			runStatement("INSERT IGNORE INTO `" + tablePlayers + "` (`name`) VALUES (?);", "none");
+			runStatement("INSERT IGNORE INTO `" + tablePlayers + "` (`name`) VALUES (?);", "Console");
 		}
 
 		Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -102,41 +102,72 @@ public class MySQL extends Database implements Listener
 		playersToID.remove(player);
 	}
 
-	private void CheckUUIDs()
+	private void checkUUIDs()
 	{
-		List<String> converter = new ArrayList<>();
-		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement();
-		    ResultSet res = stmt.executeQuery("SELECT `name`,`uuid` FROM " + Table_Players + " WHERE `uuid` IS NULL or `uuid` LIKE '%-%'"))
+		class UpdateData // Helper class for fixing UUIDs
 		{
-			while(res.next())
+			int id;
+			String name, uuid;
+
+			public UpdateData(String name, String uuid, int id)
 			{
-				if(res.isFirst())
+				this.id = id;
+				this.name = name;
+				this.uuid = uuid;
+			}
+		}
+		try(Connection connection = dataSource.getConnection())
+		{
+			Map<String, UpdateData> toConvert = new HashMap<>();
+			List<UpdateData> toUpdate = new LinkedList<>();
+			try(Statement stmt = connection.createStatement(); ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + tablePlayers + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
+			{
+				while(res.next())
 				{
-					plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
+					if(res.isFirst())
+					{
+						plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
+					}
+					String uuid = res.getString("`uuid`");
+					if(uuid == null)
+					{
+						toConvert.put(res.getString("`name`").toLowerCase(), new UpdateData(res.getString("`name`"), null, res.getInt("`player_id`")));
+					}
+					else
+					{
+						toUpdate.add(new UpdateData(res.getString("`name`"), uuid.replaceAll("-", ""), res.getInt("`player_id`")));
+					}
 				}
-				if(res.getString(2) != null && res.getString(2).isEmpty())
+			}
+			if(toConvert.size() > 0 || toUpdate.size() > 0)
+			{
+				if(toConvert.size() > 0)
 				{
-					converter.add("UPDATE " + Table_Players + " SET uuid='" + res.getString(2).replaceAll("-", "") + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), true, false);
+					for(Map.Entry<String, String> entry : newUUIDs.entrySet())
+					{
+						UpdateData updateData = toConvert.get(entry.getKey().toLowerCase());
+						updateData.uuid = entry.getValue();
+						toUpdate.add(updateData);
+					}
 				}
-				else
+				try(PreparedStatement ps = connection.prepareStatement("UPDATE `" + tablePlayers + "` SET `uuid`=? WHERE `player_id`=?;"))
 				{
-					converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString(1), true) + "' WHERE name='" + res.getString(1).replace("\\", "\\\\").replace("'", "\\'") + "'");
+					for(UpdateData updateData : toUpdate)
+					{
+						ps.setString(1, updateData.uuid);
+						ps.setInt(2, updateData.id);
+						ps.addBatch();
+						ps.executeBatch();
+					}
 				}
+				plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"), toUpdate.size()));
 			}
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
-		if(converter.size() > 0)
-		{
-			for(String string : converter)
-			{
-				runStatement(string);
-			}
-			plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"), converter.size()));
-		}
-
 	}
 
 	public void Disable()
@@ -150,12 +181,12 @@ public class MySQL extends Database implements Listener
 	{
 		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Players + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL" + ((plugin.UseUUIDs) ? "" : " UNIQUE") +", PRIMARY KEY (`player_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `" + tablePlayers + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL" + ((plugin.UseUUIDs) ? "" : " UNIQUE") +", PRIMARY KEY (`player_id`));");
 			if(plugin.UseUUIDs)
 			{
 				try
 				{
-					stmt.execute("ALTER TABLE `" + Table_Players + "` ADD COLUMN `uuid` CHAR(32) UNIQUE;");
+					stmt.execute("ALTER TABLE `" + tablePlayers + "` ADD COLUMN `uuid` CHAR(32) UNIQUE;");
 				}
 				catch(SQLException e)
 				{
@@ -173,7 +204,7 @@ public class MySQL extends Database implements Listener
 			{
 				try
 				{
-					stmt.execute("ALTER TABLE `" + Table_Players + "` ADD COLUMN `sharebackpack` TINYINT(1) NOT NULL DEFAULT false;");
+					stmt.execute("ALTER TABLE `" + tablePlayers + "` ADD COLUMN `sharebackpack` TINYINT(1) NOT NULL DEFAULT false;");
 				}
 				catch(SQLException e)
 				{
@@ -187,13 +218,13 @@ public class MySQL extends Database implements Listener
 					}
 				}
 			}
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Priests + "` (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Partners + "` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL, `pvp_state` TINYINT(1) NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `" + tablePriests + "` (`priest_id` INT NOT NULL, PRIMARY KEY (`priest_id`));");
+			stmt.execute("CREATE TABLE IF NOT EXISTS `" + tablePartners + "` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL, `pvp_state` TINYINT(1) NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
 			if(plugin.config.getSurname())
 			{
 				try
 				{
-					stmt.execute("ALTER TABLE `" + Table_Partners + "` ADD COLUMN `Surname` VARCHAR(35) UNIQUE;");
+					stmt.execute("ALTER TABLE `" + tablePartners + "` ADD COLUMN `Surname` VARCHAR(35) UNIQUE;");
 				}
 				catch(SQLException e)
 				{
@@ -207,10 +238,10 @@ public class MySQL extends Database implements Listener
 					}
 				}
 			}
-			stmt.execute("CREATE TABLE IF NOT EXISTS " + Table_Home + " (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
+			stmt.execute("CREATE TABLE IF NOT EXISTS " + tableHome + " (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
 			try
 			{
-				stmt.execute("ALTER TABLE `" + Table_Home + "` ADD COLUMN `home_server` VARCHAR(45) UNIQUE;");
+				stmt.execute("ALTER TABLE `" + tableHome + "` ADD COLUMN `home_server` VARCHAR(45) UNIQUE;");
 			}
 			catch(SQLException e)
 			{
@@ -223,7 +254,7 @@ public class MySQL extends Database implements Listener
 					e.printStackTrace();
 				}
 			}
-			stmt.execute("DELETE FROM " + Table_Partners + " WHERE player1=player2");
+			stmt.execute("DELETE FROM " + tablePartners + " WHERE player1=player2");
 		}
 		catch(SQLException e)
 		{
@@ -233,7 +264,7 @@ public class MySQL extends Database implements Listener
 
 	public void UpdatePlayer(final Player player)
 	{
-		if(!UpdatePlayer)
+		if(!updatePlayer)
 		{
 			return;
 		}
@@ -242,7 +273,7 @@ public class MySQL extends Database implements Listener
 			@Override
 			public void run()
 			{
-				try(Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
+				try(Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?;"))
 				{
 					ps.setString(1, getUUIDorName(player));
 					try(ResultSet rs = ps.executeQuery())
@@ -252,12 +283,12 @@ public class MySQL extends Database implements Listener
 							playersToID.put(player, rs.getInt(1));
 							if(plugin.UseUUIDs)
 							{
-								runStatementAsync("UPDATE `" + Table_Players + "` SET `name`=? WHERE `uuid`=?;", player.getName(), player.getUniqueId().toString().replace("-", ""));
+								runStatementAsync("UPDATE `" + tablePlayers + "` SET `name`=? WHERE `uuid`=?;", player.getName(), player.getUniqueId().toString().replace("-", ""));
 							}
 						}
 						else
 						{
-							try(PreparedStatement ps2 = con.prepareStatement("INSERT INTO `" + Table_Players + "` (`name`" + ((plugin.UseUUIDs) ? ",`uuid`" : "") + ") VALUES (?" + ((plugin.UseUUIDs) ? ",?" : "") + ");", Statement.RETURN_GENERATED_KEYS))
+							try(PreparedStatement ps2 = con.prepareStatement("INSERT INTO `" + tablePlayers + "` (`name`" + ((plugin.UseUUIDs) ? ",`uuid`" : "") + ") VALUES (?" + ((plugin.UseUUIDs) ? ",?" : "") + ");", Statement.RETURN_GENERATED_KEYS))
 							{
 								ps2.setString(1, player.getName());
 								if(plugin.UseUUIDs)
@@ -322,7 +353,7 @@ public class MySQL extends Database implements Listener
 		{
 			return ID;
 		}
-		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?"))
 		{
 			ps.setString(1, getUUIDorName(player));
 			try(ResultSet rs = ps.executeQuery())
@@ -349,7 +380,7 @@ public class MySQL extends Database implements Listener
 		{
 			return ID;
 		}
-		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `name`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `name`=?"))
 		{
 			ps.setString(1, player);
 			ps.executeQuery();
@@ -374,7 +405,7 @@ public class MySQL extends Database implements Listener
 		String name = null;
 		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
-			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
+			stmt.executeQuery("SELECT `name` FROM `" + tablePlayers + "` WHERE `player_id`=" + pid);
 			try(ResultSet rs = stmt.getResultSet())
 			{
 				if(rs.next())
@@ -397,18 +428,18 @@ public class MySQL extends Database implements Listener
 
 	public void SetPriest(Player priest)
 	{
-		runStatementAsync("INSERT INTO `" + Table_Priests + "` SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;", getUUIDorName(priest));
+		runStatementAsync("INSERT INTO `" + tablePriests + "` SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?;", getUUIDorName(priest));
 	}
 
 	public void DelPriest(Player priest)
 	{
-		runStatementAsync("DELETE FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?);", getUUIDorName(priest));
+		runStatementAsync("DELETE FROM `" + tablePriests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?);", getUUIDorName(priest));
 	}
 
 	public boolean IsPriest(Player priest)
 	{
 		try(Connection connection = dataSource.getConnection();
-		    PreparedStatement ps = connection.prepareStatement("SELECT priest_id FROM `" + Table_Priests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?);"))
+		    PreparedStatement ps = connection.prepareStatement("SELECT priest_id FROM `" + tablePriests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?);"))
 		{
 			ps.setString(1, getUUIDorName(priest));
 			try(ResultSet rs = ps.executeQuery())
@@ -429,7 +460,7 @@ public class MySQL extends Database implements Listener
 	public boolean GetPvPEnabled(Player player)
 	{
 		boolean res = false;
-		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `pvp_state` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `pvp_state` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			ps.setInt(1, pid);
@@ -453,7 +484,7 @@ public class MySQL extends Database implements Listener
 	public String GetPartner(Player player)
 	{
 		String partner = null;
-		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			ps.setInt(1, pid);
@@ -482,7 +513,7 @@ public class MySQL extends Database implements Listener
 			{
 				final TreeMap<String, String> MarryMap_out = new TreeMap<>();
 				try(Connection connection = dataSource.getConnection(); Statement statement = connection.createStatement();
-				    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + Table_Partners + "` INNER JOIN `" + Table_Players + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + Table_Players + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
+				    ResultSet rs = statement.executeQuery("SELECT `mp1`.`name`,`mp2`.`name` FROM `" + tablePartners + "` INNER JOIN `" + tablePlayers + "` AS mp1 ON `player1`=`mp1`.`player_id` INNER JOIN `" + tablePlayers + "` AS mp2 ON `player2`=`mp2`.`player_id`"))
 				{
 					while(rs.next())
 					{
@@ -516,7 +547,7 @@ public class MySQL extends Database implements Listener
 
 	private void DelMarryHome(int pid)
 	{
-		runStatementAsync("DELETE FROM `" + Table_Home + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?);", pid, pid);
+		runStatementAsync("DELETE FROM `" + tableHome + "` WHERE `marry_id`=(SELECT `marry_id` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?);", pid, pid);
 	}
 
 	public void GetMarryHome(String player, Callback<Location> result)
@@ -537,7 +568,7 @@ public class MySQL extends Database implements Listener
 			public void run()
 			{
 				try(Connection connection = dataSource.getConnection();
-						PreparedStatement pstmt = connection.prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
+						PreparedStatement pstmt = connection.prepareStatement("SELECT `home_x`,`home_y`,`home_z`,`home_world` FROM `" + tableHome + "` INNER JOIN `" + tablePartners + "` ON `" + tableHome + "`.`marry_id`=`" + tablePartners + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
 				{
 					pstmt.setInt(1, pid);
 					pstmt.setInt(2, pid);
@@ -565,7 +596,7 @@ public class MySQL extends Database implements Listener
 	public void SetMarryHome(Location loc, Player player)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("REPLACE INTO `" + Table_Home + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`,`home_server`) SELECT `marry_id`,?,?,?,?,? FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?;", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName(), plugin.HomeServer, pid, pid);
+		runStatementAsync("REPLACE INTO `" + tableHome + "` (`marry_id`,`home_x`,`home_y`,`home_z`,`home_world`,`home_server`) SELECT `marry_id`,?,?,?,?,? FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?;", loc.getX(), loc.getY(), loc.getZ(), loc.getWorld().getName(), plugin.HomeServer, pid, pid);
 	}
 
 	public void MarryPlayers(Player player, Player otherPlayer, Player priest, String surname)
@@ -578,11 +609,11 @@ public class MySQL extends Database implements Listener
 		if(plugin.config.getSurname())
 		{
 			args[4] = LimitText(surname, 34);
-			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
+			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
 		}
 		else
 		{
-			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
+			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
 		}
 	}
 
@@ -596,30 +627,30 @@ public class MySQL extends Database implements Listener
 		if(plugin.config.getSurname())
 		{
 			args[4] = LimitText(surname, 34);
-			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
+			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
 		}
 		else
 		{
-			runStatementAsync("INSERT INTO `" + Table_Partners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
+			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
 		}
 	}
 
 	public void DivorcePlayer(Player player)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("DELETE `p`,`h` FROM `" + Table_Partners + "` AS `p` LEFT OUTER JOIN `" + Table_Home + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
+		runStatementAsync("DELETE `p`,`h` FROM `" + tablePartners + "` AS `p` LEFT OUTER JOIN `" + tableHome + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
 	}
 
 	public void SetPvPEnabled(Player player, boolean state)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("UPDATE `" + Table_Partners + "` SET `pvp_state`=? WHERE `player1`=? OR `player2`=?", state, pid, pid);
+		runStatementAsync("UPDATE `" + tablePartners + "` SET `pvp_state`=? WHERE `player1`=? OR `player2`=?", state, pid, pid);
 	}
 
 	public String GetSurname(Player player)
 	{
 		String surname = null;
-		try(Connection connection = dataSource.getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `surname` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement pstmt = connection.prepareStatement("SELECT `surname` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
 		{
 			int pid = GetPlayerID(player);
 			pstmt.setInt(1, pid);
@@ -643,18 +674,18 @@ public class MySQL extends Database implements Listener
 	public void SetSurname(Player player, String surname)
 	{
 		int pid = GetPlayerID(player);
-		runStatementAsync("UPDATE `" + Table_Partners + "` SET `surname`=? WHERE `player1`=? OR `player2`=?", LimitText(surname, 34), pid, pid);
+		runStatementAsync("UPDATE `" + tablePartners + "` SET `surname`=? WHERE `player1`=? OR `player2`=?", LimitText(surname, 34), pid, pid);
 	}
 
 	public void SetShareBackpack(Player player, boolean allow)
 	{
-		runStatementAsync("UPDATE `" + Table_Players + "` SET `sharebackpack`=? WHERE `" + uuidOrName + "`=?;", allow, getUUIDorName(player));
+		runStatementAsync("UPDATE `" + tablePlayers + "` SET `sharebackpack`=? WHERE `" + uuidOrName + "`=?;", allow, getUUIDorName(player));
 	}
 
 	public boolean GetPartnerShareBackpack(Player player)
 	{
 		boolean result = false;
-		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `sharebackpack` FROM `" + Table_Players + "` WHERE `" + uuidOrName + "`=?;"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `sharebackpack` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?;"))
 		{
 			ps.setString(1, getUUIDorName(player));
 			try(ResultSet rs = ps.executeQuery())

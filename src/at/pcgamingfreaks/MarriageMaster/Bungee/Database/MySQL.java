@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,9 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.UUIDConverter;
@@ -71,36 +69,67 @@ public class MySQL extends Database
 	
 	private void CheckUUIDs()
 	{
-		try
+		class UpdateData // Helper class for fixing UUIDs
 		{
-			List<String> converter = new ArrayList<>();
-			Statement stmt = GetConnection().createStatement();
-			ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + Table_Players + "` WHERE `uuid` IS NULL or `uuid` LIKE '%-%'");
-			while(res.next())
+			int id;
+			String name, uuid;
+
+			public UpdateData(String name, String uuid, int id)
 			{
-				if(res.isFirst())
-				{
-					plugin.log.info(plugin.lang.getString("Console.UpdateUUIDs"));
-				}
-				if(res.getString("uuid") != null)
-				{
-					converter.add("UPDATE " + Table_Players + " SET uuid='" + res.getString("uuid").replaceAll("-", "") + "' WHERE `player_id`=" + res.getInt("player_id") + ";");
-				}
-				else
-				{
-					converter.add("UPDATE " + Table_Players + " SET uuid='" + UUIDConverter.getUUIDFromName(res.getString("name"), plugin.getProxy().getConfigurationAdapter().getBoolean("online_mode", true)) + "' WHERE `player_id`=" + res.getInt("player_id") + ";");
-				}
-			}
-			if(converter.size() > 0)
-			{
-				for (String string : converter)
-				{
-					stmt.execute(string);
-				}
-				plugin.log.info(String.format(plugin.lang.getString("Console.UpdatedUUIDs"), converter.size()));
+				this.id = id;
+				this.name = name;
+				this.uuid = uuid;
 			}
 		}
-		catch (SQLException e)
+		try
+		{
+			Map<String, UpdateData> toConvert = new HashMap<>();
+			List<UpdateData> toUpdate = new LinkedList<>();
+			try(Statement stmt = GetConnection().createStatement(); ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + Table_Players + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
+			{
+				while(res.next())
+				{
+					if(res.isFirst())
+					{
+						plugin.log.info(plugin.lang.getString("Console.UpdateUUIDs"));
+					}
+					String uuid = res.getString("`uuid`");
+					if(uuid == null)
+					{
+						toConvert.put(res.getString("`name`").toLowerCase(), new UpdateData(res.getString("`name`"), null, res.getInt("`player_id`")));
+					}
+					else
+					{
+						toUpdate.add(new UpdateData(res.getString("`name`"), uuid.replaceAll("-", ""), res.getInt("`player_id`")));
+					}
+				}
+			}
+			if(toConvert.size() > 0 || toUpdate.size() > 0)
+			{
+				if(toConvert.size() > 0)
+				{
+					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), true, false);
+					for(Map.Entry<String, String> entry : newUUIDs.entrySet())
+					{
+						UpdateData updateData = toConvert.get(entry.getKey().toLowerCase());
+						updateData.uuid = entry.getValue();
+						toUpdate.add(updateData);
+					}
+				}
+				try(PreparedStatement ps = GetConnection().prepareStatement("UPDATE `" + Table_Players + "` SET `uuid`=? WHERE `player_id`=?;"))
+				{
+					for(UpdateData updateData : toUpdate)
+					{
+						ps.setString(1, updateData.uuid);
+						ps.setInt(2, updateData.id);
+						ps.addBatch();
+						ps.executeBatch();
+					}
+				}
+				plugin.log.info(String.format(plugin.lang.getString("Console.UpdatedUUIDs"), toUpdate.size()));
+			}
+		}
+		catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
