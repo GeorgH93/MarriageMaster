@@ -7,9 +7,9 @@ Language:
         NoPermPL: Kein Permission-Plugin gefunden, verwende standard rechte.
         NoEcoPL: Kein Wirtschafts-Plugin gefunden, deaktiviere Geld-System.
         MetricsOffline: Metrics offline.
-        NotSupportedNet: 'Keine unterstütste Version von Bukkit gefunden. Herz-Effekt Deaktiviert.'
+        NotSupportedNet: 'Keine unterstÃ¼tste Version von Bukkit gefunden. Herz-Effekt Deaktiviert.'
         UpdateUUIDs: Starte Datenbank Update auf UUIDs ...
-        UpdatedUUIDs: '%s Datensätze wurden auf UUIDs geupdated.'
+        UpdatedUUIDs: '%s DatensÃ¤tze wurden auf UUIDs geupdated.'
     Description:
         Commands: Befehle
         ListAll: Liste aller verheirateten Spieler.
@@ -23,25 +23,25 @@ Language:
         TPHome: Teleportiert dich nachhause.
         Chat: Privater Chat mit deinem Partner.
         ChatToggle: Schaltet denn Chat auf denn Privaten Chat um.
-        Reload: Lädt die Config des Plugins neu.
+        Reload: LÃ¤dt die Config des Plugins neu.
         ListenChat: Zeigt alle Chatnachrichten die an Partner gesendet werden an.
-        Gift: Sendet deinem Partner das Item das du in der Hand häldst.
-        Kiss: Küsse deinen Partner.
-        Update: Prüft ob ein update verfügbar ist und lädt dieses herunter.
+        Gift: Sendet deinem Partner das Item das du in der Hand hÃ¤ldst.
+        Kiss: KÃ¼sse deinen Partner.
+        Update: PrÃ¼ft ob ein update verfÃ¼gbar ist und lÃ¤dt dieses herunter.
         SelfMarry: Sendet eine heiratsanfrage an einem Spieler.
         SelfDivorce: Trennt dich von deinem Partner.
-        Surname: 'Ändert den Nachnamen eines Paares.'
-        Backpack: 'Öffnet den Rucksack deines Partners.'
-        BackpackOn: 'Gibt deinem Partner das Recht deinen Rucksack zu öffnen.'
-        BackpackOff: 'Nimmt deinem Partner das Recht deinen Rucksack zu öffnen.'
-        DelHome: 'Löscht dein Zuhause.'
+        Surname: 'Ã„ndert den Nachnamen eines Paares.'
+        Backpack: 'Ã–ffnet den Rucksack deines Partners.'
+        BackpackOn: 'Gibt deinem Partner das Recht deinen Rucksack zu Ã¶ffnen.'
+        BackpackOff: 'Nimmt deinem Partner das Recht deinen Rucksack zu Ã¶ffnen.'
+        DelHome: 'LÃ¶scht dein Zuhause.'
         TPHomeOther: 'Teleportiert dich zu dem Zuhause eines verheirateten Spielers.'
-        DelHomeOther: 'Löscht das Zuhause eines verheirateten Spielers.'
+        DelHomeOther: 'LÃ¶scht das Zuhause eines verheirateten Spielers.'
     Ingame:
         NotMarried: Du bist nicht Verheiratet.
         NoMarriedPlayers: Es ist niemand Verheiratet.
         NotAPriest: Du bist kein Priester.
-        NoPermission: 'Dir fehlen die Rechte dafür.'
+        NoPermission: 'Dir fehlen die Rechte dafÃ¼r.'
         PartnerOnline: Dein Partner ist Online.
         PartnerOffline: Dein Partner ist Offline.
         PartnerNowOnline: Dein Partner ist jetzt Online.
@@ -56,13 +56,13 @@ Language:
         NoTPInVanish: Du kannst dich nicht zu deinem Partner teleportieren wenn er unsichtbar ist.
         TP: Teleportiere zu deinem Partner...
         TPto: Dein Partner teleportiert sich zu dir...
-        TPUnsafe: "Teleport abgebrochen! Du würdest es nicht überleben!"
-        TPtoUnsafe: "Dein Partner wollte sich zu dir teleportieren, würde es aber nicht überleben."
+        TPUnsafe: "Teleport abgebrochen! Du wÃ¼rdest es nicht Ã¼berleben!"
+        TPtoUnsafe: "Dein Partner wollte sich zu dir teleportieren, wÃ¼rde es aber nicht Ã¼berleben."
         ListHL: Liste verheirateter Spieler
         ListHLMP: 'Zeige Seite %1$d/%2$d - /marry list <Seite>'
         PvPIsOff: Du kannst deinem Partner nicht verletzen wenn ihr PvP aus habt.
-        ListeningStarted: Du hörst nun denn Ehe-Chat mit.
-        ListeningStoped: Du hörst nun denn Ehe-Chat nicht mehr mit.
+        ListeningStarted: Du hÃ¶rst nun denn Ehe-Chat mit.
+        ListeningStoped: Du hÃ¶rst nun denn Ehe-Chat nicht mehr mit.
         PriestMarryOff: 'Euer Priester (%s) ist offline gegangen, Hochzeit abgebrochen.'
         PlayerMarryOff: '%s ist offline gegangen, Hochzeit abgebrochen.'
         PlayerCalledOff: '%s hat die Hochzeit abgebrochen.'
@@ -72,14 +72,14 @@ Language:
         ItemSent: 'Du hast deinem Partner %1$s %2$s geschickt.'
         ItemReceived: 'Dein Partner hat dir %1$s %2$s geschickt.'
         GiftsOnlyInSurvival: Du kannst nur im Survival Modus Items an deinen Partner senden.
-        YouKissed: Du hast deinen Partner geküsst!
-        YouGotKissed: Dein Partner hat dich geküsst!
-        TooFarToKiss: Du bist zu weit weg um deinen Partner zu küssen. (Max 2 Blocks)
+        YouKissed: Du hast deinen Partner gekÃ¼sst!
+        YouGotKissed: Dein Partner hat dich gekÃ¼sst!
+        TooFarToKiss: Du bist zu weit weg um deinen Partner zu kÃ¼ssen. (Max 2 Blocks)
         KissWait: 'Zu kurz seit deinem Letzten Kuss, bitte warte noch %s Sekunden.'
         WorldNotAllowed: Dein Partner ist in ein Welt in der TP nicht erlaubt ist.
         CheckingForUpdates: '&1Plugin update wird gesucht.'
-        Updated: 'Plugin aktualisiert, wird bei nächsten restart/reload geladen.'
-        NoUpdate: 'Kein Plugin update verfügbar.'
+        Updated: 'Plugin aktualisiert, wird bei nÃ¤chsten restart/reload geladen.'
+        NoUpdate: 'Kein Plugin update verfÃ¼gbar.'
         MarryConfirm: '%s will dich heiraten. Akzeptiere mit /marry accept oder lehne mit /marry deny ab.'
         HasMarried: 'Du hast %s geheiratet.'
         BroadcastMarriage: '%1$s hat %2$s geheiratet.'
@@ -94,25 +94,25 @@ Language:
         TPDontMove: 'Teleport in %s sek, bewege dich nicht!'
         NotYourself: Du kannst dich nicht selbst heiraten.
         ChatJoined: Du hast deinen Chat auf den private Chat umgeschalten.
-        ChatLeft: 'Du hast deinen Chat auf den öffentlichen Chat umgeschalten.'
-        NaN: 'Keine gültige Zahl eingegeben.'
+        ChatLeft: 'Du hast deinen Chat auf den Ã¶ffentlichen Chat umgeschalten.'
+        NaN: 'Keine gÃ¼ltige Zahl eingegeben.'
         NotInRange: Dein Partner ist zu weit Weg.
         BackpackOnlyInSurvival: Du kannst nur im Survival Modus auf den Rucksack von deinen Partner zugreifen.
         BackpackShareOn: Du teilst jetzt deinen Rucksack mit deinem Partner.
         BackpackShareOff: Du teilst deinen Rucksack nicht mehr mit deinem Partner.
-        BackpackOpend: 'Dein Partner hat deinen Rucksack geöffnet.'
+        BackpackOpend: 'Dein Partner hat deinen Rucksack geÃ¶ffnet.'
         BackpackShareDenied: 'Dein Partner erlaubt dir nicht das du auf seinen Rucksack zugreifst.'
-        HomeDeleted: 'Zuhause gelöscht.'
+        HomeDeleted: 'Zuhause gelÃ¶scht.'
     Economy:
         NotEnough: 'Du hast nicht genug Geld. Du brauchst %1$s.'
         PartnerNotEnough: Dein Partner hat nicht genug Geld.
-        NotEnoughPriestInfo: Die Spieler welche du verheiraten möchtest haben nicht genug Geld.
+        NotEnoughPriestInfo: Die Spieler welche du verheiraten mÃ¶chtest haben nicht genug Geld.
         HomeTPPaid: 'Du hast %1$s gezahlt um dich nachhause zu teleportieren.'
         SetHomePaid: 'Du hast %1$s gezahlt um dein zuhause zu setzen.'
         TPPaid: 'Du hast %1$s gezahlt um dich zu deinem Partner zu Teleportieren.'
-        DivorcePaid: 'Du hast %1$s für deine Scheidung gezahlt.'
-        DivNotEnoPriestI: Die Spieler welche du scheiden möchtest haben nicht genug Geld.
-        MarriagePaid: 'Du hast %1$s für deine Eheschließung gezahlt.'
+        DivorcePaid: 'Du hast %1$s fÃ¼r deine Scheidung gezahlt.'
+        DivNotEnoPriestI: Die Spieler welche du scheiden mÃ¶chtest haben nicht genug Geld.
+        MarriagePaid: 'Du hast %1$s fÃ¼r deine EheschlieÃŸung gezahlt.'
         GiftPaid: 'Du hast %1$s gehzahlt um deinen Partner ein item zu senden.'
     Priest:
         NotWithHimself: 'Du kannst %s nicht mit sich selbst verheiraten.'
@@ -130,8 +130,8 @@ Language:
         PartnerOffline: "%1$s's Partner (%2$s) ist nicht Online."
         DivorcedPlayer: '%1$s hat dich von %2$s geschieden.'
         Divorced: 'Du hast %1$s von %2$s geschieden.'
-        Confirm: 'Bestätige die Eheschließung mit /marry accept oder lehne sie ab mit /marry deny'
-        AlreadyAccepted: 'Du hast die Eheschließung bereits bestätigt.'
+        Confirm: 'BestÃ¤tige die EheschlieÃŸung mit /marry accept oder lehne sie ab mit /marry deny'
+        AlreadyAccepted: 'Du hast die EheschlieÃŸung bereits bestÃ¤tigt.'
         NoRequest: 'Es liegt keine offene eheanfrage vor.'
         NotYourSelf: 'Du darfst dich nicht selbst heiraten.'
         AlreadyOpenRequest: '%s hat bereits einen offenen Heiratsantrag.'
@@ -139,12 +139,12 @@ Language:
         DivPriestOff: 'Priest (%s) ist offline gegangen, Scheidung abgebrochen.'
         PlayerCanceled: '%s hat die Scheidung abgelehnt.'
         DivorceCanceled: Du hast die Scheidung abgelehnt.
-        DivorceConfirm: 'Bestätige die Scheidung mit /marry accept oder lehne sie ab mit /marry deny'
-        SurnameSet: 'Nachname geändert.'
+        DivorceConfirm: 'BestÃ¤tige die Scheidung mit /marry accept oder lehne sie ab mit /marry deny'
+        SurnameSet: 'Nachname geÃ¤ndert.'
         DivorceRequestSent: 'Scheidungsantrag gesendet.'
     Dialog:
-        DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
-        AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'
-        Married: 'Dann erkläre ich euch macht meines Amtes als verheiratet.'
+        DoYouWant: 'MÃ¶chtest du %1$s, %2$s auf diesem Server heiraten?'
+        AndDoYouWant: 'Und mÃ¶chtest du %1$s, %2$s auf diesem Server heiraten?'
+        Married: 'Dann erklÃ¤re ich euch macht meines Amtes als verheiratet.'
         YesIWant: 'Ja, ich will!'
         NoIDontWant: 'Nein, ich will nicht!'

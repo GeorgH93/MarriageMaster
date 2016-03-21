@@ -6,21 +6,21 @@ Language:
     LangUpdated: Sprachdatei wurde aktualisiert.
     MetricsOffline: Metrics offline.
     UpdateUUIDs: Starte Datenbank Update auf UUIDs ...
-    UpdatedUUIDs: '%s Datensätze wurden auf UUIDs geupdated.'
+    UpdatedUUIDs: '%s DatensÃ¤tze wurden auf UUIDs geupdated.'
   Ingame:
     PartnerOnline: '&aDein Partner ist Online.'
     PartnerOffline: '&aDein Partner ist Offline.'
     PartnerNowOnline: '&aDein Partner ist jetzt Online.'
     PartnerNowOffline: '&aDein Partner ist jetzt Offline.'
-    NoPermission: '&cDir fehlen die Rechte dafür.'
+    NoPermission: '&cDir fehlen die Rechte dafÃ¼r.'
     NotMarried: '&cDu bist nicht Verheiratet.'
     CheckingForUpdates: '&1Plugin update wird gesucht.'
     Updated: '&aPlugin update heruntergeladen.'
-    NoUpdate: '&2Kein Plugin update verfügbar.'
+    NoUpdate: '&2Kein Plugin update verfÃ¼gbar.'
     ChatJoined: '&aDu hast deinen Chat auf den private Chat umgeschalten.'
-    ChatLeft: '&aDu hast deinen Chat auf den öffentlichen Chat umgeschalten.'
-    ChatListeningStarted: '&aDu hörst nun denn Ehe-Chat mit.'
-    ChatListeningStoped: '&aDu hörst nun denn Ehe-Chat nicht mehr mit.'
+    ChatLeft: '&aDu hast deinen Chat auf den Ã¶ffentlichen Chat umgeschalten.'
+    ChatListeningStarted: '&aDu hÃ¶rst nun denn Ehe-Chat mit.'
+    ChatListeningStoped: '&aDu hÃ¶rst nun denn Ehe-Chat nicht mehr mit.'
     HomeBlocked: '&cDu darfst dich von hier nicht Nachhause teleportieren.'
     NoHome: '&cDu hast noch kein Zuhause.'
     TPBlocked: '&cDu darfst dich von hier nicht Nachhause teleportieren.'
