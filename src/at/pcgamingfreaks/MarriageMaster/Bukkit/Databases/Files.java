@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Databases;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.UUIDConverter;
+import at.pcgamingfreaks.MarriageMaster.UUIDConverter;
 
 import org.bukkit.Location;
 import org.bukkit.World;

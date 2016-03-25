@@ -21,7 +21,7 @@ import java.sql.*;
 import java.util.*;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import at.pcgamingfreaks.UUIDConverter;
+import at.pcgamingfreaks.MarriageMaster.UUIDConverter;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
 public class MySQL extends Database
