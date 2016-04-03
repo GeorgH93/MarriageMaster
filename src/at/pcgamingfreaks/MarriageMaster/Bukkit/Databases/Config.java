@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 21;
+	private static final int CONFIG_VERSION = 22;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -101,6 +101,7 @@ public class Config
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
 		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
+		config.set("UUID_Type", "auto");
 		config.set("AllowSelfMarry", false);
 		config.set("AllowSelfDivorce", "auto");
 		config.set("Surname", false);
@@ -244,6 +245,8 @@ public class Config
 				config.set("DelayMessageForJoiningPlayer", 0);
 			case 20:
 				config.set("Database.MySQL.MaxConnections", 4);
+			case 21:
+				config.set("UUID_Type", "auto");
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -466,6 +469,11 @@ public class Config
 	public boolean getUseUUIDs()
 	{
 		return config.getBoolean("UseUUIDs");
+	}
+
+	public String getUUIDType()
+	{
+		return config.getString("UUID_Type", "auto");
 	}
 	
 	public String getChatToggleCommand()

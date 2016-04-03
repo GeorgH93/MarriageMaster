@@ -43,7 +43,7 @@ public class MySQL extends Database implements Listener
 	private HikariDataSource dataSource;
 
 	private final String tablePlayers, tablePriests, tablePartners, tableHome, uuidOrName;
-	private final boolean updatePlayer;
+	private final boolean updatePlayer, onlineUUIDs;
 
 	private Map<String, Integer> namesToID = new ConcurrentHashMap<>();
 	private Map<Player, Integer> playersToID = new ConcurrentHashMap<>();
@@ -53,6 +53,7 @@ public class MySQL extends Database implements Listener
 		super(marriagemaster);
 
 		// Load Settings
+		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equals("online");
 		tablePlayers = plugin.config.getUserTable();
 		tablePriests = plugin.config.getPriestsTable();
 		tablePartners = plugin.config.getPartnersTable();
@@ -143,7 +144,7 @@ public class MySQL extends Database implements Listener
 			{
 				if(toConvert.size() > 0)
 				{
-					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), true, false);
+					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), onlineUUIDs, false);
 					for(Map.Entry<String, String> entry : newUUIDs.entrySet())
 					{
 						UpdateData updateData = toConvert.get(entry.getKey().toLowerCase());

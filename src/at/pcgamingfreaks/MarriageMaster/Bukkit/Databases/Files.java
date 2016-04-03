@@ -34,10 +34,12 @@ public class Files extends Database
 {
 	private Map<String, FileConfiguration> MarryMap;
 	private List<String> Priests;
+	private boolean onlineUUIDs;
 
 	public Files(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
+		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") ? plugin.getServer().getOnlineMode() : marriagemaster.config.getUUIDType().equals("online");
 		MarryMap = new HashMap<>();
 		Priests = new ArrayList<>();
 		LoadAllPlayers();
@@ -167,7 +169,7 @@ public class Files extends Database
 				Priests.remove(s);
 				if(s.length() <= 16)
 				{
-					s = UUIDConverter.getUUIDFromName(s, plugin.getServer().getOnlineMode());
+					s = UUIDConverter.getUUIDFromName(s, onlineUUIDs);
 					if(s != null)
 					{
 						Priests.add(s);
@@ -187,7 +189,7 @@ public class Files extends Database
 				temp = entry.getKey();
 				if(temp.length() <= 16)
 				{
-					temp = UUIDConverter.getUUIDFromName(temp, plugin.getServer().getOnlineMode());
+					temp = UUIDConverter.getUUIDFromName(temp, onlineUUIDs);
 					if(temp == null)
 					{
 						continue;
@@ -200,7 +202,7 @@ public class Files extends Database
 				}
 				if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID") == null)
 				{
-					tempFileConfig.set("MarriedToUUID", UUIDConverter.getUUIDFromName(tempFileConfig.getString("MarriedTo"), plugin.getServer().getOnlineMode()));
+					tempFileConfig.set("MarriedToUUID", UUIDConverter.getUUIDFromName(tempFileConfig.getString("MarriedTo"), onlineUUIDs));
 				}
 				else if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID").length() > 32)
 				{
