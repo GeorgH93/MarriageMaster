@@ -39,7 +39,7 @@ public class Files extends Database
 	public Files(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
-		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") ? plugin.getServer().getOnlineMode() : marriagemaster.config.getUUIDType().equals("online");
+		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") ? plugin.getServer().getOnlineMode() : marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
 		MarryMap = new HashMap<>();
 		Priests = new ArrayList<>();
 		LoadAllPlayers();

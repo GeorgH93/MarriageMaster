@@ -53,7 +53,7 @@ public class MySQL extends Database implements Listener
 		super(marriagemaster);
 
 		// Load Settings
-		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equals("online");
+		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
 		tablePlayers = plugin.config.getUserTable();
 		tablePriests = plugin.config.getPriestsTable();
 		tablePartners = plugin.config.getPartnersTable();
