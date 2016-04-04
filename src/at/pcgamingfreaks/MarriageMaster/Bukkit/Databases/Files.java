@@ -149,6 +149,7 @@ public class Files extends Database
 			}
 		}
 		Map<String, FileConfiguration> CMarryMap = new HashMap<>();
+		List<String> toConvert = new LinkedList<>();
 		for(Entry<String, FileConfiguration> entry : MarryMap.entrySet())
 		{
 			if(entry.getValue() == null)
@@ -158,10 +159,13 @@ public class Files extends Database
 			}
 			if(entry.getKey().length() != 32)
 			{
+				if(entry.getKey().length() <= 16) toConvert.add(entry.getKey());
 				CMarryMap.put(entry.getKey(), entry.getValue());
 			}
 			else if("married".equalsIgnoreCase(entry.getValue().getString("MarriedStatus")) && (entry.getValue().getString("MarriedToUUID") == null || entry.getValue().getString("MarriedToUUID").isEmpty() || entry.getValue().getString("MarriedToUUID").contains("-")))
 			{
+				String uuid = entry.getValue().getString("MarriedToUUID");
+				if(uuid != null && !uuid.isEmpty() && uuid.length() <= 16) toConvert.add(entry.getValue().getString("MarriedTo"));
 				CMarryMap.put(entry.getKey(), entry.getValue());
 			}
 		}
@@ -180,6 +184,11 @@ public class Files extends Database
 			}
 			String temp;
 			FileConfiguration tempFileConfig;
+			Map<String, String> namesToUUID = null;
+			if(toConvert.size() > 0)
+			{
+				namesToUUID = UUIDConverter.getUUIDsFromNames(toConvert, onlineUUIDs, false);
+			}
 			for(Entry<String, FileConfiguration> entry : CMarryMap.entrySet())
 			{
 				MarryMap.remove(entry.getKey());
@@ -187,7 +196,7 @@ public class Files extends Database
 				temp = entry.getKey();
 				if(temp.length() <= 16)
 				{
-					temp = UUIDConverter.getUUIDFromName(temp, onlineUUIDs);
+					temp = namesToUUID == null ? null : namesToUUID.get(temp);
 					if(temp == null)
 					{
 						continue;
@@ -198,9 +207,9 @@ public class Files extends Database
 				{
 					temp = temp.replace("-", "");
 				}
-				if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID") == null)
+				if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && (tempFileConfig.getString("MarriedToUUID") == null || tempFileConfig.getString("MarriedToUUID").isEmpty()))
 				{
-					tempFileConfig.set("MarriedToUUID", UUIDConverter.getUUIDFromName(tempFileConfig.getString("MarriedTo"), onlineUUIDs));
+					tempFileConfig.set("MarriedToUUID", namesToUUID == null ? null : namesToUUID.get(tempFileConfig.getString("MarriedTo")));
 				}
 				else if("married".equalsIgnoreCase(tempFileConfig.getString("MarriedStatus")) && tempFileConfig.getString("MarriedToUUID").length() > 32)
 				{
