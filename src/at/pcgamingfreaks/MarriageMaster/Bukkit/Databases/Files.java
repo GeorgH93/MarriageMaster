@@ -136,10 +136,14 @@ public class Files extends Database
 		{
 			return;
 		}
-		List<String> convert = new ArrayList<>();
+		List<String> convert = new LinkedList<>(), convertToUUID = new LinkedList<>();
 		for(String string : Priests)
 		{
-			if(string.length() != 32)
+			if(string.length() <= 16)
+			{
+				convertToUUID.add(string);
+			}
+			else if(string.length() != 32)
 			{
 				convert.add(string);
 			}
@@ -161,24 +165,18 @@ public class Files extends Database
 				CMarryMap.put(entry.getKey(), entry.getValue());
 			}
 		}
-		if(convert.size() > 0 || CMarryMap.size() > 0)
+		if(convert.size() > 0 || convertToUUID.size() > 0 || CMarryMap.size() > 0)
 		{
 			plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
 			for(String s : convert)
 			{
 				Priests.remove(s);
-				if(s.length() <= 16)
-				{
-					s = UUIDConverter.getUUIDFromName(s, onlineUUIDs);
-					if(s != null)
-					{
-						Priests.add(s);
-					}
-				}
-				else
-				{
-					Priests.add(s.replace("-", ""));
-				}
+				Priests.add(s.replace("-", ""));
+			}
+			if(convertToUUID.size() > 0)
+			{
+				Priests.removeAll(convertToUUID);
+				Priests.addAll(UUIDConverter.getUUIDsFromNames(convertToUUID, onlineUUIDs, false).values());
 			}
 			String temp;
 			FileConfiguration tempFileConfig;
