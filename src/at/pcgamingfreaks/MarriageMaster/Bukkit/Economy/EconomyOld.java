@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@ public class EconomyOld extends BaseEconomy
 	public EconomyOld(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
+		plugin.getLogger().warning("You are using an outdated version of Vault! Please update!");
+		plugin.getLogger().warning("The support for Vault versions below 1.4 will be dropped with MarriageMaster V2!!!");
 	}
 
 	public boolean HomeTeleport(Player player)

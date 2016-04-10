@@ -67,10 +67,16 @@ public class MarriageMaster extends JavaPlugin
     public HashMap<Player, Player> dr;
     public MinePacksIntegrationBase minepacks = null;
     public String HomeServer = null;
-    
+
+    @Override
     public void onEnable()
 	{
 		log = getLogger();
+		if (System.getProperty("java.version").startsWith("1.7"))
+		{
+			log.warning("You are still using Java 1.7. Java 1.7 ist EOL for over a year now! You should really update to Java 1.8!");
+			log.info("For now I this plugin will still work fine with Java 1.7 but no warranty that this won't change in the future.");
+		}
 		config = new Config(this);
 		load();
 		log.info(lang.Get("Console.Enabled"));
@@ -198,6 +204,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 	}
 	 
+	@Override
 	public void onDisable()
 	{
 		if(config.UseUpdater())
