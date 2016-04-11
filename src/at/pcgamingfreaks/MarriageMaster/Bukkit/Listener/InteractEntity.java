@@ -22,36 +22,43 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Network.Reflection;
 
 public class InteractEntity implements Listener
 {
-	MarriageMaster plugin;
+	private MarriageMaster plugin;
+	private boolean dualHandMC;
 	
 	public InteractEntity (MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
+		dualHandMC = Reflection.getVersion().contains("1_9");
 	}
 	
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
-		Player player = event.getPlayer();
-		String playername = player.getName();
-		if(player.isSneaking() && plugin.CheckPerm(player, "marry.kiss"))
+		if(!dualHandMC || event.getHand().equals(EquipmentSlot.HAND))
 		{
-			Entity entity = event.getRightClicked();
-			if(entity != null && entity instanceof Player)
+			Player player = event.getPlayer();
+			String playername = player.getName();
+			if(player.isSneaking() && plugin.CheckPerm(player, "marry.kiss"))
 			{
-				Player otherPlayer = (Player) entity;
-				String partner = plugin.DB.GetPartner(player);
-				if(partner != null && plugin.kiss.CanKissAgain(playername) && partner.equalsIgnoreCase(otherPlayer.getName()))
+				Entity entity = event.getRightClicked();
+				if(entity != null && entity instanceof Player)
 				{
-					if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("KissInteract")))
-        			{
-						plugin.kiss.kiss(player, otherPlayer);
-        			}
+					Player otherPlayer = (Player) entity;
+					String partner = plugin.DB.GetPartner(player);
+					if(partner != null && plugin.kiss.CanKissAgain(playername) && partner.equalsIgnoreCase(otherPlayer.getName()))
+					{
+						if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("KissInteract")))
+						{
+							plugin.kiss.kiss(player, otherPlayer);
+						}
+					}
 				}
 			}
 		}
