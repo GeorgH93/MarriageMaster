@@ -97,7 +97,7 @@ public class OnCommand implements CommandExecutor
 					case "update":
 						if(plugin.config.UseUpdater())
 						{
-							plugin.AsyncUpdate(sender);
+							plugin.update();
 						}
 						break;
 					case "surname":
@@ -536,10 +536,10 @@ public class OnCommand implements CommandExecutor
 			case "deny":
 				for(Marry_Requests m : plugin.bdr)
 				{
-					if(m.p1 == player || m.p2 == player)
+					if(m.p1.equals(player) || m.p2.equals(player))
 					{
 						plugin.bdr.remove(m);
-						if(m.p1 == player)
+						if(m.p1.equals(player))
 						{
 							m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
@@ -565,7 +565,7 @@ public class OnCommand implements CommandExecutor
 				}
 				for(Marry_Requests m : plugin.mr)
 				{
-					if(m.p1 == player || m.p2 == player)
+					if(m.p1.equals(player) || m.p2.equals(player))
 					{
 						plugin.mr.remove(m);
 						if(plugin.config.UseConfirmation() && plugin.config.UseConfirmationAutoDialog() && m.priest != null)
@@ -577,7 +577,7 @@ public class OnCommand implements CommandExecutor
 							m.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						player.sendMessage(plugin.lang.Get("Ingame.YouCalledOff"));
-						if(m.p1 == player)
+						if(m.p1.equals(player))
 						{
 							m.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
@@ -595,10 +595,10 @@ public class OnCommand implements CommandExecutor
 			case "clear":
 				for(Marry_Requests m : plugin.bdr)
 				{
-					if(m.p1 == player || m.p2 == player)
+					if(m.p1.equals(player) || m.p2.equals(player))
 					{
 						plugin.bdr.remove(m);
-						if(m.p1 == player)
+						if(m.p1.equals(player))
 						{
 							m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
@@ -630,7 +630,7 @@ public class OnCommand implements CommandExecutor
 				}
 				for(Marry_Requests m : plugin.mr)
 				{
-					if(m.p1 == player || m.p2 == player)
+					if(m.p1.equals(player) || m.p2.equals(player))
 					{
 						plugin.mr.remove(m);
 						if(m.priest != null)
@@ -638,7 +638,7 @@ public class OnCommand implements CommandExecutor
 							m.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						player.sendMessage(plugin.lang.Get("Ingame.YouCalledOff"));
-						if(m.p1 == player)
+						if(m.p1.equals(player))
 						{
 							m.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
@@ -656,7 +656,7 @@ public class OnCommand implements CommandExecutor
 				{
 					if(plugin.CheckPerm(player, "marry.update", false))
 					{
-						plugin.AsyncUpdate(sender);
+						plugin.update(player);
 					}
 					else
 					{

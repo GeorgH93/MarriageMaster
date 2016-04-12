@@ -23,15 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Minepacks.MinePacksIntegrationBase;
-import net.gravitydevelopment.Updater.Bukkit_Updater;
-import net.gravitydevelopment.Updater.UpdateResult;
-import net.gravitydevelopment.Updater.UpdateType;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -45,6 +40,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.MarryTp;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Economy.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Minepacks.MinePacksIntegrationBase;
+import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
 
 public class MarriageMaster extends JavaPlugin
 {
@@ -116,7 +113,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 		if(config.UseUpdater())
 		{
-			Update();
+			update();
 		}
 		UsePerms = config.getUsePermissions();
 		if(config.getUseVaultPermissions())
@@ -209,7 +206,7 @@ public class MarriageMaster extends JavaPlugin
 	{
 		if(config.UseUpdater())
 		{
-			Update();
+			update();
 		}
 		disable();
 		log.info(lang.Get("Console.Disabled"));
@@ -240,30 +237,47 @@ public class MarriageMaster extends JavaPlugin
 		return radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false)));
 	}
 	
-	public void AsyncUpdate(final CommandSender sender)
+	public void update(final Player sender)
 	{
 		sender.sendMessage(ChatColor.BLUE + lang.Get("Ingame.CheckingForUpdates"));
-		getServer().getScheduler().runTaskAsynchronously(this, new Runnable()
+		Updater updater = new Updater(this, this.getFile(), true, 74734);
+		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
+		{
+			@Override
+			public void onDone(UpdateResult result)
 			{
-				@Override
-				public void run()
+				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
 				{
-					if(Update())
-					{
-						sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
-					}
-					else
-					{
-						sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
-					}
+					if(MarriageMasterV2IsOut.instance == null) new MarriageMasterV2IsOut(MarriageMaster.this);
+					MarriageMasterV2IsOut.instance.announce(sender);
 				}
-			});
+				else if(result == UpdateResult.SUCCESS)
+				{
+					sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
+				}
+				else
+				{
+					sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
+				}
+			}
+		});
 	}
 	
-	public boolean Update()
+	public void update()
 	{
-		Bukkit_Updater updater = new Bukkit_Updater(this, 74734, this.getFile(), UpdateType.DEFAULT, true);
-		return updater.getResult() == UpdateResult.SUCCESS;
+		Updater updater = new Updater(this, this.getFile(), true, 74734);
+		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
+		{
+			@Override
+			public void onDone(UpdateResult result)
+			{
+				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
+				{
+					new MarriageMasterV2IsOut(MarriageMaster.this);
+				}
+			}
+		});
+		updater.waitForAsyncOperation();
 	}
 	
 	public boolean CheckPerm(Player player, String Perm)

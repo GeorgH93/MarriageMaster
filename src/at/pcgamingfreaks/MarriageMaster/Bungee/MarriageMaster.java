@@ -25,9 +25,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import net.gravitydevelopment.Updater.Bungee_Updater;
-import net.gravitydevelopment.Updater.UpdateResult;
-import net.gravitydevelopment.Updater.UpdateType;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -39,6 +36,7 @@ import org.mcstats.Bungee_Metrics;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Database.*;
+import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
 
 public class MarriageMaster extends Plugin
 {
@@ -58,6 +56,7 @@ public class MarriageMaster extends Plugin
     // Global Messages
     public BaseComponent[] Message_NoPermission, Message_NotMarried, Message_PartnerOffline;
     
+    @Override
     public void onEnable()
 	{
 		log = getLogger();
@@ -153,6 +152,7 @@ public class MarriageMaster extends Plugin
     	getProxy().getPluginManager().unregisterCommands(this);
     }
 	 
+	@Override
 	public void onDisable()
 	{
 		String disabled = lang.getString("Console.Disabled");
@@ -207,13 +207,19 @@ public class MarriageMaster extends Plugin
 		}
     }
 	
-	public boolean Update()
+	public void Update()
 	{
-		Bungee_Updater updater = new Bungee_Updater(this, 74734, this.getFile(), UpdateType.DEFAULT, true);
-		if(updater.getResult() == UpdateResult.SUCCESS)
+		Updater updater = new Updater(this, true, 74734);
+		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
 		{
-			return true;
-		}
-		return false;
+			@Override
+			public void onDone(UpdateResult result)
+			{
+				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
+				{
+					new MarriageMasterV2IsOut(MarriageMaster.this);
+				}
+			}
+		});
 	}
 }

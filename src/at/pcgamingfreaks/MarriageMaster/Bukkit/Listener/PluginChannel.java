@@ -76,7 +76,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 			    String[] args = in.readUTF().split("\\|");
 				switch(args[0])
 				{
-					case "update": plugin.AsyncUpdate(plugin.getServer().getConsoleSender()); break;
+					case "update": plugin.update(); break;
 					case "reload": plugin.reload(); break;
 					case "home": if(args.length == 2) { plugin.home.TP(plugin.getServer().getPlayerExact(args[1])); } break;
 					case "delayHome": if(args.length == 2) { plugin.home.BungeeHomeDelay(plugin.getServer().getPlayerExact(args[1])); } break;

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMasterV2IsOut;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Updater;
+import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
 
 public class Update extends BaseCommand
 {
@@ -35,15 +38,24 @@ public class Update extends BaseCommand
 		Message_NoUpdate			= plugin.lang.getReady("Ingame.NoUpdate");
 	}
 	
+	@Override
 	public boolean execute(final ProxiedPlayer sender, String cmd, String[] args)
 	{
 		if(sender.hasPermission("marry.update"))
 		{
 			sender.sendMessage(Message_CheckingForUpdates);
-			plugin.getProxy().getScheduler().runAsync(plugin, new Runnable() { @Override
-				public void run()
+			Updater updater = new Updater(plugin, true, 74734);
+			updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
+			{
+				@Override
+				public void onDone(UpdateResult result)
 				{
-					if(plugin.Update())
+					if(result == UpdateResult.UPDATE_AVAILABLE_V2)
+					{
+						if(MarriageMasterV2IsOut.instance == null) new MarriageMasterV2IsOut(plugin);
+						MarriageMasterV2IsOut.instance.announce(sender);
+					}
+					else if(result == UpdateResult.SUCCESS)
 					{
 						sender.sendMessage(Message_Updated);
 						plugin.broadcastPluginMessage("update"); // Send update through plugin channel to all servers
@@ -52,7 +64,8 @@ public class Update extends BaseCommand
 					{
 						sender.sendMessage(Message_NoUpdate);
 					}
-				}});
+				}
+			});
 		}
 		else
 		{
