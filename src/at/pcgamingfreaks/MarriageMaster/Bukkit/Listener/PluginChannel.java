@@ -101,13 +101,26 @@ public class PluginChannel implements PluginMessageListener, Listener
 		}
 	}
 	
-	public void sendMessage(String message)
+	public void sendMessage(Object... components)
 	{
 		try
 		{
 	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(stream);
-	        out.writeUTF(message);
+			if(components != null && components.length > 0)
+			{
+				for(Object o : components)
+				{
+					if(o instanceof Integer) out.writeInt((int) o);
+					else if(o instanceof String) out.writeUTF((String) o);
+					else if(o instanceof Boolean) out.writeBoolean((boolean) o);
+					else if(o instanceof Double) out.writeDouble((double) o);
+					else if(o instanceof Float) out.writeFloat((float) o);
+					else if(o instanceof Byte) out.writeByte((byte) o);
+					else if(o instanceof Long) out.writeLong((long) o);
+					else if(o instanceof Short) out.writeShort((short) o);
+				}
+			}
 	        out.flush();
 			Player sendWith = getPlayerToSendWith();
 			if(sendWith!=null)

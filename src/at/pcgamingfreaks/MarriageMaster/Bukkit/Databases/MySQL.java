@@ -242,7 +242,7 @@ public class MySQL extends Database implements Listener
 			stmt.execute("CREATE TABLE IF NOT EXISTS " + tableHome + " (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
 			try
 			{
-				stmt.execute("ALTER TABLE `" + tableHome + "` ADD COLUMN `home_server` VARCHAR(45) UNIQUE;");
+				stmt.execute("ALTER TABLE `" + tableHome + "` ADD COLUMN `home_server` VARCHAR(45);");
 			}
 			catch(SQLException e)
 			{
@@ -255,7 +255,11 @@ public class MySQL extends Database implements Listener
 					e.printStackTrace();
 				}
 			}
-			stmt.execute("DELETE FROM " + tablePartners + " WHERE player1=player2");
+			// Clean up database
+			stmt.execute("DELETE FROM `" + tablePartners + "` WHERE player1=player2");
+			stmt.execute("DELETE FROM `" + tablePartners + "` WHERE NOT EXISTS(SELECT NULL FROM `" + tablePlayers + "` WHERE `player_id`=`player1` OR `player_id`=`player2`)");
+			stmt.execute("DELETE FROM `" + tablePriests + "` WHERE NOT EXISTS(SELECT NULL FROM `" + tablePlayers + "` WHERE `priest_id`=`player_id`)");
+			stmt.execute("DELETE FROM `" + tableHome + "` WHERE NOT EXISTS(SELECT NULL FROM `" + tablePartners + "` WHERE `" + tableHome + "`.`marry_id`=`" + tablePartners + "`.`marry_id`)");
 		}
 		catch(SQLException e)
 		{
@@ -429,12 +433,16 @@ public class MySQL extends Database implements Listener
 
 	public void SetPriest(Player priest)
 	{
-		runStatementAsync("INSERT INTO `" + tablePriests + "` SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?;", getUUIDorName(priest));
+		int pid = GetPlayerID(priest);
+		runStatementAsync("INSERT INTO `" + tablePriests + "` (`priest_id`) VALUE (?)", pid);
+		if(plugin.pluginchannel != null) plugin.pluginchannel.sendMessage("updatePlayer", "setPriest", pid);
 	}
 
 	public void DelPriest(Player priest)
 	{
-		runStatementAsync("DELETE FROM `" + tablePriests + "` WHERE `priest_id` IN (SELECT `player_id` FROM `" + tablePlayers + "` WHERE `" + uuidOrName + "`=?);", getUUIDorName(priest));
+		int pid = GetPlayerID(priest);
+		runStatementAsync("DELETE FROM `" + tablePriests + "` WHERE `priest_id`=?;", pid);
+		if(plugin.pluginchannel != null) plugin.pluginchannel.sendMessage("updatePlayer", "delPriest", pid);
 	}
 
 	public boolean IsPriest(Player priest)
@@ -602,50 +610,138 @@ public class MySQL extends Database implements Listener
 
 	public void MarryPlayers(Player player, Player otherPlayer, Player priest, String surname)
 	{
-		Object[] args = new Object[(plugin.config.getSurname()) ? 5 : 4];
-		args[0] = GetPlayerID(player);
-		args[1] = GetPlayerID(otherPlayer);
-		args[2] = GetPlayerID(priest);
-		args[3] = new Timestamp(Calendar.getInstance().getTime().getTime());
-		if(plugin.config.getSurname())
-		{
-			args[4] = LimitText(surname, 34);
-			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
-		}
-		else
-		{
-			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
-		}
+		MarryPlayers(player, otherPlayer, GetPlayerID(priest), surname);
 	}
 
-	public void MarryPlayers(Player player, Player otherPlayer, String priest, String surname)
+	public void MarryPlayers(final Player player, final Player otherPlayer, final String priest, final String surname)
 	{
-		Object[] args = new Object[(plugin.config.getSurname()) ? 5 : 4];
-		args[0] = GetPlayerID(player);
-		args[1] = GetPlayerID(otherPlayer);
-		args[2] = GetPlayerID(priest);
-		args[3] = new Timestamp(Calendar.getInstance().getTime().getTime());
-		if(plugin.config.getSurname())
-		{
-			args[4] = LimitText(surname, 34);
-			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);");
-		}
-		else
-		{
-			runStatementAsync("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
-		}
+		MarryPlayers(player, otherPlayer, GetPlayerID(priest), surname);
 	}
 
-	public void DivorcePlayer(Player player)
+	public void MarryPlayers(final Player player, final Player otherPlayer, final int priest, final String surname)
 	{
-		int pid = GetPlayerID(player);
-		runStatementAsync("DELETE `p`,`h` FROM `" + tablePartners + "` AS `p` LEFT OUTER JOIN `" + tableHome + "` AS `h` USING (`marry_id`) WHERE `p`.`player1`=? OR `p`.`player2`=?;", pid, pid);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run()
+			{
+				Object[] args = new Object[(plugin.config.getSurname()) ? 5 : 4];
+				int player1 = GetPlayerID(player);
+				args[0] = player1;
+				args[1] = GetPlayerID(otherPlayer);
+				args[2] = priest;
+				args[3] = new Timestamp(Calendar.getInstance().getTime().getTime());
+				if(plugin.config.getSurname())
+				{
+					args[4] = LimitText(surname, 34);
+					runStatement("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`, `surname`) VALUES (?,?,?,?,?);", args);
+				}
+				else
+				{
+					runStatement("INSERT INTO `" + tablePartners + "` (`player1`, `player2`, `priest`, `date`) VALUES (?,?,?,?);", args);
+				}
+				if(plugin.pluginchannel != null)
+				{
+					try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `marry_id` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
+					{
+						ps.setInt(1, player1);
+						ps.setInt(2, player1);
+						try(ResultSet rs = ps.executeQuery())
+						{
+							if(rs.next())
+							{
+								final int marryID = rs.getInt(1);
+								Bukkit.getScheduler().runTask(plugin, new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										plugin.pluginchannel.sendMessage("updateMarriage", "marry", marryID);
+									}
+								});
+							}
+						}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		});
 	}
 
-	public void SetPvPEnabled(Player player, boolean state)
+	public void DivorcePlayer(final Player player)
 	{
-		int pid = GetPlayerID(player);
-		runStatementAsync("UPDATE `" + tablePartners + "` SET `pvp_state`=? WHERE `player1`=? OR `player2`=?", state, pid, pid);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run()
+			{
+				int pid = GetPlayerID(player);
+				try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `marry_id` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
+				{
+					ps.setInt(1, pid);
+					ps.setInt(2, pid);
+					try(ResultSet rs = ps.executeQuery())
+					{
+						if(rs.next())
+						{
+							final int marryID = rs.getInt(1);
+							runStatementAsync("DELETE `p`,`h` FROM `" + tablePartners + "` AS `p` LEFT OUTER JOIN `" + tableHome + "` AS `h` USING (`marry_id`) WHERE `p`.`marry_id`=?;", marryID);
+							Bukkit.getScheduler().runTask(plugin, new Runnable() {
+								@Override
+								public void run()
+								{
+									plugin.pluginchannel.sendMessage("updateMarriage", "divorce", marryID);
+								}
+							});
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public void SetPvPEnabled(final Player player, final boolean state)
+	{
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run()
+			{
+				int pid = GetPlayerID(player);
+				try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `marry_id` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
+				{
+					ps.setInt(1, pid);
+					ps.setInt(2, pid);
+					try(ResultSet rs = ps.executeQuery())
+					{
+						if(rs.next())
+						{
+							final int marryID = rs.getInt(1);
+							runStatement("UPDATE `" + tablePartners + "` SET `pvp_state`=? WHERE `marry_id`=?", state, marryID);
+							if(plugin.pluginchannel != null)
+							{
+								Bukkit.getScheduler().runTask(plugin, new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										plugin.pluginchannel.sendMessage("updateMarriage", "pvpState", marryID, state);
+									}
+								});
+							}
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public String GetSurname(Player player)
@@ -672,15 +768,52 @@ public class MySQL extends Database implements Listener
 		return surname;
 	}
 
-	public void SetSurname(Player player, String surname)
+	public void SetSurname(final Player player, final String surname)
 	{
-		int pid = GetPlayerID(player);
-		runStatementAsync("UPDATE `" + tablePartners + "` SET `surname`=? WHERE `player1`=? OR `player2`=?", LimitText(surname, 34), pid, pid);
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run()
+			{
+				int pid = GetPlayerID(player);
+
+				try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `marry_id` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
+				{
+					ps.setInt(1, pid);
+					ps.setInt(2, pid);
+					try(ResultSet rs = ps.executeQuery())
+					{
+						if(rs.next())
+						{
+							final int marryID = rs.getInt(1);
+							final String text = LimitText(surname, 34);
+							runStatement("UPDATE `" + tablePartners + "` SET `surname`=? WHERE `marry_id`=?", text, marryID);
+							if(plugin.pluginchannel != null)
+							{
+								Bukkit.getScheduler().runTask(plugin, new Runnable()
+								{
+									@Override
+									public void run()
+									{
+										plugin.pluginchannel.sendMessage("updateMarriage", "surname", marryID, text);
+									}
+								});
+							}
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void SetShareBackpack(Player player, boolean allow)
 	{
-		runStatementAsync("UPDATE `" + tablePlayers + "` SET `sharebackpack`=? WHERE `" + uuidOrName + "`=?;", allow, getUUIDorName(player));
+		int pid = GetPlayerID(player);
+		runStatementAsync("UPDATE `" + tablePlayers + "` SET `sharebackpack`=? WHERE `player_id`=?;", allow, pid);
+		if(plugin.pluginchannel != null) plugin.pluginchannel.sendMessage("updatePlayer", "shareBackpack", pid, allow);
 	}
 
 	public boolean GetPartnerShareBackpack(Player player)

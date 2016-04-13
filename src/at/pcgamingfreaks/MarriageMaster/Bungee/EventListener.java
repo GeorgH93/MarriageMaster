@@ -19,13 +19,15 @@ package at.pcgamingfreaks.MarriageMaster.Bungee;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
+
+import com.google.common.io.ByteStreams;
+
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -44,7 +46,7 @@ public class EventListener implements Listener
 	private boolean JLInfo = true;
 	private int delay = 1;
 	
-	// Subcommand map
+	// Sub-command map
 	private HashMap<String, BaseCommand> marrycommandmap = new HashMap<String, BaseCommand>();
 	
 	public EventListener(MarriageMaster MM)
@@ -167,6 +169,14 @@ public class EventListener implements Listener
 			{
 				case "home": if(plugin.home != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
 				case "tp": if(plugin.tp != null && args.length == 2) { plugin.tp.SendTP(args[1]); } break;
+				case "updateMarriage":
+				case "updatePlayer":
+					Set<Map.Entry<String, ServerInfo>> serverList = plugin.getProxy().getServers().entrySet();
+					for(Map.Entry<String, ServerInfo> e : serverList)
+					{
+						if(!e.getKey().equalsIgnoreCase(((Server) ev.getSender()).getInfo().getName())) e.getValue().sendData("MarriageMaster", ev.getData(), true);
+					}
+					break;
 			}
 		}
 		catch(Exception e)
