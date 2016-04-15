@@ -52,6 +52,7 @@ public class Updater extends at.pcgamingfreaks.MarriageMaster.Updater.Updater
 	protected void runAsync(Runnable runnable)
 	{
 		thread = new Thread(runnable);
+		thread.start();
 	}
 
 	@Override
