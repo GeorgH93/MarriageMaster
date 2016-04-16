@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 22;
+	private static final int CONFIG_VERSION = 23;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -147,6 +147,7 @@ public class Config
 		config.set("Kiss.CompatibilityMode", false);
 		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
+		config.set("Misc.DisableV2Info", false);
 		config.set("Range.Marry", 25.0F);
 		config.set("Range.Kiss", 2.0F);
 		config.set("Range.KissInteract", 2.0F);
@@ -247,6 +248,8 @@ public class Config
 				config.set("Database.MySQL.MaxConnections", 4);
 			case 21:
 				config.set("UUID_Type", "auto");
+			case 22:
+				config.set("Misc.DisableV2Info", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -556,5 +559,10 @@ public class Config
 	public int getDelayMessageForJoiningPlayer()
 	{
 		return config.getInt("DelayMessageForJoiningPlayer", 0);
+	}
+
+	public boolean isV2InfoDisabled()
+	{
+		return config.getBoolean("Misc.DisableV2Info", false);
 	}
 }

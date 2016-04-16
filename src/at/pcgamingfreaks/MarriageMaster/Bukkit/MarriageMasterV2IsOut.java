@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,9 +31,14 @@ public class MarriageMasterV2IsOut implements Listener
 
 	public MarriageMasterV2IsOut(MarriageMaster plugin)
 	{
+		if(plugin.config.isV2InfoDisabled()) return;
 		instance = this;
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "#####################################");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "Marriage Master V2 has been released! " + ChatColor.YELLOW + ":)");
+		Bukkit.getConsoleSender().sendMessage("Please download it form here:" + ChatColor.AQUA + " https://www.spigotmc.org/resources/19273/");
+		Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "#####################################");
 	}
 
 	public void announce(Player player)

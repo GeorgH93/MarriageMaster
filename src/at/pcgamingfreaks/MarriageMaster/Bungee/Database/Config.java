@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,65 +37,57 @@ public class Config
 {
 	private MarriageMaster plugin;
 	private Configuration config;
-	private ConfigurationProvider configprovider;
-	private static final int CONFIG_VERSION = 2;
+	private ConfigurationProvider configurationProvider;
+	private static final int CONFIG_VERSION = 3;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		configprovider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-		LoadConfig();
+		configurationProvider = ConfigurationProvider.getProvider(YamlConfiguration.class);
+		loadConfig();
 	}
-	
-	public void Reload()
-	{
-		LoadConfig();
-	}
-	
-	private void LoadConfig()
+
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	private void loadConfig()
 	{
 		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
 		{
-			NewConfig(file);
+			try
+			{
+				if (!plugin.getDataFolder().exists())
+				{
+					plugin.getDataFolder().mkdir();
+				}
+				file.createNewFile();
+				try (InputStream is = plugin.getResourceAsStream("bungee_config.yml"); OutputStream os = new FileOutputStream(file))
+				{
+					ByteStreams.copy(is, os);
+				}
+				plugin.log.info("Config extracted successfully!");
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 		try
 		{
-			config = configprovider.load(file);
+			config = configurationProvider.load(file);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		UpdateConfig(file);
+		updateConfig(file);
 	}
 	
-	private void NewConfig(File file)
-	{
-		try
-		{
-			if (!plugin.getDataFolder().exists())
-			{
-				plugin.getDataFolder().mkdir();
-	        }
-            file.createNewFile();
-            try (InputStream is = plugin.getResourceAsStream("bungee_config.yml"); OutputStream os = new FileOutputStream(file))
-            {
-                ByteStreams.copy(is, os);
-            }
-            plugin.log.info("Config extracted successfully!");
-        }
-		catch (IOException e)
-		{
-            e.printStackTrace();
-        }
-	}
-	
-	private boolean UpdateConfig(File file)
+	private boolean updateConfig(File file)
 	{
 		switch(config.getInt("Version"))
 		{
 			case 1: config.set("DelayMessageForJoiningPlayer", 1);
+			case 2: config.set("Misc.DisableV2Info", false);
 				break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -103,10 +95,10 @@ public class Config
 		config.set("Version", CONFIG_VERSION);
 		try
 		{
-			configprovider.save(config, file);
+			configurationProvider.save(config, file);
 			plugin.log.info("Config File has been updated.");
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			e.printStackTrace();
 			return false;
@@ -156,6 +148,7 @@ public class Config
 		String cmd = config.getString("Chat.ToggleCommand").toLowerCase();
 		if(cmd.equals("chattoggle"))
 		{
+			//noinspection SpellCheckingInspection
 			return "ctoggle";
 		}
 		return cmd;
@@ -178,7 +171,7 @@ public class Config
 	
 	public HashSet<String> getHomeFromServersBlocked()
 	{
-		HashSet<String> blockFrom = new HashSet<String>();
+		HashSet<String> blockFrom = new HashSet<>();
 		for(String s : config.getStringList("Home.FromServersBlocked"))
 		{
 			blockFrom.add(s.toLowerCase());
@@ -198,7 +191,7 @@ public class Config
 	
 	public HashSet<String> getTPFromServersBlocked()
 	{
-		HashSet<String> blockFrom = new HashSet<String>();
+		HashSet<String> blockFrom = new HashSet<>();
 		for(String s : config.getStringList("TP.FromServersBlocked"))
 		{
 			blockFrom.add(s.toLowerCase());
@@ -245,5 +238,10 @@ public class Config
 	public boolean getUpdatePlayer()
 	{
 		return config.getBoolean("Database.UpdatePlayer", true);
+	}
+
+	public boolean isV2InfoDisabled()
+	{
+		return config.getBoolean("Misc.DisableV2Info", false);
 	}
 }

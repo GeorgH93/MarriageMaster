@@ -33,11 +33,12 @@ public class MarriageMasterV2IsOut implements Listener
 {
 	public static MarriageMasterV2IsOut instance = null;
 	private MarriageMaster plugin;
-	private final BaseComponent[] messageV2IsThereLine1, messageV2IsThereLine2, spacer;
+	private BaseComponent[] messageV2IsThereLine1, messageV2IsThereLine2, spacer;
 	private final static String spigotURL = "https://www.spigotmc.org/resources/19273/", bukkitURL = "http://dev.bukkit.org/bukkit-plugins/marriage-master/";
 
 	public MarriageMasterV2IsOut(MarriageMaster plugin)
 	{
+		if(plugin.config.isV2InfoDisabled()) return;
 		instance = this;
 		this.plugin = plugin;
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
@@ -48,6 +49,10 @@ public class MarriageMasterV2IsOut implements Listener
 				.color(ChatColor.WHITE)
 				.append("dev.bukkit.org").underlined(true).bold(true).color(ChatColor.AQUA).event(new ClickEvent(ClickEvent.Action.OPEN_URL, bukkitURL))
 				.append("!").color(ChatColor.WHITE).create();
+		plugin.getProxy().getConsole().sendMessage(spacer);
+		plugin.getProxy().getConsole().sendMessage(messageV2IsThereLine1);
+		plugin.getProxy().getConsole().sendMessage(messageV2IsThereLine2);
+		plugin.getProxy().getConsole().sendMessage(spacer);
 	}
 
 	public void announce(ProxiedPlayer player)
@@ -61,6 +66,7 @@ public class MarriageMasterV2IsOut implements Listener
 		}
 	}
 
+	@SuppressWarnings("unused")
 	@EventHandler
 	public void onJoin(PostLoginEvent event)
 	{
