@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,14 +35,14 @@ public class MarryChat
 	public MarryChat(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		pcl = new ArrayList<Player>();
-		Marry_ChatDirect = new ArrayList<Player>();
+		pcl = new ArrayList<>();
+		Marry_ChatDirect = new ArrayList<>();
 		format = plugin.config.getChatPrivateFormat();
 	}
 
-	public void Chat(Player sender, Player reciver, String msg)
+	public void Chat(Player sender, Player receiver, String msg)
 	{
-		if(reciver != null && reciver.isOnline())
+		if(receiver != null && receiver.isOnline())
 		{
 			msg = msg.replace('§', '&');
 			if(plugin.CheckPerm(sender, "marry.chat.color"))
@@ -65,11 +65,12 @@ public class MarryChat
 			{
 				msg = msg.replaceAll("§k", "&k");
 			}
-			msg = String.format(format, sender.getDisplayName(), reciver.getDisplayName(), msg);
-			reciver.sendMessage(msg);
+			msg = String.format(format, sender.getDisplayName(), receiver.getDisplayName(), msg);
+			receiver.sendMessage(msg);
 			sender.sendMessage(msg);
 			for (Player play : pcl)
 			{
+				if(play.equals(sender) || play.equals(receiver)) continue;
 				play.sendMessage(msg);
 			}
 		}
