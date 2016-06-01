@@ -1,0 +1,151 @@
+# Translation by VreyaViress
+Version: 18
+Language:
+    Console:
+        Enabled: Casamiento Maestro activado!
+        Disabled: Casamiento Maestro desactivado.
+        LangUpdated: Archivo de Idioma 
+        NoPermPL: No hay permisos del plugin, usando permisos normales.
+        NoEcoPL: No se encontro un plugin de economía. Economía desactivada.
+        MetricsOffline: Métrica desconectada.
+        NotSupportedNet: Version de MC no soportada. Efecto de corazon desactivado.
+        UpdateUUIDs: Actualizando UUIDS ...
+        UpdatedUUIDs: Ya actualizadas %s cuentas para UUIDs.'
+    Description:
+        Commands: comandos
+        ListAll: Lista de todos los jugadores casados.
+        Marry: 'Casarse con una persona en un rango de %s bloques.'
+        Divorce: Divorciarse de una persona en un rango de %s bloques.'
+        Priest: Elegir un sacerdote.
+        TP: Teleportarse a la persona con la cual se ha casado.
+        PvPOn: Activa el PvP con tu pareja.
+        PvPOff: Desactiva el PvP con tu pareja.
+        SetHome: Elige un punto donde aparecer en casa.
+        TPHome: Teletransportarse a su punto de la casa.
+        Chat: Chat privado con su pareja.
+        ChatToggle: Activa tu chat para ser privado con tu pareja.
+        Reload: Recarga la configuración del plugin.
+        ListenChat: Muestra todos los mensajes enviados de el jugador casado a su pareja.
+        Gift: Regala el objeto de tu mano a tu pareja.
+        Kiss: Besa a tu pareja.
+        Update: Ve si hay una actualización disponible y la descarga.
+        SelfMarry: Manda una petición de matrimonio a un jugador.
+        SelfDivorce: Deja a tu pareja.
+        Surname: Cambia el apellido de una pareja.
+        Backpack: Abre la mochila de tu pareja.
+        BackpackOn: Permite a tu pareja abrir tu mochila.
+        BackpackOff: No permitir abrir tu mochila a tu pareja.
+        DelHome: Borra el punto home de la pareja.
+        TPHomeOther: Te teletransporta a el punto de casa de tu pareja.
+        DelHomeOther: Borra el punto home de la pareja.
+    Ingame:
+        NotMarried: No estás casado.
+        NoMarriedPlayers: No hay jugadores comprometidos.
+        NotAPriest: No eres un sacerdote.
+        NoPermission: "No tienes los permisos para hacer eso."
+        PartnerOnline: Tu pareja esta conectada.
+        PartnerOffline: Tu pareja esta desconectada.
+        PartnerNowOnline: Tu pareja esta ahora conectada.
+        PartnerNowOffline: Tu pareja esta ahora desconectada.
+        PvPOn: Activas el PvP entre pareja.
+        PvPOff: Desactivas el PvP entre pareja.
+        PlayerNoHome: "La pareja todavia no tiene un punto home establecido."
+        NoHome: Tu pareja y tú aún no tienen un punto home establecido.
+        HomeTP: Fuiste teletrasportado a tu casa.
+        HomeSet: Tu casa fue guardada.
+        PlayerNotOn: '¡%s no esta en línea!.'
+        NoTPInVanish: No puedes usar la teletransportación si tu compañero esta en modo vanish.
+        TP: Teletrasportandose a tu pareja...
+        TPto: Tu pareja se está teletrasportandose...
+        TPUnsafe: "¡Teleportamiento cancelado! ¡No ibas a sobrevivirlo!"
+        TPtoUnsafe: "¡Tu amigo se quiere teletransportar hacia ti, pero no lo va a soportar!"
+        ListHL: Lista de parejas casadas
+        ListHLMP: 'Mostrando página %1$d/%2$d - /marry list <página>'
+        PvPIsOff: No puedes herir a tu pareja si tienen el PvP desactivado.
+        ListeningStarted: Ahora estás viendo el chat de pareja.
+        ListeningStoped: Ya no verás el chat de pareja.
+        PriestMarryOff: 'El sacerdote (%s) se ha desconectado, la boda se cancela.'
+        PlayerMarryOff: '%s se ha desconectado, la boda se cancela.'
+        PlayerCalledOff: '%s se ha arrepentido y ya no desea casarse.'
+        YouCalledOff: Detuviste la boda.
+        NoItemInHand: No estas sosteniendo un objeto.
+        PartnerInvFull: Tu pareja no tiene espacio en el inventario.
+        ItemSent: 'Le enviaste a tu pareja %1$s %2$s.'
+        ItemReceived: 'Tu pareja te envió %1$s %2$s.'
+        GiftsOnlyInSurvival: Solo puedes dar objetos a tu pareja en survival.
+        YouKissed: ¡Besaste a tu pareja!
+        YouGotKissed: ¡Tu pareja te beso!
+        TooFarToKiss: Estás demasiado lejos para besar a tu pareja. (Máx 2 Bloques)
+        KissWait: 'Tienes que esperar %s segundos para besar a tu pareja denuevo.'
+        WorldNotAllowed: Tu pareja esta en un mundo donde el teletransporte no está permitido.
+        CheckingForUpdates: 'Buscando actualizaciones...'
+        Updated: 'Plugin actualizado, los cambios harán efecto en el próximo reinicio.'
+        NoUpdate: 'No se encontró una actualización para el plugin.'
+        MarryConfirm: '%s te pidió casarte con el/ella. Acepta su propuesta con /marry accept o recházala con /marry deny'
+        HasMarried: 'Casaste a %s.'
+        BroadcastMarriage: '%1$s se casó con %2$s.'
+        BroadcastDivorce: '%1$s se divorció de %2$s.'
+        Divorced: 'Dejaste a %s. Eres soltero ahora.'
+        DivorcedPlayer: '%s te dejó. Eres soltero ahora.'
+        AlreadyMarried: ¡Estás casado!
+        OtherAlreadyMarried: '¡%s ya esta casado!.'
+        AlreadyOpenRequest: Ya tienes una petición de casamiento no aprobada/desaprovada.
+        MarryRequestSent: ¡Petición de casamiento enviada!.
+        TPMoved: ¡Teleportamiento cancelado! Te moviste!
+        TPDontMove: "Teleportamiento en %s seg! No te muevas!"
+        NotYourself: No te puedes casar contigo mismo.
+        ChatJoined: Cambiaste tu chat al chat privado de la pareja.
+        ChatLeft: Chat público activado.
+        NaN: ¡El valor no es un número!
+        NotInRange: Tu pareja está lejos.
+        BackpackOnlyInSurvival: Solo puedes acceder a la mochila de tu pareja cuando estás en survival.
+        BackpackShareOn: Ahora compartes tu mochila con la de tu pareja.
+        BackpackShareOff: Ya compartes tu mochila con tu pareja.
+        BackpackOpend: Tu pareja abrió tu mochila.
+        BackpackShareDenied: Tu pareja no te dio permiso en su mochila.
+        HomeDeleted: Punto de casa eliminado.
+    Economy:
+        NotEnough: "No tienes suficientes zerus! Necesitas %1$s."
+        PartnerNotEnough: Tu pareja no tiene suficientes zerus!
+        NotEnoughPriestInfo: Los jugadores a los que tratas de casar no tienen suficientes zerus.
+        HomeTPPaid: 'Pagaste %1$s por ir a casa. (Te quedan %2$s )'
+        SetHomePaid: 'Pagaste %1$s por establecer tu casa (Te quedan %2$s )'
+        TPPaid: 'Pagaste %1$s por el teleportamiento (Te quedan %1$s )'
+        DivorcePaid: 'Pagaste %1$s por el anulamiento de tu matrimonio (Te quedan %2$s )'
+        DivNotEnoPriestI: Los jugadores que tratas de divorsir no tienen suficientes zerus.
+        MarriagePaid: 'Pagaste %1$s por tu matrimonio (Te quedan %2$s )'
+        GiftPaid: 'Pagaste %1$s por darle un objeto a tu pareja (Te quedan %2$s )'
+    Priest:
+        NotWithHimself: "No puedes casar a alguien consigo mismo."
+        NotInRange: Los jugadores no están en el rango máximo.
+        AlreadyMarried: No puedes casarte con gente ya casada.
+        BroadcastMarriage: '%1$s casó a %2$s con %3$s.'
+        BroadcastDivorce: '%1$s divorció a %2$s de %3$s.'
+        Married: 'Casaste a %1$s con %2$s.'
+        HasMarried: '%1$s te casó con %2$s.'
+        MadeYouAPriest: '%s te hizo sacerdote.'
+        MadeAPriest: 'Hiciste a %s un sacerdote.'
+        UnMadeYouAPriest: '%s te despidió como sacerdote.'
+        UnMadeAPriest: 'Despediste a %s como sacerdote.'
+        PlayerNotMarried: El jugador no está casado.
+        PartnerOffline: "(%2$s), el esposo/a de %1$s, no esta en línea."
+        DivorcedPlayer: '%1$s te divorció de %2$s.'
+        Divorced: 'Divorciaste a %1$s y %2$s.'
+        Confirm: 'Acepta la propuesta de matrimonio con /marry accept o recházala con /marry deny'
+        AlreadyAccepted: 'Ya aceptaste la petición de matrimonio.'
+        NoRequest: 'No tienes peticiones de matrimonio pendientes.'
+        NotYourSelf: 'No puedes casarte contigo mismo.'
+        AlreadyOpenRequest: '%s no acepta peticiones de matrimonio.'
+        DivPlayerOff: '%s se ha desconectado, divorcio cancelado.'
+        DivPriestOff: 'El sacerdote (%s) se ha desconectado, divorcio cancelado.'
+        PlayerCanceled: '%s denegó el divorcio.'
+        DivorceCanceled: Denegaste el divorcio.
+        DivorceConfirm: 'Acepta el divorcio con /marry accept o recházalo con /marry deny'
+        SurnameSet: Apellido cambiado.
+        DivorceRequestSent: 'Petición de divorcio enviada.'
+    Dialog:
+        DoYouWant: '%1$s, ¿aceptas casarte con %2$s?'
+        AndDoYouWant: 'Y tú, %1$s, ¿aceptas casarte con %2$s?'
+        Married: 'Ahora los declaro una pareja. Se pueden besar.'
+        YesIWant: 'Sí, acepto.'
+        NoIDontWant: 'No, no acepto.'
