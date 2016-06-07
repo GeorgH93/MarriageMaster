@@ -206,7 +206,10 @@ public class MarriageMaster extends JavaPlugin
 	{
 		if(config.UseUpdater())
 		{
-			update();
+			log.info("Checking for updates ...");
+			Updater updater = new Updater(this, this.getFile(), true, 74734);
+			updater.update();
+			updater.waitForAsyncOperation();
 		}
 		disable();
 		log.info(lang.Get("Console.Disabled"));
@@ -239,6 +242,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public void update(final Player sender)
 	{
+		log.info("Checking for updates ...");
 		sender.sendMessage(ChatColor.BLUE + lang.Get("Ingame.CheckingForUpdates"));
 		Updater updater = new Updater(this, this.getFile(), true, 74734);
 		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
@@ -265,6 +269,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public void update()
 	{
+		log.info("Checking for updates ...");
 		Updater updater = new Updater(this, this.getFile(), true, 74734);
 		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
 		{

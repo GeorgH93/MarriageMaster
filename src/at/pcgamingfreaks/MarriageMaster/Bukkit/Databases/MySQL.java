@@ -687,13 +687,17 @@ public class MySQL extends Database implements Listener
 						{
 							final int marryID = rs.getInt(1);
 							runStatementAsync("DELETE `p`,`h` FROM `" + tablePartners + "` AS `p` LEFT OUTER JOIN `" + tableHome + "` AS `h` USING (`marry_id`) WHERE `p`.`marry_id`=?;", marryID);
-							Bukkit.getScheduler().runTask(plugin, new Runnable() {
-								@Override
-								public void run()
+							if(plugin.pluginchannel != null)
+							{
+								Bukkit.getScheduler().runTask(plugin, new Runnable()
 								{
-									plugin.pluginchannel.sendMessage("updateMarriage", "divorce", marryID);
-								}
-							});
+									@Override
+									public void run()
+									{
+										plugin.pluginchannel.sendMessage("updateMarriage", "divorce", marryID);
+									}
+								});
+							}
 						}
 					}
 				}

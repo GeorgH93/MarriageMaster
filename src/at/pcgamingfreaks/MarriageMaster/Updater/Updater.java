@@ -301,6 +301,14 @@ public abstract class Updater
 					if(getRemoteVersion().startsWith("2"))
 					{
 						result = UpdateResult.UPDATE_AVAILABLE_V2;
+						if(response != null) runSync(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								response.onDone(result);
+							}
+						});
 					}
 					else if(versionCheck(getRemoteVersion()))
 					{
