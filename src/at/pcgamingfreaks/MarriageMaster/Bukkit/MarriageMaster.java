@@ -146,7 +146,6 @@ public class MarriageMaster extends JavaPlugin
     
     public void disable()
     {
-    	
     	HandlerList.unregisterAll(this);
     	getServer().getMessenger().unregisterIncomingPluginChannel(this);
     	getServer().getMessenger().unregisterOutgoingPluginChannel(this);
@@ -204,14 +203,18 @@ public class MarriageMaster extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
+		Updater updater = null;
 		if(config.UseUpdater())
 		{
 			log.info("Checking for updates ...");
-			Updater updater = new Updater(this, this.getFile(), true, 74734);
+			updater = new Updater(this, this.getFile(), true, 74734);
 			updater.update();
-			updater.waitForAsyncOperation();
 		}
 		disable();
+		if(updater != null)
+		{
+			updater.waitForAsyncOperation();
+		}
 		log.info(lang.Get("Console.Disabled"));
 	}
 	
@@ -282,7 +285,6 @@ public class MarriageMaster extends JavaPlugin
 				}
 			}
 		});
-		updater.waitForAsyncOperation();
 	}
 	
 	public boolean CheckPerm(Player player, String Perm)
