@@ -21,6 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.Updater.UpdateProviders.NotSuccessfullyQ
 import at.pcgamingfreaks.MarriageMaster.Updater.UpdateProviders.UpdateProvider;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
@@ -35,6 +36,7 @@ public abstract class Updater
 {
 	private final static int BUFFER_SIZE = 1024;
 
+	@SuppressWarnings({ "FieldCanBeLocal", "unused" }) // I know I don't use it, will be replaced anyways so no reason to remove it now
 	private final File pluginsFolder, updateFolder;
 	private final UpdateProvider updateProvider;
 	private final boolean announceDownloadProgress;
@@ -197,6 +199,11 @@ public abstract class Updater
 
 	protected void download(URL url, String fileName) // Saves file into servers update directory
 	{
+		download(url, fileName, 0);
+	}
+
+	protected void download(URL url, String fileName, int movedCount) // Saves file into servers update directory
+	{
 		if(!updateFolder.exists())
 		{
 			//noinspection ResultOfMethodCallIgnored
@@ -204,10 +211,29 @@ public abstract class Updater
 		}
 		try
 		{
-			int fileLength = url.openConnection().getContentLength(), count, percent, percentHelper = -1;
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setInstanceFollowRedirects(false);
+			connection.setConnectTimeout(15000);
+			connection.setReadTimeout(15000);
+			switch (connection.getResponseCode())
+			{
+				case HttpURLConnection.HTTP_MOVED_PERM:
+				case HttpURLConnection.HTTP_MOVED_TEMP:
+					if(movedCount == 5)
+					{
+						logger.warning("Target url moved more than 5 times. Abort.");
+						result = UpdateResult.FAIL_DOWNLOAD;
+						return;
+					}
+					download(new URL(url, connection.getHeaderField("Location")), fileName, ++movedCount);
+					return;
+			}
+			//endregion
+			long fileLength = connection.getContentLengthLong();
+			int count, percent, percentHelper = -1;
 			File downloadFile = new File(updateFolder.getAbsolutePath() + File.separator + fileName);
 			MessageDigest md5HashGenerator = updateProvider.provideMD5Checksum() ? MessageDigest.getInstance("MD5") : null;
-			try(InputStream inputStream = (md5HashGenerator != null) ? new DigestInputStream(new BufferedInputStream(url.openStream()), md5HashGenerator) : new BufferedInputStream(url.openStream());
+			try(InputStream inputStream = (md5HashGenerator != null) ? new DigestInputStream(new BufferedInputStream(connection.getInputStream()), md5HashGenerator) : new BufferedInputStream(url.openStream());
 			    FileOutputStream outputStream = new FileOutputStream(downloadFile))
 			{
 				byte[] buffer = new byte[BUFFER_SIZE];
