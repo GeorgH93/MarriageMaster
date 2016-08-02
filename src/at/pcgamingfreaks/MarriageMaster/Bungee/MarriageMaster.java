@@ -90,7 +90,7 @@ public class MarriageMaster extends Plugin
 		}
 		// Load Global Messages
 		Message_NoPermission	= lang.getReady("Ingame.NoPermission");
-		Message_NotMarried		= lang.getReady("NotMarried");
+		Message_NotMarried		= lang.getReady("Ingame.NotMarried");
 		Message_PartnerOffline	= lang.getReady("Ingame.PartnerOffline");
 		// Load Worker
 		if(config.getChatGlobal())

@@ -8,4 +8,4 @@ It overs an outstanding compatibility with older Minecraft versions and gets upd
 [Spigot](https://www.spigotmc.org/resources/marriage-master.19273/)</br>
 [Dev Bukkit](http://dev.bukkit.org/bukkit-plugins/marriage-master/)</br>
 [Issue tracker](https://github.com/GeorgH93/Bukkit_MarriageMaster/issues)</br>
-[Build Server ![Build Status](https://ci.pcgamingfreaks.at/job/MarriageMaster%20V1/badge/icon)](http://ci.pcgamingfreaks.at/job/MarriageMaster%20V1/)
+[Build Server ![Build Status](https://ci.pcgamingfreaks.at/job/MarriageMaster/badge/icon)](http://ci.pcgamingfreaks.at/job/MarriageMaster/)
