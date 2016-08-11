@@ -32,6 +32,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -748,10 +749,14 @@ public class OnCommand implements CommandExecutor
 				}
 				return true;
 			case "divorce":
-				if(args.length == 2)
+				if((args.length == 2 && ! plugin.config.requireBothNamesOnPriestDivorce()) || args.length == 3)
 				{
 					if(plugin.IsPriest(player))
 					{
+						if(args.length == 3)
+						{
+							args = Arrays.copyOf(args, 2);
+						}
 						priest.Divorce(player, args);
 					}
 					else
@@ -867,7 +872,14 @@ public class OnCommand implements CommandExecutor
 		if(plugin.IsPriest(player))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Marry"), plugin.config.GetRange("Marry")));
-			player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
+			if(plugin.config.requireBothNamesOnPriestDivorce())
+			{
+				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
+			}
+			else
+			{
+				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
+			}
 		}
 		if(plugin.CheckPerm(player, "marry.tp"))
 		{
@@ -964,7 +976,14 @@ public class OnCommand implements CommandExecutor
 		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.Get("Description.Commands"));
 		sender.sendMessage(ChatColor.AQUA + "/marry list <Page>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListAll"));
 		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Marry"));
-		sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Divorce"));
+		if(plugin.config.requireBothNamesOnPriestDivorce())
+		{
+			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Divorce"));
+		}
+		else
+		{
+			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Divorce"));
+		}
 		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Priest"));
 		if(plugin.config.getSurname())
 		{

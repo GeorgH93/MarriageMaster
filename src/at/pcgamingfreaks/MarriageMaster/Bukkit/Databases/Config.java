@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 23;
+	private static final int CONFIG_VERSION = 24;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -160,6 +160,7 @@ public class Config
 		config.set("Teleport.DelayTime", 3);
 		config.set("Teleport.CheckSafety", true);
 		config.set("Teleport.BlacklistedWorlds", new ArrayList<String>());
+		config.set("RequireBothNamesOnPriestDivorce", false);
 		config.set("Version", CONFIG_VERSION);
 		try 
 		{
@@ -250,6 +251,8 @@ public class Config
 				config.set("UUID_Type", "auto");
 			case 22:
 				config.set("Misc.DisableV2Info", false);
+			case 23:
+				config.set("RequireBothNamesOnPriestDivorce", false);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -564,5 +567,10 @@ public class Config
 	public boolean isV2InfoDisabled()
 	{
 		return config.getBoolean("Misc.DisableV2Info", false);
+	}
+
+	public boolean requireBothNamesOnPriestDivorce()
+	{
+		return config.getBoolean("RequireBothNamesOnPriestDivorce", false);
 	}
 }
