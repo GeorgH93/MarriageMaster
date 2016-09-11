@@ -37,6 +37,7 @@ public class JoinLeaveChat implements Listener
 	private MarriageMaster plugin;
 	private String prefix = null, suffix = null;
 	private int delay = 0;
+	private boolean useSurname = false, changeChatFormat = false;
 
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
@@ -50,6 +51,8 @@ public class JoinLeaveChat implements Listener
 			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
 		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
+		useSurname = plugin.config.getSurname();
+		changeChatFormat = prefix != null | suffix != null | useSurname;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -86,41 +89,55 @@ public class JoinLeaveChat implements Listener
 		}
 		plugin.DB.UpdatePlayer(event.getPlayer());
 	}
+
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	public void onPlayerChatPrivate(AsyncPlayerChatEvent event)
+	{
+		Player player = event.getPlayer();
+		if(plugin.chat.Marry_ChatDirect.contains(player))
+		{
+			Player partner = plugin.DB.GetPlayerPartner(player);
+			if(partner != null)
+			{
+				plugin.chat.Chat(player, partner, event.getMessage());
+				event.setCancelled(true);
+			}
+		}
+	}
 	
 	@SuppressWarnings("deprecation")
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChat(AsyncPlayerChatEvent event)
 	{
+		if(!changeChatFormat) return;
 		Player player = event.getPlayer();
 		String partner = plugin.DB.GetPartner(player);
 		if(partner != null && !partner.isEmpty())
 		{
-			if(plugin.chat.Marry_ChatDirect.contains(player))
+			String format = event.getFormat(), formatReplacer = "%1$s";
+			boolean changed = false;
+			if(prefix != null)
 			{
-				Player otP = plugin.getServer().getPlayerExact(partner);
-				plugin.chat.Chat(player, otP, event.getMessage());
-				event.setCancelled(true);
+				formatReplacer = prefix + ' ' + formatReplacer;
+				changed = true;
 			}
-			else
+			if(useSurname)
 			{
-				String format = event.getFormat();
-				if(prefix != null)
+				String surname = plugin.DB.GetSurname(event.getPlayer());
+				if(surname != null && !surname.isEmpty())
 				{
-					format = prefix.replace("<partnername>", partner) + " " + format;
+					formatReplacer += ' ' + surname;
+					changed = true;
 				}
-				if(suffix != null)
-				{
-					format = format.replace("%1$s", "%1$s " + suffix).replace("<partnername>", partner);
-				}
-				if(plugin.config.getSurname())
-				{
-					String Surname = plugin.DB.GetSurname(event.getPlayer());
-					if(Surname != null && !Surname.isEmpty())
-					{
-						format = format.replace("%1$s", "%1$s " + Surname);
-					}
-				}
-				event.setFormat(format);
+			}
+			if(suffix != null)
+			{
+				formatReplacer += ' ' + suffix;
+				changed = true;
+			}
+			if(changed)
+			{
+				event.setFormat(format.replace("%1$s", formatReplacer.replace("<partnername>", partner)));
 			}
 		}
 	}
