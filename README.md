@@ -1,6 +1,4 @@
-Bukkit_MarriageMaster
-=====================
+MarriageMaster API
+==================
 
-Marry Plugin for Bukkit
-
-http://dev.bukkit.org/bukkit-plugins/marriage-master/
+Work in progress.

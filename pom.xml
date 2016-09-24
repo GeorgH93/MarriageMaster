@@ -1,10 +1,8 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
-	<artifactId>Bukkit_MarriageMaster_API</artifactId>
-	<version>2.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<artifactId>MarriageMaster-API</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:GeorgH93/Bukkit_MarriageMaster.git</connection>
@@ -17,12 +15,12 @@
 	</issueManagement>
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://ci.pcgamingfreaks.at/job/Bukkit_MarriageMaster/</url>
+		<url>http://ci.pcgamingfreaks.at/job/MarriageMaster/</url>
 	</ciManagement>
 
-	<name>Bukkit_MarriageMaster_API</name>
-	<description>API for the Bukkit/Spigot plugin MarriageMaster.</description>
-	<inceptionYear>2015</inceptionYear>
+	<name>MarriageMaster API</name>
+	<description>The API for the Marriage Master Bukkit plugin.</description>
+	<inceptionYear>2016</inceptionYear>
 	<licenses>
 		<license>
 			<name>GNU General Public License (GPL) v3</name>
@@ -31,22 +29,49 @@
 		</license>
 	</licenses>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	</properties>
-
 	<repositories>
 		<repository>
 			<id>pcgf-repo</id>
-			<url>http://repo.pcgamingfreaks.at/repository/everything/</url>
+			<url>http://repo.pcgamingfreaks.at/repository/everything</url>
+		</repository>
+		<repository>
+			<id>spigot-nexus</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>sonatype-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>sonatype-release</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
 		</repository>
 	</repositories>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>15.0</version>
+		</dependency>
+		<!-- Bukkit -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Bungee -->
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- PCGF Plugin Lib -->
+		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>YAML-Parser</artifactId>
+			<artifactId>Bukkit_Bungee_PluginLib</artifactId>
 			<version>LATEST</version>
 		</dependency>
 	</dependencies>
@@ -54,15 +79,6 @@
 	<build>
 		<defaultGoal>clean install</defaultGoal>
 		<sourceDirectory>src</sourceDirectory>
-		<resources>
-			<resource>
-				<directory>resources</directory>
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -70,75 +86,8 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<encoding>UTF-8</encoding>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.4</version>
-				<executions>
-					<execution>
-						<id>add-wsdl-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>${basedir}/libs</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.3</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<createDependencyReducedPom>false</createDependencyReducedPom>
-							<minimizeJar>true</minimizeJar>
-							<artifactSet>
-								<includes>
-									<include>com.google.code.gson:gson</include>
-									<include>at.pcgamingfreaks:YAML-Parser</include>
-								</includes>
-							</artifactSet>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.2.1</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.3</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
