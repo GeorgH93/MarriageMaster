@@ -36,5 +36,5 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	 *
 	 * @param server The server of the home point. null to delete home.
 	 */
-	void setHome(@Nullable String server);
+	void setHomeServer(@Nullable String server);
 }
