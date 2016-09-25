@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, AcceptPendingRequest, OfflinePlayer, Message>
@@ -37,4 +38,11 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @param share True if the backpack should be shared. False if not.
 	 */
 	void setShareBackpack(boolean share);
+
+	/**
+	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.
+	 *
+	 * @return The nearest partner. null if not married, partner is offline or partner is in an other world.
+	 */
+	@Nullable Marriage getNearestPartnerMarriageData();
 }

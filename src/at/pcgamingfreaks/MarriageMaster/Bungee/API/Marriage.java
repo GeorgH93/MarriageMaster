@@ -19,6 +19,22 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
 import net.md_5.bungee.api.CommandSender;
 
+import org.jetbrains.annotations.Nullable;
+
 @SuppressWarnings("unused")
 public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender>
-{}
+{
+	/**
+	 * Gets the home server of the couple.
+	 *
+	 * @return The server of the couples home. null if no home is set.
+	 */
+	@Nullable String getHomeServer();
+
+	/**
+	 * Sets the home server of the couple.
+	 *
+	 * @param server The server of the home point. null to delete home.
+	 */
+	void setHome(@Nullable String server);
+}

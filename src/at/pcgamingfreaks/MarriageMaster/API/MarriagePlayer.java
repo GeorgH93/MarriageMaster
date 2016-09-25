@@ -184,13 +184,6 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	@Nullable MARRIAGE getMarriageData();
 
 	/**
-	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.
-	 *
-	 * @return The nearest partner. null if not married, partner is offline or partner is in an other world.
-	 */
-	@Nullable MARRIAGE getNearestPartnerMarriageData();
-
-	/**
 	 * Gets all the partners of the player.
 	 * If multi marriage is not enabled this will also return the partner of the player.
 	 *
