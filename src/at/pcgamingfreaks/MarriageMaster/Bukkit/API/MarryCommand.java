@@ -175,11 +175,11 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 		List<HelpData> help = new LinkedList<>();
 		if(partnerSelectorInHelp && requester instanceof Player && getMarriagePlugin().getPlayerData((Player) requester).getPartners().size() > 1)
 		{
-			help.add(new HelpData(getTranslatedName(), null, getDescription()));
+			help.add(new HelpData(getTranslatedName(), helpPartnerSelector, getDescription()));
 		}
 		else
 		{
-			help.add(new HelpData(getTranslatedName(), helpPartnerSelector, getDescription()));
+			help.add(new HelpData(getTranslatedName(), null, getDescription()));
 		}
 		return help;
 	}
