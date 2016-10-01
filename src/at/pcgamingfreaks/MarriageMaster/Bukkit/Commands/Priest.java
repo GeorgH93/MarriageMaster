@@ -91,7 +91,7 @@ public class Priest
 			priest.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.PlayerNotOn"), args[1]));
 			return;
 		}
-		if(player == priest || otherPlayer == priest)
+		if(player.equals(priest) || otherPlayer.equals(priest))
 		{
 			priest.sendMessage(ChatColor.RED + plugin.lang.Get("Priest.NotYourSelf"));
 			return;
@@ -223,7 +223,7 @@ public class Priest
 	{
 		for(Marry_Requests m:plugin.mr)
 		{
-			if(m.p1 == player || m.p2 == player)
+			if(m.p1.equals(player) || m.p2.equals(player))
 			{
 				return true;
 			}
@@ -235,7 +235,7 @@ public class Priest
 	{
 		for(Marry_Requests m : plugin.bdr)
 		{
-			if(m.p1 == player || m.p2 == player)
+			if(m.p1.equals(player) || m.p2.equals(player))
 			{
 				return true;
 			}
@@ -261,7 +261,7 @@ public class Priest
 	{
 		for (Marry_Requests m : plugin.bdr)
 		{
-    		if(m.p1 == player || m.p2 == player)
+    		if(m.p1.equals(player) || m.p2.equals(player))
     		{
     			if(!m.HasAccepted(player))
     			{
@@ -295,11 +295,11 @@ public class Priest
 		}
 		for (Marry_Requests m : plugin.mr)
 		{
-    		if(m.p1 == player || m.p2 == player)
+    		if(m.p1.equals(player) || m.p2.equals(player))
     		{
     			if(m.priest == null)
     			{
-    				if(m.p2 == player)
+    				if(m.p2.equals(player))
     				{
     					plugin.mr.remove(m);
     					SelfMarryAccept(m);

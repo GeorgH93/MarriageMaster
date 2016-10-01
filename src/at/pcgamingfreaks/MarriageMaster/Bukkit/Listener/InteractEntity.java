@@ -35,7 +35,7 @@ public class InteractEntity implements Listener
 	public InteractEntity (MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		dualHandMC = Reflection.getVersion().contains("1_9");
+		dualHandMC = Reflection.getVersion().contains("1_9") | Reflection.getVersion().contains("1_10");
 	}
 	
 	@EventHandler
