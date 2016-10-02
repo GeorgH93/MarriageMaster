@@ -32,7 +32,7 @@ public class Config
 {
 	private JavaPlugin plugin;
 	private FileConfiguration config;
-	private static final int CONFIG_VERSION = 24;
+	private static final int CONFIG_VERSION = 25;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -125,6 +125,7 @@ public class Config
 		config.set("BonusXp.Multiplier", 2);
 		config.set("Prefix.Enable", true);
 		config.set("Prefix.String", "<heart><partnername><heart>");
+		config.set("Prefix.OnLineBeginning", true);
 		config.set("Suffix.Enable", false);
 		config.set("Suffix.String", " (<heart><partnername><heart>)");
 		config.set("Database.Type","Files");
@@ -253,6 +254,8 @@ public class Config
 				config.set("Misc.DisableV2Info", false);
 			case 23:
 				config.set("RequireBothNamesOnPriestDivorce", false);
+			case 24:
+				config.set("Prefix.OnLineBeginning", true);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -332,16 +335,21 @@ public class Config
 		return getUsePermissions() && config.getBoolean("VaultPermissions", true);
 	}
 	
-	public boolean UsePrefix()
+	public boolean usePrefix()
 	{
 		return config.getBoolean("Prefix.Enable");	
 	}
 	
-	public String GetPrefix()
+	public String getPrefix()
 	{
 		return config.getString("Prefix.String");
 	}
-	
+
+	public boolean getPrefixOnLineBeginning()
+	{
+		return config.getBoolean("Prefix.OnLineBeginning", true);
+	}
+
 	public boolean UseSuffix()
 	{
 		return config.getBoolean("Suffix.Enable");	

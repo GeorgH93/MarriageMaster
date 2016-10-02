@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,14 +37,14 @@ public class JoinLeaveChat implements Listener
 	private MarriageMaster plugin;
 	private String prefix = null, suffix = null;
 	private int delay = 0;
-	private boolean useSurname = false, changeChatFormat = false;
+	private boolean useSurname = false, changeChatFormat = false, prefixOnLineBeginning;
 
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
+		if(plugin.config.usePrefix() && plugin.config.getPrefix() != null)
 		{
-			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.getPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 		}
 		if(plugin.config.UseSuffix() && plugin.config.GetSuffix() != null)
 		{
@@ -52,6 +52,7 @@ public class JoinLeaveChat implements Listener
 		}
 		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
 		useSurname = plugin.config.getSurname();
+		prefixOnLineBeginning = plugin.config.getPrefixOnLineBeginning();
 		changeChatFormat = prefix != null | suffix != null | useSurname;
 	}
 
@@ -118,7 +119,14 @@ public class JoinLeaveChat implements Listener
 			boolean changed = false;
 			if(prefix != null)
 			{
-				formatReplacer = prefix + ' ' + formatReplacer;
+				if(prefixOnLineBeginning)
+				{
+					format = prefix.replace("<partnername>", partner) + format;
+				}
+				else
+				{
+					formatReplacer = prefix + ' ' + formatReplacer;
+				}
 				changed = true;
 			}
 			if(useSurname)
@@ -187,7 +195,7 @@ public class JoinLeaveChat implements Listener
 		while (m.hasNext())
 		{
 			temp = m.next();
-			if(temp.p1 == player)
+			if(temp.p1.equals(player))
 			{
 				if(temp.priest != null)
 				{
@@ -196,7 +204,7 @@ public class JoinLeaveChat implements Listener
 				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
 				m.remove();
 			}
-			else if(temp.p2 == player)
+			else if(temp.p2.equals(player))
 			{
 				if(temp.priest != null)
 				{
@@ -205,7 +213,7 @@ public class JoinLeaveChat implements Listener
 				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
 				m.remove();
 			}
-			else if(temp.priest != null && temp.priest == player)
+			else if(temp.priest != null && temp.priest.equals(player))
 			{
 				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
 				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
