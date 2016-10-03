@@ -121,7 +121,7 @@ public class JoinLeaveChat implements Listener
 			{
 				if(prefixOnLineBeginning)
 				{
-					format = prefix.replace("<partnername>", partner) + format;
+					format = prefix.replace("<partnername>", partner) + ' ' + format;
 				}
 				else
 				{
