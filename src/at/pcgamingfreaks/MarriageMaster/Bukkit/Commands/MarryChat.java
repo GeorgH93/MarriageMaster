@@ -76,7 +76,7 @@ public class MarryChat
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+			sender.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 		}
 	}
 }

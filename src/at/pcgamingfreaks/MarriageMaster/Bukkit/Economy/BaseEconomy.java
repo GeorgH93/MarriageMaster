@@ -70,16 +70,16 @@ public abstract class BaseEconomy
 		Costs_SetHome = plugin.config.GetEconomy("SetHome");
 		Costs_TP      = plugin.config.GetEconomy("Tp");
 		// Load Messages
-		Message_NotEnough			= ChatColor.RED   + plugin.lang.Get("Economy.NotEnough");
-		Message_PartnerNotEnough 	= ChatColor.RED   + plugin.lang.Get("Economy.PartnerNotEnough");
-		Message_DivorcePaid			= ChatColor.GREEN + plugin.lang.Get("Economy.DivorcePaid");
-		Message_MarriagePaid		= ChatColor.GREEN + plugin.lang.Get("Economy.MarriagePaid");
-		Message_DivNotEnoPriestI	= ChatColor.RED   + plugin.lang.Get("Economy.DivNotEnoPriestI");
-		Message_NotEnoughPriestInfo	= ChatColor.RED   + plugin.lang.Get("Economy.NotEnoughPriestInfo");
-		Message_HomeTPPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.HomeTPPaid");
-		Message_SetHomePaid			= ChatColor.GREEN + plugin.lang.Get("Economy.SetHomePaid");
-		Message_GiftPaid			= ChatColor.GREEN + plugin.lang.Get("Economy.GiftPaid");
-		Message_TPPaid				= ChatColor.GREEN + plugin.lang.Get("Economy.TPPaid");
+		Message_NotEnough			= ChatColor.RED   + plugin.lang.get("Economy.NotEnough");
+		Message_PartnerNotEnough 	= ChatColor.RED   + plugin.lang.get("Economy.PartnerNotEnough");
+		Message_DivorcePaid			= ChatColor.GREEN + plugin.lang.get("Economy.DivorcePaid");
+		Message_MarriagePaid		= ChatColor.GREEN + plugin.lang.get("Economy.MarriagePaid");
+		Message_DivNotEnoPriestI	= ChatColor.RED   + plugin.lang.get("Economy.DivNotEnoPriestI");
+		Message_NotEnoughPriestInfo	= ChatColor.RED   + plugin.lang.get("Economy.NotEnoughPriestInfo");
+		Message_HomeTPPaid			= ChatColor.GREEN + plugin.lang.get("Economy.HomeTPPaid");
+		Message_SetHomePaid			= ChatColor.GREEN + plugin.lang.get("Economy.SetHomePaid");
+		Message_GiftPaid			= ChatColor.GREEN + plugin.lang.get("Economy.GiftPaid");
+		Message_TPPaid				= ChatColor.GREEN + plugin.lang.get("Economy.TPPaid");
 	}
 
 	public abstract boolean SetHome(Player player);

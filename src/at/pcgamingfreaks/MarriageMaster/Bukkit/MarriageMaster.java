@@ -76,7 +76,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 		config = new Config(this);
 		load();
-		log.info(lang.Get("Console.Enabled"));
+		log.info(lang.get("Console.Enabled"));
 	}
     
     public void load()
@@ -108,7 +108,7 @@ public class MarriageMaster extends JavaPlugin
 			}
 			catch (IOException e)
 			{
-			    log.info(lang.Get("Console.MetricsOffline"));
+			    log.info(lang.get("Console.MetricsOffline"));
 			}
 		}
 		if(config.UseUpdater())
@@ -120,7 +120,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			if(!setupPermissions())
 			{
-				log.info(lang.Get("Console.NoPermPL"));
+				log.info(lang.get("Console.NoPermPL"));
 			}
 		}
 		economy = BaseEconomy.getEconomy(this);
@@ -215,7 +215,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			updater.waitForAsyncOperation();
 		}
-		log.info(lang.Get("Console.Disabled"));
+		log.info(lang.get("Console.Disabled"));
 	}
 	
 	public boolean IsPriest(Player player)
@@ -246,7 +246,7 @@ public class MarriageMaster extends JavaPlugin
 	public void update(final Player sender)
 	{
 		log.info("Checking for updates ...");
-		sender.sendMessage(ChatColor.BLUE + lang.Get("Ingame.CheckingForUpdates"));
+		sender.sendMessage(ChatColor.BLUE + lang.get("Ingame.CheckingForUpdates"));
 		Updater updater = new Updater(this, this.getFile(), true, 74734);
 		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
 		{
@@ -260,11 +260,11 @@ public class MarriageMaster extends JavaPlugin
 				}
 				else if(result == UpdateResult.SUCCESS)
 				{
-					sender.sendMessage(ChatColor.GREEN + lang.Get("Ingame.Updated"));
+					sender.sendMessage(ChatColor.GREEN + lang.get("Ingame.Updated"));
 				}
 				else
 				{
-					sender.sendMessage(ChatColor.GOLD + lang.Get("Ingame.NoUpdate"));
+					sender.sendMessage(ChatColor.GOLD + lang.get("Ingame.NoUpdate"));
 				}
 			}
 		});

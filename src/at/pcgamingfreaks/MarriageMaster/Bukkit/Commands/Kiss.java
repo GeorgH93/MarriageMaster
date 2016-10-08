@@ -42,7 +42,7 @@ public class Kiss
 		eb = EffectBase.getEffect();
 		if(eb == null)
 		{
-			plugin.log.warning(plugin.lang.Get("Console.NotSupportedNet"));
+			plugin.log.warning(plugin.lang.get("Console.NotSupportedNet"));
 		}
 	}
 	
@@ -71,8 +71,17 @@ public class Kiss
 	
 	public void kiss(Player player, Player otherPlayer)
 	{
-		player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.YouKissed"));
-		otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.YouGotKissed"));
+		String youKissed = plugin.lang.get("Ingame.YouKissed");
+		String youGotKissed = plugin.lang.get("Ingame.YouGotKissed");
+		if (youKissed != null && !youKissed.isEmpty())
+		{
+			player.sendMessage(ChatColor.GREEN + youKissed);
+		}
+		if (youGotKissed != null && !youGotKissed.isEmpty())
+		{
+			otherPlayer.sendMessage(ChatColor.GREEN + youGotKissed);
+		}
+
 		DrawHearts(otherPlayer);
 		DrawHearts(player);
 		if(!plugin.CheckPerm(player, "marry.skiptpdelay", false))

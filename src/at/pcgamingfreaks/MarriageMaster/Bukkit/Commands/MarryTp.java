@@ -60,22 +60,22 @@ public class MarryTp
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.WorldNotAllowed"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.WorldNotAllowed"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoTPInVanish"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoTPInVanish"));
 				}
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 			}
 		}
 		else
 		{
-			player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+			player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 		}
 	}
 
@@ -86,7 +86,7 @@ public class MarryTp
 			final Location p_loc = player.getLocation();
 			final Player p = player, otp = otherPlayer;
 			final double p_hea = (double)player.getHealth();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() { @Override public void run() {
 				if(p != null && p.isOnline())
 				{
@@ -97,8 +97,8 @@ public class MarryTp
 							if(!plugin.config.getCheckTPSafety() || p.isFlying() || !otp.isFlying())
 							{
 								p.teleport(otp);
-								p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
-								otp.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+								p.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
+								otp.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
 							}
 							else
 							{
@@ -106,31 +106,31 @@ public class MarryTp
 								if(l != null)
 								{
 									p.teleport(l);
-									p.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
-									otp.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+									p.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
+									otp.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
 								}
 								else
 								{
-									p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPUnsafe"));
-									otp.sendMessage(ChatColor.GOLD + plugin.lang.Get("Ingame.TPtoUnsafe"));
+									p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPUnsafe"));
+									otp.sendMessage(ChatColor.GOLD + plugin.lang.get("Ingame.TPtoUnsafe"));
 								}
 							}
 						}
 						else
 						{
-							p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+							p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 						}
 					}
 					else
 					{
-						p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+						p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 				}}}}, delaytime);
 		}
 		else
 		{
 			player.teleport(otherPlayer);
-			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TP"));
-			otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.TPto"));
+			player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
+			otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
 		}
 	}
 	
@@ -169,7 +169,7 @@ public class MarryTp
 		{
 			final double p_hea = p.getHealth();
 			final Location p_loc = p.getLocation();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
 				{
 					@Override
@@ -183,7 +183,7 @@ public class MarryTp
 							}
 							else
 							{
-								p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+								p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 							}
 						}
 					}}, delaytime);

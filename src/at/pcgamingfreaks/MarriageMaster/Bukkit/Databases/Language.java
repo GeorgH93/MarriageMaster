@@ -37,10 +37,10 @@ public class Language
 	public Language(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		LoadFile();
+		loadFile();
 	}
 	
-	public String Get(String Option)
+	public String get(String Option)
 	{
 		String msg = lang.getString("Language." + Option);
 		if(msg != null)
@@ -50,23 +50,23 @@ public class Language
 		return msg;
 	}
 	
-	public void Reload()
+	public void reload()
 	{
-		LoadFile();
+		loadFile();
 	}
 	
-	private void LoadFile()
+	private void loadFile()
 	{
 		File file = new File(plugin.getDataFolder() + File.separator + "Lang", plugin.config.GetLanguage()+".yml");
 		if(!file.exists())
 		{
-			ExtractLangFile(file);
+			extractLangFile(file);
 		}
 		lang = YamlConfiguration.loadConfiguration(file);
-		UpdateLangFile(file);
+		updateLangFile(file);
 	}
 	
-	private void ExtractLangFile(File Target)
+	private void extractLangFile(File Target)
 	{
 		try
 		{
@@ -90,16 +90,16 @@ public class Language
 		}
 	}
 	
-	private boolean UpdateLangFile(File file)
+	private boolean updateLangFile(File file)
 	{
 		plugin.log.info("Language Version: " + lang.getInt("Version") + " => " + ((lang.getInt("Version") == LANG_VERSION) ? "no updated needed" : "update needed"));
 		if(lang.getInt("Version") != LANG_VERSION)
 		{
 			if(plugin.config.GetLanguageUpdateMode().equalsIgnoreCase("overwrite"))
 			{
-				ExtractLangFile(file);
-				LoadFile();
-				plugin.log.info(Get("Console.LangUpdated"));
+				extractLangFile(file);
+				loadFile();
+				plugin.log.info(get("Console.LangUpdated"));
 				return true;
 			}
 			else
@@ -222,7 +222,7 @@ public class Language
 				try
 				{
 					lang.save(file);
-					plugin.log.info(Get("Console.LangUpdated"));
+					plugin.log.info(get("Console.LangUpdated"));
 				}
 		  	  	catch (IOException e) 
 		  	  	{

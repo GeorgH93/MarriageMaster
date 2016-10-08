@@ -52,7 +52,7 @@ public class Damage implements Listener
 				{
 					if(!plugin.DB.GetPvPEnabled(player))
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PvPIsOff"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PvPIsOff"));
 						event.setCancelled(true);
 					}
 				}

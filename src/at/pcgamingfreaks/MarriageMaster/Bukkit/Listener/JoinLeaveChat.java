@@ -74,17 +74,17 @@ public class JoinLeaveChat implements Listener
 						Player otherPlayer = plugin.getServer().getPlayerExact(partner);
 						if(otherPlayer != null && otherPlayer.isOnline())
 						{
-							sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOnline"));
+							sender.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PartnerOnline"));
 						}
 						else
 						{
-							sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerOffline"));
+							sender.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PartnerOffline"));
 						}
 					}
 				}, delay);
 				if(otherPlayer != null && otherPlayer.isOnline())
 				{
-					otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerNowOnline"));
+					otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PartnerNowOnline"));
 				}
 			}
 		}
@@ -158,7 +158,7 @@ public class JoinLeaveChat implements Listener
 			Player otherPlayer = plugin.DB.GetPlayerPartner(event.getPlayer());
 			if(otherPlayer != null && otherPlayer.isOnline())
 			{
-				otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PartnerNowOffline"));
+				otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PartnerNowOffline"));
 			}
 		}
 		plugin.chat.pcl.remove(event.getPlayer());
@@ -173,12 +173,12 @@ public class JoinLeaveChat implements Listener
 				e = d.next();
 				if(event.getPlayer().equals(e.getKey()))
 				{
-					e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.DivPlayerOff"), e.getKey().getName()));
+					e.getValue().sendMessage(String.format(plugin.lang.get("Priest.DivPlayerOff"), e.getKey().getName()));
 					d.remove();
 				}
 				else if(event.getPlayer().equals(e.getValue()))
 				{
-					e.getKey().sendMessage(String.format(plugin.lang.Get("Priest.DivPriestOff"), e.getValue().getName()));
+					e.getKey().sendMessage(String.format(plugin.lang.get("Priest.DivPriestOff"), e.getValue().getName()));
 					d.remove();
 				}
 			}
@@ -199,24 +199,24 @@ public class JoinLeaveChat implements Listener
 			{
 				if(temp.priest != null)
 				{
-					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+					temp.priest.sendMessage(String.format(plugin.lang.get("Ingame.PlayerMarryOff"), temp.p1.getName()));
 				}
-				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p1.getName()));
+				temp.p2.sendMessage(String.format(plugin.lang.get("Ingame.PlayerMarryOff"), temp.p1.getName()));
 				m.remove();
 			}
 			else if(temp.p2.equals(player))
 			{
 				if(temp.priest != null)
 				{
-					temp.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+					temp.priest.sendMessage(String.format(plugin.lang.get("Ingame.PlayerMarryOff"), temp.p2.getName()));
 				}
-				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerMarryOff"), temp.p2.getName()));
+				temp.p1.sendMessage(String.format(plugin.lang.get("Ingame.PlayerMarryOff"), temp.p2.getName()));
 				m.remove();
 			}
 			else if(temp.priest != null && temp.priest.equals(player))
 			{
-				temp.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
-				temp.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				temp.p1.sendMessage(String.format(plugin.lang.get("Ingame.PriestMarryOff"), temp.priest.getName()));
+				temp.p2.sendMessage(String.format(plugin.lang.get("Ingame.PriestMarryOff"), temp.priest.getName()));
 				m.remove();
 			}
 		}

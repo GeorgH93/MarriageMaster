@@ -127,7 +127,7 @@ public class MySQL extends Database implements Listener
 				{
 					if(res.isFirst())
 					{
-						plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
+						plugin.log.info(plugin.lang.get("Console.UpdateUUIDs"));
 					}
 					String uuid = res.getString("`uuid`");
 					if(uuid == null)
@@ -162,7 +162,7 @@ public class MySQL extends Database implements Listener
 						ps.executeBatch();
 					}
 				}
-				plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"), toUpdate.size()));
+				plugin.log.info(String.format(plugin.lang.get("Console.UpdatedUUIDs"), toUpdate.size()));
 			}
 		}
 		catch(SQLException e)

@@ -51,7 +51,7 @@ public class Home
 				}
 				else
 				{
-					admin.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PlayerNoHome"));
+					admin.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PlayerNoHome"));
 				}
 			}
 		});
@@ -73,7 +73,7 @@ public class Home
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoHome"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoHome"));
 				}
 			}
 		});
@@ -87,7 +87,7 @@ public class Home
 		{
 			final Location p_loc = player.getLocation(), toloc = loc;
 			final double p_hea = player.getHealth();
-			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
 			{
 				@Override
@@ -98,11 +98,11 @@ public class Home
 						if(p_hea <= player.getHealth() && p_loc.getX() == player.getLocation().getX() && p_loc.getY() == player.getLocation().getY() && p_loc.getZ() == player.getLocation().getZ() && p_loc.getWorld().equals(player.getLocation().getWorld()))
 						{
 							player.teleport(toloc);
-							player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
+							player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.HomeTP"));
 						}
 						else
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 						}
 					}
 				}
@@ -111,7 +111,7 @@ public class Home
 		else
 		{
 			player.teleport(loc);
-			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeTP"));
+			player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.HomeTP"));
 		}
 	}
 
@@ -121,7 +121,7 @@ public class Home
 		{
 			final double p_hea = p.getHealth();
 			final Location p_loc = p.getLocation();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.Get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
 			{
 				@Override
@@ -135,7 +135,7 @@ public class Home
 						}
 						else
 						{
-							p.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TPMoved"));
+							p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 						}
 					}
 				}
@@ -149,7 +149,7 @@ public class Home
 		if(plugin.economy == null || plugin.economy.SetHome(player))
 		{
 			plugin.DB.SetMarryHome(home, player);
-			player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeSet"));
+			player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.HomeSet"));
 		}
 	}
 }

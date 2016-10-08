@@ -82,7 +82,7 @@ public class OnCommand implements CommandExecutor
 							{
 								if(map.size() > 0)
 								{
-									sender.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ListHL"));
+									sender.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ListHL"));
 									for(Map.Entry<String, String> item : map.entrySet())
 									{
 										sender.sendMessage(ChatColor.GREEN + item.getKey() + " + " + item.getValue());
@@ -90,7 +90,7 @@ public class OnCommand implements CommandExecutor
 								}
 								else
 								{
-									sender.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoMarriedPlayers"));
+									sender.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoMarriedPlayers"));
 								}
 							}
 						});
@@ -159,7 +159,7 @@ public class OnCommand implements CommandExecutor
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "list":
@@ -178,7 +178,7 @@ public class OnCommand implements CommandExecutor
 						}
 						catch(Exception e)
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NaN"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NaN"));
 							return true;
 						}
 					}
@@ -196,7 +196,7 @@ public class OnCommand implements CommandExecutor
 								{
 									page = avpages - 1;
 								}
-								player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ListHL") + ((avpages > 1) ? (ChatColor.WHITE + " - " + ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.ListHLMP"), page + 1, avpages)) : ""));
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ListHL") + ((avpages > 1) ? (ChatColor.WHITE + " - " + ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ListHLMP"), page + 1, avpages)) : ""));
 								int c = 7, c2 = page * 7;
 								for(Map.Entry<String, String> item : map.entrySet())
 								{
@@ -217,14 +217,14 @@ public class OnCommand implements CommandExecutor
 							}
 							else
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoMarriedPlayers"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoMarriedPlayers"));
 							}
 						}
 					});
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "pvpon":
@@ -235,16 +235,16 @@ public class OnCommand implements CommandExecutor
 						if(plugin.CheckPerm(player, "marry.pvpon"))
 						{
 							plugin.DB.SetPvPEnabled(player, true);
-							player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PvPOn"));
+							player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PvPOn"));
 						}
 						else
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
@@ -260,16 +260,16 @@ public class OnCommand implements CommandExecutor
 						if(plugin.CheckPerm(player, "marry.pvpoff"))
 						{
 							plugin.DB.SetPvPEnabled(player, false);
-							player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.PvPOff"));
+							player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.PvPOff"));
 						}
 						else
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
@@ -290,12 +290,12 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "sethome":
@@ -307,12 +307,12 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "delhome":
@@ -321,21 +321,21 @@ public class OnCommand implements CommandExecutor
 					if(args.length == 2 && plugin.CheckPerm(player, "marry.home.others", false))
 					{
 						plugin.DB.DelMarryHome(args[1]);
-						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeDeleted"));
+						player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.HomeDeleted"));
 					}
 					else if(plugin.HasPartner(player))
 					{
 						plugin.DB.DelMarryHome(player);
-						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.HomeDeleted"));
+						player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.HomeDeleted"));
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "tp":
@@ -345,7 +345,7 @@ public class OnCommand implements CommandExecutor
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "c":
@@ -359,12 +359,12 @@ public class OnCommand implements CommandExecutor
 						{
 							if(plugin.chat.Marry_ChatDirect.contains(player))
 							{
-								player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ChatLeft"));
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ChatLeft"));
 								plugin.chat.Marry_ChatDirect.remove(player);
 							}
 							else
 							{
-								player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ChatJoined"));
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ChatJoined"));
 								plugin.chat.Marry_ChatDirect.add(player);
 							}
 							return true;
@@ -386,12 +386,12 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "listenchat":
@@ -400,17 +400,17 @@ public class OnCommand implements CommandExecutor
 					if(!plugin.chat.pcl.contains(player))
 					{
 						plugin.chat.pcl.add(player);
-						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ListeningStarted"));
+						player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ListeningStarted"));
 					}
 					else
 					{
 						plugin.chat.pcl.remove(player);
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.ListeningStoped"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.ListeningStoped"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "gift":
@@ -423,47 +423,47 @@ public class OnCommand implements CommandExecutor
 					{
 						if(!(player.getGameMode().equals(GameMode.SURVIVAL) || plugin.config.getAllowGiftsInCreative() || plugin.CheckPerm(player, "marry.bypassgiftgamemode", false)))
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.GiftsOnlyInSurvival"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.GiftsOnlyInSurvival"));
 							return true;
 						}
 						Player partner = Bukkit.getServer().getPlayerExact(Partner);
 						if(partner == null || !partner.isOnline())
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 							return true;
 						}
 						if(!plugin.InRadiusAllWorlds(player, partner, plugin.config.GetRange("Gift")))
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotInRange"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotInRange"));
 							return true;
 						}
 						ItemStack its = player.getInventory().getItemInHand();
 						if(its == null || its.getType() == Material.AIR)
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoItemInHand"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoItemInHand"));
 							return true;
 						}
 						if(partner.getInventory().firstEmpty() == -1)
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerInvFull"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerInvFull"));
 							return true;
 						}
 						if(plugin.economy == null || plugin.economy.Gift(player))
 						{
 							partner.getInventory().addItem(its);
 							player.getInventory().removeItem(its);
-							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
-							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.Get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
+							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
 						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "backpack":
@@ -483,12 +483,12 @@ public class OnCommand implements CommandExecutor
 							if(args[1].equalsIgnoreCase("on"))
 							{
 								plugin.DB.SetShareBackpack(player, true);
-								player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.BackpackShareOn"));
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.BackpackShareOn"));
 							}
 							else if(args[1].equalsIgnoreCase("off"))
 							{
 								plugin.DB.SetShareBackpack(player, false);
-								player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.BackpackShareOff"));
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.BackpackShareOff"));
 							}
 						}
 						else
@@ -496,39 +496,39 @@ public class OnCommand implements CommandExecutor
 							// Open backpack
 							if(!player.getGameMode().equals(GameMode.SURVIVAL))
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.BackpackOnlyInSurvival"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.BackpackOnlyInSurvival"));
 								return true;
 							}
 							Player partner = Bukkit.getServer().getPlayerExact(Partner);
 							if(partner == null || !partner.isOnline())
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 								return true;
 							}
 							if(plugin.DB.GetPartnerShareBackpack(partner))
 							{
 								if(!plugin.InRadius(player, partner, plugin.config.GetRange("Backpack")))
 								{
-									player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotInRange"));
+									player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotInRange"));
 									return true;
 								}
 								plugin.minepacks.OpenBackpack(player, partner, true);
-								partner.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.BackpackOpend"));
+								partner.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.BackpackOpend"));
 							}
 							else
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.BackpackShareDenied"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.BackpackShareDenied"));
 							}
 						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 				}
 				return true;
 			case "accept":
@@ -542,13 +542,13 @@ public class OnCommand implements CommandExecutor
 						plugin.bdr.remove(m);
 						if(m.p1.equals(player))
 						{
-							m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+							m.p2.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						else
 						{
-							m.p1.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+							m.p1.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
-						m.priest.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						m.priest.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						return true;
 					}
 				}
@@ -559,7 +559,7 @@ public class OnCommand implements CommandExecutor
 					e = d.next();
 					if(player.equals(e.getKey()))
 					{
-						e.getValue().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						e.getValue().sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						d.remove();
 						return true;
 					}
@@ -571,25 +571,25 @@ public class OnCommand implements CommandExecutor
 						plugin.mr.remove(m);
 						if(plugin.config.UseConfirmation() && plugin.config.UseConfirmationAutoDialog() && m.priest != null)
 						{
-							player.chat(plugin.lang.Get("Dialog.NoIDontWant"));
+							player.chat(plugin.lang.get("Dialog.NoIDontWant"));
 						}
 						if(m.priest != null)
 						{
-							m.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.priest.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
-						player.sendMessage(plugin.lang.Get("Ingame.YouCalledOff"));
+						player.sendMessage(plugin.lang.get("Ingame.YouCalledOff"));
 						if(m.p1.equals(player))
 						{
-							m.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.p2.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						else
 						{
-							m.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.p1.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						return true;
 					}
 				}
-				player.sendMessage(plugin.lang.Get("Priest.NoRequest"));
+				player.sendMessage(plugin.lang.get("Priest.NoRequest"));
 				return true;
 			case "cancel":
 			case "close":
@@ -601,13 +601,13 @@ public class OnCommand implements CommandExecutor
 						plugin.bdr.remove(m);
 						if(m.p1.equals(player))
 						{
-							m.p2.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+							m.p2.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						else
 						{
-							m.p1.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+							m.p1.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						}
-						m.priest.sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						m.priest.sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						return true;
 					}
 				}
@@ -618,13 +618,13 @@ public class OnCommand implements CommandExecutor
 					e2 = d2.next();
 					if(player.equals(e2.getKey()))
 					{
-						e2.getValue().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						e2.getValue().sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						d2.remove();
 						return true;
 					}
 					else if(player.equals(e2.getValue()))
 					{
-						e2.getKey().sendMessage(String.format(plugin.lang.Get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
+						e2.getKey().sendMessage(String.format(plugin.lang.get("Priest.PlayerCanceled"), player.getDisplayName() + ChatColor.WHITE));
 						d2.remove();
 						return true;
 					}
@@ -636,21 +636,21 @@ public class OnCommand implements CommandExecutor
 						plugin.mr.remove(m);
 						if(m.priest != null)
 						{
-							m.priest.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.priest.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
-						player.sendMessage(plugin.lang.Get("Ingame.YouCalledOff"));
+						player.sendMessage(plugin.lang.get("Ingame.YouCalledOff"));
 						if(m.p1.equals(player))
 						{
-							m.p2.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.p2.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						else
 						{
-							m.p1.sendMessage(String.format(plugin.lang.Get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
+							m.p1.sendMessage(String.format(plugin.lang.get("Ingame.PlayerCalledOff"), player.getDisplayName() + ChatColor.WHITE));
 						}
 						return true;
 					}
 				}
-				player.sendMessage(plugin.lang.Get("Priest.NoRequest"));
+				player.sendMessage(plugin.lang.get("Priest.NoRequest"));
 				return true;
 			case "update":
 				if(plugin.config.UseUpdater())
@@ -661,7 +661,7 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 					}
 				}
 				else
@@ -678,19 +678,19 @@ public class OnCommand implements CommandExecutor
 						{
 							if(!plugin.kiss.CanKissAgain(player.getName()))
 							{
-								player.sendMessage(ChatColor.RED + String.format(plugin.lang.Get("Ingame.KissWait"), plugin.kiss.GetKissTimeOut(player.getName())));
+								player.sendMessage(ChatColor.RED + String.format(plugin.lang.get("Ingame.KissWait"), plugin.kiss.GetKissTimeOut(player.getName())));
 								return true;
 							}
 							String Partner = plugin.DB.GetPartner(player);
 							if(Partner == null || Partner.isEmpty())
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 								return true;
 							}
 							Player partner = Bukkit.getServer().getPlayerExact(Partner);
 							if(partner == null || !partner.isOnline())
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.PartnerOffline"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
 								return true;
 							}
 							if(plugin.InRadius(player, partner, plugin.config.GetRange("Kiss")))
@@ -699,17 +699,17 @@ public class OnCommand implements CommandExecutor
 							}
 							else
 							{
-								player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.TooFarToKiss"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TooFarToKiss"));
 							}
 						}
 						else
 						{
-							player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 						}
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 					}
 				}
 				else
@@ -740,7 +740,7 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 					}
 				}
 				else
@@ -761,7 +761,7 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotAPriest"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotAPriest"));
 					}
 				}
 				else if(plugin.config.AllowSelfDivorce() && args.length == 1)
@@ -772,7 +772,7 @@ public class OnCommand implements CommandExecutor
 					}
 					else
 					{
-						player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 					}
 				}
 				else
@@ -790,23 +790,23 @@ public class OnCommand implements CommandExecutor
 				{
 					if(plugin.chat.Marry_ChatDirect.contains(player))
 					{
-						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ChatLeft"));
+						player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ChatLeft"));
 						plugin.chat.Marry_ChatDirect.remove(player);
 					}
 					else
 					{
-						player.sendMessage(ChatColor.GREEN + plugin.lang.Get("Ingame.ChatJoined"));
+						player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.ChatJoined"));
 						plugin.chat.Marry_ChatDirect.add(player);
 					}
 				}
 				else
 				{
-					player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotMarried"));
+					player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotMarried"));
 				}
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 			}
 		}
 		else if(args.length == 2 && args[0].equalsIgnoreCase(plugin.config.GetPriestCMD()))
@@ -817,7 +817,7 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 			}
 		}
 		else if(plugin.config.AllowSelfMarry() && ((args[0].equalsIgnoreCase("me") && (args.length == 2 || args.length == 3)) || args.length == 1))
@@ -836,7 +836,7 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NoPermission"));
+				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 			}
 		}
 		else if(args.length == 2 || (args.length == 3 && plugin.config.getSurname()))
@@ -847,7 +847,7 @@ public class OnCommand implements CommandExecutor
 			}
 			else
 			{
-				player.sendMessage(ChatColor.RED + plugin.lang.Get("Ingame.NotAPriest"));
+				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotAPriest"));
 			}
 		}
 		else
@@ -864,105 +864,105 @@ public class OnCommand implements CommandExecutor
 		{
 			Surname = "";
 		}
-		player.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.Get("Description.Commands"));
+		player.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.get("Description.Commands"));
 		if(plugin.CheckPerm(player, "marry.list"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListAll"));
+			player.sendMessage(ChatColor.AQUA + "/marry list" + ChatColor.WHITE + " - " + plugin.lang.get("Description.ListAll"));
 		}
 		if(plugin.IsPriest(player))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Marry"), plugin.config.GetRange("Marry")));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + String.format(plugin.lang.get("Description.Marry"), plugin.config.GetRange("Marry")));
 			if(plugin.config.requireBothNamesOnPriestDivorce())
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
+				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + String.format(plugin.lang.get("Description.Divorce"), plugin.config.GetRange("Marry")));
 			}
 			else
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(plugin.lang.Get("Description.Divorce"), plugin.config.GetRange("Marry")));
+				player.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + String.format(plugin.lang.get("Description.Divorce"), plugin.config.GetRange("Marry")));
 			}
 		}
 		if(plugin.CheckPerm(player, "marry.tp"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry tp" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TP"));
+			player.sendMessage(ChatColor.AQUA + "/marry tp" + ChatColor.WHITE + " - " + plugin.lang.get("Description.TP"));
 		}
 		if(plugin.CheckPerm(player, "marry.home"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry home" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHome"));
-			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SetHome"));
-			player.sendMessage(ChatColor.AQUA + "/marry delhome" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.DelHome"));
+			player.sendMessage(ChatColor.AQUA + "/marry home" + ChatColor.WHITE + " - " + plugin.lang.get("Description.TPHome"));
+			player.sendMessage(ChatColor.AQUA + "/marry sethome" + ChatColor.WHITE + " - " + plugin.lang.get("Description.SetHome"));
+			player.sendMessage(ChatColor.AQUA + "/marry delhome" + ChatColor.WHITE + " - " + plugin.lang.get("Description.DelHome"));
 			if(plugin.CheckPerm(player, "marry.home.others", false))
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry home <player>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.TPHomeOther"));
-				player.sendMessage(ChatColor.AQUA + "/marry delhome <player>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.DelHomeOther"));
+				player.sendMessage(ChatColor.AQUA + "/marry home <player>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.TPHomeOther"));
+				player.sendMessage(ChatColor.AQUA + "/marry delhome <player>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.DelHomeOther"));
 			}
 		}
 		if(plugin.CheckPerm(player, "marry.chat"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry chat <Message>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Chat"));
-			player.sendMessage(ChatColor.AQUA + "/marry chat toggle" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ChatToggle"));
+			player.sendMessage(ChatColor.AQUA + "/marry chat <Message>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Chat"));
+			player.sendMessage(ChatColor.AQUA + "/marry chat toggle" + ChatColor.WHITE + " - " + plugin.lang.get("Description.ChatToggle"));
 		}
 		if(plugin.CheckPerm(player, "marry.pvpon") && plugin.config.GetAllowBlockPvP())
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry pvpon" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.PvPOn"));
+			player.sendMessage(ChatColor.AQUA + "/marry pvpon" + ChatColor.WHITE + " - " + plugin.lang.get("Description.PvPOn"));
 		}
 		if(plugin.CheckPerm(player, "marry.pvpoff") && plugin.config.GetAllowBlockPvP())
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry pvpoff" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.PvPOff"));
+			player.sendMessage(ChatColor.AQUA + "/marry pvpoff" + ChatColor.WHITE + " - " + plugin.lang.get("Description.PvPOff"));
 		}
 		if(plugin.CheckPerm(player, "marry.gift"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Gift"));
+			player.sendMessage(ChatColor.AQUA + "/marry gift" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Gift"));
 		}
 		if(plugin.minepacks != null && plugin.CheckPerm(player, "marry.backpack"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry backpack" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Backpack"));
+			player.sendMessage(ChatColor.AQUA + "/marry backpack" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Backpack"));
 			if(plugin.DB.GetPartnerShareBackpack(player))
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry backpack off" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.BackpackOff"));
+				player.sendMessage(ChatColor.AQUA + "/marry backpack off" + ChatColor.WHITE + " - " + plugin.lang.get("Description.BackpackOff"));
 			}
 			else
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry backpack on" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.BackpackOn"));
+				player.sendMessage(ChatColor.AQUA + "/marry backpack on" + ChatColor.WHITE + " - " + plugin.lang.get("Description.BackpackOn"));
 			}
 		}
 		if(plugin.CheckPerm(player, "marry.kiss") && plugin.config.GetKissEnabled())
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Kiss"));
+			player.sendMessage(ChatColor.AQUA + "/marry kiss" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Kiss"));
 		}
 		if(plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry"))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SelfMarry"));
-			player.sendMessage(ChatColor.AQUA + "/marry divorce" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.SelfDivorce"));
+			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.get("Description.SelfMarry"));
+			player.sendMessage(ChatColor.AQUA + "/marry divorce" + ChatColor.WHITE + " - " + plugin.lang.get("Description.SelfDivorce"));
 		}
 		if(plugin.config.getSurname() && plugin.CheckPerm(player, "marry.changesurname"))
 		{
 			if(plugin.IsPriest(player))
 			{
-				player.sendMessage(ChatColor.AQUA + "/marry Surname <Playername> <Surname>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Surname"));
+				player.sendMessage(ChatColor.AQUA + "/marry Surname <Playername> <Surname>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Surname"));
 			}
 			else
 			{
 				if(plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry"))
 				{
-					player.sendMessage(ChatColor.AQUA + "/marry Surname <Surname>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Surname"));
+					player.sendMessage(ChatColor.AQUA + "/marry Surname <Surname>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Surname"));
 				}
 			}
 		}
 		if(plugin.CheckPerm(player, "marry.setpriest", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry " + plugin.config.GetPriestCMD() + " <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Priest"));
+			player.sendMessage(ChatColor.AQUA + "/marry " + plugin.config.GetPriestCMD() + " <Playername>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Priest"));
 		}
 		if(plugin.CheckPerm(player, "marry.listenchat", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry listenchat" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListenChat"));
+			player.sendMessage(ChatColor.AQUA + "/marry listenchat" + ChatColor.WHITE + " - " + plugin.lang.get("Description.ListenChat"));
 		}
 		if(plugin.config.UseUpdater() && plugin.CheckPerm(player, "marry.update", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Update"));
+			player.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Update"));
 		}
 		if(plugin.CheckPerm(player, "marry.reload", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Reload"));
+			player.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.get("Description.reload"));
 		}
 	}
 
@@ -973,26 +973,26 @@ public class OnCommand implements CommandExecutor
 		{
 			Surname = "";
 		}
-		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.Get("Description.Commands"));
-		sender.sendMessage(ChatColor.AQUA + "/marry list <Page>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.ListAll"));
-		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Marry"));
+		sender.sendMessage(ChatColor.YELLOW + "Marriage Master - " + plugin.lang.get("Description.Commands"));
+		sender.sendMessage(ChatColor.AQUA + "/marry list <Page>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.ListAll"));
+		sender.sendMessage(ChatColor.AQUA + "/marry <Playername> <Playername>" + Surname + ChatColor.WHITE + " - " + plugin.lang.get("Description.Marry"));
 		if(plugin.config.requireBothNamesOnPriestDivorce())
 		{
-			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Divorce"));
+			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername 1> <Playername 2>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Divorce"));
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Divorce"));
+			sender.sendMessage(ChatColor.AQUA + "/marry divorce <Playername>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Divorce"));
 		}
-		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Priest"));
+		sender.sendMessage(ChatColor.AQUA + "/marry priest <Playername>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Priest"));
 		if(plugin.config.getSurname())
 		{
-			sender.sendMessage(ChatColor.AQUA + "/marry Surname <Playername> <Surname>" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Surname"));
+			sender.sendMessage(ChatColor.AQUA + "/marry Surname <Playername> <Surname>" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Surname"));
 		}
 		if(plugin.config.UseUpdater())
 		{
-			sender.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Update"));
+			sender.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Update"));
 		}
-		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.Get("Description.Reload"));
+		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.get("Description.reload"));
 	}
 }

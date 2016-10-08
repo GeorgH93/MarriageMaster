@@ -171,7 +171,7 @@ public class Files extends Database
 		}
 		if(convert.size() > 0 || convertToUUID.size() > 0 || CMarryMap.size() > 0)
 		{
-			plugin.log.info(plugin.lang.Get("Console.UpdateUUIDs"));
+			plugin.log.info(plugin.lang.get("Console.UpdateUUIDs"));
 			for(String s : convert)
 			{
 				Priests.remove(s);
@@ -219,7 +219,7 @@ public class Files extends Database
 			}
 			ReSaveAll();
 			SavePriests();
-			plugin.log.info(String.format(plugin.lang.Get("Console.UpdatedUUIDs"), convert.size() + CMarryMap.size()));
+			plugin.log.info(String.format(plugin.lang.get("Console.UpdatedUUIDs"), convert.size() + CMarryMap.size()));
 		}
 	}
 
