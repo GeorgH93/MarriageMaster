@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
+public abstract class MarryCommand<PLUGIN extends MarriageMasterPlugin, COMMAND_SENDER>
 {
 	private String name, description, permission = null;
 	private List<String> aliases;
@@ -111,10 +111,10 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 *
 	 * @return The instance of the marriage master plugin.
 	 */
-	protected @NotNull T getMarriagePlugin()
+	protected @NotNull PLUGIN getMarriagePlugin()
 	{
 		//noinspection unchecked
-		return (T) marriagePlugin;
+		return (PLUGIN) marriagePlugin;
 	}
 	//endregion
 
@@ -153,7 +153,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param sender The player/console that should be checked.
 	 * @return True if he can use the command, false if not.
 	 */
-	public abstract boolean canUse(@NotNull U sender);
+	public abstract boolean canUse(@NotNull COMMAND_SENDER sender);
 
 	//region Command Help Stuff
 	/**
@@ -161,7 +161,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 *
 	 * @param requester The command sender that requested help.
 	 */
-	public @Nullable List<HelpData> doGetHelp(@NotNull U requester)
+	public @Nullable List<HelpData> doGetHelp(@NotNull COMMAND_SENDER requester)
 	{
 		if(canUse(requester))
 		{
@@ -176,7 +176,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param sendTo         The command sender that requested help.
 	 * @param usedMarryAlias The used marry alias to replace the /marry with the used alias.
 	 */
-	public void showHelp(@NotNull U sendTo, @NotNull String usedMarryAlias)
+	public void showHelp(@NotNull COMMAND_SENDER sendTo, @NotNull String usedMarryAlias)
 	{
 		try
 		{
@@ -194,7 +194,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param requester The command sender that requested help.
 	 * @return All the help data for this command.
 	 */
-	public abstract @Nullable List<HelpData> getHelp(@NotNull U requester);
+	public abstract @Nullable List<HelpData> getHelp(@NotNull COMMAND_SENDER requester);
 	//endregion
 
 	//region Command Execution Stuff
@@ -206,7 +206,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param alias            Alias of the command which has been used.
 	 * @param args             Passed command arguments.
 	 */
-	public abstract void doExecute(@NotNull U sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args);
+	public abstract void doExecute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 
 	/**
 	 * Executes the given command returning its success.
@@ -216,7 +216,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param alias            Alias of the command which has been used.
 	 * @param args             Passed command arguments.
 	 */
-	public abstract void execute(@NotNull U sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args);
+	public abstract void execute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 	//endregion
 
 	//region Tab Complete Stuff
@@ -229,7 +229,7 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param args             The arguments passed to the command, including final partial argument to be completed and command label.
 	 * @return A List of possible completions for the final argument or null as default for the command executor.
 	 */
-	public abstract List<String> doTabComplete(@NotNull U sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args);
+	public abstract List<String> doTabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 
 	/**
 	 * Generates list for tab completion.
@@ -240,6 +240,6 @@ public abstract class MarryCommand<T extends MarriageMasterPlugin, U>
 	 * @param args    The arguments passed to the command, including final partial argument to be completed and command label.
 	 * @return A List of possible completions for the final argument or null as default for the command executor.
 	 */
-	public abstract List<String> tabComplete(@NotNull U sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args);
+	public abstract List<String> tabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 	//endregion
 }
