@@ -199,13 +199,13 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 		// Workaround so that we can compile the api without the main plugin
 		try
 		{
-			closeMethod.invoke(playerThatHasToAccept);
+			closeMethod.invoke(playerThatHasToAccept, this);
 			if(playersThatCanCancel == null) return;
 			for(T p : playersThatCanCancel)
 			{
 				if(!p.equals(playerThatHasToAccept))
 				{
-					closeMethod.invoke(p);
+					closeMethod.invoke(p, this);
 				}
 			}
 		}
