@@ -12,6 +12,9 @@ Language:
         UpdatedUUIDs: 'Updated %s accounts to UUIDs.'
     Description:
         Commands: commands
+        HelpHeader: '&eMarriage Master - commands'
+        HelpFooter: '&e__________________________'
+        HelpSeparator: '&r - '
         ListAll: Lists all Married Players.
         Marry: 'Marry two Persons in a range of %s blocks.'
         Divorce: 'Divorces two Persons in a range of %s blocks.'
