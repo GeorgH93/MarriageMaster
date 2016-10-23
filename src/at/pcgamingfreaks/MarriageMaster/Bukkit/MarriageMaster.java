@@ -185,7 +185,7 @@ public class MarriageMaster extends JavaPlugin
 		}
 		if(config.GetBonusXPEnabled())
 		{
-			getServer().getPluginManager().registerEvents(new Death(this), this);
+			getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 		}
 		if(config.GetKissEnabled())
 		{

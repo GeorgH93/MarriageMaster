@@ -18,7 +18,10 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -37,7 +40,10 @@ public class JoinLeaveChat implements Listener
 	private MarriageMaster plugin;
 	private String prefix = null, suffix = null;
 	private int delay = 0;
-	private boolean useSurname = false, changeChatFormat = false, prefixOnLineBeginning;
+	private boolean useSurname, changeChatFormat, prefixOnLineBeginning, magicHeart, statusHeart;
+	private char[] chatColors = new char[]{ '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
+	private Map<String, ChatColor> colorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private Random random = new Random();
 
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
@@ -45,6 +51,8 @@ public class JoinLeaveChat implements Listener
 		if(plugin.config.usePrefix() && plugin.config.getPrefix() != null)
 		{
 			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.getPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			magicHeart = prefix.contains("<magicheart>");
+			statusHeart = prefix.contains("<statusheart>");
 		}
 		if(plugin.config.UseSuffix() && plugin.config.GetSuffix() != null)
 		{
@@ -63,6 +71,12 @@ public class JoinLeaveChat implements Listener
 		if(plugin.config.GetInformOnPartnerJoinEnabled())
 		{
 			final String partner = plugin.DB.GetPartner(event.getPlayer());
+			if(magicHeart && !colorMap.containsKey(event.getPlayer().getName()))
+			{
+				ChatColor color = ChatColor.getByChar(chatColors[random.nextInt(chatColors.length)]);
+				colorMap.put(event.getPlayer().getName(), color);
+				colorMap.put(partner, color);
+			}
 			if(partner != null)
 			{
 				Player otherPlayer = plugin.getServer().getPlayerExact(partner);
@@ -145,9 +159,32 @@ public class JoinLeaveChat implements Listener
 			}
 			if(changed)
 			{
-				event.setFormat(format.replace("%1$s", formatReplacer.replace("<partnername>", partner)));
+				event.setFormat(format.replace("%1$s", formatReplacer.replace("<partnername>", partner)).replace("<magicheart>", getMagicHeart(player))
+						                .replace("<statusheart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
 			}
 		}
+		else
+		{
+			if(statusHeart)
+			{
+				if(prefixOnLineBeginning)
+				{
+					event.setFormat(ChatColor.GRAY + "\u2764" + ChatColor.WHITE + ' ' + event.getFormat());
+				}
+				else
+				{
+					event.setFormat(event.getFormat().replace("%1$s", ChatColor.GRAY + "\u2764" + ChatColor.WHITE + " %1$s"));
+				}
+			}
+		}
+	}
+
+	public String getMagicHeart(Player player)
+	{
+		if(!magicHeart) return "";
+		ChatColor color = colorMap.get(player.getName());
+		if(color == null) return "";
+		return color + "\u2764" + ChatColor.WHITE;
 	}
 
 	@EventHandler

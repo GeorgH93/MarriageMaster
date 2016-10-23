@@ -17,42 +17,34 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerExpChangeEvent;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-public class Death implements Listener 
+public class BonusXP implements Listener
 {
 	private MarriageMaster plugin;
 
-	public Death(MarriageMaster marriagemaster) 
+	public BonusXP(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 	}
 
 	@EventHandler
-	public void onEntityDeath(EntityDeathEvent event)
+	public void onXPPickup(PlayerExpChangeEvent event)
     {
-		if(event.getEntityType() != EntityType.PLAYER)
+		Player player = event.getPlayer();
+		Player partner = plugin.DB.GetPlayerPartner(player);
+		if(partner != null && partner.isOnline())
 		{
-			Player killer = event.getEntity().getKiller();
-			if(killer != null)
+			if(plugin.InRadius(player, partner, plugin.config.GetRange("BonusXP")))
 			{
-				Player otherPlayer = plugin.DB.GetPlayerPartner(killer);
-				if(otherPlayer != null && otherPlayer.isOnline())
-				{
-					if(plugin.InRadius(killer, otherPlayer, plugin.config.GetRange("BonusXP")))
-					{
-						int xp = (event.getDroppedExp() / 2) * plugin.config.GetBonusXPAmount();
-						otherPlayer.giveExp(xp);
-						killer.giveExp(xp);
-						event.setDroppedExp(0);
-					}
-				}
+				int xp = (int) Math.ceil((event.getAmount() / 2.0) * plugin.config.GetBonusXPAmount());
+				event.setAmount(xp);
+				partner.giveExp(xp);
 			}
 		}
 	}
