@@ -37,6 +37,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 
 public class JoinLeaveChat implements Listener 
 {
+	private static final String HEART = "\u2764";
+	private static final String HEART_GRAY = ChatColor.GRAY + HEART + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART + ChatColor.WHITE;
+
 	private MarriageMaster plugin;
 	private String prefix = null, suffix = null;
 	private int delay = 0;
@@ -50,13 +53,13 @@ public class JoinLeaveChat implements Listener
 		plugin = marriagemaster;
 		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
 		{
-			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", HEART_RED);
 			magicHeart = prefix.contains("<magicheart>");
 			statusHeart = prefix.contains("<statusheart>");
 		}
 		if(plugin.config.UseSuffix() && plugin.config.GetSuffix() != null)
 		{
-			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			suffix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetSuffix()).replace("<heart>", HEART_RED);
 		}
 		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
 		useSurname = plugin.config.getSurname();
@@ -160,7 +163,7 @@ public class JoinLeaveChat implements Listener
 			if(changed)
 			{
 				event.setFormat(format.replace("%1$s", formatReplacer.replace("<partnername>", partner)).replace("<magicheart>", getMagicHeart(player))
-						                .replace("<statusheart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+						                .replace("<statusheart>", HEART_RED));
 			}
 		}
 		else
@@ -169,11 +172,11 @@ public class JoinLeaveChat implements Listener
 			{
 				if(prefixOnLineBeginning)
 				{
-					event.setFormat(ChatColor.GRAY + "\u2764" + ChatColor.WHITE + ' ' + event.getFormat());
+					event.setFormat(HEART_GRAY + ' ' + event.getFormat());
 				}
 				else
 				{
-					event.setFormat(event.getFormat().replace("%1$s", ChatColor.GRAY + "\u2764" + ChatColor.WHITE + " %1$s"));
+					event.setFormat(event.getFormat().replace("%1$s", HEART_GRAY + " %1$s"));
 				}
 			}
 		}
@@ -184,7 +187,7 @@ public class JoinLeaveChat implements Listener
 		if(!magicHeart) return "";
 		ChatColor color = colorMap.get(player.getName());
 		if(color == null) return "";
-		return color + "\u2764" + ChatColor.WHITE;
+		return color + HEART + ChatColor.WHITE;
 	}
 
 	@EventHandler
