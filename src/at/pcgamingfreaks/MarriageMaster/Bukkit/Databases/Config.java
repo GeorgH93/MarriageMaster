@@ -335,17 +335,17 @@ public class Config
 		return getUsePermissions() && config.getBoolean("VaultPermissions", true);
 	}
 	
-	public boolean usePrefix()
+	public boolean UsePrefix()
 	{
 		return config.getBoolean("Prefix.Enable");	
 	}
-	
-	public String getPrefix()
+
+	public String GetPrefix()
 	{
 		return config.getString("Prefix.String");
 	}
 
-	public boolean getPrefixOnLineBeginning()
+	public boolean GetPrefixOnLineBeginning()
 	{
 		return config.getBoolean("Prefix.OnLineBeginning", true);
 	}

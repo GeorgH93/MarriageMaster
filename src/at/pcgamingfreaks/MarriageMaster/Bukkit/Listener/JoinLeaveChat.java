@@ -48,9 +48,9 @@ public class JoinLeaveChat implements Listener
 	public JoinLeaveChat(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		if(plugin.config.usePrefix() && plugin.config.getPrefix() != null)
+		if(plugin.config.UsePrefix() && plugin.config.GetPrefix() != null)
 		{
-			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.getPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
+			prefix = ChatColor.translateAlternateColorCodes('&', plugin.config.GetPrefix()).replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE);
 			magicHeart = prefix.contains("<magicheart>");
 			statusHeart = prefix.contains("<statusheart>");
 		}
@@ -60,7 +60,7 @@ public class JoinLeaveChat implements Listener
 		}
 		delay = plugin.config.getDelayMessageForJoiningPlayer() * 20 + 1;
 		useSurname = plugin.config.getSurname();
-		prefixOnLineBeginning = plugin.config.getPrefixOnLineBeginning();
+		prefixOnLineBeginning = plugin.config.GetPrefixOnLineBeginning();
 		changeChatFormat = prefix != null | suffix != null | useSurname;
 	}
 
