@@ -22,6 +22,7 @@ permissions:
       marry.backpack: true
       marry.kiss: true
       marry.selfmarry: true
+      marry.selfdivorce: true
       marry.changesurname: true
       marry.priest: true
       marry.setpriest: true
@@ -63,6 +64,7 @@ permissions:
       marry.backpack: true
       marry.kiss: true
       marry.selfmarry: true
+      marry.selfdivorce: true
       marry.changesurname: true
   marry.chat.*:
     description: Gives acces to all private message formats
@@ -109,6 +111,9 @@ permissions:
     default: true
   marry.selfmarry:
     description: Allows to marry an other player without a priest
+    defualt: true
+  marry.selfdivorce:
+    description: Allows to divorce from an other player without a priest
     defualt: true
   marry.changesurname:
     description: Allows to change the surname when self marry is on.

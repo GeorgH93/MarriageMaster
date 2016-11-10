@@ -764,7 +764,7 @@ public class OnCommand implements CommandExecutor
 				}
 				else if(plugin.config.AllowSelfDivorce() && args.length == 1)
 				{
-					if(plugin.CheckPerm(player, "marry.selfmarry"))
+					if(plugin.CheckPerm(player, "marry.selfmarry") || plugin.CheckPerm(player, "marry.selfdivorce"))
 					{
 						priest.SelfDivorce(player);
 					}
@@ -931,6 +931,9 @@ public class OnCommand implements CommandExecutor
 		if(plugin.config.AllowSelfMarry() && plugin.CheckPerm(player, "marry.selfmarry"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry <Playername>" + surname + separator + plugin.lang.get("Description.SelfMarry"));
+		}
+		if(plugin.config.AllowSelfDivorce() && (plugin.CheckPerm(player, "marry.selfmarry") || plugin.CheckPerm(player, "marry.selfdivorce")))
+		{
 			player.sendMessage(ChatColor.AQUA + "/marry divorce" + separator + plugin.lang.get("Description.SelfDivorce"));
 		}
 		if(plugin.config.getSurname() && plugin.CheckPerm(player, "marry.changesurname"))
