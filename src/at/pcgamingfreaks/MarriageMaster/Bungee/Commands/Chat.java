@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ public class Chat extends BaseCommand
 	
 	private BaseComponent[] Message_ChatJoined, Message_ChatLeft, Message_ChatListeningStarted, Message_ChatListeningStoped;
 	
-	public ArrayList<ProxiedPlayer> DirectChat = new ArrayList<ProxiedPlayer>();
-	public ArrayList<ProxiedPlayer> ChatListener = new ArrayList<ProxiedPlayer>();
+	public ArrayList<ProxiedPlayer> DirectChat = new ArrayList<>();
+	public ArrayList<ProxiedPlayer> ChatListener = new ArrayList<>();
 	
 	public Chat(MarriageMaster MM)
 	{
@@ -49,13 +49,14 @@ public class Chat extends BaseCommand
 		Message_ChatListeningStoped  = plugin.lang.getReady("Ingame.ChatListeningStoped");
 	}
 	
+	@Override
 	public boolean execute(ProxiedPlayer player, String cmd, String[] args)
 	{
 		if(player.hasPermission("marry.chat"))
 		{
 			if(cmd.equals("ctoggle") || cmd.equals("chattoggle") || cmd.equals(tcc) || (args.length > 0 && args[0].equalsIgnoreCase("toggle")))
 			{
-				UUID partner = plugin.DB.GetPartnerUUID(player);
+				UUID partner = plugin.DB.getPartnerUUID(player);
 				if(partner != null)
 	    		{
 					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
@@ -104,15 +105,15 @@ public class Chat extends BaseCommand
 			}
 			else if(args.length >= 1)
 			{
-				UUID partner = plugin.DB.GetPartnerUUID(player);
+				UUID partner = plugin.DB.getPartnerUUID(player);
 				if(partner != null)
 	    		{
 					ProxiedPlayer partnerPlayer = plugin.getProxy().getPlayer(partner);
 					String msg = "";
-        			for(int i = 0; i < args.length; i++)
-    				{
-    					msg += args[i] + " ";
-    				}
+				    for(String arg : args)
+				    {
+					    msg += arg + " ";
+				    }
         			SendChat(player, partnerPlayer, msg);
 				}
 				else
@@ -132,9 +133,9 @@ public class Chat extends BaseCommand
 		return true;
 	}
 	
-	public void SendChat(ProxiedPlayer sender, ProxiedPlayer reciver, String msg)
+	public void SendChat(ProxiedPlayer sender, ProxiedPlayer receiver, String msg)
 	{
-		if(reciver != null)
+		if(receiver != null)
 		{
 			msg = msg.replace('§', '&');
 			if(sender.hasPermission("marry.chat.color"))
@@ -157,12 +158,12 @@ public class Chat extends BaseCommand
 			{
 				msg = msg.replaceAll("§k", "&k");
 			}
-			BaseComponent[] sendmsg = TextComponent.fromLegacyText(String.format(format, sender.getDisplayName(), reciver.getDisplayName(), msg));
-			reciver.sendMessage(sendmsg);
-			sender.sendMessage(sendmsg);
+			BaseComponent[] message = TextComponent.fromLegacyText(String.format(format, sender.getDisplayName(), receiver.getDisplayName(), msg));
+			receiver.sendMessage(message);
+			sender.sendMessage(message);
 			for (ProxiedPlayer player : ChatListener)
 			{
-				player.sendMessage(sendmsg);
+				player.sendMessage(message);
 			}
 		}
 		else
@@ -181,7 +182,7 @@ public class Chat extends BaseCommand
 	{
 		if(DirectChat.contains(player))
 		{
-			ProxiedPlayer partner = plugin.DB.GetPartnerPlayer(player);
+			ProxiedPlayer partner = plugin.DB.getPartnerPlayer(player);
 			if(partner != null)
 			{
 				SendChat(player, partner, text);

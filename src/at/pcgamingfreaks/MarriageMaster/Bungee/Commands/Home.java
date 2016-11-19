@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ public class Home extends BaseCommand
 {
 	private HashSet<String> blocked;
 	private boolean delayed;
-	private BaseComponent[] Message_NoHome, Message_HomeBlocked;
+	private BaseComponent[] messageNoHome, messageHomeBlocked;
 	
 	public Home(MarriageMaster MM)
 	{
@@ -40,24 +40,25 @@ public class Home extends BaseCommand
 		delayed = plugin.config.getHomeDelayed();
 		
 		// Load Messages
-		Message_NoHome = plugin.lang.getReady("Ingame.NoHome");
-		Message_HomeBlocked = plugin.lang.getReady("Ingame.HomeBlocked");
+		messageNoHome = plugin.lang.getReady("Ingame.NoHome");
+		messageHomeBlocked = plugin.lang.getReady("Ingame.HomeBlocked");
 	}
 	
+	@Override
 	public boolean execute(ProxiedPlayer player, String cmd, String[] args)
 	{
 		if(player.hasPermission("marry.home"))
 		{
-			UUID partner = plugin.DB.GetPartnerUUID(player);
+			UUID partner = plugin.DB.getPartnerUUID(player);
 			if(partner != null)
 			{
-				String homeserver = plugin.DB.getHomeServer(player);
-				if(homeserver != null)
+				String homeServer = plugin.DB.getHomeServer(player);
+				if(homeServer != null)
 				{
-					ServerInfo si = plugin.getProxy().getServerInfo(homeserver);
+					ServerInfo si = plugin.getProxy().getServerInfo(homeServer);
 					if(si != null)
 					{
-						if(!blocked.contains(homeserver.toLowerCase()))
+						if(!blocked.contains(homeServer.toLowerCase()))
 						{
 							if(delayed && !player.hasPermission("marry.skiptpdelay"))
 							{
@@ -65,22 +66,22 @@ public class Home extends BaseCommand
 							}
 							else
 							{
-								SendHome(player, si);
+								sendHome(player, si);
 							}
 						}
 						else
 						{
-							player.sendMessage(Message_HomeBlocked);
+							player.sendMessage(messageHomeBlocked);
 						}
 					}
 					else
 					{
-						player.sendMessage(Message_NoHome);
+						player.sendMessage(messageNoHome);
 					}
 				}
 				else
 				{
-					player.sendMessage(Message_NoHome);
+					player.sendMessage(messageNoHome);
 				}
 			}
 			else
@@ -95,24 +96,24 @@ public class Home extends BaseCommand
 		return true;
 	}
 	
-	public void SendHome(String splayer)
+	public void sendHome(String stringPlayer)
 	{
-		ProxiedPlayer player = plugin.getProxy().getPlayer(splayer);
+		ProxiedPlayer player = plugin.getProxy().getPlayer(stringPlayer);
 		if(player != null)
 		{
-			String homeserver = plugin.DB.getHomeServer(player);
-			if(homeserver != null)
+			String homeServer = plugin.DB.getHomeServer(player);
+			if(homeServer != null)
 			{
-				ServerInfo si = plugin.getProxy().getServerInfo(homeserver);
+				ServerInfo si = plugin.getProxy().getServerInfo(homeServer);
 				if(si != null)
 				{
-					SendHome(player, si);
+					sendHome(player, si);
 				}
 			}
 		}
 	}
 	
-	public void SendHome(final ProxiedPlayer player, final ServerInfo homeServer)
+	public void sendHome(final ProxiedPlayer player, final ServerInfo homeServer)
 	{
 		if(!player.getServer().getInfo().getName().equals(homeServer.getName()))
 		{

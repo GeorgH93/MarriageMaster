@@ -28,31 +28,31 @@ public class MySQL extends Database
 {
 	private Connection conn = null;
 	
-	private String Table_Players, Table_Partners, Table_Home, Host, User, Password;
-	private boolean UpdatePlayer;
+	private String tablePlayers, tableMarriages, tableHomes, host, user, password;
+	private boolean updatePlayer;
 	
 	public MySQL(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
 		
 		// Load Settings
-		Table_Players = plugin.config.getUserTable();
-		Table_Partners = plugin.config.getPartnersTable();
-		Table_Home = plugin.config.getHomesTable();
-		UpdatePlayer = plugin.config.getUpdatePlayer();
-		Host = plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase();
-		User = plugin.config.getMySQLUser();
-		Password = plugin.config.getMySQLPassword();
+		tablePlayers = plugin.config.getUserTable();
+		tableMarriages = plugin.config.getPartnersTable();
+		tableHomes = plugin.config.getHomesTable();
+		updatePlayer = plugin.config.getUpdatePlayer();
+		host = plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase();
+		user = plugin.config.getMySQLUser();
+		password = plugin.config.getMySQLPassword();
 		// Finished Loading Settings
-		CheckDB();
+		checkDB();
 		CheckUUIDs();
-		runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
-		runStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
+		runStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
+		runStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "Console", "00000000000000000000000000000001", "Console", "00000000000000000000000000000001");
 	}
 
 	private void runStatement(final String query, final Object... args)
 	{
-		try(PreparedStatement preparedStatement = GetConnection().prepareStatement(query))
+		try(PreparedStatement preparedStatement = getConnection().prepareStatement(query))
 		{
 			for(int i = 0; args != null && i < args.length; i++)
 			{
@@ -85,7 +85,7 @@ public class MySQL extends Database
 		{
 			Map<String, UpdateData> toConvert = new HashMap<>();
 			List<UpdateData> toUpdate = new LinkedList<>();
-			try(Statement stmt = GetConnection().createStatement(); ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + Table_Players + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
+			try(Statement stmt = getConnection().createStatement(); ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + tablePlayers + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
 			{
 				while(res.next())
 				{
@@ -116,7 +116,7 @@ public class MySQL extends Database
 						toUpdate.add(updateData);
 					}
 				}
-				try(PreparedStatement ps = GetConnection().prepareStatement("UPDATE `" + Table_Players + "` SET `uuid`=? WHERE `player_id`=?;"))
+				try(PreparedStatement ps = getConnection().prepareStatement("UPDATE `" + tablePlayers + "` SET `uuid`=? WHERE `player_id`=?;"))
 				{
 					for(UpdateData updateData : toUpdate)
 					{
@@ -135,13 +135,13 @@ public class MySQL extends Database
 		}
 	}
 	
-	private Connection GetConnection()
+	private Connection getConnection()
 	{
 		try
 		{
 			if(conn == null || conn.isClosed())
 			{
-				conn = DriverManager.getConnection("jdbc:mysql://" + Host + "?allowMultiQueries=true&autoReconnect=true", User, Password);
+				conn = DriverManager.getConnection("jdbc:mysql://" + host + "?allowMultiQueries=true&autoReconnect=true", user, password);
 			}
 		}
 		catch (SQLException e)
@@ -150,46 +150,37 @@ public class MySQL extends Database
 		}
 		return conn;
 	}
+
+	private String replacePlaceholders(String query)
+	{
+		return query.replaceAll("(\\{\\w+\\})", "`$1`").replaceAll("`(\\{\\w+\\})`_UNIQUE", "`$1_UNIQUE`").replaceAll("`(\\{\\w+\\})`_idx", "`$1_idx`")
+				.replaceAll("fk_`(\\{\\w+\\})`_`(\\{\\w+\\})`_`(\\{\\w+\\})`", "`fk_$1_$2_$3`")
+				.replaceAll("\\{TPlayers\\}", tablePlayers).replaceAll("\\{TMarriages\\}", tableMarriages).replaceAll("\\{THomes\\}", tableHomes)
+				.replaceAll("\\{FPlayerID\\}", "player_id").replaceAll("\\{FName\\}", "name").replaceAll("\\{FUUID\\}", "uuid").replaceAll("\\{FShareBackpack\\}", "sharebackpack")
+				.replaceAll("\\{FMarryID\\}", "marry_id").replaceAll("\\{FSurname\\}", "surname").replaceAll("\\{FPlayer1\\}", "player1").replaceAll("\\{FPlayer2\\}", "player2")
+				.replaceAll("\\{FPriest\\}", "priest").replaceAll("\\{FPvPState\\}", "pvp_state").replaceAll("\\{FDate\\}", "date").replaceAll("\\{FHomeServer\\}", "home_server")
+				.replaceAll("\\{FHomeX\\}", "home_x").replaceAll("\\{FHomeY\\}", "home_y").replaceAll("\\{FHomeZ\\}", "home_z").replaceAll("\\{FHomeWorld\\}", "home_world");
+	}
 	
-	private void CheckDB()
+	private void checkDB()
 	{
 		try
 		{
-			Statement stmt = GetConnection().createStatement();
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Players + "` (`player_id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(20) NOT NULL UNIQUE, PRIMARY KEY (`player_id`));");
-			try
-			{
-				stmt.execute("ALTER TABLE `" + Table_Players + "` ADD COLUMN `uuid` CHAR(32) UNIQUE;");
-			}
-			catch(SQLException e)
-			{
-				if(e.getErrorCode() == 1142)
-				{
-					plugin.log.warning(e.getMessage());
-				}
-				else if(e.getErrorCode() != 1060)
-				{
-					e.printStackTrace();
-				}
-			}
-			stmt.execute("CREATE TABLE IF NOT EXISTS `" + Table_Partners + "` (`marry_id` INT NOT NULL AUTO_INCREMENT, `player1` INT NOT NULL, `player2` INT NOT NULL, `priest` INT NULL, `pvp_state` TINYINT(1) NOT NULL DEFAULT false, `date` DATETIME NOT NULL, PRIMARY KEY (`marry_id`) );");
-			stmt.execute("CREATE TABLE IF NOT EXISTS " + Table_Home + " (`marry_id` INT NOT NULL, `home_x` DOUBLE NOT NULL, `home_y` DOUBLE NOT NULL, `home_z` DOUBLE NOT NULL, `home_world` VARCHAR(45) NOT NULL DEFAULT 'world', PRIMARY KEY (`marry_id`) );");
-			try
-			{
-				stmt.execute("ALTER TABLE `" + Table_Home + "` ADD COLUMN `home_server` VARCHAR(45) UNIQUE;");
-			}
-			catch(SQLException e)
-			{
-				if(e.getErrorCode() == 1142)
-				{
-					plugin.log.warning(e.getMessage());
-				}
-				else if(e.getErrorCode() != 1060)
-				{
-					e.printStackTrace();
-				}
-			}
-			stmt.close();
+			Connection connection = getConnection();
+			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
+					                                            "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n);"),
+					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT NOT NULL,\n{FPlayer2} INT NOT NULL,\n" +
+							                                      "{FPriest} INT NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
+							                                      "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
+							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n);"),
+					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n" +
+							                                  "{FHomeZ} DOUBLE NOT NULL,\n{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n{FHomeServer} VARCHAR(45) DEFAULT NULL,\nPRIMARY KEY ({FMarryID}),\n" +
+							                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n);");
+			DBTools.updateDB(connection, queryTPlayers);
+			DBTools.updateDB(connection, queryTMarriages);
+			DBTools.updateDB(connection, queryTHomes);
 		}
 		catch (SQLException e)
 		{
@@ -197,9 +188,10 @@ public class MySQL extends Database
 		}
 	}
 	
-	public void UpdatePlayer(final ProxiedPlayer player)
+	@Override
+	public void updatePlayer(final ProxiedPlayer player)
 	{
-		if(!UpdatePlayer)
+		if(!updatePlayer)
 		{
 			return;
 		}
@@ -211,15 +203,15 @@ public class MySQL extends Database
 					try
 					{
 						PreparedStatement ps;
-						Connection con = DriverManager.getConnection("jdbc:mysql://" + Host, User, Password);
-						ps = con.prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?;");
+						Connection con = DriverManager.getConnection("jdbc:mysql://" + host, user, password);
+						ps = con.prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `uuid`=?;");
 						ps.setString(1, player.getUniqueId().toString().replace("-", ""));
 						ResultSet rs = ps.executeQuery();
 						if(rs.next())
 						{
 							rs.close();
 							ps.close();
-							ps = con.prepareStatement("UPDATE `" + Table_Players + "` SET `name`=? WHERE `uuid`=?;");
+							ps = con.prepareStatement("UPDATE `" + tablePlayers + "` SET `name`=? WHERE `uuid`=?;");
 							ps.setString(1, player.getName());
 							ps.setString(2, player.getUniqueId().toString().replace("-", ""));
 						}
@@ -227,7 +219,7 @@ public class MySQL extends Database
 						{
 							rs.close();
 							ps.close();
-							ps = con.prepareStatement("INSERT INTO `" + Table_Players + "` (`name`,`uuid`) VALUES (?,?);");
+							ps = con.prepareStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?);");
 							ps.setString(1, player.getName());
 							ps.setString(2, player.getUniqueId().toString().replace("-", ""));
 						}
@@ -243,22 +235,20 @@ public class MySQL extends Database
 			    }});
 	}
 	
-	private int GetPlayerID(ProxiedPlayer player)
+	private int getPlayerID(ProxiedPlayer player)
 	{
 		int id = -1;
-		try
+		try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `uuid`=?"))
 		{
-			PreparedStatement pstmt;
-			pstmt = GetConnection().prepareStatement("SELECT `player_id` FROM `" + Table_Players + "` WHERE `uuid`=?");
-			pstmt.setString(1, player.getUniqueId().toString().replace("-", ""));
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
+			preparedStatement.setString(1, player.getUniqueId().toString().replace("-", ""));
+			preparedStatement.executeQuery();
+			try(ResultSet rs = preparedStatement.getResultSet())
 			{
-				id = rs.getInt(1);
+				if(rs.next())
+				{
+					id = rs.getInt(1);
+				}
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (Exception e)
 		{
@@ -267,13 +257,13 @@ public class MySQL extends Database
 		return id;
 	}
 	
-	private String GetPlayerName(int pid)
+	private String getPlayerName(int pid)
 	{
 		String name = null;
 		try
 		{
-			Statement stmt = GetConnection().createStatement();
-			stmt.executeQuery("SELECT `name` FROM `" + Table_Players + "` WHERE `player_id`="+pid);
+			Statement stmt = getConnection().createStatement();
+			stmt.executeQuery("SELECT `name` FROM `" + tablePlayers + "` WHERE `player_id`="+pid);
 			ResultSet rs = stmt.getResultSet();
 			if(rs.next())
 			{
@@ -289,13 +279,13 @@ public class MySQL extends Database
 		return name;
 	}
 	
-	private UUID GetPlayerUUID(int pid)
+	private UUID getPlayerUUID(int pid)
 	{
 		UUID uuid = null;
 		try
 		{
-			Statement stmt = GetConnection().createStatement();
-			stmt.executeQuery("SELECT `uuid` FROM `" + Table_Players + "` WHERE `player_id`=" + pid);
+			Statement stmt = getConnection().createStatement();
+			stmt.executeQuery("SELECT `uuid` FROM `" + tablePlayers + "` WHERE `player_id`=" + pid);
 			ResultSet rs = stmt.getResultSet();
 			if(rs.next())
 			{
@@ -312,31 +302,34 @@ public class MySQL extends Database
 		return uuid;
 	}
 	
-	public String GetPartner(ProxiedPlayer player)
+	@Override
+	public String getPartner(ProxiedPlayer player)
 	{
 		String partner = null;
 		try
 		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next ())
+			int pid = getPlayerID(player);
+			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
 			{
-				if(rs.getInt(1) == pid)
+				preparedStatement.setInt(1, pid);
+				preparedStatement.setInt(2, pid);
+				preparedStatement.executeQuery();
+				try(ResultSet rs = preparedStatement.getResultSet())
 				{
-					pid = rs.getInt(2);
+					if(rs.next())
+					{
+						if(rs.getInt(1) == pid)
+						{
+							pid = rs.getInt(2);
+						}
+						else
+						{
+							pid = rs.getInt(1);
+						}
+						partner = getPlayerName(pid);
+					}
 				}
-				else
-				{
-					pid = rs.getInt(1);
-				}
-				partner = GetPlayerName(pid);
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (Exception e)
 		{
@@ -345,31 +338,34 @@ public class MySQL extends Database
 		return partner;
 	}
 	
-	public UUID GetPartnerUUID(ProxiedPlayer player)
+	@Override
+	public UUID getPartnerUUID(ProxiedPlayer player)
 	{
 		UUID partner = null;
 		try
 		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + Table_Partners + "` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next ())
+			int pid = getPlayerID(player);
+			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
 			{
-				if(rs.getInt(1) == pid)
+				preparedStatement.setInt(1, pid);
+				preparedStatement.setInt(2, pid);
+				preparedStatement.executeQuery();
+				try(ResultSet rs = preparedStatement.getResultSet())
 				{
-					pid = rs.getInt(2);
+					if(rs.next())
+					{
+						if(rs.getInt(1) == pid)
+						{
+							pid = rs.getInt(2);
+						}
+						else
+						{
+							pid = rs.getInt(1);
+						}
+						partner = getPlayerUUID(pid);
+					}
 				}
-				else
-				{
-					pid = rs.getInt(1);
-				}
-				partner = GetPlayerUUID(pid);
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (Exception e)
 		{
@@ -378,23 +374,26 @@ public class MySQL extends Database
 		return partner;
 	}
 	
+	@Override
 	public String getHomeServer(ProxiedPlayer player)
 	{
 		String HomeServer = null;
 		try
 		{
-			int pid = GetPlayerID(player);
-			PreparedStatement pstmt = GetConnection().prepareStatement("SELECT `home_server` FROM `" + Table_Home + "` INNER JOIN `" + Table_Partners + "` ON `" + Table_Home + "`.`marry_id`=`" + Table_Partners + "`.`marry_id` WHERE `player1`=? OR `player2`=?");
-			pstmt.setInt(1, pid);
-			pstmt.setInt(2, pid);
-			pstmt.executeQuery();
-			ResultSet rs = pstmt.getResultSet();
-			if(rs.next())
+			int pid = getPlayerID(player);
+			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `home_server` FROM `" + tableHomes + "` INNER JOIN `" + tableMarriages + "` ON `" + tableHomes + "`.`marry_id`=`" + tableMarriages + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
 			{
-				HomeServer = rs.getString(1);
+				preparedStatement.setInt(1, pid);
+				preparedStatement.setInt(2, pid);
+				preparedStatement.executeQuery();
+				try(ResultSet rs = preparedStatement.getResultSet())
+				{
+					if(rs.next())
+					{
+						HomeServer = rs.getString(1);
+					}
+				}
 			}
-			rs.close();
-			pstmt.close();
 		}
 		catch (Exception e)
 		{

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,19 +28,17 @@ public class Database
 	
 	public Database(MarriageMaster marriagemaster) { plugin = marriagemaster; }
 	
-	public void Recache() {}
+	public void disable() {}
 	
-	public void Disable() {}
+	public void updatePlayer(ProxiedPlayer player) {}
 	
-	public void UpdatePlayer(ProxiedPlayer player) {}
+	public String getPartner(ProxiedPlayer player) { return null; }
 	
-	public String GetPartner(ProxiedPlayer player) { return null; }
+	public UUID getPartnerUUID(ProxiedPlayer player) { return null; }
 	
-	public UUID GetPartnerUUID(ProxiedPlayer player) { return null; }
-	
-	public ProxiedPlayer GetPartnerPlayer(ProxiedPlayer player)
+	public ProxiedPlayer getPartnerPlayer(ProxiedPlayer player)
 	{
-		UUID partner = GetPartnerUUID(player);
+		UUID partner = getPartnerUUID(player);
 		if(partner != null)
 		{
 			return plugin.getProxy().getPlayer(partner);
@@ -50,7 +48,7 @@ public class Database
 	
 	public String getHomeServer(ProxiedPlayer player) { return null; }
 	
-	public String LimitText(String text, int len)
+	public String limitText(String text, int len)
 	{
 		if(text != null && text.length() > len)
 		{

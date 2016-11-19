@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ public class TP extends BaseCommand
 {
 	private HashSet<String> blocked;
 	private boolean delayed;
-	private BaseComponent[] Message_TPBlocked;
+	private BaseComponent[] messageTPBlocked;
 	
 	public TP(MarriageMaster MM)
 	{
@@ -39,14 +39,15 @@ public class TP extends BaseCommand
 		delayed = plugin.config.getTPDelayed();
 		
 		// Load Messages
-		Message_TPBlocked = plugin.lang.getReady("Ingame.TPBlocked");
+		messageTPBlocked = plugin.lang.getReady("Ingame.TPBlocked");
 	}
 	
+	@Override
 	public boolean execute(ProxiedPlayer player, String cmd, String[] args)
 	{
 		if(player.hasPermission("marry.tp"))
 		{
-			UUID partner = plugin.DB.GetPartnerUUID(player);
+			UUID partner = plugin.DB.getPartnerUUID(player);
 			if(partner != null)
 			{
 				ProxiedPlayer Partner = plugin.getProxy().getPlayer(partner);
@@ -60,12 +61,12 @@ public class TP extends BaseCommand
 						}
 						else
 						{
-							SendTP(player, Partner);
+							sendTP(player, Partner);
 						}
 					}
 					else
 					{
-						player.sendMessage(Message_TPBlocked);
+						player.sendMessage(messageTPBlocked);
 					}
 				}
 				else
@@ -85,20 +86,20 @@ public class TP extends BaseCommand
 		return true;
 	}
 	
-	public void SendTP(String splayer)
+	public void sendTP(String sPlayer)
 	{
-		ProxiedPlayer player = plugin.getProxy().getPlayer(splayer);
+		ProxiedPlayer player = plugin.getProxy().getPlayer(sPlayer);
 		if(player != null)
 		{
-			ProxiedPlayer Pplayer = plugin.DB.GetPartnerPlayer(player);
-			if(Pplayer != null)
+			ProxiedPlayer pPlayer = plugin.DB.getPartnerPlayer(player);
+			if(pPlayer != null)
 			{
-				SendTP(player, Pplayer);
+				sendTP(player, pPlayer);
 			}
 		}
 	}
 	
-	public void SendTP(final ProxiedPlayer player, final ProxiedPlayer partner)
+	public void sendTP(final ProxiedPlayer player, final ProxiedPlayer partner)
 	{
 		if(!player.getServer().getInfo().getName().equals(partner.getServer().getInfo().getName()))
 		{

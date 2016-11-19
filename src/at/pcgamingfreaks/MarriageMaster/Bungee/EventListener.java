@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
 
-import com.google.common.io.ByteStreams;
-
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -47,7 +45,7 @@ public class EventListener implements Listener
 	private int delay = 1;
 	
 	// Sub-command map
-	private HashMap<String, BaseCommand> marrycommandmap = new HashMap<String, BaseCommand>();
+	private HashMap<String, BaseCommand> marryCommandMap = new HashMap<>();
 	
 	public EventListener(MarriageMaster MM)
 	{
@@ -62,14 +60,15 @@ public class EventListener implements Listener
 		Message_PartnerNowOffline = plugin.lang.getReady("Ingame.PartnerNowOffline");
 	}
 	
-	public void RegisterMarrySubcommand(BaseCommand command, String... aliases)
+	public void RegisterMarrySubCommand(BaseCommand command, String... aliases)
 	{
 		for(String s : aliases)
 		{
-			marrycommandmap.put(s, command);
+			marryCommandMap.put(s, command);
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	@EventHandler(priority=EventPriority.NORMAL)
     public void onChat(ChatEvent event)
     {
@@ -84,10 +83,10 @@ public class EventListener implements Listener
 					cmd = args[1].toLowerCase();
 					try
 					{
-						event.setCancelled(marrycommandmap.get(cmd).execute((ProxiedPlayer)event.getSender(), cmd,
-							((args.length) > 2) ? Arrays.copyOfRange(args, 2, args.length) : (new String[0])));
+						event.setCancelled(marryCommandMap.get(cmd).execute((ProxiedPlayer)event.getSender(), cmd,
+						                                                    ((args.length) > 2) ? Arrays.copyOfRange(args, 2, args.length) : (new String[0])));
 					}
-					catch(Exception e) {}
+					catch(Exception ignored) {}
 				}
 			}
 			else
@@ -101,12 +100,13 @@ public class EventListener implements Listener
 		}
     }
 	
+	@SuppressWarnings("unused")
 	@EventHandler(priority=EventPriority.NORMAL)
     public void onLogin(PostLoginEvent event)
     {
 		if(JLInfo)
 		{
-			final UUID partner = plugin.DB.GetPartnerUUID(event.getPlayer());
+			final UUID partner = plugin.DB.getPartnerUUID(event.getPlayer());
 			if(partner != null)
 			{
 				ProxiedPlayer otherPlayer = plugin.getProxy().getPlayer(partner);
@@ -132,15 +132,16 @@ public class EventListener implements Listener
 				}, delay, TimeUnit.SECONDS);
 			}
 		}
-		plugin.DB.UpdatePlayer(event.getPlayer());
+		plugin.DB.updatePlayer(event.getPlayer());
     }
 	
+	@SuppressWarnings("unused")
 	@EventHandler(priority=EventPriority.NORMAL)
     public void onDisconnect(PlayerDisconnectEvent event)
     {
 		if(JLInfo)
 		{
-			ProxiedPlayer otherPlayer = plugin.DB.GetPartnerPlayer(event.getPlayer());
+			ProxiedPlayer otherPlayer = plugin.DB.getPartnerPlayer(event.getPlayer());
 			
 			if(otherPlayer != null)
 			{
@@ -153,6 +154,7 @@ public class EventListener implements Listener
 		}
     }
 	
+	@SuppressWarnings("unused")
 	@EventHandler(priority=EventPriority.NORMAL)
 	public void onPluginMessage(PluginMessageEvent ev)
 	{
@@ -167,8 +169,8 @@ public class EventListener implements Listener
 		    String[] args = in.readUTF().split("\\|");
 			switch(args[0].toLowerCase())
 			{
-				case "home": if(plugin.home != null && args.length == 2) { plugin.home.SendHome(args[1]); } break;
-				case "tp": if(plugin.tp != null && args.length == 2) { plugin.tp.SendTP(args[1]); } break;
+				case "home": if(plugin.home != null && args.length == 2) { plugin.home.sendHome(args[1]); } break;
+				case "tp": if(plugin.tp != null && args.length == 2) { plugin.tp.sendTP(args[1]); } break;
 				case "updateMarriage":
 				case "updatePlayer":
 					Set<Map.Entry<String, ServerInfo>> serverList = plugin.getProxy().getServers().entrySet();

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -114,17 +114,17 @@ public class MarriageMaster extends Plugin
 			// Register sub Commands for /marry
 		if(config.getChatGlobal())
 		{
-			listener.RegisterMarrySubcommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
+			listener.RegisterMarrySubCommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
 		}
-		listener.RegisterMarrySubcommand(new Update(this), "update");
-		listener.RegisterMarrySubcommand(new Reload(this), "reload");
+		listener.RegisterMarrySubCommand(new Update(this), "update");
+		listener.RegisterMarrySubCommand(new Reload(this), "reload");
 		if(config.getHomeGlobal())
 		{
-			listener.RegisterMarrySubcommand(home, "home");
+			listener.RegisterMarrySubCommand(home, "home");
 		}
 		if(config.getTPGlobal())
 		{
-			listener.RegisterMarrySubcommand(tp, "tp");
+			listener.RegisterMarrySubCommand(tp, "tp");
 		}
     }
     
@@ -143,7 +143,7 @@ public class MarriageMaster extends Plugin
     
     public void Disable()
     {
-    	DB.Disable();
+    	DB.disable();
     	DB = null;
     	lang = null;
     	config = null;
@@ -167,14 +167,14 @@ public class MarriageMaster extends Plugin
 	
 	public void broadcastPluginMessage(String message)
 	{
-		byte[] outba = null;
+		byte[] bytesOut = null;
 		try
 		{
 			ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	        DataOutputStream out = new DataOutputStream(stream);
 	        out.writeUTF(message);
 	        out.flush();
-	        outba = stream.toByteArray();
+	        bytesOut = stream.toByteArray();
 	        out.close();
 		}
 		catch (Exception e)
@@ -182,10 +182,10 @@ public class MarriageMaster extends Plugin
 			log.warning("Failed sending message!");
 			e.printStackTrace();
 		}
-		Set<Entry<String, ServerInfo>> serverlist = getProxy().getServers().entrySet();
-		for(Entry<String, ServerInfo> e : serverlist)
+		Set<Entry<String, ServerInfo>> serverList = getProxy().getServers().entrySet();
+		for(Entry<String, ServerInfo> e : serverList)
 		{
-			e.getValue().sendData("MarriageMaster", outba, true);
+			e.getValue().sendData("MarriageMaster", bytesOut, true);
 		}
 	}
 	

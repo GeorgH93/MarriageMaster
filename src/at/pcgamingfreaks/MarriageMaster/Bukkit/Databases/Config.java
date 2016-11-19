@@ -100,7 +100,7 @@ public class Config
 		config.set("Language","en");
 		config.set("LanguageUpdateMode","Overwrite");
 		config.set("PriestCMD", "priest");
-		config.set("UseUUIDs", Bukkit.getServer().getOnlineMode() && UUIDComp());
+		config.set("UseUUIDs", UUIDComp());
 		config.set("UUID_Type", "auto");
 		config.set("AllowSelfMarry", false);
 		config.set("AllowSelfDivorce", "auto");
