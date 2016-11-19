@@ -19,54 +19,21 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Network;
 
 public enum Effects
 {
-	Explode(0, "explode", "EXPLOSION_NORMAL"),
-	LargeExplosion(1, "largeexplosion", "EXPLOSION_LARGE"),
-	HugeExplosion(2, "hugeexplosion", "EXPLOSION_HUGE"),
-	FireworksSpark(3, "fireworksSpark", "FIREWORKS_SPARK"),
-	Bubble(4, "bubble", "WATER_BUBBLE"),
-	Wake(5, "wake", "WATER_WAKE"),
-	Splash(6, "splash", "WATER_SPLASH"),
-	Suspended(7, "suspended", "SUSPENDED"),
-	Townaura(8, "townaura", "TOWN_AURA"),
-	Crit(9, "crit", "CRIT"),
-	MagicCrit(10, "magicCrit", "CRIT_MAGIC"),
-	Smoke(11, "smoke", "SMOKE_NORMAL"),
-	LargeSmoke(12, "largesmoke", "SMOKE_LARGE"),
-	MobSpell(13, "mobSpell", "SPELL_MOB"),
-	InstantSpell(14, "instantSpell", "SPELL_INSTANT"),
-	Spell(15, "spell", "SPELL"),
-	WitchMagic(17, "witchMagic", "SPELL_WITCH"),
-	DripWater(18, "dripWater", "DRIP_WATER"),
-	DripLava(19, "dripLava", "DRIP_LAVA"),
-	AngryVillager(20, "angryVillager", "VILLAGER_ANGRY"),
-	HappyVillager(21, "happyVillager", "VILLAGER_HAPPY"),
-	Depthsuspend(22, "depthsuspend", "SUSPENDED_DEPTH"),
-	Note(23, "note", "NOTE"),
-	Portal(24, "portal", "PORTAL"),
-	Enchantmenttable(25, "enchantmenttable", "ENCHANTMENT_TABLE"),
-	Flame(26, "flame", "FLAME"),
-	Lava(27, "lava", "LAVA"),
-	Footstep(28, "footstep", "FOOTSTEP"),
-	Cloud(29, "cloud", "CLOUD"),
-	Reddust(30, "reddust", "REDSTONE"),
-	Snowballpoof(31, "snowballpoof", "SNOWBALL"),
-	Snowshovel(32, "snowshovel", "SNOW_SHOVEL"),
-	Slime(33, "slime", "SLIME"),
-	Heart(34, "heart", "HEART"),
-	Barrier(35, "barrier", "BARRIER");
+	Heart(34, "heart", "HEART");
 	
 	private final int id;
 	private final String name, nameUpperCase, newName;
 	private final Enum<?> nmsEnumParticle;
 	
-	private Effects(int ID, String NAME, String NEWNAME)
+	Effects(int ID, String NAME, String NEWNAME)
 	{
 		id = ID;
 		name = NAME;
 		nameUpperCase = name.toUpperCase();
 		newName = NEWNAME;
-		if(Reflection.getVersion().contains("1_8") || Reflection.getVersion().contains("1_9") || Reflection.getVersion().contains("1_10"))
+		if(Reflection.getVersion().contains("1_8") || Reflection.getVersion().contains("1_9") || Reflection.getVersion().contains("1_10") || Reflection.getVersion().contains("1_11"))
 		{
+			//noinspection ConstantConditions
 			nmsEnumParticle = Reflection.getEnum(Reflection.getNMSClass("EnumParticle").getName() + "." + (newName));
 		}
 		else

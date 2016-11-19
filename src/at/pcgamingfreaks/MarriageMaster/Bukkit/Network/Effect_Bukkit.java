@@ -36,7 +36,7 @@ public class Effect_Bukkit extends EffectBase
 		if(SEND_PACKET == null || PLAYER_CONNECTION == null)
 			return;
 		Object handle = Reflection.getHandle(player);
-		if(handle != null && handle.getClass() == ENTITY_PLAYER) // If it's not a real player we can't send him the packet
+		if(handle != null && handle.getClass().equals(ENTITY_PLAYER)) // If it's not a real player we can't send him the packet
 		{
 			SEND_PACKET.invoke(PLAYER_CONNECTION.get(handle), packet);
 		}
@@ -48,7 +48,7 @@ public class Effect_Bukkit extends EffectBase
 			return;
 		for(Entity entity : location.getWorld().getEntities())
 		{
-			if(entity instanceof Player && entity.getLocation().getWorld().equals(location.getWorld()) && entity.getLocation().distance(location) < visibleRange)
+			if(entity instanceof Player && entity.getLocation().getWorld().getName().equalsIgnoreCase(location.getWorld().getName()) && entity.getLocation().distance(location) < visibleRange)
 			{
 				sendPacket((Player) entity, particle);
 			}

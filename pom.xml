@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.29.8</version>
+	<version>1.29.9</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -110,13 +110,13 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.9-R0.1-SNAPSHOT</version>
+			<version>1.11-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.md-5</groupId>
 			<artifactId>bungeecord-api</artifactId>
-			<version>LATEST</version>
+			<version>1.11-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
