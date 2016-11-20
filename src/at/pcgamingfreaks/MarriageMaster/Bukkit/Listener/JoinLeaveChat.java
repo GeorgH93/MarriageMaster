@@ -43,7 +43,7 @@ public class JoinLeaveChat implements Listener
 	private MarriageMaster plugin;
 	private String prefix = null, suffix = null;
 	private int delay = 0;
-	private boolean useSurname, changeChatFormat, prefixOnLineBeginning, magicHeart, statusHeart;
+	private boolean useSurname, changeChatFormat, prefixOnLineBeginning, magicHeart, statusHeart, onJoinInfo;
 	private char[] chatColors = new char[]{ '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f' };
 	private Map<String, ChatColor> colorMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private Random random = new Random();
@@ -65,23 +65,24 @@ public class JoinLeaveChat implements Listener
 		useSurname = plugin.config.getSurname();
 		prefixOnLineBeginning = plugin.config.GetPrefixOnLineBeginning();
 		changeChatFormat = prefix != null | suffix != null | useSurname;
+		onJoinInfo = plugin.config.GetInformOnPartnerJoinEnabled();
 	}
 
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerLoginEvent(PlayerJoinEvent event)
 	{
-		if(plugin.config.GetInformOnPartnerJoinEnabled())
+		if(onJoinInfo)
 		{
 			final String partner = plugin.DB.GetPartner(event.getPlayer());
-			if(magicHeart && !colorMap.containsKey(event.getPlayer().getName()))
-			{
-				ChatColor color = ChatColor.getByChar(chatColors[random.nextInt(chatColors.length)]);
-				colorMap.put(event.getPlayer().getName(), color);
-				colorMap.put(partner, color);
-			}
 			if(partner != null)
 			{
+				if(magicHeart && !colorMap.containsKey(event.getPlayer().getName()))
+				{
+					ChatColor color = ChatColor.getByChar(chatColors[random.nextInt(chatColors.length)]);
+					colorMap.put(event.getPlayer().getName(), color);
+					colorMap.put(partner, color);
+				}
 				Player otherPlayer = plugin.getServer().getPlayerExact(partner);
 				final Player sender = event.getPlayer();
 				plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
@@ -193,7 +194,7 @@ public class JoinLeaveChat implements Listener
 	@EventHandler
 	public void PlayerLeaveEvent(PlayerQuitEvent event)
 	{
-		if(plugin.config.GetInformOnPartnerJoinEnabled())
+		if(onJoinInfo)
 		{
 			Player otherPlayer = plugin.DB.GetPlayerPartner(event.getPlayer());
 			if(otherPlayer != null && otherPlayer.isOnline())
