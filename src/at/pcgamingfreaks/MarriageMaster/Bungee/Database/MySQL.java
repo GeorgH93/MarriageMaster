@@ -168,16 +168,12 @@ public class MySQL extends Database
 		{
 			Connection connection = getConnection();
 			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
-					                                            "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n);"),
+					                                            "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID}));"),
 					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT NOT NULL,\n{FPlayer2} INT NOT NULL,\n" +
 							                                      "{FPriest} INT NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
-							                                      "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n);"),
-					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n" +
-							                                  "{FHomeZ} DOUBLE NOT NULL,\n{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n{FHomeServer} VARCHAR(45) DEFAULT NULL,\nPRIMARY KEY ({FMarryID}),\n" +
-							                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n);");
+							                                      "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}));"),
+					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n{FHomeZ} DOUBLE NOT NULL,\\n" +
+							                                  "{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n{FHomeServer} VARCHAR(45) DEFAULT NULL,\nPRIMARY KEY ({FMarryID}));");
 			DBTools.updateDB(connection, queryTPlayers);
 			DBTools.updateDB(connection, queryTMarriages);
 			DBTools.updateDB(connection, queryTHomes);
