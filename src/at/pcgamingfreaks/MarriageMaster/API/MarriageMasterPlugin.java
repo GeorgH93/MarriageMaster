@@ -74,6 +74,13 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	boolean isSelfMarriageAllowed();
 
 	/**
+	 * Checks if players can divorce form their partners directly without the need for a priest.
+	 *
+	 * @return True if players can divorce himself without a priest. False if not.
+	 */
+	boolean isSelfDivorceAllowed();
+
+	/**
 	 * Checks if surnames are enabled.
 	 *
 	 * @return True if surnames are enabled. False if not.
