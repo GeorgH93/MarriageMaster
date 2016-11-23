@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.29.9.1</version>
+	<version>1.29.9.2</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -127,8 +127,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.6.4</version>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.7.10</version>
 		</dependency>
 
 		<dependency>

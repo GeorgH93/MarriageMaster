@@ -66,6 +66,8 @@ public class MySQL extends Database implements Listener
 		poolConfig.setPassword(plugin.config.getMySQLPassword());
 		poolConfig.setMinimumIdle(1);
 		poolConfig.setMaximumPoolSize(plugin.config.getMySQLMaxConnections());
+		poolConfig.setPoolName("MarriageMaster-Connection-Pool");
+		poolConfig.addDataSourceProperty("cachePrepStmts", "true");
 		dataSource = new HikariDataSource(poolConfig);
 
 		uuidOrName = (plugin.UseUUIDs) ? "uuid" : "name";
