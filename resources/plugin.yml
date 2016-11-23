@@ -111,10 +111,10 @@ permissions:
     default: true
   marry.selfmarry:
     description: Allows to marry an other player without a priest
-    defualt: true
+    default: true
   marry.selfdivorce:
     description: Allows to divorce from an other player without a priest
-    defualt: true
+    default: true
   marry.changesurname:
     description: Allows to change the surname when self marry is on.
     default: true
