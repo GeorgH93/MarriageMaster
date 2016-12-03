@@ -27,7 +27,7 @@ public class Effect_1_8_AndNewer extends Effect_Bukkit
 			boolean.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class, int[].class);
 
 	@Override
-	public void SpawnParticle(Location location, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
+	public void spawnParticle(Location location, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
 		try
 		{

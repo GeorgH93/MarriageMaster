@@ -8,7 +8,6 @@ Language:
         NoPermPL: No Permission Plugin found, using default permissions.
         NoEcoPL: No Economy Plugin found disable economy.
         MetricsOffline: Metrics offline.
-        NotSupportedNet: Not supported MC version. Heart effect disabled.
         UpdateUUIDs: Start updating database to UUIDs ...
         UpdatedUUIDs: 'Updated %s accounts to UUIDs.'
     Description:

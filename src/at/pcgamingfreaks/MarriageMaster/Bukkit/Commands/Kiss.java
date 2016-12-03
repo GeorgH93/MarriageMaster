@@ -17,33 +17,28 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
-import java.util.HashMap;
-import java.util.Map;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Network.EffectBase;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Network.Effects;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Network.EffectBase;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Network.Effects;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Kiss
 {
-	private MarriageMaster plugin;
-	private Map<String, Long> wait;
-	private EffectBase eb = null;
+	private final MarriageMaster plugin;
+	private final Map<String, Long> wait = new HashMap<>();
+	private final EffectBase eb;
 
 	public Kiss(MarriageMaster marriagemaster) 
 	{
 		plugin = marriagemaster;
-		wait = new HashMap<>();
-		eb = EffectBase.getEffect();
-		if(eb == null)
-		{
-			plugin.log.warning(plugin.lang.get("Console.NotSupportedNet"));
-		}
+		eb = EffectBase.getEffect(marriagemaster);
 	}
 	
 	public boolean CanKissAgain(String playername)
@@ -62,10 +57,7 @@ public class Kiss
 	
 	public int GetKissTimeOut(String playername)
 	{
-		if(!wait.containsKey(playername))
-		{
-			return 0;
-		}
+		if(!wait.containsKey(playername)) return 0;
 		return (int)((wait.get(playername) + plugin.config.GetKissWaitTime() - System.currentTimeMillis())/1000);
 	}
 	
@@ -73,15 +65,8 @@ public class Kiss
 	{
 		String youKissed = plugin.lang.get("Ingame.YouKissed");
 		String youGotKissed = plugin.lang.get("Ingame.YouGotKissed");
-		if (youKissed != null && !youKissed.isEmpty())
-		{
-			player.sendMessage(ChatColor.GREEN + youKissed);
-		}
-		if (youGotKissed != null && !youGotKissed.isEmpty())
-		{
-			otherPlayer.sendMessage(ChatColor.GREEN + youGotKissed);
-		}
-
+		if (!youKissed.isEmpty()) player.sendMessage(ChatColor.GREEN + youKissed);
+		if (!youGotKissed.isEmpty()) otherPlayer.sendMessage(ChatColor.GREEN + youGotKissed);
 		DrawHearts(otherPlayer);
 		DrawHearts(player);
 		if(!plugin.CheckPerm(player, "marry.skiptpdelay", false))
@@ -95,19 +80,16 @@ public class Kiss
 		if(eb != null)
 		{
 			Location loc = player.getLocation();
-			if(loc == null)
+			if(loc == null) return;
+			try
 			{
-	    		return;
+				eb.spawnParticle(player.getLocation(), Effects.Heart, plugin.config.GetRange("HearthVisible"), plugin.config.GetKissHearthCount(), 1.0F, 1.0F, 1.0F, 1.0F);
 			}
-	    	try
-	    	{
-	    		eb.SpawnParticle(loc, Effects.Heart, plugin.config.GetRange("HearthVisible"), plugin.config.GetKissHearthCount(), 1.0F, 1.0F, 1.0F, 1.0F);
-	    	}
-	    	catch(Exception e)
-	    	{
-	    		plugin.log.warning("Failed spawning heart! Bukkit: " + Bukkit.getVersion());
-	    		e.printStackTrace();
-	    	}
+			catch(Exception e)
+			{
+				plugin.log.warning("Failed spawning heart! Bukkit: " + Bukkit.getVersion());
+				e.printStackTrace();
+			}
 		}
 	}
 }

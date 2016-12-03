@@ -7,7 +7,6 @@ Language:
         NoPermPL: Kein Permission-Plugin gefunden, verwende standard rechte.
         NoEcoPL: Kein Wirtschafts-Plugin gefunden, deaktiviere Geld-System.
         MetricsOffline: Metrics offline.
-        NotSupportedNet: 'Keine unterstütste Version von Bukkit gefunden. Herz-Effekt Deaktiviert.'
         UpdateUUIDs: Starte Datenbank Update auf UUIDs ...
         UpdatedUUIDs: '%s Datensätze wurden auf UUIDs geupdated.'
     Description:

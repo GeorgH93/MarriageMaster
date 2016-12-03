@@ -17,14 +17,16 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Network;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 public class EffectBase
 {
-	public void SpawnParticle(Location loc, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
+	public void spawnParticle(Location loc, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception {}
 	
-	public static EffectBase getEffect()
+	public static EffectBase getEffect(MarriageMaster plugin)
 	{
 		EffectBase eb = null;
 		String name = Bukkit.getServer().getClass().getPackage().getName();
@@ -56,7 +58,9 @@ public class EffectBase
 		}
 		if(eb == null)
 		{
-			Bukkit.getServer().getLogger().warning("Could not initialize effect spawner. Running: " + name + ": " + Bukkit.getVersion());
+			plugin.getLogger().warning("Could not initialize effect spawner. Running: " +
+					                                       plugin.getName() + " (" + plugin.getDescription().getVersion() + ") with" + name + " (" + Bukkit.getVersion() + ")");
+			plugin.getLogger().warning("Not supported MC version. Heart effect disabled.");
 		}
 		return eb;
 	}

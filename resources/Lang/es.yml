@@ -8,7 +8,6 @@ Language:
         NoPermPL: No hay permisos del plugin, usando permisos normales.
         NoEcoPL: No se encontro un plugin de economía. Economía desactivada.
         MetricsOffline: Métrica desconectada.
-        NotSupportedNet: Version de MC no soportada. Efecto de corazon desactivado.
         UpdateUUIDs: Actualizando UUIDS ...
         UpdatedUUIDs: Ya actualizadas %s cuentas para UUIDs.'
     Description:

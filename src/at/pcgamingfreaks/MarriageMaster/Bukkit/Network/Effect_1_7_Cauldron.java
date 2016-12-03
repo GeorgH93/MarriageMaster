@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014-2015 GeorgH93
+ * Copyright (C) 2014-2016 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,24 +23,28 @@ import org.bukkit.entity.Player;
 
 public class Effect_1_7_Cauldron extends EffectBase
 {
-	private static Class<?> PacketPlayOutParticle = Reflection_Cauldron.getNMSClass("PacketPlayOutWorldParticles");
+	private static final Class<?> PACKET_PLAY_OUT_WORLD_PARTICLES = Reflection_Cauldron.getNMSClass("PacketPlayOutWorldParticles");
+	private static final Class<?> PACKET = Reflection_Cauldron.getNMSClass("Packet");
 	
-	public void SpawnParticle(Location loc, Effects type, double visrange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
+	@SuppressWarnings("ConstantConditions")
+	@Override
+	public void spawnParticle(Location loc, Effects type, double visibleRange, int count, float offsetX, float offsetY, float offsetZ, float speed) throws Exception
 	{
+		if(PACKET_PLAY_OUT_WORLD_PARTICLES == null) return;
 		try
 		{
-			Object packet = PacketPlayOutParticle.getConstructor(new Class[] { String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class })
+			Object packet = PACKET_PLAY_OUT_WORLD_PARTICLES.getConstructor(new Class[] { String.class, float.class, float.class, float.class, float.class, float.class, float.class, float.class, int.class })
 					.newInstance(type.getName(), (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), offsetX, offsetY, offsetZ, speed, count);
 			Object handle, connection;
 			for(Entity entity : loc.getWorld().getEntities())
 			{
-				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visrange)
+				if(entity instanceof Player && entity.getLocation().getWorld().equals(loc.getWorld()) && entity.getLocation().distance(loc) < visibleRange)
 				{
 					handle = Reflection_Cauldron.getHandle(entity);
 					if(handle != null && handle.getClass().getName().endsWith(".EntityPlayerMP"))
 					{
 						connection = Reflection_Cauldron.getNMSField(handle.getClass(), "playerConnection").get(handle);
-						Reflection_Cauldron.getNMSMethod(connection.getClass(), "sendPacket", Reflection_Cauldron.getNMSClass("Packet")).invoke(connection, new Object[]{packet});
+						Reflection_Cauldron.getNMSMethod(connection.getClass(), "sendPacket", PACKET).invoke(connection, packet);
 					}
 				}
 			}

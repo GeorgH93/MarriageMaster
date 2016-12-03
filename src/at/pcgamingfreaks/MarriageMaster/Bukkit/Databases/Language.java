@@ -47,7 +47,7 @@ public class Language
 		{
 			msg = ChatColor.translateAlternateColorCodes('&', msg);
 		}
-		return msg;
+		return msg == null ? "" : msg;
 	}
 	
 	public void reload()
@@ -154,7 +154,6 @@ public class Language
 					case 6:
 					case 7:
 					case 8:
-						lang.set("Language.Console.NotSupportedNet",	"Not supported MC version. Heart effect disabled.");
 						lang.set("Language.Console.UpdateUUIDs",		"Start updating database to UUIDs ...");
 						lang.set("Language.Console.UpdatedUUIDs",		"Updated %s accounts to UUIDs.");
 						lang.set("Language.Description.SelfMarry",		"Sends a marry request to a other player.");
