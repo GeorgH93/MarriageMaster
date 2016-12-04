@@ -30,9 +30,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private JavaPlugin plugin;
-	private FileConfiguration config;
 	private static final int CONFIG_VERSION = 25;
+
+	private final JavaPlugin plugin;
+	private FileConfiguration config;
 	
 	public Config(JavaPlugin pl)
 	{
@@ -177,7 +178,7 @@ public class Config
 	
 	private boolean UpdateConfig(File file)
 	{
-		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") < CONFIG_VERSION) ? "no updated needed" : "update needed"));
+		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") >= CONFIG_VERSION) ? "no " : "") + "update needed");
 		switch(config.getInt("Version"))
 		{
 			case 1:

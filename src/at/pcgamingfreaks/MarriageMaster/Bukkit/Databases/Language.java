@@ -30,9 +30,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 public class Language
 {
-	private MarriageMaster plugin;
-	private FileConfiguration lang;
 	private static final int LANG_VERSION = 18;
+
+	private final MarriageMaster plugin;
+	private FileConfiguration lang;
 
 	public Language(MarriageMaster marriagemaster) 
 	{
@@ -92,7 +93,7 @@ public class Language
 	
 	private boolean updateLangFile(File file)
 	{
-		plugin.log.info("Language Version: " + lang.getInt("Version") + " => " + ((lang.getInt("Version") == LANG_VERSION) ? "no updated needed" : "update needed"));
+		plugin.log.info("Language Version: " + lang.getInt("Version") + " => " + ((lang.getInt("Version") >= LANG_VERSION) ? "no " : "") + "update needed");
 		if(lang.getInt("Version") != LANG_VERSION)
 		{
 			if(plugin.config.GetLanguageUpdateMode().equalsIgnoreCase("overwrite"))

@@ -32,13 +32,13 @@ public class EffectBase
 		String name = Bukkit.getServer().getClass().getPackage().getName();
 		try
 		{
-			String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
 			if(Bukkit.getServer().getName().toLowerCase().contains("cauldron"))
 			{
 				eb = new Effect_1_7_Cauldron();
 			}
 			else
 			{
+				String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
 				if(version[0].equals("1"))
 				{
 					if(version[1].equals("7"))
