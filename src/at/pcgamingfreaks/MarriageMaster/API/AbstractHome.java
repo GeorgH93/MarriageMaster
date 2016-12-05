@@ -15,9 +15,31 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bungee.API;
+package at.pcgamingfreaks.MarriageMaster.API;
 
-import net.md_5.bungee.api.CommandSender;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * Ignore this class!
+ * Use the Bukkit or BungeeCord implementation!
+ */
 @SuppressWarnings("unused")
-public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home> {}
+public abstract class AbstractHome
+{
+	private final String homeServer;
+
+	public AbstractHome(@Nullable String homeServer)
+	{
+		this.homeServer = homeServer;
+	}
+
+	/**
+	 * Gets the server of the represented home.
+	 *
+	 * @return The name of the server where the home is located. Null if BungeeCord is not used.
+	 */
+	public @Nullable String getHomeServer()
+	{
+		return homeServer;
+	}
+}

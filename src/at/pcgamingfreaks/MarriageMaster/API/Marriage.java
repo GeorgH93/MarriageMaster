@@ -17,13 +17,15 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
 @SuppressWarnings("unused")
-public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER>
+public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends AbstractHome>
 {
 	/**
 	 * Gets one of the married players.
@@ -131,4 +133,18 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * @return True if the given player is part of this marriage, false if not.
 	 */
 	boolean hasPlayer(@NotNull MARRIAGE_PLAYER player);
+
+	/**
+	 * Gets the home of the couple.
+	 *
+	 * @return The {@link HOME} of the couple. null if no home is set.
+	 */
+	@Nullable HOME getHome();
+
+	/**
+	 * Sets the home of the couple.
+	 *
+	 * @param home The {@link HOME} for the marriage. null to delete home.
+	 */
+	void setHome(@Nullable HOME home);
 }

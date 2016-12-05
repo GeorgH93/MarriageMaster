@@ -17,7 +17,19 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
-import net.md_5.bungee.api.CommandSender;
+import at.pcgamingfreaks.MarriageMaster.API.AbstractHome;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Represents a home for a marriage
+ */
 @SuppressWarnings("unused")
-public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home> {}
+public class Home extends AbstractHome
+{
+	public Home(@Nullable String homeServer)
+	{
+		super(homeServer);
+	}
+}

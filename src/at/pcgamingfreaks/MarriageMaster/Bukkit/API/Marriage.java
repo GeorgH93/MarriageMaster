@@ -17,27 +17,11 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
-public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender>
+public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home>
 {
-	/**
-	 * Gets the home location of the couple.
-	 *
-	 * @return The location of the couples home. null if no home is set.
-	 */
-	@Nullable Location getHome();
-
-	/**
-	 * Sets the home location of the couple.
-	 *
-	 * @param location The location of the home point. null to delete home.
-	 */
-	void setHome(Location location);
-
 	/**
 	 * Gets the distance between the two married players.
 	 *
