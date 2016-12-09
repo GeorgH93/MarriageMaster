@@ -516,7 +516,7 @@ public class MySQL extends Database implements Listener
 		}
 		if(partnerID >= 0)
 		{
-			partner = GetPlayerName(partnerID)
+			partner = GetPlayerName(partnerID);
 		}
 		return partner;
 	}
