@@ -495,16 +495,17 @@ public class MySQL extends Database implements Listener
 	public String GetPartner(Player player)
 	{
 		String partner = null;
+		int partnerID = -1;
+		int pid = GetPlayerID(player);
 		try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + tablePartners + "` WHERE `player1`=? OR `player2`=?"))
 		{
-			int pid = GetPlayerID(player);
 			ps.setInt(1, pid);
 			ps.setInt(2, pid);
 			ps.executeQuery();
 			ResultSet rs = ps.getResultSet();
 			if(rs.next())
 			{
-				partner = GetPlayerName((rs.getInt(1) == pid) ? rs.getInt(2) : rs.getInt(1));
+				partnerID = (rs.getInt(1) == pid) ? rs.getInt(2) : rs.getInt(1);
 			}
 			rs.close();
 			ps.close();
@@ -512,6 +513,10 @@ public class MySQL extends Database implements Listener
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		}
+		if(partnerID >= 0)
+		{
+			partner = GetPlayerName(partnerID)
 		}
 		return partner;
 	}
