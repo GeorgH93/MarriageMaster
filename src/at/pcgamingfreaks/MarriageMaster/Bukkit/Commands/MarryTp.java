@@ -31,13 +31,13 @@ public class MarryTp
 {
 	private MarriageMaster plugin;
 	
-	private long delaytime;
+	private long delayTime;
 	
 	public MarryTp(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 		
-		delaytime = plugin.config.TPDelayTime() * 20L;
+		delayTime = plugin.config.TPDelayTime() * 20L;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -79,52 +79,51 @@ public class MarryTp
 		}
 	}
 
-	private void DoTP(Player player, Player otherPlayer) 
+	private void DoTP(final Player player, final Player otherPlayer)
 	{
 		if(plugin.config.DelayTP() && !plugin.CheckPerm(player, "marry.skiptpdelay", false))
 		{
 			final Location p_loc = player.getLocation();
-			final Player p = player, otp = otherPlayer;
 			final double p_hea = (double)player.getHealth();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() { @Override public void run() {
-				if(p != null && p.isOnline())
+				if(player.isOnline())
 				{
-					if(otp != null && otp.isOnline())
+					if(otherPlayer != null && otherPlayer.isOnline())
 					{
-						if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+						if(p_hea <= player.getHealth() && p_loc.getX() == player.getLocation().getX() && p_loc.getY() == player.getLocation().getY() && p_loc.getZ() == player.getLocation().getZ() && p_loc.getWorld().equals(player.getLocation().getWorld()))
 						{
-							if(!plugin.config.getCheckTPSafety() || p.isFlying() || !otp.isFlying())
+							if(!plugin.config.getCheckTPSafety() || player.isFlying() || !otherPlayer.isFlying())
 							{
-								p.teleport(otp);
-								p.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
-								otp.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
+								player.teleport(otherPlayer);
+								player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
+								otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
 							}
 							else
 							{
-								Location l = getSaveLoc(otp.getLocation());
+								Location l = getSaveLoc(otherPlayer.getLocation());
 								if(l != null)
 								{
-									p.teleport(l);
-									p.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
-									otp.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
+									player.teleport(l);
+									player.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TP"));
+									otherPlayer.sendMessage(ChatColor.GREEN + plugin.lang.get("Ingame.TPto"));
 								}
 								else
 								{
-									p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPUnsafe"));
-									otp.sendMessage(ChatColor.GOLD + plugin.lang.get("Ingame.TPtoUnsafe"));
+									player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPUnsafe"));
+									otherPlayer.sendMessage(ChatColor.GOLD + plugin.lang.get("Ingame.TPtoUnsafe"));
 								}
 							}
 						}
 						else
 						{
-							p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
+							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 						}
 					}
 					else
 					{
-						p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
-				}}}}, delaytime);
+						player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
+				}}}}, delayTime);
 		}
 		else
 		{
@@ -163,30 +162,30 @@ public class MarryTp
 		return loc;
 	}
 	
-	public void BungeeTPDelay(final Player p)
+	public void BungeeTPDelay(final Player player)
 	{
-		if(p != null)
+		if(player != null)
 		{
-			final double p_hea = p.getHealth();
-			final Location p_loc = p.getLocation();
-			p.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
+			final double p_hea = player.getHealth();
+			final Location p_loc = player.getLocation();
+			player.sendMessage(ChatColor.GOLD + String.format(plugin.lang.get("Ingame.TPDontMove"), plugin.config.TPDelayTime()));
 			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
 				{
 					@Override
 					public void run()
 					{
-						if(p != null && p.isOnline())
+						if(player.isOnline())
 						{
-							if(p_hea <= p.getHealth() && p_loc.getX() == p.getLocation().getX() && p_loc.getY() == p.getLocation().getY() && p_loc.getZ() == p.getLocation().getZ() && p_loc.getWorld().equals(p.getLocation().getWorld()))
+							if(p_hea <= player.getHealth() && p_loc.getX() == player.getLocation().getX() && p_loc.getY() == player.getLocation().getY() && p_loc.getZ() == player.getLocation().getZ() && p_loc.getWorld().equals(player.getLocation().getWorld()))
 							{
-								plugin.pluginchannel.sendMessage("tp|" + p.getName());
+								plugin.pluginchannel.sendMessage("tp|" + player.getName());
 							}
 							else
 							{
-								p.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
+								player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.TPMoved"));
 							}
 						}
-					}}, delaytime);
+					}}, delayTime);
 		}
 	}
 }
