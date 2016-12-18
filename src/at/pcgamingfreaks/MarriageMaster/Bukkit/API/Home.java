@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 import at.pcgamingfreaks.MarriageMaster.API.AbstractHome;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,10 +32,10 @@ public abstract class Home extends AbstractHome
 {
 	private final Location location;
 
-	/*public Home(Location location)
+	public Home(Location location)
 	{
 		this(location, null);
-	}*/
+	}
 
 	public Home(@NotNull Location location, @Nullable String homeServer)
 	{
@@ -52,5 +53,60 @@ public abstract class Home extends AbstractHome
 		return location;
 	}
 
+	/**
+	 * Gets the x position of the represented home.
+	 *
+	 * @return The x position.
+	 */
+	public double getX()
+	{
+		return location.getX();
+	}
+
+	/**
+	 * Gets the y position of the represented home.
+	 *
+	 * @return The y position.
+	 */
+	public double getY()
+	{
+		return location.getX();
+	}
+
+	/**
+	 * Gets the z position of the represented home.
+	 *
+	 * @return The z position.
+	 */
+	public double getZ()
+	{
+		return location.getX();
+	}
+
+	/**
+	 * Gets the world name of the represented home.
+	 *
+	 * @return The world name position.
+	 */
+	public @NotNull String getWorldName()
+	{
+		return getWorld().getName();
+	}
+
+	/**
+	 * Gets the world of the represented home.
+	 *
+	 * @return The x position.
+	 */
+	public @NotNull World getWorld()
+	{
+		return location.getWorld();
+	}
+
+	/**
+	 * Checks if the home is on the server.
+	 *
+	 * @return True if the home is on the server, false if not.
+	 */
 	public abstract boolean isOnThisServer();
 }
