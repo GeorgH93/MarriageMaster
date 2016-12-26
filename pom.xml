@@ -1,0 +1,220 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>at.pcgamingfreaks</groupId>
+	<artifactId>MarriageMaster</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+
+	<scm>
+		<connection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</connection>
+		<developerConnection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</developerConnection>
+		<url>git@github.com:GeorgH93/MarriageMaster.git</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/GeorgH93/MarriageMaster/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>jenkins</system>
+		<url>http://ci.pcgamingfreaks.at/job/MarriageMaster/</url>
+	</ciManagement>
+
+	<name>MarriageMaster</name>
+	<description>A marriage plugin for bukkit servers.</description>
+	<inceptionYear>2016</inceptionYear>
+	<licenses>
+		<license>
+			<name>GNU General Public License (GPL) v3</name>
+			<url>http://www.gnu.org/licenses/gpl-3.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<properties>
+		<author>GeorgH93</author>
+		<website>https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-11.19273/</website>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<timestamp>${maven.build.timestamp}</timestamp>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>pcgf-repo</id>
+			<url>http://repo.pcgamingfreaks.at/repository/everything</url>
+		</repository>
+		<repository>
+			<id>spigot-nexus</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>sonatype-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>sonatype-release</id>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
+		</repository>
+		<repository>
+			<id>herocraftonline-repo</id>
+			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+		</repository>
+		<repository>
+			<id>placeholderapi</id>
+			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+		</repository>
+		<!--<repository>
+			<id>mvdw-software</id>
+			<name>MVdW Public Repositories</name>
+			<url>http://repo.mvdw-software.be/content/groups/public/</url>
+		</repository>-->
+	</repositories>
+
+	<dependencies>
+		<!-- Marriage Master API -->
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-API</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- For documentation -->
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>15.0</version>
+		</dependency>
+		<!-- Bukkit -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.11-R0.1-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Bungee -->
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>1.11-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- PCGF Plugin Lib -->
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>PluginLib</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- Vault -->
+		<dependency>
+			<groupId>net.milkbowl.vault</groupId>
+			<artifactId>VaultAPI</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>bukkit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Minepacks -->
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>Minepacks</artifactId>
+			<version>2.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- DeluxeChat API -->
+		<dependency>
+			<groupId>me.clip.deluxechat</groupId>
+			<artifactId>DeluxeChatPlaceholderAPI</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<!-- MVdW Placeholder API -->
+		<dependency>
+			<groupId>be.maximvdw</groupId>
+			<artifactId>MVdWPlaceholderAPI</artifactId>
+			<version>LATEST</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>bukkit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- PlaceholderAPI -->
+		<dependency>
+			<groupId>me.clip</groupId>
+			<artifactId>placeholderapi</artifactId>
+			<version>2.0.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- jUnit for unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>test</scope>
+			<optional>true</optional>
+		</dependency>
+		<!-- Mocking stuff -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>2.0.2-beta</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<defaultGoal>clean install</defaultGoal>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testSourceDirectory>test/src</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<minimizeJar>true</minimizeJar>
+							<artifactSet>
+								<includes>
+									<include>at.pcgamingfreaks:MarriageMaster-API</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>http://repo.pcgamingfreaks.at/repository/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://repo.pcgamingfreaks.at/repository/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
