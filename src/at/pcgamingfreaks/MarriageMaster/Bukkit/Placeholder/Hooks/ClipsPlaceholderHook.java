@@ -32,7 +32,7 @@ public class ClipsPlaceholderHook extends EZPlaceholderHook implements Placehold
 
 	public ClipsPlaceholderHook(MarriageMaster plugin, PlaceholderManager placeholderManager)
 	{
-		super(plugin, plugin.getName().toLowerCase());
+		super(plugin, plugin.getDescription().getName().toLowerCase());
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
 		this.hook();

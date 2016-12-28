@@ -59,7 +59,7 @@ public class PlaceholderManager
 		}
 		//endregion
 		//region Chips PlaceholderAPI
-		if(isPluginEnabled("MVdWPlaceholderAPI"))
+		if(isPluginEnabled("PlaceholderAPI"))
 		{
 			hooks.add(new ClipsPlaceholderHook(plugin, this));
 		}
