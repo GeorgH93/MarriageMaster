@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.29.11</version>
+	<version>1.29.12</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -22,7 +22,7 @@
 		</repository>
 		<repository>
 			<id>pcgf-repo</id>
-			<url>http://repo.pcgamingfreaks.at/repository/everything/</url>
+			<url>http://repo.pcgamingfre aks.at/repository/everything/</url>
 		</repository>
 	</repositories>
 
