@@ -106,7 +106,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			failedToEnablePlugin();
 			return;
 		}
-		placeholderManager = new PlaceholderManager(this);
 		getLogger().info(StringUtils.getPluginEnabledMessage("Marriage Master"));
 	}
 
@@ -215,6 +214,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		if(config.isJoinLeaveInfoEnabled()) { getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this); }
 		if(config.isPrefixEnabled() || config.isSuffixEnabled()) { getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this); }
 		if(config.isEconomyEnabled()) { getServer().getPluginManager().registerEvents(new EconomyManager(this), this); }
+
+		placeholderManager = new PlaceholderManager(this);
 		return true;
 	}
 

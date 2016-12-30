@@ -51,23 +51,28 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 	}
 
 	@Override
-	public String getTranslated(String key)
+	public String getTranslated(final String key)
 	{
 		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
-	public String getDialog(String key)
+	public String getTranslatedPlaceholder(final String key)
+	{
+		return ChatColor.translateAlternateColorCodes('&', lang.getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+	}
+
+	public String getDialog(final String key)
 	{
 		return lang.getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
-	public String[] getCommandAliases(String command)
+	public String[] getCommandAliases(final String command)
 	{
 		List<String> aliases = lang.getStringList("Command." + command, new LinkedList<String>());
 		return (aliases.size() > 0) ? aliases.toArray(new String[aliases.size()]) : new String[0];
 	}
 
-	public String[] getSwitch(String key, String defaultSwitch)
+	public String[] getSwitch(final String key, final String defaultSwitch)
 	{
 		List<String> switches = lang.getStringList("Command.Switches." + key, new LinkedList<String>());
 		if(!switches.contains(defaultSwitch)) switches.add(defaultSwitch);

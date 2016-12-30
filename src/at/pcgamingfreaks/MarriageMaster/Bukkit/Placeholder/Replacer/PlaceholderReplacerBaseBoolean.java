@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
 {
-	private static final String PLACEHOLDER_BOOLEAN_KEY = "Placeholders.Boolean.";
+	private static final String PLACEHOLDER_BOOLEAN_KEY = "Boolean.";
 	protected final String valueTrue, valueFalse;
 
 	public PlaceholderReplacerBaseBoolean(@NotNull MarriageMaster plugin)
@@ -35,7 +35,7 @@ abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
 
 	protected @NotNull String getBooleanPlaceholderValue(String placeholder)
 	{
-		String msg = this.plugin.getLanguage().getTranslated(PLACEHOLDER_BOOLEAN_KEY + placeholder);
+		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_BOOLEAN_KEY + placeholder);
 		if(!msg.equals(messageNotFound))
 		{
 			return msg;

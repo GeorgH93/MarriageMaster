@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
-	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "Placeholders.NotMarried.";
+	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried.";
 
 	protected final MarriageMaster plugin;
 	protected final String messageNotFound;
@@ -34,18 +34,18 @@ abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 	public PlaceholderReplacerBase(@NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		this.messageNotFound = plugin.getLanguage().getTranslated("this.key.should.not.exist");
+		this.messageNotFound = plugin.getLanguage().getTranslatedPlaceholder("this.key.should.not.exist");
 		valueNotMarried = getNotMarriedPlaceholderValue(this.getClass().getSimpleName());
 	}
 
 	protected @Nullable String getNotMarriedPlaceholderValue(@NotNull String placeholder)
 	{
-		String msg = this.plugin.getLanguage().getTranslated(PLACEHOLDER_NOT_MARRIED_KEY + placeholder);
+		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + placeholder);
 		if(!msg.equals(messageNotFound))
 		{
 			return msg.equals("NULL") ? null : msg;
 		}
-		msg = this.plugin.getLanguage().getTranslated(PLACEHOLDER_NOT_MARRIED_KEY + "Default");
+		msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + "Default");
 		if(msg.equals(messageNotFound) || msg.equals("NULL"))
 		{
 			msg = null;

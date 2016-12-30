@@ -299,12 +299,12 @@ Dialog:
   Married: "I now pronounce you husband and wife. You may now kiss."
   YesIWant: "Yes, I will!"
   NoIDontWant: "No, I will not!"
-# This selection allows to change the placeholder return values. You can change them if you like. TODO link to wiki
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Placeholders:
   Boolean:
     True: true
     False: false
   # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
-  # TODO link to wiki list with all the placeholder names
+  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
   NotMarried:
-    Default: NULL
+    Default: "not married"
