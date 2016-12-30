@@ -30,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private static final int CONFIG_VERSION = 25;
+	private static final int CONFIG_VERSION = 26;
 
 	private final JavaPlugin plugin;
 	private FileConfiguration config;
@@ -151,6 +151,7 @@ public class Config
 		config.set("Misc.AutoUpdate", true);
 		config.set("Misc.DisableV2Info", false);
 		config.set("Range.Marry", 25.0F);
+		config.set("Range.Divorce", 25.0F);
 		config.set("Range.Kiss", 2.0F);
 		config.set("Range.KissInteract", 2.0F);
 		config.set("Range.HearthVisible", 128.0F);
@@ -257,6 +258,8 @@ public class Config
 				config.set("RequireBothNamesOnPriestDivorce", false);
 			case 24:
 				config.set("Prefix.OnLineBeginning", true);
+			case 25:
+				config.set("Range.Divorce", GetRange("Marry"));
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;

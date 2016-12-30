@@ -238,9 +238,7 @@ public class MarriageMaster extends JavaPlugin
 	
 	public boolean InRadiusAllWorlds(Player player, Player otherPlayer, double radius)
 	{
-		Location pl = player.getLocation();
-		Location opl = otherPlayer.getLocation();
-		return radius < 0 || (pl.getWorld().equals(opl.getWorld()) && (pl.distance(opl) <= radius || radius == 0 || CheckPerm(player, "marry.bypassrangelimit", false)));
+		return radius < 0 || InRadius(player, otherPlayer, radius);
 	}
 	
 	public void update(final Player sender)

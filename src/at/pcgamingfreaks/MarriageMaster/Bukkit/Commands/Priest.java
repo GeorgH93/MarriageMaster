@@ -46,14 +46,14 @@ public class Priest
 			}
 			else
 			{
-				AllowedSurnameCharactersRegEx = "�";
+				AllowedSurnameCharactersRegEx = "§";
 			}
 		}
 		else
 		{
 			if(plugin.config.getAllowSurnameColors())
 			{
-				AllowedSurnameCharactersRegEx += "&�";
+				AllowedSurnameCharactersRegEx += "&§";
 			}
 			AllowedSurnameCharactersRegEx = "[^" + AllowedSurnameCharactersRegEx + "]";
 		}
@@ -71,7 +71,7 @@ public class Priest
 		}
 		if(plugin.config.getAllowSurnameColors())
 		{
-			surname = ChatColor.translateAlternateColorCodes('&', surname.replace('�', '&').replaceAll("&k", ""));
+			surname = ChatColor.translateAlternateColorCodes('&', surname.replace('§', '&').replaceAll("&k", ""));
 		}
 		return surname;
 	}
@@ -142,7 +142,7 @@ public class Priest
 		}
 		else
 		{
-			if(InRadius(player, otherPlayer, priest))
+			if(InRadius(player, otherPlayer, priest, plugin.config.GetRange("Marry")))
 			{
 				String a1 = plugin.DB.GetPartner(player);
 				String a2 = plugin.DB.GetPartner(otherPlayer);
@@ -385,9 +385,9 @@ public class Priest
 		}
 	}
 
-	private boolean InRadius(Player player, Player otherPlayer, Player priest) 
+	private boolean InRadius(Player player, Player otherPlayer, Player priest, double range)
 	{
-		return plugin.InRadiusAllWorlds(priest, player, plugin.config.GetRange("Marry")) && plugin.InRadiusAllWorlds(priest, otherPlayer, plugin.config.GetRange("Marry"));
+		return plugin.InRadiusAllWorlds(priest, player, range) && plugin.InRadiusAllWorlds(priest, otherPlayer, range);
 	}
 	
 	public void setPriest(String[] args, CommandSender sender)
@@ -463,7 +463,7 @@ public class Priest
 				priest.sendMessage(ChatColor.RED + String.format(plugin.lang.get("Priest.PartnerOffline"), args[1], otP));
 			}
 		}
-		else if(InRadius(player, otherPlayer, priest))
+		else if(InRadius(player, otherPlayer, priest, plugin.config.GetRange("Divorce")))
 		{
 			if(!plugin.config.UseConfirmation())
 			{
