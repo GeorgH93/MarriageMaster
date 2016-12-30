@@ -36,17 +36,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ChatCommand extends MarryCommand implements Listener
 {
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, privateMessageFormat, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage;
-	private LinkedList<Player> listeners = new LinkedList<>();
+	private final Set<Player> listeners = Collections.newSetFromMap(new HashMap<Player, Boolean>()); // Java 8: ConcurrentHashMap.newKeySet()
 	private MarryCommand chatToggleCommand, chatListenCommand;
 	private final String[] setTargetParameters;
 
@@ -90,7 +90,6 @@ public class ChatCommand extends MarryCommand implements Listener
 	public void close()
 	{
 		listeners.clear();
-		listeners = null;
 		if(chatToggleCommand != null)
 		{
 			chatToggleCommand.close();
@@ -211,6 +210,16 @@ public class ChatCommand extends MarryCommand implements Listener
 	public void onLeave(PlayerQuitEvent event)
 	{
 		listeners.remove(event.getPlayer());
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+	public void onJoin(PlayerJoinEvent event)
+	{
+		//noinspection SpellCheckingInspection
+		if(event.getPlayer().hasPermission("marry.listenchat.autojoin"))
+		{
+			listeners.add(event.getPlayer());
+		}
 	}
 
 	private void toggleChatSetting(MarriagePlayer player)
@@ -410,11 +419,11 @@ public class ChatCommand extends MarryCommand implements Listener
 				}
 				else if(getMarriagePlugin().getCommandManager().isOnSwitch(args[0]))
 				{
-					chatCommand.toggleListenChat((Player) sender);
+					chatCommand.toggleListenChat((Player) sender, true);
 				}
 				else if(getMarriagePlugin().getCommandManager().isOffSwitch(args[0]))
 				{
-					chatCommand.toggleListenChat((Player) sender);
+					chatCommand.toggleListenChat((Player) sender, false);
 				}
 				else
 				{
