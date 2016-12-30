@@ -172,7 +172,7 @@ public class MySQL extends Database
 					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT NOT NULL,\n{FPlayer2} INT NOT NULL,\n" +
 							                                      "{FPriest} INT NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL,\n" +
 							                                      "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest})\n);"),
-					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n{FHomeZ} DOUBLE NOT NULL,\\n" +
+					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n{FHomeZ} DOUBLE NOT NULL,\n" +
 							                                  "{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n{FHomeServer} VARCHAR(45) DEFAULT NULL,\nPRIMARY KEY ({FMarryID})\n);");
 			DBTools.updateDB(connection, queryTPlayers);
 			DBTools.updateDB(connection, queryTMarriages);
