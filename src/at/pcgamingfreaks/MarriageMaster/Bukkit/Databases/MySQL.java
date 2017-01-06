@@ -61,7 +61,7 @@ public class MySQL extends Database implements Listener
 		updatePlayer = plugin.config.getUpdatePlayer();
 
 		HikariConfig poolConfig = new HikariConfig();
-		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase() + "?allowMultiQueries=true");
+		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase() + "?allowMultiQueries=true" + plugin.config.getMySQLProperties());
 		poolConfig.setUsername(plugin.config.getMySQLUser());
 		poolConfig.setPassword(plugin.config.getMySQLPassword());
 		poolConfig.setMinimumIdle(1);

@@ -30,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private static final int CONFIG_VERSION = 26;
+	private static final int CONFIG_VERSION = 27;
 
 	private final JavaPlugin plugin;
 	private FileConfiguration config;
@@ -133,6 +133,7 @@ public class Config
 		config.set("Database.UpdatePlayer", true);
 		config.set("Database.MySQL.Host", "localhost:3306");
 		config.set("Database.MySQL.Database", "minecraft");
+		config.set("Database.MySQL.Properties", new ArrayList<>());
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
 		config.set("Database.MySQL.MaxConnections", 4);
@@ -260,6 +261,8 @@ public class Config
 				config.set("Prefix.OnLineBeginning", true);
 			case 25:
 				config.set("Range.Divorce", GetRange("Marry"));
+			case 26:
+				config.set("Database.MySQL.Properties", new ArrayList<>());
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -387,6 +390,20 @@ public class Config
 	public String getMySQLDatabase()
 	{
 		return config.getString("Database.MySQL.Database");
+	}
+
+	public String getMySQLProperties()
+	{
+		List<String> list = config.getStringList("Database.MySQL.Properties");
+		String str = "";
+		if(list != null)
+		{
+			for(String s : list)
+			{
+				str += "&" + s;
+			}
+		}
+		return str;
 	}
 	
 	public String getMySQLUser()

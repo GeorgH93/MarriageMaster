@@ -141,7 +141,7 @@ public class MySQL extends Database
 		{
 			if(conn == null || conn.isClosed())
 			{
-				conn = DriverManager.getConnection("jdbc:mysql://" + host + "?allowMultiQueries=true&autoReconnect=true", user, password);
+				conn = DriverManager.getConnection("jdbc:mysql://" + host + "?allowMultiQueries=true&autoReconnect=true" + plugin.config.getMySQLProperties(), user, password);
 			}
 		}
 		catch (SQLException e)

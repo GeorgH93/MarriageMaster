@@ -41,6 +41,7 @@ Database:
     Database: minecraft
     User: minecraft
     Password: minecraft
+    Properties: []
   Tables:
     User: marry_players
     Home: marry_home

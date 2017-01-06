@@ -22,7 +22,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
@@ -38,7 +40,7 @@ public class Config
 	private MarriageMaster plugin;
 	private Configuration config;
 	private ConfigurationProvider configurationProvider;
-	private static final int CONFIG_VERSION = 3;
+	private static final int CONFIG_VERSION = 4;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -88,6 +90,7 @@ public class Config
 		{
 			case 1: config.set("DelayMessageForJoiningPlayer", 1);
 			case 2: config.set("Misc.DisableV2Info", false);
+			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
 				break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -219,7 +222,21 @@ public class Config
 	{
 		return config.getString("Database.MySQL.Password");
 	}
-	
+
+	public String getMySQLProperties()
+	{
+		List<String> list = config.getStringList("Database.MySQL.Properties");
+		String str = "";
+		if(list != null)
+		{
+			for(String s : list)
+			{
+				str += "&" + s;
+			}
+		}
+		return str;
+	}
+
 	public String getUserTable()
 	{
 		return config.getString("Database.Tables.User", "marry_players");
