@@ -30,7 +30,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config
 {
-	private static final int CONFIG_VERSION = 27;
+	private static final int CONFIG_VERSION = 28;
 
 	private final JavaPlugin plugin;
 	private FileConfiguration config;
@@ -145,6 +145,7 @@ public class Config
 		config.set("Confirmation.AutoDialog", true);
 		config.set("Confirmation.BothPlayersOnDivorce", false);
 		config.set("Kiss.Enable", true);
+		config.set("Kiss.Interaction", true);
 		config.set("Kiss.WaitTime", 10);
 		config.set("Kiss.HearthCount", 50);
 		config.set("Kiss.CompatibilityMode", false);
@@ -263,6 +264,8 @@ public class Config
 				config.set("Range.Divorce", GetRange("Marry"));
 			case 26:
 				config.set("Database.MySQL.Properties", new ArrayList<>());
+			case 27:
+				config.set("Kiss.Interaction", true);
 			break;
 			case CONFIG_VERSION: return false;
 			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
@@ -470,7 +473,12 @@ public class Config
 	{
 		return config.getBoolean("Kiss.Enable");
 	}
-	
+
+	public boolean isKissInteractEnabled()
+	{
+		return config.getBoolean("Kiss.Interaction");
+	}
+
 	public int GetKissWaitTime()
 	{
 		return config.getInt("Kiss.WaitTime") * 1000;

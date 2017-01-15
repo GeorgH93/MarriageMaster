@@ -187,7 +187,7 @@ public class MarriageMaster extends JavaPlugin
 		{
 			getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 		}
-		if(config.GetKissEnabled())
+		if(config.GetKissEnabled() && config.isKissInteractEnabled())
 		{
 			getServer().getPluginManager().registerEvents(new InteractEntity(this), this);
 		}
