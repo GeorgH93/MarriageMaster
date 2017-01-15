@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class MarryCommand<PLUGIN extends MarriageMasterPlugin, COMMAND_SENDER>
+public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND_SENDER>
 {
 	private String name, description, permission = null;
 	private List<String> aliases;
@@ -160,6 +160,7 @@ public abstract class MarryCommand<PLUGIN extends MarriageMasterPlugin, COMMAND_
 	 * Executes some basic checks and gets the help.
 	 *
 	 * @param requester The command sender that requested help.
+	 * @return The list of help data elements.
 	 */
 	public @Nullable List<HelpData> doGetHelp(@NotNull COMMAND_SENDER requester)
 	{

@@ -34,8 +34,7 @@ public interface DelayableTeleportAction<PLAYER>
 	/**
 	 * Defines the delay at which the action will be executed.
 	 *
-	 * @return The delay for the execution in ticks (1 second = 20 ticks).
-	 *         <= 0 for instant execution without check for movement or damage.
+	 * @return The delay for the execution in ticks (1 second = 20 ticks). 0 or less for instant execution without check for movement or damage.
 	 */
 	long getDelay();
 
