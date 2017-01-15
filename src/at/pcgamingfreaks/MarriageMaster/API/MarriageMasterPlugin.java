@@ -57,7 +57,7 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	 *
 	 * @return A {@link Collection} containing all the registered marriages.
 	 */
-	@NotNull Collection<MARRIAGE> getMarriages();
+	@NotNull Collection<? extends MARRIAGE> getMarriages();
 
 	/**
 	 * Checks if polygamy (marrying more then one player) is enabled on the server.
