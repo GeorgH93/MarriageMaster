@@ -69,7 +69,7 @@ public class ListCommand extends MarryCommand
 				return;
 			}
 		}
-		Collection<Marriage> couples = getMarriagePlugin().getMarriages();
+		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
 		if(couples.size() > 0) // There are married couples
 		{
 			int c = entriesPerPage, availablePages = (int) Math.ceil(couples.size() / (float)entriesPerPage);
@@ -78,7 +78,7 @@ public class ListCommand extends MarryCommand
 				page = availablePages - 1;
 			}
 			messageHeadlineMain.send(sender, page + 1, availablePages, mainCommandAlias, alias);
-			Iterator<Marriage> couplesIterator = couples.iterator();
+			Iterator<? extends Marriage> couplesIterator = couples.iterator();
 			for(int i = 0; couplesIterator.hasNext() && i < page * entriesPerPage; i++)
 			{
 				couplesIterator.next();

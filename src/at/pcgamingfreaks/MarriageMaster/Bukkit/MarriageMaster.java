@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.Bukkit.Updater;
+import at.pcgamingfreaks.Bukkit.Metrics;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriageMasterReloadEvent;
@@ -44,7 +45,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.mcstats.Bukkit_Metrics_MultiVersion;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -113,7 +113,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	{
 		try
 		{
-			Bukkit_Metrics_MultiVersion metrics = new Bukkit_Metrics_MultiVersion(this);
+			Metrics metrics = new Metrics(this);
 			metrics.start();
 		}
 		catch (IOException e)
@@ -223,6 +223,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	{
 		getServer().getMessenger().unregisterIncomingPluginChannel(this);
 		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+		pluginChannelCommunicator.close();
 		pluginChannelCommunicator = null;
 		HandlerList.unregisterAll(this);
 		getServer().getMessenger().unregisterIncomingPluginChannel(this);
@@ -363,9 +364,9 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 
 	@Override
-	public @NotNull Collection<Marriage> getMarriages()
+	public @NotNull Collection<? extends Marriage> getMarriages()
 	{
-		return database.getMarriages();
+		return database.getCache().getLoadedMarriages();
 	}
 
 	@Override

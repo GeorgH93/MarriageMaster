@@ -38,6 +38,6 @@ public class MagicHeart extends PlaceholderReplacerBase
 	{
 		MarriagePlayer marriagePlayer = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return marriagePlayer.isMarried() ? ChatColor.COLOR_CHAR + CHAT_COLORS[marriagePlayer.getMarriageData().hashCode() % 16] + HEART : valueNotMarried;
+		return marriagePlayer.isMarried() ? ChatColor.COLOR_CHAR + CHAT_COLORS[marriagePlayer.getMarriageData().hashCode() & 15] + HEART : valueNotMarried;
 	}
 }
