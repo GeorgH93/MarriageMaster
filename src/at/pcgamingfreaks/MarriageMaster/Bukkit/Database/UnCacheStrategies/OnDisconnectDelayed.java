@@ -17,9 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -33,7 +33,7 @@ public class OnDisconnectDelayed extends UnCacheStrategie implements Listener
 {
 	private final long delay;
 
-	public OnDisconnectDelayed(Database cache)
+	public OnDisconnectDelayed(Cache cache)
 	{
 		super(cache);
 		delay = MarriageMaster.getInstance().getConfiguration().getUnCacheDelay();
@@ -44,7 +44,7 @@ public class OnDisconnectDelayed extends UnCacheStrategie implements Listener
 	public void playerLeaveEvent(PlayerQuitEvent event)
 	{
 		final MarriagePlayerData player = cache.getPlayer(event.getPlayer().getUniqueId());
-		if(!player.isMarried()) // We only uncache unmarried player.
+		if(!player.isMarried() && !player.isPriest()) // We only uncache unmarried player.
 		{
 			new BukkitRunnable()
 			{

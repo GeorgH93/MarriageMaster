@@ -74,6 +74,12 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CHANNEL_MARRIAGE_MASTER, this);
 	}
 
+	public void close()
+	{
+		plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin);
+		plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin);
+	}
+
 	public void setTpCommand(TpCommand instance)
 	{
 		tpCommand = instance;
@@ -134,14 +140,14 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 					case "updateHome":
 						if(args.length == 2 && database != null)
 						{
-							MarriageData marriage = database.getMarriageFromId(Integer.parseInt(args[1]));
+							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							database.loadHome(marriage);
 						}
 						break;
 					case "updatePvP":
 						if(args.length == 3)
 						{
-							MarriageData marriage = database.getMarriageFromId(Integer.parseInt(args[1]));
+							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							if(marriage != null)
 							{
 								marriage.updatePvPState(Boolean.parseBoolean(args[2]));
@@ -151,7 +157,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 					case "updateSurname":
 						if(args.length == 3 && database != null)
 						{
-							MarriageData marriage = database.getMarriageFromId(Integer.parseInt(args[1]));
+							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							if(marriage != null)
 							{
 								marriage.updateSurname(args[2]);
@@ -167,7 +173,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 					case "divorce":
 						if(args.length == 2)
 						{
-							MarriageData marriage = database.getMarriageFromId(Integer.parseInt(args[1]));
+							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							if(marriage != null)
 							{
 								marriage.updateDivorce();
@@ -206,6 +212,11 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		if(serverName == null)
 		{
 			sendMessage(CHANNEL_BUNGEE_CORD, "GetServer");
+		}
+		// If the server is empty and a player joins the server we have to do a resync
+		if(plugin.getServer().getOnlinePlayers().size() == 0) //TODO validate
+		{
+			database.resync();
 		}
 	}
 

@@ -55,8 +55,7 @@ public class SQLite extends SQL
 	}
 
 	@Override
-	@NotNull
-	public Connection getConnection() throws SQLException
+	public @NotNull Connection getConnection() throws SQLException
 	{
 		Connection connection = super.getConnection();
 		try(Statement statement = connection.createStatement())

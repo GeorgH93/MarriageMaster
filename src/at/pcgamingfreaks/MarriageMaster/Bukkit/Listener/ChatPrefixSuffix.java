@@ -68,7 +68,7 @@ public class ChatPrefixSuffix implements Listener
 			if(prefix != null)
 			{
 				//noinspection ConstantConditions
-				p = String.format(prefix, marriage.getSurname(), partner.getName(), partner.getDisplayName(), HEART_RED, ((useMagicHeart) ? (ChatColor.COLOR_CHAR + CHAT_COLORS[marriage.hashCode() % 16] + HEART) : ""));
+				p = String.format(prefix, marriage.getSurname(), partner.getName(), partner.getDisplayName(), HEART_RED, ((useMagicHeart) ? (ChatColor.COLOR_CHAR + CHAT_COLORS[marriage.hashCode() & 15] + HEART) : ""));
 				changed = true;
 			}
 			if(suffix != null)

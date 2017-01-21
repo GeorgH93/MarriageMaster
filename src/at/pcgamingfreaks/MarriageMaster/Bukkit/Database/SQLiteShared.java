@@ -45,8 +45,7 @@ public class SQLiteShared extends SQLite
 	}
 
 	@Override
-	@NotNull
-	public Connection getConnection() throws SQLException
+	public @NotNull Connection getConnection() throws SQLException
 	{
 		Connection connection = pool.getConnection();
 		try(Statement statement = connection.createStatement())

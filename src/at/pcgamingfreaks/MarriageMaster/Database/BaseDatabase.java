@@ -25,10 +25,9 @@ import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE extends Marriage>
+public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_DATA extends MARRIAGE>
 {
 	//region Messages
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
@@ -40,9 +39,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	protected final boolean useUUIDs, useUUIDSeparators, useOnlineUUIDs;
 	protected final Logger logger;
 	protected final MARRIAGE_MASTER plugin;
-	protected final Map<UUID, MARRIAGE_PLAYER_DATA> players = new ConcurrentHashMap<>();
-	protected final Map<String, MARRIAGE> surnames = new ConcurrentHashMap<>();
-	protected final Set<MARRIAGE> marriages = Collections.newSetFromMap(new ConcurrentHashMap<MARRIAGE, Boolean>()); // Java 8: ConcurrentHashMap.newKeySet()
+	protected final Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache = new Cache<>();
 
 	protected BaseDatabase(MARRIAGE_MASTER plugin, Logger logger, boolean useUUIDs, boolean useUUIDSeparators, boolean useOnlineUUIDs)
 	{
@@ -57,58 +54,24 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	{
 		if(useUUIDs) checkUUIDs();
 		loadAll();
-		reCacheSurnames();
+		cache.reCacheSurnames();
 	}
 
 	protected void close()
 	{
 		logger.info(MESSAGE_CLEANING_DB_CACHE);
-		players.clear();
-		marriages.clear();
-		surnames.clear();
+		cache.close();
 		logger.info(MESSAGE_DB_CACHE_CLEANED);
 	}
 
-	protected void reCacheSurnames()
+	public Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> getCache()
 	{
-		surnames.clear();
-		for(MARRIAGE marriage : marriages)
-		{
-			if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
-			{
-				surnames.put(marriage.getSurname(), marriage);
-			}
-		}
-	}
-
-	public Collection<MARRIAGE_PLAYER_DATA> getLoadedPlayers()
-	{
-		return players.values();
+		return cache;
 	}
 
 	public Collection<String> getSurnames()
 	{
-		return surnames.keySet();
-	}
-
-	public void unCache(MARRIAGE_PLAYER_DATA player)
-	{
-		players.remove(player.getUUID());
-	}
-
-	public void unCache(MARRIAGE marriage)
-	{
-		marriages.remove(marriage);
-	}
-
-	protected void cache(MARRIAGE_PLAYER_DATA player)
-	{
-		players.put(player.getUUID(), player);
-	}
-
-	protected void cache(MARRIAGE marriage)
-	{
-		marriages.add(marriage);
+		return cache.getSurnames();
 	}
 
 	protected String getUsedPlayerIdentifier(MARRIAGE_PLAYER_DATA player)

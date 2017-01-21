@@ -17,19 +17,22 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
+import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 public abstract class UnCacheStrategie
 {
-	protected Database cache;
+	protected final Cache<MarriagePlayerData, MarriageData> cache;
 
-	public UnCacheStrategie(Database cache)
+	public UnCacheStrategie(Cache cache)
 	{
+		//noinspection unchecked
 		this.cache = cache;
 	}
 
-	public static UnCacheStrategie getUnCacheStrategie(Database cache)
+	public static UnCacheStrategie getUnCacheStrategie(Cache cache)
 	{
 		switch(MarriageMaster.getInstance().getConfiguration().getUnCacheStrategie())
 		{
@@ -40,8 +43,5 @@ public abstract class UnCacheStrategie
 		}
 	}
 
-	public void close()
-	{
-		cache = null;
-	}
+	public void close() {}
 }

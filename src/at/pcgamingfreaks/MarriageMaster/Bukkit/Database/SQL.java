@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 //@SuppressWarnings("JpaQueryApiInspection")
 public abstract class SQL extends Database implements SQLBasedDatabase
@@ -44,8 +43,6 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	//TODO: resync on player join with bungee = true
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
 
-	private final Map<Integer, MarriageData> marriageFromID = new ConcurrentHashMap<>();
-	private final Map<Integer, MarriagePlayerData> playerFromID = new ConcurrentHashMap<>();
 	private HikariDataSource dataSource; // SQL Connection Pool
 	protected boolean bungee;
 
@@ -262,11 +259,6 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 		}
 	}
 
-	public MarriageData getMarriageFromId(int id)
-	{
-		return marriageFromID.get(id);
-	}
-
 	//region Helper functions for async querys
 	protected void runAsync(Runnable runnable, @NotNull DatabaseElement databaseElement)
 	{
@@ -283,27 +275,6 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 		runAsync(new DbElementStatementWithKeyFirstRunnable(this, databaseElement, query, args), databaseElement);
 	}
 	//endregion
-
-	@Override
-	public void unCache(MarriagePlayerData player)
-	{
-		super.unCache(player);
-		if(player.getDatabaseKey() instanceof Integer) playerFromID.remove(player.getDatabaseKey());
-	}
-
-	@Override
-	public void unCache(Marriage marriage)
-	{
-		super.unCache(marriage);
-		if(marriage instanceof DatabaseElement && ((DatabaseElement) marriage).getDatabaseKey() instanceof Integer) marriageFromID.remove(((DatabaseElement) marriage).getDatabaseKey());
-	}
-
-	@Override
-	protected void cache(Marriage marriage)
-	{
-		super.cache(marriage);
-		if(marriage instanceof DatabaseElement && ((DatabaseElement) marriage).getDatabaseKey() instanceof Integer) marriageFromID.put((Integer) ((DatabaseElement) marriage).getDatabaseKey(), (MarriageData) marriage);
-	}
 
 	@Override
 	protected void checkUUIDs()
@@ -360,6 +331,11 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public void resync()
+	{
+		//TODO fill me
 	}
 
 	@Override
@@ -434,8 +410,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 						MarriagePlayerData player = new MarriagePlayerData(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName),
 						                                                   (plugin.getBackpacksIntegration() != null) && rs.getBoolean(fieldShareBackpack), priests.contains(rs.getInt(fieldPlayerID)),
 						                                                   rs.getInt(fieldPlayerID));
-						playerFromID.put(rs.getInt(fieldPlayerID), player);
-						cache(player);
+						cache.cache(player);
 					}
 				}
 			}
@@ -448,7 +423,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 			plugin.getLogger().info("Writing marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
 			{
-				cache(new MarriageData(playerFromID.get(sm.p1ID), playerFromID.get(sm.p2ID), playerFromID.get(sm.priest), sm.date, sm.surname, sm.pvp, null, sm.marryID));
+				cache.cache(new MarriageData(cache.getPlayerFromDbKey(sm.p1ID), cache.getPlayerFromDbKey(sm.p2ID), cache.getPlayerFromDbKey(sm.priest), sm.date, sm.surname, sm.pvp, null, sm.marryID));
 			}
 			plugin.getLogger().info("Marriages loaded into cache");
 		}
@@ -479,7 +454,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 						}
 						String surname = plugin.isSurnamesEnabled() ? rs.getString(fieldSurname) : null;
 						MarriageData marriage = new MarriageData(player1, player2, priest, rs.getTimestamp(fieldDate), surname, rs.getBoolean(fieldPVPState), null, marriageId);
-						cache(marriage);
+						cache.cache(marriage);
 						loadHome(marriage);
 					}
 				}
@@ -493,7 +468,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 
 	protected @Nullable MarriagePlayerData playerFromId(@NotNull Connection connection, int id) throws SQLException
 	{
-		if(playerFromID.containsKey(id)) return playerFromID.get(id);
+		if(cache.isPlayerFromDbKeyLoaded(id)) return cache.getPlayerFromDbKey(id);
 		// No cache for the player, load him
 		try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayerFromId))
 		{
@@ -504,8 +479,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 				{
 					MarriagePlayerData player = new MarriagePlayerData(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName),
 					                                                   (plugin.getBackpacksIntegration() != null) && rs.getBoolean(fieldShareBackpack), false, rs.getInt(fieldPlayerID));
-					playerFromID.put(rs.getInt(fieldPlayerID), player);
-					cache(player);
+					cache.cache(player);
 					return player;
 				}
 			}
@@ -528,7 +502,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 						String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
 						homes.put(rs.getInt(fieldMarryID), new MarriageHome(rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), homeServer));
 					}
-					for(Marriage marriage : marriages)
+					for(Marriage marriage : cache.getLoadedMarriages())
 					{
 						if(marriage instanceof MarriageData)
 						{
@@ -584,16 +558,6 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	}
 
 	@Override
-	public void cachedDivorce(MarriageData marriage, boolean updateDatabase)
-	{
-		super.cachedDivorce(marriage, updateDatabase);
-		if(marriage.getDatabaseKey() instanceof Integer)
-		{
-			marriageFromID.remove(marriage.getDatabaseKey());
-		}
-	}
-
-	@Override
 	protected void load(final @NotNull MarriagePlayerData player)
 	{
 		if(player.getDatabaseKey() == null || bungee)
@@ -644,7 +608,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 				if(rs.next())
 				{
 					player.setDatabaseKey(rs.getInt(1));
-					playerFromID.put(rs.getInt(1), player);
+					cache.addDbKey(player);
 				}
 				else
 				{
@@ -672,7 +636,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 				if(rs.next())
 				{
 					player.setDatabaseKey(rs.getInt(fieldPlayerID));
-					playerFromID.put(rs.getInt(fieldPlayerID), player);
+					cache.addDbKey(player);
 					if(plugin.getBackpacksIntegration() != null) player.setSharesBackpack(rs.getBoolean(fieldShareBackpack));
 					try(PreparedStatement ps = connection.prepareStatement(queryIsPriest))
 					{
@@ -753,7 +717,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 						if(rs.next())
 						{
 							marriage.setDatabaseKey(rs.getInt(1));
-							marriageFromID.put(rs.getInt(1), marriage);
+							cache.addDbKey(marriage);
 						}
 					}
 				}

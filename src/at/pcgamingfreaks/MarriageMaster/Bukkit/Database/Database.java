@@ -29,7 +29,6 @@ import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -39,14 +38,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, Marriage> implements Listener
+public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, Marriage, MarriageData> implements Listener
 {
 	private final UnCacheStrategie unCacheStrategie;
 
 	protected Database(MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), plugin.getConfiguration().useUUIDs(), plugin.getConfiguration().useUUIDSeparators(), plugin.getConfiguration().getUseOnlineUUIDs());
-		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(this);
+		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
 	}
 
 	public static Database getDatabase(MarriageMaster plugin)
@@ -99,55 +98,37 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 	@Override
 	public void close()
 	{
-		unCacheStrategie.close(); // Killing the uncache strategie
+		unCacheStrategie.close(); // Killing the uncache strategie before killing the rest like the caches
 		super.close();
 		HandlerList.unregisterAll(this);
-	}
-
-	@SuppressWarnings("deprecation")
-	protected UUID getUUIDFromIdentifier(String identifier)
-	{
-		if(useUUIDs)
-		{
-			return UUID.fromString((useUUIDSeparators) ? identifier : identifier.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
-		}
-		else
-		{
-			return Bukkit.getOfflinePlayer(identifier).getUniqueId();
-		}
 	}
 
 	@Override
 	public MarriagePlayerData getPlayer(UUID uuid)
 	{
-		MarriagePlayerData player = players.get(uuid);
+		MarriagePlayerData player = cache.getPlayer(uuid);
 		if(player == null)
 		{
 			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
 			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
 			player = new MarriagePlayerData(Bukkit.getOfflinePlayer(uuid));
-			cache(player); // Let's put the new player into the cache
+			cache.cache(player); // Let's put the new player into the cache
 			load(player);
 		}
 		return player;
-	}
-
-	public Collection<Marriage> getMarriages()
-	{
-		return marriages;
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST) // We want to start the loading of the player as soon as he connects, so he probably is ready as soon as someone requests the player.
 	public void onPlayerLoginEvent(PlayerJoinEvent event) // This will load the player if he isn't loaded yet
 	{
 		UUID uuid = event.getPlayer().getUniqueId();
-		MarriagePlayerData player = players.get(uuid);
+		MarriagePlayerData player = cache.getPlayer(uuid);
 		if(player == null)
 		{
 			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
 			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
 			player = new MarriagePlayerData(Bukkit.getOfflinePlayer(uuid));
-			cache(player); // Let's put the new player into the cache
+			cache.cache(player); // Let's put the new player into the cache
 		}
 		load(player);
 	}
@@ -162,11 +143,11 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 		if(updateDatabase) updateSurname(marriage);
 		if(oldSurname != null && !oldSurname.isEmpty())
 		{
-			surnames.remove(oldSurname);
+			cache.removeSurname(oldSurname);
 		}
 		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
 		{
-			surnames.put(marriage.getSurname(), marriage);
+			cache.addSurname(marriage);
 		}
 	}
 
@@ -178,21 +159,26 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 	public void cachedDivorce(MarriageData marriage, boolean updateDatabase)
 	{
 		if(updateDatabase) divorce(marriage);
-		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
-		{
-			surnames.remove(marriage.getSurname());
-		}
-		unCache(marriage);
+		cache.unCache(marriage);
 	}
 
 	public void cachedMarry(MarriageData marriage)
 	{
 		marry(marriage);
-		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
+		cache.cache(marriage);
+	}
+
+	@SuppressWarnings("deprecation")
+	protected UUID getUUIDFromIdentifier(String identifier)
+	{
+		if(useUUIDs)
 		{
-			surnames.put(marriage.getSurname(), marriage);
+			return UUID.fromString((useUUIDSeparators) ? identifier : identifier.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
 		}
-		cache(marriage);
+		else
+		{
+			return Bukkit.getOfflinePlayer(identifier).getUniqueId();
+		}
 	}
 
 	protected boolean supportBungee()

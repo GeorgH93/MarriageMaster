@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
+import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
@@ -27,7 +27,7 @@ public class Interval extends UnCacheStrategie implements Runnable
 {
 	final int taskID;
 
-	public Interval(Database cache)
+	public Interval(Cache cache)
 	{
 		super(cache);
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MarriageMaster.getInstance(), this, MarriageMaster.getInstance().getConfiguration().getUnCacheDelay(), MarriageMaster.getInstance().getConfiguration().getUnCacheInterval());
@@ -38,7 +38,7 @@ public class Interval extends UnCacheStrategie implements Runnable
 	{
 		for(MarriagePlayerData player : cache.getLoadedPlayers())
 		{
-			if(!player.isOnline() && !player.isMarried())
+			if(!player.isOnline() && !player.isMarried() && !player.isPriest())
 			{
 				this.cache.unCache(player);
 			}

@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
+import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
@@ -28,7 +28,7 @@ public class IntervalChecked extends UnCacheStrategie implements Runnable
 	private final long delay;
 	private final int taskID;
 
-	public IntervalChecked(Database cache)
+	public IntervalChecked(Cache cache)
 	{
 		super(cache);
 		long delay = MarriageMaster.getInstance().getConfiguration().getUnCacheDelay();
@@ -42,7 +42,7 @@ public class IntervalChecked extends UnCacheStrategie implements Runnable
 		long currentTime = System.currentTimeMillis() - delay;
 		for(MarriagePlayerData player : cache.getLoadedPlayers())
 		{
-			if(!player.isOnline() && player.getPlayer().getLastPlayed() < currentTime && !player.isMarried())
+			if(!player.isOnline() && player.getPlayer().getLastPlayed() < currentTime && !player.isMarried() && !player.isPriest())
 			{
 				this.cache.unCache(player);
 			}

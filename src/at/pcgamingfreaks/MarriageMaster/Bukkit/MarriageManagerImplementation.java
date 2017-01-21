@@ -55,7 +55,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			messageSelfDivorceYouDeny, messageSelfDivorceCancelled, messageSelfDivorceYouCancelled, messageSelfDivorceNotInRange;
 	private boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
 	private int surnameMinLength, surnameMaxLength;
-	private double range;
+	private double rangeMarry, rangeDivorce;
 
 	public MarriageManagerImplementation(MarriageMaster plugin)
 	{
@@ -73,7 +73,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
 
-		range            = plugin.getConfiguration().getRange("Marry");
+		rangeMarry       = plugin.getConfiguration().getRange("Marry");
+		rangeDivorce     = plugin.getConfiguration().getRange("Divorce");
 		announceMarriage = plugin.getConfiguration().isMarryAnnouncementEnabled();
 		confirm          = plugin.getConfiguration().isMarryConfirmationEnabled();
 		bothOnDivorce    = plugin.getConfiguration().isConfirmationBothPlayersOnDivorceEnabled();
@@ -420,9 +421,9 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 					{
 						messageNotYourself.send(bPriest);
 					}
-					else if(!plugin.isInRange(bPlayer1, bPlayer2, range))
+					else if(!plugin.isInRange(bPlayer1, bPlayer2, rangeMarry))
 					{
-						messageSelfNotInRange.send(bPriest, range);
+						messageSelfNotInRange.send(bPriest, rangeMarry);
 					}
 					else if(!plugin.isPolygamyAllowed() && (player1.isMarried() || player2.isMarried()))
 					{
@@ -466,7 +467,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				{
 					if(marryPriestTestCanMarry(player1, player2, bPriest))
 					{
-						if(priest.hasPermission("marry.bypass.rangelimit") || (plugin.isInRange(bPlayer1, bPlayer2, range) && plugin.isInRange(bPriest, bPlayer1, range) && plugin.isInRange(bPriest, bPlayer2, range)))
+						if(priest.hasPermission("marry.bypass.rangelimit") || (plugin.isInRange(bPlayer1, bPlayer2, rangeMarry) && plugin.isInRange(bPriest, bPlayer1, rangeMarry) && plugin.isInRange(bPriest, bPlayer2, rangeMarry)))
 						{
 							if(!confirm)
 							{
@@ -497,7 +498,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 						}
 						else
 						{
-							messageNotInRange.send(bPriest, range);
+							messageNotInRange.send(bPriest, rangeMarry);
 						}
 					}
 				}
@@ -766,7 +767,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				}
 				else
 				{
-					if(plugin.isInRange(bPlayer, otherPlayer.getPlayer().getPlayer(), range))
+					if(plugin.isInRange(bPlayer, otherPlayer.getPlayer().getPlayer(), rangeDivorce))
 					{
 						if(otherPlayerOnSelfDivorce)
 						{
@@ -795,7 +796,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 					}
 					else
 					{
-						messageSelfDivorceNotInRange.send(bPlayer, range);
+						messageSelfDivorceNotInRange.send(bPlayer, rangeDivorce);
 					}
 				}
 			}
@@ -824,7 +825,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			{
 				if(marriage.isBothOnline())
 				{
-					if(divorceBy.hasPermission("marry.bypass.rangelimit") || (plugin.isInRange(divorceBy.getPlayer().getPlayer(), marriage.getPartner1().getPlayer().getPlayer(), range) && plugin.isInRange(divorceBy.getPlayer().getPlayer(), marriage.getPartner2().getPlayer().getPlayer(), range)))
+					if(divorceBy.hasPermission("marry.bypass.rangelimit") || (plugin.isInRange(divorceBy.getPlayer().getPlayer(), marriage.getPartner1().getPlayer().getPlayer(), rangeDivorce) && plugin.isInRange(divorceBy.getPlayer().getPlayer(), marriage.getPartner2().getPlayer().getPlayer(), rangeDivorce)))
 					{
 						if(confirm)
 						{
@@ -851,7 +852,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 					}
 					else
 					{
-						messageDivorceNotInRange.send(divorceBy.getPlayer().getPlayer(), range);
+						messageDivorceNotInRange.send(divorceBy.getPlayer().getPlayer(), rangeDivorce);
 					}
 				}
 				else if(divorceBy.getPlayer().getPlayer().hasPermission("marry.offlinedivorce"))
