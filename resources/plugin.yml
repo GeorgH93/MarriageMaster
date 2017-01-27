@@ -4,7 +4,7 @@ website: ${website}
 description: ${project.description}
 main: at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster
 version: ${project.version}-T${timestamp}
-depend: [PCGF_MC_Plugin_Lib]
+depend: [PCGF_PluginLib]
 softdepend: [Vault,MVdWPlaceholderAPI,MinePacks,DeluxeChat,PlaceholderAPI]
 
 permissions:
@@ -126,7 +126,7 @@ permissions:
     description: Allows to see the private chat
     default: op
   marry.listenchat.autojoin:
-    description: Allows to see the private chat
+    description: Automatically stats listening on private chats when a player with the permission joins the server.
     default: false
   marry.update:
     description: Allows to update the plugin

@@ -205,7 +205,7 @@ public final class OldFileUpdater
 		// Just copy all the old settings into the new file ...
 		try
 		{
-			newConfig.set("Language", oldYAML.getString("Language", "en"));
+			newConfig.set("Language.Language", oldYAML.getString("Language", "en"));
 			newConfig.set("PvP.AllowBlocking", oldYAML.getBoolean("AllowBlockPvP", false));
 			newConfig.set("InfoOnPartnerJoinLeave.Enable", oldYAML.getBoolean("InformOnPartnerJoin", true));
 			newConfig.set("InfoOnPartnerJoinLeave.JoinDelay", oldYAML.getInt("DelayMessageForJoiningPlayer", 0));
@@ -236,6 +236,7 @@ public final class OldFileUpdater
 			newConfig.set("Kiss.HearthCount", oldYAML.getInt("Kiss.HearthCount", 50));
 			newConfig.set("Range.Kiss", oldYAML.getDouble("Range.Kiss", 2));
 			newConfig.set("Range.Marry", oldYAML.getDouble("Range.Marry", 25));
+			newConfig.set("Range.Divorce", oldYAML.getDouble("Range.Divorce", oldYAML.getDouble("Range.Marry", 25)));
 			newConfig.set("Range.Backpack", oldYAML.getDouble("Range.Backpack", 5));
 			newConfig.set("Range.KissInteract", oldYAML.getDouble("Range.KissInteract", 5));
 			newConfig.set("Range.HearthVisible", oldYAML.getDouble("Range.HearthVisible", 128));

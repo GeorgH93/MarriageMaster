@@ -1,27 +1,34 @@
 # MarriageMaster Config File
 
 # Language Settings
-Language: en
-# Options:
-#     Overwrite (deletes all changes from the file and extracts a new language file)
-#     Upgrade (extracts a new language file and copy's all settings from the old language file)
-#     Update (adds the default (english) text values for all missing values, just some basic formatting)
-LanguageUpdateMode: Upgrade
+Language:
+  # Defines the used language and the corresponding file used. The corresponding language file will be placed next to the config.yml named: <Language>.yml
+  Language: en
+  # Options:
+  #     Overwrite (deletes all changes from the file and extracts a new language file)
+  #     Upgrade (extracts a new language file and copy's all settings from the old language file)
+  #     Update (adds the default (english) text values for all missing values, just some basic formatting)
+  UpdateMode: Upgrade
 
 # Database Settings
 Database:
   # SQLite = data stored in SQLite file, MySQL = data stored in MySQL database (see selection below), Shared = use shared connection pool from PCGF PluginLib
   Type: SQLite
+  # It is highly recommended to use uuids. Not using uuids will have a negative performance impact on startup (and resyncs if BungeeCord is enabled).
   UseUUIDs: true
+  # Defines the storage format for UUIDs for compatibility with other plugins (shared user table).
+  # true: format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  # false: format: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   UseUUIDSeparators: false
-  # Options: auto, online, offline | auto will decide based on the server online mode option
+  # Options: auto, online, offline | auto will decide based on the server online mode option. Change it for BungeeCord setups to whatever you use on your BungeeCord server!!!
   UUID_Type: auto
   SQL:
     Host: 'localhost'
     Database: 'minecraft'
     User: 'minecraft'
     Password: 'minecraft'
-    # You may want to adjust this setting based on the load of your database server and the amount of players
+    # The max amount of connections to the database the connection pool will open.
+    # You may want to adjust this setting based on the load of your database server and the amount of players.
     MaxConnections: 2
     Tables:
       User: marry_players
@@ -115,6 +122,7 @@ HealthRegain:
 # -1 No range limit and no world limit, 0 No range limit but in the same world, >= 1 range limit in meters/blocks
 Range:
   Marry: 25.0
+  Divorce: 25.0
   Backpack: 5
   Gift: 0
   Kiss: 2

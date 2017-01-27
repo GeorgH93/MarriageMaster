@@ -235,17 +235,17 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	{
 		try(Connection connection = getConnection())
 		{
-			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
+			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
 					"{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
-					queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT NOT NULL,\nPRIMARY KEY ({FPlayerID}),\n" +
+					queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\n" +
 							"CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
-					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT NOT NULL,\n{FPlayer2} INT NOT NULL,\n" +
-							"{FPriest} INT NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
+					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n{FPlayer2} INT UNSIGNED NOT NULL,\n" +
+							"{FPriest} INT UNSIGNED NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
 							"PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
 							"CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
 							"CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
 							"CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n)" + getEngine() + ";"),
-					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n" +
+					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT UNSIGNED NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n" +
 							"{FHomeZ} DOUBLE NOT NULL,\n{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" + ((bungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
 							"CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
 			DBTools.updateDB(connection, queryTPlayers);
@@ -387,36 +387,37 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 			// Load players
 			plugin.getLogger().info("Loading players ...");
 			//TODO validate the performance loss for individual querys to load the data
-			StringBuilder stringBuilder = new StringBuilder("");
-			for(int ignored : playerToLoad)
+			if(!playerToLoad.isEmpty())
 			{
-				if(stringBuilder.length() > 0)
+				StringBuilder stringBuilder = new StringBuilder("");
+				for(int ignored : playerToLoad)
 				{
-					stringBuilder.append(',');
-				}
-				stringBuilder.append('?');
-			}
-			try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
-			{
-				int i = 0;
-				for(int pid : playerToLoad)
-				{
-					ps.setInt(++i, pid);
-				}
-				try(ResultSet rs = ps.executeQuery())
-				{
-					while(rs.next())
+					if(stringBuilder.length() > 0)
 					{
-						MarriagePlayerData player = new MarriagePlayerData(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName),
-						                                                   (plugin.getBackpacksIntegration() != null) && rs.getBoolean(fieldShareBackpack), priests.contains(rs.getInt(fieldPlayerID)),
-						                                                   rs.getInt(fieldPlayerID));
-						cache.cache(player);
+						stringBuilder.append(',');
+					}
+					stringBuilder.append('?');
+				}
+				try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
+				{
+					int i = 0;
+					for(int pid : playerToLoad)
+					{
+						ps.setInt(++i, pid);
+					}
+					try(ResultSet rs = ps.executeQuery())
+					{
+						while(rs.next())
+						{
+							MarriagePlayerData player = new MarriagePlayerData(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName), (plugin.getBackpacksIntegration() != null) && rs.getBoolean(fieldShareBackpack), priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
+							cache.cache(player);
+						}
 					}
 				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 			plugin.getLogger().info("Players loaded");
 			// Load the marriages into the cache

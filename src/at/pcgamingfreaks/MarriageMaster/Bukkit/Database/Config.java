@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Configuration;
+import at.pcgamingfreaks.LanguageUpdateMethod;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
@@ -37,6 +38,8 @@ public class Config extends Configuration
 	public Config(JavaPlugin plugin)
 	{
 		super(plugin, CONFIG_VERSION, UPGRADE_THRESHOLD);
+		languageKey = "Language.Language";
+		languageUpdateKey = "Language.UpdateMode";
 	}
 
 	@Override
@@ -323,7 +326,7 @@ public class Config extends Configuration
 
 	public int getSQLMaxConnections()
 	{
-		return Math.max(1, config.getInt("Database.SQL.MaxConnections", 4));
+		return Math.max(1, config.getInt("Database.SQL.MaxConnections", 2));
 	}
 
 	public String getSQLTableUser()
