@@ -41,15 +41,15 @@ public class ChatPrefixSuffix implements Listener
 		plugin = marriagemaster;
 		if(plugin.getConfiguration().isPrefixEnabled() && plugin.getConfiguration().getPrefix() != null)
 		{
-			prefix = plugin.getConfiguration().getPrefix().replaceAll("\\{Surname\\}", "%1\\$s").replaceAll("\\{PartnerName\\}", "%2\\$s").replaceAll("\\{PartnerDisplayName\\}", "%3\\$s")
-					.replaceAll("\\{StatusHeart\\}", "%4\\$s").replaceAll("\\{MagicHeart\\}", "%5\\$s");
+			prefix = plugin.getConfiguration().getPrefix().replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s")
+					.replaceAll("\\{StatusHeart}", "%4\\$s").replaceAll("\\{MagicHeart}", "%5\\$s");
 			useStatusHeart = plugin.getConfiguration().getPrefix().contains("{StatusHeart}");
 			useMagicHeart  = plugin.getConfiguration().getPrefix().contains("{MagicHeart}");
 			prefixOnLineBeginning = plugin.getConfiguration().isPrefixOnLineBeginning();
 		}
 		if(plugin.getConfiguration().isSuffixEnabled() && plugin.getConfiguration().getSuffix() != null)
 		{
-			suffix = plugin.getConfiguration().getSuffix().replaceAll("\\{Surname\\}", "%1\\$s").replaceAll("\\{PartnerName\\}", "%2\\$s").replaceAll("\\{PartnerDisplayName\\}", "%3\\$s");
+			suffix = plugin.getConfiguration().getSuffix().replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s");
 		}
 	}
 
@@ -79,7 +79,7 @@ public class ChatPrefixSuffix implements Listener
 			}
 			if(prefixOnLineBeginning)
 			{
-				format = p + format.replace("%1$s", " %1$s " + s);
+				format = p + ' ' + format.replace("%1$s", "%1$s " + s);
 			}
 			else
 			{
@@ -92,7 +92,7 @@ public class ChatPrefixSuffix implements Listener
 			{
 				if(prefixOnLineBeginning)
 				{
-					format = HEART_GRAY + format;
+					format = HEART_GRAY + ' ' + format;
 				}
 				else
 				{
