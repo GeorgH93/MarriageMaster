@@ -223,8 +223,11 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	{
 		getServer().getMessenger().unregisterIncomingPluginChannel(this);
 		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
-		pluginChannelCommunicator.close();
-		pluginChannelCommunicator = null;
+		if(pluginChannelCommunicator != null)
+		{
+			pluginChannelCommunicator.close();
+			pluginChannelCommunicator = null;
+		}
 		HandlerList.unregisterAll(this);
 		getServer().getMessenger().unregisterIncomingPluginChannel(this);
 		getServer().getMessenger().unregisterOutgoingPluginChannel(this);

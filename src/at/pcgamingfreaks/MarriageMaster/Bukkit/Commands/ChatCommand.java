@@ -63,7 +63,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
-		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget");
+		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget", new String[] { "target", "settarget" });
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}

@@ -256,7 +256,8 @@ public final class OldFileUpdater
 			newConfig.set("HealthRegain.Multiplier", oldYAML.getInt("HealthRegain.Multiplier", 2));
 			newConfig.set("Prefix.Enable", oldYAML.getBoolean("Prefix.Enable", false));
 			newConfig.set("Prefix.OnLineBeginning", oldYAML.getBoolean("Prefix.OnLineBeginning", true));
-			newConfig.set("Prefix.String", oldYAML.getString("Prefix.String", "<heart>{PartnerName}<heart>").replace("<partnername>", "{PartnerName}"));
+			newConfig.set("Prefix.String", oldYAML.getString("Prefix.String", "<heart>{PartnerName}<heart>").replace("<partnername>", "{PartnerName}").replace("<statusheart>", "{StatusHeart}")
+					.replace("<magicheart>", "{MagicHeart}"));
 			newConfig.set("Suffix.Enable", oldYAML.getBoolean("Suffix.Enable", false));
 			newConfig.set("Suffix.String", oldYAML.getString("Suffix.String", "{Surname}").replace("<partnername>", "{PartnerName}"));
 			newConfig.set("UseBungeeCord", oldYAML.getBoolean("Misc.UseBungeeCord", false));
