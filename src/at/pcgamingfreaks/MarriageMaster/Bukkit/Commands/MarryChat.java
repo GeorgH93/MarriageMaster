@@ -73,6 +73,7 @@ public class MarryChat
 				if(play.equals(sender) || play.equals(receiver)) continue;
 				play.sendMessage(msg);
 			}
+			plugin.getLogger().info(msg);
 		}
 		else
 		{

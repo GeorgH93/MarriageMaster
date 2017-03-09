@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.29.14-SNAPSHOT</version>
+	<version>1.29.14</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
