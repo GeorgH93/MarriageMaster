@@ -165,6 +165,7 @@ public class Chat extends BaseCommand
 			{
 				player.sendMessage(message);
 			}
+			plugin.getProxy().getConsole().sendMessage(message);
 		}
 		else
 		{

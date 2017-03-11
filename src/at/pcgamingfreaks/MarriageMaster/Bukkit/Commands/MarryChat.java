@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -73,7 +74,7 @@ public class MarryChat
 				if(play.equals(sender) || play.equals(receiver)) continue;
 				play.sendMessage(msg);
 			}
-			plugin.getLogger().info(msg);
+			Bukkit.getConsoleSender().sendMessage(msg);
 		}
 		else
 		{
