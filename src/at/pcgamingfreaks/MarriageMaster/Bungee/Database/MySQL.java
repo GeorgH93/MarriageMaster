@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,13 +29,14 @@ public class MySQL extends Database
 	private Connection conn = null;
 	
 	private String tablePlayers, tableMarriages, tableHomes, host, user, password;
-	private boolean updatePlayer;
+	private boolean updatePlayer, onlineUUIDs;
 	
 	public MySQL(MarriageMaster marriagemaster)
 	{
 		super(marriagemaster);
 		
 		// Load Settings
+		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
 		tablePlayers = plugin.config.getUserTable();
 		tableMarriages = plugin.config.getPartnersTable();
 		tableHomes = plugin.config.getHomesTable();
@@ -93,14 +94,14 @@ public class MySQL extends Database
 					{
 						plugin.log.info(plugin.lang.getString("Console.UpdateUUIDs"));
 					}
-					String uuid = res.getString("`uuid`");
+					String uuid = res.getString("uuid");
 					if(uuid == null)
 					{
-						toConvert.put(res.getString("`name`").toLowerCase(), new UpdateData(res.getString("`name`"), null, res.getInt("`player_id`")));
+						toConvert.put(res.getString("name").toLowerCase(), new UpdateData(res.getString("name"), null, res.getInt("player_id")));
 					}
 					else
 					{
-						toUpdate.add(new UpdateData(res.getString("`name`"), uuid.replaceAll("-", ""), res.getInt("`player_id`")));
+						toUpdate.add(new UpdateData(res.getString("name"), uuid.replaceAll("-", ""), res.getInt("player_id")));
 					}
 				}
 			}
@@ -108,7 +109,7 @@ public class MySQL extends Database
 			{
 				if(toConvert.size() > 0)
 				{
-					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), true, false);
+					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), onlineUUIDs, false);
 					for(Map.Entry<String, String> entry : newUUIDs.entrySet())
 					{
 						UpdateData updateData = toConvert.get(entry.getKey().toLowerCase());
@@ -153,13 +154,13 @@ public class MySQL extends Database
 
 	private String replacePlaceholders(String query)
 	{
-		return query.replaceAll("(\\{\\w+\\})", "`$1`").replaceAll("`(\\{\\w+\\})`_UNIQUE", "`$1_UNIQUE`").replaceAll("`(\\{\\w+\\})`_idx", "`$1_idx`")
-				.replaceAll("fk_`(\\{\\w+\\})`_`(\\{\\w+\\})`_`(\\{\\w+\\})`", "`fk_$1_$2_$3`")
-				.replaceAll("\\{TPlayers\\}", tablePlayers).replaceAll("\\{TMarriages\\}", tableMarriages).replaceAll("\\{THomes\\}", tableHomes)
-				.replaceAll("\\{FPlayerID\\}", "player_id").replaceAll("\\{FName\\}", "name").replaceAll("\\{FUUID\\}", "uuid").replaceAll("\\{FShareBackpack\\}", "sharebackpack")
-				.replaceAll("\\{FMarryID\\}", "marry_id").replaceAll("\\{FSurname\\}", "surname").replaceAll("\\{FPlayer1\\}", "player1").replaceAll("\\{FPlayer2\\}", "player2")
-				.replaceAll("\\{FPriest\\}", "priest").replaceAll("\\{FPvPState\\}", "pvp_state").replaceAll("\\{FDate\\}", "date").replaceAll("\\{FHomeServer\\}", "home_server")
-				.replaceAll("\\{FHomeX\\}", "home_x").replaceAll("\\{FHomeY\\}", "home_y").replaceAll("\\{FHomeZ\\}", "home_z").replaceAll("\\{FHomeWorld\\}", "home_world");
+		return query.replaceAll("(\\{\\w+})", "`$1`").replaceAll("`(\\{\\w+})`_UNIQUE", "`$1_UNIQUE`").replaceAll("`(\\{\\w+})`_idx", "`$1_idx`")
+				.replaceAll("fk_`(\\{\\w+})`_`(\\{\\w+})`_`(\\{\\w+})`", "`fk_$1_$2_$3`")
+				.replaceAll("\\{TPlayers}", tablePlayers).replaceAll("\\{TMarriages}", tableMarriages).replaceAll("\\{THomes}", tableHomes)
+				.replaceAll("\\{FPlayerID}", "player_id").replaceAll("\\{FName}", "name").replaceAll("\\{FUUID}", "uuid").replaceAll("\\{FShareBackpack}", "sharebackpack")
+				.replaceAll("\\{FMarryID}", "marry_id").replaceAll("\\{FSurname}", "surname").replaceAll("\\{FPlayer1}", "player1").replaceAll("\\{FPlayer2}", "player2")
+				.replaceAll("\\{FPriest}", "priest").replaceAll("\\{FPvPState}", "pvp_state").replaceAll("\\{FDate}", "date").replaceAll("\\{FHomeServer}", "home_server")
+				.replaceAll("\\{FHomeX}", "home_x").replaceAll("\\{FHomeY}", "home_y").replaceAll("\\{FHomeZ}", "home_z").replaceAll("\\{FHomeWorld}", "home_world");
 	}
 	
 	private void checkDB()

@@ -35,6 +35,8 @@ TP:
 Database:
   # Disable UpdatePlayer in the plugin config of your bukkit server!!!
   UpdatePlayer: true
+  # Defines if uuids are in online or offline mode
+  UUID_Type: online
   # MySQL Settings must match the settings in your bukkit plugin config.
   MySQL:
     Host: localhost:3306
@@ -55,4 +57,4 @@ Misc:
   DisableV2Info: false
 
 # Config File Version. Don't touch it!
-Version: 3
+Version: 5

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class Config
 	private MarriageMaster plugin;
 	private Configuration config;
 	private ConfigurationProvider configurationProvider;
-	private static final int CONFIG_VERSION = 4;
+	private static final int CONFIG_VERSION = 5;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -91,6 +91,7 @@ public class Config
 			case 1: config.set("DelayMessageForJoiningPlayer", 1);
 			case 2: config.set("Misc.DisableV2Info", false);
 			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
+			case 4: config.set("Database.UUID_Type", "online");
 				break;
 			case CONFIG_VERSION: return false;
 			default: plugin.log.info("Config File Version newer than expected!"); return false;
@@ -235,6 +236,11 @@ public class Config
 			}
 		}
 		return str;
+	}
+
+	public String getUUIDType()
+	{
+		return config.getString("Database.UUID_Type", "auto");
 	}
 
 	public String getUserTable()

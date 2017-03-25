@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ public class MySQL extends Database implements Listener
 		super(marriagemaster);
 
 		// Load Settings
-		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
+		onlineUUIDs = (marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") && Bukkit.getServer().getOnlineMode()) || marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
 		tablePlayers = plugin.config.getUserTable();
 		tablePriests = plugin.config.getPriestsTable();
 		tablePartners = plugin.config.getPartnersTable();
@@ -131,14 +131,14 @@ public class MySQL extends Database implements Listener
 					{
 						plugin.log.info(plugin.lang.get("Console.UpdateUUIDs"));
 					}
-					String uuid = res.getString("`uuid`");
+					String uuid = res.getString("uuid");
 					if(uuid == null)
 					{
-						toConvert.put(res.getString("`name`").toLowerCase(), new UpdateData(res.getString("`name`"), null, res.getInt("`player_id`")));
+						toConvert.put(res.getString("name").toLowerCase(), new UpdateData(res.getString("name"), null, res.getInt("player_id")));
 					}
 					else
 					{
-						toUpdate.add(new UpdateData(res.getString("`name`"), uuid.replaceAll("-", ""), res.getInt("`player_id`")));
+						toUpdate.add(new UpdateData(res.getString("name"), uuid.replaceAll("-", ""), res.getInt("player_id")));
 					}
 				}
 			}
