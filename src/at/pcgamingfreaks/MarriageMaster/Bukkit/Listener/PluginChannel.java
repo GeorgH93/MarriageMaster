@@ -43,24 +43,28 @@ public class PluginChannel implements PluginMessageListener, Listener
 	}
 
 	@EventHandler
-	public void onPlayerLoginEvent(PlayerJoinEvent event)
+	public void onPlayerLoginEvent(final PlayerJoinEvent event)
 	{
 		if(plugin.HomeServer == null)
 		{
-			try
-			{
-				ByteArrayOutputStream stream = new ByteArrayOutputStream();
-				DataOutputStream out = new DataOutputStream(stream);
-				out.writeUTF("GetServer");
-				out.flush();
-				event.getPlayer().sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
-				out.close();
-			}
-			catch(Exception e)
-			{
-				plugin.log.warning("Failed sending request to bungee!");
-				e.printStackTrace();
-			}
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				public void run() {
+					try
+					{
+						ByteArrayOutputStream stream = new ByteArrayOutputStream();
+						DataOutputStream out = new DataOutputStream(stream);
+						out.writeUTF("GetServer");
+						out.flush();
+						event.getPlayer().sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+						out.close();
+						plugin.log.info("Sending server name request to bungee");
+					}
+					catch(Exception e)
+					{
+						plugin.log.warning("Failed sending request to bungee!");
+						e.printStackTrace();
+					}
+				}}, 5L);
 		}
 	}
 
@@ -89,7 +93,8 @@ public class PluginChannel implements PluginMessageListener, Listener
 			{
 			    switch(in.readUTF())
 			    {
-			    	case "GetServer": plugin.HomeServer = in.readUTF(); break;
+			    	case "GetServer": plugin.HomeServer = in.readUTF(); 
+					plugin.log.info("Received HomeServer: " + plugin.HomeServer); break;
 			    }
 			    in.close();
 			}
