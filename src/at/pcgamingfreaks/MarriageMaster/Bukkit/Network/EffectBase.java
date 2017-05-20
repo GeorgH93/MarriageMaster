@@ -45,7 +45,7 @@ public class EffectBase
 					{
 						eb = new Effect_1_7();
 					}
-					else if(version[1].equals("8") || version[1].equals("9") || version[1].equals("10") || version[1].equals("11"))
+					else if(version[1].equals("8") || version[1].equals("9") || version[1].equals("10") || version[1].equals("11") || version[1].equals("12"))
 					{
 						eb = new Effect_1_8_AndNewer();
 					}
