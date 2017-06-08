@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,11 +33,11 @@ public class Effect_1_8_AndNewer extends Effect_Bukkit
 		{
 			//noinspection ConstantConditions
 			spawnParticle(location, visibleRange, PACKET_CONSTRUCTOR.newInstance(
-					type.getEnum(), false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, count, new int[]{}));
+					type.getEnum(), false, (float) location.getX(), (float) location.getY(), (float) location.getZ(), offsetX, offsetY, offsetZ, speed, count, new int[0]));
 		}
 		catch(Exception e)
 		{
-			System.out.println("Unable to spawn particle " + type.getName() + ". (Version 1.8/1.9/1.10/1.11)");
+			System.out.println("Unable to spawn particle " + type.getName() + ". (Version 1.8/1.9/1.10/1.11/1.12)");
 			e.printStackTrace();
 		}
 	}

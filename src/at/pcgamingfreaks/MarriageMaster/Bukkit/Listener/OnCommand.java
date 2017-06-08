@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -924,7 +924,7 @@ public class OnCommand implements CommandExecutor
 				player.sendMessage(ChatColor.AQUA + "/marry backpack on" + separator + plugin.lang.get("Description.BackpackOn"));
 			}
 		}
-		if(plugin.CheckPerm(player, "marry.kiss") && plugin.config.GetKissEnabled())
+		if(plugin.config.GetKissEnabled() && plugin.CheckPerm(player, "marry.kiss"))
 		{
 			player.sendMessage(ChatColor.AQUA + "/marry kiss" + separator + plugin.lang.get("Description.Kiss"));
 		}
