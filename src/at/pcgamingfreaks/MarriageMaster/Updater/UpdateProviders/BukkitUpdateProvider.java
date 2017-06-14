@@ -17,7 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Updater.UpdateProviders;
 
-import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
 
 import com.google.gson.Gson;
@@ -79,7 +78,7 @@ public class BukkitUpdateProvider implements UpdateProvider
 				versions = new Gson().fromJson(reader, Version[].class);
 				if(versions == null || versions.length == 0)
 				{
-					logger.warning(ConsoleColor.RED + "The updater could not find any files for the project id " + projectID + " " + ConsoleColor.RESET);
+					logger.warning("The updater could not find any files for the project id " + projectID);
 					return UpdateResult.FAIL_FILE_NOT_FOUND;
 				}
 			}
@@ -88,15 +87,15 @@ public class BukkitUpdateProvider implements UpdateProvider
 		{
 			if(e.getMessage().contains("HTTP response code: 403"))
 			{
-				logger.severe(ConsoleColor.RED + "dev.bukkit.org rejected the provided API key!" + ConsoleColor.RESET);
-				logger.severe(ConsoleColor.RED + "Please double-check your configuration to ensure it is correct." + ConsoleColor.RESET);
+				logger.severe("dev.bukkit.org rejected the provided API key!");
+				logger.severe("Please double-check your configuration to ensure it is correct.");
 				logger.log(Level.SEVERE, null, e);
 				return UpdateResult.FAIL_API_KEY;
 			}
 			else
 			{
-				logger.severe(ConsoleColor.RED + "The updater could not contact dev.bukkit.org for updating!" + ConsoleColor.RESET);
-				logger.severe(ConsoleColor.RED + "If this is the first time you are seeing this message, the site may be experiencing temporary downtime." + ConsoleColor.RESET);
+				logger.severe("The updater could not contact dev.bukkit.org for updating!");
+				logger.severe("If this is the first time you are seeing this message, the site may be experiencing temporary downtime.");
 				logger.log(Level.SEVERE, null, e);
 				return UpdateResult.FAIL_SERVER_OFFLINE;
 			}
@@ -160,7 +159,7 @@ public class BukkitUpdateProvider implements UpdateProvider
 		}
 		catch(MalformedURLException e)
 		{
-			System.out.println(ConsoleColor.RED + "Failed to interpret download url \"" + versions[versions.length - 1].downloadUrl + "\"!" + ConsoleColor.RESET);
+			System.out.println("Failed to interpret download url \"" + versions[versions.length - 1].downloadUrl + "\"!");
 			e.printStackTrace();
 		}
 		return null;
