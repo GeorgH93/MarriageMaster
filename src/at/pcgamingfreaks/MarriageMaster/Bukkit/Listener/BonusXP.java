@@ -36,16 +36,23 @@ public class BonusXP implements Listener
 	@EventHandler
 	public void onXPPickup(PlayerExpChangeEvent event)
     {
-		Player player = event.getPlayer();
-		Player partner = plugin.DB.GetPlayerPartner(player);
-		if(partner != null && partner.isOnline())
+    	try
+	    {
+		    Player player = event.getPlayer();
+		    Player partner = plugin.DB.GetPlayerPartner(player);
+		    if(partner != null && partner.isOnline())
+		    {
+			    if(plugin.InRadius(player, partner, plugin.config.GetRange("BonusXP")))
+			    {
+				    int xp = (int) Math.ceil((event.getAmount() / 2.0) * plugin.config.GetBonusXPAmount());
+				    event.setAmount(xp);
+				    partner.giveExp(xp);
+			    }
+		    }
+	    }
+		catch(Exception e)
 		{
-			if(plugin.InRadius(player, partner, plugin.config.GetRange("BonusXP")))
-			{
-				int xp = (int) Math.ceil((event.getAmount() / 2.0) * plugin.config.GetBonusXPAmount());
-				event.setAmount(xp);
-				partner.giveExp(xp);
-			}
+			e.printStackTrace();
 		}
 	}
 }

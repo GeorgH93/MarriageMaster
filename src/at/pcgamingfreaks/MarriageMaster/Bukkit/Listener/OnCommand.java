@@ -370,12 +370,12 @@ public class OnCommand implements CommandExecutor
 						else if(args.length >= 2)
 						{
 							Player otP = Bukkit.getPlayerExact(partner);
-							String msg = "";
+							StringBuilder msg = new StringBuilder();
 							for(int i = 1; i < args.length; i++)
 							{
-								msg += args[i] + " ";
+								msg.append(args[i]).append(" ");
 							}
-							plugin.chat.Chat(player, otP, msg);
+							plugin.chat.Chat(player, otP, msg.toString());
 						}
 						else
 						{
@@ -818,7 +818,7 @@ public class OnCommand implements CommandExecutor
 				player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoPermission"));
 			}
 		}
-		else if(plugin.config.AllowSelfMarry() && ((args[0].equalsIgnoreCase("me") && (args.length == 2 || args.length == 3)) || args.length == 1))
+		else if(plugin.config.AllowSelfMarry() && ((args[0].equalsIgnoreCase("me") && (args.length == 2 || (args.length == 3 && plugin.config.getSurname()))) || args.length == 1))
 		{
 			if(plugin.CheckPerm(player, "marry.selfmarry"))
 			{
