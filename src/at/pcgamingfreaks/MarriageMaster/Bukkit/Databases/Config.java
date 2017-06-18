@@ -51,7 +51,7 @@ public class Config
 		LoadConfig();
 	}
 	
-	private boolean LoadConfig()
+	private void LoadConfig()
 	{
 		File file = new File(plugin.getDataFolder(), "config.yml");
 		if(!file.exists())
@@ -72,7 +72,6 @@ public class Config
 				config = null;
 			}
 		}
-		return config != null;
 	}
 	
 	public boolean UUIDComp()
@@ -179,7 +178,7 @@ public class Config
   	  	}
 	}
 	
-	private boolean UpdateConfig(File file)
+	private void UpdateConfig(File file)
 	{
 		plugin.getLogger().info("Config Version: " + config.getInt("Version") + " => " + ((config.getInt("Version") >= CONFIG_VERSION) ? "no " : "") + "update needed");
 		switch(config.getInt("Version"))
@@ -267,8 +266,10 @@ public class Config
 			case 27:
 				config.set("Kiss.Interaction", true);
 			break;
-			case CONFIG_VERSION: return false;
-			default: plugin.getLogger().info("Config File Version newer than expected!"); return false;
+			case CONFIG_VERSION:
+				return;
+			default: plugin.getLogger().info("Config File Version newer than expected!");
+				return;
 		}
 		config.set("Version", CONFIG_VERSION);
 		try 
@@ -280,9 +281,7 @@ public class Config
   	  	{
   	  		e.printStackTrace();
   	  		config = null;
-  	  		return false;
-  	  	}
-		return true;
+	    }
 	}
 	
 	public boolean getUseBungeeCord()
@@ -398,15 +397,15 @@ public class Config
 	public String getMySQLProperties()
 	{
 		List<String> list = config.getStringList("Database.MySQL.Properties");
-		String str = "";
+		StringBuilder str = new StringBuilder();
 		if(list != null)
 		{
 			for(String s : list)
 			{
-				str += "&" + s;
+				str.append("&").append(s);
 			}
 		}
-		return str;
+		return str.toString();
 	}
 	
 	public String getMySQLUser()
@@ -421,7 +420,7 @@ public class Config
 
 	public int getMySQLMaxConnections()
 	{
-		return config.getInt("Database.MySQL.MaxConnections", 4);
+		return Math.max(1, config.getInt("Database.MySQL.MaxConnections", 2));
 	}
 	
 	public String getUserTable()
