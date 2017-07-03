@@ -93,8 +93,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 			{
 			    switch(in.readUTF())
 			    {
-			    	case "GetServer": plugin.HomeServer = in.readUTF(); 
-					plugin.log.info("Received HomeServer: " + plugin.HomeServer); break;
+			    	case "GetServer": plugin.HomeServer = in.readUTF(); break;
 			    }
 			    in.close();
 			}

@@ -135,7 +135,7 @@ public class Config
 		config.set("Database.MySQL.Properties", new ArrayList<>());
 		config.set("Database.MySQL.User", "minecraft");
 		config.set("Database.MySQL.Password", "minecraft");
-		config.set("Database.MySQL.MaxConnections", 4);
+		config.set("Database.MySQL.MaxConnections", 2);
 		config.set("Database.Tables.User", "marry_players");
 		config.set("Database.Tables.Home", "marry_home");
 		config.set("Database.Tables.Priests", "marry_priests");
