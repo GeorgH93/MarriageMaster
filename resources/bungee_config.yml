@@ -10,26 +10,26 @@ InformOnPartnerJoin: true
 DelayMessageForJoiningPlayer: 1
 
 Chat:
-  # If turned off the marry chat function will be handeld by the bukkit server (Private chat will only work if both players are on the same server)
+  # If turned off the marry chat function will be handled by the bukkit server (Private chat will only work if both players are on the same server)
   Global: true
-  # Alternativ command to set the default chat to the marry chat
+  # Alternative command to set the default chat to the marry chat
   ToggleCommand: 'ctoggle'
   PrivateFormat: '<heart> %1$s&r => %2$s: %3$s'
 
 Home:
-  # If turned off the marry home function will be handeld by the bukkit server (homes will only work if the player is on the same server as his home)
+  # If turned off the marry home function will be handled by the bukkit server (homes will only work if the player is on the same server as his home)
   Global: true
   # Disable delay on the bukkit server!
   Delayed: false
-  # List of Servers where it's not posible to teleport from
+  # List of Servers where it's not possible to teleport from
   FromServersBlocked: []
 
 TP:
-  # If turned off the marry tp function will be handeld by the bukkit server (tp will only work if both players are on the same server)
+  # If turned off the marry tp function will be handled by the bukkit server (tp will only work if both players are on the same server)
   Global: true
   # Disable delay on the bukkit server!
   Delayed: false
-  # List of Servers where it's not posible to teleport from
+  # List of Servers where it's not possible to teleport from
   FromServersBlocked: []
 
 Database:
@@ -50,8 +50,7 @@ Database:
     Partner: marry_partners
 
 Misc:
-  Metrics: true
-  # Only Downloads the update to the "updates" folder. You will have to move it manualy or let you system move it in the startup script.
+  # Only Downloads the update to the "updates" folder. You will have to move it manually or let you system move it in the startup script.
   # If turned off you still can use /marry update to download the update
   AutoUpdate: true
   DisableV2Info: false

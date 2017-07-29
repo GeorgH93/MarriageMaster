@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bungee;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -31,8 +30,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
-
-import org.mcstats.Bungee_Metrics;
 
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Database.*;
@@ -70,19 +67,6 @@ public class MarriageMaster extends Plugin
 		config = new Config(this);
 		lang = new Language(this);
 		DB = new MySQL(this);
-		// Starting Metrics service
-		if(config.getUseMetrics())
-		{
-			try
-			{
-				Bungee_Metrics metrics = new Bungee_Metrics(this);
-			    metrics.start();
-			}
-			catch (IOException e)
-			{
-			    log.info(lang.getString("Console.MetricsOffline"));
-			}
-		}
 		// Check for updates
 		if(config.getUseUpdater())
 		{

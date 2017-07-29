@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics_MultiVersion;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Kiss;
@@ -99,18 +97,6 @@ public class MarriageMaster extends JavaPlugin
 		mr = new ArrayList<>();
 		bdr = new ArrayList<>();
 		dr = new HashMap<>();
-		if(config.UseMetrics())
-		{
-			try
-			{
-				Metrics_MultiVersion metrics = new Metrics_MultiVersion(this);
-				metrics.start();
-			}
-			catch (IOException e)
-			{
-			    log.info(lang.get("Console.MetricsOffline"));
-			}
-		}
 		if(config.UseUpdater())
 		{
 			update();
@@ -124,14 +110,8 @@ public class MarriageMaster extends JavaPlugin
 			}
 		}
 		economy = BaseEconomy.getEconomy(this);
-		if(config.getUseMinepacks())
-		{
-			setupMinePacks();
-		}
-		if(config.getUseBungeeCord())
-		{
-			pluginchannel = new PluginChannel(this);
-		}
+		if(config.getUseMinepacks()) minepacks = MinePacksIntegrationBase.getIntegration();
+		if(config.getUseBungeeCord()) pluginchannel = new PluginChannel(this);
 		// Register events
 		getCommand("marry").setExecutor(new OnCommand(this));
 		registerEvents();
@@ -164,12 +144,6 @@ public class MarriageMaster extends JavaPlugin
         	perms = permissionProvider.getProvider();
         }
         return (perms != null);
-    }
-    
-    public boolean setupMinePacks()
-    {
-	    minepacks = MinePacksIntegrationBase.getIntegration();
-		return minepacks != null;
     }
 	
 	public void registerEvents()

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -148,7 +148,6 @@ public class Config
 		config.set("Kiss.WaitTime", 10);
 		config.set("Kiss.HearthCount", 50);
 		config.set("Kiss.CompatibilityMode", false);
-		config.set("Misc.Metrics", true);
 		config.set("Misc.AutoUpdate", true);
 		config.set("Misc.DisableV2Info", false);
 		config.set("Range.Marry", 25.0F);
@@ -197,7 +196,6 @@ public class Config
 				config.set("Kiss.Enable", true);
 				config.set("Kiss.WaitTime", 10);
 				config.set("Kiss.HearthCount", 50);
-				config.set("Misc.Metrics", true);
 				config.set("Misc.AutoUpdate", true);
 				config.set("Economy.Gift", 10.00);
 			case 5:
@@ -486,11 +484,6 @@ public class Config
 	public int GetKissHearthCount()
 	{
 		return config.getInt("Kiss.HearthCount");
-	}
-	
-	public boolean UseMetrics()
-	{
-		return config.getBoolean("Misc.Metrics");
 	}
 	
 	public boolean UseUpdater()

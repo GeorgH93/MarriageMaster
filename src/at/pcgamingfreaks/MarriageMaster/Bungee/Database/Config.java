@@ -84,7 +84,7 @@ public class Config
 		updateConfig(file);
 	}
 	
-	private boolean updateConfig(File file)
+	private void updateConfig(File file)
 	{
 		switch(config.getInt("Version"))
 		{
@@ -93,8 +93,8 @@ public class Config
 			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
 			case 4: config.set("Database.UUID_Type", "online");
 				break;
-			case CONFIG_VERSION: return false;
-			default: plugin.log.info("Config File Version newer than expected!"); return false;
+			case CONFIG_VERSION: return;
+			default: plugin.log.info("Config File Version newer than expected!"); return;
 		}
 		config.set("Version", CONFIG_VERSION);
 		try
@@ -105,9 +105,7 @@ public class Config
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return false;
 		}
-		return true;
 	}
 	
 	
@@ -120,11 +118,6 @@ public class Config
 	public String getLanguageUpdateMode()
 	{
 		return config.getString("LanguageUpdateMode");
-	}
-	
-	public boolean getUseMetrics()
-	{
-		return config.getBoolean("Misc.Metrics");
 	}
 	
 	public boolean getUseUpdater()
@@ -227,15 +220,15 @@ public class Config
 	public String getMySQLProperties()
 	{
 		List<String> list = config.getStringList("Database.MySQL.Properties");
-		String str = "";
+		StringBuilder str = new StringBuilder();
 		if(list != null)
 		{
 			for(String s : list)
 			{
-				str += "&" + s;
+				str.append("&").append(s);
 			}
 		}
-		return str;
+		return str.toString();
 	}
 
 	public String getUUIDType()
