@@ -154,7 +154,6 @@ Economy:
   SetHome: 100.0
 
 Misc:
-  Metrics: true
   AutoUpdate: true
   UseBungeeCord: false
 

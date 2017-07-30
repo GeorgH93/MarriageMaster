@@ -428,11 +428,6 @@ public class Config extends Configuration
 	//endregion
 
 	//region Misc getter
-	public boolean useMetrics()
-	{
-		return config.getBoolean("Misc.Metrics", true);
-	}
-
 	public boolean useUpdater()
 	{
 		return config.getBoolean("Misc.AutoUpdate", true);

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.Bukkit.Updater;
-import at.pcgamingfreaks.Bukkit.Metrics;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriageMasterReloadEvent;
@@ -46,7 +45,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -98,7 +96,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			return;
 		}
 		if(config.useUpdater()) update(); // Check for updates
-		if(config.useMetrics()) setupMetrics(); // Start the metrics service
 		backpacksIntegration = BackpacksIntegrationBase.getIntegration();
 
 		if(!load()) // Load Plugin
@@ -107,19 +104,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			return;
 		}
 		getLogger().info(StringUtils.getPluginEnabledMessage("Marriage Master"));
-	}
-
-	private void setupMetrics()
-	{
-		try
-		{
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		}
-		catch (IOException e)
-		{
-			getLogger().info("Failed to start metric service.");
-		}
 	}
 
 	private void failedToEnablePlugin()

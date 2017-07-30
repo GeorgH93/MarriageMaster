@@ -5,7 +5,7 @@ description: ${project.description}
 main: at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster
 version: ${project.version}-T${timestamp}
 depend: [PCGF_PluginLib]
-softdepend: [Vault,MVdWPlaceholderAPI,MinePacks,DeluxeChat,PlaceholderAPI]
+softdepend: [Vault,MinePacks,MVdWPlaceholderAPI,DeluxeChat,PlaceholderAPI]
 
 permissions:
   marry.*:
