@@ -89,8 +89,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -120,8 +120,7 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-							<!-- Java 1.8 uses checks for the JavaDoc, we disable them on Java 1.8, but older Java version don't understand the parameter, so we have to use a small trick -->
-							<additionalparam>${javadoc.opts}</additionalparam>
+							<additionalparam>-Xdoclint:none</additionalparam>
 						</configuration>
 					</execution>
 				</executions>
@@ -139,17 +138,4 @@
 			<url>https://repo.pcgamingfreaks.at/repository/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
-
-	<!-- Java 1.8 uses checks for the JavaDoc, we disable them on Java 1.8, but older Java version don't understand the parameter, so we have to use a small trick -->
-	<profiles>
-		<profile>
-			<id>doclint-java8-disable</id>
-			<activation>
-				<jdk>[1.8,)</jdk>
-			</activation>
-			<properties>
-				<javadoc.opts>-Xdoclint:none</javadoc.opts>
-			</properties>
-		</profile>
-	</profiles>
 </project>
