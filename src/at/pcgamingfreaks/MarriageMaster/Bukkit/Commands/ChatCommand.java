@@ -352,7 +352,9 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				playerReceivers.add(receiver); // Add the receiver to the list
 			}
-			privateMessageFormat.send(playerReceivers, sender.getDisplayName(), (receiver != null) ? receiver.getDisplayName() : displayNameAll, msg, sender.getName(), (receiver != null) ? receiver.getName() : displayNameAll);
+			String receiverDisplayName = (receiver != null) ? receiver.getDisplayName() : displayNameAll, receiverName = (receiver != null) ? receiver.getName() : displayNameAll;
+			privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
+			privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
 		}
 		else
 		{
