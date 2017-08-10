@@ -31,7 +31,7 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE_D
 	private final Map<Object, MARRIAGE_DATA> databaseMarriages = new ConcurrentHashMap<>(); // To resolve marriages form database key
 	private final Map<UUID, MARRIAGE_PLAYER_DATA> players = new ConcurrentHashMap<>(); // To resolve players from their UUID
 	private final Map<String, MARRIAGE_DATA> surnames = new ConcurrentHashMap<>(); // To resolve marriages from their surname
-	private final Set<MARRIAGE_DATA> marriages = Collections.newSetFromMap(new ConcurrentHashMap<MARRIAGE_DATA, Boolean>()); // Set containing all the marriages // Java 8: ConcurrentHashMap.newKeySet()
+	private final Set<MARRIAGE_DATA> marriages = ConcurrentHashMap.newKeySet(); // Set containing all the marriages
 
 	/**
 	 * Creates a new cache instance

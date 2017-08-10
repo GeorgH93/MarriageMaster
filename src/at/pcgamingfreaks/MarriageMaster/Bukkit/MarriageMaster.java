@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2017 GeorgH93
+ *   Copyright (C) 2016, 2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -83,7 +83,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public void onEnable()
 	{
-		Utils.warnOnJava_1_7(getLogger());
 		instance = this;
 		version = new Version(this.getDescription().getVersion());
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info

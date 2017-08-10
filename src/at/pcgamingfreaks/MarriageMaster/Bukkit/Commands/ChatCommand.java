@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,12 +41,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatCommand extends MarryCommand implements Listener
 {
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, privateMessageFormat, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage;
-	private final Set<Player> listeners = Collections.newSetFromMap(new HashMap<Player, Boolean>()); // Java 8: ConcurrentHashMap.newKeySet()
+	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
 	private MarryCommand chatToggleCommand, chatListenCommand;
 	private final String[] setTargetParameters;
 
@@ -202,7 +203,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			event.setCancelled(true);
 			final String msg = event.getMessage();
 			// Sync the execution of the chat event with the main thread. We check a lot of stuff with the bukkit api which is not thread save!
-			Bukkit.getScheduler().runTask(plugin, new Runnable() { @Override public void run() { doChat(player, msg); } });
+			Bukkit.getScheduler().runTask(plugin, () -> doChat(player, msg));
 		}
 	}
 
