@@ -113,6 +113,7 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 			registerMarryCommand(new KissCommand(plugin));
 		}
 		registerMarryCommand(new HugCommand(plugin));
+		registerMarryCommand(new SeenCommand(plugin));
 		if(plugin.getConfiguration().isSurnamesEnabled())
 		{
 			registerMarryCommand(new SurnameCommand(plugin));

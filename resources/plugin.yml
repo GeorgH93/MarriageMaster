@@ -44,6 +44,7 @@ permissions:
       marry.backpack: true
       marry.kiss: true
       marry.hug: true
+      marry.seen: true
       marry.selfmarry: true
       marry.changesurname: true
   marry.chat.*:
@@ -88,6 +89,9 @@ permissions:
     default: true
   marry.hug:
     description: Allows to hug your partner
+    default: true
+  marry.seen:
+    description: Allows to check when your partner was online the last time
     default: true
   marry.selfmarry:
     description: Allows to marry an other player without a priest

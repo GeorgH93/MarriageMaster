@@ -69,6 +69,13 @@ Language:
       GotHugged: "[\"\",{\"text\":\"&eDein Partner hat dich umarmt!\"}]"
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Du bist zu weit entfernt um deinen Partner zu umarmen. (Maximal {Distance} Blöcke)\",\"color\":\"red\"}]"
+    Seen:
+      # Options: {Name}, {DisplayName}
+      CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} ist zur Zeit \",\"extra\":[{\"text\":\"online\",\"color\":\"green\"},{\"text\":\".\"}]}]"
+      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      LastSeen: "[\"\",{\"text\":\"{Name} wurde zuletzt gesehen am \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"vor {Count}\"}},{\"text\":\".\"}]}]"
+      # No Json!!!
+      DateFormat: "dd.MM.yyyy 'um' HH:mm:ss"
     List:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"Es gibt keine verheirateten Spieler.\",\"color\":\"red\"}]"
@@ -211,6 +218,7 @@ Language:
       Tp: "Teleportiert dich zu deinem Partner."
       Kiss: "Du küsst deinen Partner."
       Hug: "Du umarmst deinen Partner."
+      Seen: "Zeigt dir wenn dein Partner zuletzt hier war."
       Marry: "Verheiratet zwei Spieler."
       MarrySelf: "Sendet eine Heiratsanfrage zu einem anderen Spieler."
       Divorce: "Scheidet zwei Spieler."
@@ -273,6 +281,8 @@ Command:
     - kiss
   Hug:
     - hug
+  Seen:
+    - seen
   PvPOn:
     - pvpon
   PvPOff:
