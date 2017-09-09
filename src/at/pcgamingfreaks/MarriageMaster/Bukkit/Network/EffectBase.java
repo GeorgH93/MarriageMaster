@@ -32,7 +32,7 @@ public class EffectBase
 		String name = Bukkit.getServer().getClass().getPackage().getName();
 		try
 		{
-			if(Bukkit.getServer().getName().toLowerCase().contains("cauldron"))
+			if(Bukkit.getServer().getName().toLowerCase().contains("cauldron")||Bukkit.getServer().getName().toLowerCase().contains("uranium"))
 			{
 				eb = new Effect_1_7_Cauldron();
 			}
