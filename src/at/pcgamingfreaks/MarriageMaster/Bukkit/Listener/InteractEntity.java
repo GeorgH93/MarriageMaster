@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2017 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public class InteractEntity implements Listener
 	public InteractEntity (MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		dualHandMC = Reflection.getVersion().contains("1_9") | Reflection.getVersion().contains("1_10");
+		dualHandMC = Reflection.getVersion().contains("1_9") | Reflection.getVersion().contains("1_10") | Reflection.getVersion().contains("1_11") | Reflection.getVersion().contains("1_12");
 	}
 	
 	@EventHandler
