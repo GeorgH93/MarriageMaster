@@ -63,14 +63,14 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.11.2-R0.1-SNAPSHOT</version>
+			<version>1.12-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Bungee -->
 		<dependency>
 			<groupId>net.md-5</groupId>
 			<artifactId>bungeecord-api</artifactId>
-			<version>1.11-SNAPSHOT</version>
+			<version>1.12-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- PCGF Plugin Lib -->
