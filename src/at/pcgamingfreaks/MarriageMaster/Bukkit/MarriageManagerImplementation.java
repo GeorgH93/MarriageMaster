@@ -171,7 +171,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 	@Override
 	public boolean isSurnameAvailable(@NotNull String surname)
 	{
-		return !plugin.getDB().getSurnames().contains(surname);
+		return !plugin.getDatabase().getSurnames().contains(surname);
 	}
 
 	@Override
@@ -379,7 +379,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				marriage = new MarriageData(player1, player2, null, surname);
 			}
 
-			plugin.getDB().cachedMarry(marriage);
+			plugin.getDatabase().cachedMarry(marriage);
 			messageMarried.send(priest, player1.getName(), player1.getDisplayName(), player2.getName(), player2.getDisplayName());
 			player1.sendMessage(messageHasMarried, priestName, priestDPName, player2.getName(), player2.getDisplayName());
 			player2.sendMessage(messageHasMarried, priestName, priestDPName, player1.getName(), player1.getDisplayName());
@@ -530,7 +530,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			if(!marryEvent.isCancelled())
 			{
 				MarriageData marriage = new MarriageData(getPlayersThatCanCancel()[0], getPlayerThatHasToAccept(), getPlayersThatCanCancel()[0], surname);
-				plugin.getDB().cachedMarry(marriage);
+				plugin.getDatabase().cachedMarry(marriage);
 				player2.send(messageSelfMarried, player1.getName(), player1.getDisplayName());
 				player1.send(messageSelfMarried, player2.getName(), player2.getDisplayName());
 				if(announceMarriage)

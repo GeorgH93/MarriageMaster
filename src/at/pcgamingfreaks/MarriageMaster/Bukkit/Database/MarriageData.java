@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
+import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
@@ -109,7 +110,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	{
 		String oldSurname = this.surname;
 		this.surname = surname;
-		MarriageMaster.getInstance().getDB().cachedSurnameUpdate(this, oldSurname, false);
+		MarriageMaster.getInstance().getDatabase().cachedSurnameUpdate(this, oldSurname, false);
 	}
 
 	public void updatePvPState(boolean newState)
@@ -121,7 +122,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	{
 		((MarriagePlayerData) player1).removeMarriage(this);
 		((MarriagePlayerData) player2).removeMarriage(this);
-		MarriageMaster.getInstance().getDB().cachedDivorce(this, false);
+		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
 		surname = null;
 		home = null;
 	}
@@ -165,7 +166,7 @@ public class MarriageData implements Marriage, DatabaseElement
 		{
 			String oldSurname = this.surname;
 			this.surname = surname;
-			MarriageMaster.getInstance().getDB().cachedSurnameUpdate(this, oldSurname);
+			MarriageMaster.getInstance().getDatabase().cachedSurnameUpdate(this, oldSurname);
 			return true;
 		}
 		return false;
@@ -199,7 +200,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	public void setHome(@Nullable Home home)
 	{
 		this.home = home;
-		MarriageMaster.getInstance().getDB().updateHome(this);
+		MarriageMaster.getInstance().getDatabase().updateHome(this);
 	}
 
 	@Override
@@ -212,7 +213,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	public void setPVPEnabled(boolean pvpEnabled)
 	{
 		this.pvpEnabled = pvpEnabled;
-		MarriageMaster.getInstance().getDB().updatePvPState(this);
+		MarriageMaster.getInstance().getDatabase().updatePvPState(this);
 	}
 
 	@Override
@@ -232,7 +233,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	{
 		((MarriagePlayerData) player1).removeMarriage(this);
 		((MarriagePlayerData) player2).removeMarriage(this);
-		MarriageMaster.getInstance().getDB().cachedDivorce(this);
+		MarriageMaster.getInstance().getDatabase().cachedDivorce(this);
 		surname = null;
 		home = null;
 	}
@@ -252,7 +253,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public double getDistance()
 	{
-		return (player1.isOnline() && player2.isOnline()) ?  MarriageMaster.getDistance(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer()) : Double.NEGATIVE_INFINITY;
+		return (player1.isOnline() && player2.isOnline()) ?  Utils.getDistance(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer()) : Double.NEGATIVE_INFINITY;
 	}
 
 	@Override

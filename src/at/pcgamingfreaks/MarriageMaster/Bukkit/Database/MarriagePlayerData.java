@@ -251,7 +251,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 				return;
 			}
 		}
-		MarriageMaster.getInstance().getDB().updatePriestStatus(this);
+		MarriageMaster.getInstance().getDatabase().updatePriestStatus(this);
 	}
 
 	@Override
@@ -317,7 +317,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 				return;
 			}
 		}
-		MarriageMaster.getInstance().getDB().updateBackpackShareState(this);
+		MarriageMaster.getInstance().getDatabase().updateBackpackShareState(this);
 	}
 
 	@Override

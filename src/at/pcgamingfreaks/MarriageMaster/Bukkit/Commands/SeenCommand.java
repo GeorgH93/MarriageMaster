@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.DateUtils;
+import at.pcgamingfreaks.Calendar.TimeSpan;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -41,8 +41,8 @@ public class SeenCommand extends MarryCommand
 		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), "marry.seen", true, false, plugin.getLanguage().getCommandAliases("seen"));
 
 		dateFormat = new SimpleDateFormat(plugin.getLanguage().get("Ingame.Seen.DateFormat"));
-		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name\\}", "%1$s").replaceAll("\\{Date\\}", "%2$s").replaceAll("\\{CountTotalDays\\}", "%3$d").replaceAll("\\{Count\\}", "%4$s");
-		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name\\}", "%1$s").replaceAll("\\{DisplayName\\}", "%2$s");
+		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{Date\\}", "%2\\$s").replaceAll("\\{CountTotalDays\\}", "%3\\$d").replaceAll("\\{Count\\}", "%4\\$s");
+		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
 	}
 
 	@Override
@@ -63,8 +63,8 @@ public class SeenCommand extends MarryCommand
 			else
 			{
 				Date lastOnline = new Date(partner.getPlayer().getLastPlayed());
-				int[] diff = DateUtils.timeSpan(lastOnline);
-				player.send(messageLastSeen, partner.getName(), dateFormat.format(lastOnline), diff[DateUtils.TOTAL_DAYS], DateUtils.timeSpanToString(diff));
+				TimeSpan timeSpan = new TimeSpan(lastOnline);
+				player.send(messageLastSeen, partner.getName(), dateFormat.format(lastOnline), timeSpan.getTotalDays(), timeSpan.toString());
 			}
 		}
 		else

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ * Copyright (C) 2018 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,34 +22,27 @@ import at.pcgamingfreaks.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.Plugin;
 
-public class MinePacksIntegration extends BackpacksIntegrationBase
+import java.util.MissingResourceException;
+
+public class MinepacksIntegration implements IBackpackIntegration
 {
+	private static final String PLUGIN_NAME = "Minepacks";
 	private static final Version MIN_VERSION = new Version("2.0");
-	private Minepacks minepacks = null;
+	private Minepacks minepacks;
 
-	public MinePacksIntegration() throws NullPointerException, BackpackPluginIncompatibleException
+	public MinepacksIntegration() throws NullPointerException, BackpackPluginIncompatibleException
 	{
-		if(Bukkit.getPluginManager().getPlugin("Minepacks") == null)
+		Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
+		if(!(bukkitPlugin instanceof Minepacks)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);
+		Version installedVersion = new Version(bukkitPlugin.getDescription().getVersion(), true);
+		if(MIN_VERSION.newerThan(installedVersion))
 		{
-			return;
+			throw new BackpackPluginIncompatibleException("Your Minepacks version is outdated! Please update in order to use it with this plugin!\n" +
+					                                              "You have installed: " + installedVersion + " Required: " + MIN_VERSION);
 		}
-		RegisteredServiceProvider<Minepacks> mpProvider = Bukkit.getServicesManager().getRegistration(Minepacks.class);
-		if(mpProvider != null)
-		{
-			minepacks = mpProvider.getProvider();
-			Version installedVersion = new Version(mpProvider.getPlugin().getDescription().getVersion(), true);
-			if(MIN_VERSION.olderOrEqualThan(installedVersion))
-			{
-				throw new BackpackPluginIncompatibleException("Your MinePacks version is outdated! Please update in order to use it with this plugin!\n" +
-						                                              "You have installed: " + installedVersion + " Required: " + MIN_VERSION);
-			}
-		}
-		else
-		{
-			throw new NullPointerException("Can't retrieve the backpack plugin!");
-		}
+		minepacks = (Minepacks) bukkitPlugin;
 	}
 
 	@Override

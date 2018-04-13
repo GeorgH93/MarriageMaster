@@ -23,7 +23,8 @@ import at.pcgamingfreaks.Bukkit.Updater;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriageMasterReloadEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.BackpacksIntegrationBase;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.BackpackIntegrationManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.IBackpackIntegration;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementation;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
@@ -34,7 +35,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.RegainHealth;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.AlwaysUpdateProvider;
-import at.pcgamingfreaks.Updater.UpdateResult;
 import at.pcgamingfreaks.Version;
 
 import org.apache.commons.lang3.Validate;
@@ -61,7 +61,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private Language lang;
 	private Database database = null;
 	private CommandManagerImplementation commandManager = null;
-	private BackpacksIntegrationBase backpacksIntegration = null;
+	private IBackpackIntegration backpacksIntegration = null;
 	private MarriageManagerImplementation marriageManager = null;
 	private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private PlaceholderManager placeholderManager = null;
@@ -95,7 +95,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			return;
 		}
 		if(config.useUpdater()) update(); // Check for updates
-		backpacksIntegration = BackpacksIntegrationBase.getIntegration();
+		BackpackIntegrationManager.initIntegration();
+		backpacksIntegration = BackpackIntegrationManager.getIntegration();
 
 		if(!load()) // Load Plugin
 		{
@@ -223,11 +224,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 	public void update()
 	{
-		update(new at.pcgamingfreaks.Updater.Updater.UpdaterResponse()
-		{
-			@Override
-			public void onDone(UpdateResult result) {}
-		});
+		update(result -> {});
 	}
 
 	public void update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
@@ -236,27 +233,13 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		updater.update(output);
 	}
 
-	//TODO move to PCGF Lib
-	public static double getDistance(Player player1, Player player2)
-	{
-		if(player1.equals(player2))
-		{
-			return 0;
-		}
-		if(player1.getWorld().getName().equalsIgnoreCase(player2.getWorld().getName()))
-		{
-			return player1.getLocation().distance(player2.getLocation());
-		}
-		return Double.POSITIVE_INFINITY;
-	}
-
 	public static boolean inRange(Player player1, Player player2, double maxDistance)
 	{
 		if(maxDistance < 0) return true;
 		getInstance().getLogger().info(player1.getName() + " || " + player2.getName());
 		getInstance().getLogger().info(player1.hasPermission(RANGE_LIMIT_PERM) + " || " + player2.hasPermission(RANGE_LIMIT_PERM));
 		if(player1.hasPermission(RANGE_LIMIT_PERM) || player2.hasPermission(RANGE_LIMIT_PERM)) return true;
-		double distance = getDistance(player1, player2);
+		double distance = Utils.getDistance(player1, player2);
 		getInstance().getLogger().info("distance: " + distance + " max: " + maxDistance);
 		return (maxDistance == 0 && distance != Double.POSITIVE_INFINITY) || distance <= maxDistance;
 	}
@@ -271,12 +254,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		return lang;
 	}
 
-	public BackpacksIntegrationBase getBackpacksIntegration()
+	public IBackpackIntegration getBackpacksIntegration()
 	{
 		return backpacksIntegration;
 	}
 
-	public Database getDB()
+	public Database getDatabase()
 	{
 		return database;
 	}
@@ -380,21 +363,17 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 				final Location p_loc = action.getPlayer().getLocation();
 				final double p_hea = action.getPlayer().getHealth();
 				messageDontMove.send(action.getPlayer(), action.getDelay()/20L);
-				getServer().getScheduler().runTaskLater(this, new Runnable()
-				{
-					@Override public void run()
+				getServer().getScheduler().runTaskLater(this, () -> {
+					if(action.getPlayer().isOnline())
 					{
-						if(action.getPlayer().isOnline())
+						if(p_hea <= action.getPlayer().getHealth() && p_loc.getX() == action.getPlayer().getLocation().getX() && p_loc.getY() == action.getPlayer().getLocation().getY() &&
+								p_loc.getZ() == action.getPlayer().getLocation().getZ() && p_loc.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
 						{
-							if(p_hea <= action.getPlayer().getHealth() && p_loc.getX() == action.getPlayer().getLocation().getX() && p_loc.getY() == action.getPlayer().getLocation().getY() &&
-									p_loc.getZ() == action.getPlayer().getLocation().getZ() && p_loc.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
-							{
-								action.run();
-							}
-							else
-							{
-								messageMoved.send(action.getPlayer());
-							}
+							action.run();
+						}
+						else
+						{
+							messageMoved.send(action.getPlayer());
 						}
 					}
 				}, action.getDelay());

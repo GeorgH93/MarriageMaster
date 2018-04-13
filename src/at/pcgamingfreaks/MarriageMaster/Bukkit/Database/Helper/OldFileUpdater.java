@@ -146,8 +146,8 @@ public final class OldFileUpdater
 							switch(keys[2])
 							{
 								case "ListAll": simpleConverter.put(helper + "List", key); break;
-								case "SelfMarry": simpleConverter.put(helper + "MarrySelf", key); break;
-								case "SelfDivorce": simpleConverter.put(helper + "DivorceSelf", key); break;
+								case "SelfMarry": simpleConverter.put(helper + "RequirePriest", key); break;
+								case "SelfDivorce": simpleConverter.put(helper + "DivorceRequiresPriest", key); break;
 								case "ListenChat": simpleConverter.put(helper + "ChatListen", key); break;
 								case "TP": simpleConverter.put(helper + "Tp", key); break;
 								case "Priest": simpleConverter.put(helper + "SetPriest", key); break;
