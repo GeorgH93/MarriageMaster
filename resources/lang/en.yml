@@ -79,8 +79,8 @@ Language:
     List:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"There are no married players.\",\"color\":\"red\"}]"
-      Headline: "[\"\",{\"text\":\"Married players list\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"}]"
-      Footer: "[{\"text\":\"### Showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"},{\"text\":\" ###\"}]"
+      Headline: "[\"\",{\"text\":\"Married players list\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"You can't hurt your partner if you have PvP disabled.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"You have now enabled PvP with your partner.\",\"color\":\"green\"}]"

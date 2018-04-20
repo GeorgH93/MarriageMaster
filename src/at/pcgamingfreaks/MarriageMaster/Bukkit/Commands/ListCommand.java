@@ -29,9 +29,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ListCommand extends MarryCommand
 {
+	private static final Pattern PAGE_REGEX = Pattern.compile("(?<page>\\d+)(?<op>\\+\\d+|-\\d+|\\+\\+|--)");
 	private final int entriesPerPage;
 	private final Message messageHeadlineMain, messageFooter, messageListFormat, messageNoMarriedPlayers;
 	private final boolean useFooter;
@@ -55,15 +58,25 @@ public class ListCommand extends MarryCommand
 		int page = 0;
 		if(args.length == 1)
 		{
-			try
+			Matcher matcher = PAGE_REGEX.matcher(args[0]);
+			if(matcher.matches())
 			{
-				page = Integer.parseInt(args[0]) - 1;
-				if(page < 0)
+				page = Integer.parseInt(matcher.group("page"));
+				if(matcher.group("op") != null)
 				{
-					page = 0;
+					switch(matcher.group("op"))
+					{
+						case "++": page++; break;
+						case "--": page--; break;
+						default:
+							String offset = matcher.group("op");
+							page += Integer.parseInt((offset.startsWith("+")) ? offset.substring(1) : offset);
+							break;
+					}
 				}
+				if(--page < 0) page = 0; // To convert the input to a valid array range
 			}
-			catch(NumberFormatException e)
+			else
 			{
 				((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
 				return;

@@ -43,35 +43,35 @@ public class Config extends Configuration
 	}
 
 	@Override
-	protected void doUpgrade(at.pcgamingfreaks.Configuration oldConfig)
+	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldConfig)
 	{
 		if(oldConfig.getVersion() < PRE_V2_VERSIONS)
 		{
-			OldFileUpdater.updateConfig(oldConfig.getConfig(), this.getConfig());
+			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfig());
 			new UpgradedInfo(MarriageMaster.getInstance());
 		}
 		else
 		{
 			for(String key : getConfig().getKeys(true))
 			{
-				if(oldConfig.getConfig().isSet(key))
+				if(oldConfig.getYaml().isSet(key))
 				{
 					if(key.equals("Version")) continue;
 					if(key.equals("Marriage.AllowSelfMarriage"))
 					{
-						getConfig().set(key, !oldConfig.getConfig().getBoolean(key, false));
+						getConfig().set(key, !oldConfig.getYaml().getBoolean(key, false));
 						continue;
 					}
 					if(key.equals("Marriage.AllowSelfDivorce"))
 					{
-						String s = oldConfig.getConfig().getString(key, null);
+						String s = oldConfig.getYaml().getString(key, null);
 						if(s != null && !s.trim().toLowerCase().equals("auto"))
 						{
-							getConfig().set(key, !oldConfig.getConfig().getBoolean(key, false));
+							getConfig().set(key, !oldConfig.getYaml().getBoolean(key, false));
 						}
 						continue;
 					}
-					getConfig().set(key, oldConfig.getConfig().getString(key, null));
+					getConfig().set(key, oldConfig.getYaml().getString(key, null));
 				}
 			}
 		}
@@ -289,7 +289,7 @@ public class Config extends Configuration
 		getConfig().set("Database.Type", newType);
 		try
 		{
-			saveConfig();
+			save();
 		}
 		catch(FileNotFoundException e)
 		{

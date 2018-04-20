@@ -39,11 +39,11 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 	protected void doUpdate() {}
 
 	@Override
-	protected void doUpgrade(at.pcgamingfreaks.Language oldLang)
+	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldLang)
 	{
 		if(oldLang.getVersion() < PRE_V2_VERSIONS)
 		{
-			OldFileUpdater.updateLanguage(oldLang.getLang(), getLang());
+			OldFileUpdater.updateLanguage(oldLang.getYaml(), getLang());
 		}
 		else
 		{
@@ -59,12 +59,12 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 
 	public String getTranslatedPlaceholder(final String key)
 	{
-		return ChatColor.translateAlternateColorCodes('&', lang.getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return ChatColor.translateAlternateColorCodes('&', getLang().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
 	public String getDialog(final String key)
 	{
-		return lang.getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return getLang().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
 	public String[] getCommandAliases(final String command)
@@ -74,13 +74,13 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 
 	public String[] getCommandAliases(final String command, final @NotNull String[] defaults)
 	{
-		List<String> aliases = lang.getStringList("Command." + command, new LinkedList<String>());
+		List<String> aliases = getLang().getStringList("Command." + command, new LinkedList<String>());
 		return (aliases.size() > 0) ? aliases.toArray(new String[aliases.size()]) : defaults;
 	}
 
 	public String[] getSwitch(final String key, final String defaultSwitch)
 	{
-		List<String> switches = lang.getStringList("Command.Switches." + key, new LinkedList<String>());
+		List<String> switches = getLang().getStringList("Command.Switches." + key, new LinkedList<String>());
 		if(!switches.contains(defaultSwitch)) switches.add(defaultSwitch);
 		return switches.toArray(new String[switches.size()]);
 	}
