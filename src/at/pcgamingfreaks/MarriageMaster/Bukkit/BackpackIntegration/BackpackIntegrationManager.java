@@ -55,7 +55,7 @@ public class BackpackIntegrationManager
 
 	static
 	{
-		registerCompatiblePlugin("MinePacks", new VersionRange("1.14", "1.999"), MinepacksV1Integration.class);
+		registerCompatiblePlugin("MinePacks", new VersionRange("1.17.7", "1.999"), MinepacksV1Integration.class);
 		registerCompatiblePlugin("Minepacks", new VersionRange("2.0-SNAPSHOT", null), MinepacksIntegration.class);
 	}
 

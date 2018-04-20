@@ -20,7 +20,7 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"Your partner is offline.\",\"color\":\"gray\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"All your partners are offline.\",\"color\":\"gray\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"Following partners are online: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
+      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "

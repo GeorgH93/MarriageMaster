@@ -29,7 +29,7 @@ import java.util.MissingResourceException;
 class MinepacksV1Integration implements IBackpackIntegration
 {
 	private static final String PLUGIN_NAME = "MinePacks";
-	private static final Version MIN_VERSION = new Version("1.14");
+	private static final Version MIN_VERSION = new Version("1.17.7");
 	private MinePacks minepacks;
 
 	public MinepacksV1Integration() throws NullPointerException, BackpackPluginIncompatibleException
