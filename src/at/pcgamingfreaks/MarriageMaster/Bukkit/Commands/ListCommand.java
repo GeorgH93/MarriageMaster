@@ -22,7 +22,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,9 +45,9 @@ public class ListCommand extends MarryCommand
 		useFooter        = plugin.getConfiguration().useListFooter();
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
-		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player2Name\\}", "%2\\$s").replaceAll("\\{Player1DisplayName\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
-		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").replaceAll("\\{CurrentPage\\}", "%1\\$d").replaceAll("\\{MaxPage\\}", "%2\\$d").replaceAll("\\{MainCommand\\}", "%3\\$s").replaceAll("\\{SubCommand\\}", "%4\\$s");
-		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").replaceAll("\\{CurrentPage\\}", "%1\\$d").replaceAll("\\{MaxPage\\}", "%2\\$d").replaceAll("\\{MainCommand\\}", "%3\\$s").replaceAll("\\{SubCommand\\}", "%4\\$s");
+		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player2Name}", "%2\\$s").replaceAll("\\{Player1DisplayName}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s");
+		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s");
 		messageNoMarriedPlayers   = plugin.getLanguage().getMessage("Ingame.List.NoMarriedPlayers");
 	}
 
@@ -68,10 +67,7 @@ public class ListCommand extends MarryCommand
 					{
 						case "++": page++; break;
 						case "--": page--; break;
-						default:
-							String offset = matcher.group("op");
-							page += Integer.parseInt((offset.startsWith("+")) ? offset.substring(1) : offset);
-							break;
+						default: page += Integer.parseInt(matcher.group("op")); break;
 					}
 				}
 				if(--page < 0) page = 0; // To convert the input to a valid array range
@@ -99,10 +95,7 @@ public class ListCommand extends MarryCommand
 			while(couplesIterator.hasNext() && --c >= 0)
 			{
 				Marriage couple = couplesIterator.next();
-				//noinspection ConstantConditions
-				messageListFormat.send(sender, couple.getPartner1().getPlayer().getName(), couple.getPartner2().getPlayer().getName(),
-						(couple.getPartner1().getPlayer().getPlayer() == null) ? ChatColor.GRAY + couple.getPartner1().getPlayer().getName() : couple.getPartner1().getPlayer().getPlayer().getDisplayName(),
-						(couple.getPartner2().getPlayer().getPlayer() == null) ? ChatColor.GRAY + couple.getPartner2().getPlayer().getName() : couple.getPartner2().getPlayer().getPlayer().getDisplayName());
+				messageListFormat.send(sender, couple.getPartner1().getName(), couple.getPartner2().getName(), couple.getPartner1().getDisplayName(), couple.getPartner2().getDisplayName());
 			}
 			if(useFooter)
 			{

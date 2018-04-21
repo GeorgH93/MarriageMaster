@@ -81,8 +81,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		autoDialog       = plugin.getConfiguration().isMarryConfirmationAutoDialogEnabled();
 		otherPlayerOnSelfDivorce = plugin.getConfiguration().isConfirmationOtherPlayerOnSelfDivorceEnabled();
 
-		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
-		dialogAndDoYouWant  = plugin.getLanguage().getDialog("AndDoYouWant").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
+		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		dialogAndDoYouWant  = plugin.getLanguage().getDialog("AndDoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
 		dialogMarried       = plugin.getLanguage().getDialog("Married");
 		dialogYesIWant      = plugin.getLanguage().getDialog("YesIWant");
 		dialogNoIDontWant   = plugin.getLanguage().getDialog("NoIDontWant");
@@ -430,8 +430,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 						if(priest.isMarried())
 						{
 							//noinspection ConstantConditions
-							OfflinePlayer partner = priest.getPartner().getPlayer();
-							messageSelfAlreadyMarried.send(bPriest, partner.getName(), (partner.isOnline()) ? partner.getPlayer().getDisplayName() : ChatColor.GRAY + partner.getName());
+							messageSelfAlreadyMarried.send(bPriest, priest.getPartner().getName(), priest.getPartner().getDisplayName());
 						}
 						if(otherPlayer.isMarried())
 						{
@@ -674,8 +673,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		{
 			marriage.divorce();
 			OfflinePlayer player1 = marriage.getPartner1().getPlayer(), player2 = marriage.getPartner2().getPlayer();
-			String player1Name = player1.getName(), player1DisplayName = (player1.isOnline()) ? player1.getPlayer().getDisplayName() : ChatColor.GRAY + player1.getName();
-			String player2Name = player2.getName(), player2DisplayName = (player2.isOnline()) ? player2.getPlayer().getDisplayName() : ChatColor.GRAY + player2.getName();
+			String player1Name = marriage.getPartner1().getName(), player1DisplayName = marriage.getPartner1().getDisplayName();
+			String player2Name = marriage.getPartner2().getName(), player2DisplayName = marriage.getPartner2().getDisplayName();
 			String priestName, priestDPName;
 			if(divorceBy instanceof Player)
 			{

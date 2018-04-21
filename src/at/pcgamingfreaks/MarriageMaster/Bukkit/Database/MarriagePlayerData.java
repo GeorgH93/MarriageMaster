@@ -121,14 +121,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 		{
 			openRequest = null;
 		}
-		Iterator<AcceptPendingRequest> iterator = getRequestsToCancel().iterator();
-		while(iterator.hasNext())
-		{
-			if(iterator.next().equals(request))
-			{
-				iterator.remove();
-			}
-		}
+		getRequestsToCancel().removeIf(acceptPendingRequest -> acceptPendingRequest.equals(request));
 	}
 
 	public void addMarriage(Marriage marriage)
@@ -414,9 +407,9 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 		List<String> names = new LinkedList<>();
 		for(MarriagePlayer partner : getPartners())
 		{
-			if(partner.getPlayer().getName().toLowerCase().startsWith(namePart))
+			if(partner.getName().toLowerCase().startsWith(namePart))
 			{
-				names.add(partner.getPlayer().getName());
+				names.add(partner.getName());
 			}
 		}
 		return names;

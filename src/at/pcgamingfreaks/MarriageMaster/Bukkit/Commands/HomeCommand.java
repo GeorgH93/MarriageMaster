@@ -210,7 +210,7 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, target.getPlayer().getName());
+					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, target.getName());
 					return null;
 				}
 			}

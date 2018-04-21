@@ -126,11 +126,11 @@ public class SurnameCommand extends MarryCommand
 				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]), player2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(!player1.isMarried())
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player1.getPlayer().getName());
+					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player1.getName());
 				}
 				else if(!player2.isMarried())
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player2.getPlayer().getName());
+					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player2.getName());
 				}
 				else if(!player1.isPartner(player2))
 				{

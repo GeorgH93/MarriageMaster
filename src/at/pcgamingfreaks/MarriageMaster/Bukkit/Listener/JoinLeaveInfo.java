@@ -46,9 +46,9 @@ public class JoinLeaveInfo implements Listener
 		messageOffline       = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerOffline");
 		messageAllOffline    = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.AllPartnersOffline");
 		messageOnlineMulti   = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti");
-		messageNowOnline     = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline") .replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageNowOffline    = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		multiOnlineFormat    = plugin.getLanguage().getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageNowOnline     = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageNowOffline    = plugin.getLanguage().getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		multiOnlineFormat    = plugin.getLanguage().getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		multiOnlineSeparator = plugin.getLanguage().getTranslated("Ingame.JoinLeaveInfo.MultiOnlineSeparator");
 	}
 

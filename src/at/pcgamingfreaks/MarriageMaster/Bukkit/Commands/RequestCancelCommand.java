@@ -91,9 +91,9 @@ public class RequestCancelCommand extends MarryCommand
 			String arg = args[0].toLowerCase();
 			for(AcceptPendingRequest request : player.getRequestsToCancel())
 			{
-				if(request.getPlayerThatHasToAccept().getPlayer().getName().toLowerCase().startsWith(arg))
+				if(request.getPlayerThatHasToAccept().getName().toLowerCase().startsWith(arg))
 				{
-					tab.add(request.getPlayerThatHasToAccept().getPlayer().getName());
+					tab.add(request.getPlayerThatHasToAccept().getName());
 				}
 			}
 			return tab;

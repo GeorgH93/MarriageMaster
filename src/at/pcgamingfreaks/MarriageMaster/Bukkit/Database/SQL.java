@@ -596,7 +596,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 		try(PreparedStatement psAdd = connection.prepareStatement(queryAddPlayer, Statement.RETURN_GENERATED_KEYS))
 		{
 			int i = 1;
-			psAdd.setString(i++, player.getPlayer().getName());
+			psAdd.setString(i++, player.getName());
 			if(useUUIDs) psAdd.setString(i++, getUsedPlayerIdentifier(player));
 			if(plugin.getBackpacksIntegration() != null) psAdd.setBoolean(i++, player.isSharingBackpack());
 			if(psAdd.getParameterMetaData().getParameterCount() == i && useUUIDs)
