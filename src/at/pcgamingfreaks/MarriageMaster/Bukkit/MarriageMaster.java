@@ -34,7 +34,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorke
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.RegainHealth;
 import at.pcgamingfreaks.StringUtils;
-import at.pcgamingfreaks.Updater.UpdateProviders.AlwaysUpdateProvider;
+import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
 import at.pcgamingfreaks.Version;
 
 import org.apache.commons.lang3.Validate;
@@ -51,7 +51,6 @@ import java.util.UUID;
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
 	//private static final int BUKKIT_PROJECT_ID = 74734;
-	private static final String BETA_UPDATE_URL = "http://ci.pcgamingfreaks.at:8080/job/MarriageMaster%20V2/lastSuccessfulBuild/artifact/target/MarriageMaster-2.0-SNAPSHOT.jar";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	private static Version version = null;
 	private static MarriageMaster instance;
@@ -173,12 +172,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		messageNotMarried            = lang.getMessage("Ingame.NotMarried");
 		messagePartnerOffline        = lang.getMessage("Ingame.PartnerOffline");
 		messagePartnerNotInRange     = lang.getMessage("Ingame.PartnerNotInRange");
-		messagePlayerNotFound        = lang.getMessage("Ingame.PlayerNotFound").replaceAll("\\{PlayerName\\}", "%s");
-		messagePlayerNotMarried      = lang.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName\\}", "%s");
-		messagePlayerNotOnline       = lang.getMessage("Ingame.PlayerNotOnline").replaceAll("\\{PlayerName\\}", "%s");
+		messagePlayerNotFound        = lang.getMessage("Ingame.PlayerNotFound").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotMarried      = lang.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotOnline       = lang.getMessage("Ingame.PlayerNotOnline").replaceAll("\\{PlayerName}", "%s");
 		messagePlayersNotMarried     = lang.getMessage("Ingame.PlayersNotMarried");
 		messageMoved                 = lang.getMessage("Ingame.TP.Moved");
-		messageDontMove              = lang.getMessage("Ingame.TP.DontMove").replaceAll("\\{Time\\}", "%d");
+		messageDontMove              = lang.getMessage("Ingame.TP.DontMove").replaceAll("\\{Time}", "%d");
 		messageMarriageNotExact      = lang.getMessage("Ingame.MarriageNotExact");
 		messageTargetPartnerNotFound = lang.getMessage("Ingame.TargetPartnerNotFound");
 
@@ -229,7 +228,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 	public void update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
 	{
-		Updater updater = new Updater(this, this.getFile(), true, /*new BukkitUpdateProvider(BUKKIT_PROJECT_ID)*/new AlwaysUpdateProvider(BETA_UPDATE_URL));
+		Updater updater = new Updater(this, this.getFile(), true, /*new BukkitUpdateProvider(BUKKIT_PROJECT_ID)*/new JenkinsUpdateProvider("https://ci.pcgamingfreaks.at", "MarriageMaster V2", getLogger()));
 		updater.update(output);
 	}
 

@@ -52,28 +52,15 @@ public class Config extends Configuration
 		}
 		else
 		{
-			for(String key : getConfig().getKeys(true))
+			super.doUpgrade(oldConfig);
+			/*for(String key : getConfig().getKeys(true))
 			{
 				if(oldConfig.getYaml().isSet(key))
 				{
 					if(key.equals("Version")) continue;
-					if(key.equals("Marriage.AllowSelfMarriage"))
-					{
-						getConfig().set(key, !oldConfig.getYaml().getBoolean(key, false));
-						continue;
-					}
-					if(key.equals("Marriage.AllowSelfDivorce"))
-					{
-						String s = oldConfig.getYaml().getString(key, null);
-						if(s != null && !s.trim().toLowerCase().equals("auto"))
-						{
-							getConfig().set(key, !oldConfig.getYaml().getBoolean(key, false));
-						}
-						continue;
-					}
 					getConfig().set(key, oldConfig.getYaml().getString(key, null));
 				}
-			}
+			}*/
 		}
 	}
 

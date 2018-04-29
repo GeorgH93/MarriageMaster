@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -106,11 +106,11 @@ public final class OldFileUpdater
 								case "MarryRequestSent": advancedConverter.put(helper + "Marry.Self.AlreadyMarried", ChatColor.RED + oldYAML.getString(key)); break;
 								case "AlreadyOpenRequest": advancedConverter.put(helper + "Marry.Self.AlreadyOpenRequest", ChatColor.RED + oldYAML.getString(key)); break;
 								case "OtherAlreadyMarried": advancedConverter.put(helper + "Marry.Self.OtherAlreadyMarried", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.RED)); break;
-								case "BroadcastMarriage": advancedConverter.put(helper + "Marry.Self.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "BroadcastMarriage": advancedConverter.put(helper + "Marry.Self.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
 								case "HasMarried": advancedConverter.put(helper + "Marry.Self.Married", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.GREEN)); break;
 								case "Divorced": advancedConverter.put(helper + "Divorce.Self.Divorced", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.GREEN)); break;
 								case "DivorcedPlayer": advancedConverter.put(helper + "Divorce.Self.DivorcedPlayer", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.GREEN)); break;
-								case "BroadcastDivorce": advancedConverter.put(helper + "Divorce.Self.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "BroadcastDivorce": advancedConverter.put(helper + "Divorce.Self.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
 							}
 							break;
 						case "Priest": helper = "Language.Ingame.";
@@ -119,17 +119,17 @@ public final class OldFileUpdater
 								case "NotWithHimself": advancedConverter.put(helper + "Marry.NotWithHimself", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.RED)); break;
 								case "NotInRange": advancedConverter.put(helper + "Marry.NotInRange", ChatColor.RED + oldYAML.getString(key)); break;
 								case "AlreadyMarried": advancedConverter.put(helper + "Marry.AlreadyMarried", ChatColor.RED + oldYAML.getString(key)); break;
-								case "BroadcastMarriage": advancedConverter.put(helper + "Marry.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%3$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
-								case "BroadcastDivorce": advancedConverter.put(helper + "Divorce.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%3$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
-								case "Married": advancedConverter.put(helper + "Marry.Married", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
-								case "HasMarried": advancedConverter.put(helper + "Marry.HasMarried", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{PartnerDisplayName}" + ChatColor.GREEN)); break;
+								case "BroadcastMarriage": advancedConverter.put(helper + "Marry.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%3\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "BroadcastDivorce": advancedConverter.put(helper + "Divorce.Broadcast", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%3\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "Married": advancedConverter.put(helper + "Marry.Married", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "HasMarried": advancedConverter.put(helper + "Marry.HasMarried", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{PartnerDisplayName}" + ChatColor.GREEN)); break;
 								case "MadeYouAPriest": advancedConverter.put(helper + "SetPriest.MadeYouAPriest", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{Name}" + ChatColor.GREEN)); break;
 								case "MadeAPriest": advancedConverter.put(helper + "SetPriest.YouMadeAPriest", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{Name}" + ChatColor.GREEN)); break;
 								case "UnMadeYouAPriest": advancedConverter.put(helper + "SetPriest.FiredYou", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{Name}" + ChatColor.RED)); break;
 								case "UnMadeAPriest": advancedConverter.put(helper + "SetPriest.YouFiredAPriest", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{Name}" + ChatColor.RED)); break;
 								case "PlayerNotMarried": advancedConverter.put(helper + "PlayerNotMarried", ChatColor.RED + oldYAML.getString(key));
-								case "DivorcedPlayer": advancedConverter.put(helper + "Divorce.DivorcedPlayer", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{PartnerDisplayName}" + ChatColor.GREEN)); break;
-								case "Divorced": advancedConverter.put(helper + "Divorce.Divorced", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
+								case "DivorcedPlayer": advancedConverter.put(helper + "Divorce.DivorcedPlayer", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{PriestDisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{PartnerDisplayName}" + ChatColor.GREEN)); break;
+								case "Divorced": advancedConverter.put(helper + "Divorce.Divorced", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Player1DisplayName}" + ChatColor.GREEN).replaceAll("%2\\$s", "{Player2DisplayName}" + ChatColor.GREEN)); break;
 								case "Confirm": advancedConverter.put(helper + "Marry.Confirm", oldYAML.getString(key)); break;
 								case "AlreadyOpenRequest": advancedConverter.put(helper + "Marry.AlreadyOpenRequest", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.RED)); break;
 								case "DivPlayerOff": advancedConverter.put(helper + "Divorce.PlayerOff", ChatColor.RED + oldYAML.getString(key).replaceAll("%s", "{DisplayName}" + ChatColor.RED)); break;
@@ -159,16 +159,16 @@ public final class OldFileUpdater
 						case "Economy": helper = "Language.Economy.";
 							switch(keys[2])
 							{
-								case "NotEnough": advancedConverter.put(helper + "NotEnough", ChatColor.RED + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}"));
-								case "PartnerNotEnough": advancedConverter.put(helper + "PartnerNotEnough", ChatColor.RED + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}"));
+								case "NotEnough": advancedConverter.put(helper + "NotEnough", ChatColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}"));
+								case "PartnerNotEnough": advancedConverter.put(helper + "PartnerNotEnough", ChatColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}"));
 								case "NotEnoughPriestInfo": advancedConverter.put(helper + "PriestMarryNotEnough", ChatColor.RED + oldYAML.getString(key));
 								case "DivNotEnoPriestI": advancedConverter.put(helper + "PriestDivorceNotEnough", ChatColor.RED + oldYAML.getString(key));
-								case "TPPaid": advancedConverter.put(helper + "TpPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
-								case "HomeTPPaid": advancedConverter.put(helper + "HomeTPPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
-								case "SetHomePaid": advancedConverter.put(helper + "SetHomePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
-								case "GiftPaid": advancedConverter.put(helper + "GiftPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
-								case "MarriagePaid": advancedConverter.put(helper + "MarriagePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
-								case "DivorcePaid": advancedConverter.put(helper + "DivorcePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1$s", "{Cost} {CurrencyName}").replaceAll("%2$s", "{Remaining} {CurrencyName}"));
+								case "TPPaid": advancedConverter.put(helper + "TpPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "HomeTPPaid": advancedConverter.put(helper + "HomeTPPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "SetHomePaid": advancedConverter.put(helper + "SetHomePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "GiftPaid": advancedConverter.put(helper + "GiftPaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "MarriagePaid": advancedConverter.put(helper + "MarriagePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "DivorcePaid": advancedConverter.put(helper + "DivorcePaid", ChatColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
 							}
 							break;
 					}
@@ -222,8 +222,15 @@ public final class OldFileUpdater
 			newConfig.set("Database.SQL.Tables.Partner", oldYAML.getString("Database.Tables.Partner", "marry_partners"));
 			newConfig.set("Database.SQL.Tables.Home", oldYAML.getString("Database.Tables.Home", "marry_home"));
 			newConfig.set("Marriage.AnnounceOnMarriage", oldYAML.getBoolean("Announcement", true));
-			newConfig.set("Marriage.AllowSelfMarriage", oldYAML.getBoolean("AllowSelfMarry", false));
-			newConfig.set("Marriage.AllowSelfDivorce", oldYAML.getString("AllowSelfDivorce", "auto"));
+			newConfig.set("Marriage.RequirePriest", !oldYAML.getBoolean("AllowSelfMarry", false));
+			if(!oldYAML.getString("AllowSelfDivorce", "auto").equalsIgnoreCase("auto"))
+			{
+				switch(oldYAML.getString("AllowSelfDivorce", "auto").trim().toLowerCase())
+				{
+					case "on": case "yes": case "true": newConfig.set("Marriage.DivorceRequiresPriest", false); break;
+					case "off": case "no": case "false": newConfig.set("Marriage.DivorceRequiresPriest", true);
+				}
+			}
 			newConfig.set("Marriage.Surnames.Enable", oldYAML.getBoolean("Surname", false));
 			newConfig.set("Marriage.Surnames.AllowColors", oldYAML.getBoolean("AllowSurnameColors", false));
 			newConfig.set("Marriage.Surnames.AllowedCharacters", oldYAML.getString("AllowedSurnameCharacters", "A-Za-z"));
@@ -248,7 +255,7 @@ public final class OldFileUpdater
 			newConfig.set("Teleport.Delay", oldYAML.getBoolean("Teleport.Delay", false));
 			newConfig.set("Teleport.DelayTime", oldYAML.getInt("Teleport.DelayTime", 3));
 			newConfig.set("Teleport.CheckSafety", oldYAML.getBoolean("Teleport.CheckSafety", true));
-			newConfig.set("Teleport.BlacklistedWorlds", oldYAML.getStringList("Teleport.BlacklistedWorlds", new LinkedList<String>()));
+			newConfig.set("Teleport.BlacklistedWorlds", oldYAML.getStringList("Teleport.BlacklistedWorlds", new LinkedList<>()));
 			newConfig.set("Gift.AllowInCreative", oldYAML.getBoolean("AllowGiftsInCreative", false));
 			newConfig.set("BonusXp.Enable", oldYAML.getBoolean("BonusXp.Enable", true));
 			newConfig.set("BonusXp.Multiplier", oldYAML.getInt("BonusXp.Multiplier", 2));
