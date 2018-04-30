@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2017 GeorgH93
+ *   Copyright (C) 2016-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,23 +18,27 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.Bukkit.Updater;
+import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriageMasterReloadEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageMasterPlugin;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.BackpackIntegrationManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.IBackpackIntegration;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementation;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.RegainHealth;
 import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.Updater.UpdateProviders.BukkitUpdateProvider;
 import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
+import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
 import at.pcgamingfreaks.Version;
 
 import org.apache.commons.lang3.Validate;
@@ -44,13 +48,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
-	//private static final int BUKKIT_PROJECT_ID = 74734;
+	private static final int BUKKIT_PROJECT_ID = 74734;
+	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	private static Version version = null;
 	private static MarriageMaster instance;
@@ -93,7 +99,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			failedToEnablePlugin();
 			return;
 		}
-		if(config.useUpdater()) update(); // Check for updates
+		if(config.useUpdater()) update(null); // Check for updates
 		BackpackIntegrationManager.initIntegration();
 		backpacksIntegration = BackpackIntegrationManager.getIntegration();
 
@@ -115,13 +121,15 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public void onDisable()
 	{
+		Updater updater = null;
 		if(config != null && config.isLoaded() && database != null)
 		{
-			if(config.useUpdater()) update(); // Check for updates
+			if(config.useUpdater()) updater = update(null); // Check for updates
 			unload();
 		}
 		if(placeholderManager != null) placeholderManager.close();
 		instance = null;
+		if(updater != null) updater.waitForAsyncOperation();
 		getLogger().info(StringUtils.getPluginDisabledMessage("Marriage Master"));
 	}
 
@@ -221,26 +229,20 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 	//endregion
 
-	public void update()
+	public Updater update(@Nullable at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
 	{
-		update(result -> {});
-	}
-
-	public void update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
-	{
-		Updater updater = new Updater(this, this.getFile(), true, /*new BukkitUpdateProvider(BUKKIT_PROJECT_ID)*/new JenkinsUpdateProvider("https://ci.pcgamingfreaks.at", "MarriageMaster V2", getLogger()));
+		UpdateProvider updateProvider;
+		if(config.useUpdaterDevBuilds())
+		{
+			updateProvider = new JenkinsUpdateProvider(JENKINS_URL, JENKINS_JOB, getLogger());
+		}
+		else
+		{
+			updateProvider = new BukkitUpdateProvider(BUKKIT_PROJECT_ID, getLogger());
+		}
+		Updater updater = new Updater(this, this.getFile(), true, updateProvider);
 		updater.update(output);
-	}
-
-	public static boolean inRange(Player player1, Player player2, double maxDistance)
-	{
-		if(maxDistance < 0) return true;
-		getInstance().getLogger().info(player1.getName() + " || " + player2.getName());
-		getInstance().getLogger().info(player1.hasPermission(RANGE_LIMIT_PERM) + " || " + player2.hasPermission(RANGE_LIMIT_PERM));
-		if(player1.hasPermission(RANGE_LIMIT_PERM) || player2.hasPermission(RANGE_LIMIT_PERM)) return true;
-		double distance = Utils.getDistance(player1, player2);
-		getInstance().getLogger().info("distance: " + distance + " max: " + maxDistance);
-		return (maxDistance == 0 && distance != Double.POSITIVE_INFINITY) || distance <= maxDistance;
+		return updater;
 	}
 
 	public Config getConfiguration()
@@ -342,8 +344,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	{
 		Validate.notNull(player1, "The first player must not be null!");
 		Validate.notNull(player2, "The second player must not be null!");
-		Location loc1 = player1.getLocation(), loc2 = player2.getLocation();
-		return range < 0 || player1.hasPermission(RANGE_LIMIT_PERM) || (loc1.getWorld().getName().equalsIgnoreCase(loc2.getWorld().getName()) && (range == 0 || loc1.distance(loc2) <= range));
+		return Utils.inRange(player1, player2, range, RANGE_LIMIT_PERM);
 	}
 
 	@Override

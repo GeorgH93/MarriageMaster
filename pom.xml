@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>2.0-RC1-SNAPSHOT</version>
+	<version>2.0-RC1</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</connection>
@@ -175,6 +175,12 @@
 			<resource>
 				<directory>resources</directory>
 				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>./</directory>
+				<includes>
+					<include>LICENSE</include>
+				</includes>
 			</resource>
 		</resources>
 		<!--<testSourceDirectory>test/src</testSourceDirectory>-->

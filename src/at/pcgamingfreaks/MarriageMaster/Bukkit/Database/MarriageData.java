@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ * Copyright (C) 2016-2018 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -259,7 +259,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public boolean inRange(double maxDistance)
 	{
-		return player1.isOnline() && player2.isOnline() && MarriageMaster.inRange(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer(), maxDistance);
+		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRange(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer(), maxDistance);
 	}
 
 	@Override

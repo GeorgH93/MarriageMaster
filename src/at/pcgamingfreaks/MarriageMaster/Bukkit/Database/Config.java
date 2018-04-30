@@ -448,6 +448,12 @@ public class Config extends Configuration
 		return getConfig().getBoolean("Misc.AutoUpdate", true);
 	}
 
+	public boolean useUpdaterDevBuilds()
+	{
+		//TODO add config value for final version
+		return true;
+	}
+
 	public boolean isBungeeEnabled()
 	{
 		return getConfig().getBoolean("Misc.UseBungeeCord", false);
