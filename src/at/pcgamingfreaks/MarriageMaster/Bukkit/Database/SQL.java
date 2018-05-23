@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016-2018 GeorgH93
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
@@ -31,6 +31,7 @@ import at.pcgamingfreaks.UUIDConverter;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -235,7 +236,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	{
 		try(Connection connection = getConnection())
 		{
-			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
+			@Language("SQL") String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
 					"{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
 					queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\n" +
 							"CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
@@ -342,13 +343,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	protected void loadAll()
 	{
 		Set<StructMarriageSQL> marriagesSet = new HashSet<>();
-		Set<Integer> playerToLoad = new FilteredHashSet<>(new FilteredHashSet.Filter<Integer>() {
-			@Override
-			public boolean isAllowed(Integer element)
-			{
-				return element >= 0;
-			}
-		});
+		Set<Integer> playerToLoad = new FilteredHashSet<>(element -> element >= 0);
 		try(Connection connection = getConnection())
 		{
 			// Load marriages
@@ -437,32 +432,28 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 
 	public void loadMarriage(final int marriageId)
 	{
-		runAsync(new Runnable() {
-			@Override
-			public void run()
+		runAsync(() -> {
+			try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadMarriage))
 			{
-				try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadMarriage))
+				ps.setInt(1, marriageId);
+				try(ResultSet rs =  ps.executeQuery())
 				{
-					ps.setInt(1, marriageId);
-					try(ResultSet rs =  ps.executeQuery())
+					MarriagePlayerData player1 = playerFromId(connection, rs.getInt(fieldPlayer1)), player2 = playerFromId(connection, rs.getInt(fieldPlayer2));
+					MarriagePlayerData priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
+					if(player1 == null || player2 == null)
 					{
-						MarriagePlayerData player1 = playerFromId(connection, rs.getInt(fieldPlayer1)), player2 = playerFromId(connection, rs.getInt(fieldPlayer2));
-						MarriagePlayerData priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
-						if(player1 == null || player2 == null)
-						{
-							plugin.getLogger().warning("Failed to load marriage (id: " + marriageId + ") cause one of it's players could not be loaded successful!");
-							return;
-						}
-						String surname = plugin.isSurnamesEnabled() ? rs.getString(fieldSurname) : null;
-						MarriageData marriage = new MarriageData(player1, player2, priest, rs.getTimestamp(fieldDate), surname, rs.getBoolean(fieldPVPState), null, marriageId);
-						cache.cache(marriage);
-						loadHome(marriage);
+						plugin.getLogger().warning("Failed to load marriage (id: " + marriageId + ") cause one of it's players could not be loaded successful!");
+						return;
 					}
+					String surname = plugin.isSurnamesEnabled() ? rs.getString(fieldSurname) : null;
+					MarriageData marriage = new MarriageData(player1, player2, priest, rs.getTimestamp(fieldDate), surname, rs.getBoolean(fieldPVPState), null, marriageId);
+					cache.cache(marriage);
+					loadHome(marriage);
 				}
-				catch(SQLException e)
-				{
-					e.printStackTrace();
-				}
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
 			}
 		});
 	}
@@ -490,69 +481,61 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 
 	protected void loadHomesDelayed()
 	{
-		runAsync(new Runnable() {
-			@Override
-			public void run()
+		runAsync(() -> {
+			plugin.getLogger().info("Loading homes ...");
+			Map<Integer, Home> homes = new HashMap<>();
+			try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHomes); ResultSet rs = ps.executeQuery())
 			{
-				plugin.getLogger().info("Loading homes ...");
-				Map<Integer, Home> homes = new HashMap<>();
-				try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHomes); ResultSet rs = ps.executeQuery())
+				while(rs.next())
 				{
-					while(rs.next())
+					String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
+					homes.put(rs.getInt(fieldMarryID), new MarriageHome(rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), homeServer));
+				}
+				for(Marriage marriage : cache.getLoadedMarriages())
+				{
+					if(marriage instanceof MarriageData)
 					{
-						String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
-						homes.put(rs.getInt(fieldMarryID), new MarriageHome(rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), homeServer));
-					}
-					for(Marriage marriage : cache.getLoadedMarriages())
-					{
-						if(marriage instanceof MarriageData)
+						MarriageData m = (MarriageData) marriage;
+						if(m.getDatabaseKey() != null && m.getDatabaseKey() instanceof Integer)
 						{
-							MarriageData m = (MarriageData) marriage;
-							if(m.getDatabaseKey() != null && m.getDatabaseKey() instanceof Integer)
-							{
-								m.setHomeLoc(homes.get(m.getDatabaseKey()));
-							}
+							m.setHomeLoc(homes.get(m.getDatabaseKey()));
+						}
+					}
+				}
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+			homes.clear();
+			plugin.getLogger().info("Homes loaded");
+		});
+	}
+
+	public void loadHome(final MarriageData marriage)
+	{
+		runAsync(() -> {
+			if(marriage.getDatabaseKey() instanceof Integer) // If there is no db key we can't store it
+			{
+				try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHome))
+				{
+					ps.setInt(1, (int) marriage.getDatabaseKey());
+					try(ResultSet rs = ps.executeQuery())
+					{
+						if(rs.next())
+						{
+							String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
+							marriage.setHomeLoc(new MarriageHome(rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), homeServer));
+						}
+						else
+						{
+							marriage.setHomeLoc(null);
 						}
 					}
 				}
 				catch(SQLException e)
 				{
 					e.printStackTrace();
-				}
-				homes.clear();
-				plugin.getLogger().info("Homes loaded");
-			}
-		});
-	}
-
-	public void loadHome(final MarriageData marriage)
-	{
-		runAsync(new Runnable() {
-			@Override
-			public void run()
-			{
-				if(marriage.getDatabaseKey() instanceof Integer) // If there is no db key we can't store it
-				{
-					try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHome))
-					{
-						ps.setInt(1, (int) marriage.getDatabaseKey());
-						try(ResultSet rs = ps.executeQuery())
-						{
-							if(rs.next())
-							{
-								String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
-								marriage.setHomeLoc(new MarriageHome(rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), homeServer));
-							}
-							else
-							{
-								marriage.setHomeLoc(null);
-							}
-						}
-					}
-					catch(SQLException e)
-					{
-						e.printStackTrace();
-					}
 				}
 			}
 		}, marriage);
@@ -563,29 +546,24 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	{
 		if(player.getDatabaseKey() == null || bungee)
 		{
-			runAsync(new Runnable()
-			{
-				@Override
-				public void run()
+			runAsync(() -> {
+				try(Connection connection = getConnection())
 				{
-					try(Connection connection = getConnection())
+					if((player.getDatabaseKey() != null && !bungee) || queryPlayer(player, connection))
 					{
-						if((player.getDatabaseKey() != null && !bungee) || queryPlayer(player, connection))
+						if(useUUIDs && player.isOnline())
 						{
-							if(useUUIDs && player.isOnline())
-							{
-								update(player, connection);
-							}
-						}
-						else
-						{
-							add(player, connection);
+							update(player, connection);
 						}
 					}
-					catch(SQLException e)
+					else
 					{
-						e.printStackTrace();
+						add(player, connection);
 					}
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
 				}
 			});
 		}
@@ -703,29 +681,25 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	protected void marry(final MarriageData marriage)
 	{
 		//TODO test if the player id is available
-		runAsync(new Runnable() {
-			@Override
-			public void run()
+		runAsync(() -> {
+			try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryMarry, Statement.RETURN_GENERATED_KEYS))
 			{
-				try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryMarry, Statement.RETURN_GENERATED_KEYS))
+				DBTools.setParameters(ps, ((MarriagePlayerData) marriage.getPartner1()).getDatabaseKey(), ((MarriagePlayerData) marriage.getPartner2()).getDatabaseKey(),
+				                (marriage.getPriest() != null) ? ((MarriagePlayerData) marriage.getPriest()).getDatabaseKey() : null, marriage.isPVPEnabled(), new Timestamp(marriage.getWeddingDate().getTime()));
+				if(plugin.isSurnamesEnabled()) ps.setString(6, marriage.getSurname());
+				ps.executeUpdate();
+				try(ResultSet rs = ps.getGeneratedKeys())
 				{
-					DBTools.setParameters(ps, ((MarriagePlayerData) marriage.getPartner1()).getDatabaseKey(), ((MarriagePlayerData) marriage.getPartner2()).getDatabaseKey(),
-					                (marriage.getPriest() != null) ? ((MarriagePlayerData) marriage.getPriest()).getDatabaseKey() : null, marriage.isPVPEnabled(), new Timestamp(marriage.getWeddingDate().getTime()));
-					if(plugin.isSurnamesEnabled()) ps.setString(6, marriage.getSurname());
-					ps.executeUpdate();
-					try(ResultSet rs = ps.getGeneratedKeys())
+					if(rs.next())
 					{
-						if(rs.next())
-						{
-							marriage.setDatabaseKey(rs.getInt(1));
-							cache.addDbKey(marriage);
-						}
+						marriage.setDatabaseKey(rs.getInt(1));
+						cache.addDbKey(marriage);
 					}
 				}
-				catch(SQLException e)
-				{
-					e.printStackTrace();
-				}
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
 			}
 		});
 	}

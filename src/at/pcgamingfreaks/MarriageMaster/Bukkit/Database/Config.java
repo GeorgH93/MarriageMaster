@@ -53,14 +53,6 @@ public class Config extends Configuration
 		else
 		{
 			super.doUpgrade(oldConfig);
-			/*for(String key : getConfig().getKeys(true))
-			{
-				if(oldConfig.getYaml().isSet(key))
-				{
-					if(key.equals("Version")) continue;
-					getConfig().set(key, oldConfig.getYaml().getString(key, null));
-				}
-			}*/
 		}
 	}
 

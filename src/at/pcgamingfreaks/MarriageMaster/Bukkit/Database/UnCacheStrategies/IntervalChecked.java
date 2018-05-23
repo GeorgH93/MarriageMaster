@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ * Copyright (C) 2016, 2018 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,9 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies;
 
-import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Database.Cache;
 
 import org.bukkit.Bukkit;
 
@@ -53,6 +53,5 @@ public class IntervalChecked extends UnCacheStrategie implements Runnable
 	public void close()
 	{
 		Bukkit.getScheduler().cancelTask(taskID);
-		super.close();
 	}
 }

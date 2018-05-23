@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>2.0-RC1</version>
+	<version>2.0-RC2-SNAPSHOT</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</connection>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<version>1.0.2-SNAPSHOT</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 
 import at.pcgamingfreaks.Database.DBTools;
 
+import org.intellij.lang.annotations.Language;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +29,7 @@ import java.util.Arrays;
 
 public class DbElementStatementWithKeyRunnable extends DbElementStatementRunnable
 {
-	public DbElementStatementWithKeyRunnable(@NotNull SQLBasedDatabase database, @NotNull DatabaseElement databaseElement, @NotNull String query, @Nullable Object... args)
+	public DbElementStatementWithKeyRunnable(@NotNull SQLBasedDatabase database, @NotNull DatabaseElement databaseElement, @NonNls @Language("SQL") String query, @Nullable Object... args)
 	{
 		super(database, databaseElement, query, args);
 	}
@@ -37,13 +39,13 @@ public class DbElementStatementWithKeyRunnable extends DbElementStatementRunnabl
 	{
 		if(args == null)
 		{
-			DBTools.runStatement(connection, query, databaseElement.getDatabaseKey());
+			DBTools.runStatementWithoutException(connection, query, databaseElement.getDatabaseKey());
 		}
 		else
 		{
 			Object[] comboArgs = Arrays.copyOf(args, args.length + 1);
 			comboArgs[args.length] = databaseElement.getDatabaseKey();
-			DBTools.runStatement(connection, query, comboArgs);
+			DBTools.runStatementWithoutException(connection, query, comboArgs);
 		}
 	}
 }

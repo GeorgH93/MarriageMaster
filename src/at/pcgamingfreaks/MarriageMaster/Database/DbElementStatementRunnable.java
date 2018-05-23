@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 
 import at.pcgamingfreaks.Database.DBTools;
 
+import org.intellij.lang.annotations.Language;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,10 +31,10 @@ public class DbElementStatementRunnable implements Runnable
 {
 	protected final DatabaseElement databaseElement;
 	protected final SQLBasedDatabase database;
-	protected final String query;
+	protected final @Language("SQL") String query;
 	protected final Object[] args;
 
-	public DbElementStatementRunnable(@NotNull SQLBasedDatabase database, @NotNull DatabaseElement databaseElement, @NotNull String query, @Nullable Object... args)
+	public DbElementStatementRunnable(@NotNull SQLBasedDatabase database, @NotNull DatabaseElement databaseElement, @NonNls @Language("SQL") String query, @Nullable Object... args)
 	{
 		this.databaseElement = databaseElement;
 		this.database = database;
@@ -56,6 +58,6 @@ public class DbElementStatementRunnable implements Runnable
 
 	protected void runStatement(Connection connection)
 	{
-		DBTools.runStatement(connection, query, args);
+		DBTools.runStatementWithoutException(connection, query, args);
 	}
 }
