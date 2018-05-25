@@ -55,16 +55,16 @@ public class EconomyManager implements Listener
 		costHome    = plugin.getConfiguration().getEconomyValue("HomeTp");
 		costSetHome = plugin.getConfiguration().getEconomyValue("SetHome");
 		// Load messages
-		messageNotEnough              = getMessage("NotEnough").replaceAll("\\{Cost\\}", "%1$d").replaceAll("\\{CurrencyName\\}", "%2\\$s");
+		messageNotEnough              = getMessage("NotEnough").replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{CurrencyName\\}", "%2\\$s");
 		messagePartnerNotEnough       = getMessage("PartnerNotEnough");
 		messagePriestMarryNotEnough   = getMessage("PriestMarryNotEnough");
 		messagePriestDivorceNotEnough = getMessage("PriestDivorceNotEnough");
-		messageMarriagePaid           = getMessage("MarriagePaid").replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
-		messageDivorcePaid            = getMessage("DivorcePaid") .replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
-		messageTpPaid                 = getMessage("TpPaid")      .replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
-		messageHomePaid               = getMessage("HomeTPPaid")  .replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
-		messageSetHomePaid            = getMessage("SetHomePaid") .replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
-		messageGiftPaid               = getMessage("GiftPaid")    .replaceAll("\\{Cost\\}", "%1\\$d").replaceAll("\\{Remaining\\}", "%2\\$d").replaceAll("\\{CurrencyName\\}", "%3\\$s");
+		messageMarriagePaid           = getMessage("MarriagePaid").replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageDivorcePaid            = getMessage("DivorcePaid") .replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageTpPaid                 = getMessage("TpPaid")      .replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageHomePaid               = getMessage("HomeTPPaid")  .replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageSetHomePaid            = getMessage("SetHomePaid") .replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageGiftPaid               = getMessage("GiftPaid")    .replaceAll("\\{Cost}", "%1\\$d").replaceAll("\\{Remaining}", "%2\\$d").replaceAll("\\{CurrencyName}", "%3\\$s");
 	}
 
 	private Message getMessage(String key)
