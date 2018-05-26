@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -153,12 +153,12 @@ public class EconomyManager implements Listener
 		if(f2 || hasPlayerEnoughMoney(player2, cost))
 		{
 			messagePartnerNotEnough.send(player1.getPlayer().getPlayer());
-			messageNotEnough.send(player2.getPlayer().getPlayer(), cost);
+			messageNotEnough.send(player2.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
 		}
 		else
 		{
 			messagePartnerNotEnough.send(player2.getPlayer().getPlayer());
-			messageNotEnough.send(player1.getPlayer().getPlayer(), cost);
+			messageNotEnough.send(player1.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
 		}
 		if(priest != null)
 		{
