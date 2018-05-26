@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,8 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.Updater.UpdateResult;
-import at.pcgamingfreaks.Updater.Updater;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -47,17 +45,13 @@ public class UpdateCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		messageCheckingForUpdates.send(sender);
-		((MarriageMaster) getMarriagePlugin()).update(new Updater.UpdaterResponse() {
-			@Override
-			public void onDone(UpdateResult result)
+		((MarriageMaster) getMarriagePlugin()).update(result -> {
+			switch(result)
 			{
-				switch(result)
-				{
-					case SUCCESS: messageUpdated.send(sender); break;
-					case NO_UPDATE: messageNoUpdate.send(sender); break;
-					case UPDATE_AVAILABLE: messageUpdateAvailable.send(sender); break;
-					default: messageUpdateFail.send(sender); break;
-				}
+				case SUCCESS: messageUpdated.send(sender); break;
+				case NO_UPDATE: messageNoUpdate.send(sender); break;
+				case UPDATE_AVAILABLE: messageUpdateAvailable.send(sender); break;
+				default: messageUpdateFail.send(sender); break;
 			}
 		});
 	}

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,8 +20,8 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.API.HelpData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
@@ -122,10 +122,7 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		{
 			registerMarryCommand(new SetPriestCommand(plugin));
 		}
-		if(plugin.getConfiguration().useUpdater())
-		{
-			registerMarryCommand(new UpdateCommand(plugin));
-		}
+		registerMarryCommand(new UpdateCommand(plugin));
 		registerMarryCommand(new ReloadCommand(plugin));
 		registerMarryCommand(new HelpCommand(plugin, commands)); // The help command needs the list of all existing commands to show the help
 		registerMarryCommand(new RequestAcceptCommand(plugin));
