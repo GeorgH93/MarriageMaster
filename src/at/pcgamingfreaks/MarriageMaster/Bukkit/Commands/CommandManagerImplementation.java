@@ -93,7 +93,10 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		registerMarryCommand(new ListCommand(plugin));
 		registerMarryCommand(new MarryMarryCommand(plugin));
 		registerMarryCommand(new MarryDivorceCommand(plugin));
-		registerMarryCommand(new ChatCommand(plugin));
+		if(plugin.getConfiguration().isChatEnabled())
+		{
+			registerMarryCommand(new ChatCommand(plugin));
+		}
 		registerMarryCommand(new TpCommand(plugin));
 		registerMarryCommand(new HomeCommand(plugin));
 		if(plugin.getConfiguration().getPvPAllowBlocking())

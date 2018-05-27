@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2017 GeorgH93
+ *   Copyright (C) 2016-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.MarriageMaster.API.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryChatEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryChatMultiTargetEvent;
-import at.pcgamingfreaks.MarriageMaster.API.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
@@ -40,7 +40,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatCommand extends MarryCommand implements Listener
@@ -48,8 +50,9 @@ public class ChatCommand extends MarryCommand implements Listener
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, privateMessageFormat, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
-	private MarryCommand chatToggleCommand, chatListenCommand;
 	private final String[] setTargetParameters;
+	private final boolean allowChatSurveillance;
+	private MarryCommand chatToggleCommand, chatListenCommand;
 
 	public ChatCommand(MarriageMaster plugin)
 	{
@@ -65,7 +68,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget", new String[] { "target", "settarget" });
-
+		allowChatSurveillance = plugin.getConfiguration().isChatSurveillanceEnabled();
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
@@ -74,8 +77,11 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		chatToggleCommand = new ChatToggleCommand(((MarriageMaster) getMarriagePlugin()), this);
 		getMarriagePlugin().getCommandManager().registerMarryCommand(chatToggleCommand);
-		chatListenCommand = new ChatListenCommand(((MarriageMaster) getMarriagePlugin()), this);
-		getMarriagePlugin().getCommandManager().registerMarryCommand(chatListenCommand);
+		if(allowChatSurveillance)
+		{
+			chatListenCommand = new ChatListenCommand(((MarriageMaster) getMarriagePlugin()), this);
+			getMarriagePlugin().getCommandManager().registerMarryCommand(chatListenCommand);
+		}
 	}
 
 	@Override
@@ -83,8 +89,11 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(chatToggleCommand);
 		chatToggleCommand.close();
-		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(chatListenCommand);
-		chatListenCommand.close();
+		if(allowChatSurveillance)
+		{
+			getMarriagePlugin().getCommandManager().unRegisterMarryCommand(chatListenCommand);
+			chatListenCommand.close();
+		}
 	}
 
 	@Override
@@ -136,7 +145,7 @@ public class ChatCommand extends MarryCommand implements Listener
 				//noinspection ConstantConditions
 				if(player.getPrivateChatTarget() == null || player.getPrivateChatTarget().getPartner(player).isOnline())
 				{
-					StringBuilder stringBuilder = new StringBuilder("");
+					StringBuilder stringBuilder = new StringBuilder();
 					for(int i = 0; i < args.length; i++)
 					{
 						if(i != 0)
@@ -210,14 +219,14 @@ public class ChatCommand extends MarryCommand implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onLeave(PlayerQuitEvent event)
 	{
-		listeners.remove(event.getPlayer());
+		if(allowChatSurveillance) listeners.remove(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event)
 	{
 		//noinspection SpellCheckingInspection
-		if(event.getPlayer().hasPermission("marry.listenchat.autojoin"))
+		if(allowChatSurveillance && event.getPlayer().hasPermission("marry.listenchat.autojoin"))
 		{
 			listeners.add(event.getPlayer());
 		}

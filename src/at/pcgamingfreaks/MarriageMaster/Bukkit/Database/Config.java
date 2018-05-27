@@ -33,7 +33,7 @@ import java.util.Set;
 
 public class Config extends Configuration
 {
-	private static final int CONFIG_VERSION = 91, UPGRADE_THRESHOLD = 91, PRE_V2_VERSIONS = 90;
+	private static final int CONFIG_VERSION = 92, UPGRADE_THRESHOLD = 92, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
 	{
@@ -385,6 +385,18 @@ public class Config extends Configuration
 	public long getJoinInfoDelay()
 	{
 		return getConfig().getLong("InfoOnPartnerJoinLeave.JoinDelay", 0) * 20L;
+	}
+	//endregion
+
+	//region Chat settings
+	public boolean isChatEnabled()
+	{
+		return getConfig().getBoolean("Chat.Enabled", true);
+	}
+
+	public boolean isChatSurveillanceEnabled()
+	{
+		return getConfig().getBoolean("Chat.AllowSurveillance", false);
 	}
 	//endregion
 

@@ -14,7 +14,7 @@ Language:
 Database:
   # SQLite = data stored in SQLite file, MySQL = data stored in MySQL database (see selection below), Shared = use shared connection pool from PCGF PluginLib
   Type: SQLite
-  # It is highly recommended to use uuids. Not using uuids will have a negative performance impact on startup (and resyncs if BungeeCord is enabled).
+  # It is highly recommended to use uuids. Not using uuids will have a negative performance impact on startup (and re-syncs if BungeeCord is enabled).
   UseUUIDs: true
   # Defines the storage format for UUIDs for compatibility with other plugins (shared user table).
   # true: format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -124,6 +124,11 @@ HealthRegain:
   Enable: true
   Multiplier: 2
 
+Chat:
+  Enable: true
+  # This option allows to enable the chat surveillance. With this option the private marriage chat can be watched by players with the right permission as well as the servers console + log file. Enabling this option will be problematic for players privacy!
+  AllowSurveillance: false
+
 # Ranges for actions
 # -1 no range limit and no world limit, 0 no range limit but in the same world, >= 1 range limit in meters/blocks
 Range:
@@ -162,8 +167,8 @@ Economy:
 Misc:
   # When auto update is disabled you still can use the build in update function manually with /marry update
   AutoUpdate: true
-  # Enable this option if you are in a bungeecord environment. It is also recommended to install the plugin on your bungeecord server
+  # Enable this option if you are in a BungeeCord environment. It is also recommended to install the plugin on your BungeeCord server
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 91
+Version: 92
