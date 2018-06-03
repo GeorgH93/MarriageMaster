@@ -70,7 +70,7 @@ public abstract class Home extends AbstractHome
 	 */
 	public double getY()
 	{
-		return location.getX();
+		return location.getY();
 	}
 
 	/**
@@ -80,7 +80,7 @@ public abstract class Home extends AbstractHome
 	 */
 	public double getZ()
 	{
-		return location.getX();
+		return location.getZ();
 	}
 
 	/**
