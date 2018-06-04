@@ -26,14 +26,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.FileNotFoundException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Config extends Configuration
 {
-	private static final int CONFIG_VERSION = 92, UPGRADE_THRESHOLD = 92, PRE_V2_VERSIONS = 90;
+	private static final int CONFIG_VERSION = 93, UPGRADE_THRESHOLD = 93, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
 	{
@@ -443,6 +440,33 @@ public class Config extends Configuration
 	public double getEconomyValue(String valueName)
 	{
 		return getConfig().getDouble("Economy." + valueName, 0);
+	}
+	//endregion
+
+	//region Command Executor
+	public boolean isCommandExecutorEnabled()
+	{
+		return getConfig().getBoolean("CommandExecutor.Enable", false);
+	}
+
+	public Collection<String> getCommandExecutorOnMarry()
+	{
+		return getConfig().getStringList("CommandExecutor.OnMarry", new LinkedList<>());
+	}
+
+	public Collection<String> getCommandExecutorOnMarryWithPriest()
+	{
+		return getConfig().getStringList("CommandExecutor.OnMarry", new LinkedList<>());
+	}
+
+	public Collection<String> getCommandExecutorOnDivorce()
+	{
+		return getConfig().getStringList("CommandExecutor.OnDivorce", new LinkedList<>());
+	}
+
+	public Collection<String> getCommandExecutorOnDivorceWithPriest()
+	{
+		return getConfig().getStringList("CommandExecutor.OnDivorceWithPriest", new LinkedList<>());
 	}
 	//endregion
 

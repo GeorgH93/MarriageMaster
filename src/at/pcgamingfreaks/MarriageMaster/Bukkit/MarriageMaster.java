@@ -48,7 +48,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -201,10 +200,11 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickup(this), this);
 		}
-		if(config.isHPRegainEnabled()) { getServer().getPluginManager().registerEvents(new RegainHealth(this), this); }
-		if(config.isJoinLeaveInfoEnabled()) { getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this); }
-		if(config.isPrefixEnabled() || config.isSuffixEnabled()) { getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this); }
-		if(config.isEconomyEnabled()) { getServer().getPluginManager().registerEvents(new EconomyManager(this), this); }
+		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
+		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
+		if(config.isPrefixEnabled() || config.isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
+		if(config.isEconomyEnabled()) getServer().getPluginManager().registerEvents(new EconomyManager(this), this);
+		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 
 		placeholderManager = new PlaceholderManager(this);
 		return true;
@@ -229,7 +229,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 	//endregion
 
-	public Updater update(@Nullable at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
+	public Updater update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
 	{
 		UpdateProvider updateProvider;
 		if(config.useUpdaterDevBuilds())

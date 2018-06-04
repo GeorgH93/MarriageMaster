@@ -164,6 +164,27 @@ Economy:
   HomeTp: 25.0
   SetHome: 100.0
 
+# Allows the execution of commands on certain events related to the marriage
+CommandExecutor:
+  Enable: false
+  # General information about the command executor:
+  # The commands can contain placeholders in the format {Placeholdername} (The {} is part of the name. The available placeholders are listed right about the event).
+  # Every event can executed multiple commands in the list. Commands do not have to start with / !
+  # Commands to be executed:
+  # Will be executed when two players marry, without a priest
+  # Allowed placeholders: {Player1}, {Player2}
+  # OnMarry: [ "eco give {Player1} 100", "pex user {Player2} add example.perm" ]
+  OnMarry: []
+  # Will be executed when two players marry by a priest
+  # Allowed placeholders: {Player1}, {Player2}, {Priest}
+  OnMarryWithPriest: []
+  # Will be executed when two players get divorced, without a priest
+  # Allowed placeholders: {Player1}, {Player2}
+  OnDivorce: []
+  # Will be executed when two players get divorced through a priest
+  # Allowed placeholders: {Player1}, {Player2}, {Priest}
+  OnDivorceWithPriest: []
+
 Misc:
   # When auto update is disabled you still can use the build in update function manually with /marry update
   AutoUpdate: true
@@ -171,4 +192,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 92
+Version: 93
