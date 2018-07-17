@@ -73,6 +73,16 @@ public class MarryEvent extends Event implements Cancellable
 	}
 
 	/**
+	 * Gets the priest that would like to marry the players, if it is not one of them.
+	 *
+	 * @return The priest that would like to marry the players. null if there is no priest. A marriage started by one of the players will return null.
+	 */
+	public @Nullable CommandSender getPriestIfNotOneOfTheCouple()
+	{
+		return (player1.getPlayer().equals(priest) || player2.getPlayer().equals(priest)) ? null : priest;
+	}
+
+	/**
 	 * Gets the first of the two players that should get married.
 	 *
 	 * @return The first of the two players that should get married.

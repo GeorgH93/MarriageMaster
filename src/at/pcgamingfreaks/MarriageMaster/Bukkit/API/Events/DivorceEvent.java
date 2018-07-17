@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Event is fired right before two players get divorced. All the checks are done. We just await your approval.
@@ -40,7 +41,7 @@ public class DivorceEvent extends Event implements Cancellable
 	 * @param marriageData The marriage data of the couple that should get divorced.
 	 * @param priest The priest that want to divorce the couple.
 	 */
-	public DivorceEvent(@NotNull Marriage marriageData, @NotNull CommandSender priest)
+	public DivorceEvent(@NotNull Marriage marriageData, @Nullable CommandSender priest)
 	{
 		this.marriageData = marriageData;
 		this.priest = priest;
@@ -71,9 +72,19 @@ public class DivorceEvent extends Event implements Cancellable
 	 *
 	 * @return The priest that would like to divorce the players. null if there is no priest. Self divorce will return the player that requested the divorce.
 	 */
-	public @NotNull CommandSender getPriest()
+	public @Nullable CommandSender getPriest()
 	{
 		return priest;
+	}
+
+	/**
+	 * Gets the priest that would like to divorce the players, if it is not one of the married players.
+	 *
+	 * @return The priest that would like to divorce the players. null if there is no priest. A divorce started by one of the players will return null.
+	 */
+	public @Nullable CommandSender getPriestIfNotOneOfTheCouple()
+	{
+		return (marriageData.getPartner1().getPlayer().equals(priest) || marriageData.getPartner2().getPlayer().equals(priest)) ? null : priest;
 	}
 
 	/**
