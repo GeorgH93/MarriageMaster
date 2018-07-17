@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -74,14 +74,14 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 
 	public String[] getCommandAliases(final String command, final @NotNull String[] defaults)
 	{
-		List<String> aliases = getLang().getStringList("Command." + command, new LinkedList<String>());
-		return (aliases.size() > 0) ? aliases.toArray(new String[aliases.size()]) : defaults;
+		List<String> aliases = getLang().getStringList("Command." + command, new LinkedList<>());
+		return (aliases.size() > 0) ? aliases.toArray(new String[0]) : defaults;
 	}
 
 	public String[] getSwitch(final String key, final String defaultSwitch)
 	{
-		List<String> switches = getLang().getStringList("Command.Switches." + key, new LinkedList<String>());
+		List<String> switches = getLang().getStringList("Command.Switches." + key, new LinkedList<>());
 		if(!switches.contains(defaultSwitch)) switches.add(defaultSwitch);
-		return switches.toArray(new String[switches.size()]);
+		return switches.toArray(new String[0]);
 	}
 }

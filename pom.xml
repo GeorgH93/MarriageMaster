@@ -72,7 +72,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MarriageMaster-API</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0-RC2-SNAPSHOT</version>
 		</dependency>
 		<!-- For documentation -->
 		<dependency>
@@ -98,7 +98,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.2-SNAPSHOT</version>
+			<version>1.0.4-SNAPSHOT</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -153,17 +153,15 @@
 		</dependency>
 		<!-- jUnit for unit tests -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>RELEASE</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.2.0</version>
 			<scope>test</scope>
-			<optional>true</optional>
 		</dependency>
-		<!-- Mocking stuff -->
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>2.0.2-beta</version>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>2.19.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -183,7 +181,7 @@
 				</includes>
 			</resource>
 		</resources>
-		<!--<testSourceDirectory>test/src</testSourceDirectory>-->
+		<testSourceDirectory>test/src</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -213,6 +211,45 @@
 								</includes>
 							</artifactSet>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.junit.platform</groupId>
+						<artifactId>junit-platform-surefire-provider</artifactId>
+						<version>1.1.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.junit.jupiter</groupId>
+						<artifactId>junit-jupiter-engine</artifactId>
+						<version>5.2.0</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- Creates the coverage report -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+						<format>html</format>
+					</formats>
+					<aggregate>true</aggregate>
+					<check/>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>cobertura</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

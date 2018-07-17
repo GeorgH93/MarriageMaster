@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.API.HelpData;
+import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryChatEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryChatMultiTargetEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;

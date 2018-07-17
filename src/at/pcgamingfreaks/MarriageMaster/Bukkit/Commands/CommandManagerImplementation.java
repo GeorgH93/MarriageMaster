@@ -17,10 +17,12 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.Command.CommandExecutorWithSubCommandsGeneric;
+import at.pcgamingfreaks.Bukkit.Command.SubCommand;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
+import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.API.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
@@ -31,27 +33,25 @@ import at.pcgamingfreaks.Reflection;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
-public class CommandManagerImplementation implements CommandExecutor, TabCompleter, CommandManager
+public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
 {
 	private MarriageMaster plugin;
-	private HashMap<String, MarryCommand> marryCommandMap = new HashMap<>();
-	private List<MarryCommand> commands = new LinkedList<>();
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll;
 	private RegisterablePluginCommand marryCommand;
 	private Message helpFormat;
 
-	public CommandManagerImplementation(MarriageMaster marriageMaster)
+	public CommandManagerImplementation(MarriageMaster plugin)
 	{
-		plugin = marriageMaster;
+		this.plugin = plugin;
 	}
 
 	public void init()
@@ -74,8 +74,8 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		try
 		{
 			// Show help function
-			Reflection.setStaticField(at.pcgamingfreaks.MarriageMaster.API.MarryCommand.class, "showHelp", this.getClass().getDeclaredMethod("sendHelp", CommandSender.class, String.class, Collection.class));
-			Reflection.setStaticField(at.pcgamingfreaks.MarriageMaster.API.MarryCommand.class, "marriagePlugin", plugin); // Plugin instance
+			Reflection.setStaticField(MarryCommand.class, "marriagePlugin", plugin); // Plugin instance
+			Reflection.setStaticField(MarryCommand.class, "showHelp", this.getClass().getDeclaredMethod("sendHelp", CommandSender.class, String.class, Collection.class));
 			Reflection.setStaticField(MarryCommand.class, "messageNoPermission", plugin.messageNoPermission); // No permission message
 			Reflection.setStaticField(MarryCommand.class, "messageNotFromConsole", plugin.messageNotFromConsole); // Not from console message
 			Reflection.setStaticField(MarryCommand.class, "messageNotMarried", plugin.messageNotMarried); // Not married message
@@ -131,21 +131,14 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		registerMarryCommand(new RequestAcceptCommand(plugin));
 		registerMarryCommand(new RequestDenyCommand(plugin));
 		registerMarryCommand(new RequestCancelCommand(plugin));
+		setDefaultSubCommand(subCommandMap.get("help"));
 	}
 
+	@Override
 	public void close()
 	{
 		marryCommand.unregisterCommand();
-		marryCommand = null;
-		for(MarryCommand mC : commands)
-		{
-			mC.close();
-		}
-		commands.clear();
-		commands = null;
-		marryCommandMap.clear();
-		marryCommandMap = null;
-		plugin = null;
+		super.close();
 	}
 
 	public void sendHelp(CommandSender target, String marryAlias, Collection<HelpData> data)
@@ -161,79 +154,22 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 	{
 		if(args.length > 0)
 		{
-			MarryCommand mC = marryCommandMap.get(args[0].toLowerCase());
-			if(mC != null)
+			SubCommand subCommand = subCommandMap.get(args[0].toLowerCase());
+			if(subCommand != null)
 			{
-				mC.doExecute(sender, alias, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
+				subCommand.doExecute(sender, alias, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
 				return true;
 			}
 			@SuppressWarnings("deprecation")
 			Player target = plugin.getServer().getPlayer(args[0]);
 			if(target != null || args.length == 2)
 			{
-				marryCommandMap.get("marry").doExecute(sender, alias, "marry", args);
+				subCommandMap.get("marry").doExecute(sender, alias, "marry", args);
 				return true;
 			}
 		}
-		marryCommandMap.get("help").doExecute(sender, alias, "help", args);
+		defaultSubCommand.doExecute(sender, alias, "help", args);
 		return true;
-	}
-
-	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
-	{
-		if(args.length > 0)
-		{
-			String arg = args[0].toLowerCase();
-			MarryCommand marryCommand = marryCommandMap.get(arg);
-			if(marryCommand != null)
-			{
-				return marryCommand.doTabComplete(sender, alias, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
-			}
-			List<String> results = new LinkedList<>();
-			if(args.length == 1)
-			{
-				for(Map.Entry<String, MarryCommand> cmd : marryCommandMap.entrySet())
-				{
-					if(cmd.getKey().startsWith(arg) && cmd.getValue().canUse(sender))
-					{
-						results.add(cmd.getKey());
-					}
-				}
-			}
-			arg = args[args.length - 1].toLowerCase();
-			for(Player player : plugin.getServer().getOnlinePlayers())
-			{
-				if(player.getName().toLowerCase().startsWith(arg))
-				{
-					results.add(player.getName());
-				}
-			}
-			return results;
-		}
-		return null;
-	}
-
-	@Override
-	public void registerMarryCommand(@NotNull MarryCommand command)
-	{
-		commands.add(command);
-		for(String s : command.getAliases())
-		{
-			marryCommandMap.put(s.toLowerCase(), command);
-		}
-		command.registerSubCommands();
-	}
-
-	@Override
-	public void unRegisterMarryCommand(@NotNull MarryCommand command)
-	{
-		command.unRegisterSubCommands();
-		commands.remove(command);
-		for(String s : command.getAliases())
-		{
-			marryCommandMap.remove(s.toLowerCase());
-		}
 	}
 
 	@Override
@@ -291,12 +227,21 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		if(sender instanceof Player && plugin.isPolygamyAllowed() && args != null && args.length == 1)
 		{
 			names = plugin.getPlayerData((Player) sender).getMatchingPartnerNames(args[0]);
-			if(names.isEmpty())
-			{
-				names = null;
-			}
+			if(names.isEmpty()) names = null;
 		}
 		return names;
+	}
+
+	@Override
+	public void registerMarryCommand(@NotNull MarryCommand command)
+	{
+		registerSubCommand(command);
+	}
+
+	@Override
+	public void unRegisterMarryCommand(@NotNull MarryCommand command)
+	{
+		unRegisterSubCommand(command);
 	}
 
 	@Override
@@ -311,10 +256,7 @@ public class CommandManagerImplementation implements CommandExecutor, TabComplet
 		{
 			for(MarriagePlayer p : request.getPlayersThatCanCancel())
 			{
-				if(!(p instanceof MarriagePlayerData) || !p.isOnline())
-				{
-					return false;
-				}
+				if(!(p instanceof MarriagePlayerData) || !p.isOnline()) return false;
 			}
 			for(MarriagePlayer p : request.getPlayersThatCanCancel())
 			{

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,23 +17,25 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.Command.SubCommand;
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.API.HelpData;
+import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
 public class HelpCommand extends MarryCommand
 {
-	private List<MarryCommand> commands;
+	private Collection<MarryCommand> commands;
 	private Message messageHeader, messageFooter;
 
-	public HelpCommand(MarriageMaster plugin, List<MarryCommand> commands)
+	public HelpCommand(MarriageMaster plugin, Collection<MarryCommand> commands)
 	{
 		super(plugin, "help", plugin.getLanguage().getTranslated("Commands.Description.Help"), plugin.getLanguage().getCommandAliases("Help"));
 		this.commands = commands;
@@ -46,14 +48,11 @@ public class HelpCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		messageHeader.send(sender);
-		List<HelpData> help = new LinkedList<>(), temp;
-		for(MarryCommand cmd : commands)
+		Collection<HelpData> help = new LinkedList<>(), temp;
+		for(SubCommand cmd : commands)
 		{
 			temp = cmd.doGetHelp(sender);
-			if(temp != null)
-			{
-				help.addAll(temp);
-			}
+			if(temp != null) help.addAll(temp);
 		}
 		((CommandManagerImplementation) getMarriagePlugin().getCommandManager()).sendHelp(sender, mainCommandAlias, help);
 		messageFooter.send(sender);

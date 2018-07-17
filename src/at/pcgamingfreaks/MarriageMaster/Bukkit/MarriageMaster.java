@@ -35,6 +35,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
+import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.BukkitUpdateProvider;
 import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
@@ -90,6 +91,13 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		instance = this;
 		version = new Version(this.getDescription().getVersion());
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
+
+		if(PluginLib.getInstance().getVersion().olderThan(new Version("1.0.4-SNAPSHOT")))
+		{
+			getLogger().warning("You are using an outdated version of the PCGF PluginLib! Please update it!");
+			failedToEnablePlugin();
+			return;
+		}
 
 		config = new Config(this);
 		lang = new Language(this);
@@ -203,7 +211,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
 		if(config.isPrefixEnabled() || config.isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
-		if(config.isEconomyEnabled()) getServer().getPluginManager().registerEvents(new EconomyManager(this), this);
+		if(config.isEconomyEnabled()) new EconomyManager(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 
 		placeholderManager = new PlaceholderManager(this);

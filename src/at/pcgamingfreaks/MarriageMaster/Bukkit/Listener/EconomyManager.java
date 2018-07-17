@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -33,20 +34,18 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class EconomyManager implements Listener
 {
-	private MarriageMaster plugin;
 	private double costMarry, costDivorce, costTp, costHome, costSetHome, costGift;
 	private Message messageNotEnough, messagePartnerNotEnough, messageMarriagePaid, messageDivorcePaid, messagePriestMarryNotEnough, messagePriestDivorceNotEnough, messageTpPaid, messageSetHomePaid, messageHomePaid, messageGiftPaid;
 	private Economy econ = null;
 
 	public EconomyManager(MarriageMaster plugin)
 	{
-		this.plugin = plugin;
-
 		if(!setupEconomy())
 		{
 			plugin.getLogger().info(ConsoleColor.RED + "Failed to connect with Vault's economy provider. Disable economy." + ConsoleColor.RESET);
 			return;
 		}
+
 		// Load costs
 		costMarry   = plugin.getConfiguration().getEconomyValue("Marry") / 2.0;
 		costDivorce = plugin.getConfiguration().getEconomyValue("Divorce") / 2.0;
@@ -55,27 +54,29 @@ public class EconomyManager implements Listener
 		costHome    = plugin.getConfiguration().getEconomyValue("HomeTp");
 		costSetHome = plugin.getConfiguration().getEconomyValue("SetHome");
 		// Load messages
-		messageNotEnough              = getMessage("NotEnough").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{CurrencyName\\}", "%2\\$s");
-		messagePartnerNotEnough       = getMessage("PartnerNotEnough");
-		messagePriestMarryNotEnough   = getMessage("PriestMarryNotEnough");
-		messagePriestDivorceNotEnough = getMessage("PriestDivorceNotEnough");
-		messageMarriagePaid           = getMessage("MarriagePaid").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageDivorcePaid            = getMessage("DivorcePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageTpPaid                 = getMessage("TpPaid")      .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageHomePaid               = getMessage("HomeTPPaid")  .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageSetHomePaid            = getMessage("SetHomePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageGiftPaid               = getMessage("GiftPaid")    .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageNotEnough              = getMessage(plugin, "NotEnough").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{CurrencyName\\}", "%2\\$s");
+		messagePartnerNotEnough       = getMessage(plugin, "PartnerNotEnough");
+		messagePriestMarryNotEnough   = getMessage(plugin, "PriestMarryNotEnough");
+		messagePriestDivorceNotEnough = getMessage(plugin, "PriestDivorceNotEnough");
+		messageMarriagePaid           = getMessage(plugin, "MarriagePaid").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageDivorcePaid            = getMessage(plugin, "DivorcePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageTpPaid                 = getMessage(plugin, "TpPaid")      .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	private Message getMessage(String key)
+	private Message getMessage(MarriageMaster plugin, String key)
 	{
 		return plugin.getLanguage().getMessage("Ingame.Economy." + key);
 	}
 
 	private boolean setupEconomy()
 	{
-		if(plugin.getServer().getPluginManager().getPlugin("Vault") == null) return false;
-		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+		if(Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) return false;
+		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null) econ = economyProvider.getProvider();
 		return (econ != null);
 	}

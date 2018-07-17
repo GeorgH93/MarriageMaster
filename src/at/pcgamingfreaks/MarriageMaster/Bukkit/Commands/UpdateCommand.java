@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,7 @@ public class UpdateCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		messageCheckingForUpdates.send(sender);
+		((PluginLib) PluginLib.getInstance()).update(null); // Make the PluginLib to check for updates too
 		((MarriageMaster) getMarriagePlugin()).update(result -> {
 			switch(result)
 			{
