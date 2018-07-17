@@ -74,15 +74,9 @@ public class EconomyManager implements Listener
 
 	private boolean setupEconomy()
 	{
-		if(plugin.getServer().getPluginManager().getPlugin("Vault") == null)
-		{
-			return false;
-		}
+		if(plugin.getServer().getPluginManager().getPlugin("Vault") == null) return false;
 		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-		if (economyProvider != null)
-		{
-			econ = economyProvider.getProvider();
-		}
+		if (economyProvider != null) econ = economyProvider.getProvider();
 		return (econ != null);
 	}
 
@@ -96,6 +90,7 @@ public class EconomyManager implements Listener
 		return econ.withdrawPlayer(player.getPlayer(), cost).transactionSuccess();
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean basicBillPlayer(MarriagePlayer player, double cost, Message successMessage)
 	{
 		if(hasPlayerEnoughMoney(player, costTp) && billPlayer(player, costTp))
@@ -114,7 +109,7 @@ public class EconomyManager implements Listener
 	public void onMarry(MarryEvent event)
 	{
 		if(costMarry <= 0) return;
-		if(billMarryOrDivorce(event.getPlayer1(), event.getPlayer2(), (!event.isPriestAPlayer() || !(event.getPlayer1().equals(event.getPriest()) || event.getPlayer2().equals(event.getPriest()))) ? event.getPriest() : null, costMarry, messageMarriagePaid, messagePriestMarryNotEnough))
+		if(!billMarryOrDivorce(event.getPlayer1(), event.getPlayer2(), event.getPriestIfNotOneOfTheCouple(), costMarry, messageMarriagePaid, messagePriestMarryNotEnough))
 		{
 			event.setCancelled(true);
 		}
@@ -124,15 +119,16 @@ public class EconomyManager implements Listener
 	public void onDivorce(DivorceEvent event)
 	{
 		if(costDivorce <= 0) return;
-		if(billMarryOrDivorce(event.getMarriageData().getPartner1(), event.getMarriageData().getPartner2(), (!event.isPriestAPlayer() || !event.getMarriageData().hasPlayer((MarriagePlayer) event.getPriest())) ? event.getPriest() : null, costDivorce, messageDivorcePaid, messagePriestDivorceNotEnough))
+		if(!billMarryOrDivorce(event.getMarriageData().getPartner1(), event.getMarriageData().getPartner2(), event.getPriestIfNotOneOfTheCouple(), costDivorce, messageDivorcePaid, messagePriestDivorceNotEnough))
 		{
 			event.setCancelled(true);
 		}
 	}
-	
+
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean billMarryOrDivorce(MarriagePlayer player1, MarriagePlayer player2, CommandSender priest, double cost, Message success, Message failPriest)
 	{
-		boolean f2 = false;
+		boolean failedPlayer2 = false;
 		if(hasPlayerEnoughMoney(player1, cost) && hasPlayerEnoughMoney(player2, cost))
 		{
 			if(billPlayer(player1, cost))
@@ -144,13 +140,13 @@ public class EconomyManager implements Listener
 					return true;
 				}
 				else
-				{
+				{ // It should not happen, it's just there to be on the save site
 					econ.depositPlayer(player1.getPlayer(), cost); // Failed to bill player 2. Return the billed money to player 1.
-					f2 = true;
+					failedPlayer2 = true;
 				}
 			}
 		}
-		if(f2 || hasPlayerEnoughMoney(player2, cost))
+		if(!hasPlayerEnoughMoney(player2, cost) || failedPlayer2)
 		{
 			messagePartnerNotEnough.send(player1.getPlayer().getPlayer());
 			messageNotEnough.send(player2.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
@@ -160,10 +156,7 @@ public class EconomyManager implements Listener
 			messagePartnerNotEnough.send(player2.getPlayer().getPlayer());
 			messageNotEnough.send(player1.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
 		}
-		if(priest != null)
-		{
-			failPriest.send(priest);
-		}
+		if(priest != null) failPriest.send(priest);
 		return false;
 	}
 
