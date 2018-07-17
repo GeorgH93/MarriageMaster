@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ public class MarryEvent extends Event implements Cancellable
 	 * @param priest  The priest that would like to marry the players.
 	 * @param surname The surname for the new couple.
 	 */
-	public MarryEvent(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, @NotNull CommandSender priest, @Nullable String surname)
+	public MarryEvent(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, @Nullable CommandSender priest, @Nullable String surname)
 	{
 		this.player1 = player1;
 		this.player2 = player2;
@@ -67,7 +67,7 @@ public class MarryEvent extends Event implements Cancellable
 	 *
 	 * @return The priest that would like to marry the players. null if there is no priest. Self marriage will return the player that requested the marriage.
 	 */
-	public @NotNull CommandSender getPriest()
+	public @Nullable CommandSender getPriest()
 	{
 		return priest;
 	}
