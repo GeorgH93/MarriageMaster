@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,5 +22,5 @@ import at.pcgamingfreaks.Bungee.Message.Message;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @SuppressWarnings("unused")
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, AcceptPendingRequest, ProxiedPlayer, Message>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, ProxiedPlayer, Message>
 {}

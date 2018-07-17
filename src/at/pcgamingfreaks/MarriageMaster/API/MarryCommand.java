@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,121 +17,65 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
+import at.pcgamingfreaks.Command.HelpData;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND_SENDER>
+public interface MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND_SENDER>
 {
-	private String name, description, permission = null;
-	private List<String> aliases;
-	private static MarriageMasterPlugin marriagePlugin;
-	private static Method showHelp;
-
-	public MarryCommand(@NotNull String name, @NotNull String description, @Nullable String permission, @Nullable String... aliases)
-	{
-		this.name = name.toLowerCase();
-		if(aliases != null)
-		{
-			this.aliases = new ArrayList<>(aliases.length + 1);
-			for(String alias : aliases)
-			{
-				if(alias != null) this.aliases.add(alias.toLowerCase());
-			}
-		}
-		else
-		{
-			this.aliases = new ArrayList<>(1);
-		}
-		if(!this.aliases.contains(this.name))
-		{
-			this.aliases.add(this.name);
-		}
-		this.description = description;
-		this.permission = permission;
-	}
-
 	//region Getters
 	/**
 	 * Gets a list with the aliases of the command.
 	 *
 	 * @return List of aliases of the command.
 	 */
-	public @NotNull List<String> getAliases()
-	{
-		return this.aliases;
-	}
+	@NotNull List<String> getAliases();
 
 	/**
 	 * Gets the name of the command.
 	 *
 	 * @return The commands name.
 	 */
-	public @NotNull String getName()
-	{
-		return this.name;
-	}
+	@NotNull String getName();
 
 	/**
 	 * Gets the name of the command in the used language.
 	 *
 	 * @return The commands name translated into the used language.
 	 */
-	public @NotNull String getTranslatedName()
-	{
-		return this.aliases.get(0);
-	}
+	@NotNull String getTranslatedName();
 
 	/**
 	 * Gets the permission that is needed for the command.
 	 *
 	 * @return The permission for the command.
 	 */
-	public @Nullable String getPermission()
-	{
-		return this.permission;
-	}
+	@Nullable String getPermission();
 
 	/**
 	 * Gets the description of the command.
 	 *
 	 * @return The commands description.
 	 */
-	public @NotNull String getDescription()
-	{
-		return description;
-	}
+	@NotNull String getDescription();
 
 	/**
 	 * Gets the instance of the marriage master plugin.
 	 *
 	 * @return The instance of the marriage master plugin.
 	 */
-	protected @NotNull PLUGIN getMarriagePlugin()
-	{
-		//noinspection unchecked
-		return (PLUGIN) marriagePlugin;
-	}
+	@NotNull PLUGIN getMarriagePlugin();
 	//endregion
 
 	//region Command Management Stuff
-	public final void closeCommand()
-	{
-		close();
-		name = null;
-		aliases.clear();
-		aliases = null;
-		description = null;
-	}
-
 	/**
 	 * The command got closed. Close stuff you no longer need.
 	 */
-	public void close() {}
+	void close();
 
 	/**
 	 * Allows to register commands that have to do with the current command (to be registered at the same time as the command).
@@ -139,12 +83,12 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 *
 	 * Also allows to execute code after the command is registered.
 	 */
-	public void registerSubCommands() {}
+	void registerSubCommands();
 
 	/**
 	 * Allows to un-register commands that have been registered at the same time as another command.
 	 */
-	public void unRegisterSubCommands() {}
+	void unRegisterSubCommands();
 	//endregion
 
 	/**
@@ -153,7 +97,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param sender The player/console that should be checked.
 	 * @return True if he can use the command, false if not.
 	 */
-	public abstract boolean canUse(@NotNull COMMAND_SENDER sender);
+	boolean canUse(@NotNull COMMAND_SENDER sender);
 
 	//region Command Help Stuff
 	/**
@@ -162,14 +106,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param requester The command sender that requested help.
 	 * @return The list of help data elements.
 	 */
-	public @Nullable List<HelpData> doGetHelp(@NotNull COMMAND_SENDER requester)
-	{
-		if(canUse(requester))
-		{
-			return getHelp(requester);
-		}
-		return null;
-	}
+	@Nullable List<HelpData> doGetHelp(@NotNull COMMAND_SENDER requester);
 
 	/**
 	 * Shows the help to a given command sender.
@@ -177,17 +114,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param sendTo         The command sender that requested help.
 	 * @param usedMarryAlias The used marry alias to replace the /marry with the used alias.
 	 */
-	public void showHelp(@NotNull COMMAND_SENDER sendTo, @NotNull String usedMarryAlias)
-	{
-		try
-		{
-			showHelp.invoke(getMarriagePlugin().getCommandManager(), sendTo, usedMarryAlias, doGetHelp(sendTo));
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+	void showHelp(@NotNull COMMAND_SENDER sendTo, @NotNull String usedMarryAlias);
 
 	/**
 	 * Gets the help for a given command sender.
@@ -195,7 +122,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param requester The command sender that requested help.
 	 * @return All the help data for this command.
 	 */
-	public abstract @Nullable List<HelpData> getHelp(@NotNull COMMAND_SENDER requester);
+	@Nullable List<HelpData> getHelp(@NotNull COMMAND_SENDER requester);
 	//endregion
 
 	//region Command Execution Stuff
@@ -207,7 +134,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param alias            Alias of the command which has been used.
 	 * @param args             Passed command arguments.
 	 */
-	public abstract void doExecute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
+	void doExecute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 
 	/**
 	 * Executes the given command returning its success.
@@ -217,7 +144,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param alias            Alias of the command which has been used.
 	 * @param args             Passed command arguments.
 	 */
-	public abstract void execute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
+	void execute(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 	//endregion
 
 	//region Tab Complete Stuff
@@ -230,7 +157,7 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param args             The arguments passed to the command, including final partial argument to be completed and command label.
 	 * @return A List of possible completions for the final argument or null as default for the command executor.
 	 */
-	public abstract List<String> doTabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
+	List<String> doTabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 
 	/**
 	 * Generates list for tab completion.
@@ -241,6 +168,6 @@ public abstract class MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND
 	 * @param args    The arguments passed to the command, including final partial argument to be completed and command label.
 	 * @return A List of possible completions for the final argument or null as default for the command executor.
 	 */
-	public abstract List<String> tabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
+	List<String> tabComplete(@NotNull COMMAND_SENDER sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args);
 	//endregion
 }

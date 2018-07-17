@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,10 +20,13 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 @SuppressWarnings("unused")
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, AcceptPendingRequest, OfflinePlayer, Message>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, Message>
 {
 	/**
 	 * Checks if the player is sharing his backpack with his partner.
@@ -45,4 +48,18 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @return The nearest partner. null if not married, partner is offline or partner is in an other world.
 	 */
 	@Nullable Marriage getNearestPartnerMarriageData();
+
+	/**
+	 * Gets the open request the player can accept or deny.
+	 *
+	 * @return The open request. Null = no open request
+	 */
+	@Nullable AcceptPendingRequest getOpenRequest();
+
+	/**
+	 * Gets all open requests the player can cancel.
+	 *
+	 * @return The requests the player can cancel.
+	 */
+	@NotNull List<AcceptPendingRequest> getRequestsToCancel();
 }

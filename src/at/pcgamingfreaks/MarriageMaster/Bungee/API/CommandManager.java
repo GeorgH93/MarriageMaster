@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,5 +24,5 @@ import net.md_5.bungee.api.CommandSender;
  * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
  */
 @SuppressWarnings("unused")
-public interface CommandManager extends at.pcgamingfreaks.MarriageMaster.API.CommandManager<MarryCommand, AcceptPendingRequest, CommandSender>
+public interface CommandManager extends at.pcgamingfreaks.MarriageMaster.API.CommandManager<MarryCommand, CommandSender>
 {}

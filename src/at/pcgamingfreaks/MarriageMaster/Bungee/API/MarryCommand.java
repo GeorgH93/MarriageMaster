@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
+import at.pcgamingfreaks.Bungee.Command.SubCommand;
 import at.pcgamingfreaks.Bungee.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.API.HelpData;
+import at.pcgamingfreaks.Command.HelpData;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -28,12 +29,14 @@ import net.md_5.bungee.api.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
+public abstract class MarryCommand extends SubCommand implements at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
 {
+	private static MarriageMasterPlugin marriagePlugin = null;
 	protected Plugin plugin;
 
 	@SuppressWarnings("FieldCanBeLocal")
@@ -42,6 +45,7 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 	private static Message messageNotFromConsole = new Message(ChatColor.RED + "This command can't be used from console!");
 	private static Message messageNotMarried     = new Message(ChatColor.RED + "You are not married!");
 	private boolean playerOnly = false, mustBeMarried = false, partnerSelectorInHelp = false;
+	private static Method showHelp;
 
 	//region Constructors
 	/**
@@ -107,6 +111,17 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 	}
 	//endregion
 
+	/**
+	 * Gets the instance of the marriage master plugin.
+	 *
+	 * @return The instance of the marriage master plugin.
+	 */
+	@Override
+	public @NotNull MarriageMasterPlugin getMarriagePlugin()
+	{
+		return marriagePlugin;
+	}
+
 	//region Command Stuff
 	/**
 	 * Executes some basic checks and runs the command afterwards.
@@ -117,7 +132,7 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 	 * @param args             Passed command arguments.
 	 */
 	@Override
-	public void doExecute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args)
+	public void doExecute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String... args)
 	{
 		if(playerOnly && !(sender instanceof ProxiedPlayer))
 		{
@@ -147,7 +162,7 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 	 * @return A List of possible completions for the final argument, or null to default to the command executor.
 	 */
 	@Override
-	public List<String> doTabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @Nullable String... args)
+	public List<String> doTabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String... args)
 	{
 		if(playerOnly && !(sender instanceof ProxiedPlayer))
 		{
@@ -183,6 +198,25 @@ public abstract class MarryCommand extends at.pcgamingfreaks.MarriageMaster.API.
 			help.add(new HelpData(getTranslatedName(), helpPartnerSelector, getDescription()));
 		}
 		return help;
+	}
+
+	/**
+	 * Shows the help to a given command sender.
+	 *
+	 * @param sendTo         The command sender that requested help.
+	 * @param usedMarryAlias The used marry alias to replace the /marry with the used alias.
+	 */
+	@Override
+	public void showHelp(@NotNull CommandSender sendTo, @NotNull String usedMarryAlias)
+	{
+		try
+		{
+			showHelp.invoke(getMarriagePlugin().getCommandManager(), sendTo, usedMarryAlias, doGetHelp(sendTo));
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import java.util.List;
  * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
  */
 @SuppressWarnings("unused")
-public interface CommandManager<MARRY_COMMAND extends MarryCommand, ACCEPT_PENDING_REQUEST extends AcceptPendingRequest, V>
+public interface CommandManager<MARRY_COMMAND extends MarryCommand, V>
 {
 	/**
 	 * Registers a new sub-command for /marry.
@@ -111,12 +111,4 @@ public interface CommandManager<MARRY_COMMAND extends MarryCommand, ACCEPT_PENDI
 	 * @return The list of names for the tab complete event. Null if there is no matching partner.
 	 */
 	@Nullable List<String> getSimpleTabComplete(@NotNull V sender, @Nullable String... args);
-
-	/**
-	 * Registers an accept pending request.
-	 *
-	 * @param request The request to be registered.
-	 * @return True if it was possible to register the request (the person to accept has no open requests or is online). False if not.
-	 */
-	boolean registerAcceptPendingRequest(@NotNull ACCEPT_PENDING_REQUEST request);
 }

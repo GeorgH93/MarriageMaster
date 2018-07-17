@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, ACCEPT_PENDING_REQUEST extends AcceptPendingRequest, PLAYER, MESSAGE extends Message>
+public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER, MESSAGE extends Message>
 {
 	/**
 	* Gets the Bukkit offline player that is represented by this marriage player data.
@@ -122,20 +122,6 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @param target The target which should receive the private messages in the future.
 	 */
 	void setPrivateChatTarget(@Nullable MARRIAGE target);
-
-	/**
-	 * Gets the open request the player can accept or deny.
-	 *
-	 * @return The open request. Null = no open request
-	 */
-	@Nullable ACCEPT_PENDING_REQUEST getOpenRequest();
-
-	/**
-	 * Gets all open requests the player can cancel.
-	 *
-	 * @return The requests the player can cancel.
-	 */
-	@NotNull List<ACCEPT_PENDING_REQUEST> getRequestsToCancel();
 
 	/**
 	 * Checks if a player is married.
