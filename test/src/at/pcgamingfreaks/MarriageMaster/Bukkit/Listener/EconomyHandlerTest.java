@@ -57,6 +57,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
+@SuppressWarnings("unchecked")
 class EconomyHandlerTest
 { // TODO: validate that the right message is sent
 	private static MarriageMaster marriageMaster;
@@ -95,7 +96,6 @@ class EconomyHandlerTest
 		when(server.getPluginManager()).thenReturn(pluginManager);
 		ServicesManager servicesManager = mock(ServicesManager.class);
 		when(server.getServicesManager()).thenReturn(servicesManager);
-		//noinspection unchecked
 		serviceProvider = (RegisteredServiceProvider<Economy>) mock(RegisteredServiceProvider.class);
 		when(servicesManager.getRegistration(Economy.class)).thenReturn(serviceProvider);
 		marriagePlayer1 = mock(MarriagePlayer.class);
