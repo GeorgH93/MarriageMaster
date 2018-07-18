@@ -25,22 +25,21 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import net.milkbowl.vault.economy.Economy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-public class EconomyManager implements Listener
+public class EconomyHandler implements Listener
 {
 	private double costMarry, costDivorce, costTp, costHome, costSetHome, costGift;
 	private Message messageNotEnough, messagePartnerNotEnough, messageMarriagePaid, messageDivorcePaid, messagePriestMarryNotEnough, messagePriestDivorceNotEnough, messageTpPaid, messageSetHomePaid, messageHomePaid, messageGiftPaid;
 	private Economy econ = null;
 
-	public EconomyManager(MarriageMaster plugin)
+	public EconomyHandler(MarriageMaster plugin)
 	{
-		if(!setupEconomy())
+		if(!setupEconomy(plugin))
 		{
 			plugin.getLogger().info(ConsoleColor.RED + "Failed to connect with Vault's economy provider. Disable economy." + ConsoleColor.RESET);
 			return;
@@ -73,12 +72,11 @@ public class EconomyManager implements Listener
 		return plugin.getLanguage().getMessage("Ingame.Economy." + key);
 	}
 
-	private boolean setupEconomy()
+	private boolean setupEconomy(MarriageMaster plugin)
 	{
-		if(Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) return false;
-		RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-		if (economyProvider != null) econ = economyProvider.getProvider();
-		return (econ != null);
+		if(plugin.getServer().getPluginManager().getPlugin("Vault") == null) return false;
+		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+		return (econ = (economyProvider != null) ? economyProvider.getProvider() : null) != null;
 	}
 
 	private boolean hasPlayerEnoughMoney(MarriagePlayer player, double cost)

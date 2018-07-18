@@ -211,7 +211,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
 		if(config.isPrefixEnabled() || config.isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
-		if(config.isEconomyEnabled()) new EconomyManager(this);
+		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 
 		placeholderManager = new PlaceholderManager(this);
