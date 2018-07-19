@@ -49,17 +49,18 @@ public class EffectBase
 					{
 						eb = new Effect_1_8_AndNewer();
 					}
+					else if(version[1].equals("13"))
+					{
+						eb = new Effect_1_13();
+					}
 				}
 			}
 		}
-		catch (NoClassDefFoundError | Exception e)
-		{
-			eb = null;
-		}
+		catch (NoClassDefFoundError | Exception ignored) {}
 		if(eb == null)
 		{
 			plugin.getLogger().warning("Could not initialize effect spawner. Running: " +
-					                                       plugin.getName() + " (" + plugin.getDescription().getVersion() + ") with" + name + " (" + Bukkit.getVersion() + ")");
+					                                       plugin.getName() + " (" + plugin.getDescription().getVersion() + ") on " + name + " (" + Bukkit.getVersion() + ")");
 			plugin.getLogger().warning("Not supported MC version. Heart effect disabled.");
 		}
 		return eb;
