@@ -35,7 +35,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 public class PluginChannel implements PluginMessageListener, Listener
 {
 	private final MarriageMaster plugin;
-	private final String channelMarriageMaster, channelBungee;
+	private final String channelMarriageMaster, channelBungee = "BungeeCord";
 	
 	public PluginChannel(MarriageMaster MM)
 	{
@@ -47,12 +47,10 @@ public class PluginChannel implements PluginMessageListener, Listener
 		if(Integer.parseInt(GameVersion[1]) > 12)
 		{
 			channelMarriageMaster = "marriagemaster:main";
-			channelBungee = "bungeecord:main";
 		}
 		else
 		{
 			channelMarriageMaster = "MarriageMaster";
-			channelBungee = "BungeeCord";
 		}
 
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, channelMarriageMaster, this);
@@ -68,14 +66,11 @@ public class PluginChannel implements PluginMessageListener, Listener
 		{
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				public void run() {
-					try
+					try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
 					{
-						ByteArrayOutputStream stream = new ByteArrayOutputStream();
-						DataOutputStream out = new DataOutputStream(stream);
 						out.writeUTF("GetServer");
 						out.flush();
 						event.getPlayer().sendPluginMessage(plugin, channelBungee, stream.toByteArray());
-						out.close();
 						plugin.log.info("Sending server name request to bungee");
 					}
 					catch(Exception e)
@@ -91,9 +86,8 @@ public class PluginChannel implements PluginMessageListener, Listener
 	@Override
 	public void onPluginMessageReceived(String channel, Player player, byte[] bytes)
 	{
-		try
+		try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 	    {
-			DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
 			if (channel.equals(channelMarriageMaster))
 			{
 			    String[] args = in.readUTF().split("\\|");
@@ -106,7 +100,6 @@ public class PluginChannel implements PluginMessageListener, Listener
 					case "TP": if(args.length == 2) { plugin.tp.TP(plugin.getServer().getPlayerExact(args[1])); } break;
 					case "delayTP": if(args.length == 2) { plugin.tp.BungeeTPDelay(plugin.getServer().getPlayerExact(args[1])); } break;
 				}
-				in.close();
 	        }
 			else if (channel.equals(channelBungee))
 			{
@@ -114,7 +107,6 @@ public class PluginChannel implements PluginMessageListener, Listener
 			    {
 			    	case "GetServer": plugin.HomeServer = in.readUTF(); break;
 			    }
-			    in.close();
 			}
 		}
 		catch (Exception e)
@@ -126,10 +118,8 @@ public class PluginChannel implements PluginMessageListener, Listener
 	
 	public void sendMessage(Object... components)
 	{
-		try
+		try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
 		{
-	        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	        DataOutputStream out = new DataOutputStream(stream);
 			if(components != null && components.length > 0)
 			{
 				for(Object o : components)
@@ -150,7 +140,6 @@ public class PluginChannel implements PluginMessageListener, Listener
 			{
 				sendWith.sendPluginMessage(plugin, channelMarriageMaster, stream.toByteArray());
 			}
-	        out.close();
 		}
 		catch(Exception e)
 		{
