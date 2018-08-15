@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2017 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,6 +41,8 @@ public class MarriageMaster extends Plugin
     public Config config;
     public Language lang;
     public Database DB;
+
+    public String channel;
     
     // Worker
     public Chat chat = null;
@@ -92,7 +94,8 @@ public class MarriageMaster extends Plugin
 		// Register Listener
 		listener = new EventListener(this);
 		getProxy().getPluginManager().registerListener(this, listener);
-		getProxy().registerChannel("MarriageMaster");
+	    channel = (config.isMC1_13andUp()) ? "marriagemaster:main" : "MarriageMaster";
+		getProxy().registerChannel(channel);
 		// Register Commands
 			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
 			// Register sub Commands for /marry
@@ -169,7 +172,7 @@ public class MarriageMaster extends Plugin
 		Set<Entry<String, ServerInfo>> serverList = getProxy().getServers().entrySet();
 		for(Entry<String, ServerInfo> e : serverList)
 		{
-			e.getValue().sendData("MarriageMaster", bytesOut, true);
+			e.getValue().sendData(channel, bytesOut, true);
 		}
 	}
 	
@@ -181,7 +184,7 @@ public class MarriageMaster extends Plugin
 	        DataOutputStream out = new DataOutputStream(stream);
 	        out.writeUTF(message);
 	        out.flush();
-			server.sendData("MarriageMaster", stream.toByteArray(), true);
+			server.sendData(channel, stream.toByteArray(), true);
 			out.close();
 		}
 		catch (Exception e)

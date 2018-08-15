@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,8 +41,8 @@ public class EventListener implements Listener
 	private MarriageMaster plugin;
 	
 	private BaseComponent[] Message_PartnerOnline, Message_PartnerNowOffline, Message_PartnerNowOnline;
-	private boolean JLInfo = true;
-	private int delay = 1;
+	private boolean JLInfo;
+	private int delay;
 	
 	// Sub-command map
 	private HashMap<String, BaseCommand> marryCommandMap = new HashMap<>();
@@ -160,7 +160,7 @@ public class EventListener implements Listener
 	{
 		try
 		{
-			if (!(ev.getTag().equals("MarriageMaster") && ev.getSender() instanceof Server))
+			if (!(ev.getTag().equals(plugin.channel) && ev.getSender() instanceof Server))
 			{
 		        return;
 		    }
@@ -176,7 +176,7 @@ public class EventListener implements Listener
 					Set<Map.Entry<String, ServerInfo>> serverList = plugin.getProxy().getServers().entrySet();
 					for(Map.Entry<String, ServerInfo> e : serverList)
 					{
-						if(!e.getKey().equalsIgnoreCase(((Server) ev.getSender()).getInfo().getName())) e.getValue().sendData("MarriageMaster", ev.getData(), true);
+						if(!e.getKey().equalsIgnoreCase(((Server) ev.getSender()).getInfo().getName())) e.getValue().sendData(plugin.channel, ev.getData(), true);
 					}
 					break;
 			}

@@ -54,6 +54,8 @@ Misc:
   # If turned off you still can use /marry update to download the update
   AutoUpdate: true
   DisableV2Info: false
+  # Enable this option if the MC server behind the bungee cord server is running MC 1.13 or newer!
+  MC1_13andUp: false
 
 # Config File Version. Don't touch it!
-Version: 5
+Version: 6

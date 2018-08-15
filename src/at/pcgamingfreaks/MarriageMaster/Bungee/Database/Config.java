@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2017 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class Config
 	private MarriageMaster plugin;
 	private Configuration config;
 	private ConfigurationProvider configurationProvider;
-	private static final int CONFIG_VERSION = 5;
+	private static final int CONFIG_VERSION = 6;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -92,6 +92,7 @@ public class Config
 			case 2: config.set("Misc.DisableV2Info", false);
 			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
 			case 4: config.set("Database.UUID_Type", "online");
+			case 5: config.set("Misc.MC1_13andUp", false);
 				break;
 			case CONFIG_VERSION: return;
 			default: plugin.log.info("Config File Version newer than expected!"); return;
@@ -194,6 +195,11 @@ public class Config
 			blockFrom.add(s.toLowerCase());
 		}
 		return blockFrom;
+	}
+
+	public boolean isMC1_13andUp()
+	{
+		return config.getBoolean("Misc.MC1_13andUp", false);
 	}
 	
 	// DB Settings

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2017 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -164,13 +164,6 @@ public class MarriageMaster extends JavaPlugin
 		if(config.GetKissEnabled() && config.isKissInteractEnabled())
 		{
 			getServer().getPluginManager().registerEvents(new InteractEntity(this), this);
-		}
-		if(config.getUseBungeeCord())
-		{
-			getServer().getMessenger().registerIncomingPluginChannel(this, "MarriageMaster", pluginchannel);
-			getServer().getMessenger().registerOutgoingPluginChannel(this, "MarriageMaster");
-			getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", pluginchannel);
-			getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 		}
 	}
 	 

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,12 +34,31 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 public class PluginChannel implements PluginMessageListener, Listener
 {
-	private MarriageMaster plugin;
+	private final MarriageMaster plugin;
+	private final String channelMarriageMaster, channelBungee;
 	
 	public PluginChannel(MarriageMaster MM)
 	{
 		plugin = MM;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+
+		String[] GameVersion = Bukkit.getBukkitVersion().split("-");
+		GameVersion = GameVersion[0].split("\\.");
+		if(Integer.parseInt(GameVersion[1]) > 12)
+		{
+			channelMarriageMaster = "marriagemaster:main";
+			channelBungee = "bungeecord:main";
+		}
+		else
+		{
+			channelMarriageMaster = "MarriageMaster";
+			channelBungee = "BungeeCord";
+		}
+
+		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, channelMarriageMaster, this);
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, channelMarriageMaster);
+		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, channelBungee, this);
+		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, channelBungee);
 	}
 
 	@EventHandler
@@ -55,7 +74,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 						DataOutputStream out = new DataOutputStream(stream);
 						out.writeUTF("GetServer");
 						out.flush();
-						event.getPlayer().sendPluginMessage(plugin, "BungeeCord", stream.toByteArray());
+						event.getPlayer().sendPluginMessage(plugin, channelBungee, stream.toByteArray());
 						out.close();
 						plugin.log.info("Sending server name request to bungee");
 					}
@@ -75,7 +94,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 		try
 	    {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes));
-			if (channel.equals("MarriageMaster"))
+			if (channel.equals(channelMarriageMaster))
 			{
 			    String[] args = in.readUTF().split("\\|");
 				switch(args[0])
@@ -89,7 +108,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 				}
 				in.close();
 	        }
-			else if (channel.equals("BungeeCord"))
+			else if (channel.equals(channelBungee))
 			{
 			    switch(in.readUTF())
 			    {
@@ -129,7 +148,7 @@ public class PluginChannel implements PluginMessageListener, Listener
 			Player sendWith = getPlayerToSendWith();
 			if(sendWith!=null)
 			{
-				sendWith.sendPluginMessage(plugin, "MarriageMaster", stream.toByteArray());
+				sendWith.sendPluginMessage(plugin, channelMarriageMaster, stream.toByteArray());
 			}
 	        out.close();
 		}
