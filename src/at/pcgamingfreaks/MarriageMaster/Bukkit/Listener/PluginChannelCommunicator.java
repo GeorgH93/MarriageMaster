@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ * Copyright (C) 2016-2018 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.SQL;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 public class PluginChannelCommunicator implements PluginMessageListener, Listener
 {
-	private static final String CHANNEL_MARRIAGE_MASTER = "MarriageMaster", CHANNEL_BUNGEE_CORD = "BungeeCord";
+	private static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
 	private static String serverName = null;
 
 	private final MarriageMaster plugin;

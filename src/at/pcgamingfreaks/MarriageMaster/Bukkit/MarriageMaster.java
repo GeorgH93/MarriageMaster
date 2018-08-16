@@ -100,13 +100,13 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		}
 
 		config = new Config(this);
-		lang = new Language(this);
-		if(config == null || !config.isLoaded())
+		if(!config.isLoaded())
 		{
 			failedToEnablePlugin();
 			return;
 		}
 		if(config.useUpdater()) update(null); // Check for updates
+		lang = new Language(this);
 		BackpackIntegrationManager.initIntegration();
 		backpacksIntegration = BackpackIntegrationManager.getIntegration();
 

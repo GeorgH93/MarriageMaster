@@ -237,7 +237,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 		try(Connection connection = getConnection())
 		{
 			@Language("SQL") String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
-					"{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
+							"{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
 					queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\n" +
 							"CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
 					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n{FPlayer2} INT UNSIGNED NOT NULL,\n" +
@@ -261,7 +261,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	}
 
 	//region Helper functions for async querys
-	protected void runAsync(Runnable runnable, @NotNull DatabaseElement databaseElement)
+	protected void runAsync(@NotNull Runnable runnable, @NotNull DatabaseElement databaseElement)
 	{
 		runAsync(runnable, (databaseElement.getDatabaseKey() == null) ? RETRY_DELAY : 0);
 	}
