@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2017 GeorgH93
+ *   Copyright (C) 2014-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,9 +24,12 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.MarriageMaster.UUIDConverter;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 public class MySQL extends Database
 {
-	private Connection conn = null;
+	private HikariDataSource dataSource;
 	
 	private String tablePlayers, tableMarriages, tableHomes, host, user, password;
 	private boolean updatePlayer, onlineUUIDs;
@@ -35,7 +38,7 @@ public class MySQL extends Database
 	{
 		super(marriagemaster);
 		
-		// Load Settings
+		//region Load Settings
 		onlineUUIDs = marriagemaster.config.getUUIDType().equalsIgnoreCase("auto") || marriagemaster.config.getUUIDType().equalsIgnoreCase("online");
 		tablePlayers = plugin.config.getUserTable();
 		tableMarriages = plugin.config.getPartnersTable();
@@ -44,7 +47,18 @@ public class MySQL extends Database
 		host = plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase();
 		user = plugin.config.getMySQLUser();
 		password = plugin.config.getMySQLPassword();
-		// Finished Loading Settings
+		//endregion
+
+		HikariConfig poolConfig = new HikariConfig();
+		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.config.getMySQLHost() + "/" + plugin.config.getMySQLDatabase() + "?allowMultiQueries=true" + plugin.config.getMySQLProperties());
+		poolConfig.setUsername(plugin.config.getMySQLUser());
+		poolConfig.setPassword(plugin.config.getMySQLPassword());
+		poolConfig.setMinimumIdle(1);
+		poolConfig.setMaximumPoolSize(2);
+		poolConfig.setPoolName("MarriageMaster-Connection-Pool");
+		poolConfig.addDataSourceProperty("cachePrepStmts", "true");
+		dataSource = new HikariDataSource(poolConfig);
+
 		checkDB();
 		CheckUUIDs();
 		runStatement("INSERT INTO `" + tablePlayers + "` (`name`,`uuid`) VALUES (?,?) ON DUPLICATE KEY UPDATE `name`=?, `uuid`=?;", "none", "00000000000000000000000000000000", "none", "00000000000000000000000000000000");
@@ -53,7 +67,7 @@ public class MySQL extends Database
 
 	private void runStatement(final String query, final Object... args)
 	{
-		try(PreparedStatement preparedStatement = getConnection().prepareStatement(query))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query))
 		{
 			for(int i = 0; args != null && i < args.length; i++)
 			{
@@ -86,7 +100,8 @@ public class MySQL extends Database
 		{
 			Map<String, UpdateData> toConvert = new HashMap<>();
 			List<UpdateData> toUpdate = new LinkedList<>();
-			try(Statement stmt = getConnection().createStatement(); ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + tablePlayers + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
+			try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement();
+			    ResultSet res = stmt.executeQuery("SELECT `player_id`,`name`,`uuid` FROM `" + tablePlayers + "` WHERE `uuid` IS NULL OR `uuid` LIKE '%-%';"))
 			{
 				while(res.next())
 				{
@@ -117,15 +132,15 @@ public class MySQL extends Database
 						toUpdate.add(updateData);
 					}
 				}
-				try(PreparedStatement ps = getConnection().prepareStatement("UPDATE `" + tablePlayers + "` SET `uuid`=? WHERE `player_id`=?;"))
+				try(Connection connection = dataSource.getConnection(); PreparedStatement ps = connection.prepareStatement("UPDATE `" + tablePlayers + "` SET `uuid`=? WHERE `player_id`=?;"))
 				{
 					for(UpdateData updateData : toUpdate)
 					{
 						ps.setString(1, updateData.uuid);
 						ps.setInt(2, updateData.id);
 						ps.addBatch();
-						ps.executeBatch();
 					}
+					ps.executeBatch();
 				}
 				plugin.log.info(String.format(plugin.lang.getString("Console.UpdatedUUIDs"), toUpdate.size()));
 			}
@@ -134,22 +149,6 @@ public class MySQL extends Database
 		{
 			e.printStackTrace();
 		}
-	}
-	
-	private Connection getConnection()
-	{
-		try
-		{
-			if(conn == null || conn.isClosed())
-			{
-				conn = DriverManager.getConnection("jdbc:mysql://" + host + "?allowMultiQueries=true&autoReconnect=true" + plugin.config.getMySQLProperties(), user, password);
-			}
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return conn;
 	}
 
 	private String replacePlaceholders(String query)
@@ -165,9 +164,8 @@ public class MySQL extends Database
 	
 	private void checkDB()
 	{
-		try
+		try(Connection connection = dataSource.getConnection())
 		{
-			Connection connection = getConnection();
 			String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
 					                                            "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n);"),
 					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT NOT NULL,\n{FPlayer2} INT NOT NULL,\n" +
@@ -235,7 +233,7 @@ public class MySQL extends Database
 	private int getPlayerID(ProxiedPlayer player)
 	{
 		int id = -1;
-		try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `uuid`=?"))
+		try(Connection connection = dataSource.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT `player_id` FROM `" + tablePlayers + "` WHERE `uuid`=?"))
 		{
 			preparedStatement.setString(1, player.getUniqueId().toString().replace("-", ""));
 			preparedStatement.executeQuery();
@@ -257,17 +255,13 @@ public class MySQL extends Database
 	private String getPlayerName(int pid)
 	{
 		String name = null;
-		try
+		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
-			Statement stmt = getConnection().createStatement();
 			stmt.executeQuery("SELECT `name` FROM `" + tablePlayers + "` WHERE `player_id`="+pid);
-			ResultSet rs = stmt.getResultSet();
-			if(rs.next())
+			try(ResultSet rs = stmt.getResultSet())
 			{
-				name = rs.getString(1);
+				if(rs.next()) name = rs.getString(1);
 			}
-			rs.close();
-			stmt.close();
 		}
 		catch (Exception e)
 		{
@@ -279,18 +273,17 @@ public class MySQL extends Database
 	private UUID getPlayerUUID(int pid)
 	{
 		UUID uuid = null;
-		try
+		try(Connection connection = dataSource.getConnection(); Statement stmt = connection.createStatement())
 		{
-			Statement stmt = getConnection().createStatement();
 			stmt.executeQuery("SELECT `uuid` FROM `" + tablePlayers + "` WHERE `player_id`=" + pid);
-			ResultSet rs = stmt.getResultSet();
-			if(rs.next() && rs.getString(1) != null)
+			try(ResultSet rs = stmt.getResultSet())
 			{
-				String hexStringWithInsertedHyphens = rs.getString(1).replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
-				uuid = UUID.fromString(hexStringWithInsertedHyphens);
+				if(rs.next() && rs.getString(1) != null)
+				{
+					String hexStringWithInsertedHyphens = rs.getString(1).replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
+					uuid = UUID.fromString(hexStringWithInsertedHyphens);
+				}
 			}
-			rs.close();
-			stmt.close();
 		}
 		catch (Exception e)
 		{
@@ -306,7 +299,8 @@ public class MySQL extends Database
 		try
 		{
 			int pid = getPlayerID(player);
-			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
+			try(Connection connection = dataSource.getConnection();
+			    PreparedStatement preparedStatement = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
 			{
 				preparedStatement.setInt(1, pid);
 				preparedStatement.setInt(2, pid);
@@ -342,7 +336,8 @@ public class MySQL extends Database
 		try
 		{
 			int pid = getPlayerID(player);
-			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
+			try(Connection connection = dataSource.getConnection();
+			    PreparedStatement preparedStatement = connection.prepareStatement("SELECT `player1`,`player2` FROM `" + tableMarriages + "` WHERE `player1`=? OR `player2`=?"))
 			{
 				preparedStatement.setInt(1, pid);
 				preparedStatement.setInt(2, pid);
@@ -378,7 +373,8 @@ public class MySQL extends Database
 		try
 		{
 			int pid = getPlayerID(player);
-			try(PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT `home_server` FROM `" + tableHomes + "` INNER JOIN `" + tableMarriages + "` ON `" + tableHomes + "`.`marry_id`=`" + tableMarriages + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
+			try(Connection connection = dataSource.getConnection();
+			    PreparedStatement preparedStatement = connection.prepareStatement("SELECT `home_server` FROM `" + tableHomes + "` INNER JOIN `" + tableMarriages + "` ON `" + tableHomes + "`.`marry_id`=`" + tableMarriages + "`.`marry_id` WHERE `player1`=? OR `player2`=?"))
 			{
 				preparedStatement.setInt(1, pid);
 				preparedStatement.setInt(2, pid);
