@@ -160,7 +160,7 @@ public class EventListener implements Listener
 	{
 		try
 		{
-			if (!(ev.getTag().equals(plugin.channel) && ev.getSender() instanceof Server))
+			if (!(ev.getTag().equals(plugin.PLUGIN_CHANNEL) && ev.getSender() instanceof Server))
 			{
 		        return;
 		    }
@@ -176,7 +176,7 @@ public class EventListener implements Listener
 					Set<Map.Entry<String, ServerInfo>> serverList = plugin.getProxy().getServers().entrySet();
 					for(Map.Entry<String, ServerInfo> e : serverList)
 					{
-						if(!e.getKey().equalsIgnoreCase(((Server) ev.getSender()).getInfo().getName())) e.getValue().sendData(plugin.channel, ev.getData(), true);
+						if(!e.getKey().equalsIgnoreCase(((Server) ev.getSender()).getInfo().getName())) e.getValue().sendData(plugin.PLUGIN_CHANNEL, ev.getData(), true);
 					}
 					break;
 			}

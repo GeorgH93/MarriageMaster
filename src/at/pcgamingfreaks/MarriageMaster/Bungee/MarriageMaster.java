@@ -42,7 +42,7 @@ public class MarriageMaster extends Plugin
     public Language lang;
     public Database DB;
 
-    public String channel;
+    public static final String PLUGIN_CHANNEL = "marriagemaster:main";
     
     // Worker
     public Chat chat = null;
@@ -94,8 +94,7 @@ public class MarriageMaster extends Plugin
 		// Register Listener
 		listener = new EventListener(this);
 		getProxy().getPluginManager().registerListener(this, listener);
-	    channel = (config.isMC1_13andUp()) ? "marriagemaster:main" : "MarriageMaster";
-		getProxy().registerChannel(channel);
+		getProxy().registerChannel(PLUGIN_CHANNEL);
 		// Register Commands
 			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
 			// Register sub Commands for /marry
@@ -172,7 +171,7 @@ public class MarriageMaster extends Plugin
 		Set<Entry<String, ServerInfo>> serverList = getProxy().getServers().entrySet();
 		for(Entry<String, ServerInfo> e : serverList)
 		{
-			e.getValue().sendData(channel, bytesOut, true);
+			e.getValue().sendData(PLUGIN_CHANNEL, bytesOut, true);
 		}
 	}
 	
@@ -184,7 +183,7 @@ public class MarriageMaster extends Plugin
 	        DataOutputStream out = new DataOutputStream(stream);
 	        out.writeUTF(message);
 	        out.flush();
-			server.sendData(channel, stream.toByteArray(), true);
+			server.sendData(PLUGIN_CHANNEL, stream.toByteArray(), true);
 			out.close();
 		}
 		catch (Exception e)

@@ -92,7 +92,7 @@ public class Config
 			case 2: config.set("Misc.DisableV2Info", false);
 			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
 			case 4: config.set("Database.UUID_Type", "online");
-			case 5: config.set("Misc.MC1_13andUp", false);
+			case 5:
 				break;
 			case CONFIG_VERSION: return;
 			default: plugin.log.info("Config File Version newer than expected!"); return;
@@ -195,11 +195,6 @@ public class Config
 			blockFrom.add(s.toLowerCase());
 		}
 		return blockFrom;
-	}
-
-	public boolean isMC1_13andUp()
-	{
-		return config.getBoolean("Misc.MC1_13andUp", false);
 	}
 	
 	// DB Settings
