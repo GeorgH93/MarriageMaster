@@ -30,6 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -57,15 +58,8 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	{
 		this.plugin = plugin;
 		logger = plugin.getLogger();
-		if(plugin.getDatabase() instanceof SQL)
-		{
-			database = (SQL) plugin.getDatabase();
-		}
-		else
-		{
-			database = null;
-			logger.warning(ConsoleColor.RED + "The used database backend dose not extend the SQL-Database provider! There is something going wrong!" + ConsoleColor.RESET);
-		}
+		if(!(plugin.getDatabase() instanceof SQL)) throw new RuntimeException("The used database backend dose not extend the SQL-Database provider! There is something going wrong!");
+		database = (SQL) plugin.getDatabase();
 		delayTime = plugin.getConfiguration().getTPDelayTime() * 20L;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, CHANNEL_BUNGEE_CORD);
@@ -76,6 +70,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 
 	public void close()
 	{
+		HandlerList.unregisterAll(this);
 		plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin);
 		plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin);
 	}

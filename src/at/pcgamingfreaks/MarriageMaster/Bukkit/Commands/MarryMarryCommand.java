@@ -150,10 +150,7 @@ public class MarryMarryCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length == 0 || canUse(sender))
-		{
-			return null;
-		}
+		if(args.length == 0 || !canUse(sender)) return null;
 		List<String> names = new LinkedList<>();
 		String arg = args[args.length - 1].toLowerCase();
 		for(Player player : Bukkit.getOnlinePlayers())
