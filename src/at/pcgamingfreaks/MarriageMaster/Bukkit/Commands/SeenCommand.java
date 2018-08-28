@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2017 GeorgH93
+ *   Copyright (C) 2017-2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public class SeenCommand extends MarryCommand
 	{
 		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), "marry.seen", true, false, plugin.getLanguage().getCommandAliases("seen"));
 
-		dateFormat = new SimpleDateFormat(plugin.getLanguage().get("Ingame.Seen.DateFormat"));
+		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLang().getString("Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss"));
 		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{Date\\}", "%2\\$s").replaceAll("\\{CountTotalDays\\}", "%3\\$d").replaceAll("\\{Count\\}", "%4\\$s");
 		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
 	}
