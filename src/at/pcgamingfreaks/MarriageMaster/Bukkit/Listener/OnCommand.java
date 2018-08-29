@@ -42,11 +42,15 @@ public class OnCommand implements CommandExecutor
 {
 	private MarriageMaster plugin;
 	private Priest priest;
+	private boolean newMC;
 
 	public OnCommand(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 		priest = new Priest(plugin);
+		String name = Bukkit.getServer().getClass().getPackage().getName();
+		String[] version = name.substring(name.lastIndexOf('.') + 2).split("_");
+		newMC = Integer.valueOf(version[1]) >= 13;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -416,15 +420,15 @@ public class OnCommand implements CommandExecutor
 			case "send":
 				if(plugin.CheckPerm(player, "marry.gift"))
 				{
-					String Partner = plugin.DB.GetPartner(player);
-					if(Partner != null && !Partner.isEmpty())
+					String partnerName = plugin.DB.GetPartner(player);
+					if(partnerName != null && !partnerName.isEmpty())
 					{
 						if(!(player.getGameMode().equals(GameMode.SURVIVAL) || plugin.config.getAllowGiftsInCreative() || plugin.CheckPerm(player, "marry.bypassgiftgamemode", false)))
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.GiftsOnlyInSurvival"));
 							return true;
 						}
-						Player partner = Bukkit.getServer().getPlayerExact(Partner);
+						Player partner = Bukkit.getServer().getPlayerExact(partnerName);
 						if(partner == null || !partner.isOnline())
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerOffline"));
@@ -436,7 +440,7 @@ public class OnCommand implements CommandExecutor
 							return true;
 						}
 						ItemStack its = player.getInventory().getItemInHand();
-						if(its == null || its.getType() == Material.AIR)
+						if(its == null || (!newMC && its.getType() == Material.AIR) || its.getAmount() == 0)
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoItemInHand"));
 							return true;
@@ -450,8 +454,9 @@ public class OnCommand implements CommandExecutor
 						{
 							partner.getInventory().addItem(its);
 							player.getInventory().removeItem(its);
-							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), its.getType().toString()));
-							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemReceived"), its.getAmount(), its.getType().toString()));
+							String itemName = its.getType() == Material.AIR ? (its.getAmount() == 1 ? "item" : "items") : its.getType().toString();
+							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), itemName));
+							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemReceived"), its.getAmount(), itemName));
 						}
 					}
 					else
