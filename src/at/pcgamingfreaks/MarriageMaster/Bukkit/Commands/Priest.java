@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2014-2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -397,7 +397,11 @@ public class Priest
 		if(player != null && player.isOnline())
 		{
 			String senderName = ((sender instanceof Player) ? ((Player) sender).getDisplayName() : ChatColor.GRAY + sender.getName()) + ChatColor.GREEN;
-			if(plugin.IsPriest(player))
+			if(plugin.CheckPerm(player, "marry.priest", false))
+			{
+				sender.sendMessage(String.format(plugin.lang.get("Priest.IsPriestPerPermission"), player.getDisplayName() + ChatColor.WHITE));
+			}
+			else if(plugin.IsPriest(player))
 			{
 				plugin.DB.DelPriest(player);
 				player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Priest.UnMadeYouAPriest"), senderName));

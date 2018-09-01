@@ -1,5 +1,5 @@
 # Translation by RedLight66
-Version: 18
+Version: 19
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -142,6 +142,7 @@ Language:
         DivorceConfirm: 'Accepter le divorce avec /marry accept ou le refuser avec /marry deny'
         SurnameSet: Surnom changé.
         DivorceRequestSent: 'Demande de divorce envoyée.'
+        IsPriestPerPermission: '%s is a priest by permissions and can not be dismissed.'
     Dialog:
         DoYouWant: 'Veux-tu %1$s, prendre la main de %2$s et lui offrir ton amour jusqu''à la fin du serveur ?'
         AndDoYouWant: 'Et toi %1$s, veux-tu épouser %2$s et partager vos ressources jusqu''à la fin du serveur ?'

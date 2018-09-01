@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2014-2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 public class Language
 {
-	private static final int LANG_VERSION = 18;
+	private static final int LANG_VERSION = 19;
 
 	private final MarriageMaster plugin;
 	private FileConfiguration lang;
@@ -215,6 +215,8 @@ public class Language
 					case 17:
 						lang.set("Language.Ingame.TPUnsafe",			"Teleport cancled! You would not survive it!");
 						lang.set("Language.Ingame.TPtoUnsafe",			"Your partner was about to teleport to you, but would not survive it!");
+					case 18:
+						lang.set("Language.Priest.IsPriestPerPermission", "%s is a priest by permissions and can not be dismissed.");
 						break;
 					default: plugin.log.warning("Language File Version newer than expected!"); return false;
 				}

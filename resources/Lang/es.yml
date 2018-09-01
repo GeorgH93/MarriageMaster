@@ -1,5 +1,5 @@
 # Translation by VreyaViress
-Version: 18
+Version: 19
 Language:
     Console:
         Enabled: El plugin ha sido activado!
@@ -142,6 +142,7 @@ Language:
         DivorceConfirm: 'Acepta el divorcio con /marry accept o recházalo con /marry deny'
         SurnameSet: Apellido cambiado.
         DivorceRequestSent: 'Petición de divorcio enviada.'
+        IsPriestPerPermission: '%s is a priest by permissions and can not be dismissed.'
     Dialog:
         DoYouWant: '%1$s, ¿aceptas casarte con %2$s?'
         AndDoYouWant: 'Y tú, %1$s, ¿aceptas casarte con %2$s?'

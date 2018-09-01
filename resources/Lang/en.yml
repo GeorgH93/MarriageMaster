@@ -1,4 +1,4 @@
-Version: 18
+Version: 19
 Language:
     Console:
         Enabled: Marriage Master has been enabled!
@@ -127,7 +127,7 @@ Language:
         MadeYouAPriest: '%s has made you a priest.'
         MadeAPriest: 'You have made %s a priest.'
         UnMadeYouAPriest: '%s has fired you as a priest.'
-        UnMadeAPriest: 'You have fired %s as a priest.'
+        UnMadeAPriest: '%s is no longer a priest.'
         PlayerNotMarried: The players is not married.
         PartnerOffline: "%1$s's partner (%2$s) is not Online."
         DivorcedPlayer: '%1$s has divorced your marriage with %2$s.'
@@ -144,6 +144,7 @@ Language:
         DivorceConfirm: 'Accept the divorce with /marry accept or deny it with /marry deny'
         SurnameSet: Surname changed.
         DivorceRequestSent: 'Divorce request sent.'
+        IsPriestPerPermission: '%s is a priest by permissions and can not be dismissed.'
     Dialog:
         DoYouWant: 'Do you %1$s, want to marry %2$s on this server?'
         AndDoYouWant: 'And do you %1$s, want to marry %2$s on this server?'

@@ -1,4 +1,4 @@
-Version: 18
+Version: 19
 Language:
     Console:
         Enabled: Marriage Master wurde aktiviert!
@@ -141,6 +141,7 @@ Language:
         DivorceConfirm: 'Bestätige die Scheidung mit /marry accept oder lehne sie ab mit /marry deny'
         SurnameSet: 'Nachname geändert.'
         DivorceRequestSent: 'Scheidungsantrag gesendet.'
+        IsPriestPerPermission: '%s ist durch seine Berechtigungen ein Priester und kann nicht entlassen werden.'
     Dialog:
         DoYouWant: 'Möchtest du %1$s, %2$s auf diesem Server heiraten?'
         AndDoYouWant: 'Und möchtest du %1$s, %2$s auf diesem Server heiraten?'
