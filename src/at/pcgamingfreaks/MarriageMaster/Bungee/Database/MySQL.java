@@ -54,7 +54,7 @@ public class MySQL extends Database
 		poolConfig.setUsername(plugin.config.getMySQLUser());
 		poolConfig.setPassword(plugin.config.getMySQLPassword());
 		poolConfig.setMinimumIdle(1);
-		poolConfig.setMaximumPoolSize(2);
+		poolConfig.setMaximumPoolSize(plugin.config.getMySQLMaxConnections());
 		poolConfig.setPoolName("MarriageMaster-Connection-Pool");
 		poolConfig.addDataSourceProperty("cachePrepStmts", "true");
 		dataSource = new HikariDataSource(poolConfig);

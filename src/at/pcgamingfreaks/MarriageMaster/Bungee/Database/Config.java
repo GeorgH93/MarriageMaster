@@ -40,7 +40,7 @@ public class Config
 	private MarriageMaster plugin;
 	private Configuration config;
 	private ConfigurationProvider configurationProvider;
-	private static final int CONFIG_VERSION = 6;
+	private static final int CONFIG_VERSION = 7;
 	
 	public Config(MarriageMaster marriagemaster)
 	{
@@ -93,6 +93,7 @@ public class Config
 			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
 			case 4: config.set("Database.UUID_Type", "online");
 			case 5:
+			case 6: config.set("Database.MySQL.MaxConnections", 2);
 				break;
 			case CONFIG_VERSION: return;
 			default: plugin.log.info("Config File Version newer than expected!"); return;
@@ -230,6 +231,11 @@ public class Config
 			}
 		}
 		return str.toString();
+	}
+
+	public int getMySQLMaxConnections()
+	{
+		return Math.max(1, config.getInt("Database.MySQL.MaxConnections", 2));
 	}
 
 	public String getUUIDType()

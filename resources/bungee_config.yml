@@ -44,6 +44,7 @@ Database:
     User: minecraft
     Password: minecraft
     Properties: []
+    MaxConnections: 2
   Tables:
     User: marry_players
     Home: marry_home
@@ -56,4 +57,4 @@ Misc:
   DisableV2Info: false
 
 # Config File Version. Don't touch it!
-Version: 6
+Version: 7
