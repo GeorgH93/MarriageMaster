@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,9 +23,9 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 public class UpdateUUIDsHelper
 {
 	private final int id;
-	private String uuid;
+	private String uuid, name;
 
-	public UpdateUUIDsHelper(String uuid, int id)
+	public UpdateUUIDsHelper(String name, String uuid, int id)
 	{
 		this.id = id;
 		this.uuid = uuid;
@@ -44,5 +44,10 @@ public class UpdateUUIDsHelper
 	public int getId()
 	{
 		return id;
+	}
+
+	public String getName()
+	{
+		return name;
 	}
 }

@@ -295,12 +295,12 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 					String uuid = res.getString(fieldUUID);
 					if(uuid == null)
 					{
-						toConvert.put(res.getString(fieldName), new UpdateUUIDsHelper(null, res.getInt(fieldPlayerID)));
+						toConvert.put(res.getString(fieldName), new UpdateUUIDsHelper(res.getString(fieldName), null, res.getInt(fieldPlayerID)));
 					}
 					else
 					{
 						uuid = (useUUIDSeparators) ? uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : uuid.replaceAll("-", "");
-						toUpdate.add(new UpdateUUIDsHelper(uuid, res.getInt(fieldPlayerID)));
+						toUpdate.add(new UpdateUUIDsHelper(res.getString(fieldName), uuid, res.getInt(fieldPlayerID)));
 					}
 				}
 			}
@@ -316,15 +316,42 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 						toUpdate.add(updateData);
 					}
 				}
-				try(PreparedStatement ps = connection.prepareStatement(queryFixUUIDs))
+				boolean ok = false;
+				do
 				{
-					for(UpdateUUIDsHelper updateData : toUpdate)
+					try(PreparedStatement ps = connection.prepareStatement(queryFixUUIDs))
 					{
-						DBTools.setParameters(ps, updateData.getUUID(), updateData.getId());
-						ps.addBatch();
+						for(UpdateUUIDsHelper updateData : toUpdate)
+						{
+							DBTools.setParameters(ps, updateData.getUUID(), updateData.getId());
+							ps.addBatch();
+						}
+						ps.executeBatch();
+						ok = true;
 					}
-					ps.executeBatch();
-				}
+					catch(SQLException e)
+					{
+						Iterator<UpdateUUIDsHelper> updateUUIDsHelperIterator = toUpdate.iterator();
+						while(updateUUIDsHelperIterator.hasNext())
+						{
+							UpdateUUIDsHelper updateData = updateUUIDsHelperIterator.next();
+							try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayer))
+							{
+								ps.setString(1, updateData.getUUID());
+								try(ResultSet rs = ps.executeQuery())
+								{
+									if(rs.next())
+									{
+										plugin.getLogger().warning("User " + updateData.getName() + " (db id: " + updateData.getId() + ") has the same UUID as " + rs.getString(fieldName) +
+												                           " (db id: " + rs.getInt(fieldPlayerID) + "), UUID: " + updateData.getUUID());
+										updateUUIDsHelperIterator.remove();
+									}
+								}
+							}
+						}
+					}
+				} while(!ok);
+
 				plugin.getLogger().info(String.format(MESSAGE_UPDATED_UUIDS, toUpdate.size()));
 			}
 		}
