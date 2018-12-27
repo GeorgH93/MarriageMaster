@@ -4,6 +4,7 @@ website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 main: at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster
 version: ${project.version}
 softdepend: [Vault,MinePacks]
+api-version: 1.13
 commands:
    marry:
       description: Marry main command

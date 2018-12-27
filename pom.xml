@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>1.31.9-SNAPSHOT</version>
+	<version>1.31.9</version>
 	<name>MarriageMaster</name>
 
 	<repositories>
@@ -93,7 +93,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.13-pre7-R0.1-SNAPSHOT</version>
+			<version>1.13.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -149,8 +149,18 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MinePacks</artifactId>
-			<version>1.16.6</version>
+			<version>1.18.1</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bukkit</groupId>
+					<artifactId>bukkit</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>at.pcgamingfreaks</groupId>
+					<artifactId>PluginLib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

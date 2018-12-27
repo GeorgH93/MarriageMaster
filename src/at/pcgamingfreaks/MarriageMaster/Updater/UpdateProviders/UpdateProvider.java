@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -44,37 +44,33 @@ public interface UpdateProvider
 	 * Get the latest version's direct download url.
 	 *
 	 * @return latest version's file download url.
-	 * @throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException If the provider doesn't support the request type
 	 * @throws NotSuccessfullyQueriedException  If the provider has not been queried successfully before
 	 */
-	URL getLatestFileURL() throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException, NotSuccessfullyQueriedException;
+	URL getLatestFileURL() throws NotSuccessfullyQueriedException;
 
 	/**
 	 * Get the latest version's file name.
 	 *
 	 * @return latest version's file name.
-	 * @throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException If the provider doesn't support the request type
 	 * @throws NotSuccessfullyQueriedException  If the provider has not been queried successfully before
 	 */
-	String getLatestVersionFileName() throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException, NotSuccessfullyQueriedException;
+	String getLatestVersionFileName() throws NotSuccessfullyQueriedException;
 
 	/**
 	 * Get the latest version's name (such as "Project v1.0").
 	 *
 	 * @return latest version's name.
-	 * @throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException If the provider doesn't support the request type
 	 * @throws NotSuccessfullyQueriedException  If the provider has not been queried successfully before
 	 */
-	String getLatestName() throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException, NotSuccessfullyQueriedException;
+	String getLatestName() throws NotSuccessfullyQueriedException;
 
 	/**
 	 * Get the latest version's checksum (md5).
 	 *
 	 * @return latest version's MD5 checksum.
-	 * @throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException If the provider doesn't support the request type
 	 * @throws NotSuccessfullyQueriedException  If the provider has not been queried successfully before
 	 */
-	String getLatestChecksum() throws at.pcgamingfreaks.Updater.UpdateProviders.RequestTypeNotAvailableException, NotSuccessfullyQueriedException;
+	String getLatestChecksum() throws NotSuccessfullyQueriedException;
 	//endregion
 
 	//region provider property's
