@@ -40,6 +40,8 @@ permissions:
       marry.pvp: true
       marry.tp: true
       marry.home: true
+      marry.sethome: true
+      marry.delhome: true
       marry.chat.*: true
       marry.gift: true
       marry.backpack: true
@@ -65,7 +67,13 @@ permissions:
     description: Allows you to tp to your partner
     default: true
   marry.home:
-    description: Allows you to tp / set to your home
+    description: Allows the player to teleport to his home
+    default: true
+  marry.sethome:
+    description: Allows the player to set the home point
+    default: true
+  marry.delhome:
+    description: Allows the player to delete his home point
     default: true
   marry.chat:
     description: Allows you to chat with your partner

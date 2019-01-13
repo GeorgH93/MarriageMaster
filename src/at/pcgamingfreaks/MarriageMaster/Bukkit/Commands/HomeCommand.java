@@ -18,10 +18,13 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HomeDelEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HomeSetEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HomeTPEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageHome;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
@@ -282,7 +285,7 @@ public class HomeCommand extends MarryCommand
 
 		public SetHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{
-			super(plugin, "sethome", plugin.getLanguage().getTranslated("Commands.Description.SetHome"), "marry.home", false, true, plugin.getLanguage().getCommandAliases("SetHome"));
+			super(plugin, "sethome", plugin.getLanguage().getTranslated("Commands.Description.SetHome"), "marry.sethome", false, true, plugin.getLanguage().getCommandAliases("SetHome"));
 			this.homeCommand = homeCommand;
 			messageSet = plugin.getLanguage().getMessage("Ingame.Home.Set");
 		}
@@ -332,7 +335,7 @@ public class HomeCommand extends MarryCommand
 
 		public DelHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{
-			super(plugin, "delhome", plugin.getLanguage().getTranslated("Commands.Description.DelHome"), "marry.home", false, true, plugin.getLanguage().getCommandAliases("DelHome"));
+			super(plugin, "delhome", plugin.getLanguage().getTranslated("Commands.Description.DelHome"), "marry.delhome", false, true, plugin.getLanguage().getCommandAliases("DelHome"));
 			this.homeCommand = homeCommand;
 			messageHomeDeleted = plugin.getLanguage().getMessage("Ingame.Home.Deleted");
 		}
