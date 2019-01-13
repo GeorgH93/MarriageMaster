@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.TPEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
@@ -39,24 +40,38 @@ import java.util.Set;
 public class TpCommand extends MarryCommand
 {
 	private final Message messageTeleport, messageTeleportTo, messageUnsafe, messageToUnsafe, messagePartnerVanished, messageWorldNotAllowed;
+	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner;
+	private final Message messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
 	private final Set<String> blacklistedWorlds;
-	private final boolean safetyCheck;
+	private final boolean safetyCheck, requireConfirmation;
 	private final long delayTime;
 
 	public TpCommand(MarriageMaster plugin)
 	{
 		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), "marry.tp", true, true, plugin.getLanguage().getCommandAliases("Tp"));
 
-		blacklistedWorlds = plugin.getConfiguration().getTPBlackListedWorlds();
-		safetyCheck       = plugin.getConfiguration().getSafetyCheck();
-		delayTime         = plugin.getConfiguration().getTPDelayTime() * 20L;
+		blacklistedWorlds   = plugin.getConfiguration().getTPBlackListedWorlds();
+		safetyCheck         = plugin.getConfiguration().getSafetyCheck();
+		requireConfirmation = plugin.getConfiguration().getRequireConfirmation();
+		delayTime           = plugin.getConfiguration().getTPDelayTime() * 20L;
 
+		//region loading messages
 		messageTeleport        = plugin.getLanguage().getMessage("Ingame.TP.Teleport");
 		messageTeleportTo      = plugin.getLanguage().getMessage("Ingame.TP.TeleportTo");
 		messageUnsafe          = plugin.getLanguage().getMessage("Ingame.TP.Unsafe");
 		messageToUnsafe        = plugin.getLanguage().getMessage("Ingame.TP.ToUnsafe");
 		messagePartnerVanished = plugin.getLanguage().getMessage("Ingame.TP.PartnerVanished");
 		messageWorldNotAllowed = plugin.getLanguage().getMessage("Ingame.TP.WorldNotAllowed");
+
+		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.TP.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageWaitForConfirmation                = plugin.getLanguage().getMessage("Ingame.TP.Request.WaitForConfirmation");
+		messageRequestDenied                      = plugin.getLanguage().getMessage("Ingame.TP.Request.Denied");
+		messageRequestDeniedPartner               = plugin.getLanguage().getMessage("Ingame.TP.Request.DeniedPartner");
+		messageRequestCanceled                    = plugin.getLanguage().getMessage("Ingame.TP.Request.Canceled");
+		messageRequestCanceledPartner             = plugin.getLanguage().getMessage("Ingame.TP.Request.CanceledPartner");
+		messageRequestCanceledDisconnectRequester = plugin.getLanguage().getMessage("Ingame.TP.Request.CanceledDisconnectRequester");
+		messageRequestCanceledDisconnectTarget    = plugin.getLanguage().getMessage("Ingame.TP.Request.CanceledDisconnectTarget");
+		//endregion
 
 		if(plugin.getPluginChannelCommunicator() != null)
 		{
@@ -75,16 +90,31 @@ public class TpCommand extends MarryCommand
 		}
 		else if(partner.isOnline())
 		{
-			TPEvent event = new TPEvent(player, player.getMarriageData(partner));
-			Bukkit.getPluginManager().callEvent(event);
-			if(!event.isCancelled())
+			//noinspection SpellCheckingInspection
+			if(requireConfirmation && !(player.hasPermission("marry.bypass.tpconfirmation") || partner.hasPermission("marry.autoaccept.tprequest")))
 			{
-				getMarriagePlugin().doDelayableTeleportAction(new TPToPartner((Player) sender, partner.getPlayer().getPlayer()));
+				messageWaitForConfirmation.send(sender);
+				getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new TpRequest(player, partner));
+				messageRequireConfirmation.send(partner.getPlayer().getPlayer(), player.getName(), player.getDisplayName());
+			}
+			else
+			{
+				tp(player, partner);
 			}
 		}
 		else
 		{
 			((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+		}
+	}
+
+	private void tp(@NotNull final MarriagePlayer player, @NotNull final MarriagePlayer partner)
+	{
+		TPEvent event = new TPEvent(player, player.getMarriageData(partner));
+		Bukkit.getPluginManager().callEvent(event);
+		if(!event.isCancelled())
+		{
+			getMarriagePlugin().doDelayableTeleportAction(new TpToPartner(player.getPlayer().getPlayer(), partner.getPlayer().getPlayer()));
 		}
 	}
 
@@ -149,11 +179,11 @@ public class TpCommand extends MarryCommand
 		}
 	}
 
-	private class TPToPartner implements DelayableTeleportAction
+	private class TpToPartner implements DelayableTeleportAction
 	{
 		private final Player player, partner;
 
-		public TPToPartner(Player player1, Player player2)
+		public TpToPartner(Player player1, Player player2)
 		{
 			player  = player1;
 			partner = player2;
@@ -175,6 +205,44 @@ public class TpCommand extends MarryCommand
 		public long getDelay()
 		{
 			return delayTime;
+		}
+	}
+
+	private class TpRequest extends AcceptPendingRequest
+	{
+		MarriagePlayer player;
+
+		public TpRequest(MarriagePlayer player, MarriagePlayer partner)
+		{
+			super(partner, player);
+			this.player = player;
+		}
+
+		@Override
+		protected void onAccept()
+		{
+			tp(player,getPlayerThatHasToAccept());
+		}
+
+		@Override
+		protected void onDeny()
+		{
+			messageRequestDenied.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
+			messageRequestDeniedPartner.send(player.getPlayer().getPlayer());
+		}
+
+		@Override
+		protected void onCancel(@NotNull MarriagePlayer marriagePlayer)
+		{
+			messageRequestCanceled.send(player.getPlayer().getPlayer());
+			messageRequestCanceledPartner.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
+		}
+
+		@Override
+		protected void onDisconnect(@NotNull MarriagePlayer marriagePlayer)
+		{
+			if(marriagePlayer.equals(player)) messageRequestCanceledDisconnectRequester.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
+			else messageRequestCanceledDisconnectTarget.send(player.getPlayer().getPlayer());
 		}
 	}
 }

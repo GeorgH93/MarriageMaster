@@ -188,6 +188,11 @@ public class Config extends Configuration
 	{
 		return getConfig().getBoolean("Teleport.CheckSafety", true);
 	}
+
+	public boolean getRequireConfirmation()
+	{
+		return getConfig().getBoolean("Teleport.RequireConfirmation", true);
+	}
 	//endregion
 
 	//region Kiss command settings

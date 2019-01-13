@@ -1,5 +1,7 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 90
+Version: 91
+LanguageName: "English"
+Author: "GeorgH93"
 Language:
   # Global Wildcards: <heart> and <smallheart>
   Ingame:
@@ -94,6 +96,15 @@ Language:
       WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where tp is not allowed.\",\"color\":\"red\"}]"
       Moved: "[\"\",{\"text\":\"Teleport canceled! You have moved!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Teleport in {Time} sec! Don't Move!\",\"color\":\"red\"}]"
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r wants teleport to you. Accept the teleport with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "Please wait till your partner accepts the teleport."
+        Denied: "You denied the teleport request of your partner."
+        DeniedPartner: "Your partner denied the teleport request."
+        Canceled: "You canceled your teleport request."
+        CanceledPartner: "Your partner canceled the teleport request."
+        CanceledDisconnectReques: "Your partner went offline. Teleport request canceled."
+        CanceledDisconnectTarget: "Your partner went offline. Teleport request canceled."
     SetPriest:
       # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" has made you a priest.\",\"color\":\"green\"}]"
@@ -123,7 +134,7 @@ Language:
       AlreadyOpenRequest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" has already one not answered marry request.\",\"color\":\"red\"}]"
       YouCalledOff: "You have called the wedding off."
       PlayerCalledOff: "{DisplayName}&r called the wedding off."
-      Confirm: "{PriestDisplayName}&r wants to marry you with {PlayerDisplayName}&r. Accept the marriage with /marry accept or deny it with /marry deny."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\"wants to marry you with \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Accept the marriage with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       PriestOff: "Priest {DisplayName}&r is now offline, wedding called off."
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
       Self:

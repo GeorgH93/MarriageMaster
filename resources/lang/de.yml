@@ -1,5 +1,7 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 90
+Version: 91
+LanguageName: "German"
+Author: "GeorgH93"
 Language:
   # Global Wildcards: <heart> and <smallheart>
   NotFromConsole: "&cDieser Befehl kann nicht von der Konsole aus verwendet werden!"
@@ -94,6 +96,15 @@ Language:
       WorldNotAllowed: "[\"\",{\"text\":\"Dein Partner ist in einer Welt in der tp nicht erlaubt ist.\",\"color\":\"red\"}]"
       Moved: "[\"\",{\"text\":\"Teleportation abgebrochen! Du hast dich bewegt!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Teleportation in {Time} Sekunden! Nicht bewegen!\",\"color\":\"red\"}]"
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r will sich zu dir teleportieren. Nimm die Anfrage mit \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" an oder lehne sie mit \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\" ab.\"}]"
+        WaitForConfirmation: "Bitte warte bis dein Partner die Anfrage annimmt."
+        Denied: "Du hast die Teleportations-Anfrage deines Partners abgelehnt."
+        DeniedPartner: "Dein Partner hat deine Teleportations-Anfrage abgelehnt."
+        Canceled: "Du hast deine Teleportations-Anfrage abgebrochen."
+        CanceledPartner: "Dein Partner hat seine Teleportations-Anfrage abgebrochen."
+        CanceledDisconnectReques: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
+        CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
     SetPriest:
       # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" hat dich zu einem Priester gemacht.\",\"color\":\"green\"}]"

@@ -151,7 +151,10 @@ Teleport:
   DelayTime: 3
   # List of worlds where you cant teleport to
   BlacklistedWorlds: []
+  # This option controls whether a safety check is performed before the player is teleported.
   CheckSafety: true
+  # If this option is enabled the partner has to accept the teleport request before the player will be teleported. Only applicable for teleporting to another player.
+  RequireConfirmation: false
 
 BackpackShare:
   Enable: true

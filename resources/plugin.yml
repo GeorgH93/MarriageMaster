@@ -32,6 +32,7 @@ permissions:
       marry.bypass.giftgamemode: true
       marry.bypass.backpackgamemode: true
       marry.bypass.worldblacklist: true
+      marry.bypass.tpconfirmation: true
   marry.user:
     description: Gives acces to all user functions
     children:
@@ -117,6 +118,9 @@ permissions:
   marry.bypass.worldblacklist:
     description: Allows to bypass the world check for teleports
     default: op
+  marry.bypass.tpconfirmation:
+    description: Allows to bypass the teleport confirmation request
+    default: op
   marry.offlinedivorce:
     description: Allows a priest to divorce players when only one of them is online.
     default: op
@@ -141,3 +145,6 @@ permissions:
   marry.home.others:
     description: Allows to teleport to homes of other players
     default: op
+  marry.autoaccept.tprequest:
+    description: If the permission is granted the player will automaticaly accept tp requests
+    default: false

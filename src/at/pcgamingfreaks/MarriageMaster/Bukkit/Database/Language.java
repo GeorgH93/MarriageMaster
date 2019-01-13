@@ -28,7 +28,7 @@ import java.util.List;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language
 {
-	private static final int LANG_VERSION = 90, UPGRADE_THRESHOLD = 90, PRE_V2_VERSIONS = 90;
+	private static final int LANG_VERSION = 91, UPGRADE_THRESHOLD = 91, PRE_V2_VERSIONS = 90;
 
 	public Language(JavaPlugin plugin)
 	{
