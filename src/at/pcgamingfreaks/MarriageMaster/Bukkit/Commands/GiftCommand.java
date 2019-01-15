@@ -26,7 +26,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
-import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -108,7 +107,7 @@ public class GiftCommand extends MarryCommand
 						its = event.getItemStack();
 						bPartner.getInventory().addItem(its);
 						bPlayer.getInventory().removeItem(its);
-						final String itemJson = StringUtils.escapeJsonString(Utils.convertItemStackToJson(its, plugin.getLogger()));
+						final String itemJson = (Utils.convertItemStackToJson(its, plugin.getLogger()));
 						final String itemName = itemNameResolver.getName(its);
 						messageItemSent.send(sender, its.getAmount(), itemName, itemJson);
 						messageItemReceived.send(bPartner, its.getAmount(), itemName, itemJson);
