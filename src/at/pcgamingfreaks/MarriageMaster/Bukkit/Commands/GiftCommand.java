@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2016, 2018, 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.ItemNameResolver;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.GiftEvent;
@@ -24,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.Bukkit;
@@ -41,6 +43,7 @@ public class GiftCommand extends MarryCommand
 	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived;
 	private final double range;
 	private final boolean allowedInCreative;
+	private final ItemNameResolver itemNameResolver;
 
 	public GiftCommand(MarriageMaster plugin)
 	{
@@ -54,6 +57,8 @@ public class GiftCommand extends MarryCommand
 
 		range             = plugin.getConfiguration().getRange("Gift");
 		allowedInCreative = plugin.getConfiguration().isGiftAllowedInCreative();
+
+		itemNameResolver = ((PluginLib) PluginLib.getInstance()).getItemNameResolver();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -80,7 +85,7 @@ public class GiftCommand extends MarryCommand
 				if(mPD == null) { return; } // Should never happen, but it's always good to be save!
 				partner = player.getNearestPartnerMarriageData().getPartner(player);
 			}
-			Player bPartner = partner.getPlayer().getPlayer();
+			final Player bPartner = partner.getPlayer().getPlayer();
 			if(bPartner != null && bPartner.isOnline())
 			{
 				if(getMarriagePlugin().isInRange(bPlayer, bPartner, range))
@@ -103,9 +108,10 @@ public class GiftCommand extends MarryCommand
 						its = event.getItemStack();
 						bPartner.getInventory().addItem(its);
 						bPlayer.getInventory().removeItem(its);
-						String itemJson = StringUtils.escapeJsonString(Utils.convertItemStackToJson(its, plugin.getLogger()));
-						messageItemSent.send(sender, its.getAmount(), its.getType().toString(), itemJson);
-						messageItemReceived.send(bPartner, its.getAmount(), its.getType().toString(), itemJson);
+						final String itemJson = StringUtils.escapeJsonString(Utils.convertItemStackToJson(its, plugin.getLogger()));
+						final String itemName = itemNameResolver.getName(its);
+						messageItemSent.send(sender, its.getAmount(), itemName, itemJson);
+						messageItemReceived.send(bPartner, its.getAmount(), itemName, itemJson);
 					}
 				}
 				else
