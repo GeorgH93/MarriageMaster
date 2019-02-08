@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2018 GeorgH93
+ *   Copyright (C) 2016-2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -47,6 +47,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	private MarriageMaster plugin;
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll;
 	private RegisterablePluginCommand marryCommand;
+	private MarryCommand marryActionCommand;
 	private Message helpFormat;
 
 	public CommandManagerImplementation(MarriageMaster plugin)
@@ -91,7 +92,8 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 
 		// Init MarriageMaster commands
 		registerMarryCommand(new ListCommand(plugin));
-		registerMarryCommand(new MarryMarryCommand(plugin));
+		marryActionCommand = new MarryMarryCommand(plugin);
+		registerMarryCommand(marryActionCommand);
 		registerMarryCommand(new MarryDivorceCommand(plugin));
 		if(plugin.getConfiguration().isChatEnabled())
 		{
@@ -162,9 +164,9 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			}
 			@SuppressWarnings("deprecation")
 			Player target = plugin.getServer().getPlayer(args[0]);
-			if(target != null || args.length == 2)
+			if(target != null && args.length < 2)
 			{
-				subCommandMap.get("marry").doExecute(sender, alias, "marry", args);
+				marryActionCommand.doExecute(sender, alias, "marry", args);
 				return true;
 			}
 		}
@@ -266,5 +268,16 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		((MarriagePlayerData) request.getPlayerThatHasToAccept()).addRequest(request);
 		return true;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
+	{
+		List<String> results = super.onTabComplete(sender, command, alias, args);
+		if(args.length == 1 && marryActionCommand.canUse(sender))
+		{
+			results.addAll(marryActionCommand.tabComplete(sender, alias, "marry", args));
+		}
+		return results;
 	}
 }
