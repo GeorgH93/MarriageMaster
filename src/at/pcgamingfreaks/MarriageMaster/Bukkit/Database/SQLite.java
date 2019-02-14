@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ * Copyright (C) 2016, 2019 GeorgH93
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ public class SQLite extends SQL
 	protected void buildQuerys()
 	{
 		super.buildQuerys();
-		querySetPriest  = querySetPriest .replace("REPLACE INTO", "INSERT OR REPLACE INTO");
+		querySetPriest  = querySetPriest .replace("REPLACE INTO", "INSERT OR REPLACE INTO").replace(" VALUE ", " VALUES ");
 		queryUpdateHome = queryUpdateHome.replace("REPLACE INTO", "INSERT OR REPLACE INTO");
 		queryAddPlayer  = queryAddPlayer .replace("INSERT IGNORE INTO", "INSERT OR IGNORE INTO");
 	}
