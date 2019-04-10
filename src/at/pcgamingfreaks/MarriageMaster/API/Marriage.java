@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,8 +16,6 @@
  */
 
 package at.pcgamingfreaks.MarriageMaster.API;
-
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +50,7 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * Gets the other player of the married players.
 	 *
 	 * @param player The player for which the partner should be retrieved.
-	 * @return The other player of the married couple.
+	 * @return The other player of the married couple. Null if the given player is not in this marriage.
 	 */
 	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MARRIAGE_PLAYER player);
 
@@ -148,4 +146,19 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * @param home The {@link HOME} for the marriage. null to delete home.
 	 */
 	void setHome(@Nullable HOME home);
+
+	/**
+	 * Gets the prefix that will be added to every private (marriage) chat message.
+	 * This string can contain color codes which will be send even if the player sending the message doesn't have the permission to use colors in the private chat.
+	 *
+	 * @return The prefix that will be added to every private (marriage) chat message.
+	 */
+	@NotNull String getMarriageChatMessagePrefix();
+
+	/**
+	 * Sets the prefix that will be added to every private (marriage) chat message.
+	 * This string can contain color codes which will be send even if the player sending the message doesn't have the permission to use colors in the private chat.
+	 * Prefix is limited to 20 chars, everything beyond will be ignored.
+	 */
+	void setMarriageChatMessagePrefix(@NotNull String prefix);
 }

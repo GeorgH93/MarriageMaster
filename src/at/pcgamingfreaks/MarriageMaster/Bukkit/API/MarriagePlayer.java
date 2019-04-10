@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,4 +63,14 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @return The requests the player can cancel.
 	 */
 	@NotNull List<AcceptPendingRequest> getRequestsToCancel();
+
+	/**
+	 * Gets the bukkit player represented by the marriage player.
+	 *
+	 * @return The represented player. Null if the player is offline.
+	 */
+	default @Nullable Player getPlayerOnline()
+	{
+		return getPlayer().getPlayer();
+	}
 }
