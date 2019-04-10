@@ -122,8 +122,8 @@ public class KissCommand extends MarryCommand implements Listener
 			if(!event.isCancelled())
 			{
 				if(!player.hasPermission("marry.skiptpdelay")) wait.put(player, System.currentTimeMillis());
-				messageKissed.send(player.getPlayerOnline());
-				messageGotKissed.send(partner.getPlayerOnline());
+				player.send(messageKissed);
+				partner.send(messageGotKissed);
 				if(particleSpawner != null)
 				{
 					particleSpawner.spawnParticle(player.getPlayerOnline().getLocation(), Particle.HEART, hearthVisibleRange, hearthCount, 1.0F, 1.0F, 1.0F, 1.0F);

@@ -237,14 +237,12 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(player.isPrivateChatDefault())
 		{
 			player.setPrivateChatDefault(false);
-			//noinspection ConstantConditions
-			messageLeft.send(player.getPlayerOnline()); // The player sent the command so it's not possible that he/she is offline.
+			player.send(messageLeft);
 		}
 		else
 		{
 			player.setPrivateChatDefault(true);
-			//noinspection ConstantConditions
-			messageJoined.send(player.getPlayerOnline()); // The player sent the command so it's not possible that he/she is offline.
+			player.send(messageJoined);
 		}
 	}
 

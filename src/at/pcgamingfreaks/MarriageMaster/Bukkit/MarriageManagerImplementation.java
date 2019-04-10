@@ -50,7 +50,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 	private Message messageNotYourself, messageSelfNotInRange, messageSelfAlreadyMarried, messageSelfOtherAlreadyMarried, messageSelfAlreadyOpenRequest, messageSelfBroadcastMarriage, messageSelfMarried,
 			messageSelfPlayerCalledOff, messageSelfYouCalledOff, messageSelfConfirm, messageSelfMarryRequestSent, messageSelfPlayerMarryOff;
 	private Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorcePlayerOff, messageDivorcePriestOff, messageDivorceDeny, messageDivorceYouDeny, messageDivorceConfirm,
-			messageDivorceNotInRange, messageDivorcePlayerCancelled, messageDivorcePriestCancelled, messageDivorceYouCancelled, messageDivorceYouCancelledPrie;
+			messageDivorceNotInRange, messageDivorcePlayerCancelled, messageDivorcePriestCancelled, messageDivorceYouCancelled, messageDivorceYouCancelledPriest;
 	private Message messageSelfDivorcePlayerOff, messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceDeny,
 			messageSelfDivorceYouDeny, messageSelfDivorceCancelled, messageSelfDivorceYouCancelled, messageSelfDivorceNotInRange;
 	private boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
@@ -132,7 +132,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		messageDivorcePriestCancelled  = getMSG("Ingame.Divorce.PriestCancelled").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
 		messageDivorcePlayerCancelled  = getMSG("Ingame.Divorce.PlayerCancelled").replaceAll("\\{PlayerName\\}", "%1\\$s").replaceAll("\\{PlayerDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
 		messageDivorceYouCancelled     = getMSG("Ingame.Divorce.YouCancelled").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorceYouCancelledPrie = getMSG("Ingame.Divorce.YouCancelledPriest").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
+		messageDivorceYouCancelledPriest = getMSG("Ingame.Divorce.YouCancelledPriest").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
 
 		messageSelfDivorced            = getMSG("Ingame.Divorce.Self.Divorced").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
 		messageSelfDivorceDeny         = getMSG("Ingame.Divorce.Self.Deny").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
@@ -457,7 +457,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				}
 				else
 				{
-					plugin.messageNoPermission.send(priest.getPlayerOnline());
+					priest.send(plugin.messageNoPermission);
 				}
 			}
 			else // Player priest
@@ -503,7 +503,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				}
 				else
 				{
-					plugin.messageNoPermission.send(priest.getPlayerOnline());
+					priest.send(plugin.messageNoPermission);
 				}
 			}
 		}
@@ -584,7 +584,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			super(player1, player2, priest);
 			this.surname = surname;
 			this.firstPlayer = firstPlayer;
-			messageConfirm.send(player1.getPlayerOnline(), priest.getName(), priest.getDisplayName(), player1.getName(), player1.getDisplayName());
+			player1.send(messageConfirm, priest.getName(), priest.getDisplayName(), player1.getName(), player1.getDisplayName());
 		}
 
 		@Override
@@ -712,7 +712,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			messageSelfDivorced.send(bPlayer, otherName, otherDisplayName);
 			if(otherPlayer.isOnline())
 			{
-				messageSelfDivorcedPlayer.send(otherPlayer.getPlayerOnline(), bPlayer.getName(), bPlayer.getDisplayName());
+				otherPlayer.send(messageSelfDivorcedPlayer, bPlayer.getName(), bPlayer.getDisplayName());
 			}
 			if(announceMarriage)
 			{
@@ -747,7 +747,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		if(!divorceBy.isOnline()) return;
 		if(marriage.hasPlayer(divorceBy)) // Self divorce
 		{
-			if(plugin.isSelfMarriageAllowed() && divorceBy.getPlayerOnline().hasPermission("marry.selfmarry"))
+			if(plugin.isSelfMarriageAllowed() && divorceBy.hasPermission("marry.selfmarry"))
 			{
 				MarriagePlayer otherPlayer = marriage.getPartner(divorceBy);
 				Player bPlayer = divorceBy.getPlayerOnline();
@@ -783,7 +783,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 							}
 							else
 							{
-								messageSelfDivorceConfirm.send(otherPlayer.getPlayerOnline(), bPlayer.getName(), bPlayer.getDisplayName());
+								otherPlayer.send(messageSelfDivorceConfirm, bPlayer.getName(), bPlayer.getDisplayName());
 								messageSelfDivorceRequestSent.send(bPlayer, otherPlayer.getName(), otherPlayer.getDisplayName());
 								plugin.getCommandManager().registerAcceptPendingRequest(new SelfDivorceAcceptRequest(otherPlayer, divorceBy, marriage));
 							}
@@ -801,7 +801,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			}
 			else
 			{
-				plugin.messageNoPermission.send(divorceBy.getPlayerOnline());
+				divorceBy.send(plugin.messageNoPermission);
 			}
 		}
 		else // Divorce by player priest
@@ -832,11 +832,11 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 							{
 								if(marriage.getPartner1().getOpenRequest() != null)
 								{
-									messageAlreadyOpenRequest.send(divorceBy.getPlayerOnline(), marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName());
+									divorceBy.send(messageAlreadyOpenRequest, marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName());
 								}
 								if(marriage.getPartner2().getOpenRequest() != null)
 								{
-									messageAlreadyOpenRequest.send(divorceBy.getPlayerOnline(), marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
+									divorceBy.send(messageAlreadyOpenRequest, marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
 								}
 							}
 							else
@@ -851,10 +851,10 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 					}
 					else
 					{
-						messageDivorceNotInRange.send(divorceBy.getPlayerOnline(), rangeDivorce);
+						divorceBy.send(messageDivorceNotInRange, rangeDivorce);
 					}
 				}
-				else if(divorceBy.getPlayerOnline().hasPermission("marry.offlinedivorce"))
+				else if(divorceBy.hasPermission("marry.offlinedivorce"))
 				{
 					if(!marriage.getPartner1().isOnline() && !marriage.getPartner2().isOnline()) // Both are offline
 					{
@@ -878,11 +878,11 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 								{
 									if(marriage.getPartner1().getOpenRequest() != null)
 									{
-										messageAlreadyOpenRequest.send(divorceBy.getPlayerOnline(), marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName());
+										divorceBy.send(messageAlreadyOpenRequest, marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName());
 									}
 									if(marriage.getPartner2().getOpenRequest() != null)
 									{
-										messageAlreadyOpenRequest.send(divorceBy.getPlayerOnline(), marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
+										divorceBy.send(messageAlreadyOpenRequest, marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
 									}
 								}
 								else
@@ -899,7 +899,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 						else
 						{
 							//noinspection ConstantConditions
-							plugin.messagePlayerNotOnline.send(divorceBy.getPlayerOnline(), marriage.getPartner(first).getName());
+							divorceBy.send(plugin.messagePlayerNotOnline, marriage.getPartner(first).getName());
 						}
 					}
 				}
@@ -911,7 +911,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			}
 			else
 			{
-				plugin.messageNoPermission.send(divorceBy.getPlayerOnline());
+				divorceBy.send(plugin.messageNoPermission);
 			}
 		}
 	}
@@ -937,8 +937,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		protected void onDeny()
 		{
 			//noinspection ConstantConditions
-			messageSelfDivorceDeny.send(getPlayersThatCanCancel()[0].getPlayerOnline(), getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
-			messageSelfDivorceYouDeny.send(getPlayerThatHasToAccept().getPlayerOnline(), getPlayersThatCanCancel()[0].getName(), getPlayersThatCanCancel()[0].getDisplayName());
+			getPlayersThatCanCancel()[0].send(messageSelfDivorceDeny, getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
+			getPlayerThatHasToAccept().send(messageSelfDivorceYouDeny, getPlayersThatCanCancel()[0].getName(), getPlayersThatCanCancel()[0].getDisplayName());
 		}
 
 		@Override
@@ -954,12 +954,12 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			//noinspection ConstantConditions
 			if(player.equals(getPlayersThatCanCancel()[0]))
 			{
-				messageSelfDivorcePlayerOff.send(getPlayerThatHasToAccept().getPlayerOnline(), player.getName(), player.getDisplayName());
+				getPlayerThatHasToAccept().send(messageSelfDivorcePlayerOff, player.getName(), player.getDisplayName());
 			}
 			else
 			{
 				//noinspection ConstantConditions
-				messageSelfDivorcePlayerOff.send(getPlayersThatCanCancel()[0].getPlayerOnline(), player.getName(), player.getDisplayName());
+				getPlayersThatCanCancel()[0].send(messageSelfDivorcePlayerOff, player.getName(), player.getDisplayName());
 			}
 		}
 	}
@@ -978,7 +978,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 			this.marriage = marriage;
 			this.priest = priest;
 			partner = marriage.getPartner(hasToAccept);
-			messageDivorceConfirm.send(hasToAccept.getPlayerOnline(), priest.getName(), priest.getDisplayName(), partner.getName(), partner.getDisplayName());
+			hasToAccept.send(messageDivorceConfirm, priest.getName(), priest.getDisplayName(), partner.getName(), partner.getDisplayName());
 		}
 
 		@Override
@@ -998,8 +998,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		protected void onDeny()
 		{
 			MarriagePlayer player = getPlayerThatHasToAccept();
-			if(partner.isOnline()) messageDivorceDeny.send(partner.getPlayerOnline(), player.getName(), player.getDisplayName());
-			messageDivorceDeny.send(priest.getPlayerOnline(), player.getName(), player.getDisplayName());
+			if(partner.isOnline()) partner.send(messageDivorceDeny, player.getName(), player.getDisplayName());
+			priest.send(messageDivorceDeny, player.getName(), player.getDisplayName());
 			player.send(messageDivorceYouDeny, partner.getName(), partner.getDisplayName());
 		}
 
@@ -1008,13 +1008,13 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		{
 			if(player.equals(priest)) // The priest cancelled the divorce
 			{
-				messageDivorcePriestCancelled.send(getPlayerThatHasToAccept().getPlayerOnline(), player.getName(), player.getDisplayName(), partner.getName(), partner.getDisplayName());
-				messageDivorceYouCancelledPrie.send(player.getPlayerOnline(), marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName(), marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
+				getPlayerThatHasToAccept().send(messageDivorcePriestCancelled, player.getName(), player.getDisplayName(), partner.getName(), partner.getDisplayName());
+				player.send(messageDivorceYouCancelledPriest, marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName(), marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
 			}
 			else
 			{
-				messageDivorcePlayerCancelled.send(priest.getPlayerOnline(), player.getName(), player.getDisplayName(), getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
-				messageDivorceYouCancelled.send(player.getPlayerOnline(), partner.getName(), partner.getDisplayName());
+				priest.send(messageDivorcePlayerCancelled, player.getName(), player.getDisplayName(), getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
+				player.send(messageDivorceYouCancelled, partner.getName(), partner.getDisplayName());
 			}
 		}
 

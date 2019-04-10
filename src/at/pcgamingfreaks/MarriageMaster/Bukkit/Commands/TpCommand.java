@@ -95,7 +95,7 @@ public class TpCommand extends MarryCommand
 			{
 				messageWaitForConfirmation.send(sender);
 				getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new TpRequest(player, partner));
-				messageRequireConfirmation.send(partner.getPlayerOnline(), player.getName(), player.getDisplayName());
+				partner.send(messageRequireConfirmation, player.getName(), player.getDisplayName());
 			}
 			else
 			{
@@ -227,22 +227,22 @@ public class TpCommand extends MarryCommand
 		@Override
 		protected void onDeny()
 		{
-			messageRequestDenied.send(getPlayerThatHasToAccept().getPlayerOnline());
-			messageRequestDeniedPartner.send(player.getPlayerOnline());
+			getPlayerThatHasToAccept().send(messageRequestDenied);
+			player.send(messageRequestDeniedPartner);
 		}
 
 		@Override
 		protected void onCancel(@NotNull MarriagePlayer marriagePlayer)
 		{
-			messageRequestCanceled.send(player.getPlayerOnline());
-			messageRequestCanceledPartner.send(getPlayerThatHasToAccept().getPlayerOnline());
+			player.send(messageRequestCanceled);
+			getPlayerThatHasToAccept().send(messageRequestCanceledPartner);
 		}
 
 		@Override
 		protected void onDisconnect(@NotNull MarriagePlayer marriagePlayer)
 		{
-			if(marriagePlayer.equals(player)) messageRequestCanceledDisconnectRequester.send(getPlayerThatHasToAccept().getPlayerOnline());
-			else messageRequestCanceledDisconnectTarget.send(player.getPlayerOnline());
+			if(marriagePlayer.equals(player)) getPlayerThatHasToAccept().send(messageRequestCanceledDisconnectRequester);
+			else player.send(messageRequestCanceledDisconnectTarget);
 		}
 	}
 }

@@ -177,7 +177,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 						break;
 					default:
 						logger.info(ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: " + args[0] + "   " + ConsoleColor.RESET);
-						logger.info("There are two likely reasons for that. 1. You are running an outdated version of the plugin. 2. Someone has connected to your server without directly, check you setup!");
+						logger.info("There are two likely reasons for that. 1. You are running an outdated version of the plugin. 2. Someone has connected to your server directly, check you setup!");
 						break;
 				}
 	        }
