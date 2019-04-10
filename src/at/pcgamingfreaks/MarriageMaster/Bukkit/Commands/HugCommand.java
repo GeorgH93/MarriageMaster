@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -54,9 +54,9 @@ public class HugCommand extends MarryCommand
 		{
 			player.sendMessage(((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound);
 		}
-		else if(partner.isOnline() && partner.getPlayer().getPlayer() != null)
+		else if(partner.isOnline() && partner.getPlayerOnline() != null)
 		{
-			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayer().getPlayer(), range))
+			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayerOnline(), range))
 			{
 				HugEvent event = new HugEvent(player, player.getMarriageData(partner));
 				Bukkit.getPluginManager().callEvent(event);

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -94,12 +94,12 @@ public class EconomyHandler implements Listener
 	{
 		if(hasPlayerEnoughMoney(player, costTp) && billPlayer(player, costTp))
 		{
-			if(player.isOnline()) successMessage.send(player.getPlayer().getPlayer(), cost, econ.getBalance(player.getPlayer()), econ.currencyNamePlural());
+			if(player.isOnline()) successMessage.send(player.getPlayerOnline(), cost, econ.getBalance(player.getPlayer()), econ.currencyNamePlural());
 			return true;
 		}
 		else
 		{
-			if(player.isOnline()) messageNotEnough.send(player.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
+			if(player.isOnline()) messageNotEnough.send(player.getPlayerOnline(), cost, econ.currencyNamePlural());
 			return false;
 		}
 	}
@@ -134,8 +134,8 @@ public class EconomyHandler implements Listener
 			{
 				if(billPlayer(player2, cost))
 				{
-					success.send(player1.getPlayer().getPlayer(), cost, econ.getBalance(player1.getPlayer()), econ.currencyNamePlural());
-					success.send(player2.getPlayer().getPlayer(), cost, econ.getBalance(player2.getPlayer()), econ.currencyNamePlural());
+					success.send(player1.getPlayerOnline(), cost, econ.getBalance(player1.getPlayer()), econ.currencyNamePlural());
+					success.send(player2.getPlayerOnline(), cost, econ.getBalance(player2.getPlayer()), econ.currencyNamePlural());
 					return true;
 				}
 				else
@@ -147,13 +147,13 @@ public class EconomyHandler implements Listener
 		}
 		if(!hasPlayerEnoughMoney(player2, cost) || failedPlayer2)
 		{
-			messagePartnerNotEnough.send(player1.getPlayer().getPlayer());
-			messageNotEnough.send(player2.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
+			messagePartnerNotEnough.send(player1.getPlayerOnline());
+			messageNotEnough.send(player2.getPlayerOnline(), cost, econ.currencyNamePlural());
 		}
 		else
 		{
-			messagePartnerNotEnough.send(player2.getPlayer().getPlayer());
-			messageNotEnough.send(player1.getPlayer().getPlayer(), cost, econ.currencyNamePlural());
+			messagePartnerNotEnough.send(player2.getPlayerOnline());
+			messageNotEnough.send(player1.getPlayerOnline(), cost, econ.currencyNamePlural());
 		}
 		if(priest != null) failPriest.send(priest);
 		return false;

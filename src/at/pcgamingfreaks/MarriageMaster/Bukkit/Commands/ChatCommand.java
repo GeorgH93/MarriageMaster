@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -237,12 +237,14 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(player.isPrivateChatDefault())
 		{
 			player.setPrivateChatDefault(false);
-			messageLeft.send(player.getPlayer().getPlayer());
+			//noinspection ConstantConditions
+			messageLeft.send(player.getPlayerOnline()); // The player sent the command so it's not possible that he/she is offline.
 		}
 		else
 		{
 			player.setPrivateChatDefault(true);
-			messageJoined.send(player.getPlayer().getPlayer());
+			//noinspection ConstantConditions
+			messageJoined.send(player.getPlayerOnline()); // The player sent the command so it's not possible that he/she is offline.
 		}
 	}
 
@@ -275,14 +277,14 @@ public class ChatCommand extends MarryCommand implements Listener
 			for(Marriage m : sender.getMultiMarriageData())
 			{
 				p = m.getPartner(sender);
-				if(p != null && p.isOnline() && p.getPlayer().getPlayer() != null)
+				if(p != null && p.isOnline() && p.getPlayerOnline() != null)
 				{
 					receivers.add(m);
 				}
 			}
 			if(receivers.size() == 1 && p != null)
 			{
-				receiver = p.getPlayer().getPlayer();
+				receiver = p.getPlayerOnline();
 			}
 		}
 		else
@@ -321,7 +323,7 @@ public class ChatCommand extends MarryCommand implements Listener
 				if(receivers.size() == 1)
 				{
 					//noinspection ConstantConditions
-					receiver = receivers.get(0).getPartner(sender).getPlayer().getPlayer();
+					receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
 				}
 			}
 
@@ -349,13 +351,13 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			// Send the message
 			List<Player> playerReceivers = new LinkedList<>(listeners); // Copy the listeners since we need to send the message to them anyway
-			playerReceivers.add(sender.getPlayer().getPlayer()); // Add the sender to the list
+			playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
 			if(receiver == null) // Add the receivers to the list
 			{
 				for(Marriage target : receivers)
 				{
 					//noinspection ConstantConditions
-					playerReceivers.add(target.getPartner(sender).getPlayer().getPlayer());
+					playerReceivers.add(target.getPartner(sender).getPlayerOnline());
 				}
 			}
 			else

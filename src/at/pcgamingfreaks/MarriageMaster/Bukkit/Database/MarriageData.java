@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	private final int hash;
 	private final Date weddingDate;
 	private String surname;
+	@NotNull private String chatPrefix;
 	private Home home;
 	private boolean pvpEnabled;
 	private Object databaseKey;
@@ -54,6 +55,7 @@ public class MarriageData implements Marriage, DatabaseElement
 		this.weddingDate = (Date) weddingDate.clone();
 		this.databaseKey = databaseKey;
 		this.home = home;
+		this.chatPrefix = ""; // TODO implement in db
 		if(player1 instanceof MarriagePlayerData && player2 instanceof MarriagePlayerData)
 		{
 			((MarriagePlayerData) player1).addMarriage(this);
@@ -181,7 +183,7 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public void setSurname(String surname, @NotNull MarriagePlayer changer)
 	{
-		MarriageMaster.getInstance().getMarriageManager().setSurname(this, surname, changer.getPlayer().getPlayer());
+		MarriageMaster.getInstance().getMarriageManager().setSurname(this, surname, changer.getPlayerOnline());
 	}
 
 	@Override
@@ -253,18 +255,30 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public double getDistance()
 	{
-		return (player1.isOnline() && player2.isOnline()) ?  Utils.getDistance(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer()) : Double.NEGATIVE_INFINITY;
+		return (player1.isOnline() && player2.isOnline()) ?  Utils.getDistance(player1.getPlayerOnline(), player2.getPlayerOnline()) : Double.NEGATIVE_INFINITY;
 	}
 
 	@Override
 	public boolean inRange(double maxDistance)
 	{
-		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRange(player1.getPlayer().getPlayer(), player2.getPlayer().getPlayer(), maxDistance);
+		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRange(player1.getPlayerOnline(), player2.getPlayerOnline(), maxDistance);
 	}
 
 	@Override
 	public boolean hasPlayer(@NotNull MarriagePlayer player)
 	{
 		return getPartner1().equals(player) || getPartner2().equals(player);
+	}
+
+	@Override
+	public @NotNull String getMarriageChatMessagePrefix()
+	{
+		return chatPrefix;
+	}
+
+	@Override
+	public void setMarriageChatMessagePrefix(@NotNull String chatPrefix)
+	{
+		this.chatPrefix = chatPrefix.substring(0, Math.min(20, chatPrefix.length()));
 	}
 }

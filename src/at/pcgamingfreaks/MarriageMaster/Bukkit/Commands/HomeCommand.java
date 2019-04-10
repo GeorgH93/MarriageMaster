@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018-2019 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -233,8 +233,8 @@ public class HomeCommand extends MarryCommand
 			{
 				if(marriage.getHome().isOnThisServer())
 				{
-					player.getPlayer().getPlayer().teleport(marriage.getHome().getLocation());
-					messageTPed.send(player.getPlayer().getPlayer());
+					player.getPlayerOnline().teleport(marriage.getHome().getLocation());
+					player.send(messageTPed);
 				}
 				else
 				{
@@ -243,7 +243,7 @@ public class HomeCommand extends MarryCommand
 			}
 			else
 			{
-				messageNoHome.send(player.getPlayer().getPlayer());
+				player.send(messageNoHome);
 			}
 		}
 	}
@@ -268,7 +268,7 @@ public class HomeCommand extends MarryCommand
 		@Override
 		public @NotNull Player getPlayer()
 		{
-			return player.getPlayer().getPlayer();
+			return player.getPlayerOnline();
 		}
 
 		@Override

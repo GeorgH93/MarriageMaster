@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -119,10 +119,10 @@ public class BackpackCommand extends MarryCommand
 
 	private void openBackpack(MarriagePlayer opener, MarriagePlayer partner)
 	{
-		Player sender = opener.getPlayer().getPlayer();
-		if(sender.getGameMode() == GameMode.SURVIVAL || sender.hasPermission("marry.bypass.backpackgamemode"))
+		Player sender = opener.getPlayerOnline();
+		if(sender.getGameMode() == GameMode.SURVIVAL || sender.hasPermission("marry.bypass.backpackgamemode")) //TODO use minepacks settings
 		{
-			Player partnerPlayer = partner.getPlayer().getPlayer();
+			Player partnerPlayer = partner.getPlayerOnline();
 			if(partnerPlayer == null || !partnerPlayer.isOnline())
 			{
 				((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);

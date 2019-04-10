@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -88,9 +88,9 @@ public class KissCommand extends MarryCommand implements Listener
 		{
 			((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 		}
-		else if(partner.isOnline() && partner.getPlayer().getPlayer() != null)
+		else if(partner.isOnline() && partner.getPlayerOnline() != null)
 		{
-			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayer().getPlayer(), range))
+			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayerOnline(), range))
 			{
 				kiss(player, partner);
 			}
@@ -122,12 +122,12 @@ public class KissCommand extends MarryCommand implements Listener
 			if(!event.isCancelled())
 			{
 				if(!player.hasPermission("marry.skiptpdelay")) wait.put(player, System.currentTimeMillis());
-				messageKissed.send(player.getPlayer().getPlayer());
-				messageGotKissed.send(partner.getPlayer().getPlayer());
+				messageKissed.send(player.getPlayerOnline());
+				messageGotKissed.send(partner.getPlayerOnline());
 				if(particleSpawner != null)
 				{
-					particleSpawner.spawnParticle(player.getPlayer().getPlayer().getLocation(), Particle.HEART, hearthVisibleRange, hearthCount, 1.0F, 1.0F, 1.0F, 1.0F);
-					particleSpawner.spawnParticle(partner.getPlayer().getPlayer().getLocation(), Particle.HEART, hearthVisibleRange, hearthCount, 1.0F, 1.0F, 1.0F, 1.0F);
+					particleSpawner.spawnParticle(player.getPlayerOnline().getLocation(), Particle.HEART, hearthVisibleRange, hearthCount, 1.0F, 1.0F, 1.0F, 1.0F);
+					particleSpawner.spawnParticle(partner.getPlayerOnline().getLocation(), Particle.HEART, hearthVisibleRange, hearthCount, 1.0F, 1.0F, 1.0F, 1.0F);
 				}
 			}
 		}

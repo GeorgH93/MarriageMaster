@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2019 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ public class TpCommand extends MarryCommand
 			{
 				messageWaitForConfirmation.send(sender);
 				getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new TpRequest(player, partner));
-				messageRequireConfirmation.send(partner.getPlayer().getPlayer(), player.getName(), player.getDisplayName());
+				messageRequireConfirmation.send(partner.getPlayerOnline(), player.getName(), player.getDisplayName());
 			}
 			else
 			{
@@ -114,7 +114,7 @@ public class TpCommand extends MarryCommand
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled())
 		{
-			getMarriagePlugin().doDelayableTeleportAction(new TpToPartner(player.getPlayer().getPlayer(), partner.getPlayer().getPlayer()));
+			getMarriagePlugin().doDelayableTeleportAction(new TpToPartner(player.getPlayerOnline(), partner.getPlayerOnline()));
 		}
 	}
 
@@ -227,22 +227,22 @@ public class TpCommand extends MarryCommand
 		@Override
 		protected void onDeny()
 		{
-			messageRequestDenied.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
-			messageRequestDeniedPartner.send(player.getPlayer().getPlayer());
+			messageRequestDenied.send(getPlayerThatHasToAccept().getPlayerOnline());
+			messageRequestDeniedPartner.send(player.getPlayerOnline());
 		}
 
 		@Override
 		protected void onCancel(@NotNull MarriagePlayer marriagePlayer)
 		{
-			messageRequestCanceled.send(player.getPlayer().getPlayer());
-			messageRequestCanceledPartner.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
+			messageRequestCanceled.send(player.getPlayerOnline());
+			messageRequestCanceledPartner.send(getPlayerThatHasToAccept().getPlayerOnline());
 		}
 
 		@Override
 		protected void onDisconnect(@NotNull MarriagePlayer marriagePlayer)
 		{
-			if(marriagePlayer.equals(player)) messageRequestCanceledDisconnectRequester.send(getPlayerThatHasToAccept().getPlayer().getPlayer());
-			else messageRequestCanceledDisconnectTarget.send(player.getPlayer().getPlayer());
+			if(marriagePlayer.equals(player)) messageRequestCanceledDisconnectRequester.send(getPlayerThatHasToAccept().getPlayerOnline());
+			else messageRequestCanceledDisconnectTarget.send(player.getPlayerOnline());
 		}
 	}
 }
