@@ -439,7 +439,7 @@ public class OnCommand implements CommandExecutor
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotInRange"));
 							return true;
 						}
-						ItemStack its = player.getInventory().getItemInHand();
+						ItemStack its = player.getInventory().getItemInMainHand();
 						if(its == null || (!newMC && its.getType() == Material.AIR) || its.getAmount() == 0)
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoItemInHand"));
@@ -453,7 +453,7 @@ public class OnCommand implements CommandExecutor
 						if(plugin.economy == null || plugin.economy.Gift(player))
 						{
 							partner.getInventory().addItem(its);
-							player.getInventory().removeItem(its);
+							player.getInventory().setItemInMainHand(null);
 							String itemName = its.getType() == Material.AIR ? (its.getAmount() == 1 ? "item" : "items") : its.getType().toString();
 							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), itemName));
 							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemReceived"), its.getAmount(), itemName));
