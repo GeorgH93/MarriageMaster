@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
+import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.GiftEvent;
@@ -39,6 +40,7 @@ import java.util.List;
 
 public class GiftCommand extends MarryCommand
 {
+	private static final boolean DUAL_WIELDING_MC = MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9);
 	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived;
 	private final double range;
 	private final boolean allowedInCreative;
@@ -84,12 +86,12 @@ public class GiftCommand extends MarryCommand
 				if(mPD == null) { return; } // Should never happen, but it's always good to be save!
 				partner = player.getNearestPartnerMarriageData().getPartner(player);
 			}
-			final Player bPartner = partner.getPlayerOnline();
-			if(bPartner != null && bPartner.isOnline())
+			if(partner != null && partner.isOnline())
 			{
-				if(getMarriagePlugin().isInRange(bPlayer, bPartner, range))
+				final Player bPartner = partner.getPlayerOnline();
+				if(bPartner != null && getMarriagePlugin().isInRange(bPlayer, bPartner, range))
 				{
-					ItemStack its = bPlayer.getInventory().getItemInHand();
+					ItemStack its = DUAL_WIELDING_MC ? bPlayer.getInventory().getItemInMainHand() : bPlayer.getInventory().getItemInHand();
 					if(its == null || its.getType() == Material.AIR)
 					{
 						messageNoItemInHand.send(sender);
@@ -106,7 +108,7 @@ public class GiftCommand extends MarryCommand
 					{
 						its = event.getItemStack();
 						bPartner.getInventory().addItem(its);
-						bPlayer.getInventory().removeItem(its);
+						if(DUAL_WIELDING_MC) bPlayer.getInventory().setItemInMainHand(null); else bPlayer.getInventory().setItemInHand(null);
 						final String itemJson = (Utils.convertItemStackToJson(its, plugin.getLogger()));
 						final String itemName = itemNameResolver.getName(its);
 						messageItemSent.send(sender, its.getAmount(), itemName, itemJson);
