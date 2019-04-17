@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.Priest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Databases.Database;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MCVersion;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Marry_Requests;
 
@@ -40,6 +41,7 @@ import java.util.TreeMap;
 
 public class OnCommand implements CommandExecutor
 {
+	private static final boolean DUAL_WIELDING_MC = MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9);
 	private MarriageMaster plugin;
 	private Priest priest;
 	private boolean newMC;
@@ -439,7 +441,7 @@ public class OnCommand implements CommandExecutor
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NotInRange"));
 							return true;
 						}
-						ItemStack its = player.getInventory().getItemInMainHand();
+						ItemStack its = DUAL_WIELDING_MC ? player.getInventory().getItemInMainHand() : player.getInventory().getItemInHand();
 						if(its == null || (!newMC && its.getType() == Material.AIR) || its.getAmount() == 0)
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoItemInHand"));
@@ -453,7 +455,7 @@ public class OnCommand implements CommandExecutor
 						if(plugin.economy == null || plugin.economy.Gift(player))
 						{
 							partner.getInventory().addItem(its);
-							player.getInventory().setItemInMainHand(null);
+							if(DUAL_WIELDING_MC) player.getInventory().setItemInMainHand(null); else player.getInventory().setItemInHand(null);
 							String itemName = its.getType() == Material.AIR ? (its.getAmount() == 1 ? "item" : "items") : its.getType().toString();
 							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), itemName));
 							partner.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemReceived"), its.getAmount(), itemName));
