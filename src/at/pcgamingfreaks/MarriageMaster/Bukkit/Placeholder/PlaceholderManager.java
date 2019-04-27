@@ -39,7 +39,7 @@ public class PlaceholderManager
 	public PlaceholderManager(MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		if(!(isPluginEnabled("DeluxeChat") || isPluginEnabled("MVdWPlaceholderAPI") || isPluginEnabled("PlaceholderAPI"))) return; // No supported placeholder API installed
+		if(!(isPluginEnabled("MVdWPlaceholderAPI") || isPluginEnabled("PlaceholderAPI"))) return; // No supported placeholder API installed
 		generatePlaceholdersMap();
 		//region MVdW Placeholders
 		if(isPluginEnabled("MVdWPlaceholderAPI"))
