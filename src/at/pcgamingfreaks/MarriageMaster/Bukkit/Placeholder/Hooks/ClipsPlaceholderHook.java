@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,29 +17,39 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks;
 
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.external.EZPlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class ClipsPlaceholderHook extends EZPlaceholderHook implements PlaceholderAPIHook
+import java.util.List;
+
+public class ClipsPlaceholderHook extends PlaceholderExpansion implements PlaceholderAPIHook
 {
 	private final MarriageMaster plugin;
 	private final PlaceholderManager placeholderManager;
 
 	public ClipsPlaceholderHook(MarriageMaster plugin, PlaceholderManager placeholderManager)
 	{
-		super(plugin, plugin.getDescription().getName().toLowerCase());
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
-		this.hook();
+		if(this.register())
+		{
+			this.plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully registered!" + ConsoleColor.RESET);
+		}
+		else
+		{
+			this.plugin.getLogger().info(ConsoleColor.RED + "PlaceholderAPI hook failed to registered!" + ConsoleColor.RESET);
+			this.plugin.getLogger().info("If you currently have the eCloud version installed please remove it and try again!");
+		}
 	}
 
 	@Override
-	public String onPlaceholderRequest(Player player, String identifier)
+	public String onRequest(OfflinePlayer player, String identifier)
 	{
 		return placeholderManager.replacePlaceholder(player, identifier);
 	}
@@ -47,6 +57,49 @@ public class ClipsPlaceholderHook extends EZPlaceholderHook implements Placehold
 	@Override
 	public void close()
 	{
-		PlaceholderAPI.unregisterPlaceholderHook(plugin);
+		if(PlaceholderAPI.unregisterExpansion(this))
+		{
+			plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully unregistered!" + ConsoleColor.RESET);
+		}
+		else
+		{
+			plugin.getLogger().info(ConsoleColor.RED + "PlaceholderAPI hook failed to unregistered!" + ConsoleColor.RESET);
+		}
+	}
+
+	@Override
+	public String getName()
+	{
+		return plugin.getDescription().getName();
+	}
+
+	@Override
+	public String getIdentifier()
+	{
+		return plugin.getDescription().getName().toLowerCase();
+	}
+
+	@Override
+	public String getAuthor()
+	{
+		return plugin.getDescription().getAuthors().toString();
+	}
+
+	@Override
+	public String getVersion()
+	{
+		return plugin.getDescription().getVersion();
+	}
+
+	@Override
+	public List<String> getPlaceholders()
+	{
+		return placeholderManager.getPlaceholdersList();
+	}
+
+	@Override
+	public boolean persist()
+	{
+		return true;
 	}
 }

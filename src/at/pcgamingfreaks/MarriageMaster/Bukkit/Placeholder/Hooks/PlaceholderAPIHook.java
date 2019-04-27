@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,10 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
-
 public interface PlaceholderAPIHook
 {
-	public abstract void close();
+	void close();
 }

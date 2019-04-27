@@ -26,10 +26,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class PlaceholderManager
 {
@@ -37,6 +34,7 @@ public class PlaceholderManager
 	private final MarriageMaster plugin;
 	private final Map<String, at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer> placeholders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private final List<PlaceholderAPIHook> hooks = new LinkedList<>();
+	private final List<String> placeholdersList = new ArrayList<>();
 
 	public PlaceholderManager(MarriageMaster plugin)
 	{
@@ -47,7 +45,7 @@ public class PlaceholderManager
 		if(isPluginEnabled("MVdWPlaceholderAPI"))
 		{
 			if(mVdWPlaceholderReplacer == null) mVdWPlaceholderReplacer = new MVdWPlaceholderReplacer(plugin, this);
-			mVdWPlaceholderReplacer.set(plugin, this); // Workaround cause we cant unregister from MVdWPlaceholders
+			mVdWPlaceholderReplacer.set(plugin, this); // Workaround cause we can't unregister from MVdWPlaceholders
 			hooks.add(mVdWPlaceholderReplacer);
 		}
 		//endregion
@@ -72,6 +70,8 @@ public class PlaceholderManager
 		}
 		if(mVdWPlaceholderReplacer != null) mVdWPlaceholderReplacer.set(null, null);
 		hooks.clear();
+		placeholdersList.clear();
+		placeholders.clear();
 	}
 
 	public Map<String, PlaceholderReplacer> getPlaceholders()
@@ -147,5 +147,17 @@ public class PlaceholderManager
 			placeholders.put("PartnerDisplayName_List", placeholders.get("PartnerDisplayNameList"));
 			placeholders.put("Partner_DisplayName_List", placeholders.get("PartnerDisplayNameList"));
 		}
+	}
+
+	public List<String> getPlaceholdersList()
+	{
+		if(placeholdersList.size() == 0)
+		{
+			for(String key : placeholders.keySet())
+			{
+				placeholdersList.add(plugin.getDescription().getName() + '_' + key);
+			}
+		}
+		return placeholdersList;
 	}
 }
