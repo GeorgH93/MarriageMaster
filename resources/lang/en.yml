@@ -309,6 +309,8 @@ Command:
     - divorce
   Update:
     - update
+  Version:
+    - version
   Accept:
     - accept
   Cancel:

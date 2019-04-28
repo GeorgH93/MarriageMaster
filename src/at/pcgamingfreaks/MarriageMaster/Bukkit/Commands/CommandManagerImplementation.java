@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2019 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -129,6 +129,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		registerMarryCommand(new UpdateCommand(plugin));
 		registerMarryCommand(new ReloadCommand(plugin));
+		registerMarryCommand(new VersionCommand(plugin));
 		registerMarryCommand(new HelpCommand(plugin, commands)); // The help command needs the list of all existing commands to show the help
 		registerMarryCommand(new RequestAcceptCommand(plugin));
 		registerMarryCommand(new RequestDenyCommand(plugin));
@@ -274,7 +275,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
 	{
 		List<String> results = super.onTabComplete(sender, command, alias, args);
-		if(args.length == 1 && marryActionCommand.canUse(sender))
+		if(results != null && args.length == 1 && marryActionCommand.canUse(sender))
 		{
 			results.addAll(marryActionCommand.tabComplete(sender, alias, "marry", args));
 		}

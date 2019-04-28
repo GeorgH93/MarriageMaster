@@ -22,6 +22,7 @@ permissions:
       marry.priest: true
       marry.listenchat: true
       marry.update: true
+      marry.version: true
       marry.offlinedivorce: true
       marry.bypass: true
       marry.home.others: true
@@ -147,6 +148,9 @@ permissions:
     default: false
   marry.update:
     description: Allows to update the plugin
+    default: op
+  marry.version:
+    description: "Allows to print the version of the plugin and it's dependencies"
     default: op
   marry.reload:
     description: Allows you to reload the config
