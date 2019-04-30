@@ -30,7 +30,7 @@ public class VersionCommand extends MarryCommand
 {
 	public VersionCommand(MarriageMaster plugin)
 	{
-		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Update"), "marry.version", plugin.getLanguage().getCommandAliases("Version"));
+		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), "marry.version", plugin.getLanguage().getCommandAliases("Version"));
 	}
 
 	@Override

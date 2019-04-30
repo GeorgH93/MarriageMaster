@@ -242,6 +242,7 @@ Language:
       Deny: "Lehnt eine offene Anfrage ab."
       SetPriest: "Macht aus einem Spieler einen/keinen Priester."
       Reload: "Lädt die Konfigurationsdatei vom Plugin neu."
+      Version: "Gibt die Versionsdetails über das Plugin und seine Abhängigkeiten aus."
 Command:
   Switches:
     On:

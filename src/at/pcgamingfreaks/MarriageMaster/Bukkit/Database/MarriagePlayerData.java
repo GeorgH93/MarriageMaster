@@ -47,7 +47,6 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	private List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
 	private Map<MarriagePlayer, Marriage> partnersMarriages = new HashMap<>();
 	private Object databaseKey = null;
-	private final Object syncDBKey = new Object(), syncPrivateChatTarget = new Object();
 
 	public MarriagePlayerData(OfflinePlayer player)
 	{
@@ -156,18 +155,12 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	@Override
 	public Object getDatabaseKey()
 	{
-		synchronized(syncDBKey)
-		{
-			return databaseKey;
-		}
+		return databaseKey;
 	}
 
 	public void setDatabaseKey(Object key)
 	{
-		synchronized(syncDBKey)
-		{
-			databaseKey = key;
-		}
+		databaseKey = key;
 	}
 
 	public void setSharesBackpack(boolean state)
@@ -270,19 +263,13 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	@Override
 	public Marriage getPrivateChatTarget()
 	{
-		synchronized(syncPrivateChatTarget)
-		{
-			return privateChatTarget;
-		}
+		return privateChatTarget;
 	}
 
 	@Override
 	public void setPrivateChatTarget(MarriagePlayer target)
 	{
-		synchronized(syncPrivateChatTarget)
-		{
-			privateChatTarget = getMarriageData(target);
-		}
+		privateChatTarget = getMarriageData(target);
 	}
 
 	@Override

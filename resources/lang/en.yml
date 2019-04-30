@@ -242,6 +242,7 @@ Language:
       Deny: "Denies an open request."
       SetPriest: "Promotes/Demotes a player to a priest."
       Reload: "Reloads the config of the plugin."
+      Version: "Prints the version details about the plugin and it's dependencies."
 Command:
   Switches:
     On:

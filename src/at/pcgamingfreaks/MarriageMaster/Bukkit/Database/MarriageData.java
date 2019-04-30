@@ -41,7 +41,6 @@ public class MarriageData implements Marriage, DatabaseElement
 	private Home home;
 	private boolean pvpEnabled;
 	private Object databaseKey;
-	private final Object syncDBKey = new Object(); // Just to be able sync the key
 
 	public MarriageData(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, @Nullable MarriagePlayer priest, Date weddingDate, String surname, boolean pvpEnabled, Home home, Object databaseKey)
 	{
@@ -89,18 +88,12 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public Object getDatabaseKey()
 	{
-		synchronized(syncDBKey)
-		{
-			return databaseKey;
-		}
+		return databaseKey;
 	}
 
 	public void setDatabaseKey(Object key)
 	{
-		synchronized(syncDBKey)
-		{
-			databaseKey = key;
-		}
+		databaseKey = key;
 	}
 
 	public void setHomeLoc(Home loc)
