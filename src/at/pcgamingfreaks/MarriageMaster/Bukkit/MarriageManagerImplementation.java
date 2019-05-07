@@ -42,20 +42,20 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 {
 	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME;
 
-	private MarriageMaster plugin;
-	private String surnameNotAllowedCharactersRex, dialogDoYouWant, dialogAndDoYouWant, dialogMarried, dialogYesIWant, dialogNoIDontWant;
-	private Message messageSurnameSuccess, messageSurnameFailed, messageSurnameToShort, messageSurnameToLong, messageSurnameAlreadyUsed;
-	private Message messageAlreadyMarried, messageNotWithHimself, messageSurnameNeeded, messageMarried, messageHasMarried, messageBroadcastMarriage, messageNotInRange, messageAlreadyOpenRequest,
-			messageYouCalledOff, messagePlayerCalledOff, messageConfirm, messagePriestMarryOff, messagePlayerMarryOff;
-	private Message messageNotYourself, messageSelfNotInRange, messageSelfAlreadyMarried, messageSelfOtherAlreadyMarried, messageSelfAlreadyOpenRequest, messageSelfBroadcastMarriage, messageSelfMarried,
-			messageSelfPlayerCalledOff, messageSelfYouCalledOff, messageSelfConfirm, messageSelfMarryRequestSent, messageSelfPlayerMarryOff;
-	private Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorcePlayerOff, messageDivorcePriestOff, messageDivorceDeny, messageDivorceYouDeny, messageDivorceConfirm,
-			messageDivorceNotInRange, messageDivorcePlayerCancelled, messageDivorcePriestCancelled, messageDivorceYouCancelled, messageDivorceYouCancelledPriest;
-	private Message messageSelfDivorcePlayerOff, messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceDeny,
-			messageSelfDivorceYouDeny, messageSelfDivorceCancelled, messageSelfDivorceYouCancelled, messageSelfDivorceNotInRange;
-	private boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
-	private int surnameMinLength, surnameMaxLength;
-	private double rangeMarry, rangeDivorce;
+	private final MarriageMaster plugin;
+	private final String  surnameNotAllowedCharactersRex, dialogDoYouWant, dialogAndDoYouWant, dialogMarried, dialogYesIWant, dialogNoIDontWant;
+	private final Message messageSurnameSuccess, messageSurnameFailed, messageSurnameToShort, messageSurnameToLong, messageSurnameAlreadyUsed;
+	private final Message messageAlreadyMarried, messageNotWithHimself, messageSurnameNeeded, messageMarried, messageHasMarried, messageBroadcastMarriage, messageNotInRange, messageAlreadyOpenRequest,
+							messageYouCalledOff, messagePlayerCalledOff, messageConfirm, messagePriestMarryOff, messagePlayerMarryOff;
+	private final Message messageNotYourself, messageSelfNotInRange, messageSelfAlreadyMarried, messageSelfOtherAlreadyMarried, messageSelfAlreadyOpenRequest, messageSelfBroadcastMarriage, messageSelfMarried,
+							messageSelfPlayerCalledOff, messageSelfYouCalledOff, messageSelfConfirm, messageSelfMarryRequestSent, messageSelfPlayerMarryOff;
+	private final Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorcePlayerOff, messageDivorcePriestOff, messageDivorceDeny, messageDivorceYouDeny, messageDivorceConfirm,
+							messageDivorceNotInRange, messageDivorcePlayerCancelled, messageDivorcePriestCancelled, messageDivorceYouCancelled, messageDivorceYouCancelledPriest;
+	private final Message messageSelfDivorcePlayerOff, messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceDeny,
+							messageSelfDivorceYouDeny, messageSelfDivorceCancelled, messageSelfDivorceYouCancelled, messageSelfDivorceNotInRange;
+	private final boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
+	private final int surnameMinLength, surnameMaxLength;
+	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 
 	public MarriageManagerImplementation(MarriageMaster plugin)
 	{
@@ -80,6 +80,8 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		bothOnDivorce    = plugin.getConfiguration().isConfirmationBothPlayersOnDivorceEnabled();
 		autoDialog       = plugin.getConfiguration().isMarryConfirmationAutoDialogEnabled();
 		otherPlayerOnSelfDivorce = plugin.getConfiguration().isConfirmationOtherPlayerOnSelfDivorceEnabled();
+		rangeMarrySquared   = rangeMarry * rangeMarry;
+		rangeDivorceSquared = rangeDivorce * rangeDivorce;
 
 		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
 		dialogAndDoYouWant  = plugin.getLanguage().getDialog("AndDoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
@@ -421,7 +423,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 					{
 						messageNotYourself.send(bPriest);
 					}
-					else if(!plugin.isInRange(bPlayer1, bPlayer2, rangeMarry))
+					else if(!plugin.isInRangeSquared(bPlayer1, bPlayer2, rangeMarrySquared))
 					{
 						messageSelfNotInRange.send(bPriest, rangeMarry);
 					}
@@ -766,7 +768,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				}
 				else
 				{
-					if(plugin.isInRange(bPlayer, otherPlayer.getPlayerOnline(), rangeDivorce))
+					if(plugin.isInRangeSquared(bPlayer, otherPlayer.getPlayerOnline(), rangeDivorceSquared))
 					{
 						if(otherPlayerOnSelfDivorce)
 						{

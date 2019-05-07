@@ -49,7 +49,7 @@ public class BackpackCommand extends MarryCommand
 		descriptionOn         = plugin.getLanguage().getTranslated("Commands.Description.BackpackOn");
 		descriptionOff        = plugin.getLanguage().getTranslated("Commands.Description.BackpackOff");
 
-		range = plugin.getConfiguration().getRange("Backpack");
+		range = plugin.getConfiguration().getRangeSquared("Backpack");
 	}
 
 	@Override
@@ -129,7 +129,7 @@ public class BackpackCommand extends MarryCommand
 			}
 			else if(partner.isSharingBackpack())
 			{
-				if(getMarriagePlugin().isInRange(sender, partnerPlayer, range))
+				if(getMarriagePlugin().isInRangeSquared(sender, partnerPlayer, range))
 				{
 					((MarriageMaster) getMarriagePlugin()).getBackpacksIntegration().openBackpack(sender, partnerPlayer, true);
 					messageOpened.send(partnerPlayer);

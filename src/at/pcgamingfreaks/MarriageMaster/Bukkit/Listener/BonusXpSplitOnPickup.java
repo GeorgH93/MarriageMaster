@@ -35,7 +35,7 @@ public class BonusXpSplitOnPickup implements Listener
 	public BonusXpSplitOnPickup(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		range = marriagemaster.getConfiguration().getRange("BonusXP");
+		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -48,7 +48,7 @@ public class BonusXpSplitOnPickup implements Listener
 			if(marriage != null)
 			{
 				MarriagePlayer partner = marriage.getPartner(player);
-				if(partner != null && partner.isOnline() && marriage.inRange(range))
+				if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 				{
 					double amount = event.getAmount() / 2.0;
 					int xpPlayer = (int) Math.round((amount)), xpPartner = (int) amount;

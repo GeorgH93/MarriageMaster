@@ -258,6 +258,12 @@ public class MarriageData implements Marriage, DatabaseElement
 	}
 
 	@Override
+	public boolean inRangeSquared(double maxDistanceSquared)
+	{
+		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRangeSquared(player1.getPlayerOnline(), player2.getPlayerOnline(), maxDistanceSquared);
+	}
+
+	@Override
 	public boolean hasPlayer(@NotNull MarriagePlayer player)
 	{
 		return getPartner1().equals(player) || getPartner2().equals(player);

@@ -56,7 +56,7 @@ public class GiftCommand extends MarryCommand
 		messageItemSent            = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{ItemAmount\\}", "%1\\$d").replaceAll("\\{ItemName\\}", "%2\\$s").replaceAll("\\{ItemMetaJSON\\}", "%3\\$s");
 		messageItemReceived        = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{ItemAmount\\}", "%1\\$d").replaceAll("\\{ItemName\\}", "%2\\$s").replaceAll("\\{ItemMetaJSON\\}", "%3\\$s");
 
-		range             = plugin.getConfiguration().getRange("Gift");
+		range             = plugin.getConfiguration().getRangeSquared("Gift");
 		allowedInCreative = plugin.getConfiguration().isGiftAllowedInCreative();
 
 		itemNameResolver = ((PluginLib) PluginLib.getInstance()).getItemNameResolver();
@@ -89,7 +89,7 @@ public class GiftCommand extends MarryCommand
 			if(partner != null && partner.isOnline())
 			{
 				final Player bPartner = partner.getPlayerOnline();
-				if(bPartner != null && getMarriagePlugin().isInRange(bPlayer, bPartner, range))
+				if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
 				{
 					ItemStack its = DUAL_WIELDING_MC ? bPlayer.getInventory().getItemInMainHand() : bPlayer.getInventory().getItemInHand();
 					if(its == null || its.getType() == Material.AIR)

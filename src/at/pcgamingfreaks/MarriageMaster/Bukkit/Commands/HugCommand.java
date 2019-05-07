@@ -33,13 +33,14 @@ import java.util.List;
 public class HugCommand extends MarryCommand
 {
 	private final Message messageHugged, messageGotHugged, messageTooFarAway;
-	private final double range;
+	private final double range, rangeSquared;
 
 	public HugCommand(MarriageMaster plugin)
 	{
 		super(plugin, "hug", plugin.getLanguage().getTranslated("Commands.Description.Hug"), "marry.hug", true, false, plugin.getLanguage().getCommandAliases("Hug"));
 
 		range             = plugin.getConfiguration().getRange("Hug");
+		rangeSquared      = plugin.getConfiguration().getRangeSquared("Hug");
 		messageHugged     = plugin.getLanguage().getMessage("Ingame.Hug.Hugged");
 		messageGotHugged  = plugin.getLanguage().getMessage("Ingame.Hug.GotHugged");
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance\\}", "%.1f");
@@ -56,7 +57,7 @@ public class HugCommand extends MarryCommand
 		}
 		else if(partner.isOnline() && partner.getPlayerOnline() != null)
 		{
-			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayerOnline(), range))
+			if(getMarriagePlugin().isInRangeSquared((Player) sender, partner.getPlayerOnline(), rangeSquared))
 			{
 				HugEvent event = new HugEvent(player, player.getMarriageData(partner));
 				Bukkit.getPluginManager().callEvent(event);

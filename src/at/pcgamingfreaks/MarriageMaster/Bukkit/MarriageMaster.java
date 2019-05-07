@@ -357,6 +357,14 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 
 	@Override
+	public boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared)
+	{
+		Validate.notNull(player1, "The first player must not be null!");
+		Validate.notNull(player2, "The second player must not be null!");
+		return Utils.inRange(player1, player2, rangeSquared, RANGE_LIMIT_PERM);
+	}
+
+	@Override
 	public void doDelayableTeleportAction(@NotNull final DelayableTeleportAction action)
 	{
 		//noinspection ConstantConditions

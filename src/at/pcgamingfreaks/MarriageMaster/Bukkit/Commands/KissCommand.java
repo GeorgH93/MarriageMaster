@@ -44,7 +44,7 @@ public class KissCommand extends MarryCommand implements Listener
 	private static final boolean DUAL_HAND_MC = MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9);
 
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
-	private final double interactRange, range, hearthVisibleRange;
+	private final double interactRange, range, rangeSquared, hearthVisibleRange;
 	private final int waitTime, hearthCount;
 	private Map<MarriagePlayer, Long> wait;
 	private ParticleSpawner particleSpawner;
@@ -57,7 +57,8 @@ public class KissCommand extends MarryCommand implements Listener
 		particleSpawner = ParticleSpawner.getParticleSpawner();
 
 		range              = plugin.getConfiguration().getRange("Kiss");
-		interactRange      = plugin.getConfiguration().getRange("KissInteract");
+		rangeSquared       = plugin.getConfiguration().getRangeSquared("Kiss");
+		interactRange      = plugin.getConfiguration().getRangeSquared("KissInteract");
 		hearthVisibleRange = plugin.getConfiguration().getRange("HearthVisible");
 		waitTime           = plugin.getConfiguration().getKissWaitTime();
 		hearthCount        = plugin.getConfiguration().getKissHearthCount();
@@ -90,7 +91,7 @@ public class KissCommand extends MarryCommand implements Listener
 		}
 		else if(partner.isOnline() && partner.getPlayerOnline() != null)
 		{
-			if(getMarriagePlugin().isInRange((Player) sender, partner.getPlayerOnline(), range))
+			if(getMarriagePlugin().isInRangeSquared((Player) sender, partner.getPlayerOnline(), rangeSquared))
 			{
 				kiss(player, partner);
 			}
@@ -147,7 +148,7 @@ public class KissCommand extends MarryCommand implements Listener
 			if(time == null || time < System.currentTimeMillis() - waitTime)
 			{
 				MarriagePlayer player2 = getMarriagePlugin().getPlayerData((Player) event.getRightClicked());
-				if(player.isPartner(player2) && getMarriagePlugin().isInRange(event.getPlayer(), (Player) event.getRightClicked(), interactRange))
+				if(player.isPartner(player2) && getMarriagePlugin().isInRangeSquared(event.getPlayer(), (Player) event.getRightClicked(), interactRange))
 				{
 					kiss(player, player2);
 				}
