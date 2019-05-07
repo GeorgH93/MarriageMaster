@@ -19,8 +19,8 @@
 	</ciManagement>
 
 	<name>MarriageMaster API</name>
-	<description>The API for the Marriage Master Bukkit plugin.</description>
-	<inceptionYear>2016</inceptionYear>
+	<description>The API for the Marriage Master Bukkit/Spigot/BungeeCord plugin.</description>
+	<inceptionYear>2014</inceptionYear>
 	<licenses>
 		<license>
 			<name>GNU General Public License (GPL) v3</name>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.6-SNAPSHOT</version>
+			<version>1.0.8-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
