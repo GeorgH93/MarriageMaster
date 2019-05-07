@@ -37,4 +37,13 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	 * @return True if they are within the given distance. False if not or one is offline or both of them are offline.
 	 */
 	boolean inRange(double maxDistance);
+
+	/**
+	 * Checks if both players are within a given distance.
+	 *
+	 * @param maxDistanceSquared The maximum squared distance between both players.
+	 *                           -1 no range limit and no world limit, 0 no range limit but in the same world, greater than 0 range limit in meters/blocks.
+	 * @return True if they are within the given distance. False if not or one is offline or both of them are offline.
+	 */
+	boolean inRangeSquared(double maxDistanceSquared);
 }
