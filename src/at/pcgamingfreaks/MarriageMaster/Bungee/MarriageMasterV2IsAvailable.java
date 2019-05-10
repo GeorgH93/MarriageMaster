@@ -29,29 +29,32 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.util.concurrent.TimeUnit;
 
-public class MarriageMasterV2IsOut implements Listener
+public class MarriageMasterV2IsAvailable implements Listener
 {
-	public static MarriageMasterV2IsOut instance = null;
+	public static MarriageMasterV2IsAvailable instance = null;
 	private MarriageMaster plugin;
-	private BaseComponent[] messageV2IsThereLine1, messageV2IsThereLine2, spacer;
-	private final static String spigotURL = "https://www.spigotmc.org/resources/19273/", bukkitURL = "http://dev.bukkit.org/bukkit-plugins/marriage-master/";
+	private BaseComponent[] messageLine1, messageLine2, messageLine3, spacer;
+	private final static String spigotURL = "https://www.spigotmc.org/resources/19273/";
+	private final static String wikiURL = "https://github.com/GeorgH93/MarriageMaster/wiki/Upgrade-to-Marriage-Master-V2.x";
 
-	public MarriageMasterV2IsOut(MarriageMaster plugin)
+	public MarriageMasterV2IsAvailable(MarriageMaster plugin)
 	{
 		if(plugin.config.isV2InfoDisabled()) return;
 		instance = this;
 		this.plugin = plugin;
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 		spacer = TextComponent.fromLegacyText(ChatColor.GRAY + "#####################################");
-		messageV2IsThereLine1 = new ComponentBuilder("Marriage Master V2 has been released! :)").color(ChatColor.GOLD).create();
-		messageV2IsThereLine2 = new ComponentBuilder("Please download it from ").color(ChatColor.WHITE)
-				.append("spigot.org").underlined(true).bold(true).color(ChatColor.AQUA).event(new ClickEvent(ClickEvent.Action.OPEN_URL, spigotURL)). append(" or ")
-				.color(ChatColor.WHITE)
-				.append("dev.bukkit.org").underlined(true).bold(true).color(ChatColor.AQUA).event(new ClickEvent(ClickEvent.Action.OPEN_URL, bukkitURL))
+		messageLine1 = new ComponentBuilder("Marriage Master V2 has been released! :)").color(ChatColor.GOLD).create();
+		messageLine2 = new ComponentBuilder("Please download it from ").color(ChatColor.WHITE)
+				.append("spigot.org").underlined(true).bold(true).color(ChatColor.AQUA).event(new ClickEvent(ClickEvent.Action.OPEN_URL, spigotURL))
 				.append("!").color(ChatColor.WHITE).create();
+		messageLine3 = new ComponentBuilder("Please read this, on how to upgrade!: ").color(ChatColor.WHITE)
+				.append(wikiURL).color(ChatColor.AQUA).underlined(true)
+				.event(new ClickEvent(ClickEvent.Action.OPEN_URL, wikiURL)).create();
 		plugin.getProxy().getConsole().sendMessage(spacer);
-		plugin.getProxy().getConsole().sendMessage(messageV2IsThereLine1);
-		plugin.getProxy().getConsole().sendMessage(messageV2IsThereLine2);
+		plugin.getProxy().getConsole().sendMessage(messageLine1);
+		plugin.getProxy().getConsole().sendMessage(messageLine2);
+		plugin.getProxy().getConsole().sendMessage(messageLine3);
 		plugin.getProxy().getConsole().sendMessage(spacer);
 	}
 
@@ -60,8 +63,9 @@ public class MarriageMasterV2IsOut implements Listener
 		if(player != null && player.isConnected())
 		{
 			player.sendMessage(spacer);
-			player.sendMessage(messageV2IsThereLine1);
-			player.sendMessage(messageV2IsThereLine2);
+			player.sendMessage(messageLine1);
+			player.sendMessage(messageLine2);
+			player.sendMessage(messageLine3);
 			player.sendMessage(spacer);
 		}
 	}

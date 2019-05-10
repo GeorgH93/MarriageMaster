@@ -20,7 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMasterV2IsOut;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMasterV2IsAvailable;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Updater;
 import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
 
@@ -52,8 +52,8 @@ public class Update extends BaseCommand
 				{
 					if(result == UpdateResult.UPDATE_AVAILABLE_V2)
 					{
-						if(MarriageMasterV2IsOut.instance == null) new MarriageMasterV2IsOut(plugin);
-						MarriageMasterV2IsOut.instance.announce(sender);
+						if(MarriageMasterV2IsAvailable.instance == null) new MarriageMasterV2IsAvailable(plugin);
+						MarriageMasterV2IsAvailable.instance.announce(sender);
 					}
 					else if(result == UpdateResult.SUCCESS)
 					{

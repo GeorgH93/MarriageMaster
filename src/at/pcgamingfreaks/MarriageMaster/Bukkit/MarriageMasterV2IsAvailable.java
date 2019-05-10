@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class MarriageMasterV2IsOut implements Listener
+public class MarriageMasterV2IsAvailable implements Listener
 {
-	public static MarriageMasterV2IsOut instance = null;
+	public static MarriageMasterV2IsAvailable instance = null;
 	private MarriageMaster plugin;
 
-	public MarriageMasterV2IsOut(MarriageMaster plugin)
+	public MarriageMasterV2IsAvailable(MarriageMaster plugin)
 	{
 		if(plugin.config.isV2InfoDisabled()) return;
 		instance = this;
@@ -38,6 +38,7 @@ public class MarriageMasterV2IsOut implements Listener
 		Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "#####################################");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "Marriage Master V2 has been released! " + ChatColor.YELLOW + ":)");
 		Bukkit.getConsoleSender().sendMessage("Please download it form here:" + ChatColor.AQUA + " https://www.spigotmc.org/resources/19273/");
+		Bukkit.getConsoleSender().sendMessage("Please read this, on how to upgrade!:" + ChatColor.AQUA + " https://github.com/GeorgH93/MarriageMaster/wiki/Upgrade-to-Marriage-Master-V2.x");
 		Bukkit.getConsoleSender().sendMessage(ChatColor.GRAY + "#####################################");
 	}
 
@@ -48,6 +49,7 @@ public class MarriageMasterV2IsOut implements Listener
 			player.sendMessage(ChatColor.GRAY + "#####################################");
 			player.sendMessage(ChatColor.GOLD + "Marriage Master V2 has been released! " + ChatColor.YELLOW + ":)");
 			player.sendMessage("Please download it form here:" + ChatColor.AQUA + " https://www.spigotmc.org/resources/19273/");
+			player.sendMessage("Please read this, on how to upgrade!:" + ChatColor.AQUA + " https://github.com/GeorgH93/MarriageMaster/wiki/Upgrade-to-Marriage-Master-V2.x");
 			player.sendMessage(ChatColor.GRAY + "#####################################");
 		}
 	}

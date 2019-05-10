@@ -203,7 +203,7 @@ public class MarriageMaster extends Plugin
 			{
 				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
 				{
-					new MarriageMasterV2IsOut(MarriageMaster.this);
+					new MarriageMasterV2IsAvailable(MarriageMaster.this);
 				}
 			}
 		});

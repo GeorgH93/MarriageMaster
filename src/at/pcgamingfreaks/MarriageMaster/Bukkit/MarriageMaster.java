@@ -220,8 +220,8 @@ public class MarriageMaster extends JavaPlugin
 			{
 				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
 				{
-					if(MarriageMasterV2IsOut.instance == null) new MarriageMasterV2IsOut(MarriageMaster.this);
-					MarriageMasterV2IsOut.instance.announce(sender);
+					if(MarriageMasterV2IsAvailable.instance == null) new MarriageMasterV2IsAvailable(MarriageMaster.this);
+					MarriageMasterV2IsAvailable.instance.announce(sender);
 				}
 				else if(result == UpdateResult.SUCCESS)
 				{
@@ -246,7 +246,7 @@ public class MarriageMaster extends JavaPlugin
 			{
 				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
 				{
-					new MarriageMasterV2IsOut(MarriageMaster.this);
+					new MarriageMasterV2IsAvailable(MarriageMaster.this);
 				}
 			}
 		});
