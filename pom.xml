@@ -122,8 +122,8 @@
 		<!-- Minepacks -->
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>Minepacks</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<artifactId>Minepacks-API</artifactId>
+			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
