@@ -447,14 +447,15 @@ public class OnCommand implements CommandExecutor
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.NoItemInHand"));
 							return true;
 						}
-						if(partner.getInventory().firstEmpty() == -1)
+						int slot = partner.getInventory().firstEmpty();
+						if(slot == -1)
 						{
 							player.sendMessage(ChatColor.RED + plugin.lang.get("Ingame.PartnerInvFull"));
 							return true;
 						}
 						if(plugin.economy == null || plugin.economy.Gift(player))
 						{
-							partner.getInventory().addItem(its);
+							partner.getInventory().setItem(slot, its);
 							if(DUAL_WIELDING_MC) player.getInventory().setItemInMainHand(null); else player.getInventory().setItemInHand(null);
 							String itemName = its.getType() == Material.AIR ? (its.getAmount() == 1 ? "item" : "items") : its.getType().toString();
 							player.sendMessage(ChatColor.GREEN + String.format(plugin.lang.get("Ingame.ItemSent"), its.getAmount(), itemName));
