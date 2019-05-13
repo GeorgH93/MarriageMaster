@@ -36,19 +36,25 @@ public abstract class MinePacksIntegrationBase
 			if(pl != null)
 			{
 				String[] MPV = (pl.getDescription().getVersion().split("-")[0]).split(Pattern.quote("."));
-				if(Integer.parseInt(MPV[0]) > 1 || (MPV.length > 1 && Integer.parseInt(MPV[0]) == 1 && Integer.parseInt(MPV[1]) >= 14))
+				if(Integer.parseInt(MPV[0]) == 1)
 				{
-					mpIB = new MinePacksIntegrationNew();
-				}
-				else
-				{
-					mpIB = new MinePacksIntegrationOld();
+					if(MPV.length > 1 && Integer.parseInt(MPV[1]) >= 14)
+					{
+						mpIB = new MinePacksIntegrationNew();
+					}
+					else
+					{
+						mpIB = new MinePacksIntegrationOld();
+					}
 				}
 			}
-			pl = Bukkit.getServer().getPluginManager().getPlugin("Minepacks");
-			if(pl != null)
+			if(mpIB == null)
 			{
-				mpIB = new MinepacksIntegration();
+				pl = Bukkit.getServer().getPluginManager().getPlugin("Minepacks");
+				if(pl != null)
+				{
+					mpIB = new MinepacksIntegration();
+				}
 			}
 		}
 		catch(Exception e)
