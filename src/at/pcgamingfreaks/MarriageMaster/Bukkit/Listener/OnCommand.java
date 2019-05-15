@@ -972,7 +972,7 @@ public class OnCommand implements CommandExecutor
 		}
 		if(plugin.CheckPerm(player, "marry.reload", false))
 		{
-			player.sendMessage(ChatColor.AQUA + "/marry reload" + separator + plugin.lang.get("Description.reload"));
+			player.sendMessage(ChatColor.AQUA + "/marry reload" + separator + plugin.lang.get("Description.Reload"));
 		}
 		if(plugin.lang.get("Description.HelpFooter") != null && !plugin.lang.get("Description.HelpFooter").isEmpty())
 		{
@@ -1007,6 +1007,6 @@ public class OnCommand implements CommandExecutor
 		{
 			sender.sendMessage(ChatColor.AQUA + "/marry update" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Update"));
 		}
-		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.get("Description.reload"));
+		sender.sendMessage(ChatColor.AQUA + "/marry reload" + ChatColor.WHITE + " - " + plugin.lang.get("Description.Reload"));
 	}
 }
