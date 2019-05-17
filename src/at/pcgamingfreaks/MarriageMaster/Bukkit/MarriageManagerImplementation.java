@@ -27,7 +27,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 
-import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -199,8 +198,6 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 	@Override
 	public void setSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
 	{
-		Validate.notNull(changer);
-		Validate.notNull(marriage);
 		surname = (!plugin.isSurnamesEnabled() && (surname.equalsIgnoreCase("null") || surname.equalsIgnoreCase("none") || surname.equalsIgnoreCase("remove"))) ? null : cleanupSurname(surname);
 		if(surname == null && plugin.isSurnamesForced())
 		{

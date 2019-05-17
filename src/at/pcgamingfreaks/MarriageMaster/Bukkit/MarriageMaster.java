@@ -42,7 +42,6 @@ import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
 import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
 import at.pcgamingfreaks.Version;
 
-import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -323,7 +322,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull UUID uuid)
 	{
-		Validate.notNull(uuid, "The uuid of the player must not be null!");
 		return database.getPlayer(uuid);
 	}
 
@@ -331,14 +329,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@SuppressWarnings("deprecation")
 	public @NotNull MarriagePlayer getPlayerData(@NotNull String name)
 	{
-		Validate.notNull(name, "The name of the player must not be null!");
 		return getPlayerData(getServer().getOfflinePlayer(name));
 	}
 
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull OfflinePlayer player)
 	{
-		Validate.notNull(player, "The player must not be null!");
 		return database.getPlayer(player.getUniqueId());
 	}
 
@@ -351,16 +347,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public boolean isInRange(@NotNull Player player1, @NotNull Player player2, double range)
 	{
-		Validate.notNull(player1, "The first player must not be null!");
-		Validate.notNull(player2, "The second player must not be null!");
 		return Utils.inRange(player1, player2, range, RANGE_LIMIT_PERM);
 	}
 
 	@Override
 	public boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared)
 	{
-		Validate.notNull(player1, "The first player must not be null!");
-		Validate.notNull(player2, "The second player must not be null!");
 		return Utils.inRange(player1, player2, rangeSquared, RANGE_LIMIT_PERM);
 	}
 

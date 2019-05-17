@@ -24,7 +24,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseElement;
 
-import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -87,6 +86,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 		this.name              = toCopy.name;
 		this.priest            = toCopy.priest;
 		this.married           = toCopy.married;
+		this.privateChat       = toCopy.privateChat;
 		this.sharesBackpack    = toCopy.sharesBackpack;
 		this.privateChatTarget = toCopy.privateChatTarget;
 		this.openRequest       = toCopy.openRequest;
@@ -321,14 +321,12 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	@Override
 	public boolean isPartner(@NotNull OfflinePlayer player)
 	{
-		Validate.notNull(player, "The player must not be null.");
 		return isPartner(MarriageMaster.getInstance().getPlayerData(player));
 	}
 
 	@Override
 	public boolean isPartner(@NotNull MarriagePlayer player)
 	{
-		Validate.notNull(player, "The player must not be null.");
 		return getPartners().contains(player);
 	}
 
@@ -383,7 +381,6 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	@Override
 	public Marriage getMarriageData(@NotNull MarriagePlayer player)
 	{
-		Validate.notNull(player, "The player must not be null!");
 		return partnersMarriages.get(player);
 	}
 

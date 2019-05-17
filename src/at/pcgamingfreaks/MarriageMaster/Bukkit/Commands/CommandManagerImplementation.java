@@ -153,7 +153,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String alias, String[] args)
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args)
 	{
 		if(args.length > 0)
 		{
@@ -272,7 +272,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args)
+	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args)
 	{
 		List<String> results = super.onTabComplete(sender, command, alias, args);
 		if(results != null && args.length == 1 && marryActionCommand.canUse(sender))
