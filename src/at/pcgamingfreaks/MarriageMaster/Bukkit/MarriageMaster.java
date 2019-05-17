@@ -92,7 +92,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		version = new Version(this.getDescription().getVersion());
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
 
-		if(PluginLib.getInstance().getVersion().olderThan(new Version("1.0.4-SNAPSHOT")))
+		if(PluginLib.getInstance().getVersion().olderThan(new Version("1.0.9-SNAPSHOT")))
 		{
 			getLogger().warning("You are using an outdated version of the PCGF PluginLib! Please update it!");
 			failedToEnablePlugin();

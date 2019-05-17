@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016-2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.Database.ConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
@@ -27,9 +28,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.StructMarriageSQL
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.*;
 import at.pcgamingfreaks.UUIDConverter;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +42,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	//TODO: resync on player join with bungee = true
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
 
-	private HikariDataSource dataSource; // SQL Connection Pool
+	protected ConnectionProvider connectionProvider; // Connection provider
 	protected boolean bungee;
 
 	//region Query related variables
@@ -70,28 +68,10 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	//endregion
 	//endregion
 
-	protected SQL(MarriageMaster marriageMaster)
+	protected SQL(@NotNull MarriageMaster marriageMaster, @NotNull ConnectionProvider connectionProvider)
 	{
 		super(marriageMaster);
-		try
-		{
-			HikariConfig poolConfig = getPoolConfig();
-			if(poolConfig != null)
-			{
-				poolConfig.setPoolName("MarriageMaster-Connection-Pool");
-				poolConfig.addDataSourceProperty("useUnicode", "true");
-				poolConfig.addDataSourceProperty("characterEncoding", "utf-8");
-				//noinspection SpellCheckingInspection
-				poolConfig.addDataSourceProperty("cachePrepStmts", "true");
-				poolConfig.addDataSourceProperty("prepStmtCacheSize", "250");
-				poolConfig.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-				dataSource = new HikariDataSource(poolConfig);
-			}
-		}
-		catch(Exception e)
-		{
-			plugin.getLogger().warning(ConsoleColor.RED + "There was a problem creating the connection pool for the SQL server! Please check your configuration." + ConsoleColor.RESET);
-		}
+		this.connectionProvider = connectionProvider;
 		bungee = supportBungee() && plugin.getConfiguration().isBungeeEnabled();
 		loadTableAndFieldNames();
 		buildQuerys();
@@ -100,7 +80,7 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	@Override
 	protected void startup() throws Exception
 	{
-		getConnection().close(); // We test if we can get a connection. This way we can easily check if the settings are correct.
+		getConnection().close(); // Test if we can get a connection. This way we can easily check if the settings are correct.
 		checkDatabase();
 		super.startup();
 	}
@@ -108,12 +88,27 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	@Override
 	public void close()
 	{
-		if (dataSource != null && !dataSource.isClosed())
+		try
 		{
-			dataSource.close();
-			dataSource = null;
+			connectionProvider.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		super.close();
+	}
+
+	/**
+	 * Override this if you don't want to use the internal connection handling.
+	 *
+	 * @return A JDBC connection to a SQL database.
+	 * @throws SQLException If there was a problem.
+	 */
+	@Override
+	public @NotNull Connection getConnection() throws SQLException
+	{
+		return connectionProvider.getConnection();
 	}
 
 	@Override
@@ -125,25 +120,6 @@ public abstract class SQL extends Database implements SQLBasedDatabase
 	protected String getEngine()
 	{
 		return "";
-	}
-
-	/**
-	 * Gets a config for a Hikari connection pool.
-	 *
-	 * @return The config for the connection pool. Null to disable the internal connection handling, override the {@link #getConnection() getConnection} method!
-	 */
-	protected abstract @Nullable HikariConfig getPoolConfig();
-
-	/**
-	 * Override this if you don't want to use the internal connection handling.
-	 *
-	 * @return A JDBC connection to a SQL database.
-	 * @throws SQLException If there was a problem.
-	 */
-	@Override
-	public @NotNull Connection getConnection() throws SQLException
-	{
-		return dataSource.getConnection();
 	}
 
 	protected void loadTableAndFieldNames()

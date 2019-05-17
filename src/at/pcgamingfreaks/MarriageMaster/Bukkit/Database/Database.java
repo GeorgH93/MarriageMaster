@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.Database.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.Converter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationMarriage;
@@ -25,6 +26,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationP
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies.UnCacheStrategie;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
+import at.pcgamingfreaks.MarriageMaster.Database.ConnectionProvider.MySQLConnectionProvider;
 import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool;
 
@@ -52,31 +54,28 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 	{
 		try
 		{
-			Database db;
-			switch(plugin.getConfiguration().getDatabaseType())
+			String dbType = plugin.getConfiguration().getDatabaseType();
+			ConnectionProvider connectionProvider = null;
+			if(dbType.equals("shared") || dbType.equals("external") || dbType.equals("global"))
 			{
-				case "mysql": db = new MySQL(plugin); break;
-				case "sqlite": db = new SQLite(plugin); break;
-				case "external":
-				case "global":
-				case "shared":
-					DatabaseConnectionPool pool = PluginLib.getInstance().getDatabaseConnectionPool();
-					if(pool == null)
-					{
-						plugin.getLogger().warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
-						return null;
-					}
-					switch(pool.getDatabaseType().toLowerCase())
-					{
-						case "mysql": db = new MySQLShared(plugin, pool); break;
-						case "sqlite": db = new SQLiteShared(plugin, pool); break;
-						default: plugin.getLogger().warning(ConsoleColor.RED + "The database type of the shared pool is currently not supported!" + ConsoleColor.RESET); return null;
-					}
-					break;
+				DatabaseConnectionPool pool = PluginLib.getInstance().getDatabaseConnectionPool();
+				if(pool == null)
+				{
+					plugin.getLogger().warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
+					return null;
+				}
+				dbType = pool.getDatabaseType().toLowerCase();
+				connectionProvider = pool.getConnectionProvider();
+			}
+			Database db;
+			switch(dbType)
+			{
+				case "mysql": db = new MySQL(plugin, (connectionProvider != null) ? connectionProvider : new MySQLConnectionProvider(plugin.getLogger(), plugin.getConfiguration())); break;
+				case "sqlite": db = new SQLite(plugin, (connectionProvider != null) ? connectionProvider : new SQLiteConnectionProvider(plugin)); break;
 				case "file":
 				case "files":
 				case "flat": plugin.getLogger().info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
-					db = new SQLite(plugin);
+					db = new SQLite(plugin, new SQLiteConnectionProvider(plugin));
 					Converter.runConverter(plugin, db);
 					break;
 				default: plugin.getLogger().warning(String.format(MESSAGE_UNKNOWN_DB_TYPE,  plugin.getConfiguration().getDatabaseType())); return null;

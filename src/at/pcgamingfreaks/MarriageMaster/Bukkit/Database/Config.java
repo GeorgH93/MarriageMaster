@@ -21,14 +21,18 @@ import at.pcgamingfreaks.Bukkit.Configuration;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
+import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Config extends Configuration
+public class Config extends Configuration implements DatabaseConfiguration
 {
 	private static final int CONFIG_VERSION = 93, UPGRADE_THRESHOLD = 93, PRE_V2_VERSIONS = 90;
 	
@@ -266,7 +270,8 @@ public class Config extends Configuration
 	//endregion
 
 	//region Database getter
-	public String getDatabaseType()
+	@Override
+	public @NotNull String getDatabaseType()
 	{
 		return getConfig().getString("Database.Type", "SQLite").toLowerCase();
 	}
@@ -284,16 +289,19 @@ public class Config extends Configuration
 		}
 	}
 
+	@Override
 	public boolean useUUIDs()
 	{
 		return getConfig().getBoolean("Database.UseUUIDs", true);
 	}
 
+	@Override
 	public boolean useUUIDSeparators()
 	{
 		return getConfig().getBoolean("Database.UseUUIDSeparators", false);
 	}
 
+	@Override
 	public boolean getUseOnlineUUIDs()
 	{
 		String type = getConfig().getString("Database.UUID_Type", "auto").toLowerCase();
@@ -304,32 +312,38 @@ public class Config extends Configuration
 		return type.equals("online");
 	}
 
-	public String getSQLHost()
+	@Override
+	public @NotNull String getSQLHost()
 	{
 		return getConfig().getString("Database.SQL.Host", "localhost:3306");
 	}
 
-	public String getSQLDatabase()
+	@Override
+	public @NotNull String getSQLDatabase()
 	{
 		return getConfig().getString("Database.SQL.Database", "minecraft");
 	}
 
-	public String getSQLUser()
+	@Override
+	public @NotNull String getSQLUser()
 	{
 		return getConfig().getString("Database.SQL.User", "minecraft");
 	}
 
-	public String getSQLPassword()
+	@Override
+	public @NotNull String getSQLPassword()
 	{
 		return getConfig().getString("Database.SQL.Password", "minecraft");
 	}
 
+	@Override
 	public int getSQLMaxConnections()
 	{
 		return Math.max(1, getConfig().getInt("Database.SQL.MaxConnections", 2));
 	}
 
-	public String getSQLConnectionProperties()
+	@Override
+	public @NotNull String getSQLConnectionProperties()
 	{
 		List<String> list = getConfig().getStringList("Database.SQL.Properties", new LinkedList<>());
 		StringBuilder str = new StringBuilder();
@@ -343,41 +357,50 @@ public class Config extends Configuration
 		return str.toString();
 	}
 
-	public String getSQLTableUser()
+	@Override
+	public @NotNull String getSQLTableUser()
 	{
 		return getConfig().getString("Database.SQL.Tables.User", "marry_players");
 	}
 
-	public String getSQLTableHomes()
+	@Override
+	public @NotNull String getSQLTableHomes()
 	{
 		return getConfig().getString("Database.SQL.Tables.Home", "marry_home");
 	}
 
-	public String getSQLTablePriests()
+	@Override
+	public @NotNull String getSQLTablePriests()
 	{
 		return getConfig().getString("Database.SQL.Tables.Priests", "marry_priests");
 	}
 
-	public String getSQLTableMarriages()
+	@Override
+	public @NotNull String getSQLTableMarriages()
 	{
 		return getConfig().getString("Database.SQL.Tables.Partner", "marry_partners");
 	}
 
-	public String getSQLField(String field, String defaultValue)
+	@Override
+	@Contract("_, !null -> !null")
+	public @NotNull String getSQLField(@NotNull String field, @Nullable String defaultValue)
 	{
 		return getConfig().getString("Database.SQL.Tables.Fields." + field, defaultValue);
 	}
 
-	public String getUnCacheStrategie()
+	@Override
+	public @NotNull String getUnCacheStrategie()
 	{
 		return getConfig().getString("Database.Cache.UnCache.Strategie", "interval").toLowerCase();
 	}
 
+	@Override
 	public long getUnCacheInterval()
 	{
 		return getConfig().getLong("Database.Cache.UnCache.Interval", 600) * 20L;
 	}
 
+	@Override
 	public long getUnCacheDelay()
 	{
 		return getConfig().getLong("Database.Cache.UnCache.Delay", 600) * 20L;

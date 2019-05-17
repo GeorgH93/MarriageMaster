@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,27 +17,16 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
+import at.pcgamingfreaks.Database.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import com.zaxxer.hikari.HikariConfig;
+import org.jetbrains.annotations.NotNull;
 
 public class MySQL extends SQL
 {
-	protected MySQL(MarriageMaster marriageMaster)
+	protected MySQL(@NotNull MarriageMaster marriageMaster, @NotNull ConnectionProvider connectionProvider)
 	{
-		super(marriageMaster);
-	}
-
-	@Override
-	protected HikariConfig getPoolConfig()
-	{
-		HikariConfig poolConfig = new HikariConfig();
-		poolConfig.setJdbcUrl("jdbc:mysql://" + plugin.getConfiguration().getSQLHost() + "/" + plugin.getConfiguration().getSQLDatabase() + "?allowMultiQueries=true" + plugin.getConfiguration().getSQLConnectionProperties());
-		poolConfig.setUsername(plugin.getConfiguration().getSQLUser());
-		poolConfig.setPassword(plugin.getConfiguration().getSQLPassword());
-		poolConfig.setMinimumIdle(1);
-		poolConfig.setMaximumPoolSize(plugin.getConfiguration().getSQLMaxConnections());
-		return poolConfig;
+		super(marriageMaster, connectionProvider);
 	}
 
 	@Override
