@@ -1,8 +1,10 @@
 <!-- Variables (this block will not be visible in the readme -->
 [banner]: https://pcgamingfreaks.at/images/marriagemaster.png
 [spigot]: https://www.spigotmc.org/resources/marriage-master.19273/
-[spigotRatingImg]: https://img.shields.io/spiget/stars/19273.svg
-[spigotDownloadsImg]: https://img.shields.io/spiget/downloads/19273.svg?label=downloads%20%28spigot%29
+<!--[spigotRatingImg]: https://img.shields.io/spiget/stars/19273.svg
+[spigotDownloadsImg]: https://img.shields.io/spiget/downloads/19273.svg?label=downloads%20%28spigot%29-->
+[spigotRatingImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=rating&query=%24.rating.average&suffix=%20%2F%205&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273
+[spigotDownloadsImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=downloads%20%28spigotmc.org%29&query=%24.downloads&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273
 [bukkit]: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 [issues]: https://github.com/GeorgH93/MarriageMaster/issues
 [wiki]: https://github.com/GeorgH93/MarriageMaster/wiki
@@ -15,9 +17,8 @@
 [licenseImg]: https://img.shields.io/github/license/GeorgH93/MarriageMaster.svg
 [ci]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/
 [ciImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/badge/icon
-[apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?color=informational&label=api-version&query=//project/version&url=https://raw.githubusercontent.com/GeorgH93/MarriageMaster/API/pom.xml
-[api]: https://github.com/GeorgH93/MarriageMaster/wiki/API
-[apiSRC]: https://github.com/GeorgH93/MarriageMaster/tree/API
+[apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?label=api-version&query=%2F%2Flatest[1]&url=https%3A%2F%2Frepo.pcgamingfreaks.at%2Frepository%2Fmaven-snapshots%2Fat%2Fpcgamingfreaks%2FMarriageMaster-API%2Fmaven-metadata.xml
+[api]: https://github.com/GeorgH93/MarriageMaster/tree/API
 [apiJavaDoc]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/javadoc/
 [apiBuilds]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/
 [featureRequestsImg]: https://img.shields.io/github/issues/GeorgH93/MarriageMaster/enhancement.svg?label=feature%20requests
@@ -64,11 +65,11 @@ The final file will be in the target folder
 ## API:
 Marriage Master V2 comes with a very powerful API that allows you to change almost everything about this plugin.
 Most of the plugins commands are implemented only using methods and data provided by the API.
-If you think there is something missing feel free to contact me.
+If you think there is something missing feel free to open a [feature request][requestFeature].
 Please do not access the data of the plugin over other ways than the provided API, the inner workings will change and I wont keep track of what you are using in your plugin.
 For more details about the API please check the following links.
 
-[Source Code][apiSRC] ⚫ [Wiki][api] ⚫ [JavaDoc][apiJavaDoc] ⚫ [Build Server][apiBuilds]
+[Source Code & Details][api] ⚫ [JavaDoc][apiJavaDoc] ⚫ [Build Server][apiBuilds]
 
 ## Support
 * [Wiki][wiki]
