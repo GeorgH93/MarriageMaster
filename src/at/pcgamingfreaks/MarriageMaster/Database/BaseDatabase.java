@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,7 +24,8 @@ import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_DATA extends MARRIAGE>
@@ -32,7 +33,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	//region Messages
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected static final String MESSAGE_FILES_NO_LONGER_SUPPORTED = ConsoleColor.RED + "File based storage is no longer supported." + ConsoleColor.YELLOW + " Migrating to SQLite.";
-	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"%s\"!";
+	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"%s\"!" + ConsoleColor.RESET;
 	protected static final String MESSAGE_CLEANING_DB_CACHE = "Cleaning database cache.", MESSAGE_DB_CACHE_CLEANED = "Database cache cleaned.";
 	//endregion
 

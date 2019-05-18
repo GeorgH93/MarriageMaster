@@ -18,20 +18,23 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.Database.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.SQLiteConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SQLite extends SQL
 {
-	protected SQLite(@NotNull MarriageMaster marriageMaster, @NotNull ConnectionProvider connectionProvider)
+	protected SQLite(@NotNull MarriageMaster plugin, @Nullable ConnectionProvider connectionProvider)
 	{
-		super(marriageMaster, connectionProvider);
+		super(plugin, (connectionProvider == null) ? new SQLiteConnectionProvider(plugin.getLogger(), plugin.getDescription().getName(), plugin.getDataFolder().getAbsolutePath() + File.separator + "backpack.db") : connectionProvider);
 	}
 
 	@Override

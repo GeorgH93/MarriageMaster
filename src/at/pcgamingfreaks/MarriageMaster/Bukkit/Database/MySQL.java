@@ -17,16 +17,18 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.Database.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.MySQLConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MySQL extends SQL
 {
-	protected MySQL(@NotNull MarriageMaster marriageMaster, @NotNull ConnectionProvider connectionProvider)
+	protected MySQL(@NotNull MarriageMaster plugin, @Nullable ConnectionProvider connectionProvider)
 	{
-		super(marriageMaster, connectionProvider);
+		super(plugin, (connectionProvider == null) ? new MySQLConnectionProvider(plugin.getLogger(), plugin.getDescription().getName(), plugin.getConfiguration()) : connectionProvider);
 	}
 
 	@Override

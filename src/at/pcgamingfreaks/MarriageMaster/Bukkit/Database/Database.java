@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.Database.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.Converter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationMarriage;
@@ -26,7 +26,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationP
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies.UnCacheStrategie;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
-import at.pcgamingfreaks.MarriageMaster.Database.ConnectionProvider.MySQLConnectionProvider;
 import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool;
 
@@ -70,12 +69,12 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 			Database db;
 			switch(dbType)
 			{
-				case "mysql": db = new MySQL(plugin, (connectionProvider != null) ? connectionProvider : new MySQLConnectionProvider(plugin.getLogger(), plugin.getConfiguration())); break;
-				case "sqlite": db = new SQLite(plugin, (connectionProvider != null) ? connectionProvider : new SQLiteConnectionProvider(plugin)); break;
+				case "mysql": db = new MySQL(plugin, connectionProvider); break;
+				case "sqlite": db = new SQLite(plugin, connectionProvider); break;
 				case "file":
 				case "files":
 				case "flat": plugin.getLogger().info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
-					db = new SQLite(plugin, new SQLiteConnectionProvider(plugin));
+					db = new SQLite(plugin, null);
 					Converter.runConverter(plugin, db);
 					break;
 				default: plugin.getLogger().warning(String.format(MESSAGE_UNKNOWN_DB_TYPE,  plugin.getConfiguration().getDatabaseType())); return null;

@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.Database.ConnectionProvider;
+import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;

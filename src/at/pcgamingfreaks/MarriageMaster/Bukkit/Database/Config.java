@@ -346,13 +346,10 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public @NotNull String getSQLConnectionProperties()
 	{
 		List<String> list = getConfig().getStringList("Database.SQL.Properties", new LinkedList<>());
-		StringBuilder str = new StringBuilder();
-		if(list != null)
+		StringBuilder str = new StringBuilder("?allowMultiQueries=true");
+		for(String s : list)
 		{
-			for(String s : list)
-			{
-				str.append("&").append(s);
-			}
+			str.append("&").append(s);
 		}
 		return str.toString();
 	}

@@ -17,6 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
+import at.pcgamingfreaks.Database.DatabaseConnectionConfiguration;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
