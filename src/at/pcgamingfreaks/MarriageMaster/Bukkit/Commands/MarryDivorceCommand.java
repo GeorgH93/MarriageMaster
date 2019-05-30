@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ public class MarryDivorceCommand extends MarryCommand
 					}
 				}
 			}
-			else if(player != null && getMarriagePlugin().isSelfMarriageAllowed() && player.isMarried() && (sender.hasPermission("marry.selfmarry") || sender.hasPermission("marry.selfdivorce")) &&
+			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (sender.hasPermission("marry.selfmarry") || sender.hasPermission("marry.selfdivorce")) &&
 					(getMarriagePlugin().isPolygamyAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
