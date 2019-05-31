@@ -18,7 +18,6 @@
 package at.pcgamingfreaks.MarriageMaster.API;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,7 +41,7 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 	 * @param canCancel The players that can cancel the request.
 	 */
 	@SafeVarargs
-	public AcceptPendingRequest(@NotNull T hasToAccept, @Nullable T... canCancel)
+	public AcceptPendingRequest(@NotNull T hasToAccept, @NotNull T... canCancel)
 	{
 		playerThatHasToAccept = hasToAccept;
 		playersThatCanCancel = canCancel;
@@ -63,7 +62,7 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 	 *
 	 * @return All the {@link at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer} for the players that can cancel the request.
 	 */
-	public final @Nullable T[] getPlayersThatCanCancel()
+	public final @NotNull T[] getPlayersThatCanCancel()
 	{
 		return playersThatCanCancel;
 	}
@@ -98,10 +97,9 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 	 */
 	public final boolean canCancel(@NotNull T player)
 	{
-		if(playersThatCanCancel == null) return false;
 		for(T p : playersThatCanCancel)
 		{
-			if(p.equals(player))
+			if(player.equals(p))
 			{
 				return true;
 			}
@@ -200,7 +198,6 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 		try
 		{
 			closeMethod.invoke(playerThatHasToAccept, this);
-			if(playersThatCanCancel == null) return;
 			for(T p : playersThatCanCancel)
 			{
 				if(!p.equals(playerThatHasToAccept))

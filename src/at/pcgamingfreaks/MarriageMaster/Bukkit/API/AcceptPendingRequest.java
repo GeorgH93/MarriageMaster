@@ -17,6 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
+import org.jetbrains.annotations.NotNull;
+
 @SuppressWarnings("unused")
 public abstract class AcceptPendingRequest extends at.pcgamingfreaks.MarriageMaster.API.AcceptPendingRequest<MarriagePlayer>
 {
@@ -26,7 +28,7 @@ public abstract class AcceptPendingRequest extends at.pcgamingfreaks.MarriageMas
 	 * @param hasToAccept The player that has to accept the request.
 	 * @param canCancel   The players that can cancel the request.
 	 */
-	public AcceptPendingRequest(MarriagePlayer hasToAccept, MarriagePlayer... canCancel)
+	public AcceptPendingRequest(@NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer... canCancel)
 	{
 		super(hasToAccept, canCancel);
 	}
