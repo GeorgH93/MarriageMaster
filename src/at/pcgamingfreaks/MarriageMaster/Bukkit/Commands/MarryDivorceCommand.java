@@ -52,7 +52,7 @@ public class MarryDivorceCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (sender.hasPermission("marry.selfmarry") || sender.hasPermission("marry.selfdivorce"))))
+		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce")))
 		{
 			if((!(sender instanceof Player) || player.isPriest()) && (getMarriagePlugin().isPolygamyAllowed() ? args.length == 2 : args.length == 1))
 			{
@@ -104,7 +104,7 @@ public class MarryDivorceCommand extends MarryCommand
 					}
 				}
 			}
-			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (sender.hasPermission("marry.selfmarry") || sender.hasPermission("marry.selfdivorce")) &&
+			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce") &&
 					(getMarriagePlugin().isPolygamyAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
@@ -157,7 +157,7 @@ public class MarryDivorceCommand extends MarryCommand
 				}
 			}
 		}
-		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && (sender.hasPermission("marry.selfmarry") || sender.hasPermission("marry.selfdivorce")))
+		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission("marry.selfdivorce"))
 		{
 			names = marriagePlayerData.getMatchingPartnerNames(args[args.length - 1]);
 		}

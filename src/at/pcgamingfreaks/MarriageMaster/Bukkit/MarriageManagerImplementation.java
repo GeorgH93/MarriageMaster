@@ -746,7 +746,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 		if(!divorceBy.isOnline()) return;
 		if(marriage.hasPlayer(divorceBy)) // Self divorce
 		{
-			if(plugin.isSelfMarriageAllowed() && divorceBy.hasPermission("marry.selfmarry"))
+			if(plugin.isSelfDivorceAllowed() && divorceBy.hasPermission("marry.selfdivorce"))
 			{
 				MarriagePlayer otherPlayer = marriage.getPartner(divorceBy);
 				Player bPlayer = divorceBy.getPlayerOnline();
