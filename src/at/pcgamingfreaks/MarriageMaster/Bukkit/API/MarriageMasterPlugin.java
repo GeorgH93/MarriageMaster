@@ -45,4 +45,34 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
 	 */
 	boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared);
+
+	/**
+	 * Checks if two players are within a certain range to each other.
+	 *
+	 * @param player1 The fist player to be checked.
+	 * @param player2 The second player to be checked.
+	 * @param range The range in which the two players should be.
+	 * @return True if the players are within the given range, false if not.
+	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 */
+	default boolean isInRange(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, double range)
+	{
+		Player bPlayer1 = player1.getPlayerOnline(), bPlayer2 = player2.getPlayerOnline();
+		return bPlayer1 != null && bPlayer2 != null && isInRange(bPlayer1, bPlayer2, range);
+	}
+
+	/**
+	 * Checks if two players are within a certain range to each other.
+	 *
+	 * @param player1 The fist player to be checked.
+	 * @param player2 The second player to be checked.
+	 * @param rangeSquared The squared distance in which the two players should be.
+	 * @return True if the players are within the given range, false if not.
+	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 */
+	default boolean isInRangeSquared(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, double rangeSquared)
+	{
+		Player bPlayer1 = player1.getPlayerOnline(), bPlayer2 = player2.getPlayerOnline();
+		return bPlayer1 != null && bPlayer2 != null && isInRangeSquared(bPlayer1, bPlayer2, rangeSquared);
+	}
 }
