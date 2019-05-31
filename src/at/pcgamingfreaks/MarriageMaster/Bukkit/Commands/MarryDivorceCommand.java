@@ -169,7 +169,7 @@ public class MarryDivorceCommand extends MarryCommand
 	{
 		List<HelpData> help = new LinkedList<>();
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
-		if(requester instanceof Player && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried())
+		if(requester instanceof Player && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (requester.hasPermission("marry.selfmarry") || requester.hasPermission("marry.selfdivorce")))
 		{
 			if(player.getPartners().size() > 1)
 			{
