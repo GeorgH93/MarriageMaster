@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public class RequestAcceptCommand extends MarryCommand
 
 	public RequestAcceptCommand(MarriageMaster plugin)
 	{
-		super(plugin, "accept", plugin.getLanguage().getTranslated("Commands.Description.Accept"), null, true, plugin.getLanguage().getCommandAliases("Accept"));
+		super(plugin, "accept", plugin.getLanguage().getTranslated("Commands.Description.Accept"), "marry.accept", true, plugin.getLanguage().getCommandAliases("Accept"));
 
 		messageNothingToAccept = plugin.getLanguage().getMessage("Ingame.Requests.NothingToAccept");
 	}

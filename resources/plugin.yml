@@ -1,9 +1,9 @@
-name: ${project.name}
-author: ${author}
-website: ${website}
-description: ${project.description}
-main: at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster
-version: ${project.version}-T${timestamp}
+name: "${project.name}"
+author: "${author}"
+website: "${website}"
+description: "${project.description}"
+main: "at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster"
+version: "${project.version}-T${timestamp}"
 api-version: "1.13"
 depend: [PCGF_PluginLib]
 softdepend: [Vault,MinePacks,Minepacks,MVdWPlaceholderAPI,PlaceholderAPI]
@@ -52,6 +52,7 @@ permissions:
       marry.seen: true
       marry.selfmarry: true
       marry.changesurname: true
+      marry.accept: true
   marry.chat.*:
     description: Gives acces to all private message formats
     children:
@@ -59,6 +60,9 @@ permissions:
       marry.chat.color: true
       marry.chat.format: true
       marry.chat.magic: true
+  marry.accept:
+    description: Allows the player to accept confirmation requests
+    default: true
   marry.list:
     description: Allows you to use the List command
     default: true
