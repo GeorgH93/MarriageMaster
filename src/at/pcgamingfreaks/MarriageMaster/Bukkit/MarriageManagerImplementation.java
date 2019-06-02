@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 public class MarriageManagerImplementation implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
-{
+{ // TODO refactor me!!!!
 	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME;
 
 	private final MarriageMaster plugin;
@@ -413,7 +413,6 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 				if(plugin.isSelfMarriageAllowed() && priest.hasPermission("marry.selfmarry"))
 				{
 					MarriagePlayer otherPlayer = (player1.equals(priest)) ? player2 : player1;
-					Player bOtherPlayer = otherPlayer.getPlayerOnline();
 					if(player1.equals(player2))
 					{
 						priest.send(messageNotYourself);
@@ -476,11 +475,11 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 								{
 									if(player1.getOpenRequest() != null)
 									{
-										priest.send(messageAlreadyOpenRequest, player2.getName(), player2.getDisplayName());
+										priest.send(messageAlreadyOpenRequest, player1.getName(), player1.getDisplayName());
 									}
 									if(player2.getOpenRequest() != null)
 									{
-										priest.send(messageAlreadyOpenRequest, player1.getName(), player1.getDisplayName());
+										priest.send(messageAlreadyOpenRequest, player2.getName(), player2.getDisplayName());
 									}
 								}
 								else
