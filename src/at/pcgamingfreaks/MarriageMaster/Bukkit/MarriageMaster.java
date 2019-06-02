@@ -33,6 +33,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
@@ -66,7 +67,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private Database database = null;
 	private CommandManagerImplementation commandManager = null;
 	private IBackpackIntegration backpacksIntegration = null;
-	private MarriageManagerImplementation marriageManager = null;
+	private MarriageManager marriageManager = null;
 	private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private PlaceholderManager placeholderManager = null;
 
@@ -197,7 +198,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
-		marriageManager = new MarriageManagerImplementation(this);
+		marriageManager = new MarriageManager(this);
 
 		// Register Events
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);

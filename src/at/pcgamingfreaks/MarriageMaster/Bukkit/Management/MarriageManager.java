@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Management;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
@@ -26,6 +26,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class MarriageManagerImplementation implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
+public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
 	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME;
 
@@ -56,7 +57,7 @@ public class MarriageManagerImplementation implements at.pcgamingfreaks.Marriage
 	private final int surnameMinLength, surnameMaxLength;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 
-	public MarriageManagerImplementation(MarriageMaster plugin)
+	public MarriageManager(MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 
