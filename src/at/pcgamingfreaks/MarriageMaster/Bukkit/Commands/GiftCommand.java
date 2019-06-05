@@ -26,7 +26,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -59,7 +58,25 @@ public class GiftCommand extends MarryCommand
 		range             = plugin.getConfiguration().getRangeSquared("Gift");
 		allowedInCreative = plugin.getConfiguration().isGiftAllowedInCreative();
 
-		itemNameResolver = ((PluginLib) PluginLib.getInstance()).getItemNameResolver();
+		/*if[STANDALONE]
+		itemNameResolver = new ItemNameResolver();
+		if (at.pcgamingfreaks.Bukkit.MCVersion.isOlderThan(at.pcgamingfreaks.Bukkit.MCVersion.MC_1_13))
+		{
+			at.pcgamingfreaks.Bukkit.Language itemNameLanguage = new at.pcgamingfreaks.Bukkit.Language(plugin, 1, 1, java.io.File.separator + "lang", "items_", "legacy_items_");
+			itemNameLanguage.setFileDescription("item name language");
+			itemNameLanguage.load(plugin.getConfiguration().getLanguage(), at.pcgamingfreaks.YamlFileUpdateMethod.OVERWRITE);
+			itemNameResolver.loadLegacy(itemNameLanguage, plugin.getLogger());
+		}
+		else
+		{
+			at.pcgamingfreaks.Bukkit.Language itemNameLanguage = new at.pcgamingfreaks.Bukkit.Language(plugin, 2, java.io.File.separator + "lang", "items_");
+			itemNameLanguage.setFileDescription("item name language");
+			itemNameLanguage.load(plugin.getConfiguration().getLanguage(), at.pcgamingfreaks.YamlFileUpdateMethod.OVERWRITE);
+			itemNameResolver.load(itemNameLanguage, plugin.getLogger());
+		}
+		else[STANDALONE]*/
+		itemNameResolver = at.pcgamingfreaks.PluginLib.Bukkit.ItemNameResolver.getInstance();
+		/*end[STANDALONE]*/
 	}
 
 	@SuppressWarnings("deprecation")

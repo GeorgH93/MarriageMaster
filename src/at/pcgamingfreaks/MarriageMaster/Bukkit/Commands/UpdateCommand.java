@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +45,9 @@ public class UpdateCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		messageCheckingForUpdates.send(sender);
-		((PluginLib) PluginLib.getInstance()).update(null); // Make the PluginLib to check for updates too
+		/*if_not[STANDALONE]*/
+		((at.pcgamingfreaks.PluginLib.Bukkit.PluginLib) at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance()).update(null); // Make the PluginLib to check for updates too
+		/*end[STANDALONE]*/
 		((MarriageMaster) getMarriagePlugin()).update(result -> {
 			switch(result)
 			{

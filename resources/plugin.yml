@@ -2,11 +2,11 @@ name: "${project.name}"
 author: "${author}"
 website: "${website}"
 description: "${project.description}"
-main: "at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster"
-version: "${project.version}-T${timestamp}"
+main: "${bukkitMainClass}"
+version: "${version}"
 api-version: "1.13"
-depend: [PCGF_PluginLib]
-softdepend: [Vault,MinePacks,Minepacks,MVdWPlaceholderAPI,PlaceholderAPI]
+depend: [${dependencies}]
+softdepend: [Vault,Minepacks,MinePacks,MVdWPlaceholderAPI,PlaceholderAPI]
 
 permissions:
   marry.*:

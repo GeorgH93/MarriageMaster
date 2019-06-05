@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +37,9 @@ public class VersionCommand extends MarryCommand
 	{
 		sender.sendMessage("##### Start Marriage Master version info #####");
 		sender.sendMessage("Marriage Master: " +  plugin.getDescription().getVersion());
-		sender.sendMessage("PCGF PluginLib: " +  PluginLib.getInstance().getVersion());
+		/*if_not[STANDALONE]*/
+		sender.sendMessage("PCGF PluginLib: " +  at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion());
+		/*end[STANDALONE]*/
 		sender.sendMessage("Server: " +  plugin.getServer().getVersion());
 		sender.sendMessage("#####  End Marriage Master version info  #####");
 	}

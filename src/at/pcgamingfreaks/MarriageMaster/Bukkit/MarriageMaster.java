@@ -36,7 +36,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
-import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.BukkitUpdateProvider;
 import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
@@ -56,7 +55,7 @@ import java.util.UUID;
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
 	private static final int BUKKIT_PROJECT_ID = 74734;
-	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2";
+	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2", MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.12-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	private static Version version = null;
 	private static MarriageMaster instance;
@@ -70,6 +69,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private MarriageManager marriageManager = null;
 	private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private PlaceholderManager placeholderManager = null;
+	@SuppressWarnings("FieldCanBeLocal") private boolean useBukkitUpdater = false; // Field is set per reflection from the BadRabbit loader
 
 	// Global Settings
 	private boolean multiMarriage = false, selfMarriage = false, selfDivorce = false, surnamesEnabled = false, surnamesForced = false;
@@ -84,6 +84,14 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		return instance;
 	}
 
+	/*if[STANDALONE]
+	@Override
+	public boolean isRunningInStandaloneMode()
+	{
+		return true;
+	}
+	end[STANDALONE]*/
+
 	//region Loading and Unloading the plugin
 	@Override
 	public void onEnable()
@@ -92,12 +100,22 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		version = new Version(this.getDescription().getVersion());
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
 
-		if(PluginLib.getInstance().getVersion().olderThan(new Version("1.0.10-SNAPSHOT")))
+		// Check if running as standalone edition
+		/*if[STANDALONE]
+		getLogger().info("Starting Minepacks in standalone mode!");
+		if(getServer().getPluginManager().isPluginEnabled("PCGF_PluginLib"))
+		{
+			getLogger().info("You do have the PCGF_PluginLib installed. You may consider switching to the default version of the plugin to reduce memory load and unlock additional features.");
+		}
+		else[STANDALONE]*/
+		// Not standalone so we should check the version of the PluginLib
+		if(at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion().olderThan(new Version(MIN_PCGF_PLUGIN_LIB_VERSION)))
 		{
 			getLogger().warning("You are using an outdated version of the PCGF PluginLib! Please update it!");
 			failedToEnablePlugin();
 			return;
 		}
+		/*end[STANDALONE]*/
 
 		config = new Config(this);
 		if(!config.isLoaded())
@@ -241,13 +259,15 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	public Updater update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
 	{
 		UpdateProvider updateProvider;
-		if(config.useUpdaterDevBuilds())
-		{
-			updateProvider = new JenkinsUpdateProvider(JENKINS_URL, JENKINS_JOB, getLogger());
-		}
+		if(useBukkitUpdater) updateProvider = new BukkitUpdateProvider(BUKKIT_PROJECT_ID, getLogger());
 		else
 		{
-			updateProvider = new BukkitUpdateProvider(BUKKIT_PROJECT_ID, getLogger());
+			/*if[STANDALONE]
+			getLogger().warning("Auto-updates not available for your build config!");
+			return null;
+			else[STANDALONE]*/
+			updateProvider = new JenkinsUpdateProvider(JENKINS_URL, JENKINS_JOB, getLogger());
+			/*end[STANDALONE]*/
 		}
 		Updater updater = new Updater(this, this.getFile(), true, updateProvider);
 		updater.update(output);

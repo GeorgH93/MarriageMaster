@@ -26,8 +26,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationP
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies.UnCacheStrategie;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
-import at.pcgamingfreaks.PluginLib.Bukkit.PluginLib;
-import at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -57,7 +55,11 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 			ConnectionProvider connectionProvider = null;
 			if(dbType.equals("shared") || dbType.equals("external") || dbType.equals("global"))
 			{
-				DatabaseConnectionPool pool = PluginLib.getInstance().getDatabaseConnectionPool();
+				/*if[STANDALONE]
+				plugin.getLogger().warning(ConsoleColor.RED + "The shared database connection option is not available in standalone mode!" + ConsoleColor.RESET);
+				return null;
+				else[STANDALONE]*/
+				at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool pool = at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getDatabaseConnectionPool();
 				if(pool == null)
 				{
 					plugin.getLogger().warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
@@ -65,6 +67,7 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 				}
 				dbType = pool.getDatabaseType().toLowerCase();
 				connectionProvider = pool.getConnectionProvider();
+				/*end[STANDALONE]*/
 			}
 			Database db;
 			switch(dbType)

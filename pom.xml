@@ -33,6 +33,12 @@
 		<website>https://www.spigotmc.org/resources/19273/</website>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
+
+		<version>${project.version}-T${timestamp}</version>
+		<dependencies>PCGF_PluginLib</dependencies>
+		<bukkitMainClass>${project.groupId}.${project.artifactId}.Bukkit.${project.artifactId}</bukkitMainClass>
+		<bungeeMainClass>${project.groupId}.${project.artifactId}.Bungee.${project.artifactId}</bungeeMainClass>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
@@ -104,8 +110,13 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.10-SNAPSHOT</version>
-			<scope>provided</scope>
+			<version>1.0.12-SNAPSHOT</version>
+		</dependency>
+		<!-- BadRabbit -->
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>BadRabbit</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -301,6 +312,127 @@
 			<!-- endregion -->
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>ExcludeBadRabbit</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.1.2</version>
+						<executions>
+							<execution>
+								<id>default-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+								<configuration>
+									<excludes>
+										<exclude>at/pcgamingfreaks/MarriageMaster/Bukkit/MarriageMasterBadRabbit.class</exclude>
+									</excludes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>Standalone</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<version>${project.version}-Standalone</version>
+				<dependencies/>
+				<bukkitMainClass>${project.groupId}.${project.artifactId}Standalone.Bukkit.${project.artifactId}</bukkitMainClass>
+				<bungeeMainClass>${project.groupId}.${project.artifactId}Standalone.Bungee.${project.artifactId}</bungeeMainClass>
+			</properties>
+			<build>
+				<plugins>
+					<!-- Shades some required libs into the final jar -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.2.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<shadedArtifactAttached>true</shadedArtifactAttached>
+									<shadedClassifierName>Standalone</shadedClassifierName>
+									<createDependencyReducedPom>false</createDependencyReducedPom>
+									<minimizeJar>true</minimizeJar>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<artifactSet>
+										<includes>
+											<include>at.pcgamingfreaks:MarriageMaster-API</include>
+											<include>at.pcgamingfreaks:PluginLib</include>
+										</includes>
+									</artifactSet>
+									<relocations>
+										<relocation>
+											<pattern>at.pcgf.libs</pattern>
+											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>at.pcgamingfreaks.MarriageMaster</pattern>
+											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone</shadedPattern>
+											<!-- ToDo relocate API -->
+											<!--<excludes>
+												<exclude>at.pcgamingfreaks.MarriageMaster.Bukkit.API.*</exclude>
+												<exclude>at.pcgamingfreaks.MarriageMaster.Bungee.API.*</exclude>
+												<exclude>at.pcgamingfreaks.MarriageMaster.API.*</exclude>
+											</excludes>-->
+										</relocation>
+										<relocation>
+											<pattern>at.pcgamingfreaks</pattern>
+											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks</shadedPattern>
+										</relocation>
+									</relocations>
+									<filters>
+										<filter>
+											<artifact>at.pcgamingfreaks:PluginLib</artifact>
+											<excludes>
+												<exclude>*.yml</exclude>
+												<exclude>META-INF/*.txt</exclude>
+											</excludes>
+										</filter>
+									</filters>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<!-- Replace all the PCGF-PluginLib code with alternatives -->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>munge-maven-plugin</artifactId>
+						<version>1.0</version>
+						<executions>
+							<execution>
+								<id>munge</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>munge</goal>
+								</goals>
+								<configuration>
+									<symbols>STANDALONE</symbols>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<distributionManagement>
 		<repository>
