@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.API;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -25,6 +26,16 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_MANAGER extends MarriageManager, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
 {
+	/**
+	 * Checks if the plugin is running in standalone mode.
+	 *
+	 * @return True if the plugin is running in standalone mode, false if not.
+	 */
+	default boolean isRunningInStandaloneMode()
+	{
+		return false;
+	}
+
 	/**
 	 * Retrieves the {@link MarriagePlayer} from a player.
 	 *
@@ -111,7 +122,7 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	/**
 	 * Gets the command manager of the plugin. Needed to register sub-commands.
 	 *
-	 * @return The Marriage Master Command Manager.
+	 * @return The Marriage Master Command Manager. null if the plugin is running in standalone mdoe.
 	 */
-	@NotNull COMMAND_MANAGER getCommandManager();
+	@Nullable COMMAND_MANAGER getCommandManager();
 }
