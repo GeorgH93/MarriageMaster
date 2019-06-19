@@ -24,5 +24,5 @@ import net.md_5.bungee.api.CommandSender;
  * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
  */
 @SuppressWarnings("unused")
-public interface CommandManager extends at.pcgamingfreaks.MarriageMaster.API.CommandManager<CommandSender>
+public interface CommandManager extends at.pcgamingfreaks.MarriageMaster.API.CommandManager<MarryCommand, CommandSender>
 {}

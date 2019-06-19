@@ -20,5 +20,5 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<ProxiedPlayer, MarriagePlayer, Marriage, MarriageManager, CommandManager, CommandManagerWithRegistry, DelayableTeleportAction>
+public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<ProxiedPlayer, MarriagePlayer, Marriage, MarriageManager, CommandManager, DelayableTeleportAction>
 {}

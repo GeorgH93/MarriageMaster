@@ -24,10 +24,10 @@ import java.util.List;
 
 /**
  * The command manager is responsible for managing all the command stuff of the plugin.
- * It provides requests that need to be accepted and switches translated in the language file.
+ * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
  */
 @SuppressWarnings("unused")
-public interface CommandManager<COMMAND_SENDER>
+public interface CommandManager<MARRY_COMMAND extends MarryCommand, COMMAND_SENDER>
 {
 	/**
 	 * Checks if a string is an on switch in the used language file.
@@ -97,4 +97,44 @@ public interface CommandManager<COMMAND_SENDER>
 	 * @return The list of names for the tab complete event. Null if there is no matching partner.
 	 */
 	@Nullable List<String> getSimpleTabComplete(@NotNull COMMAND_SENDER sender, @Nullable String... args);
+
+	/**
+	 * Registers a new sub-command for /marry. Use registerSubCommand!
+	 * The method is not available in standalone mode!
+	 *
+	 * @param command The command that should be registered.
+	 */
+	@Deprecated
+	default void registerMarryCommand(@NotNull MARRY_COMMAND command)
+	{
+		registerSubCommand(command);
+	}
+
+	/**
+	 * Unregisters a sub-command for /marry. Use unRegisterSubCommand!
+	 * The method is not available in standalone mode!
+	 *
+	 * @param command The command that should be unregistered.
+	 */
+	@Deprecated
+	default void unRegisterMarryCommand(@NotNull MARRY_COMMAND command)
+	{
+		unRegisterSubCommand(command);
+	}
+
+	/**
+	 * Registers a new sub-command for /marry.
+	 * The method is not available in standalone mode!
+	 *
+	 * @param command The command that should be registered.
+	 */
+	void registerSubCommand(@NotNull MARRY_COMMAND command);
+
+	/**
+	 * Unregisters a sub-command for /marry.
+	 * The method is not available in standalone mode!
+	 *
+	 * @param command The command that should be unregistered.
+	 */
+	void unRegisterSubCommand(@NotNull MARRY_COMMAND command);
 }

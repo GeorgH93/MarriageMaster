@@ -203,6 +203,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 
 	/**
 	 * Sends a message to the player.
+	 * The method is not available in standalone mode!
 	 *
 	 * @param message The message to be sent to the player.
 	 * @param args The arguments for the placeholders of the message.
@@ -211,6 +212,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 
 	/**
 	 * Sends a message to the player.
+	 * The method is not available in standalone mode!
 	 *
 	 * @param message The message to be sent to the player.
 	 * @param args The arguments for the placeholders of the message.
