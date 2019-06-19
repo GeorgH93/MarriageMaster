@@ -56,14 +56,6 @@
 			<id>spigot-nexus</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
-		<repository>
-			<id>sonatype-snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>
-		<repository>
-			<id>sonatype-release</id>
-			<url>https://oss.sonatype.org/content/repositories/releases</url>
-		</repository>
 		<repository> <!-- for vault -->
 			<id>herocraftonline-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
@@ -116,7 +108,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>BadRabbit</artifactId>
-			<version>1.1.1</version>
+			<version>1.2.1</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -148,7 +140,7 @@
 		<dependency>
 			<groupId>be.maximvdw</groupId>
 			<artifactId>MVdWPlaceholderAPI</artifactId>
-			<version>2.5.2-SNAPSHOT</version>
+			<version>3.0.0-SNAPSHOT</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.spigotmc</groupId>
@@ -322,6 +314,7 @@
 			<build>
 				<plugins>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-jar-plugin</artifactId>
 						<version>3.1.2</version>
 						<executions>
