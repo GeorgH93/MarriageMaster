@@ -36,7 +36,11 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		JavaPlugin newPluginInstance;
 		if(Bukkit.getPluginManager().getPlugin("PCGF_PluginLib") == null)
 		{
-			new ModifyAPI(getClassLoader()).loadClass("at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer"); // Modify the API
+			//region modify api
+			ModifyAPI modifyApiLoader = new ModifyAPI(getClassLoader());
+			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer");
+			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.CommandManager");
+			//endregion
 
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster");
@@ -52,7 +56,6 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		return newPluginInstance;
 	}
 
-	//region bad stuff to bypass the class loader and modify api
 	private class ModifyAPI extends PluginClassLoaderBypass
 	{
 		ModifyAPI(ClassLoader classLoader) throws Exception
@@ -63,8 +66,17 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		@Override
 		protected byte[] loadJarData(@NotNull String name, @NotNull InputStream stream) throws Exception
 		{
-			return MethodTypeReplacer.replace("at/pcgamingfreaks/Message/Message", "at/pcgamingfreaks/MarriageMasterStandalone/libs/at/pcgamingfreaks/Message/Message", stream);
+			System.out.println(name);
+			switch(name)
+			{
+				case "at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer":
+				case "at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer":
+				case "at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData":
+					return MethodTypeReplacer.replace("at/pcgamingfreaks/Message/Message", "at/pcgamingfreaks/MarriageMasterStandalone/libs/at/pcgamingfreaks/Message/Message", stream);
+				case "at.pcgamingfreaks.MarriageMaster.API.CommandManager":
+					return MethodTypeReplacer.replace("at/pcgamingfreaks/MarriageMaster/API/MarryCommand", "at/pcgamingfreaks/MarriageMasterStandalone/API/MarryCommand", stream);
+			}
+			return super.loadJarData(name, stream);
 		}
 	}
-	//endregion
 }

@@ -23,7 +23,10 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.Reflection;
@@ -39,7 +42,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager /*if_not[STANDALONE]*/, CommandManagerWithRegistry /*end[STANDALONE]*/
+public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
 {
 	private MarriageMaster plugin;
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll;

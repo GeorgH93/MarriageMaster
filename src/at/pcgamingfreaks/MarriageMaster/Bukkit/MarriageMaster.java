@@ -45,7 +45,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -413,21 +412,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 	@Override
 	public @NotNull CommandManager getCommandManager()
-	{
-		return commandManager;
-	}
-
-	@Override
-	public @Nullable at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManagerWithRegistry getCommandManagerWithRegistry()
-	{
-		/*if[STANDALONE]
-		return null;
-		else[STANDALONE]*/
-		return commandManager;
-		/*end[STANDALONE]*/
-	}
-
-	public @NotNull CommandManagerImplementation getCommandManagerReal()
 	{
 		return commandManager;
 	}

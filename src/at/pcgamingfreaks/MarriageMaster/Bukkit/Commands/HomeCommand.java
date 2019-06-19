@@ -64,17 +64,17 @@ public class HomeCommand extends MarryCommand
 	public void registerSubCommands()
 	{
 		setHomeCommand = new SetHomeCommand(plugin, this);
-		plugin.getCommandManagerReal().registerSubCommand(setHomeCommand);
+		plugin.getCommandManager().registerSubCommand(setHomeCommand);
 		delHomeCommand = new DelHomeCommand(plugin, this);
-		plugin.getCommandManagerReal().registerSubCommand(delHomeCommand);
+		plugin.getCommandManager().registerSubCommand(delHomeCommand);
 	}
 
 	@Override
 	public void unRegisterSubCommands()
 	{
-		plugin.getCommandManagerReal().unRegisterSubCommand(setHomeCommand);
+		plugin.getCommandManager().unRegisterSubCommand(setHomeCommand);
 		setHomeCommand.close();
-		plugin.getCommandManagerReal().unRegisterSubCommand(delHomeCommand);
+		plugin.getCommandManager().unRegisterSubCommand(delHomeCommand);
 		delHomeCommand.close();
 	}
 

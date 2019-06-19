@@ -61,17 +61,17 @@ public class PvPCommand extends MarryCommand
 	public void registerSubCommands()
 	{
 		onCommand = new PvPOnCommand(plugin);
-		plugin.getCommandManagerReal().registerSubCommand(onCommand);
+		plugin.getCommandManager().registerSubCommand(onCommand);
 		offCommand = new PvPOffCommand(plugin);
-		plugin.getCommandManagerReal().registerSubCommand(offCommand);
+		plugin.getCommandManager().registerSubCommand(offCommand);
 	}
 
 	@Override
 	public void unRegisterSubCommands()
 	{
-		plugin.getCommandManagerReal().unRegisterSubCommand(onCommand);
+		plugin.getCommandManager().unRegisterSubCommand(onCommand);
 		onCommand.close();
-		plugin.getCommandManagerReal().unRegisterSubCommand(offCommand);
+		plugin.getCommandManager().unRegisterSubCommand(offCommand);
 		offCommand.close();
 	}
 

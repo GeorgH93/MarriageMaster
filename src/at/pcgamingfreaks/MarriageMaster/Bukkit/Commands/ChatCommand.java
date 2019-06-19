@@ -78,22 +78,22 @@ public class ChatCommand extends MarryCommand implements Listener
 	public void registerSubCommands()
 	{
 		chatToggleCommand = new ChatToggleCommand(plugin, this);
-		plugin.getCommandManagerReal().registerSubCommand(chatToggleCommand);
+		plugin.getCommandManager().registerSubCommand(chatToggleCommand);
 		if(allowChatSurveillance)
 		{
 			chatListenCommand = new ChatListenCommand(plugin, this);
-			plugin.getCommandManagerReal().registerSubCommand(chatListenCommand);
+			plugin.getCommandManager().registerSubCommand(chatListenCommand);
 		}
 	}
 
 	@Override
 	public void unRegisterSubCommands()
 	{
-		plugin.getCommandManagerReal().unRegisterSubCommand(chatToggleCommand);
+		plugin.getCommandManager().unRegisterSubCommand(chatToggleCommand);
 		chatToggleCommand.close();
 		if(allowChatSurveillance)
 		{
-			plugin.getCommandManagerReal().unRegisterSubCommand(chatListenCommand);
+			plugin.getCommandManager().unRegisterSubCommand(chatListenCommand);
 			chatListenCommand.close();
 		}
 	}
