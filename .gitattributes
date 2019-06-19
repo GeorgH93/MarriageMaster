@@ -1,0 +1,12 @@
+﻿# Auto detect text files and perform LF normalization
+* text=auto
+
+*.java text diff=java
+*.xml text
+*.yml text
+*.md text
+
+# Ignore for export
+.gitattributes export-ignore
+.gitignore export-ignore
+.travis export-ignore
