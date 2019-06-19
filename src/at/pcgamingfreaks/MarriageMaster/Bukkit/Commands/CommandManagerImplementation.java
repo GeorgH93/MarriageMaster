@@ -252,6 +252,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			((MarriagePlayerData) p).addRequest(request);
 		}
 		((MarriagePlayerData) request.getPlayerThatHasToAccept()).addRequest(request);
+		if(!request.getPlayerThatHasToAccept().hasPermission("marry.accept")) request.deny(request.getPlayerThatHasToAccept());
 		return true;
 	}
 
