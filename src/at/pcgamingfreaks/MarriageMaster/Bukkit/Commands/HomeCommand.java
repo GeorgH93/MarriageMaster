@@ -38,6 +38,7 @@ import java.util.List;
 
 public class HomeCommand extends MarryCommand
 {
+	private MarriageMaster plugin;
 	private MarryCommand setHomeCommand, delHomeCommand;
 	private final Message messagePlayerNoHome, messageNoHome, messageTPed;
 	private final long delayTime;
@@ -45,6 +46,7 @@ public class HomeCommand extends MarryCommand
 	public HomeCommand(MarriageMaster plugin)
 	{
 		super(plugin, "home", plugin.getLanguage().getTranslated("Commands.Description.Home"), "marry.home", false, true, plugin.getLanguage().getCommandAliases("Home"));
+		this.plugin = plugin;
 
 		messagePlayerNoHome = plugin.getLanguage().getMessage("Ingame.Home.PlayerNoHome");
 		messageNoHome       = plugin.getLanguage().getMessage("Ingame.Home.NoHome");
@@ -61,18 +63,18 @@ public class HomeCommand extends MarryCommand
 	@Override
 	public void registerSubCommands()
 	{
-		setHomeCommand = new SetHomeCommand(((MarriageMaster) getMarriagePlugin()), this);
-		getMarriagePlugin().getCommandManager().registerMarryCommand(setHomeCommand);
-		delHomeCommand = new DelHomeCommand(((MarriageMaster) getMarriagePlugin()), this);
-		getMarriagePlugin().getCommandManager().registerMarryCommand(delHomeCommand);
+		setHomeCommand = new SetHomeCommand(plugin, this);
+		plugin.getCommandManagerReal().registerSubCommand(setHomeCommand);
+		delHomeCommand = new DelHomeCommand(plugin, this);
+		plugin.getCommandManagerReal().registerSubCommand(delHomeCommand);
 	}
 
 	@Override
 	public void unRegisterSubCommands()
 	{
-		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(setHomeCommand);
+		plugin.getCommandManagerReal().unRegisterSubCommand(setHomeCommand);
 		setHomeCommand.close();
-		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(delHomeCommand);
+		plugin.getCommandManagerReal().unRegisterSubCommand(delHomeCommand);
 		delHomeCommand.close();
 	}
 
@@ -125,7 +127,7 @@ public class HomeCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+			plugin.messageNotMarried.send(sender);
 		}
 	}
 
@@ -178,11 +180,11 @@ public class HomeCommand extends MarryCommand
 					if(!target1.isMarried() || !target2.isMarried())
 					{
 						MarriagePlayer t = (!target1.isMarried()) ? target1 : target2;
-						((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, t.getName());
+						plugin.messagePlayerNotMarried.send(sender, t.getName());
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePlayersNotMarried.send(sender);
+						plugin.messagePlayersNotMarried.send(sender);
 					}
 					return null;
 				}
@@ -192,7 +194,7 @@ public class HomeCommand extends MarryCommand
 				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
 				if(!player.isPartner(partner))
 				{
-					((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+					plugin.messageTargetPartnerNotFound.send(sender);
 					return null;
 				}
 				marriage = player.getMarriageData(partner);
@@ -213,7 +215,7 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, target.getName());
+					plugin.messagePlayerNotMarried.send(sender, target.getName());
 					return null;
 				}
 			}
@@ -280,8 +282,8 @@ public class HomeCommand extends MarryCommand
 
 	public class SetHomeCommand extends MarryCommand
 	{
-		private HomeCommand homeCommand;
-		private Message messageSet;
+		private final HomeCommand homeCommand;
+		private final Message messageSet;
 
 		public SetHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{

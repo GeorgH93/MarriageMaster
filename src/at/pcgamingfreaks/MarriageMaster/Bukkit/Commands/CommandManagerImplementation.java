@@ -23,10 +23,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.Reflection;
@@ -42,7 +39,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
+public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager /*if_not[STANDALONE]*/, CommandManagerWithRegistry /*end[STANDALONE]*/
 {
 	private MarriageMaster plugin;
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll;
@@ -91,49 +88,49 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 
 		// Init MarriageMaster commands
-		registerMarryCommand(new ListCommand(plugin));
+		registerSubCommand(new ListCommand(plugin));
 		marryActionCommand = new MarryMarryCommand(plugin);
-		registerMarryCommand(marryActionCommand);
-		registerMarryCommand(new MarryDivorceCommand(plugin));
+		registerSubCommand(marryActionCommand);
+		registerSubCommand(new MarryDivorceCommand(plugin));
 		if(plugin.getConfiguration().isChatEnabled())
 		{
-			registerMarryCommand(new ChatCommand(plugin));
+			registerSubCommand(new ChatCommand(plugin));
 		}
-		registerMarryCommand(new TpCommand(plugin));
-		registerMarryCommand(new HomeCommand(plugin));
+		registerSubCommand(new TpCommand(plugin));
+		registerSubCommand(new HomeCommand(plugin));
 		if(plugin.getConfiguration().getPvPAllowBlocking())
 		{
-			registerMarryCommand(new PvPCommand(plugin));
+			registerSubCommand(new PvPCommand(plugin));
 		}
 		if(plugin.getConfiguration().isGiftEnabled())
 		{
-			registerMarryCommand(new GiftCommand(plugin));
+			registerSubCommand(new GiftCommand(plugin));
 		}
 		if(plugin.getBackpacksIntegration() != null && plugin.getConfiguration().isBackpackShareEnabled())
 		{
-			registerMarryCommand(new BackpackCommand(plugin));
+			registerSubCommand(new BackpackCommand(plugin));
 		}
 		if(plugin.getConfiguration().isKissEnabled())
 		{
-			registerMarryCommand(new KissCommand(plugin));
+			registerSubCommand(new KissCommand(plugin));
 		}
-		registerMarryCommand(new HugCommand(plugin));
-		registerMarryCommand(new SeenCommand(plugin));
+		registerSubCommand(new HugCommand(plugin));
+		registerSubCommand(new SeenCommand(plugin));
 		if(plugin.getConfiguration().isSurnamesEnabled())
 		{
-			registerMarryCommand(new SurnameCommand(plugin));
+			registerSubCommand(new SurnameCommand(plugin));
 		}
 		if(plugin.getConfiguration().isSetPriestCommandEnabled())
 		{
-			registerMarryCommand(new SetPriestCommand(plugin));
+			registerSubCommand(new SetPriestCommand(plugin));
 		}
-		registerMarryCommand(new UpdateCommand(plugin));
-		registerMarryCommand(new ReloadCommand(plugin));
-		registerMarryCommand(new VersionCommand(plugin));
-		registerMarryCommand(new HelpCommand(plugin, commands)); // The help command needs the list of all existing commands to show the help
-		registerMarryCommand(new RequestAcceptCommand(plugin));
-		registerMarryCommand(new RequestDenyCommand(plugin));
-		registerMarryCommand(new RequestCancelCommand(plugin));
+		registerSubCommand(new UpdateCommand(plugin));
+		registerSubCommand(new ReloadCommand(plugin));
+		registerSubCommand(new VersionCommand(plugin));
+		registerSubCommand(new HelpCommand(plugin, commands)); // The help command needs the list of all existing commands to show the help
+		registerSubCommand(new RequestAcceptCommand(plugin));
+		registerSubCommand(new RequestDenyCommand(plugin));
+		registerSubCommand(new RequestCancelCommand(plugin));
 		setDefaultSubCommand(subCommandMap.get("help"));
 	}
 
@@ -236,18 +233,6 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	}
 
 	@Override
-	public void registerMarryCommand(@NotNull MarryCommand command)
-	{
-		registerSubCommand(command);
-	}
-
-	@Override
-	public void unRegisterMarryCommand(@NotNull MarryCommand command)
-	{
-		unRegisterSubCommand(command);
-	}
-
-	@Override
 	public boolean registerAcceptPendingRequest(@NotNull AcceptPendingRequest request)
 	{
 		// Check if the request is valid
@@ -255,17 +240,13 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		{
 			return false;
 		}
-		if(request.getPlayersThatCanCancel() != null)
+		for(MarriagePlayer p : request.getPlayersThatCanCancel())
 		{
-			for(MarriagePlayer p : request.getPlayersThatCanCancel())
-			{
-				if(!(p instanceof MarriagePlayerData) || !p.isOnline()) return false;
-			}
-			for(MarriagePlayer p : request.getPlayersThatCanCancel())
-			{
-				if(p == null) continue;
-				((MarriagePlayerData) p).addRequest(request);
-			}
+			if(!(p instanceof MarriagePlayerData) || !p.isOnline()) return false;
+		}
+		for(MarriagePlayer p : request.getPlayersThatCanCancel())
+		{
+			((MarriagePlayerData) p).addRequest(request);
 		}
 		((MarriagePlayerData) request.getPlayerThatHasToAccept()).addRequest(request);
 		return true;

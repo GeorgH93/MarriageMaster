@@ -18,7 +18,6 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
 import at.pcgamingfreaks.BadRabbit.Bukkit.BadRabbit;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,7 +41,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		{
 			getLogger().info("PCGF-PluginLib installed. Switching to normal mode!");
 			newPluginInstance = new MarriageMaster();
-			getField(MarriageManager.class, "useBukkitUpdater").set(newPluginInstance, true);
+			getField(MarriageMaster.class, "useBukkitUpdater").set(newPluginInstance, true);
 		}
 		return newPluginInstance;
 	}

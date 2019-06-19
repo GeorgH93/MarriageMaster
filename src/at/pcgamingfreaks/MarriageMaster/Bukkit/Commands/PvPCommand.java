@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -11,8 +11,8 @@
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  *   GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
@@ -37,6 +37,7 @@ import java.util.List;
 
 public class PvPCommand extends MarryCommand
 {
+	private final MarriageMaster plugin;
 	private final Message messagePvPOn, messagePvPOff, messagePvPIsOff;
 	private final String helpMulti, helpOn, helpOff;
 	private MarryCommand onCommand, offCommand;
@@ -44,6 +45,7 @@ public class PvPCommand extends MarryCommand
 	public PvPCommand(MarriageMaster plugin)
 	{
 		super(plugin, "pvp", plugin.getLanguage().getTranslated("Commands.Description.PvP"), "marry.pvp", true, true, plugin.getLanguage().getCommandAliases("PvP"));
+		this.plugin = plugin;
 
 		messagePvPOn    = plugin.getLanguage().getMessage("Ingame.PvP.On");
 		messagePvPOff   = plugin.getLanguage().getMessage("Ingame.PvP.Off");
@@ -58,18 +60,18 @@ public class PvPCommand extends MarryCommand
 	@Override
 	public void registerSubCommands()
 	{
-		onCommand = new PvPOnCommand(((MarriageMaster) getMarriagePlugin()));
-		getMarriagePlugin().getCommandManager().registerMarryCommand(onCommand);
-		offCommand = new PvPOffCommand(((MarriageMaster) getMarriagePlugin()));
-		getMarriagePlugin().getCommandManager().registerMarryCommand(offCommand);
+		onCommand = new PvPOnCommand(plugin);
+		plugin.getCommandManagerReal().registerSubCommand(onCommand);
+		offCommand = new PvPOffCommand(plugin);
+		plugin.getCommandManagerReal().registerSubCommand(offCommand);
 	}
 
 	@Override
 	public void unRegisterSubCommands()
 	{
-		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(onCommand);
+		plugin.getCommandManagerReal().unRegisterSubCommand(onCommand);
 		onCommand.close();
-		getMarriagePlugin().getCommandManager().unRegisterMarryCommand(offCommand);
+		plugin.getCommandManagerReal().unRegisterSubCommand(offCommand);
 		offCommand.close();
 	}
 
@@ -103,7 +105,7 @@ public class PvPCommand extends MarryCommand
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
 			{
-				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+				plugin.messageTargetPartnerNotFound.send(sender);
 				return;
 			}
 		}

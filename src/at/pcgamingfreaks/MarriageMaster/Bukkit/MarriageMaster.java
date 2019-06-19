@@ -21,11 +21,8 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Updater;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriageMasterReloadEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageMasterPlugin;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.BackpackIntegrationManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration.IBackpackIntegration;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementation;
@@ -415,7 +412,22 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 
 	@Override
-	public @NotNull at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager getCommandManager()
+	public @NotNull CommandManager getCommandManager()
+	{
+		return commandManager;
+	}
+
+	@Override
+	public @Nullable at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManagerWithRegistry getCommandManagerWithRegistry()
+	{
+		/*if[STANDALONE]
+		return null;
+		else[STANDALONE]*/
+		return commandManager;
+		/*end[STANDALONE]*/
+	}
+
+	public @NotNull CommandManagerImplementation getCommandManagerReal()
 	{
 		return commandManager;
 	}

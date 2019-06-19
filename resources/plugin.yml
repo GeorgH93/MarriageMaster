@@ -6,7 +6,7 @@ main: "${bukkitMainClass}"
 version: "${version}"
 api-version: "1.13"
 depend: [${dependencies}]
-softdepend: [Vault,Minepacks,MinePacks,MVdWPlaceholderAPI,PlaceholderAPI]
+softdepend: [ Vault, Minepacks, MinePacks, MVdWPlaceholderAPI, PlaceholderAPI ${soft-dependencies} ]
 
 permissions:
   marry.*:
