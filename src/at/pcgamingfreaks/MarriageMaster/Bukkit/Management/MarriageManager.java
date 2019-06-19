@@ -436,16 +436,13 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 							priest.send(messageSelfOtherAlreadyMarried, otherPlayer.getName(), otherPlayer.getDisplayName());
 						}
 					}
-					else if(player1.getOpenRequest() != null || player2.getOpenRequest() != null)
+					else if(priest.getOpenRequest() != null || priest.getRequestsToCancel().size() > 0)
 					{
-						if(priest.getOpenRequest() != null)
-						{
-							priest.send(messageSelfAlreadyOpenRequest);
-						}
-						if(otherPlayer.getOpenRequest() != null)
-						{
-							priest.send(messageAlreadyOpenRequest, otherPlayer.getName(), otherPlayer.getDisplayName());
-						}
+						priest.send(messageSelfAlreadyOpenRequest);
+					}
+					else if(otherPlayer.getOpenRequest() != null || otherPlayer.getRequestsToCancel().size() > 0)
+					{
+						priest.send(messageAlreadyOpenRequest, otherPlayer.getName(), otherPlayer.getDisplayName());
 					}
 					else
 					{
@@ -475,16 +472,13 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 							}
 							else
 							{
-								if(player1.getOpenRequest() != null || player2.getOpenRequest() != null)
+								if(player1.getOpenRequest() != null || player1.getRequestsToCancel().size() > 0)
 								{
-									if(player1.getOpenRequest() != null)
-									{
-										priest.send(messageAlreadyOpenRequest, player1.getName(), player1.getDisplayName());
-									}
-									if(player2.getOpenRequest() != null)
-									{
-										priest.send(messageAlreadyOpenRequest, player2.getName(), player2.getDisplayName());
-									}
+									priest.send(messageAlreadyOpenRequest, player1.getName(), player1.getDisplayName());
+								}
+								else if(player2.getOpenRequest() != null || player2.getRequestsToCancel().size() > 0)
+								{
+									priest.send(messageAlreadyOpenRequest, player2.getName(), player2.getDisplayName());
 								}
 								else
 								{
