@@ -48,6 +48,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -253,6 +254,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		database = null;
 		commandManager.close();
 		commandManager = null;
+		marriageManager.close();
+		marriageManager = null;
 	}
 	//endregion
 
