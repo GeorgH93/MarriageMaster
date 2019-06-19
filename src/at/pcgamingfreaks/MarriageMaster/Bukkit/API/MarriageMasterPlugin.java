@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<OfflinePlayer, MarriagePlayer, Marriage, MarriageManager, CommandManager, DelayableTeleportAction>
+public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<OfflinePlayer, MarriagePlayer, Marriage, MarriageManager, CommandManager, CommandManagerWithRegistry, DelayableTeleportAction>
 {
 	/**
 	 * Checks if two players are within a certain range to each other.

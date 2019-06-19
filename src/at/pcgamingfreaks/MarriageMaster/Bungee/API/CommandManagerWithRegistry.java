@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,12 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
-import net.md_5.bungee.api.CommandSender;
+import at.pcgamingfreaks.MarriageMaster.API.CommandManagerRegistry;
 
-/**
- * The command manager is responsible for managing all the command stuff of the plugin.
- * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
- */
 @SuppressWarnings("unused")
-public interface CommandManager extends at.pcgamingfreaks.MarriageMaster.API.CommandManager<CommandSender>
+public interface CommandManagerWithRegistry extends CommandManager, CommandManagerRegistry<MarryCommand>
 {}

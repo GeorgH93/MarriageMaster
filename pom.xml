@@ -43,14 +43,6 @@
 			<id>spigot-nexus</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public</url>
 		</repository>
-		<repository>
-			<id>sonatype-snapshot</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</repository>
-		<repository>
-			<id>sonatype-release</id>
-			<url>https://oss.sonatype.org/content/repositories/releases</url>
-		</repository>
 	</repositories>
 
 	<dependencies>

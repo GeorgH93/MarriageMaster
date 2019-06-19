@@ -24,25 +24,11 @@ import java.util.List;
 
 /**
  * The command manager is responsible for managing all the command stuff of the plugin.
- * It provides functions to register/unregister sub-commands, requests that need to be accepted and switches translated in the language file.
+ * It provides requests that need to be accepted and switches translated in the language file.
  */
 @SuppressWarnings("unused")
-public interface CommandManager<MARRY_COMMAND extends MarryCommand, V>
+public interface CommandManager<COMMAND_SENDER>
 {
-	/**
-	 * Registers a new sub-command for /marry.
-	 *
-	 * @param command The command that should be registered.
-	 */
-	void registerMarryCommand(@NotNull MARRY_COMMAND command);
-
-	/**
-	 * Unregisters a sub-command for /marry.
-	 *
-	 * @param command The command that should be unregistered.
-	 */
-	void unRegisterMarryCommand(@NotNull MARRY_COMMAND command);
-
 	/**
 	 * Checks if a string is an on switch in the used language file.
 	 *
@@ -110,5 +96,5 @@ public interface CommandManager<MARRY_COMMAND extends MarryCommand, V>
 	 * @param args   The given args.
 	 * @return The list of names for the tab complete event. Null if there is no matching partner.
 	 */
-	@Nullable List<String> getSimpleTabComplete(@NotNull V sender, @Nullable String... args);
+	@Nullable List<String> getSimpleTabComplete(@NotNull COMMAND_SENDER sender, @Nullable String... args);
 }

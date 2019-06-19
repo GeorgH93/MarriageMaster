@@ -24,7 +24,8 @@ import java.util.Collection;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_MANAGER extends MarriageManager, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
+public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_MANAGER extends MarriageManager, COMMAND_MANAGER extends CommandManager,
+		COMMAND_MANAGER_REGISTRY extends CommandManagerRegistry, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
 {
 	/**
 	 * Checks if the plugin is running in standalone mode.
@@ -120,9 +121,17 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	@NotNull MARRIAGE_MANAGER getMarriageManager();
 
 	/**
-	 * Gets the command manager of the plugin. Needed to register sub-commands.
+	 * Gets the command manager of the plugin.
 	 *
-	 * @return The Marriage Master Command Manager. null if the plugin is running in standalone mdoe.
+	 * @return The Marriage Master Command Manager.
 	 */
-	@Nullable COMMAND_MANAGER getCommandManager();
+	@NotNull COMMAND_MANAGER getCommandManager();
+
+	/**
+	 * Gets the command manager of the plugin. With the ability to register custom sub-commands.
+	 * It will not be possible to register custom sub commands when the plugin is running in standalone mode.
+	 *
+	 * @return The Marriage Master Command Manager. null if the plugin is running in standalone mode.
+	 */
+	@Nullable COMMAND_MANAGER_REGISTRY getCommandManagerWithRegistry();
 }
