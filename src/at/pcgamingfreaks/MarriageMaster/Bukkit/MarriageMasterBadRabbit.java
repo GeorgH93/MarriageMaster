@@ -18,10 +18,14 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
 import at.pcgamingfreaks.BadRabbit.Bukkit.BadRabbit;
+import at.pcgamingfreaks.BadRabbit.Bukkit.PluginClassLoaderBypass;
+import at.pcgamingfreaks.MarriageMaster.MethodTypeReplacer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.InputStream;
 
 @SuppressWarnings("unused")
 public class MarriageMasterBadRabbit extends BadRabbit
@@ -32,6 +36,8 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		JavaPlugin newPluginInstance;
 		if(Bukkit.getPluginManager().getPlugin("PCGF_PluginLib") == null)
 		{
+			new ModifyAPI(getClassLoader()).loadClass("at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer"); // Modify the API
+
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster");
 			newPluginInstance = (JavaPlugin) standaloneClass.newInstance();
@@ -45,4 +51,20 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		}
 		return newPluginInstance;
 	}
+
+	//region bad stuff to bypass the class loader and modify api
+	private class ModifyAPI extends PluginClassLoaderBypass
+	{
+		ModifyAPI(ClassLoader classLoader) throws Exception
+		{
+			super(classLoader);
+		}
+
+		@Override
+		protected byte[] loadJarData(@NotNull String name, @NotNull InputStream stream) throws Exception
+		{
+			return MethodTypeReplacer.replace("at/pcgamingfreaks/Message/Message", "at/pcgamingfreaks/MarriageMasterStandalone/libs/at/pcgamingfreaks/Message/Message", stream);
+		}
+	}
+	//endregion
 }

@@ -109,7 +109,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>BadRabbit</artifactId>
-			<version>1.2.1</version>
+			<version>1.3</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -156,6 +156,17 @@
 			<artifactId>placeholderapi</artifactId>
 			<version>2.9.2</version>
 			<scope>provided</scope>
+		</dependency>
+		<!-- ASM for the extra bit of black magic -->
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-util</artifactId>
+			<version>7.1</version>
 		</dependency>
 		<!-- region unit test dependencies -->
 		<!-- region JUnit 5 -->
@@ -329,6 +340,7 @@
 									<excludes>
 										<exclude>at/pcgamingfreaks/MarriageMaster/Bukkit/MarriageMasterBadRabbit.class</exclude>
 										<exclude>at/pcgamingfreaks/MarriageMaster/Bungee/MarriageMasterBadRabbit.class</exclude>
+										<exclude>at/pcgamingfreaks/MarriageMaster/MethodTypeReplacer.class</exclude>
 									</excludes>
 								</configuration>
 							</execution>
@@ -482,12 +494,17 @@
 											<include>at.pcgamingfreaks:MarriageMaster-API</include>
 											<include>at.pcgamingfreaks:BadRabbit</include>
 											<include>at.pcgamingfreaks:MarriageMaster</include>
+											<include>org.ow2.asm:*</include>
 										</includes>
 									</artifactSet>
 									<relocations>
 										<relocation>
 											<pattern>at.pcgamingfreaks.BadRabbit</pattern>
 											<shadedPattern>at.pcgamingfreaks.MarriageMaster</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>org.objectweb</pattern>
+											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs.org.objectweb</shadedPattern>
 										</relocation>
 									</relocations>
 								</configuration>
