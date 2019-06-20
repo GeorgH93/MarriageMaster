@@ -3,11 +3,11 @@ Version: 91
 LanguageName: "English"
 Author: "GeorgH93"
 Language:
+  NotFromConsole: "&cThis command can't be used from the console!"
   # Global Wildcards: <heart> and <smallheart>
   Ingame:
     NoPermission: "[\"\",{\"text\":\"You don't have the permission to do that.\",\"color\":\"red\"}]"
     NaN: "[\"\",{\"text\":\"The entered value is not a number!\",\"color\":\"red\"}]"
-    NotFromConsole: "&cThis command can't be used from the console!"
     NotMarried: "[\"\",{\"text\":\"You are not married.\",\"color\":\"red\"}]"
     PartnerOffline: "[\"\",{\"text\":\"Your partner is offline.\",\"color\":\"red\"}]"
     PartnerNotInRange: "[\"\",{\"text\":\"Your partner is too far away.\",\"color\":\"red\"}]"
@@ -103,7 +103,7 @@ Language:
         DeniedPartner: "Your partner denied the teleport request."
         Canceled: "You canceled your teleport request."
         CanceledPartner: "Your partner canceled the teleport request."
-        CanceledDisconnectReques: "Your partner went offline. Teleport request canceled."
+        CanceledDisconnectRequester: "Your partner went offline. Teleport request canceled."
         CanceledDisconnectTarget: "Your partner went offline. Teleport request canceled."
     SetPriest:
       # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!

@@ -4,11 +4,11 @@ Version: 90
   Author: "Stashenko"
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
 Language:
+  NotFromConsole: "&cЭта команда не может использоваться с консоли!"
   # Global Wildcards: <heart> and <smallheart>
   Ingame:
     NoPermission: "[\"\",{\"text\":\"У вас нет разрешения на это.\",\"color\":\"red\"}]"
     NaN: "[\"\",{\"text\":\"Введенное значение не является числом!\",\"color\":\"red\"}]"
-    NotFromConsole: "&cЭта команда не может использоваться с консоли!"
     NotMarried: "[\"\",{\"text\":\"Вы не женаты.\",\"color\":\"red\"}]"
     PartnerOffline: "[\"\",{\"text\":\"Ваш партнер не на сервере.\",\"color\":\"red\"}]"
     PartnerNotInRange: "[\"\",{\"text\":\"Ваш партнер слишком далеко.\",\"color\":\"red\"}]"

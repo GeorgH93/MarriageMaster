@@ -103,7 +103,7 @@ Language:
         DeniedPartner: "Dein Partner hat deine Teleportations-Anfrage abgelehnt."
         Canceled: "Du hast deine Teleportations-Anfrage abgebrochen."
         CanceledPartner: "Dein Partner hat seine Teleportations-Anfrage abgebrochen."
-        CanceledDisconnectReques: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
+        CanceledDisconnectRequester: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
         CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
     SetPriest:
       # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
