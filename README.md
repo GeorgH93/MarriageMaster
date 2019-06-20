@@ -55,12 +55,40 @@ Marriage Master is a Bukkit/Spigot plugin that allows you to marry another playe
 - [API][api] - The plugin has a very powerful API for developers
 
 ## Build from source:
+The plugin can be build in 3 different configurations.
+
+### Build requirements
+
+* JDK for Java 8
+* Maven 3
+* git
+
+### Normal version:
 ```
 git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
 mvn package
 ```
-The final file will be in the target folder
+The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>.jar`.
+
+### Standalone version:
+This version works without the PCGF-PluginLib, however some API features are not available.
+```
+git clone https://github.com/GeorgH93/MarriageMaster.git
+cd MarriageMaster
+mvn package -P Standalone,ExcludeBadRabbit
+```
+The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>-Standalone.jar`.
+
+### Release version:
+This is the version of the plugin published on dev.bukkit.org and spigotmc.org.
+```
+git clone https://github.com/GeorgH93/MarriageMaster.git
+cd MarriageMaster
+mvn clean install -P Standalone,ExcludeBadRabbit
+mvn clean package -P Release
+```
+The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>-Release.jar`.
 
 ## API:
 Marriage Master V2 comes with a very powerful API that allows you to change almost everything about this plugin.
