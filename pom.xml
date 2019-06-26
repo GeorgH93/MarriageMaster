@@ -233,6 +233,9 @@
 					<include>LICENSE</include>
 				</includes>
 			</resource>
+			<resource>
+				<directory>${project.build.directory}/generated-resources</directory>
+			</resource>
 		</resources>
 		<testSourceDirectory>test/src</testSourceDirectory>
 		<testResources>
@@ -423,7 +426,6 @@
 											<artifact>at.pcgamingfreaks:PluginLib</artifact>
 											<excludes>
 												<exclude>*.yml</exclude>
-												<exclude>META-INF/*.txt</exclude>
 											</excludes>
 										</filter>
 									</filters>
@@ -508,6 +510,26 @@
 										</relocation>
 									</relocations>
 								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>license-maven-plugin</artifactId>
+						<version>1.20</version>
+						<configuration>
+							<excludedScopes>test,provided,system</excludedScopes>
+							<generateBundle>true</generateBundle>
+							<licensesOutputFile>${project.build.directory}/generated-resources/licenses-THIRD-PARTY.xml</licensesOutputFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>add-third-party</id>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>add-third-party</goal>
+									<goal>download-licenses</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
