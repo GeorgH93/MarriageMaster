@@ -1,6 +1,6 @@
 name: "${project.name}"
 author: "${author}"
-website: "${website}"
+website: "${project.url}"
 description: "${project.description}"
 main: "${bukkitMainClass}"
 version: "${version}"

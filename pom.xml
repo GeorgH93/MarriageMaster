@@ -20,6 +20,7 @@
 
 	<name>MarriageMaster</name>
 	<description>A marriage plugin for bukkit/spigot servers.</description>
+	<url>https://www.spigotmc.org/resources/19273/</url>
 	<inceptionYear>2014</inceptionYear>
 	<licenses>
 		<license>
@@ -30,7 +31,6 @@
 	</licenses>
 	<properties>
 		<author>GeorgH93</author>
-		<website>https://www.spigotmc.org/resources/19273/</website>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 		<timestamp>${maven.build.timestamp}</timestamp>
 
