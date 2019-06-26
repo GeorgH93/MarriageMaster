@@ -34,43 +34,50 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.sql.SQLException;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, Marriage, MarriageData> implements Listener
 {
 	private final UnCacheStrategie unCacheStrategie;
 
-	protected Database(MarriageMaster plugin)
+	protected Database(@NotNull MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), plugin.getConfiguration().useUUIDs(), plugin.getConfiguration().useUUIDSeparators(), plugin.getConfiguration().getUseOnlineUUIDs());
 		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
 	}
 
-	public static Database getDatabase(MarriageMaster plugin)
+	public static @Nullable ConnectionProvider getExternalConnectionProvider(@NotNull String dbType, @NotNull Logger logger) throws SQLException
+	{
+		ConnectionProvider connectionProvider = null;
+		if(dbType.equals("shared") || dbType.equals("external") || dbType.equals("global"))
+		{
+			/*if[STANDALONE]
+			logger.warning(ConsoleColor.RED + "The shared database connection option is not available in standalone mode!" + ConsoleColor.RESET);
+				throw new SQLException("The shared database connection option is not available in standalone mode!");
+			else[STANDALONE]*/
+			connectionProvider = at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getConnectionProvider();
+			if(connectionProvider == null)
+			{
+				logger.warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
+				throw new SQLException("The shared connection pool is not initialized correctly!");
+			}
+			/*end[STANDALONE]*/
+		}
+		return connectionProvider;
+	}
+
+	public static Database getDatabase(@NotNull MarriageMaster plugin)
 	{
 		try
 		{
 			String dbType = plugin.getConfiguration().getDatabaseType();
-			ConnectionProvider connectionProvider = null;
-			if(dbType.equals("shared") || dbType.equals("external") || dbType.equals("global"))
-			{
-				/*if[STANDALONE]
-				plugin.getLogger().warning(ConsoleColor.RED + "The shared database connection option is not available in standalone mode!" + ConsoleColor.RESET);
-				return null;
-				else[STANDALONE]*/
-				at.pcgamingfreaks.PluginLib.Database.DatabaseConnectionPool pool = at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getDatabaseConnectionPool();
-				if(pool == null)
-				{
-					plugin.getLogger().warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
-					return null;
-				}
-				dbType = pool.getDatabaseType().toLowerCase();
-				connectionProvider = pool.getConnectionProvider();
-				/*end[STANDALONE]*/
-			}
+			ConnectionProvider connectionProvider = getExternalConnectionProvider(dbType, plugin.getLogger());
 			Database db;
-			switch(dbType)
+			switch((connectionProvider != null) ? connectionProvider.getDatabaseType() : dbType)
 			{
 				case "mysql": db = new MySQL(plugin, connectionProvider); break;
 				case "sqlite": db = new SQLite(plugin, connectionProvider); break;
@@ -80,7 +87,7 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 					db = new SQLite(plugin, null);
 					Converter.runConverter(plugin, db);
 					break;
-				default: plugin.getLogger().warning(String.format(MESSAGE_UNKNOWN_DB_TYPE,  plugin.getConfiguration().getDatabaseType())); return null;
+				default: plugin.getLogger().warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
 			}
 			db.startup();
 			return db;
@@ -152,25 +159,25 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 		}
 	}
 
-	public void cachedDivorce(MarriageData marriage)
+	public void cachedDivorce(final @NotNull MarriageData marriage)
 	{
 		cachedDivorce(marriage, true);
 	}
 
-	public void cachedDivorce(MarriageData marriage, boolean updateDatabase)
+	public void cachedDivorce(final @NotNull MarriageData marriage, boolean updateDatabase)
 	{
 		if(updateDatabase) divorce(marriage);
 		cache.unCache(marriage);
 	}
 
-	public void cachedMarry(MarriageData marriage)
+	public void cachedMarry(final @NotNull MarriageData marriage)
 	{
 		marry(marriage);
 		cache.cache(marriage);
 	}
 
 	@SuppressWarnings("deprecation")
-	protected UUID getUUIDFromIdentifier(String identifier)
+	protected @NotNull UUID getUUIDFromIdentifier(@NotNull String identifier)
 	{
 		if(useUUIDs)
 		{

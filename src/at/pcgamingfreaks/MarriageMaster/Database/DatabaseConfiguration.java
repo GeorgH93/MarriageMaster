@@ -25,29 +25,62 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
 {
-	@NotNull String getDatabaseType();
+	default @NotNull String getDatabaseType()
+	{
+		return getConfigE().getString("Database.Type", "MySQL").toLowerCase();
+	}
 
-	boolean useUUIDs();
+	default boolean useUUIDs()
+	{
+		return getConfigE().getBoolean("Database.UseUUIDs", true);
+	}
 
-	boolean useUUIDSeparators();
+	default boolean useUUIDSeparators()
+	{
+		return getConfigE().getBoolean("Database.UseUUIDSeparators", false);
+	}
 
 	boolean getUseOnlineUUIDs();
 
-	@NotNull String getSQLTableUser();
+	default @NotNull String getSQLTableUser()
+	{
+		return getConfigE().getString("Database.SQL.Tables.User", "marry_players");
+	}
 
-	@NotNull String getSQLTableHomes();
+	default @NotNull String getSQLTableHomes()
+	{
+		return getConfigE().getString("Database.SQL.Tables.Home", "marry_home");
+	}
 
-	@NotNull String getSQLTablePriests();
+	default @NotNull String getSQLTablePriests()
+	{
+		return getConfigE().getString("Database.SQL.Tables.Priests", "marry_priests");
+	}
 
-	@NotNull String getSQLTableMarriages();
+	default @NotNull String getSQLTableMarriages()
+	{
+		return getConfigE().getString("Database.SQL.Tables.Partner", "marry_partners");
+	}
 
 	@Contract("_, !null -> !null")
-	@Nullable String getSQLField(@NotNull String field, @Nullable String defaultValue);
+	default @Nullable String getSQLField(@NotNull String field, @Nullable String defaultValue)
+	{
+		return getConfigE().getString("Database.SQL.Tables.Fields." + field, defaultValue);
+	}
 
-	@NotNull String getUnCacheStrategie();
+	default @NotNull String getUnCacheStrategie()
+	{
+		return getConfigE().getString("Database.Cache.UnCache.Strategie", "interval").toLowerCase();
+	}
 
-	long getUnCacheInterval();
+	default long getUnCacheInterval()
+	{
+		return getConfigE().getLong("Database.Cache.UnCache.Interval", 600) * 20L;
+	}
 
-	long getUnCacheDelay();
+	default long getUnCacheDelay()
+	{
+		return getConfigE().getLong("Database.Cache.UnCache.Delay", 600) * 20L;
+	}
 }
 

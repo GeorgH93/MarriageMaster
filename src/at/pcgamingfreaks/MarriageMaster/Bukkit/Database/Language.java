@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 	{
 		if(oldLang.getVersion() < PRE_V2_VERSIONS)
 		{
-			OldFileUpdater.updateLanguage(oldLang.getYaml(), getLang());
+			OldFileUpdater.updateLanguage(oldLang.getYamlE(), getLang());
 		}
 		else
 		{
@@ -52,19 +52,19 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 	}
 
 	@Override
-	public String getTranslated(final String key)
+	public @NotNull String getTranslated(final @NotNull String key)
 	{
 		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
 	public String getTranslatedPlaceholder(final String key)
 	{
-		return ChatColor.translateAlternateColorCodes('&', getLang().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return ChatColor.translateAlternateColorCodes('&', getLangE().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
 	public String getDialog(final String key)
 	{
-		return getLang().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
 	public String[] getCommandAliases(final String command)
@@ -74,13 +74,13 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 
 	public String[] getCommandAliases(final String command, final @NotNull String[] defaults)
 	{
-		List<String> aliases = getLang().getStringList("Command." + command, new LinkedList<>());
+		List<String> aliases = getLangE().getStringList("Command." + command, new LinkedList<>());
 		return (aliases.size() > 0) ? aliases.toArray(new String[0]) : defaults;
 	}
 
 	public String[] getSwitch(final String key, final String defaultSwitch)
 	{
-		List<String> switches = getLang().getStringList("Command.Switches." + key, new LinkedList<>());
+		List<String> switches = getLangE().getStringList("Command.Switches." + key, new LinkedList<>());
 		if(!switches.contains(defaultSwitch)) switches.add(defaultSwitch);
 		return switches.toArray(new String[0]);
 	}

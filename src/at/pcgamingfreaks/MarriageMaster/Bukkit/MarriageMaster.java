@@ -52,7 +52,7 @@ import java.util.UUID;
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
 	private static final int BUKKIT_PROJECT_ID = 74734;
-	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2", MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.12-SNAPSHOT";
+	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2", MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.14-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	private static Version version = null;
 	private static MarriageMaster instance;
@@ -395,6 +395,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 				getServer().getScheduler().runTaskLater(this, () -> {
 					if(action.getPlayer().isOnline())
 					{
+						//noinspection ConstantConditions
 						if(p_hea <= action.getPlayer().getHealth() && p_loc.getX() == action.getPlayer().getLocation().getX() && p_loc.getY() == action.getPlayer().getLocation().getY() &&
 								p_loc.getZ() == action.getPlayer().getLocation().getZ() && p_loc.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
 						{
