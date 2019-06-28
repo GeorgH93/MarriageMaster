@@ -34,7 +34,7 @@ public class SQLite extends SQL
 {
 	protected SQLite(@NotNull MarriageMaster plugin, @Nullable ConnectionProvider connectionProvider)
 	{
-		super(plugin, (connectionProvider == null) ? new SQLiteConnectionProvider(plugin.getLogger(), plugin.getDescription().getName(), plugin.getDataFolder().getAbsolutePath() + File.separator + "backpack.db") : connectionProvider);
+		super(plugin, (connectionProvider == null) ? new SQLiteConnectionProvider(plugin.getLogger(), plugin.getDescription().getName(), plugin.getDataFolder().getAbsolutePath() + File.separator + "database.db") : connectionProvider);
 	}
 
 	@Override
