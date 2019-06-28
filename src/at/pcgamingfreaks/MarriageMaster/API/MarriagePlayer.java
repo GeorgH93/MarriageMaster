@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -200,6 +201,18 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @return The partners matching the given string.
 	 */
 	@NotNull List<String> getMatchingPartnerNames(@Nullable String namePart);
+
+	/**
+	 * Gets a list of all the players partners that are currently online.
+	 *
+	 * @return List of all online partners.
+	 */
+	default @NotNull Collection<? extends MARRIAGE_PLAYER> getOnlinePartners()
+	{
+		List<MARRIAGE_PLAYER> onlinePartners = new LinkedList<>();
+		getPartners().forEach(partner -> { if(partner.isOnline()) onlinePartners.add(partner); });
+		return onlinePartners;
+	}
 
 	/**
 	 * Sends a message to the player.
