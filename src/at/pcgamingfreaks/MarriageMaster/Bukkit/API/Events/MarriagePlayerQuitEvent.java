@@ -17,36 +17,31 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Event is fired after two players got married.
+ * Event is fired when a married player disconnects form the server.
  */
 @SuppressWarnings("unused")
-public class MarriedEvent extends Event
+public class MarriagePlayerQuitEvent extends Event
 {
-	private Marriage marriageData;
+	private MarriagePlayer player;
 
-	/**
-	 * @param marriageData Marriage data of the new formed marriage.
-	 */
-	public MarriedEvent(@NotNull Marriage marriageData)
+	public MarriagePlayerQuitEvent(MarriagePlayer player)
 	{
-		this.marriageData = marriageData;
+		this.player = player;
 	}
 
 	/**
-	 * Gets marriage data containing all data of the marriage.
-	 *
-	 * @return Marriage data of the new formed marriage.
+	 * @return The married player that has disconnected from the server
 	 */
-	public @NotNull Marriage getMarriageData()
+	public MarriagePlayer getPlayer()
 	{
-		return marriageData;
+		return this.player;
 	}
 
 	// Bukkit handler stuff

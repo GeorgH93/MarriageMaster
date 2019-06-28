@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -117,7 +117,7 @@ public class HomeSetEvent extends Event implements Cancellable
 	private static final HandlerList handlers = new HandlerList();
 
 	@Override
-	public HandlerList getHandlers()
+	public @NotNull HandlerList getHandlers()
 	{
 		return handlers;
 	}

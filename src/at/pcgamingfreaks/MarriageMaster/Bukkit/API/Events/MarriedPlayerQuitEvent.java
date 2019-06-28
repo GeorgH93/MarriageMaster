@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Event is fired when a married player disconnects form the server.
@@ -28,9 +29,9 @@ import org.bukkit.event.HandlerList;
 @SuppressWarnings("unused")
 public class MarriedPlayerQuitEvent extends Event
 {
-	private MarriagePlayer player;
+	private final MarriagePlayer player;
 
-	public MarriedPlayerQuitEvent(MarriagePlayer player)
+	public MarriedPlayerQuitEvent(final @NotNull MarriagePlayer player)
 	{
 		this.player = player;
 	}
@@ -38,7 +39,7 @@ public class MarriedPlayerQuitEvent extends Event
 	/**
 	 * @return The married player that has disconnected from the server
 	 */
-	public MarriagePlayer getPlayer()
+	public @NotNull MarriagePlayer getPlayer()
 	{
 		return this.player;
 	}
@@ -47,7 +48,7 @@ public class MarriedPlayerQuitEvent extends Event
 	private static final HandlerList handlers = new HandlerList();
 
 	@Override
-	public HandlerList getHandlers()
+	public @NotNull HandlerList getHandlers()
 	{
 		return handlers;
 	}

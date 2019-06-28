@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Event is fired when the plugin was reloaded.
@@ -30,7 +31,7 @@ public class MarriageMasterReloadEvent extends Event
 	private static final HandlerList handlers = new HandlerList();
 
 	@Override
-	public HandlerList getHandlers()
+	public @NotNull HandlerList getHandlers()
 	{
 		return handlers;
 	}
