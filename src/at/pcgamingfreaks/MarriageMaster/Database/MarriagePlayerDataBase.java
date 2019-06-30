@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
-import at.pcgamingfreaks.MarriageMaster.API.AbstractHome;
+import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.Message.Message;
@@ -27,20 +27,19 @@ import com.google.common.base.Charsets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends AbstractHome, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends Message> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>
+public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends Message> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>
 {
 	@Getter @Setter	private String name;
 	private final UUID uuid;
 	private final int hash;
-	private boolean priest = false, privateChat = false;
-	@Getter @Setter(AccessLevel.PROTECTED) private boolean married = false;
+	private boolean priest = false, privateChat = false, sharesBackpack = false;
+	@Getter private boolean married = false;
 	@Getter @Setter	private Object databaseKey = null;
 	private MARRIAGE privateChatTarget = null;
 	private Map<MARRIAGE_PLAYER, MARRIAGE> partnersMarriages = new ConcurrentHashMap<>();
@@ -53,21 +52,16 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 		this.hash = this.uuid.hashCode();
 	}
 
-	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name, final @Nullable Object databaseKey)
-	{
-		this(uuid, name);
-		this.databaseKey = databaseKey;
-	}
-
 	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name, boolean priest)
 	{
 		this(uuid, name);
 		this.priest = priest;
 	}
 
-	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name, boolean priest, final @Nullable Object databaseKey)
+	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name, boolean priest, final boolean sharesBackpack, final @Nullable Object databaseKey)
 	{
 		this(uuid, name, priest);
+		this.sharesBackpack = sharesBackpack;
 		this.databaseKey = databaseKey;
 	}
 	//endregion
@@ -84,22 +78,31 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 		return hash;
 	}
 
-	public void setIsPriest(boolean is)
+	//region set data (to update data changed externally)
+	public void setPriestData(boolean is)
 	{
 		priest = is;
+	}
+
+	public void setSharesBackpack(boolean state)
+	{
+		sharesBackpack = state;
 	}
 
 	public void addMarriage(MARRIAGE marriage)
 	{
 		partnersMarriages.put(marriage.getPartner(this), marriage);
-		setMarried(true);
+		married = true;
 	}
 
 	public void removeMarriage(MARRIAGE marriage)
 	{
 		partnersMarriages.remove(marriage.getPartner(this));
-		setMarried(partnersMarriages.size() > 0);
+		married = partnersMarriages.size() > 0;
 	}
+	//endregion
+
+	public abstract  @Nullable String getOnlineName();
 
 	//region API Methods
 	@Override
@@ -123,17 +126,21 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	@Override
 	public void setPriest(boolean set)
 	{
-		priest = set; //TODO set in DB
-		/*if(databaseKey == null)
-		{
-			MarriagePlayerData player = (MarriagePlayerData) MarriageMaster.getInstance().getPlayerData(getPlayer());
-			if(player.databaseKey != null)
-			{
-				player.setPriest(set);
-				return;
-			}
-		}
-		MarriageMaster.getInstance().getDatabase().updatePriestStatus(this);*/
+		priest = set;
+		BaseDatabase.getInstance().updatePriestStatus(this);
+	}
+
+	@Override
+	public boolean isSharingBackpack()
+	{
+		return sharesBackpack;
+	}
+
+	@Override
+	public void setShareBackpack(boolean share)
+	{
+		sharesBackpack = share;
+		BaseDatabase.getInstance().updateBackpackShareState(this);
 	}
 
 	@Override

@@ -15,24 +15,28 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
+package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.ConnectionProvider.MySQLConnectionProvider;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.API.Home;
+import at.pcgamingfreaks.MarriageMaster.Database.*;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class MySQL extends SQL
+import java.util.logging.Logger;
+
+public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends SQL<MARRIAGE_PLAYER, MARRIAGE, HOME>
 {
-	protected MySQL(@NotNull MarriageMaster plugin, @Nullable ConnectionProvider connectionProvider)
+	public MySQL(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform, final @NotNull DatabaseConfiguration dbConfig, final boolean bungee, final boolean surname,
+	                 final @NotNull Cache<MARRIAGE_PLAYER, MARRIAGE> cache, final @NotNull Logger logger, final @Nullable ConnectionProvider connectionProvider, final @NotNull String pluginName)
 	{
-		super(plugin, (connectionProvider == null) ? new MySQLConnectionProvider(plugin.getLogger(), plugin.getDescription().getName(), plugin.getConfiguration()) : connectionProvider);
+		super(platform, dbConfig, bungee, surname, cache, logger, (connectionProvider == null) ? new MySQLConnectionProvider(logger, pluginName, dbConfig) : connectionProvider);
 	}
 
 	@Override
-	protected boolean supportBungee()
+	public boolean supportsBungeeCord()
 	{
 		return true;
 	}
@@ -55,10 +59,6 @@ public class MySQL extends SQL
 		if(useUUIDs)
 		{
 			queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) SELECT ?,?,? FROM (SELECT 1) AS `tmp` WHERE NOT EXISTS (SELECT * FROM {TPlayers} WHERE {FUUID}=?);";
-			if(plugin.getBackpacksIntegration() == null)
-			{
-				queryAddPlayer = queryAddPlayer.replaceAll(",\\{FShareBackpack}\\) SELECT \\?,", ") SELECT ");
-			}
 		}
 		super.buildQuerys();
 	}

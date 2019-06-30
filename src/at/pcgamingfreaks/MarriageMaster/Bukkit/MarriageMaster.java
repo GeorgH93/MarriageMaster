@@ -46,6 +46,10 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -54,17 +58,17 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private static final int BUKKIT_PROJECT_ID = 74734;
 	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2", MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.14-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
-	private static Version version = null;
-	private static MarriageMaster instance;
+	@Setter(AccessLevel.PRIVATE) private static Version version = null;
+	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
 
 	// Global Objects
 	private Config config = null;
-	private Language lang = null;
-	private Database database = null;
+	@Getter private Language language = null;
+	@Getter private Database database = null;
+	@Getter private IBackpackIntegration backpacksIntegration = null;
+	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private CommandManagerImplementation commandManager = null;
-	private IBackpackIntegration backpacksIntegration = null;
 	private MarriageManager marriageManager = null;
-	private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private PlaceholderManager placeholderManager = null;
 	@SuppressWarnings("FieldCanBeLocal") private boolean useBukkitUpdater = false; // Field is set per reflection from the BadRabbit loader
 
@@ -75,11 +79,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	public String helpPartnerNameVariable, helpPlayerNameVariable;
 	public Message messageNotANumber, messageNoPermission, messageNotFromConsole, messageNotMarried, messagePartnerOffline, messagePartnerNotInRange, messageTargetPartnerNotFound,
 					messagePlayerNotFound, messagePlayerNotMarried, messagePlayerNotOnline, messagePlayersNotMarried, messageMoved, messageDontMove, messageMarriageNotExact;
-
-	public static MarriageMaster getInstance()
-	{
-		return instance;
-	}
 
 	/*if[STANDALONE]
 	@Override
@@ -93,8 +92,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public void onEnable()
 	{
-		instance = this;
-		version = new Version(this.getDescription().getVersion());
+		setInstance(this);
+		setVersion(new Version(this.getDescription().getVersion()));
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
 
 		// Check if running as standalone edition
@@ -121,7 +120,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			return;
 		}
 		if(config.useUpdater()) update(null); // Check for updates
-		lang = new Language(this);
+		language = new Language(this);
 		BackpackIntegrationManager.initIntegration();
 		backpacksIntegration = BackpackIntegrationManager.getIntegration();
 
@@ -150,7 +149,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			unload();
 		}
 		if(placeholderManager != null) placeholderManager.close();
-		instance = null;
+		setInstance(null);
 		if(updater != null) updater.waitForAsyncOperation();
 		getLogger().info(StringUtils.getPluginDisabledMessage("Marriage Master"));
 	}
@@ -166,7 +165,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private boolean load()
 	{
 		// Loading base Data
-		if(!config.isLoaded() || !lang.load(config))
+		if(!config.isLoaded() || !language.load(config))
 		{
 			getLogger().warning(ConsoleColor.RED + "Configuration or language file not loaded correct! Disable plugin." + ConsoleColor.RESET);
 			setEnabled(false);
@@ -180,8 +179,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		selfDivorce     = config.isSelfDivorceAllowed();
 		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
 
-		database = Database.getDatabase(this);
-		if(database == null)
+		database = new Database(this);
+		if(!database.available())
 		{
 			getLogger().warning(ConsoleColor.RED + "Failed to connect to database! Please adjust your settings and retry!" + ConsoleColor.RESET);
 			new NoDatabaseWorker(this); // Starts the worker that informs everyone with reload permission that the database connection failed.
@@ -193,22 +192,22 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		}
 
 		// Loading global translations
-		helpPlayerNameVariable       = lang.get("Commands.PlayerNameVariable");
-		helpPartnerNameVariable      = lang.get("Commands.PartnerNameVariable");
-		messageNotFromConsole        = lang.getMessage("NotFromConsole");
-		messageNotANumber            = lang.getMessage("Ingame.NaN");
-		messageNoPermission          = lang.getMessage("Ingame.NoPermission");
-		messageNotMarried            = lang.getMessage("Ingame.NotMarried");
-		messagePartnerOffline        = lang.getMessage("Ingame.PartnerOffline");
-		messagePartnerNotInRange     = lang.getMessage("Ingame.PartnerNotInRange");
-		messagePlayerNotFound        = lang.getMessage("Ingame.PlayerNotFound").replaceAll("\\{PlayerName}", "%s");
-		messagePlayerNotMarried      = lang.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
-		messagePlayerNotOnline       = lang.getMessage("Ingame.PlayerNotOnline").replaceAll("\\{PlayerName}", "%s");
-		messagePlayersNotMarried     = lang.getMessage("Ingame.PlayersNotMarried");
-		messageMoved                 = lang.getMessage("Ingame.TP.Moved");
-		messageDontMove              = lang.getMessage("Ingame.TP.DontMove").replaceAll("\\{Time}", "%d");
-		messageMarriageNotExact      = lang.getMessage("Ingame.MarriageNotExact");
-		messageTargetPartnerNotFound = lang.getMessage("Ingame.TargetPartnerNotFound");
+		helpPlayerNameVariable       = language.get("Commands.PlayerNameVariable");
+		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
+		messageNotFromConsole        = language.getMessage("NotFromConsole");
+		messageNotANumber            = language.getMessage("Ingame.NaN");
+		messageNoPermission          = language.getMessage("Ingame.NoPermission");
+		messageNotMarried            = language.getMessage("Ingame.NotMarried");
+		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
+		messagePartnerNotInRange     = language.getMessage("Ingame.PartnerNotInRange");
+		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").replaceAll("\\{PlayerName}", "%s");
+		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
+		messageMoved                 = language.getMessage("Ingame.TP.Moved");
+		messageDontMove              = language.getMessage("Ingame.TP.DontMove").replaceAll("\\{Time}", "%d");
+		messageMarriageNotExact      = language.getMessage("Ingame.MarriageNotExact");
+		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
@@ -273,26 +272,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	public Config getConfiguration()
 	{
 		return config;
-	}
-
-	public Language getLanguage()
-	{
-		return lang;
-	}
-
-	public IBackpackIntegration getBackpacksIntegration()
-	{
-		return backpacksIntegration;
-	}
-
-	public Database getDatabase()
-	{
-		return database;
-	}
-
-	public PluginChannelCommunicator getPluginChannelCommunicator()
-	{
-		return pluginChannelCommunicator;
 	}
 
 	// API Stuff

@@ -40,36 +40,17 @@ import java.util.UUID;
 
 public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, Message> implements MarriagePlayer
 {
-	//private final OfflinePlayer player;
-	private boolean sharesBackpack = false;
 	private AcceptPendingRequest openRequest = null;
 	private List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
 
 	public MarriagePlayerData(final @NotNull OfflinePlayer player)
 	{
-		this(player.getUniqueId(), Objects.requireNonNull(player.getName()));
-	}
-
-	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name)
-	{
-		super(uuid, name);
-	}
-
-	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final @Nullable Object databaseKey)
-	{
-		super(uuid, name, databaseKey);
-	}
-
-	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final boolean sharesBackpack, final boolean priest)
-	{
-		super(uuid, name, priest);
-		this.sharesBackpack = sharesBackpack;
+		super(player.getUniqueId(), Objects.requireNonNull(player.getName()));
 	}
 
 	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final boolean sharesBackpack, final boolean priest, final @Nullable Object databaseKey)
 	{
-		super(uuid, name, priest, databaseKey);
-		this.sharesBackpack = sharesBackpack;
+		super(uuid, name, priest, sharesBackpack, databaseKey);
 	}
 
 	public void addRequest(AcceptPendingRequest request)
@@ -97,15 +78,11 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 		getRequestsToCancel().removeIf(acceptPendingRequest -> acceptPendingRequest.equals(request));
 	}
 
-	public void setSharesBackpack(boolean state)
-	{
-		sharesBackpack = state;
-	}
-
+	@Override
 	public @Nullable String getOnlineName()
 	{
 		Player bPlayer = getPlayerOnline();
-		return isOnline() && bPlayer != null ? bPlayer.getName() : null;
+		return bPlayer != null ? bPlayer.getName() : null;
 	}
 
 	// API Functions
@@ -133,28 +110,6 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	public boolean isOnline()
 	{
 		return Bukkit.getPlayer(getUUID()) != null;
-	}
-
-	@Override
-	public boolean isSharingBackpack()
-	{
-		return sharesBackpack;
-	}
-
-	@Override
-	public void setShareBackpack(boolean share)
-	{
-		sharesBackpack = share;
-		if(getDatabaseKey() == null)
-		{
-			MarriagePlayerData player = (MarriagePlayerData) MarriageMaster.getInstance().getPlayerData(getPlayer());
-			if(player.getDatabaseKey() != null)
-			{
-				player.setShareBackpack(share);
-				return;
-			}
-		}
-		MarriageMaster.getInstance().getDatabase().updateBackpackShareState(this);
 	}
 
 	@Override

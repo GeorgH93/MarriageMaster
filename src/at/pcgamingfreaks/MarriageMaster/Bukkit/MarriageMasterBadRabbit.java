@@ -56,7 +56,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		return newPluginInstance;
 	}
 
-	private class ModifyAPI extends PluginClassLoaderBypass
+	private static class ModifyAPI extends PluginClassLoaderBypass
 	{
 		ModifyAPI(ClassLoader classLoader) throws Exception
 		{

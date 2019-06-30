@@ -82,5 +82,7 @@ public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
 	{
 		return getConfigE().getLong("Database.Cache.UnCache.Delay", 600) * 20L;
 	}
+
+	default void setDatabaseType(final @NotNull String type) {}
 }
 

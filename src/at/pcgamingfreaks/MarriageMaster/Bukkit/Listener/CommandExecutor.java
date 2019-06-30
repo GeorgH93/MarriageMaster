@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -49,9 +49,9 @@ public class CommandExecutor implements Listener
 	}
 
 	@EventHandler
-	public void OnMarry(MarriedEvent event)
+	public void onMarry(final MarriedEvent event)
 	{
-		Marriage marriage = event.getMarriageData();
+		final Marriage marriage = event.getMarriageData();
 		if(marriage.getPriest() == null)
 		{
 			for(String command : commandsOnMarry)
@@ -69,7 +69,7 @@ public class CommandExecutor implements Listener
 	}
 
 	@EventHandler
-	public void OnDivorce(DivorcedEvent event)
+	public void onDivorce(final DivorcedEvent event)
 	{
 		if(event.getPriest() == null)
 		{

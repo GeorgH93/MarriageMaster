@@ -23,8 +23,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.SQL;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.entity.Player;
@@ -36,6 +36,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -44,22 +48,21 @@ import java.util.logging.Logger;
 public class PluginChannelCommunicator implements PluginMessageListener, Listener
 {
 	private static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
-	private static String serverName = null;
+	@Getter @Setter(AccessLevel.PRIVATE) private static String serverName = null;
 
 	private final MarriageMaster plugin;
 	private final Queue<byte[]> messageQueue = new LinkedList<>();
 	private final long delayTime;
-	private final SQL database;
+	private final Database database;
 	private final Logger logger;
-	private TpCommand tpCommand = null;
-	private HomeCommand homeCommand = null;
+	@Setter private TpCommand tpCommand = null;
+	@Setter private HomeCommand homeCommand = null;
 	
 	public PluginChannelCommunicator(MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 		logger = plugin.getLogger();
-		if(!(plugin.getDatabase() instanceof SQL)) throw new RuntimeException("The used database backend dose not extend the SQL-Database provider! There is something going wrong!");
-		database = (SQL) plugin.getDatabase();
+		database = plugin.getDatabase();
 		delayTime = plugin.getConfiguration().getTPDelayTime() * 20L;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, CHANNEL_BUNGEE_CORD);
@@ -75,19 +78,9 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin);
 	}
 
-	public void setTpCommand(TpCommand instance)
-	{
-		tpCommand = instance;
-	}
-
-	public void setHomeCommand(HomeCommand instance)
-	{
-		homeCommand = instance;
-	}
-
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onPluginMessageReceived(String channel, Player player, byte[] bytes)
+	public void onPluginMessageReceived(String channel, @NotNull Player player, @NotNull byte[] bytes)
 	{
 		try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 	    {
@@ -183,14 +176,9 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	        }
 			else if (channel.equals(CHANNEL_BUNGEE_CORD))
 			{
-			    switch(in.readUTF())
+			    if(in.readUTF().equalsIgnoreCase("GetServer") && serverName == null)
 			    {
-			    	case "GetServer":
-			    		if(serverName != null)
-					    {
-						    serverName = in.readUTF();
-					    }
-					    break;
+			    	setServerName(in.readUTF());
 			    }
 			}
 		}
@@ -213,11 +201,6 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		{
 			database.resync();
 		}
-	}
-
-	public static String getServerName()
-	{
-		return serverName;
 	}
 
 	//region send methods
@@ -245,7 +228,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	//region helper classes
 	private class DelayedAction implements DelayableTeleportAction
 	{
-		private final Player player;
+		@Getter private final Player player;
 		private final String command, optionalParam;
 
 		public DelayedAction(String command, Player player, String optionalParam)
@@ -259,12 +242,6 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		public void run()
 		{
 			sendMessage(command + '|' + player.getName() + ((optionalParam != null) ? '|' + optionalParam : ""));
-		}
-
-		@Override
-		public @NotNull Player getPlayer()
-		{
-			return player;
 		}
 
 		@Override

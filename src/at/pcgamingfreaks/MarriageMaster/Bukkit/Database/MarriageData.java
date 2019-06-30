@@ -50,11 +50,6 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 	//endregion
 
-	public void setHomeLoc(Home loc)
-	{
-		super.setHome(loc);
-	}
-
 	public void updateSurname(String surname)
 	{
 		String oldSurname = getSurname();
@@ -99,20 +94,6 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	public void setSurname(String surname, @NotNull MarriagePlayer changer)
 	{
 		setSurname(surname, changer.getPlayerOnline());
-	}
-
-	@Override
-	public void setHome(@Nullable Home home)
-	{
-		super.setHome(home);
-		MarriageMaster.getInstance().getDatabase().updateHome(this);
-	}
-
-	@Override
-	public void setPVPEnabled(boolean pvpEnabled)
-	{
-		super.setPVPEnabled(pvpEnabled);
-		MarriageMaster.getInstance().getDatabase().updatePvPState(this);
 	}
 
 	@Override

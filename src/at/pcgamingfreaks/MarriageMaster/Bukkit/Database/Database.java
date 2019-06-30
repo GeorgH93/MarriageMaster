@@ -17,12 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.Converter;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationMarriage;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.FilesMigrator.MigrationPlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies.UnCacheStrategie;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
@@ -34,70 +28,22 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.sql.SQLException;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, Marriage, MarriageData> implements Listener
+public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, MarriageData, MarriageHome> implements Listener
 {
 	private final UnCacheStrategie unCacheStrategie;
 
-	protected Database(@NotNull MarriageMaster plugin)
+	public Database(@NotNull MarriageMaster plugin)
 	{
-		super(plugin, plugin.getLogger(), plugin.getConfiguration().useUUIDs(), plugin.getConfiguration().useUUIDSeparators(), plugin.getConfiguration().getUseOnlineUUIDs());
+		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfiguration(), plugin.getDescription().getName(), plugin.getDataFolder(), plugin.getConfiguration().isBungeeEnabled(), false);
 		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
-	}
-
-	public static @Nullable ConnectionProvider getExternalConnectionProvider(@NotNull String dbType, @NotNull Logger logger) throws SQLException
-	{
-		ConnectionProvider connectionProvider = null;
-		if(dbType.equals("shared") || dbType.equals("external") || dbType.equals("global"))
-		{
-			/*if[STANDALONE]
-			logger.warning(ConsoleColor.RED + "The shared database connection option is not available in standalone mode!" + ConsoleColor.RESET);
-				throw new SQLException("The shared database connection option is not available in standalone mode!");
-			else[STANDALONE]*/
-			connectionProvider = at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getConnectionProvider();
-			if(connectionProvider == null)
-			{
-				logger.warning(ConsoleColor.RED + "The shared connection pool is not initialized correctly!" + ConsoleColor.RESET);
-				throw new SQLException("The shared connection pool is not initialized correctly!");
-			}
-			/*end[STANDALONE]*/
-		}
-		return connectionProvider;
-	}
-
-	public static Database getDatabase(@NotNull MarriageMaster plugin)
-	{
-		try
-		{
-			String dbType = plugin.getConfiguration().getDatabaseType();
-			ConnectionProvider connectionProvider = getExternalConnectionProvider(dbType, plugin.getLogger());
-			Database db;
-			switch((connectionProvider != null) ? connectionProvider.getDatabaseType() : dbType)
-			{
-				case "mysql": db = new MySQL(plugin, connectionProvider); break;
-				case "sqlite": db = new SQLite(plugin, connectionProvider); break;
-				case "file":
-				case "files":
-				case "flat": plugin.getLogger().info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
-					db = new SQLite(plugin, null);
-					Converter.runConverter(plugin, db);
-					break;
-				default: plugin.getLogger().warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
-			}
-			db.startup();
-			return db;
-		}
-		catch(Exception ignored){ ignored.printStackTrace(); } //TODO remove stacktrace after beta
-		return null;
+		startup();
 	}
 
 	@Override
-	protected void startup() throws Exception
+	protected void startup()
 	{
 		super.startup();
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
@@ -175,60 +121,4 @@ public abstract class Database extends BaseDatabase<MarriageMaster, MarriagePlay
 		marry(marriage);
 		cache.cache(marriage);
 	}
-
-	@SuppressWarnings("deprecation")
-	protected @NotNull UUID getUUIDFromIdentifier(@NotNull String identifier)
-	{
-		if(useUUIDs)
-		{
-			return UUID.fromString((useUUIDSeparators) ? identifier : identifier.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
-		}
-		else
-		{
-			return Bukkit.getOfflinePlayer(identifier).getUniqueId();
-		}
-	}
-
-	protected boolean supportBungee()
-	{
-		return false;
-	}
-
-	public boolean useBungee()
-	{
-		return false;
-	}
-
-	@Override
-	protected void runAsync(@NotNull Runnable runnable, long delay)
-	{
-		if(delay < 1)
-		{
-			Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
-		}
-		else
-		{
-			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, runnable, delay);
-		}
-	}
-
-	//region Functions that have to be implemented by the real database
-	public abstract void updateHome(final MarriageData marriage);
-
-	public abstract void updatePvPState(final MarriageData marriage);
-
-	public abstract void updateBackpackShareState(final MarriagePlayerData player);
-
-	public abstract void updatePriestStatus(final MarriagePlayerData player);
-
-	public abstract void migratePlayer(final MigrationPlayer player);
-
-	public abstract void migrateMarriage(final MigrationMarriage marriage);
-
-	protected abstract void updateSurname(final MarriageData marriage);
-
-	protected abstract void divorce(final MarriageData marriage);
-
-	protected abstract void marry(final MarriageData marriage);
-	//endregion
 }

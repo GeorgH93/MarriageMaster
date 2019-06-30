@@ -274,7 +274,8 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getString("Database.Type", "SQLite").toLowerCase();
 	}
 
-	public void setDatabaseType(String newType)
+	@Override
+	public void setDatabaseType(final @NotNull String newType)
 	{
 		getConfigE().set("Database.Type", newType);
 		try

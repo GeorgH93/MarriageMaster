@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
-import at.pcgamingfreaks.MarriageMaster.API.AbstractHome;
+import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 
@@ -29,7 +29,7 @@ import lombok.Setter;
 
 import java.util.Date;
 
-public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends AbstractHome> implements Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, DatabaseElement
+public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home> implements Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, DatabaseElement
 {
 	private final MARRIAGE_PLAYER player1, player2;
 	@Getter private final MARRIAGE_PLAYER priest;
@@ -37,7 +37,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	private final Date weddingDate;
 	@Getter protected String surname;
 	@Getter @NotNull private String chatPrefix;
-	@Getter @Setter private HOME home;
+	@Getter private HOME home;
 	private boolean pvpEnabled;
 	@Getter @Setter	private Object databaseKey;
 
@@ -85,7 +85,14 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		return hash;
 	}
 
-	// API Functions
+	//region data setter
+	public void setHomeData(HOME home)
+	{
+		this.home = home;
+	}
+	//endregion
+
+	//region API Functions
 	@Override
 	public @NotNull MARRIAGE_PLAYER getPartner1()
 	{
@@ -117,6 +124,13 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	}
 
 	@Override
+	public void setHome(HOME home)
+	{
+		this.home = home;
+		BaseDatabase.getInstance().updateHome(this);
+	}
+
+	@Override
 	public @NotNull Date getWeddingDate()
 	{
 		return (Date) weddingDate.clone();
@@ -132,7 +146,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	public void setPVPEnabled(boolean pvpEnabled)
 	{
 		this.pvpEnabled = pvpEnabled;
-		//TODO set in db
+		BaseDatabase.getInstance().updatePvPState(this);
 	}
 
 	@Override

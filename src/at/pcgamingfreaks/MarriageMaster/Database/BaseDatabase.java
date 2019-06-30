@@ -18,51 +18,118 @@
 package at.pcgamingfreaks.MarriageMaster.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.API.Marriage;
+import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
+import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin;
-import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Database.Backend.DatabaseBackend;
+import at.pcgamingfreaks.MarriageMaster.Database.Backend.MySQL;
+import at.pcgamingfreaks.MarriageMaster.Database.Backend.SQL;
+import at.pcgamingfreaks.MarriageMaster.Database.Backend.SQLite;
+import at.pcgamingfreaks.MarriageMaster.Database.FilesMigrator.Converter;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.File;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_DATA extends MARRIAGE>
+public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MARRIAGE_DATA extends MarriageDataBase, HOME extends Home>
 {
+	@Getter @Setter(AccessLevel.PRIVATE) private static BaseDatabase instance;
+
 	//region Messages
-	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected static final String MESSAGE_FILES_NO_LONGER_SUPPORTED = ConsoleColor.RED + "File based storage is no longer supported." + ConsoleColor.YELLOW + " Migrating to SQLite.";
 	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"%s\"!" + ConsoleColor.RESET;
 	protected static final String MESSAGE_CLEANING_DB_CACHE = "Cleaning database cache.", MESSAGE_DB_CACHE_CLEANED = "Database cache cleaned.";
 	//endregion
 
-	protected final boolean useUUIDs, useUUIDSeparators, useOnlineUUIDs;
+	private final boolean bungee;
 	protected final Logger logger;
 	protected final MARRIAGE_MASTER plugin;
 	protected final Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache = new Cache<>();
+	protected final DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> backend;
+	protected final IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform;
 
-	protected BaseDatabase(MARRIAGE_MASTER plugin, Logger logger, boolean useUUIDs, boolean useUUIDSeparators, boolean useOnlineUUIDs)
+	protected BaseDatabase(final @NotNull MARRIAGE_MASTER plugin, final @NotNull Logger logger, final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
+	                       final @NotNull DatabaseConfiguration dbConfig, final @NotNull String pluginName, final @NotNull File dataFolder, final boolean bungee, final boolean bungeeSupportRequired)
 	{
 		this.plugin = plugin;
 		this.logger = logger;
-		this.useUUIDs = useUUIDs;
-		this.useOnlineUUIDs = useOnlineUUIDs;
-		this.useUUIDSeparators = useUUIDSeparators;
+		this.platform = platform;
+		this.bungee = bungee;
+		backend = getDatabaseBackend(platform, dbConfig, bungee, plugin.isSurnamesEnabled(), cache, logger, pluginName, dataFolder, bungeeSupportRequired);
 	}
 
-	protected void startup() throws Exception
+	public DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> getDatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
+	                                                                                     final @NotNull DatabaseConfiguration dbConfig, final boolean bungee, final boolean surnameEnabled,
+	                                                                                     final @NotNull Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache, final @NotNull Logger logger,
+	                                                                                     final @NotNull String pluginName, final @NotNull File dataFolder, final boolean bungeeSupportRequired)
 	{
-		if(useUUIDs) checkUUIDs();
+		try
+		{
+			String dbType = dbConfig.getDatabaseType();
+			ConnectionProvider connectionProvider = platform.getExternalConnectionProvider(dbType, logger);
+			DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> db;
+			switch((connectionProvider != null) ? connectionProvider.getDatabaseType() : dbType)
+			{
+				case "mysql": db = new MySQL<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName); break;
+				case "sqlite": db = new SQLite<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName, dataFolder); break;
+				case "file":
+				case "files":
+				case "flat": logger.info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
+					db = new SQLite<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, null, pluginName, dataFolder);
+					Converter.runConverter(logger, dbConfig, db);
+					break;
+				default: logger.warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
+			}
+			if(!db.supportsBungeeCord())
+			{
+				if(bungeeSupportRequired)
+				{
+					logger.warning("Database type not supported on BungeeCord!");
+					return null;
+				}
+				if(bungee)
+				{
+					logger.warning("The used database dose not support multi server setups! Please consider switching to MySQL!");
+				}
+			}
+			db.startup();
+			return db;
+		}
+		catch(Exception ignored){ ignored.printStackTrace(); } //TODO remove stacktrace after beta
+		return null;
+	}
+
+	public boolean available()
+	{
+		return backend != null;
+	}
+
+	public boolean useBungee()
+	{
+		return bungee;
+	}
+
+	protected void startup()
+	{
 		loadAll();
 		cache.reCacheSurnames();
+		setInstance(this);
 	}
 
 	protected void close()
 	{
+		setInstance(null);
 		logger.info(MESSAGE_CLEANING_DB_CACHE);
 		cache.close();
 		logger.info(MESSAGE_DB_CACHE_CLEANED);
+		if(backend != null) backend.close();
 	}
 
 	public Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> getCache()
@@ -75,36 +142,74 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		return cache.getSurnames();
 	}
 
-	protected String getUsedPlayerIdentifier(MARRIAGE_PLAYER_DATA player)
-	{
-		if(useUUIDs)
-		{
-			return useUUIDSeparators ? player.getUUID().toString() : player.getUUID().toString().replaceAll("-", "");
-		}
-		else
-		{
-			return player.getName();
-		}
-	}
-
-
-	protected void runAsync(@NotNull Runnable runnable)
-	{
-		runAsync(runnable, 0);
-	}
-
-	protected abstract void runAsync(@NotNull Runnable runnable, long delay);
-
-
 	//region abstract stuff
 	public abstract MARRIAGE_PLAYER_DATA getPlayer(UUID uuid);
 
-	protected abstract void checkUUIDs();
+	protected void loadAll()
+	{
+		backend.loadAll();
+	}
 
-	protected abstract void loadAll();
+	public String getDatabaseTypeName()
+	{
+		return backend.getDatabaseTypeName();
+	}
 
-	public abstract String getDatabaseTypeName();
+	protected void load(final @NotNull MARRIAGE_PLAYER_DATA player)
+	{
+		backend.load(player);
+	}
+	//endregion
 
-	protected abstract void load(final @NotNull MARRIAGE_PLAYER_DATA player);
+	//region data management methods
+	public void loadMarriage(final int marriageId)
+	{
+		if(backend instanceof SQL) ((SQL)backend).loadMarriage(marriageId);
+	}
+
+	public void resync()
+	{
+		if(backend instanceof SQL) ((SQL)backend).resync();
+	}
+
+	public void loadHome(final MARRIAGE_DATA marriage)
+	{
+		if(backend instanceof SQL) ((SQL)backend).loadHome(marriage);
+	}
+
+	public void updateHome(final MARRIAGE_DATA marriage)
+	{
+		backend.updateHome(marriage);
+	}
+
+	public void updatePvPState(final MARRIAGE_DATA marriage)
+	{
+		backend.updatePvPState(marriage);
+	}
+
+	public void updateBackpackShareState(final MARRIAGE_PLAYER_DATA player)
+	{
+		backend.updateBackpackShareState(player);
+	}
+
+	public void updatePriestStatus(final MARRIAGE_PLAYER_DATA player)
+	{
+		backend.updatePriestStatus(player);
+	}
+
+	protected void updateSurname(final MARRIAGE_DATA marriage)
+	{
+		backend.updateSurname(marriage);
+	}
+
+	protected void marry(final MARRIAGE_DATA marriage)
+	{
+		backend.marry(marriage);
+	}
+
+	protected void divorce(final MARRIAGE_DATA marriage)
+	{
+		backend.divorce(marriage);
+	}
 	//endregion
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,25 +15,18 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper;
+package at.pcgamingfreaks.MarriageMaster.Database.FilesMigrator;
 
-import java.util.Date;
-
-public class StructMarriageSQL
+public class Home
 {
-	public int marryID, p1ID, p2ID, priest;
-	public boolean pvp;
-	public String surname;
-	public Date date;
+	public double x, y, z;
+	public String world;
 
-	public StructMarriageSQL(int id, int p1, int p2, int priest, boolean pvp, String surname, java.sql.Timestamp date)
+	public Home(double x, double y, double z, String world)
 	{
-		marryID = id;
-		p1ID = p1;
-		p2ID = p2;
-		this.priest = priest;
-		this.pvp = pvp;
-		this.surname = surname;
-		this.date = new Date(date.getTime());
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.world = world;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2017 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -16,16 +16,17 @@
  */
 
 package at.pcgamingfreaks.MarriageMaster.Database;
-import at.pcgamingfreaks.MarriageMaster.API.Marriage;
-import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Caches the players and marriages for the plugin.
  */
-public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayer, MARRIAGE_DATA extends Marriage>
+public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MARRIAGE_DATA extends MarriageDataBase>
 {
 	private final Map<Object, MARRIAGE_PLAYER_DATA> databasePlayers = new ConcurrentHashMap<>(); // To resolve players from database key
 	private final Map<Object, MARRIAGE_DATA> databaseMarriages = new ConcurrentHashMap<>(); // To resolve marriages form database key

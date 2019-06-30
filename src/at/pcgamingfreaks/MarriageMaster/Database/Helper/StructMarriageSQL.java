@@ -15,7 +15,25 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Database;
+package at.pcgamingfreaks.MarriageMaster.Database.Helper;
 
-public class DatabaseBackend
-{}
+import java.util.Date;
+
+public class StructMarriageSQL
+{
+	public int marryID, p1ID, p2ID, priest;
+	public boolean pvp;
+	public String surname;
+	public Date date;
+
+	public StructMarriageSQL(int id, int p1, int p2, int priest, boolean pvp, String surname, java.sql.Timestamp date)
+	{
+		marryID = id;
+		p1ID = p1;
+		p2ID = p2;
+		this.priest = priest;
+		this.pvp = pvp;
+		this.surname = surname;
+		this.date = new Date(date.getTime());
+	}
+}

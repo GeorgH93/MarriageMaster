@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,17 +17,21 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
+import lombok.Getter;
+
 /**
  * Helper class for converting names to UUID's and for fixing UUID's that are in the wrong format.
  */
 public class UpdateUUIDsHelper
 {
-	private final int id;
-	private String uuid, name;
+	@Getter private final int id;
+	@Getter private String name;
+	private String uuid;
 
 	public UpdateUUIDsHelper(String name, String uuid, int id)
 	{
 		this.id = id;
+		this.name = name;
 		this.uuid = uuid;
 	}
 
@@ -39,15 +43,5 @@ public class UpdateUUIDsHelper
 	public void setUUID(String uuid)
 	{
 		this.uuid = uuid;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public String getName()
-	{
-		return name;
 	}
 }
