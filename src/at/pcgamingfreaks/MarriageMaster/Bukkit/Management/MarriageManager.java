@@ -85,7 +85,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		dialogMarried       = plugin.getLanguage().getDialog("Married");
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
-		messageSurnameFailed           = getMSG("Ingame.Surname.Failed");
+		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
 		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength\\}", surnameMinLength + "").replaceAll("\\{MaxLength\\}", surnameMaxLength + "");
 		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength\\}", surnameMinLength + "").replaceAll("\\{MaxLength\\}", surnameMaxLength + "");
 		messageSurnameAlreadyUsed      = getMSG("Ingame.Surname.AlreadyUsed");
