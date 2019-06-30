@@ -52,7 +52,7 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * @param player The player for which the partner should be retrieved.
 	 * @return The other player of the married couple. Null if the given player is not in this marriage.
 	 */
-	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MARRIAGE_PLAYER player);
+	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer player);
 
 	/**
 	 * Gets the surname of the married players.

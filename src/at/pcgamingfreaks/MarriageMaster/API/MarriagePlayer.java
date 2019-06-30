@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -162,6 +162,14 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @return The partner of the player. null if not married.
 	 */
 	@Nullable MARRIAGE_PLAYER getPartner(String name);
+
+	/**
+	 * Gets the partner of the player from his uuid.
+	 *
+	 * @param uuid The UUID of the partner to be retrieved.
+	 * @return The partner of the player. null if not married.
+	 */
+	@Nullable MARRIAGE_PLAYER getPartner(UUID uuid);
 
 	/**
 	 * Gets the marriage data for the player.
