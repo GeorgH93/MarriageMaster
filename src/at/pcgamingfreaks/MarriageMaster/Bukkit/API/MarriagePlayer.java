@@ -30,20 +30,6 @@ import java.util.List;
 public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, Message>
 {
 	/**
-	 * Checks if the player is sharing his backpack with his partner.
-	 *
-	 * @return True if the player is sharing the backpack. False if not.
-	 */
-	boolean isSharingBackpack();
-
-	/**
-	 * Sets the sharing status of the players backpack.
-	 *
-	 * @param share True if the backpack should be shared. False if not.
-	 */
-	void setShareBackpack(boolean share);
-
-	/**
 	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.
 	 *
 	 * @return The nearest partner. null if not married, partner is offline or partner is in an other world.

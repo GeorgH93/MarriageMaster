@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 
 @SuppressWarnings("unused")
-public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends AbstractHome>
+public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home>
 {
 	/**
 	 * Gets one of the married players.

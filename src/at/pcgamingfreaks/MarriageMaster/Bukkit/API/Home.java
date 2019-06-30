@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
-import at.pcgamingfreaks.MarriageMaster.API.AbstractHome;
-
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents a home for a marriage
  */
 @SuppressWarnings("unused")
-public abstract class Home extends AbstractHome
+public abstract class Home extends at.pcgamingfreaks.MarriageMaster.API.Home
 {
 	private final Location location;
 
@@ -39,8 +38,14 @@ public abstract class Home extends AbstractHome
 
 	public Home(@NotNull Location location, @Nullable String homeServer)
 	{
-		super(homeServer);
+		super(location.getWorld().getName(), homeServer, location.getX(), location.getY(), location.getZ());
 		this.location = location;
+	}
+
+	public Home(final @NotNull String world, final @Nullable String server, final double x, final double y, final double z)
+	{
+		super(world, server, x, y, z);
+		this.location = new Location(Bukkit.getServer().getWorld(world), x, y, z);
 	}
 
 	/**
@@ -51,46 +56,6 @@ public abstract class Home extends AbstractHome
 	public @NotNull Location getLocation()
 	{
 		return location;
-	}
-
-	/**
-	 * Gets the x position of the represented home.
-	 *
-	 * @return The x position.
-	 */
-	public double getX()
-	{
-		return location.getX();
-	}
-
-	/**
-	 * Gets the y position of the represented home.
-	 *
-	 * @return The y position.
-	 */
-	public double getY()
-	{
-		return location.getY();
-	}
-
-	/**
-	 * Gets the z position of the represented home.
-	 *
-	 * @return The z position.
-	 */
-	public double getZ()
-	{
-		return location.getZ();
-	}
-
-	/**
-	 * Gets the world name of the represented home.
-	 *
-	 * @return The world name position.
-	 */
-	public @NotNull String getWorldName()
-	{
-		return getWorld().getName();
 	}
 
 	/**
