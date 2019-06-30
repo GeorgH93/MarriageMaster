@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker;
 
-import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.Message.MessageColor;
@@ -32,6 +32,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This worker will inform the admin that the plugin failed to connect to the database, he hopefully is able to solve the problem.
@@ -59,21 +60,17 @@ public class NoDatabaseWorker implements Listener, CommandExecutor
 	{
 		if(event.getPlayer().hasPermission("marry.reload")) // If the player has the right to reload the config he hopefully also has access to the config or at least know the person that has access.
 		{
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-				@Override
-				public void run()
+			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+				if(event.getPlayer().isOnline())
 				{
-					if(event.getPlayer().isOnline())
-					{
-						messageDBProblem.send(event.getPlayer());
-					}
+					messageDBProblem.send(event.getPlayer());
 				}
 			}, 3*20L);
 		}
 	}
 
 	@Override
-	public boolean onCommand(CommandSender commandSender, Command cmd, String s, String[] strings)
+	public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command cmd, @NotNull String s, String[] strings)
 	{
 		if(strings.length != 1 || !strings[0].equalsIgnoreCase("reload"))
 		{
@@ -87,6 +84,7 @@ public class NoDatabaseWorker implements Listener, CommandExecutor
 				HandlerList.unregisterAll(this);
 				try
 				{
+					plugin.getConfiguration().reload();
 					Reflection.getMethod(plugin.getClass(), "load").invoke(plugin);
 				}
 				catch(Exception e)

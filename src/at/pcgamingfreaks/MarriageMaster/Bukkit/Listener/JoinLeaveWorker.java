@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,10 +17,11 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriagePlayerJoinEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriagePlayerQuitEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedPlayerJoinEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedPlayerQuitEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.Bukkit;
@@ -30,6 +31,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+/**
+ * Creates the Join/Quit for married players
+ */
 public class JoinLeaveWorker implements Listener
 {
 	private final MarriageMaster plugin;
@@ -39,10 +43,11 @@ public class JoinLeaveWorker implements Listener
 		this.plugin = plugin;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event)
 	{
 		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
+		Bukkit.getPluginManager().callEvent(new MarriagePlayerJoinEvent(player));
 		if(player.isMarried())
 		{
 			Bukkit.getPluginManager().callEvent(new MarriedPlayerJoinEvent(player));
@@ -53,6 +58,7 @@ public class JoinLeaveWorker implements Listener
 	public void onLeave(PlayerQuitEvent event)
 	{
 		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
+		Bukkit.getPluginManager().callEvent(new MarriagePlayerQuitEvent(player));
 		if(player.isMarried())
 		{
 			Bukkit.getPluginManager().callEvent(new MarriedPlayerQuitEvent(player));

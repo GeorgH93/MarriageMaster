@@ -22,144 +22,66 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Database.DatabaseElement;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriageDataBase;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class MarriageData implements Marriage, DatabaseElement
+public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender, Home> implements Marriage
 {
-	private final MarriagePlayer player1, player2, priest;
-	private final int hash;
-	private final Date weddingDate;
-	private String surname;
-	@NotNull private String chatPrefix;
-	private Home home;
-	private boolean pvpEnabled;
-	private Object databaseKey;
-
-	public MarriageData(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, @Nullable MarriagePlayer priest, Date weddingDate, String surname, boolean pvpEnabled, Home home, Object databaseKey)
+	//region Constructors
+	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname,
+	                    final boolean pvpEnabled, final @Nullable Home home, final @Nullable Object databaseKey)
 	{
-		Validate.notNull(player1);
-		Validate.notNull(player2);
-		this.player1 = player1;
-		this.player2 = player2;
-		this.priest  = priest;
-		this.surname = surname;
-		this.pvpEnabled = pvpEnabled;
-		this.weddingDate = (Date) weddingDate.clone();
-		this.databaseKey = databaseKey;
-		this.home = home;
-		this.chatPrefix = ""; // TODO implement in db
-		if(player1 instanceof MarriagePlayerData && player2 instanceof MarriagePlayerData)
-		{
-			((MarriagePlayerData) player1).addMarriage(this);
-			((MarriagePlayerData) player2).addMarriage(this);
-		}
-		hash = player1.hashCode() * 53 + player2.hashCode();
+		super(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
 	}
 
-	public MarriageData(MarriagePlayer player1, MarriagePlayer player2, MarriagePlayer priest, Date weddingDate, String surname)
+	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname)
 	{
-		this(player1, player2, priest, weddingDate, surname, false, null, null);
+		super(player1, player2, priest, weddingDate, surname);
 	}
 
-	public MarriageData(MarriagePlayer player1, MarriagePlayer player2, MarriagePlayer priest, String surname)
+	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @Nullable String surname)
 	{
-		this(player1, player2, priest, new Date(), surname);
+		super(player1, player2, priest, surname);
 	}
-
-	@Override
-	public boolean equals(Object otherMarriage)
-	{
-		return otherMarriage instanceof MarriageData && player1.equals(((MarriageData) otherMarriage).player1) && player2.equals(((MarriageData) otherMarriage).player2);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return hash;
-	}
-
-	@Override
-	public Object getDatabaseKey()
-	{
-		return databaseKey;
-	}
-
-	public void setDatabaseKey(Object key)
-	{
-		databaseKey = key;
-	}
+	//endregion
 
 	public void setHomeLoc(Home loc)
 	{
-		home = loc;
+		super.setHome(loc);
 	}
 
 	public void updateSurname(String surname)
 	{
-		String oldSurname = this.surname;
+		String oldSurname = getSurname();
 		this.surname = surname;
 		MarriageMaster.getInstance().getDatabase().cachedSurnameUpdate(this, oldSurname, false);
 	}
 
 	public void updatePvPState(boolean newState)
 	{
-		pvpEnabled = newState;
+		super.setPVPEnabled(newState);
 	}
 
 	public void updateDivorce()
 	{
-		((MarriagePlayerData) player1).removeMarriage(this);
-		((MarriagePlayerData) player2).removeMarriage(this);
+		((MarriagePlayerData) getPartner1()).removeMarriage(this);
+		((MarriagePlayerData) getPartner2()).removeMarriage(this);
 		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
-		surname = null;
-		home = null;
 	}
 
-	// API Functions
-	@Override
-	public @NotNull MarriagePlayer getPartner1()
-	{
-		return player1;
-	}
-
-	@Override
-	public @NotNull MarriagePlayer getPartner2()
-	{
-		return player2;
-	}
-
-	@Override
-	public boolean isBothOnline()
-	{
-		return player1.isOnline() && player2.isOnline();
-	}
-
-	@Override
-	public MarriagePlayer getPartner(@NotNull MarriagePlayer player)
-	{
-		return (player1.equals(player)) ? player2 : (player2.equals(player)) ? player1 : null;
-	}
-
-	@Override
-	public String getSurname()
-	{
-		return surname;
-	}
-
+	//region API Functions
 	@Override
 	public boolean setSurname(String surname)
 	{
 		surname = MarriageMaster.getInstance().getMarriageManager().cleanupSurname(surname);
 		if(surname == null || MarriageMaster.getInstance().getMarriageManager().isSurnameValid(surname))
 		{
-			String oldSurname = this.surname;
+			String oldSurname = this.getSurname();
 			this.surname = surname;
 			MarriageMaster.getInstance().getDatabase().cachedSurnameUpdate(this, oldSurname);
 			return true;
@@ -176,61 +98,27 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public void setSurname(String surname, @NotNull MarriagePlayer changer)
 	{
-		MarriageMaster.getInstance().getMarriageManager().setSurname(this, surname, changer.getPlayerOnline());
-	}
-
-	@Override
-	public boolean isHomeSet()
-	{
-		return getHome() != null;
-	}
-
-	@Override
-	public @Nullable Home getHome()
-	{
-		return home;
+		setSurname(surname, changer.getPlayerOnline());
 	}
 
 	@Override
 	public void setHome(@Nullable Home home)
 	{
-		this.home = home;
+		super.setHome(home);
 		MarriageMaster.getInstance().getDatabase().updateHome(this);
-	}
-
-	@Override
-	public boolean isPVPEnabled()
-	{
-		return pvpEnabled;
 	}
 
 	@Override
 	public void setPVPEnabled(boolean pvpEnabled)
 	{
-		this.pvpEnabled = pvpEnabled;
+		super.setPVPEnabled(pvpEnabled);
 		MarriageMaster.getInstance().getDatabase().updatePvPState(this);
-	}
-
-	@Override
-	public @NotNull Date getWeddingDate()
-	{
-		return (Date) weddingDate.clone();
-	}
-
-	@Override
-	public MarriagePlayer getPriest()
-	{
-		return priest;
 	}
 
 	@Override
 	public void divorce()
 	{
-		((MarriagePlayerData) player1).removeMarriage(this);
-		((MarriagePlayerData) player2).removeMarriage(this);
-		MarriageMaster.getInstance().getDatabase().cachedDivorce(this);
-		surname = null;
-		home = null;
+		MarriageMaster.getInstance().getMarriageManager().divorce(this);
 	}
 
 	@Override
@@ -248,36 +136,19 @@ public class MarriageData implements Marriage, DatabaseElement
 	@Override
 	public double getDistance()
 	{
-		return (player1.isOnline() && player2.isOnline()) ?  Utils.getDistance(player1.getPlayerOnline(), player2.getPlayerOnline()) : Double.NEGATIVE_INFINITY;
+		return (isBothOnline()) ?  Utils.getDistance(getPartner1().getPlayerOnline(), getPartner2().getPlayerOnline()) : Double.NEGATIVE_INFINITY;
 	}
 
 	@Override
 	public boolean inRange(double maxDistance)
 	{
-		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRange(player1.getPlayerOnline(), player2.getPlayerOnline(), maxDistance);
+		return isBothOnline() && MarriageMaster.getInstance().isInRange(getPartner1().getPlayerOnline(), getPartner2().getPlayerOnline(), maxDistance);
 	}
 
 	@Override
 	public boolean inRangeSquared(double maxDistanceSquared)
 	{
-		return player1.isOnline() && player2.isOnline() && MarriageMaster.getInstance().isInRangeSquared(player1.getPlayerOnline(), player2.getPlayerOnline(), maxDistanceSquared);
+		return isBothOnline() && MarriageMaster.getInstance().isInRangeSquared(getPartner1().getPlayerOnline(), getPartner2().getPlayerOnline(), maxDistanceSquared);
 	}
-
-	@Override
-	public boolean hasPlayer(@NotNull MarriagePlayer player)
-	{
-		return getPartner1().equals(player) || getPartner2().equals(player);
-	}
-
-	@Override
-	public @NotNull String getMarriageChatMessagePrefix()
-	{
-		return chatPrefix;
-	}
-
-	@Override
-	public void setMarriageChatMessagePrefix(@NotNull String chatPrefix)
-	{
-		this.chatPrefix = chatPrefix.substring(0, Math.min(20, chatPrefix.length()));
-	}
+	//endregion
 }

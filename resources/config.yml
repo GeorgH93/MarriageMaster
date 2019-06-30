@@ -172,7 +172,7 @@ Economy:
 CommandExecutor:
   Enable: false
   # General information about the command executor:
-  # The commands can contain placeholders in the format {Placeholdername} (The {} is part of the name. The available placeholders are listed right about the event).
+  # The commands can contain placeholders in the format {PlaceholderName} (The {} is part of the name. The available placeholders are listed right about the event).
   # Every event can executed multiple commands in the list. Commands do not have to start with / !
   # Commands to be executed:
   # Will be executed when two players marry, without a priest

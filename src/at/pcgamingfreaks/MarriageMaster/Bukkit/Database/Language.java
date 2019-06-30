@@ -18,19 +18,17 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
+import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class Language extends at.pcgamingfreaks.Bukkit.Language
+public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
 	private static final int LANG_VERSION = 91, UPGRADE_THRESHOLD = 91, PRE_V2_VERSIONS = 90;
 
-	public Language(JavaPlugin plugin)
+	public Language(@NotNull JavaPlugin plugin)
 	{
 		super(plugin, LANG_VERSION, UPGRADE_THRESHOLD);
 	}
@@ -39,7 +37,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 	protected void doUpdate() {}
 
 	@Override
-	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldLang)
+	protected void doUpgrade(@NotNull at.pcgamingfreaks.YamlFileManager oldLang)
 	{
 		if(oldLang.getVersion() < PRE_V2_VERSIONS)
 		{
@@ -57,31 +55,15 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language
 		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
-	public String getTranslatedPlaceholder(final String key)
+	@Override
+	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
 		return ChatColor.translateAlternateColorCodes('&', getLangE().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
 
-	public String getDialog(final String key)
+	@Override
+	public @NotNull String getDialog(final @NotNull String key)
 	{
 		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
-	}
-
-	public String[] getCommandAliases(final String command)
-	{
-		return getCommandAliases(command, new String[0]);
-	}
-
-	public String[] getCommandAliases(final String command, final @NotNull String[] defaults)
-	{
-		List<String> aliases = getLangE().getStringList("Command." + command, new LinkedList<>());
-		return (aliases.size() > 0) ? aliases.toArray(new String[0]) : defaults;
-	}
-
-	public String[] getSwitch(final String key, final String defaultSwitch)
-	{
-		List<String> switches = getLangE().getStringList("Command.Switches." + key, new LinkedList<>());
-		if(!switches.contains(defaultSwitch)) switches.add(defaultSwitch);
-		return switches.toArray(new String[0]);
 	}
 }

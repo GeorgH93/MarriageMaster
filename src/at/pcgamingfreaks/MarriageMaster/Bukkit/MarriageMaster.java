@@ -58,8 +58,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private static MarriageMaster instance;
 
 	// Global Objects
-	private Config config;
-	private Language lang;
+	private Config config = null;
+	private Language lang = null;
 	private Database database = null;
 	private CommandManagerImplementation commandManager = null;
 	private IBackpackIntegration backpacksIntegration = null;
@@ -166,9 +166,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private boolean load()
 	{
 		// Loading base Data
-		if(config == null || !config.isLoaded() || lang == null || !lang.load(config.getLanguage(), config.getLanguageUpdateMode()))
+		if(!config.isLoaded() || !lang.load(config))
 		{
-			// If we ever reach this code there must be a serious problem, someone probably has put an outdated version of one of our libs into his plugin.
 			getLogger().warning(ConsoleColor.RED + "Configuration or language file not loaded correct! Disable plugin." + ConsoleColor.RESET);
 			setEnabled(false);
 			return false;
@@ -217,7 +216,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 		// Register Events
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);
-		getServer().getPluginManager().registerEvents(new OpenRequestCloser(this), this);
+		getServer().getPluginManager().registerEvents(new OpenRequestCloser(), this);
 		if(config.isBonusXPEnabled())
 		{
 			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXP(this), this);
@@ -249,9 +248,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 		database.close();
 		database = null;
 		commandManager.close();
-		commandManager = null;
 		marriageManager.close();
-		marriageManager = null;
 	}
 	//endregion
 

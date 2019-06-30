@@ -19,80 +19,57 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Database.DatabaseElement;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-@SuppressWarnings({ "unused" })
-public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
+public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, Message> implements MarriagePlayer
 {
 	//private final OfflinePlayer player;
-	private String name;
-	private final UUID uuid;
-	private final int hash;
-	private boolean priest = false, sharesBackpack = false, married = false, privateChat = false;
-	private Marriage privateChatTarget = null;
+	private boolean sharesBackpack = false;
 	private AcceptPendingRequest openRequest = null;
 	private List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
-	private Map<MarriagePlayer, Marriage> partnersMarriages = new HashMap<>();
-	private Object databaseKey = null;
 
-	public MarriagePlayerData(OfflinePlayer player)
+	public MarriagePlayerData(final @NotNull OfflinePlayer player)
 	{
-		this(player.getUniqueId(), player.getName());
+		this(player.getUniqueId(), Objects.requireNonNull(player.getName()));
 	}
 
-	public MarriagePlayerData(UUID uuid, String name)
+	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name)
 	{
-		this.uuid = uuid;
-		this.name = name;
-		this.hash = uuid.hashCode();
+		super(uuid, name);
 	}
 
-	public MarriagePlayerData(UUID uuid, String name, Object databaseKey)
+	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final @Nullable Object databaseKey)
 	{
-		this(uuid, name);
-		this.databaseKey = databaseKey;
+		super(uuid, name, databaseKey);
 	}
 
-	public MarriagePlayerData(UUID uuid, String name, boolean sharesBackpack, boolean priest)
+	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final boolean sharesBackpack, final boolean priest)
 	{
-		this(uuid, name);
+		super(uuid, name, priest);
 		this.sharesBackpack = sharesBackpack;
-		this.priest = priest;
 	}
 
-	public MarriagePlayerData(UUID uuid, String name, boolean sharesBackpack, boolean priest, Object databaseKey)
+	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final boolean sharesBackpack, final boolean priest, final @Nullable Object databaseKey)
 	{
-		this(uuid, name, sharesBackpack, priest);
-		this.databaseKey = databaseKey;
-		this.name = name;
-	}
-
-	protected MarriagePlayerData(MarriagePlayerData toCopy)
-	{
-		this.hash              = toCopy.hash;
-		this.uuid              = toCopy.uuid;
-		this.name              = toCopy.name;
-		this.priest            = toCopy.priest;
-		this.married           = toCopy.married;
-		this.privateChat       = toCopy.privateChat;
-		this.sharesBackpack    = toCopy.sharesBackpack;
-		this.privateChatTarget = toCopy.privateChatTarget;
-		this.openRequest       = toCopy.openRequest;
-		this.canCloseRequests  = toCopy.canCloseRequests;
-		this.partnersMarriages = toCopy.partnersMarriages;
-		this.databaseKey       = toCopy.databaseKey;
+		super(uuid, name, priest, databaseKey);
+		this.sharesBackpack = sharesBackpack;
 	}
 
 	public void addRequest(AcceptPendingRequest request)
@@ -101,15 +78,12 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 		{
 			openRequest = request;
 		}
-		if(request.getPlayersThatCanCancel() != null)
+		for(MarriagePlayer p : request.getPlayersThatCanCancel())
 		{
-			for(MarriagePlayer p : request.getPlayersThatCanCancel())
+			if(this.equals(p))
 			{
-				if(this.equals(p))
-				{
-					canCloseRequests.add(request);
-					break;
-				}
+				canCloseRequests.add(request);
+				break;
 			}
 		}
 	}
@@ -123,54 +97,9 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 		getRequestsToCancel().removeIf(acceptPendingRequest -> acceptPendingRequest.equals(request));
 	}
 
-	public void addMarriage(Marriage marriage)
-	{
-		partnersMarriages.put(marriage.getPartner(this), marriage);
-		married = true;
-	}
-
-	public void removeMarriage(Marriage marriage)
-	{
-		partnersMarriages.remove(marriage.getPartner(this));
-		married = partnersMarriages.size() > 0;
-	}
-
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
-	@Override
-	public boolean equals(Object otherPlayer)
-	{
-		return otherPlayer instanceof MarriagePlayerData && uuid.equals(((MarriagePlayerData) otherPlayer).uuid);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return hash;
-	}
-
-	@Override
-	public Object getDatabaseKey()
-	{
-		return databaseKey;
-	}
-
-	public void setDatabaseKey(Object key)
-	{
-		databaseKey = key;
-	}
-
 	public void setSharesBackpack(boolean state)
 	{
 		sharesBackpack = state;
-	}
-
-	public void setIsPriest(boolean is)
-	{
-		priest = is;
 	}
 
 	public @Nullable String getOnlineName()
@@ -183,99 +112,27 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	@Override
 	public @NotNull OfflinePlayer getPlayer()
 	{
-		return Bukkit.getOfflinePlayer(uuid);
-	}
-
-	@Override
-	public @NotNull String getName()
-	{
-		return name;
-	}
-
-	@Override
-	public @NotNull UUID getUUID()
-	{
-		return uuid;
+		return Bukkit.getOfflinePlayer(getUUID());
 	}
 
 	@Override
 	public @NotNull String getDisplayName()
 	{
-		Player bukkitPlayer = Bukkit.getPlayer(uuid);
-		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : ChatColor.GRAY + name;
+		Player bukkitPlayer = Bukkit.getPlayer(getUUID());
+		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : ChatColor.GRAY + getName();
 	}
 
 	@Override
 	public boolean hasPermission(@NotNull String permission)
 	{
-		Player bukkitPlayer = Bukkit.getPlayer(uuid);
+		Player bukkitPlayer = Bukkit.getPlayer(getUUID());
 		return bukkitPlayer != null && bukkitPlayer.hasPermission(permission);
 	}
 
 	@Override
 	public boolean isOnline()
 	{
-		return Bukkit.getPlayer(uuid) != null;
-	}
-
-	@Override
-	public boolean isPriest()
-	{
-		return priest || hasPermission("marry.priest");
-	}
-
-	@Override
-	public void setPriest(boolean set)
-	{
-		priest = set;
-		if(databaseKey == null)
-		{
-			MarriagePlayerData player = (MarriagePlayerData) MarriageMaster.getInstance().getPlayerData(getPlayer());
-			if(player.getDatabaseKey() != null)
-			{
-				player.setPriest(set);
-				return;
-			}
-		}
-		MarriageMaster.getInstance().getDatabase().updatePriestStatus(this);
-	}
-
-	@Override
-	public boolean isPrivateChatDefault()
-	{
-		return privateChat;
-	}
-
-	@Override
-	public void setPrivateChatDefault(boolean enable)
-	{
-		privateChat = enable;
-		if(databaseKey == null)
-		{
-			MarriagePlayerData player = (MarriagePlayerData) MarriageMaster.getInstance().getPlayerData(getPlayer());
-			if(player.getDatabaseKey() != null)
-			{
-				player.setPrivateChatDefault(enable);
-			}
-		}
-	}
-
-	@Override
-	public Marriage getPrivateChatTarget()
-	{
-		return privateChatTarget;
-	}
-
-	@Override
-	public void setPrivateChatTarget(MarriagePlayer target)
-	{
-		privateChatTarget = getMarriageData(target);
-	}
-
-	@Override
-	public void setPrivateChatTarget(Marriage target)
-	{
-		privateChatTarget = target;
+		return Bukkit.getPlayer(getUUID()) != null;
 	}
 
 	@Override
@@ -288,7 +145,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	public void setShareBackpack(boolean share)
 	{
 		sharesBackpack = share;
-		if(databaseKey == null)
+		if(getDatabaseKey() == null)
 		{
 			MarriagePlayerData player = (MarriagePlayerData) MarriageMaster.getInstance().getPlayerData(getPlayer());
 			if(player.getDatabaseKey() != null)
@@ -313,41 +170,11 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	}
 
 	@Override
-	public boolean isMarried()
-	{
-		return married;
-	}
-
-	@Override
 	public boolean isPartner(@NotNull OfflinePlayer player)
 	{
 		return isPartner(MarriageMaster.getInstance().getPlayerData(player));
 	}
 
-	@Override
-	public boolean isPartner(@NotNull MarriagePlayer player)
-	{
-		return getPartners().contains(player);
-	}
-
-	@Override
-	public MarriagePlayer getPartner()
-	{
-		return (isMarried()) ? getPartners().iterator().next() : null;
-	}
-
-	@Override
-	public MarriagePlayer getPartner(String name)
-	{
-		MarriagePlayer partner = MarriageMaster.getInstance().getPlayerData(name);
-		return (isPartner(partner)) ? partner : null;
-	}
-
-	@Override
-	public Marriage getMarriageData()
-	{
-		return (isMarried()) ? getMultiMarriageData().iterator().next() : null;
-	}
 
 	@Override
 	public Marriage getNearestPartnerMarriageData()
@@ -367,39 +194,6 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	}
 
 	@Override
-	public @NotNull Collection<MarriagePlayer> getPartners()
-	{
-		return partnersMarriages.keySet();
-	}
-
-	@Override
-	public @NotNull Collection<Marriage> getMultiMarriageData()
-	{
-		return partnersMarriages.values();
-	}
-
-	@Override
-	public Marriage getMarriageData(@NotNull MarriagePlayer player)
-	{
-		return partnersMarriages.get(player);
-	}
-
-	@Override
-	public @NotNull List<String> getMatchingPartnerNames(String namePart)
-	{
-		namePart = namePart.toLowerCase();
-		List<String> names = new LinkedList<>();
-		for(MarriagePlayer partner : getPartners())
-		{
-			if(partner.getName().toLowerCase().startsWith(namePart))
-			{
-				names.add(partner.getName());
-			}
-		}
-		return names;
-	}
-
-	@Override
 	public void send(@NotNull Message message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
@@ -409,6 +203,7 @@ public class MarriagePlayerData implements MarriagePlayer, DatabaseElement
 	public void sendMessage(@NotNull Message message, @Nullable Object... args)
 	{
 		if(!isOnline()) return;
-		message.send(getPlayerOnline(), args);
+		//noinspection ConstantConditions
+		message.send(getPlayerOnline(), args); // Is only null if the player is not online
 	}
 }

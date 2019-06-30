@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,20 +17,20 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker;
 
-import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.Message.MessageColor;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class UpgradedInfo implements Listener
 {
-	private MarriageMaster plugin;
-	private Message messagePluginUpgraded;
+	private final MarriageMaster plugin;
+	private final Message messagePluginUpgraded;
 
 	public UpgradedInfo(MarriageMaster plugin)
 	{
@@ -48,16 +48,11 @@ public class UpgradedInfo implements Listener
 	{
 		if(event.getPlayer().hasPermission("marry.reload")) // If the player has the right to reload the config he hopefully also has access to the config or at least know the person that has access.
 		{
-			Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
-			{
-				@Override
-				public void run()
+			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+				// If he has the permissions he probably also has access to the configs or at least he knows someone who has access to the configs.
+				if(event.getPlayer().isOnline() && event.getPlayer().hasPermission("marry.reload"))
 				{
-					// If he has the permissions he probably also has access to the configs or at least he knows someone who has access to the configs.
-					if(event.getPlayer().isOnline() && event.getPlayer().hasPermission("marry.reload"))
-					{
-						messagePluginUpgraded.send(event.getPlayer());
-					}
+					messagePluginUpgraded.send(event.getPlayer());
 				}
 			}, 3 * 20L); // Run with a 3 seconds delay
 		}
