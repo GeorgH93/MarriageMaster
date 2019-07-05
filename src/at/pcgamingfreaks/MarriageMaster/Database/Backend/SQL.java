@@ -38,6 +38,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 //@SuppressWarnings("JpaQueryApiInspection")
+@SuppressWarnings("unchecked")
 public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends DatabaseBackend<MARRIAGE_PLAYER, MARRIAGE, HOME> implements SQLBasedDatabase
 {
 	//TODO: resync on player join with bungee = true
@@ -112,7 +113,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		return connectionProvider.getConnection();
 	}
 
-	protected String getEngine()
+	protected @NotNull String getEngine()
 	{
 		return "";
 	}
@@ -189,7 +190,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		queryGetUnsetOrInvalidUUIDs = replacePlaceholders(queryGetUnsetOrInvalidUUIDs);
 	}
 
-	protected String replacePlaceholders(String query)
+	protected @Language("SQL") @NotNull String replacePlaceholders(final @Language("SQL") @NotNull String query)
 	{
 		return query.replaceAll("(\\{\\w+})", "`$1`").replaceAll("`(\\{\\w+})`_(\\w+)", "`$1_$2`").replaceAll("fk_`(\\{\\w+})`_`(\\{\\w+})`_`(\\{\\w+})`", "`fk_$1_$2_$3`") // Fix name formatting
 				.replaceAll("\\{TPlayers}", tablePlayers).replaceAll("\\{TMarriages}", tableMarriages).replaceAll("\\{TPriests}", tablePriests).replaceAll("\\{THomes}", tableHomes) // Table names
@@ -203,19 +204,20 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	{
 		try(Connection connection = getConnection())
 		{
-			@Language("SQL") String  queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
-					                                                             "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
-					queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\n" +
-							                                    "CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
-					queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n{FPlayer2} INT UNSIGNED NOT NULL,\n" +
-							                                      "{FPriest} INT UNSIGNED NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
-							                                      "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n)" + getEngine() + ";"),
-					queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT UNSIGNED NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n" +
-							                                  "{FHomeZ} DOUBLE NOT NULL,\n{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" + ((bungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
-							                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
+			@Language("SQL")
+			String queryTPlayers = replacePlaceholders("CREATE TABLE {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
+			                                           "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
+			       queryTPriests = replacePlaceholders("CREATE TABLE {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\nCONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID}" +
+					                                   " FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
+			       queryTMarriages = replacePlaceholders("CREATE TABLE {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n{FPlayer2} INT UNSIGNED NOT NULL,\n" +
+					                                     "{FPriest} INT UNSIGNED NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
+					                                     "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
+					                                     "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+					                                     "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+					                                     "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n)" + getEngine() + ";"),
+			       queryTHomes = replacePlaceholders("CREATE TABLE {THomes} (\n{FMarryID} INT UNSIGNED NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n{FHomeZ} DOUBLE NOT NULL,\\n" +
+					                                 "{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" + ((bungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
+				                                     "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
 			DBTools.updateDB(connection, queryTPlayers);
 			DBTools.updateDB(connection, queryTPriests);
 			DBTools.updateDB(connection, queryTMarriages);
@@ -378,7 +380,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			//TODO validate the performance loss for individual querys to load the data
 			if(!playerToLoad.isEmpty())
 			{
-				StringBuilder stringBuilder = new StringBuilder("");
+				StringBuilder stringBuilder = new StringBuilder();
 				for(int ignored : playerToLoad)
 				{
 					if(stringBuilder.length() > 0)
@@ -398,7 +400,8 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					{
 						while(rs.next())
 						{
-							MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack), priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
+							MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
+							                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
 							cache.cache(player);
 						}
 					}
@@ -413,7 +416,8 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			logger.info("Writing marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
 			{
-				cache.cache(platform.produceMarriage((MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.priest), sm.date, sm.surname, sm.pvp, null, sm.marryID));
+				cache.cache(platform.produceMarriage((MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.priest),
+				                                     sm.date, sm.surname, sm.pvp, null, sm.marryID));
 			}
 			logger.info("Marriages loaded into cache");
 		}
@@ -452,7 +456,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		});
 	}
 
-	protected @Nullable MARRIAGE_PLAYER playerFromId(@NotNull Connection connection, int id) throws SQLException
+	protected @Nullable MARRIAGE_PLAYER playerFromId(final @NotNull Connection connection, final int id) throws SQLException
 	{
 		if(cache.isPlayerFromDbKeyLoaded(id)) return (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(id);
 		// No cache for the player, load him
@@ -464,7 +468,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				if(rs.next())
 				{
 					MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName),
-					                                                rs.getBoolean(fieldShareBackpack), false, rs.getInt(fieldPlayerID));
+					                                                false, rs.getBoolean(fieldShareBackpack), rs.getInt(fieldPlayerID));
 					cache.cache(player);
 					return player;
 				}
@@ -516,7 +520,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						if(rs.next())
 						{
 							String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
-							marriage.setHomeData(platform.produceHome("", homeServer,rs.getString(fieldHomeWorld), rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
+							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
 						}
 						else
 						{
@@ -624,19 +628,19 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updateBackpackShareState(final MARRIAGE_PLAYER player)
+	public void updateBackpackShareState(final @NotNull MARRIAGE_PLAYER player)
 	{
 		runStatementAsyncIncludeKey(querySetBackpackShareState, player, player.isSharingBackpack());
 	}
 
 	@Override
-	public void updatePriestStatus(final MARRIAGE_PLAYER player)
+	public void updatePriestStatus(final @NotNull MARRIAGE_PLAYER player)
 	{
 		runStatementAsyncIncludeKey(player.isPriest() ? querySetPriest : queryRemovePriest, player);
 	}
 
 	@Override
-	public void updateHome(final MARRIAGE marriage)
+	public void updateHome(final @NotNull MARRIAGE marriage)
 	{
 		Home home = marriage.getHome();
 		if(home == null)
@@ -657,19 +661,19 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updatePvPState(final MARRIAGE marriage)
+	public void updatePvPState(final @NotNull MARRIAGE marriage)
 	{
 		runStatementAsyncIncludeKey(queryPvPState, marriage, marriage.isPVPEnabled());
 	}
 
 	@Override
-	public void divorce(final MARRIAGE marriage)
+	public void divorce(final @NotNull MARRIAGE marriage)
 	{
 		runStatementAsyncIncludeKey(queryDelMarriage, marriage);
 	}
 
 	@Override
-	public void marry(final MARRIAGE marriage)
+	public void marry(final @NotNull MARRIAGE marriage)
 	{
 		//TODO test if the player id is available
 		runAsync(() -> {
@@ -696,13 +700,13 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updateSurname(final MARRIAGE marriage)
+	public void updateSurname(final @NotNull MARRIAGE marriage)
 	{
 		runStatementAsyncIncludeKey(querySetSurname, marriage, marriage.getSurname());
 	}
 
 	@Override
-	public void migratePlayer(MigrationPlayer player)
+	public void migratePlayer(final @NotNull MigrationPlayer player)
 	{
 		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryAddPlayer, Statement.RETURN_GENERATED_KEYS))
 		{
@@ -755,7 +759,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void migrateMarriage(MigrationMarriage marriage)
+	public void migrateMarriage(final @NotNull MigrationMarriage marriage)
 	{
 		if(marriage.player1 == null || marriage.player2 == null || marriage.player1.id < 0 || marriage.player2.id < 0) return;
 		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryMarry, Statement.RETURN_GENERATED_KEYS))

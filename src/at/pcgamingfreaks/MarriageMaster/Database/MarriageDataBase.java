@@ -90,6 +90,18 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	{
 		this.home = home;
 	}
+
+	public void updateDivorce()
+	{
+		((MarriagePlayerDataBase) getPartner1()).removeMarriage(this);
+		((MarriagePlayerDataBase) getPartner2()).removeMarriage(this);
+	}
+
+	public void doDivorce()
+	{
+		updateDivorce();
+		//TODO set in db
+	}
 	//endregion
 
 	//region API Functions

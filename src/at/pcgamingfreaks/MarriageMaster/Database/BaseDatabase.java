@@ -150,11 +150,6 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		backend.loadAll();
 	}
 
-	public String getDatabaseTypeName()
-	{
-		return backend.getDatabaseTypeName();
-	}
-
 	protected void load(final @NotNull MARRIAGE_PLAYER_DATA player)
 	{
 		backend.load(player);

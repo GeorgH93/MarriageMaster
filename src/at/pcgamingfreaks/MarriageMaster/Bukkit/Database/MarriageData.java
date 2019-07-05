@@ -62,10 +62,10 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 		super.setPVPEnabled(newState);
 	}
 
-	public void updateDivorce()
+	@Override
+	public void doDivorce() //TODO move to base class
 	{
-		((MarriagePlayerData) getPartner1()).removeMarriage(this);
-		((MarriagePlayerData) getPartner2()).removeMarriage(this);
+		updateDivorce();;
 		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
 	}
 

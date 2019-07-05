@@ -42,13 +42,13 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 	}
 
 	@Override
-	public String getDatabaseTypeName()
+	public @NotNull String getDatabaseTypeName()
 	{
 		return "MySQL";
 	}
 
 	@Override
-	protected String getEngine()
+	protected @NotNull String getEngine()
 	{
 		return " ENGINE=InnoDB";
 	}

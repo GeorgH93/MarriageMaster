@@ -92,7 +92,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 		platform.runAsync(runnable, delay);
 	}
 
-	public abstract String getDatabaseTypeName();
+	public abstract @NotNull String getDatabaseTypeName();
 
 	protected abstract void checkUUIDs();
 
@@ -100,21 +100,21 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 
 	public abstract void load(final @NotNull MARRIAGE_PLAYER player);
 
-	public abstract void updateHome(final MARRIAGE marriage);
+	public abstract void updateHome(final @NotNull MARRIAGE marriage);
 
-	public abstract void updatePvPState(final MARRIAGE marriage);
+	public abstract void updatePvPState(final @NotNull MARRIAGE marriage);
 
-	public abstract void updateBackpackShareState(final MARRIAGE_PLAYER player);
+	public abstract void updateBackpackShareState(final @NotNull MARRIAGE_PLAYER player);
 
-	public abstract void updatePriestStatus(final MARRIAGE_PLAYER player);
+	public abstract void updatePriestStatus(final @NotNull MARRIAGE_PLAYER player);
 
-	public abstract void updateSurname(final MARRIAGE marriage);
+	public abstract void updateSurname(final @NotNull MARRIAGE marriage);
 
-	public abstract void marry(final MARRIAGE marriage);
+	public abstract void marry(final @NotNull MARRIAGE marriage);
 
-	public abstract void divorce(final MARRIAGE marriage);
+	public abstract void divorce(final @NotNull MARRIAGE marriage);
 
-	public abstract void migratePlayer(final MigrationPlayer player);
+	public abstract void migratePlayer(final @NotNull MigrationPlayer player);
 
-	public abstract void migrateMarriage(final MigrationMarriage marriage);
+	public abstract void migrateMarriage(final @NotNull MigrationMarriage marriage);
 }

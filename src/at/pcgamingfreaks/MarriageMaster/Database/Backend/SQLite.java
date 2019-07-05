@@ -92,7 +92,7 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 	protected void loadTableAndFieldNames(final @NotNull DatabaseConfiguration dbConfig) {} // We use fixed names in sqlite
 
 	@Override
-	public String getDatabaseTypeName()
+	public @NotNull String getDatabaseTypeName()
 	{
 		return "SQLite";
 	}
