@@ -62,13 +62,6 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 		super.setPVPEnabled(newState);
 	}
 
-	@Override
-	public void doDivorce() //TODO move to base class
-	{
-		updateDivorce();;
-		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
-	}
-
 	//region API Functions
 	@Override
 	public boolean setSurname(String surname)
@@ -97,9 +90,10 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 
 	@Override
-	public void divorce()
+	public void divorce() //TODO move to base class
 	{
-		MarriageMaster.getInstance().getMarriageManager().divorce(this);
+		updateDivorce();;
+		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
 	}
 
 	@Override

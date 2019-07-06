@@ -96,12 +96,6 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		((MarriagePlayerDataBase) getPartner1()).removeMarriage(this);
 		((MarriagePlayerDataBase) getPartner2()).removeMarriage(this);
 	}
-
-	public void doDivorce()
-	{
-		updateDivorce();
-		//TODO set in db
-	}
 	//endregion
 
 	//region API Functions
@@ -177,6 +171,13 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	public void setMarriageChatMessagePrefix(@NotNull String chatPrefix)
 	{
 		this.chatPrefix = chatPrefix.substring(0, Math.min(20, chatPrefix.length()));
+	}
+
+	@Override
+	public void divorce()
+	{
+		updateDivorce();
+		//TODO set in db
 	}
 	//endregion
 }

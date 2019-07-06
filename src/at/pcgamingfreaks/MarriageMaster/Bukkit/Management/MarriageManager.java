@@ -30,7 +30,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestMarryAc
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Database.MarriageDataBase;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -513,7 +512,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		Bukkit.getPluginManager().callEvent(divorceEvent);
 		if(!divorceEvent.isCancelled())
 		{
-			((MarriageDataBase) marriage).doDivorce();
+			marriage.divorce();
 			MarriagePlayer player1 = marriage.getPartner1(), player2 = marriage.getPartner2();
 			String priestName, priestDPName, player1DisplayName = player1.getDisplayName(), player2DisplayName = player2.getDisplayName();
 			if(divorceBy instanceof Player)
@@ -546,7 +545,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			MarriagePlayer otherPlayer = marriage.getPartner(divorceBy);
 			//noinspection ConstantConditions
 			String otherName = otherPlayer.getName(), otherDisplayName = otherPlayer.getDisplayName();
-			((MarriageDataBase) marriage).doDivorce();
+			marriage.divorce();
 			divorceBy.send(messageSelfDivorced, otherName, otherDisplayName);
 			if(otherPlayer.isOnline())
 			{
