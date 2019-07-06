@@ -543,11 +543,10 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		Bukkit.getPluginManager().callEvent(divorceEvent);
 		if(!divorceEvent.isCancelled())
 		{
-			marriage.divorce();
 			MarriagePlayer otherPlayer = marriage.getPartner(divorceBy);
 			//noinspection ConstantConditions
 			String otherName = otherPlayer.getName(), otherDisplayName = otherPlayer.getDisplayName();
-			marriage.divorce();
+			((MarriageDataBase) marriage).doDivorce();
 			divorceBy.send(messageSelfDivorced, otherName, otherDisplayName);
 			if(otherPlayer.isOnline())
 			{
