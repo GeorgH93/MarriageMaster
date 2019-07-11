@@ -17,16 +17,13 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
-import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Database.PluginChannelCommunicatorBase;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,26 +38,23 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.*;
-import java.util.logging.Logger;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 
-public class PluginChannelCommunicator implements PluginMessageListener, Listener
+public class PluginChannelCommunicator extends PluginChannelCommunicatorBase implements PluginMessageListener, Listener
 {
-	private static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
 	@Getter @Setter(AccessLevel.PRIVATE) private static String serverName = null;
 
 	private final MarriageMaster plugin;
 	private final long delayTime;
-	private final Database database;
-	private final Logger logger;
 	@Setter private TpCommand tpCommand = null;
 	@Setter private HomeCommand homeCommand = null;
 	
 	public PluginChannelCommunicator(MarriageMaster plugin)
 	{
+		super(plugin.getLogger(), plugin.getDatabase());
 		this.plugin = plugin;
-		logger = plugin.getLogger();
-		database = plugin.getDatabase();
 		delayTime = plugin.getConfiguration().getTPDelayTime() * 20L;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, CHANNEL_BUNGEE_CORD);
@@ -69,6 +63,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CHANNEL_MARRIAGE_MASTER, this);
 	}
 
+	@Override
 	public void close()
 	{
 		HandlerList.unregisterAll(this);
@@ -76,136 +71,88 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		plugin.getServer().getMessenger().unregisterOutgoingPluginChannel(plugin);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public void onPluginMessageReceived(final String channel, @NotNull Player player, @NotNull byte[] bytes)
+	protected void receiveUnknownChannel(@NotNull String channel, @NotNull byte[] bytes)
 	{
-		try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
-	    {
-			if (channel.equals(CHANNEL_MARRIAGE_MASTER))
+		if (channel.equals(CHANNEL_BUNGEE_CORD))
+		{
+			try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 			{
-			    String[] args = in.readUTF().split("\\|");
-				switch(args[0])
+				if(in.readUTF().equalsIgnoreCase("GetServer") && serverName == null)
 				{
-					case "update": plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "marry update"); break;
-					case "reload": plugin.reload(); break;
-					case "home":
-						if((args.length == 2 || (plugin.isPolygamyAllowed() && args.length == 3)) && homeCommand != null)
-						{
-							MarriagePlayer toTP = plugin.getPlayerData(args[1]);
-							Marriage marriage = (args.length == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(args[2]));
-							if(marriage == null || !toTP.isOnline()) return;
-							homeCommand.doTheTP(toTP, marriage);
-						}
-						break;
-					case "delayHome":
-						if(args.length == 2 || (plugin.isPolygamyAllowed() && args.length == 3))
-						{
-							Player target = plugin.getServer().getPlayerExact(args[1]);
-							if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("home", target, (args.length == 2) ? null : args[2]));
-						}
-						break;
-					case "TP":
-						if((args.length == 2 || (plugin.isPolygamyAllowed() && args.length == 3)) && tpCommand != null)
-						{
-							MarriagePlayer toTP = plugin.getPlayerData(args[1]);
-							Marriage marriage = (args.length == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(args[2]));
-							//noinspection ConstantConditions
-							if(marriage == null || !toTP.isOnline() || !marriage.getPartner(toTP).isOnline()) return;
-							//noinspection ConstantConditions
-							tpCommand.doTheTP(toTP.getPlayerOnline(), marriage.getPartner(toTP).getPlayerOnline());
-						}
-						break;
-					case "delayTP":
-						if(args.length == 2 || (plugin.isPolygamyAllowed() && args.length == 3))
-						{
-							Player target = plugin.getServer().getPlayerExact(args[1]);
-							if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", target, (args.length == 2) ? null : args[2]));
-						}
-						break;
-					case "updateHome":
-						if(args.length == 2)
-						{
-							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
-							database.loadHome(marriage);
-						}
-						break;
-					case "updatePvP":
-						if(args.length == 3)
-						{
-							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
-							if(marriage != null)
-							{
-								marriage.updatePvPState(Boolean.parseBoolean(args[2]));
-							}
-						}
-						break;
-					case "updateSurname":
-						if(args.length == 3)
-						{
-							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
-							if(marriage != null)
-							{
-								String surname = args[2];
-								marriage.updateSurname(surname.equals("null") ? null : surname);
-							}
-						}
-						break;
-					case "updateBackpackShare":
-						if(args.length == 3)
-						{
-							MarriagePlayerData playerData = database.getCache().getPlayerFromDbKey(Integer.parseInt(args[1]));
-							if(playerData != null)
-							{
-								playerData.setSharesBackpack(Boolean.parseBoolean(args[2]));
-							}
-						}
-						break;
-					case "updatePriestStatus":
-						if(args.length == 3)
-						{
-							MarriagePlayerData playerData = database.getCache().getPlayerFromDbKey(Integer.parseInt(args[1]));
-							if(playerData != null)
-							{
-								playerData.setPriestData(Boolean.parseBoolean(args[2]));
-							}
-						}
-						break;
-					case "marry":
-						if(args.length == 2)
-						{
-							database.loadMarriage(Integer.parseInt(args[1]));
-						}
-						break;
-					case "divorce":
-						if(args.length == 2)
-						{
-							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
-							if(marriage != null)
-							{
-								marriage.updateDivorce();
-							}
-						}
-						break;
-					default:
-						logger.info(ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: " + args[0] + "   " + ConsoleColor.RESET);
-						logger.info("There are two likely reasons for that. 1. You are running an outdated version of the plugin. 2. Someone has connected to your server directly, check you setup!");
-						break;
+					setServerName(in.readUTF());
 				}
-	        }
-			else if (channel.equals(CHANNEL_BUNGEE_CORD))
+			}
+			catch (IOException e)
 			{
-			    if(in.readUTF().equalsIgnoreCase("GetServer") && serverName == null)
-			    {
-			    	setServerName(in.readUTF());
-			    }
+				logger.warning("Failed reading message from the bungee!");
+				e.printStackTrace();
 			}
 		}
-		catch (IOException e)
+	}
+
+	@Override
+	protected boolean receiveMarriageMaster(@NotNull String cmd, @NotNull DataInputStream inputStream) throws IOException
+	{
+		switch(cmd)
 		{
-			logger.warning("Failed reading message from the bungee!");
-			e.printStackTrace();
+			case "update": plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), "marry update"); break;
+			case "reload": plugin.reload(); break;
+			case "home":
+				{
+					int argc = inputStream.readByte();
+					if((argc == 2 || (plugin.isPolygamyAllowed() && argc == 3)) && homeCommand != null)
+					{
+						MarriagePlayer toTP = plugin.getPlayerData(inputStream.readUTF());
+						Marriage marriage = (argc == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
+						if(marriage == null || !toTP.isOnline()) return true;
+						homeCommand.doTheTP(toTP, marriage);
+					}
+				}
+				break;
+			case "delayHome":
+				{
+					int argc = inputStream.readByte();
+					if(argc == 2 || (plugin.isPolygamyAllowed() && argc == 3))
+					{
+						Player target = plugin.getServer().getPlayerExact(inputStream.readUTF());
+						if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("home", target, (argc == 2) ? null : inputStream.readUTF()));
+					}
+				}
+				break;
+			case "TP":
+				{
+					int argc = inputStream.readByte();
+					if((argc == 2 || (plugin.isPolygamyAllowed() && argc == 3)) && tpCommand != null)
+					{
+						MarriagePlayer toTP = plugin.getPlayerData(inputStream.readUTF());
+						Marriage marriage = (argc == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
+						//noinspection ConstantConditions
+						if(marriage == null || !toTP.isOnline() || !marriage.getPartner(toTP).isOnline()) return true;
+						//noinspection ConstantConditions
+						tpCommand.doTheTP(toTP.getPlayerOnline(), marriage.getPartner(toTP).getPlayerOnline());
+					}
+				}
+				break;
+			case "delayTP":
+				{
+					int argc = inputStream.readByte();
+					if(argc == 2 || (plugin.isPolygamyAllowed() && argc == 3))
+					{
+						Player target = plugin.getServer().getPlayerExact(inputStream.readUTF());
+						if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", target, (argc == 2) ? null : inputStream.readUTF()));
+					}
+				}
+				break;
+			default: return false;
 		}
+		return true;
+	}
+
+	@Override
+	public void onPluginMessageReceived(@NotNull final String channel, @NotNull Player player, @NotNull byte[] bytes)
+	{
+		receive(channel, bytes);
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -213,7 +160,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	{
 		if(serverName == null)
 		{
-			sendMessage(CHANNEL_BUNGEE_CORD, "GetServer");
+			sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
 		}
 		// If the server is empty and a player joins the server we have to do a resync
 		if(plugin.getServer().getOnlinePlayers().size() == 1)
@@ -223,14 +170,10 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	}
 
 	//region send methods
-	public void sendMessage(String message)
+	@Override
+	public void sendMessage(final @NotNull byte[] data)
 	{
-		sendMessage(CHANNEL_MARRIAGE_MASTER, message);
-	}
-
-	private void sendMessage(String channel, String... message)
-	{
-		sendMessage(channel, buildMessage(message));
+		sendMessage(CHANNEL_MARRIAGE_MASTER, data);
 	}
 
 	private void sendMessage(String channel, byte[] data)
@@ -243,22 +186,6 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		{
 			logger.warning("Failed to send PluginMessage, there is no player online!");
 		}
-	}
-
-	private byte[] buildMessage(String... msg)
-	{
-		byte[] data = null;
-		try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
-		{
-			for(String m : msg)
-			{
-				out.writeUTF(m);
-			}
-			out.flush();
-			data = stream.toByteArray();
-		}
-		catch(IOException ignored) {}
-		return data;
 	}
 	//endregion
 
@@ -278,7 +205,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		@Override
 		public void run()
 		{
-			sendMessage(command + '|' + player.getName() + ((optionalParam != null) ? '|' + optionalParam : ""));
+			sendMessage(CHANNEL_MARRIAGE_MASTER, buildStringMessage(true, command, ((optionalParam != null) ? new String[] { player.getName(), optionalParam } : new String[] { player.getName() })));
 		}
 
 		@Override

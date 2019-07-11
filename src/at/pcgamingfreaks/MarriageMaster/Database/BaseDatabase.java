@@ -54,6 +54,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	protected final Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache = new Cache<>();
 	protected final DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> backend;
 	protected final IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform;
+	@Setter(AccessLevel.MODULE) private PluginChannelCommunicatorBase communicatorBase = null;
 
 	protected BaseDatabase(final @NotNull MARRIAGE_MASTER plugin, final @NotNull Logger logger, final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
 	                       final @NotNull DatabaseConfiguration dbConfig, final @NotNull String pluginName, final @NotNull File dataFolder, final boolean bungee, final boolean bungeeSupportRequired)
@@ -210,36 +211,43 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	public void updateHome(final MARRIAGE_DATA marriage)
 	{
 		backend.updateHome(marriage);
+		if(bungee && communicatorBase != null) communicatorBase.updateHome(marriage);
 	}
 
 	public void updatePvPState(final MARRIAGE_DATA marriage)
 	{
 		backend.updatePvPState(marriage);
+		if(bungee && communicatorBase != null) communicatorBase.updatePvP(marriage);
 	}
 
 	public void updateBackpackShareState(final MARRIAGE_PLAYER_DATA player)
 	{
 		backend.updateBackpackShareState(player);
+		if(bungee && communicatorBase != null) communicatorBase.updateBackpackShareState(player);
 	}
 
 	public void updatePriestStatus(final MARRIAGE_PLAYER_DATA player)
 	{
 		backend.updatePriestStatus(player);
+		if(bungee && communicatorBase != null) communicatorBase.updatePriestStatus(player);
 	}
 
 	protected void updateSurname(final MARRIAGE_DATA marriage)
 	{
 		backend.updateSurname(marriage);
+		if(bungee && communicatorBase != null) communicatorBase.updateSurname(marriage);
 	}
 
 	protected void marry(final MARRIAGE_DATA marriage)
 	{
 		backend.marry(marriage);
+		//TODO get marriage id and send plugin message
 	}
 
 	protected void divorce(final MARRIAGE_DATA marriage)
 	{
 		backend.divorce(marriage);
+		if(bungee && communicatorBase != null) communicatorBase.divorce(marriage);
 	}
 	//endregion
 }
