@@ -41,6 +41,7 @@ import lombok.Setter;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 public class PluginChannelCommunicator extends PluginChannelCommunicatorBase implements PluginMessageListener, Listener
 {
@@ -100,48 +101,29 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 			case "reload": plugin.reload(); break;
 			case "home":
 				{
-					int argc = inputStream.readByte();
-					if((argc == 2 || (plugin.isPolygamyAllowed() && argc == 3)) && homeCommand != null)
-					{
-						MarriagePlayer toTP = plugin.getPlayerData(inputStream.readUTF());
-						Marriage marriage = (argc == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
-						if(marriage == null || !toTP.isOnline()) return true;
-						homeCommand.doTheTP(toTP, marriage);
-					}
+					MarriagePlayer toTP = plugin.getPlayerData(UUID.fromString(inputStream.readUTF()));
+					Marriage marriage = toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
+					if(marriage == null || !toTP.isOnline()) return true;
+					homeCommand.doTheTP(toTP, marriage);
 				}
 				break;
 			case "delayHome":
 				{
-					int argc = inputStream.readByte();
-					if(argc == 2 || (plugin.isPolygamyAllowed() && argc == 3))
-					{
-						Player target = plugin.getServer().getPlayerExact(inputStream.readUTF());
-						if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("home", target, (argc == 2) ? null : inputStream.readUTF()));
-					}
+					Player player = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
+					if(player != null) plugin.doDelayableTeleportAction(new DelayedAction("home", player, inputStream.readUTF()));
 				}
 				break;
-			case "TP":
+			case "tp":
 				{
-					int argc = inputStream.readByte();
-					if((argc == 2 || (plugin.isPolygamyAllowed() && argc == 3)) && tpCommand != null)
-					{
-						MarriagePlayer toTP = plugin.getPlayerData(inputStream.readUTF());
-						Marriage marriage = (argc == 2) ? toTP.getMarriageData() : toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
-						//noinspection ConstantConditions
-						if(marriage == null || !toTP.isOnline() || !marriage.getPartner(toTP).isOnline()) return true;
-						//noinspection ConstantConditions
-						tpCommand.doTheTP(toTP.getPlayerOnline(), marriage.getPartner(toTP).getPlayerOnline());
-					}
+					Player player = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
+					Player target = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
+					if(player != null && target != null && tpCommand != null) tpCommand.doTheTP(player, target);
 				}
 				break;
 			case "delayTP":
 				{
-					int argc = inputStream.readByte();
-					if(argc == 2 || (plugin.isPolygamyAllowed() && argc == 3))
-					{
-						Player target = plugin.getServer().getPlayerExact(inputStream.readUTF());
-						if(target != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", target, (argc == 2) ? null : inputStream.readUTF()));
-					}
+					Player player = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
+					if(player != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", player, inputStream.readUTF()));
 				}
 				break;
 			default: return false;
@@ -193,19 +175,19 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	private class DelayedAction implements DelayableTeleportAction
 	{
 		@Getter private final Player player;
-		private final String command, optionalParam;
+		private final String command, partnerUUID;
 
-		public DelayedAction(String command, Player player, String optionalParam)
+		public DelayedAction(String command, Player player, String partnerUUID)
 		{
 			this.command = command;
 			this.player = player;
-			this.optionalParam = optionalParam;
+			this.partnerUUID = partnerUUID;
 		}
 
 		@Override
 		public void run()
 		{
-			sendMessage(CHANNEL_MARRIAGE_MASTER, buildStringMessage(true, command, ((optionalParam != null) ? new String[] { player.getName(), optionalParam } : new String[] { player.getName() })));
+			sendMessage(command, player.getUniqueId().toString(), partnerUUID);
 		}
 
 		@Override

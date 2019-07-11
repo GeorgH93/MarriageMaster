@@ -40,19 +40,12 @@ public abstract class PluginChannelCommunicatorBase
 
 	public void close() {}
 
-	protected static byte[] buildStringMessage(final @NotNull String msg, final String... params)
-	{
-		return buildStringMessage(false, msg, params);
-	}
-
-	protected static byte[] buildStringMessage(final boolean addParamCount, final @NotNull String msg, final String... params)
+	protected static byte[] buildStringMessage(final @NotNull String... msg)
 	{
 		byte[] data = null;
 		try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
 		{
-			out.writeUTF(msg);
-			if(addParamCount) out.writeByte(params.length);
-			for(String param : params)
+			for(String param : msg)
 			{
 				out.writeUTF(param);
 			}
@@ -161,14 +154,9 @@ public abstract class PluginChannelCommunicatorBase
 
 	protected abstract void sendMessage(final @NotNull byte[] data);
 
-	public void sendMessage(final @NotNull String msg, final String... params)
+	public void sendMessage(final @NotNull String... msg)
 	{
-		sendMessage(buildStringMessage(msg, params));
-	}
-
-	public void sendMessageWithParamCount(final @NotNull String msg, final String... params)
-	{
-		sendMessage(buildStringMessage(true, msg, params));
+		sendMessage(buildStringMessage(msg));
 	}
 
 	//region update methods
@@ -207,15 +195,4 @@ public abstract class PluginChannelCommunicatorBase
 		if(marriage.getDatabaseKey() != null) sendMessage("updateDivorce", marriage.getDatabaseKey().toString());
 	}
 	//endregion
-
-	protected static String[] readStringArray(final DataInputStream inputStream) throws IOException
-	{
-		byte count = inputStream.readByte();
-		String[] data = new String[count];
-		for(byte i = 0; i < count; i++)
-		{
-			data[i] = inputStream.readUTF();
-		}
-		return data;
-	}
 }
