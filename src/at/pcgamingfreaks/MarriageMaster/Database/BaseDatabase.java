@@ -142,6 +142,41 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		return cache.getSurnames();
 	}
 
+	public void cachedSurnameUpdate(MARRIAGE_DATA marriage, String oldSurname)
+	{
+		cachedSurnameUpdate(marriage, oldSurname, true);
+	}
+
+	public void cachedSurnameUpdate(MARRIAGE_DATA marriage, String oldSurname, boolean updateDatabase)
+	{
+		if(updateDatabase) updateSurname(marriage);
+		if(oldSurname != null && !oldSurname.isEmpty())
+		{
+			cache.removeSurname(oldSurname);
+		}
+		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
+		{
+			cache.addSurname(marriage);
+		}
+	}
+
+	public void cachedDivorce(final @NotNull MARRIAGE_DATA marriage)
+	{
+		cachedDivorce(marriage, true);
+	}
+
+	public void cachedDivorce(final @NotNull MARRIAGE_DATA marriage, boolean updateDatabase)
+	{
+		if(updateDatabase) divorce(marriage);
+		cache.unCache(marriage);
+	}
+
+	public void cachedMarry(final @NotNull MARRIAGE_DATA marriage)
+	{
+		marry(marriage);
+		cache.cache(marriage);
+	}
+
 	//region abstract stuff
 	public abstract MARRIAGE_PLAYER_DATA getPlayer(UUID uuid);
 

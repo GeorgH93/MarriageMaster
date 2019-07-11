@@ -50,18 +50,6 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 	//endregion
 
-	public void updateSurname(String surname)
-	{
-		String oldSurname = getSurname();
-		this.surname = surname;
-		MarriageMaster.getInstance().getDatabase().cachedSurnameUpdate(this, oldSurname, false);
-	}
-
-	public void updatePvPState(boolean newState)
-	{
-		super.setPVPEnabled(newState);
-	}
-
 	//region API Functions
 	@Override
 	public boolean setSurname(String surname)

@@ -87,38 +87,55 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		load(player);
 	}
 
-	public void cachedSurnameUpdate(MarriageData marriage, String oldSurname)
+	//region inform other servers
+	@Override
+	public void updateHome(final MarriageData marriage)
 	{
-		cachedSurnameUpdate(marriage, oldSurname, true);
+		super.updateHome(marriage);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("updateHome|" + marriage.getDatabaseKey());
 	}
 
-	public void cachedSurnameUpdate(MarriageData marriage, String oldSurname, boolean updateDatabase)
+	@Override
+	public void updatePvPState(final MarriageData marriage)
 	{
-		if(updateDatabase) updateSurname(marriage);
-		if(oldSurname != null && !oldSurname.isEmpty())
-		{
-			cache.removeSurname(oldSurname);
-		}
-		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
-		{
-			cache.addSurname(marriage);
-		}
+		super.updatePvPState(marriage);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("updatePvP|" + marriage.getDatabaseKey() + "|" + marriage.isPVPEnabled());
 	}
 
-	public void cachedDivorce(final @NotNull MarriageData marriage)
+	@Override
+	protected void updateSurname(final MarriageData marriage)
 	{
-		cachedDivorce(marriage, true);
+		super.updateSurname(marriage);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("updateSurname|" + marriage.getDatabaseKey() + "|" + marriage.getSurname());
 	}
 
-	public void cachedDivorce(final @NotNull MarriageData marriage, boolean updateDatabase)
+	@Override
+	public void updateBackpackShareState(MarriagePlayerData player)
 	{
-		if(updateDatabase) divorce(marriage);
-		cache.unCache(marriage);
+		super.updateBackpackShareState(player);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("updateBackpackShare|" + player.getDatabaseKey() + "|" + player.isSharingBackpack());
+
 	}
 
-	public void cachedMarry(final @NotNull MarriageData marriage)
+	@Override
+	public void updatePriestStatus(MarriagePlayerData player)
 	{
-		marry(marriage);
-		cache.cache(marriage);
+		super.updatePriestStatus(player);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("updatePriestStatus|" + player.getDatabaseKey() + "|" + player.isPriest());
 	}
+
+	@Override
+	protected void marry(final MarriageData marriage)
+	{
+		super.marry(marriage);
+		//TODO get marriage id and send plugin message
+	}
+
+	@Override
+	protected void divorce(final MarriageData marriage)
+	{
+		super.divorce(marriage);
+		if(useBungee()) plugin.getPluginChannelCommunicator().sendMessage("divorce|" + marriage.getDatabaseKey());
+	}
+	//endregion
 }

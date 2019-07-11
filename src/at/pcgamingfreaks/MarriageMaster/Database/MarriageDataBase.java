@@ -91,6 +91,18 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		this.home = home;
 	}
 
+	public void updateSurname(String surname)
+	{
+		String oldSurname = getSurname();
+		this.surname = surname;
+		BaseDatabase.getInstance().cachedSurnameUpdate(this, oldSurname, false);
+	}
+
+	public void updatePvPState(boolean newState)
+	{
+		pvpEnabled = newState;
+	}
+
 	public void updateDivorce()
 	{
 		((MarriagePlayerDataBase) getPartner1()).removeMarriage(this);

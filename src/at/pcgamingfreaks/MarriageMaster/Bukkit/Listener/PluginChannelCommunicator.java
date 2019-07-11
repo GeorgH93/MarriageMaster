@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.entity.Player;
@@ -41,8 +42,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.logging.Logger;
 
 public class PluginChannelCommunicator implements PluginMessageListener, Listener
@@ -51,7 +50,6 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 	@Getter @Setter(AccessLevel.PRIVATE) private static String serverName = null;
 
 	private final MarriageMaster plugin;
-	private final Queue<byte[]> messageQueue = new LinkedList<>();
 	private final long delayTime;
 	private final Database database;
 	private final Logger logger;
@@ -80,7 +78,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onPluginMessageReceived(String channel, @NotNull Player player, @NotNull byte[] bytes)
+	public void onPluginMessageReceived(final String channel, @NotNull Player player, @NotNull byte[] bytes)
 	{
 		try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 	    {
@@ -126,7 +124,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 						}
 						break;
 					case "updateHome":
-						if(args.length == 2 && database != null)
+						if(args.length == 2)
 						{
 							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							database.loadHome(marriage);
@@ -143,12 +141,33 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 						}
 						break;
 					case "updateSurname":
-						if(args.length == 3 && database != null)
+						if(args.length == 3)
 						{
 							MarriageData marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(args[1]));
 							if(marriage != null)
 							{
-								marriage.updateSurname(args[2]);
+								String surname = args[2];
+								marriage.updateSurname(surname.equals("null") ? null : surname);
+							}
+						}
+						break;
+					case "updateBackpackShare":
+						if(args.length == 3)
+						{
+							MarriagePlayerData playerData = database.getCache().getPlayerFromDbKey(Integer.parseInt(args[1]));
+							if(playerData != null)
+							{
+								playerData.setSharesBackpack(Boolean.parseBoolean(args[2]));
+							}
+						}
+						break;
+					case "updatePriestStatus":
+						if(args.length == 3)
+						{
+							MarriagePlayerData playerData = database.getCache().getPlayerFromDbKey(Integer.parseInt(args[1]));
+							if(playerData != null)
+							{
+								playerData.setPriestData(Boolean.parseBoolean(args[2]));
 							}
 						}
 						break;
@@ -189,7 +208,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		}
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerLoginEvent(PlayerJoinEvent event)
 	{
 		if(serverName == null)
@@ -197,7 +216,7 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 			sendMessage(CHANNEL_BUNGEE_CORD, "GetServer");
 		}
 		// If the server is empty and a player joins the server we have to do a resync
-		if(plugin.getServer().getOnlinePlayers().size() == 0) //TODO validate
+		if(plugin.getServer().getOnlinePlayers().size() == 1)
 		{
 			database.resync();
 		}
@@ -209,19 +228,37 @@ public class PluginChannelCommunicator implements PluginMessageListener, Listene
 		sendMessage(CHANNEL_MARRIAGE_MASTER, message);
 	}
 
-	private void sendMessage(String channel, String message)
+	private void sendMessage(String channel, String... message)
 	{
+		sendMessage(channel, buildMessage(message));
+	}
+
+	private void sendMessage(String channel, byte[] data)
+	{
+		if(plugin.getServer().getOnlinePlayers().size() > 0)
+		{
+			plugin.getServer().getOnlinePlayers().iterator().next().sendPluginMessage(plugin, channel, data);
+		}
+		else
+		{
+			logger.warning("Failed to send PluginMessage, there is no player online!");
+		}
+	}
+
+	private byte[] buildMessage(String... msg)
+	{
+		byte[] data = null;
 		try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
 		{
-			out.writeUTF(message);
+			for(String m : msg)
+			{
+				out.writeUTF(m);
+			}
 			out.flush();
-			messageQueue.add(stream.toByteArray());
+			data = stream.toByteArray();
 		}
 		catch(IOException ignored) {}
-		while(plugin.getServer().getOnlinePlayers().size() > 0 && messageQueue.peek() != null)
-		{
-			plugin.getServer().getOnlinePlayers().iterator().next().sendPluginMessage(plugin, channel, messageQueue.poll());
-		}
+		return data;
 	}
 	//endregion
 
