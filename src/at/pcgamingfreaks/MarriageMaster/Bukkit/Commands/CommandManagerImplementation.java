@@ -165,7 +165,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			}
 			@SuppressWarnings("deprecation")
 			Player target = plugin.getServer().getPlayer(args[0]);
-			if(target != null && args.length < 2)
+			if(target != null && args.length <= 2)
 			{
 				marryActionCommand.doExecute(sender, alias, "marry", args);
 				return true;
