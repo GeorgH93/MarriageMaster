@@ -171,14 +171,14 @@ public class BackpackCommand extends MarryCommand
 			{
 				help.add(new HelpData(getTranslatedName(), null, getDescription()));
 			}
-		}
-		if(player.isSharingBackpack())
-		{
-			help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOffSwitchTranslation(), null, descriptionOff));
-		}
-		else
-		{
-			help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOnSwitchTranslation(), null, descriptionOn));
+			if(player.isSharingBackpack())
+			{
+				help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOffSwitchTranslation(), null, descriptionOff));
+			}
+			else
+			{
+				help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOnSwitchTranslation(), null, descriptionOn));
+			}
 		}
 		return help;
 	}
