@@ -126,9 +126,7 @@ HealthRegain:
   Multiplier: 2
 
 Chat:
-  Enable: true
-  # This option allows to enable the chat surveillance. With this option the private marriage chat can be watched by players with the right permission as well as the servers console + log file. Enabling this option will be problematic for players privacy!
-  AllowSurveillance: false
+  Global: true
 
 # Ranges for actions
 # -1 no range limit and no world limit, 0 no range limit but in the same world, >= 1 range limit in meters/blocks
@@ -149,7 +147,7 @@ Teleport:
   Delay: false
   # Time in seconds
   DelayTime: 3
-  # List of worlds where you cant teleport to
+  # List of worlds where you can't teleport to
   BlacklistedWorlds: []
   # This option controls whether a safety check is performed before the player is teleported.
   CheckSafety: true

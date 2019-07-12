@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -250,7 +250,6 @@ public final class OldFileUpdater
 			newConfig.set("Range.Heal", oldYAML.getDouble("Range.Heal", 3));
 			newConfig.set("Range.BonusXP", oldYAML.getDouble("Range.BonusXP", 10));
 			newConfig.set("Range.Gift", oldYAML.getDouble("Range.Gift", 0));
-			newConfig.set("Misc.Metrics", oldYAML.getBoolean("Misc.Metrics", true));
 			newConfig.set("Misc.AutoUpdate", oldYAML.getBoolean("Misc.AutoUpdate", true));
 			newConfig.set("Teleport.Delay", oldYAML.getBoolean("Teleport.Delay", false));
 			newConfig.set("Teleport.DelayTime", oldYAML.getInt("Teleport.DelayTime", 3));

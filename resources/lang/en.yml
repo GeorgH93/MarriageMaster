@@ -1,5 +1,5 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 91
+Version: 92
 LanguageName: "English"
 Author: "GeorgH93"
 Language:
@@ -57,6 +57,8 @@ Language:
       NoHome: "[\"\",{\"text\":\"You have no home yet.\",\"color\":\"red\"}]"
       TPed: "[\"\",{\"text\":\"You have been teleported to your home.\",\"color\":\"green\"}]"
       Set: "[\"\",{\"text\":\"Homepoint has been saved.\",\"color\":\"green\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"You are not allowed to teleport home from here.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"You are not allowed to teleport to your home. Please move it.\",\"color\":\"red\"}]"
     Kiss:
       Kissed: "[\"\",{\"text\":\"&eYou have kissed your partner!\"}]"
       Kissed_SendMethod: "action_bar"
@@ -96,6 +98,8 @@ Language:
       WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where tp is not allowed.\",\"color\":\"red\"}]"
       Moved: "[\"\",{\"text\":\"Teleport canceled! You have moved!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Teleport in {Time} sec! Don't Move!\",\"color\":\"red\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"You are not allowed to teleport to your partner from here.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"You are not allowed to teleport to where your partner is.\",\"color\":\"red\"}]"
       Request:
         Notification: "[\"\",{\"text\":\"{DisplayName}&r wants teleport to you. Accept the teleport with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
         WaitForConfirmation: "Please wait till your partner accepts the teleport."

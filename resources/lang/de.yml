@@ -1,5 +1,5 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 91
+Version: 92
 LanguageName: "German"
 Author: "GeorgH93"
 Language:
@@ -57,6 +57,8 @@ Language:
       NoHome: "[\"\",{\"text\":\"Du hast noch kein Zuhause.\",\"color\":\"red\"}]"
       TPed: "[\"\",{\"text\":\"Du wurdest zu deinem Zuhause teleportiert.\",\"color\":\"green\"}]"
       Set: "[\"\",{\"text\":\"Dein Zuhause wurde gespeichert.\",\"color\":\"green\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"Du darfst dich von hier nicht zu deinem Zuhause teleportieren.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"Du darfst dich nicht dorthin teleportieren wo dein Zuhause ist. Bitte verschiebe es.\",\"color\":\"red\"}]"
     Kiss:
       Kissed: "[\"\",{\"text\":\"&eDu hast deinen Partner geküsst!\"}]"
       Kissed_SendMethod: "action_bar"
@@ -96,6 +98,8 @@ Language:
       WorldNotAllowed: "[\"\",{\"text\":\"Dein Partner ist in einer Welt in der tp nicht erlaubt ist.\",\"color\":\"red\"}]"
       Moved: "[\"\",{\"text\":\"Teleportation abgebrochen! Du hast dich bewegt!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Teleportation in {Time} Sekunden! Nicht bewegen!\",\"color\":\"red\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"Du darfst dich von hier nicht zu deinem Partner teleportieren.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"Du darfst dich nicht dorthin teleportieren wo dein Partner ist.\",\"color\":\"red\"}]"
       Request:
         Notification: "[\"\",{\"text\":\"{DisplayName}&r will sich zu dir teleportieren. Nimm die Anfrage mit \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" an oder lehne sie mit \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\" ab.\"}]"
         WaitForConfirmation: "Bitte warte bis dein Partner die Anfrage annimmt."

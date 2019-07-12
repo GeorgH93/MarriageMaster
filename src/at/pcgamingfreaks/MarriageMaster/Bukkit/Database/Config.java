@@ -28,7 +28,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
@@ -297,14 +300,6 @@ public class Config extends Configuration implements DatabaseConfiguration
 			return plugin.getServer().getOnlineMode();
 		}
 		return type.equals("online");
-	}
-
-	@Override
-	public @NotNull List<String> getSQLConnectionPropertiesList()
-	{
-		List<String> list = getConfigE().getStringList("Database.SQL.Properties", new LinkedList<>());
-		list.add("allowMultiQueries=true");
-		return list;
 	}
 	//endregion
 
