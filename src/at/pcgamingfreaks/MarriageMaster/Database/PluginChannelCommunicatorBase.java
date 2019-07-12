@@ -121,6 +121,7 @@ public abstract class PluginChannelCommunicatorBase
 							MarriageDataBase marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(in.readUTF()));
 							if(marriage != null)
 							{
+								marriage.updateDivorce();
 								database.cachedDivorce(marriage, false);
 							}
 						}

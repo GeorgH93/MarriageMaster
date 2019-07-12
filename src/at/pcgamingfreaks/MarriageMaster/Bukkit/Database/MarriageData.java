@@ -78,13 +78,6 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 
 	@Override
-	public void divorce() //TODO move to base class
-	{
-		updateDivorce();;
-		MarriageMaster.getInstance().getDatabase().cachedDivorce(this, false);
-	}
-
-	@Override
 	public void divorce(@NotNull CommandSender divorcedBy)
 	{
 		MarriageMaster.getInstance().getMarriageManager().divorce(this, divorcedBy);

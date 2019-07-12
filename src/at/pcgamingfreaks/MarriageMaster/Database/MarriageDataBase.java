@@ -189,7 +189,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	public void divorce()
 	{
 		updateDivorce();
-		//TODO set in db
+		BaseDatabase.getInstance().cachedDivorce(this);
 	}
 	//endregion
 }
