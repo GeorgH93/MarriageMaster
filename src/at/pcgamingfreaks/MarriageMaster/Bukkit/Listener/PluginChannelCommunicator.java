@@ -50,6 +50,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 
 	private final MarriageMaster plugin;
 	private final long delayTime;
+	private boolean serverNameUpdated = false;
 	@Setter private TpCommand tpCommand = null;
 	@Setter private HomeCommand homeCommand = null;
 	
@@ -63,6 +64,8 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CHANNEL_BUNGEE_CORD, this);
 		plugin.getServer().getMessenger().registerOutgoingPluginChannel(plugin, CHANNEL_MARRIAGE_MASTER);
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CHANNEL_MARRIAGE_MASTER, this);
+
+		setServerName(plugin.getConfiguration().getServerName());
 	}
 
 	@Override
@@ -80,9 +83,12 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		{
 			try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 			{
-				if(in.readUTF().equalsIgnoreCase("GetServer") && serverName == null)
+				if(in.readUTF().equalsIgnoreCase("GetServer"))
 				{
-					setServerName(in.readUTF());
+					String server = in.readUTF();
+					setServerName(server);
+					plugin.getConfiguration().setServerName(server);
+					serverNameUpdated = true;
 				}
 			}
 			catch (IOException e)
@@ -103,7 +109,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 			case "home":
 				{
 					MarriagePlayer toTP = plugin.getPlayerData(UUID.fromString(inputStream.readUTF()));
-					Marriage marriage = toTP.getMarriageData(plugin.getPlayerData(inputStream.readUTF()));
+					Marriage marriage = toTP.getMarriageData(plugin.getPlayerData(UUID.fromString(inputStream.readUTF())));
 					if(marriage == null || !toTP.isOnline()) return true;
 					homeCommand.doTheTP(toTP, marriage);
 				}
@@ -141,11 +147,11 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onPlayerLoginEvent(PlayerJoinEvent event)
 	{
-		if(serverName == null)
+		if(!serverNameUpdated)
 		{
 			sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
 		}
-		// If the server is empty and a player joins the server we have to do a resync
+		// If the server is empty and a player joins the server we have to do a re-sync
 		if(plugin.getServer().getOnlinePlayers().size() == 1)
 		{
 			((Database) database).resync();

@@ -410,6 +410,24 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		return getConfigE().getBoolean("Misc.UseBungeeCord", false);
 	}
+
+	public String getServerName()
+	{
+		return getConfigE().getString("Misc.ServerName", null);
+	}
+
+	public void setServerName(String serverName)
+	{
+		try
+		{
+			getConfigE().set("Misc.ServerName", serverName);
+			save();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 	//endregion
 	//endregion
 }
