@@ -40,7 +40,7 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfiguration(), plugin.getDescription().getName(), plugin.getDataFolder(), plugin.getConfiguration().isBungeeEnabled(), false);
 		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-		if(!plugin.getConfiguration().isBungeeEnabled())
+		if(!plugin.getConfiguration().isBungeeEnabled() || plugin.getServer().getOnlinePlayers().size() > 0)
 		{
 			new Thread(loadRunnable).run(); // Load async
 		}
