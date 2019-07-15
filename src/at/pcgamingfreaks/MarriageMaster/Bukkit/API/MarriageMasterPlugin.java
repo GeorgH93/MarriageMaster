@@ -22,7 +22,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<OfflinePlayer, MarriagePlayer, Marriage, MarriageManager, CommandManager, DelayableTeleportAction>
+public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin<OfflinePlayer, MarriagePlayer, Marriage, CommandManager, DelayableTeleportAction>
 {
 	/**
 	 * Checks if two players are within a certain range to each other.
@@ -75,4 +75,11 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 		Player bPlayer1 = player1.getPlayerOnline(), bPlayer2 = player2.getPlayerOnline();
 		return bPlayer1 != null && bPlayer2 != null && isInRangeSquared(bPlayer1, bPlayer2, rangeSquared);
 	}
+
+	/**
+	 * Gets the marriage manager. Needed to do stuff like marry, divorce or change surnames.
+	 *
+	 * @return The marriage manager.
+	 */
+	@NotNull MarriageManager getMarriageManager();
 }

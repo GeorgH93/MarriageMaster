@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
-import at.pcgamingfreaks.Message.Message;
+import at.pcgamingfreaks.Message.IMessage;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER, MESSAGE extends Message>
+public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER, MESSAGE extends IMessage>
 {
 	/**
 	* Gets the Bukkit offline player that is represented by this marriage player data.

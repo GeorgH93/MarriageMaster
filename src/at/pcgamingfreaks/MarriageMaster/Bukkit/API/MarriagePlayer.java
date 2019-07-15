@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
-import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.IMessage;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, Message>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, IMessage>
 {
 	/**
 	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.

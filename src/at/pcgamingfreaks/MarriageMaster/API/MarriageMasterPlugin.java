@@ -23,7 +23,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, MARRIAGE_MANAGER extends MarriageManager, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
+public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
 {
 	/**
 	 * Checks if the plugin is running in standalone mode.
@@ -70,11 +70,11 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	@NotNull Collection<? extends MARRIAGE> getMarriages();
 
 	/**
-	 * Checks if polygamy (marrying more then one player) is enabled on the server.
+	 * Checks if multiple partners (marrying more then one player) are allowed on the server.
 	 *
-	 * @return True if polygamy is enabled. False if not.
+	 * @return True if multiple partners are allowed. False if not.
 	 */
-	boolean isPolygamyAllowed();
+	boolean areMultiplePartnersAllowed();
 
 	/**
 	 * Checks if players can marry other players directly without the need for a priest.
@@ -110,13 +110,6 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	 * @param action The action that should be executed.
 	 */
 	void doDelayableTeleportAction(@NotNull DELAYABLE_TELEPORT_ACTION action);
-
-	/**
-	 * Gets the marriage manager. Needed to do stuff like marry, divorce or change surnames.
-	 *
-	 * @return The marriage manager.
-	 */
-	@NotNull MARRIAGE_MANAGER getMarriageManager();
 
 	/**
 	 * Gets the command manager of the plugin.
