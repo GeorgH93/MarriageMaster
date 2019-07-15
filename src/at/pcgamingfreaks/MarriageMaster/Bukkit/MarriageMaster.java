@@ -18,7 +18,6 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.Bukkit.Updater;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
@@ -33,10 +32,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
+import at.pcgamingfreaks.MarriageMaster.IUpdater;
 import at.pcgamingfreaks.StringUtils;
-import at.pcgamingfreaks.Updater.UpdateProviders.BukkitUpdateProvider;
-import at.pcgamingfreaks.Updater.UpdateProviders.JenkinsUpdateProvider;
 import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
+import at.pcgamingfreaks.Updater.Updater;
 import at.pcgamingfreaks.Version;
 
 import org.bukkit.Location;
@@ -53,10 +52,9 @@ import lombok.Setter;
 import java.util.Collection;
 import java.util.UUID;
 
-public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
+public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final int BUKKIT_PROJECT_ID = 74734;
-	private static final String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB = "MarriageMaster V2", MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.14-SNAPSHOT";
+	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.14-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
@@ -70,7 +68,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private CommandManagerImplementation commandManager = null;
 	private MarriageManager marriageManager = null;
 	private PlaceholderManager placeholderManager = null;
-	@SuppressWarnings("FieldCanBeLocal") private boolean useBukkitUpdater = false; // Field is set per reflection from the BadRabbit loader
 
 	// Global Settings
 	private boolean multiMarriage = false, selfMarriage = false, selfDivorce = false, surnamesEnabled = false, surnamesForced = false;
@@ -251,22 +248,17 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 	//endregion
 
-	public Updater update(at.pcgamingfreaks.Updater.Updater.UpdaterResponse output)
+
+	@Override
+	public boolean isRelease()
 	{
-		UpdateProvider updateProvider;
-		if(useBukkitUpdater) updateProvider = new BukkitUpdateProvider(BUKKIT_PROJECT_ID, getLogger());
-		else
-		{
-			/*if[STANDALONE]
-			getLogger().warning("Auto-updates not available for your build config!");
-			return null;
-			else[STANDALONE]*/
-			updateProvider = new JenkinsUpdateProvider(JENKINS_URL, JENKINS_JOB, getLogger());
-			/*end[STANDALONE]*/
-		}
-		Updater updater = new Updater(this, this.getFile(), true, updateProvider);
-		updater.update(output);
-		return updater;
+		return getDescription().getVersion().contains("Release");
+	}
+
+	@Override
+	public Updater createUpdater(final @NotNull UpdateProvider updateProvider)
+	{
+		return new at.pcgamingfreaks.Bukkit.Updater(this, this.getFile(), true, updateProvider);
 	}
 
 	public Config getConfiguration()

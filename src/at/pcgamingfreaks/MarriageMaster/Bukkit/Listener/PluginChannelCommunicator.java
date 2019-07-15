@@ -86,8 +86,11 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 				if(in.readUTF().equalsIgnoreCase("GetServer"))
 				{
 					String server = in.readUTF();
-					setServerName(server);
-					plugin.getConfiguration().setServerName(server);
+					if(!server.equals(serverName)) // Only save if the name of the server has changed
+					{
+						setServerName(server);
+						plugin.getConfiguration().setServerName(server);
+					}
 					serverNameUpdated = true;
 				}
 			}

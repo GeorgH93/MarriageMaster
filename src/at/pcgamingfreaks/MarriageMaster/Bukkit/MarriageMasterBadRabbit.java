@@ -45,13 +45,11 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster");
 			newPluginInstance = (JavaPlugin) standaloneClass.newInstance();
-			getField(standaloneClass, "useBukkitUpdater").set(newPluginInstance, true);
 		}
 		else
 		{
 			getLogger().info("PCGF-PluginLib installed. Switching to normal mode!");
 			newPluginInstance = new MarriageMaster();
-			getField(MarriageMaster.class, "useBukkitUpdater").set(newPluginInstance, true);
 		}
 		return newPluginInstance;
 	}

@@ -58,7 +58,7 @@ Marriage:
   # This option defines if a priest is needed to divorce 2 players or if they can divorce on their own.
   # Options: true, false, auto (auto will copy the RequirePriest value)
   DivorceRequiresPriest: auto
-  AllowPolygamy: false
+  AllowMultiplePartners: false
   # This setting disables the "/marry setpriest" command players can still be promoted to a priest with the "marry.priest" permission.
   DisableSetPriestCommand: false
   Surnames:
