@@ -41,8 +41,16 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 
 	public void close()
 	{
-		databaseMarriages.clear();
+		clear();
+	}
+
+	/**
+	 * Clears the cache
+	 */
+	public void clear()
+	{
 		databasePlayers.clear();
+		databaseMarriages.clear();
 		players.clear();
 		surnames.clear();
 		marriages.clear();

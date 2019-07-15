@@ -39,14 +39,11 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	{
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfiguration(), plugin.getDescription().getName(), plugin.getDataFolder(), plugin.getConfiguration().isBungeeEnabled(), false);
 		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
-		startup();
-	}
-
-	@Override
-	protected void startup()
-	{
-		super.startup();
 		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+		if(!plugin.getConfiguration().isBungeeEnabled())
+		{
+			new Thread(loadRunnable).run(); // Load async
+		}
 	}
 
 	@Override
@@ -85,5 +82,12 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 			cache.cache(player); // Let's put the new player into the cache
 		}
 		load(player);
+	}
+
+	public void resync()
+	{
+		logger.info("Performing resync with database");
+		cache.clear();
+		platform.runAsync(loadRunnable, 0); // Performs the resync async
 	}
 }

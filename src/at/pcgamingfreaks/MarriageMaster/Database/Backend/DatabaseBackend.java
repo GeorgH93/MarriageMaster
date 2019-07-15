@@ -24,6 +24,8 @@ import at.pcgamingfreaks.MarriageMaster.Database.FilesMigrator.MigrationPlayer;
 
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Setter;
+
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -34,6 +36,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 	protected final boolean bungee, useUUIDs, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
 	protected final Cache cache;
 	protected final Logger logger;
+	@Setter protected MarriageSavedCallback marriageSavedCallback = null;
 
 	protected DatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform, final @NotNull DatabaseConfiguration dbConfig, final boolean bungee, final boolean surnameEnabled,
 	                          final @NotNull Cache<MARRIAGE_PLAYER, MARRIAGE> cache, final @NotNull Logger logger)

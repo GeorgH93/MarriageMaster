@@ -54,7 +54,8 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	protected final Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache = new Cache<>();
 	protected final DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> backend;
 	protected final IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform;
-	@Setter(AccessLevel.MODULE) private PluginChannelCommunicatorBase communicatorBase = null;
+	protected final Runnable loadRunnable;
+	private PluginChannelCommunicatorBase communicatorBase = null;
 
 	protected BaseDatabase(final @NotNull MARRIAGE_MASTER plugin, final @NotNull Logger logger, final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
 	                       final @NotNull DatabaseConfiguration dbConfig, final @NotNull String pluginName, final @NotNull File dataFolder, final boolean bungee, final boolean bungeeSupportRequired)
@@ -64,6 +65,8 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		this.platform = platform;
 		this.bungee = bungee;
 		backend = getDatabaseBackend(platform, dbConfig, bungee, plugin.isSurnamesEnabled(), cache, logger, pluginName, dataFolder, bungeeSupportRequired);
+		setInstance(this);
+		loadRunnable = new LoadRunnable();
 	}
 
 	public DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> getDatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
@@ -78,12 +81,12 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 			DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> db;
 			switch((connectionProvider != null) ? connectionProvider.getDatabaseType() : dbType)
 			{
-				case "mysql": db = new MySQL<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName); break;
-				case "sqlite": db = new SQLite<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName, dataFolder); break;
+				case "mysql": db = new MySQL<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName); break;
+				case "sqlite": db = new SQLite<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName, dataFolder); break;
 				case "file":
 				case "files":
 				case "flat": logger.info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
-					db = new SQLite<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME>(platform, dbConfig, bungee, surnameEnabled, cache, logger, null, pluginName, dataFolder);
+					db = new SQLite<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, null, pluginName, dataFolder);
 					Converter.runConverter(logger, dbConfig, db);
 					break;
 				default: logger.warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
@@ -117,13 +120,6 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		return bungee;
 	}
 
-	protected void startup()
-	{
-		loadAll();
-		cache.reCacheSurnames();
-		setInstance(this);
-	}
-
 	protected void close()
 	{
 		setInstance(null);
@@ -131,6 +127,12 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		cache.close();
 		logger.info(MESSAGE_DB_CACHE_CLEANED);
 		if(backend != null) backend.close();
+	}
+
+	void setCommunicatorBase(PluginChannelCommunicatorBase communicatorBase)
+	{
+		this.communicatorBase = communicatorBase;
+		backend.setMarriageSavedCallback(communicatorBase::marry);
 	}
 
 	public Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> getCache()
@@ -181,11 +183,6 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	//region abstract stuff
 	public abstract MARRIAGE_PLAYER_DATA getPlayer(UUID uuid);
 
-	protected void loadAll()
-	{
-		backend.loadAll();
-	}
-
 	protected void load(final @NotNull MARRIAGE_PLAYER_DATA player)
 	{
 		backend.load(player);
@@ -196,11 +193,6 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	public void loadMarriage(final int marriageId)
 	{
 		if(backend instanceof SQL) ((SQL)backend).loadMarriage(marriageId);
-	}
-
-	public void resync()
-	{
-		if(backend instanceof SQL) ((SQL)backend).resync();
 	}
 
 	public void loadHome(final MARRIAGE_DATA marriage)
@@ -241,7 +233,6 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	protected void marry(final MARRIAGE_DATA marriage)
 	{
 		backend.marry(marriage);
-		//TODO get marriage id and send plugin message
 	}
 
 	protected void divorce(final MARRIAGE_DATA marriage)
@@ -250,4 +241,14 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		if(bungee && communicatorBase != null) communicatorBase.divorce(marriage);
 	}
 	//endregion
+
+	private class LoadRunnable implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			backend.loadAll();
+			cache.reCacheSurnames();
+		}
+	}
 }

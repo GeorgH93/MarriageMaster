@@ -41,7 +41,6 @@ import java.util.logging.Logger;
 @SuppressWarnings("unchecked")
 public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends DatabaseBackend<MARRIAGE_PLAYER, MARRIAGE, HOME> implements SQLBasedDatabase
 {
-	//TODO: resync on player join with bungee = true
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
 
 	protected final ConnectionProvider connectionProvider; // Connection provider
@@ -183,6 +182,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		queryFixUUIDs      = replacePlaceholders(queryFixUUIDs);
 		queryIsPriest      = replacePlaceholders(queryIsPriest);
 		queryUpdatePlayer  = replacePlaceholders(queryUpdatePlayer);
+		queryLoadMarriage  = replacePlaceholders(queryLoadMarriage);
 		queryLoadMarriages = replacePlaceholders(queryLoadMarriages);
 		queryLoadPlayerFromId       = replacePlaceholders(queryLoadPlayerFromId);
 		queryLoadPlayersFromID      = replacePlaceholders(queryLoadPlayersFromID);
@@ -330,12 +330,6 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 	}
 
-	public void resync()
-	{
-		logger.warning("No resync code!!!!! Fix me!!!!");
-		//TODO fill me
-	}
-
 	@Override
 	public void loadAll()
 	{
@@ -426,7 +420,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			e.printStackTrace();
 		}
-		loadHomesDelayed();
+		loadHomes();
 	}
 
 	public void loadMarriage(final int marriageId)
@@ -437,17 +431,20 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				ps.setInt(1, marriageId);
 				try(ResultSet rs =  ps.executeQuery())
 				{
-					MARRIAGE_PLAYER player1 = playerFromId(connection, rs.getInt(fieldPlayer1)), player2 = playerFromId(connection, rs.getInt(fieldPlayer2));
-					MARRIAGE_PLAYER priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
-					if(player1 == null || player2 == null)
+					if(rs.next())
 					{
-						logger.warning("Failed to load marriage (id: " + marriageId + ") cause one of it's players could not be loaded successful!");
-						return;
+						MARRIAGE_PLAYER player1 = playerFromId(connection, rs.getInt(fieldPlayer1)), player2 = playerFromId(connection, rs.getInt(fieldPlayer2));
+						MARRIAGE_PLAYER priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
+						if(player1 == null || player2 == null)
+						{
+							logger.warning("Failed to load marriage (id: " + marriageId + ") cause one of it's players could not be loaded successful!");
+							return;
+						}
+						String surname = surnameEnabled ? rs.getString(fieldSurname) : null;
+						MARRIAGE marriage = platform.produceMarriage(player1, player2, priest, rs.getTimestamp(fieldDate), surname, rs.getBoolean(fieldPVPState), null, marriageId);
+						cache.cache(marriage);
+						loadHome(marriage);
 					}
-					String surname = surnameEnabled ? rs.getString(fieldSurname) : null;
-					MARRIAGE marriage = platform.produceMarriage(player1, player2, priest, rs.getTimestamp(fieldDate), surname, rs.getBoolean(fieldPVPState), null, marriageId);
-					cache.cache(marriage);
-					loadHome(marriage);
 				}
 			}
 			catch(SQLException e)
@@ -478,34 +475,32 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		return null;
 	}
 
-	protected void loadHomesDelayed()
+	protected void loadHomes()
 	{
-		runAsync(() -> {
-			logger.info("Loading homes ...");
-			Map<Integer, HOME> homes = new HashMap<>();
-			try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHomes); ResultSet rs = ps.executeQuery())
+		logger.info("Loading homes ...");
+		Map<Integer, HOME> homes = new HashMap<>();
+		try(Connection connection = getConnection(); PreparedStatement ps = connection.prepareStatement(queryLoadHomes); ResultSet rs = ps.executeQuery())
+		{
+			while(rs.next())
 			{
-				while(rs.next())
+				String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
+				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
+			}
+			for(Object marriage : cache.getLoadedMarriages())
+			{
+				MARRIAGE m = (MARRIAGE) marriage;
+				if(m.getDatabaseKey() != null && m.getDatabaseKey() instanceof Integer)
 				{
-					String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
-					homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
-				}
-				for(Object marriage : cache.getLoadedMarriages())
-				{
-					MARRIAGE m = (MARRIAGE) marriage;
-					if(m.getDatabaseKey() != null && m.getDatabaseKey() instanceof Integer)
-					{
-						m.setHomeData(homes.get(m.getDatabaseKey()));
-					}
+					m.setHomeData(homes.get(m.getDatabaseKey()));
 				}
 			}
-			catch(SQLException e)
-			{
-				e.printStackTrace();
-			}
-			homes.clear();
-			logger.info("Homes loaded");
-		});
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		homes.clear();
+		logger.info("Homes loaded");
 	}
 
 	public void loadHome(final MARRIAGE marriage)
@@ -690,6 +685,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					{
 						marriage.setDatabaseKey(rs.getInt(1));
 						cache.addDbKey(marriage);
+						if(marriageSavedCallback != null) marriageSavedCallback.run(marriage);
 					}
 				}
 			}

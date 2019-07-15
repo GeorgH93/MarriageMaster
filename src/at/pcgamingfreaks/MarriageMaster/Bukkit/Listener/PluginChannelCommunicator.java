@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.PluginChannelCommunicatorBase;
 
@@ -147,7 +148,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		// If the server is empty and a player joins the server we have to do a resync
 		if(plugin.getServer().getOnlinePlayers().size() == 1)
 		{
-			database.resync();
+			((Database) database).resync();
 		}
 	}
 
