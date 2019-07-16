@@ -88,7 +88,7 @@ public class BackpackCommand extends MarryCommand
 					}
 					else
 					{
-						if(getMarriagePlugin().isPolygamyAllowed())
+						if(getMarriagePlugin().areMultiplePartnersAllowed())
 						{
 							MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
 							if(player.isPartner(partner))

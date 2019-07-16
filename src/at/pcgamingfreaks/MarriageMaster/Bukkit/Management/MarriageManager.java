@@ -343,7 +343,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		{
 			messageNotWithHimself.send(priest, player1.getName(), player1.getDisplayName());
 		}
-		else if(!plugin.isPolygamyAllowed() && (player1.isMarried() || player2.isMarried()))
+		else if(!plugin.areMultiplePartnersAllowed() && (player1.isMarried() || player2.isMarried()))
 		{
 			if(player1.isMarried()) messageAlreadyMarried.send(priest, player1.getName(), player1.getDisplayName());
 			if(player2.isMarried()) messageAlreadyMarried.send(priest, player2.getName(), player2.getDisplayName());
@@ -425,7 +425,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 					{
 						priest.send(messageSelfNotInRange, rangeMarry);
 					}
-					else if(!plugin.isPolygamyAllowed() && (player1.isMarried() || player2.isMarried()))
+					else if(!plugin.areMultiplePartnersAllowed() && (player1.isMarried() || player2.isMarried()))
 					{
 						if(priest.isMarried())
 						{

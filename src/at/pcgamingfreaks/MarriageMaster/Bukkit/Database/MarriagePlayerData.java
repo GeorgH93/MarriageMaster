@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.IMessage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, Message> implements MarriagePlayer
+public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, IMessage> implements MarriagePlayer
 {
 	private AcceptPendingRequest openRequest = null;
 	private List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
@@ -149,13 +149,13 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
-	public void send(@NotNull Message message, @Nullable Object... args)
+	public void send(@NotNull IMessage message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
 	}
 
 	@Override
-	public void sendMessage(@NotNull Message message, @Nullable Object... args)
+	public void sendMessage(@NotNull IMessage message, @Nullable Object... args)
 	{
 		if(!isOnline()) return;
 		//noinspection ConstantConditions

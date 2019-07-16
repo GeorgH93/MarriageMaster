@@ -92,7 +92,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	//region Getters
 	//region Global settings
-	public boolean isPolygamyAllowed()
+	public boolean areMultiplePartnersAllowed()
 	{
 		return getConfigE().getBoolean("Marriage.AllowMultiplePartners", false);
 	}

@@ -98,7 +98,7 @@ public class HomeCommand extends MarryCommand
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		if(player.isMarried() ||(sender.hasPermission("marry.home.others") &&
-				((!getMarriagePlugin().isPolygamyAllowed() && args.length == 1) || (getMarriagePlugin().isPolygamyAllowed() && args.length == 2))))
+				((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 		{
 			Marriage marriage = getTargetedMarriage(sender, player, args);
 			if(marriage != null)
@@ -166,7 +166,7 @@ public class HomeCommand extends MarryCommand
 	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
 	{
 		Marriage marriage;
-		if(getMarriagePlugin().isPolygamyAllowed())
+		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
 			if(args.length == 2 && sender.hasPermission("marry.home.others"))
 			{
@@ -297,7 +297,7 @@ public class HomeCommand extends MarryCommand
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 			if(player.isMarried() || (sender.hasPermission("marry.home.others") &&
-					((!getMarriagePlugin().isPolygamyAllowed() && args.length == 1) || (getMarriagePlugin().isPolygamyAllowed() && args.length == 2))))
+					((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 			{
 				Marriage marriage = getTargetedMarriage(sender, player, args);
 				if(marriage != null)
@@ -347,7 +347,7 @@ public class HomeCommand extends MarryCommand
 		{
 			if(!(sender instanceof Player))
 			{
-				if((getMarriagePlugin().isPolygamyAllowed() && args.length == 2) || (!getMarriagePlugin().isPolygamyAllowed() && args.length == 1))
+				if((getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2) || (!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1))
 				{
 					Marriage marriageData = homeCommand.getTargetedMarriage(sender, null, args);
 					if(marriageData != null)
@@ -364,7 +364,7 @@ public class HomeCommand extends MarryCommand
 			else
 			{
 				MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-				if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().isPolygamyAllowed() && args.length == 1) || (getMarriagePlugin().isPolygamyAllowed() && args.length == 2))))
+				if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 				{
 					Marriage marriage = getTargetedMarriage(sender, player, args);
 					if(marriage != null)

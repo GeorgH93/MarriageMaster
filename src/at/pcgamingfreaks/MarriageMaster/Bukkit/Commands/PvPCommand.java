@@ -100,7 +100,7 @@ public class PvPCommand extends MarryCommand
 			return;
 		}
 		Marriage marriage;
-		if(getMarriagePlugin().isPolygamyAllowed() && args.length == 2)
+		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2)
 		{
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
@@ -147,7 +147,7 @@ public class PvPCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(getMarriagePlugin().isPolygamyAllowed() && args.length == 1)
+		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
 		{
 			return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 		}
@@ -217,7 +217,7 @@ public class PvPCommand extends MarryCommand
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData(sender);
 			Marriage marriage;
-			if(getMarriagePlugin().isPolygamyAllowed() && args.length == 1)
+			if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
 			{
 				marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 				if(marriage == null)

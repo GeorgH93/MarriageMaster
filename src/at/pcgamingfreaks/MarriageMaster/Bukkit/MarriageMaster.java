@@ -171,7 +171,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 		// Loading data
 		surnamesEnabled = config.isSurnamesEnabled();
-		multiMarriage   = config.isPolygamyAllowed();
+		multiMarriage   = config.areMultiplePartnersAllowed();
 		selfMarriage    = config.isSelfMarriageAllowed();
 		selfDivorce     = config.isSelfDivorceAllowed();
 		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
@@ -278,7 +278,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	}
 
 	@Override
-	public boolean isPolygamyAllowed()
+	public boolean areMultiplePartnersAllowed()
 	{
 		return multiMarriage;
 	}

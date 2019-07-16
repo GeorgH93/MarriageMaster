@@ -84,7 +84,7 @@ public class KissCommand extends MarryCommand implements Listener
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		//noinspection ConstantConditions
-		MarriagePlayer partner = (getMarriagePlugin().isPolygamyAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
+		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
 		if(partner == null)
 		{
 			((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);

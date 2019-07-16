@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>2.0-RC4-SNAPSHOT</version>
+	<version>2.0-RC4</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</connection>
@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MarriageMaster-API</artifactId>
-			<version>2.0-RC3-SNAPSHOT</version>
+			<version>2.0-RC4</version>
 		</dependency>
 		<!-- For documentation -->
 		<dependency>
@@ -426,9 +426,8 @@
 											<pattern>at.pcgamingfreaks</pattern>
 											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks</shadedPattern>
 											<excludes>
-												<exclude>at.pcgamingfreaks.MarriageMaster.Bukkit.API.*</exclude>
-												<exclude>at.pcgamingfreaks.MarriageMaster.Bungee.API.*</exclude>
-												<exclude>at.pcgamingfreaks.MarriageMaster.API.*</exclude>
+												<exclude>at.pcgamingfreaks.MarriageMaster.*</exclude> <!-- Marriage Master will be relocated in the next rule -->
+												<exclude>at.pcgamingfreaks.**.IMessage</exclude> <!-- Workaround to solve problems with release builds -->
 											</excludes>
 										</relocation>
 										<relocation>

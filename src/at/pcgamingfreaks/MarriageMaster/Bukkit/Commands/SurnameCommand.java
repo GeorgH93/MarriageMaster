@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public class SurnameCommand extends MarryCommand
 		descSelf         = plugin.getLanguage().getTranslated("Commands.Description.SurnameSelf");
 		helpSurnameParam = "<" + plugin.getLanguage().getTranslated("Commands.SurnameVariable") + ">";
 		helpMMParam      = "<" + plugin.helpPartnerNameVariable + "> " + helpSurnameParam;
-		if(plugin.isPolygamyAllowed())
+		if(plugin.areMultiplePartnersAllowed())
 		{
 			helpPriestParam = "<" + plugin.helpPlayerNameVariable + "> <" + plugin.helpPlayerNameVariable + "> " + helpSurnameParam;
 		}
@@ -121,7 +121,7 @@ public class SurnameCommand extends MarryCommand
 					showHelp(sender, mainCommandAlias);
 				}
 			}
-			else if(args.length == 3 && getMarriagePlugin().isPolygamyAllowed() && (!(sender instanceof Player) || player.isPriest()))
+			else if(args.length == 3 && getMarriagePlugin().areMultiplePartnersAllowed() && (!(sender instanceof Player) || player.isPriest()))
 			{
 				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]), player2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(!player1.isMarried())
@@ -155,7 +155,7 @@ public class SurnameCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length == 1 || (getMarriagePlugin().isPolygamyAllowed() && args.length == 2))
+		if(args.length == 1 || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))
 		{
 			MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 			if(!(sender instanceof Player) || player.isPriest())

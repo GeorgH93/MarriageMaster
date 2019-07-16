@@ -31,13 +31,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 	{
 		Plugin newPluginInstance;
 		if(getProxy().getPluginManager().getPlugin("PCGF_PluginLib") == null)
-		{ //TODO fix api with asm
-			//region modify api
-			/*ModifyAPI modifyApiLoader = new ModifyAPI(getClassLoader());
-			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer");
-			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.CommandManager");*/
-			//endregion
-
+		{
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bungee.MarriageMaster");
 			newPluginInstance = (Plugin) standaloneClass.newInstance();

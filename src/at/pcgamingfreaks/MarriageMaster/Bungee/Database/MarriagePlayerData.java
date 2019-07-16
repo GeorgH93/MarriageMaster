@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import at.pcgamingfreaks.Bungee.Message.Message;
+import at.pcgamingfreaks.Bungee.Message.IMessage;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, ProxiedPlayer, Message> implements MarriagePlayer
+public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, ProxiedPlayer, IMessage> implements MarriagePlayer
 {
 	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name)
 	{
@@ -84,13 +84,13 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
-	public void send(@NotNull Message message, @Nullable Object... args)
+	public void send(@NotNull IMessage message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
 	}
 
 	@Override
-	public void sendMessage(@NotNull Message message, @Nullable Object... args)
+	public void sendMessage(@NotNull IMessage message, @Nullable Object... args)
 	{
 		if(!isOnline()) return;
 		message.send(getPlayer(), args);

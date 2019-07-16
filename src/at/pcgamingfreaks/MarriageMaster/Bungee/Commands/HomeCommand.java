@@ -70,7 +70,7 @@ public class HomeCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((ProxiedPlayer) sender);
-		if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().isPolygamyAllowed() && args.length == 1) || (getMarriagePlugin().isPolygamyAllowed() && args.length == 2))))
+		if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 		{
 			Marriage marriage = getTargetedMarriage(sender, player, args);
 			if(marriage != null)
@@ -153,7 +153,7 @@ public class HomeCommand extends MarryCommand
 	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
 	{
 		Marriage marriage;
-		if(getMarriagePlugin().isPolygamyAllowed())
+		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
 			if(args.length == 2 && sender.hasPermission("marry.home.others"))
 			{
@@ -221,7 +221,7 @@ public class HomeCommand extends MarryCommand
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData(pPlayer);
 			Marriage marriage;
-			if(getMarriagePlugin().isPolygamyAllowed())
+			if(getMarriagePlugin().areMultiplePartnersAllowed())
 			{
 				MarriagePlayer partner = getMarriagePlugin().getPlayerData(partnerUUID);
 				marriage = player.getMarriageData(partner);

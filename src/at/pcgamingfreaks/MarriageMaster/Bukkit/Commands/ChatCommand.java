@@ -128,7 +128,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				toggleChatSetting(player);
 			}
-			else if(getMarriagePlugin().isPolygamyAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+			else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
 			{
 				@SuppressWarnings("deprecation") // We can't expect the players to know their partners uuid
 				Player target = Bukkit.getPlayer(args[1]);
@@ -197,7 +197,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		List<HelpData> help = new LinkedList<>();
 		help.add(new HelpData(getTranslatedName(), helpParameterMessage, getDescription()));
-		if(getMarriagePlugin().isPolygamyAllowed())
+		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
 			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + plugin.helpPartnerNameVariable + " / " +
 							getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", getDescription()));

@@ -227,7 +227,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public @Nullable List<String> getSimpleTabComplete(@NotNull CommandSender sender, String... args)
 	{
 		List<String> names = null;
-		if(sender instanceof Player && plugin.isPolygamyAllowed() && args != null && args.length == 1)
+		if(sender instanceof Player && plugin.areMultiplePartnersAllowed() && args != null && args.length == 1)
 		{
 			names = plugin.getPlayerData((Player) sender).getMatchingPartnerNames(args[0]);
 			if(names.isEmpty()) names = null;

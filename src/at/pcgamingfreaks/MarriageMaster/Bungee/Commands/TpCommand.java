@@ -68,7 +68,7 @@ public class TpCommand extends MarryCommand
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((ProxiedPlayer) sender);
 		//noinspection ConstantConditions
-		MarriagePlayer partner = (getMarriagePlugin().isPolygamyAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getMarriageData().getPartner(player);
+		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getMarriageData().getPartner(player);
 		if(partner == null)
 		{
 			player.send(((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound);

@@ -113,7 +113,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				toggleChatSetting(player);
 			}
-			else if(getMarriagePlugin().isPolygamyAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+			else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
 			{
 				ProxiedPlayer target = plugin.getProxy().getPlayer(args[1]);
 				if(target != null && player.isPartner(target))
@@ -181,7 +181,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		List<HelpData> help = new LinkedList<>();
 		help.add(new HelpData(getTranslatedName(), "<" + helpText + ">", getDescription()));
-		if(getMarriagePlugin().isPolygamyAllowed())
+		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
 			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + ((MarriageMaster) getMarriagePlugin()).helpPartnerNameVariable + " / " +
 					getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", getDescription()));
@@ -246,7 +246,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		List<Marriage> receivers = new LinkedList<>();
 		ProxiedPlayer receiver = null;
-		if(getMarriagePlugin().isPolygamyAllowed() && sender.getPrivateChatTarget() == null)
+		if(getMarriagePlugin().areMultiplePartnersAllowed() && sender.getPrivateChatTarget() == null)
 		{
 			MarriagePlayer p = null;
 			for(Marriage m : sender.getMultiMarriageData())

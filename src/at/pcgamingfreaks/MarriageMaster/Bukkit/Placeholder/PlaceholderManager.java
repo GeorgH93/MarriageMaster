@@ -113,7 +113,7 @@ public class PlaceholderManager
 		placeholders.put("Home_Z", placeholders.get("HomeZ"));
 		placeholders.put("HomeWorld", new HomeWorld(plugin));
 		placeholders.put("Home_World", placeholders.get("HomeWorld"));
-		if(plugin.isPolygamyAllowed())
+		if(plugin.areMultiplePartnersAllowed())
 		{
 			placeholders.put("NearestPartnerName", new NearestPartnerName(plugin));
 			placeholders.put("Nearest_PartnerName", placeholders.get("NearestPartnerName"));

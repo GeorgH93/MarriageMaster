@@ -38,7 +38,6 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		{
 			//region modify api
 			ModifyAPI modifyApiLoader = new ModifyAPI(getClassLoader());
-			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer");
 			modifyApiLoader.loadClass("at.pcgamingfreaks.MarriageMaster.API.CommandManager");
 			//endregion
 
@@ -67,10 +66,6 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			System.out.println(name);
 			switch(name)
 			{
-				case "at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer":
-				case "at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer":
-				case "at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData":
-					return MethodTypeReplacer.replace("at/pcgamingfreaks/Message/Message", "at/pcgamingfreaks/MarriageMasterStandalone/libs/at/pcgamingfreaks/Message/Message", stream);
 				case "at.pcgamingfreaks.MarriageMaster.API.CommandManager":
 					return MethodTypeReplacer.replace("at/pcgamingfreaks/MarriageMaster/API/MarryCommand", "at/pcgamingfreaks/MarriageMasterStandalone/API/MarryCommand", stream);
 			}

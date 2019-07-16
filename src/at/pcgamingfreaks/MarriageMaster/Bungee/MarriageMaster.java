@@ -19,7 +19,10 @@ package at.pcgamingfreaks.MarriageMaster.Bungee;
 
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.ConsoleColor;
-import at.pcgamingfreaks.MarriageMaster.Bungee.API.*;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.DelayableTeleportAction;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriageMasterPlugin;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.CommandManagerImplementation;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Database;
@@ -112,7 +115,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 		}
 		// Load data
 		surnamesEnabled = config.isSurnamesEnabled();
-		multiMarriage   = config.isPolygamyAllowed();
+		multiMarriage   = config.areMultiplePartnersAllowed();
 		selfMarriage    = config.isSelfMarriageAllowed();
 		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
 
@@ -201,7 +204,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	}
 
 	@Override
-	public boolean isPolygamyAllowed()
+	public boolean areMultiplePartnersAllowed()
 	{
 		return multiMarriage;
 	}
@@ -234,12 +237,6 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	public void doDelayableTeleportAction(@NotNull DelayableTeleportAction action)
 	{
 
-	}
-
-	@Override
-	public @NotNull MarriageManager getMarriageManager()
-	{
-		return null;
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public class GiftCommand extends MarryCommand
 		if(bPlayer.getGameMode().equals(GameMode.SURVIVAL) || allowedInCreative || bPlayer.hasPermission("marry.bypass.giftgamemode"))
 		{
 			MarriagePlayer partner;
-			if(getMarriagePlugin().isPolygamyAllowed() && args.length == 1)
+			if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
 			{
 				partner = getMarriagePlugin().getPlayerData(args[0]);
 				if(!player.isPartner(partner))

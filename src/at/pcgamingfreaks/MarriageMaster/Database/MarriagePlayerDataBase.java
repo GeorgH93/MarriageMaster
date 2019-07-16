@@ -20,7 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
-import at.pcgamingfreaks.Message.Message;
+import at.pcgamingfreaks.Message.IMessage;
 
 import com.google.common.base.Charsets;
 
@@ -33,7 +33,7 @@ import lombok.Setter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends Message> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>
+public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>
 {
 	@Getter @Setter	private String name;
 	private final UUID uuid;

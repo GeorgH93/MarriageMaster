@@ -83,7 +83,7 @@ InfoOnPartnerJoinLeave:
   # Delay for online partners info on join. In seconds
   JoinDelay: 0
 
-# This may don't work with all chat plugins!
+# The prefix options do not work with all chat plugins
 # If your chat plugin support placeholder APIs it would be better to use them! More details: https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Prefix:
   Enable: false

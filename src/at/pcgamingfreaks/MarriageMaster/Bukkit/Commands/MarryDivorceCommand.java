@@ -42,7 +42,7 @@ public class MarryDivorceCommand extends MarryCommand
 		descriptionSelf = plugin.getLanguage().getTranslated("Commands.Description.DivorceSelf");
 		helpParam = "<" + plugin.helpPartnerNameVariable + ">";
 		helpPriest = helpParam;
-		if(plugin.isPolygamyAllowed())
+		if(plugin.areMultiplePartnersAllowed())
 		{
 			helpPriest += " " + helpParam;
 		}
@@ -54,7 +54,7 @@ public class MarryDivorceCommand extends MarryCommand
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce")))
 		{
-			if((!(sender instanceof Player) || player.isPriest()) && (getMarriagePlugin().isPolygamyAllowed() ? args.length == 2 : args.length == 1))
+			if((!(sender instanceof Player) || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
 			{
 				MarriagePlayer p1 = getMarriagePlugin().getPlayerData(args[0]);
 				if(args.length == 1)
@@ -105,7 +105,7 @@ public class MarryDivorceCommand extends MarryCommand
 				}
 			}
 			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce") &&
-					(getMarriagePlugin().isPolygamyAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
+					(getMarriagePlugin().areMultiplePartnersAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
 				Marriage marriage;

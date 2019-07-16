@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2017-2019 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ public class SeenCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-		MarriagePlayer partner = (getMarriagePlugin().isPolygamyAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
+		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
 		if(partner == null)
 		{
 			player.sendMessage(((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound);
