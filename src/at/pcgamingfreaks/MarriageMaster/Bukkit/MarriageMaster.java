@@ -54,7 +54,7 @@ import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.14-SNAPSHOT";
+	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.15-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
@@ -65,6 +65,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Getter private Database database = null;
 	@Getter private IBackpackIntegration backpacksIntegration = null;
 	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
+	@Getter private PrefixSuffixFormatter prefixSuffixFormatter = null;
 	private CommandManagerImplementation commandManager = null;
 	private MarriageManager marriageManager = null;
 	private PlaceholderManager placeholderManager = null;
@@ -209,6 +210,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
 		marriageManager = new MarriageManager(this);
+		prefixSuffixFormatter = new ChatPrefixSuffix(this);
 
 		// Register Events
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);
@@ -220,7 +222,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
-		if(config.isPrefixEnabled() || config.isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
 		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 
