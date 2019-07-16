@@ -82,4 +82,6 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 * @return The marriage manager.
 	 */
 	@NotNull MarriageManager getMarriageManager();
+
+	@NotNull PrefixSuffixFormatter getPrefixSuffixFormatter();
 }
