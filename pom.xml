@@ -54,7 +54,7 @@
 	<repositories>
 		<repository>
 			<id>pcgf-repo</id>
-			<url>https://repo.pcgamingfreaks.at/repository/maven-everything</url>
+			<url>https://repo.pcgamingfreaks.at/repository/maven-releases</url>
 		</repository>
 		<repository>
 			<id>spigot-nexus</id>
@@ -86,7 +86,8 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.15-SNAPSHOT</version>
+			<version>1.0.15</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
