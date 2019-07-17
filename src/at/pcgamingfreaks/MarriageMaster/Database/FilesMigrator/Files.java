@@ -31,11 +31,13 @@ public class Files
 	private Map<String, MigrationPlayer> player = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private boolean useUUIDs = false;
 	private Logger logger = null;
+	private final File pluginDir;
 
-	public Files(boolean useUUIDs, Logger logger)
+	public Files(boolean useUUIDs, Logger logger, File pluginDir)
 	{
 		this.useUUIDs = useUUIDs;
 		this.logger = logger;
+		this.pluginDir = pluginDir;
 		player.put((useUUIDs) ? "00000000000000000000000000000000" : "none", new MigrationPlayer("none", "00000000000000000000000000000000", false, false));
 		player.put((useUUIDs) ? "00000000000000000000000000000001" : "Console", new MigrationPlayer("Console", "00000000000000000000000000000001", false, false));
 		loadPriests();
@@ -128,7 +130,7 @@ public class Files
 	private void loadPriests()
 	{
 		logger.info("Loading priests ...");
-		File file = new File("priests.yml");
+		File file = new File(pluginDir, "priests.yml");
 		priests.clear();
 		if(file.exists())
 		{
@@ -155,7 +157,7 @@ public class Files
 	private void loadAllPlayers()
 	{
 		logger.info("Loading players ...");
-		File file = new File("players");
+		File file = new File(pluginDir, "players");
 		String temp;
 		if(file.exists())
 		{
@@ -177,7 +179,7 @@ public class Files
 
 	private void loadPlayer(String player)
 	{
-		File file = new File((new StringBuilder()).append("players").append(File.separator).append(player).append(".yml").toString());
+		File file = new File(pluginDir, "players" + File.separator + player + ".yml");
 		if(file.exists())
 		{
 			try

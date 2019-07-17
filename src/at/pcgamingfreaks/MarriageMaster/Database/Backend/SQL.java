@@ -768,9 +768,18 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			{
 				if(rs.next())
 				{
-					if(marriage.home != null)
+					marriage.id = rs.getInt(1);
+					if(marriage.home != null && marriage.id >= 0)
 					{
-						DBTools.runStatement(connection, queryUpdateHome, rs.getInt(fieldMarryID), marriage.home.x, marriage.home.y, marriage.home.z, marriage.home.world);
+						try
+						{
+							DBTools.runStatement(connection, queryUpdateHome, marriage.id, marriage.home.x, marriage.home.y, marriage.home.z, marriage.home.world);
+						}
+						catch(SQLException e)
+						{
+							e.printStackTrace();
+							logger.warning(ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
+						}
 					}
 				}
 				else
@@ -782,7 +791,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		catch(SQLException e)
 		{
 			e.printStackTrace();
-			logger.warning(ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + "<->" + marriage.player2.name + "\"!" + ConsoleColor.RESET);
+			logger.warning(ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
 		}
 	}
 }

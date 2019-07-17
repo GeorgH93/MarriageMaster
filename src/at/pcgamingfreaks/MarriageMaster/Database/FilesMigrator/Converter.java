@@ -22,17 +22,18 @@ import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.Set;
 import java.util.logging.Logger;
 
 public class Converter
 {
-	public static void runConverter(final @NotNull Logger logger, final @NotNull DatabaseConfiguration config, final @NotNull DatabaseBackend newDB)
+	public static void runConverter(final @NotNull Logger logger, final @NotNull DatabaseConfiguration config, final @NotNull DatabaseBackend newDB, final File pluginDir)
 	{
 		logger.info("Loading config file ...");
 		logger.info("Config file loaded.");
 
-		Files f = new Files(config.useUUIDs(), logger);
+		Files f = new Files(config.useUUIDs(), logger, pluginDir);
 		Set<MigrationPlayer> players = f.getPlayers();
 		Set<MigrationMarriage> marriages = f.getMarriages();
 		f.close();
@@ -41,14 +42,14 @@ public class Converter
 		{
 			newDB.migratePlayer(p);
 		}
-		logger.info("Finished writing players to MySQL database.");
-		logger.info("Writing marriages to MySQL database ...");
+		logger.info("Finished writing players to " + newDB.getDatabaseTypeName() + " database.");
+		logger.info("Writing marriages to " + newDB.getDatabaseTypeName() + " database ...");
 		for(MigrationMarriage m : marriages)
 		{
 			newDB.migrateMarriage(m);
 		}
-		logger.info("Finished writing marriages to MySQL database.");
+		logger.info("Finished writing marriages to " + newDB.getDatabaseTypeName() + " database.");
 		config.setDatabaseType(newDB.getDatabaseTypeName());
-		logger.info("Finished migrating files to MySQL database.");
+		logger.info("Finished migrating files to " + newDB.getDatabaseTypeName() + " database.");
 	}
 }

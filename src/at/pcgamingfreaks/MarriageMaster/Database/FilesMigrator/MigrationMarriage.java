@@ -23,6 +23,7 @@ public class MigrationMarriage
 	public String surname;
 	public boolean pvpState;
 	public Home home;
+	public int id;
 
 	public MigrationMarriage(MigrationPlayer p1, MigrationPlayer p2, MigrationPlayer p, String surname, boolean pvp, Home h)
 	{
@@ -32,5 +33,6 @@ public class MigrationMarriage
 		this.surname = surname;
 		pvpState = pvp;
 		home = h;
+		id = -1;
 	}
 }

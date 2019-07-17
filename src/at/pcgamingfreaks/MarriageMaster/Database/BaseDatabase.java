@@ -43,7 +43,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	@Getter @Setter(AccessLevel.PRIVATE) private static BaseDatabase instance;
 
 	//region Messages
-	protected static final String MESSAGE_FILES_NO_LONGER_SUPPORTED = ConsoleColor.RED + "File based storage is no longer supported." + ConsoleColor.YELLOW + " Migrating to SQLite.";
+	protected static final String MESSAGE_FILES_NO_LONGER_SUPPORTED = ConsoleColor.RED + "File based storage is no longer supported." + ConsoleColor.YELLOW + " Migrating to SQLite." + ConsoleColor.RESET;
 	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"%s\"!" + ConsoleColor.RESET;
 	protected static final String MESSAGE_CLEANING_DB_CACHE = "Cleaning database cache.", MESSAGE_DB_CACHE_CLEANED = "Database cache cleaned.";
 	//endregion
@@ -87,8 +87,9 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 				case "files":
 				case "flat": logger.info(MESSAGE_FILES_NO_LONGER_SUPPORTED);
 					db = new SQLite<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, null, pluginName, dataFolder);
-					Converter.runConverter(logger, dbConfig, db);
-					break;
+					db.startup();
+					Converter.runConverter(logger, dbConfig, db, dataFolder);
+					return db;
 				default: logger.warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
 			}
 			if(!db.supportsBungeeCord())
