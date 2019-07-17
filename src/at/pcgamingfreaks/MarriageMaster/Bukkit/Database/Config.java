@@ -390,7 +390,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public Collection<String> getCommandExecutorOnMarryWithPriest()
 	{
-		return getConfigE().getStringList("CommandExecutor.OnMarry", new LinkedList<>());
+		return getConfigE().getStringList("CommandExecutor.OnMarryWithPriest", new LinkedList<>());
 	}
 
 	public Collection<String> getCommandExecutorOnDivorce()

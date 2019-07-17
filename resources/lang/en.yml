@@ -138,7 +138,7 @@ Language:
       AlreadyOpenRequest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" has already one not answered marry request.\",\"color\":\"red\"}]"
       YouCalledOff: "You have called the wedding off."
       PlayerCalledOff: "{DisplayName}&r called the wedding off."
-      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\"wants to marry you with \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Accept the marriage with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" wants to marry you with \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Accept the marriage with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       PriestOff: "Priest {DisplayName}&r is now offline, wedding called off."
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
       Self:
@@ -166,7 +166,7 @@ Language:
       YouCancelledPriest: "[{\"text\":\"You cancelled the divorce of \",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" and \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\"!\"}]"
       Deny: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" denied the divorce!\",\"color\":\"red\"}]"
       YouDeny: "[{\"text\":\"You denied the divorce from \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\".\"}]"
-      Confirm: "{PriestDisplayName}&r wants to divorce you from {PartnerDisplayName}. Accept the divorce with /marry accept or deny it with /marry deny."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" wants to divorce you from \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\". Accept the divorce with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       NotInRange: "[\"\",{\"text\":\"The players are not in range! They need to be within {Range} blocks!\",\"color\":\"green\"}]"
       Self:
         Divorced: "[{\"text\":\"You left \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\". You are free now.\"}]"

@@ -58,7 +58,7 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 		this.surname = surname;
 		this.firstPlayer = firstPlayer;
 		this.manager = manager;
-		player1.send(messageConfirm, priest.getName(), priest.getDisplayName(), player1.getName(), player1.getDisplayName());
+		player1.send(messageConfirm, priest.getName(), priest.getDisplayName(), player2.getName(), player2.getDisplayName());
 	}
 
 	@Override

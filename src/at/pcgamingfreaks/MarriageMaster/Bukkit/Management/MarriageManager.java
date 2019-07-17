@@ -532,7 +532,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			messageDivorced.send(divorceBy, player1.getName(), player1DisplayName, player2.getName(), player2DisplayName);
 			if(player1.isOnline()) player1.send(messageDivorcedPlayer, priestName, priestDPName, player2.getName(), player2DisplayName);
 			if(player2.isOnline()) player2.send(messageDivorcedPlayer, priestName, priestDPName, player1.getName(), player1DisplayName);
-			plugin.getServer().getPluginManager().callEvent(new DivorcedEvent(marriage.getPartner1(), marriage.getPartner2()));
+			plugin.getServer().getPluginManager().callEvent(new DivorcedEvent(marriage.getPartner1(), marriage.getPartner2(), divorceBy));
 		}
 	}
 
