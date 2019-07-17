@@ -41,9 +41,7 @@ permissions:
       marry.list: true
       marry.pvp: true
       marry.tp: true
-      marry.home: true
-      marry.sethome: true
-      marry.delhome: true
+      marry.home.*: true
       marry.chat.*: true
       marry.gift: true
       marry.backpack: true
@@ -51,6 +49,7 @@ permissions:
       marry.hug: true
       marry.seen: true
       marry.selfmarry: true
+      marry.selfdivorce: true
       marry.changesurname: true
       marry.accept: true
   marry.chat.*:
@@ -60,6 +59,10 @@ permissions:
       marry.chat.color: true
       marry.chat.format: true
       marry.chat.magic: true
+  marry.home.*:
+      marry.home: true
+      marry.sethome: true
+      marry.delhome: true
   marry.accept:
     description: Allows the player to accept confirmation requests
     default: true

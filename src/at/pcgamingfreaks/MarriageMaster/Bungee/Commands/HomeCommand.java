@@ -93,7 +93,7 @@ public class HomeCommand extends MarryCommand
 						//noinspection ConstantConditions
 						if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase()))
 						{
-							if(delayed && !player.hasPermission("marry.skiptpdelay"))
+							if(delayed && !player.hasPermission("marry.bypass.delay"))
 							{
 								//noinspection ConstantConditions
 								communicator.sendMessage(((ProxiedPlayer) sender).getServer().getInfo(), "delayHome", player.getUUID().toString(), marriage.getPartner(player).getUUID().toString());

@@ -350,7 +350,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	{
 		//noinspection ConstantConditions
 		if(action == null) return;
-		if(action.getDelay() == 0 || action.getPlayer().hasPermission("marry.skiptpdelay"))
+		if(action.getDelay() == 0 || action.getPlayer().hasPermission("marry.bypass.delay"))
 		{
 			action.run();
 		}

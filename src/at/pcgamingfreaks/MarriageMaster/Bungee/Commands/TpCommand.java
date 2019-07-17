@@ -79,7 +79,7 @@ public class TpCommand extends MarryCommand
 			{
 				if(!blockedTo.contains(partner.getPlayer().getServer().getInfo().getName().toLowerCase()))
 				{
-					if(delayed && !sender.hasPermission("marry.skiptpdelay"))
+					if(delayed && !sender.hasPermission("marry.bypass.delay"))
 					{
 						communicator.sendMessage(player.getPlayer().getServer().getInfo(), "delayTP", player.getUUID().toString(), player.getUUID().toString());
 					}

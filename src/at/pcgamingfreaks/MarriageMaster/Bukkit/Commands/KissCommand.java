@@ -122,7 +122,7 @@ public class KissCommand extends MarryCommand implements Listener
 			Bukkit.getPluginManager().callEvent(event);
 			if(!event.isCancelled())
 			{
-				if(!player.hasPermission("marry.skiptpdelay")) wait.put(player, System.currentTimeMillis());
+				if(!player.hasPermission("marry.bypass.delay")) wait.put(player, System.currentTimeMillis());
 				player.send(messageKissed);
 				partner.send(messageGotKissed);
 				if(particleSpawner != null)
