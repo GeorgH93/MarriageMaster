@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,254 +17,193 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
+import at.pcgamingfreaks.Bungee.Configuration;
+import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
+import at.pcgamingfreaks.YamlFileManager;
+
+import net.md_5.bungee.api.plugin.Plugin;
+
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
-import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
-
-import com.google.common.io.ByteStreams;
-
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
-
-public class Config
+public class Config extends Configuration implements DatabaseConfiguration
 {
-	private MarriageMaster plugin;
-	private Configuration config;
-	private ConfigurationProvider configurationProvider;
-	private static final int CONFIG_VERSION = 7;
-	
-	public Config(MarriageMaster marriagemaster)
+	private static final int CONFIG_VERSION = 100;
+
+	public Config(Plugin plugin)
 	{
-		plugin = marriagemaster;
-		configurationProvider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-		loadConfig();
+		super(plugin, CONFIG_VERSION, 100);
 	}
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	private void loadConfig()
+	@Override
+	protected void doUpgrade(YamlFileManager oldConfig)
 	{
-		File file = new File(plugin.getDataFolder(), "config.yml");
-		if(!file.exists())
+		if(oldConfig.getVersion() < 100)
 		{
 			try
 			{
-				if (!plugin.getDataFolder().exists())
-				{
-					plugin.getDataFolder().mkdir();
-				}
-				file.createNewFile();
-				try (InputStream is = plugin.getResourceAsStream("bungee_config.yml"); OutputStream os = new FileOutputStream(file))
-				{
-					ByteStreams.copy(is, os);
-				}
-				plugin.log.info("Config extracted successfully!");
+				getConfigE().set("Language.Language", oldConfig.getYamlE().getString("Language", "en"));
+				getConfigE().set("InfoOnPartnerJoinLeave.Enable", oldConfig.getYamlE().getBoolean("InformOnPartnerJoin", true));
+				getConfigE().set("InfoOnPartnerJoinLeave.JoinDelay", oldConfig.getYamlE().getInt("DelayMessageForJoiningPlayer", 0));
+				getConfigE().set("Database.UseUUIDs", oldConfig.getYamlE().getBoolean("UseUUIDs", true));
+				getConfigE().set("Database.UUID_Type ", oldConfig.getYamlE().getString("UUID_Type", "auto"));
+				getConfigE().set("Database.Type", oldConfig.getYamlE().getString("Database.Type", "SQLite"));
+				getConfigE().set("Database.SQL.Host", oldConfig.getYamlE().getString("Database.MySQL.Host", "localhost"));
+				getConfigE().set("Database.SQL.Database", oldConfig.getYamlE().getString("Database.MySQL.Database", "minecraft"));
+				getConfigE().set("Database.SQL.User", oldConfig.getYamlE().getString("Database.MySQL.User", "minecraft"));
+				getConfigE().set("Database.SQL.Password", oldConfig.getYamlE().getString("Database.MySQL.Password", "minecraft"));
+				getConfigE().set("Database.SQL.MaxConnections", oldConfig.getYamlE().getInt("Database.MySQL.MaxConnections", 4));
+				getConfigE().set("Database.SQL.Tables.User", oldConfig.getYamlE().getString("Database.Tables.User", "marry_players"));
+				getConfigE().set("Database.SQL.Tables.Priests", oldConfig.getYamlE().getString("Database.Tables.Priests", "marry_priests"));
+				getConfigE().set("Database.SQL.Tables.Partner", oldConfig.getYamlE().getString("Database.Tables.Partner", "marry_partners"));
+				getConfigE().set("Database.SQL.Tables.Home", oldConfig.getYamlE().getString("Database.Tables.Home", "marry_home"));
+				getConfigE().set("Marriage.Surnames.Enable", oldConfig.getYamlE().getBoolean("Surname", false));
+				getConfigE().set("Marriage.Surnames.AllowColors", oldConfig.getYamlE().getBoolean("AllowSurnameColors", false));
+				getConfigE().set("Marriage.Surnames.AllowedCharacters", oldConfig.getYamlE().getString("AllowedSurnameCharacters", "A-Za-z"));
+				getConfigE().set("Misc.AutoUpdate", oldConfig.getYamlE().getBoolean("Misc.AutoUpdate", true));
+				getConfigE().set("Chat.Global", oldConfig.getYamlE().getBoolean("Chat.Global", true));
+				getConfigE().set("Teleport.Delayed", oldConfig.getYamlE().getBoolean("TP.Delayed", false));
+				getConfigE().set("Teleport.Global", oldConfig.getYamlE().getBoolean("TP.Global", true));
+				getConfigE().set("Teleport.BlockedFrom", oldConfig.getYamlE().getStringList("TP.BlockedFrom", new LinkedList<>()));
+				getConfigE().set("Teleport.BlockedTo", oldConfig.getYamlE().getStringList("TP.BlockedTo", new LinkedList<>()));
+				getConfigE().set("Home.Delayed", oldConfig.getYamlE().getBoolean("Home.Delayed", false));
+				getConfigE().set("Home.Global", oldConfig.getYamlE().getBoolean("Home.Global", true));
+				getConfigE().set("Home.BlockedFrom", oldConfig.getYamlE().getStringList("Home.BlockedFrom", new LinkedList<>()));
 			}
-			catch (IOException e)
+			catch(Exception e)
 			{
+				plugin.getLogger().warning("There was a problem upgrading the old config file into the new config file.");
 				e.printStackTrace();
 			}
 		}
-		try
+		else
 		{
-			config = configurationProvider.load(file);
+			super.doUpgrade(oldConfig);
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		updateConfig(file);
-	}
-	
-	private void updateConfig(File file)
-	{
-		switch(config.getInt("Version"))
-		{
-			case 1: config.set("DelayMessageForJoiningPlayer", 1);
-			case 2: config.set("Misc.DisableV2Info", false);
-			case 3: config.set("Database.MySQL.Properties", new ArrayList<>());
-			case 4: config.set("Database.UUID_Type", "online");
-			case 5:
-			case 6: config.set("Database.MySQL.MaxConnections", 2);
-				break;
-			case CONFIG_VERSION: return;
-			default: plugin.log.info("Config File Version newer than expected!"); return;
-		}
-		config.set("Version", CONFIG_VERSION);
-		try
-		{
-			configurationProvider.save(config, file);
-			plugin.log.info("Config File has been updated.");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	
-	// Settings Reader
-	public String getLanguage()
-	{
-		return config.getString("Language");
-	}
-	
-	public String getLanguageUpdateMode()
-	{
-		return config.getString("LanguageUpdateMode");
-	}
-	
-	public boolean getUseUpdater()
-	{
-		return config.getBoolean("Misc.AutoUpdate");
-	}
-	
-	public boolean getInformOnPartnerJoinEnabled()
-	{
-		return config.getBoolean("InformOnPartnerJoin");
 	}
 
-	public int getDelayMessageForJoiningPlayer()
+	@Override
+	protected void doUpdate()
 	{
-		return config.getInt("DelayMessageForJoiningPlayer", 1);
+		// We don't have to update our config by now :)
 	}
-	
-	public boolean getChatGlobal()
+
+	//region Getters
+	//region Global settings
+	public boolean areMultiplePartnersAllowed()
 	{
-		return config.getBoolean("Chat.Global");
+		return getConfigE().getBoolean("Marriage.AllowMultiplePartners", false);
 	}
-	
-	public String getChatToggleCommand()
+
+	public boolean isSelfMarriageAllowed()
 	{
-		String cmd = config.getString("Chat.ToggleCommand").toLowerCase();
-		if(cmd.equals("chattoggle"))
+		return getConfigE().getBoolean("Marriage.AllowSelfMarriage", false);
+	}
+
+	public boolean isSurnamesEnabled()
+	{
+		return getConfigE().getBoolean("Marriage.Surnames.Enable", false);
+	}
+
+	public boolean isSurnamesForced()
+	{
+		return getConfigE().getBoolean("Marriage.Surnames.Forced", false);
+	}
+	//endregion
+
+	//region Database getter
+	@Override
+	public boolean getUseOnlineUUIDs()
+	{
+		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase();
+		if(type.equals("auto"))
 		{
-			//noinspection SpellCheckingInspection
-			return "ctoggle";
+			return plugin.getProxy().getConfig().isOnlineMode();
 		}
-		return cmd;
+		return type.equals("online");
 	}
-	
-	public String getChatFormat()
+	//endregion
+
+	//region Chat getter
+	public boolean isChatHandlerEnabled()
 	{
-		return ChatColor.translateAlternateColorCodes('&', config.getString("Chat.PrivateFormat").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return getConfigE().getBoolean("Chat.Global", true);
 	}
-	
-	public boolean getHomeGlobal()
+	//endregion
+
+	//region TP getter
+	public boolean isTPHandlerEnabled()
 	{
-		return config.getBoolean("Home.Global");
+		return getConfigE().getBoolean("Teleport.Global", true);
 	}
-	
-	public boolean getHomeDelayed()
+
+	public boolean isTPDelayed()
 	{
-		return config.getBoolean("Home.Delayed");
+		return getConfigE().getBoolean("Teleport.Delayed", false);
 	}
-	
-	public HashSet<String> getHomeFromServersBlocked()
+
+	public Set<String> getTPBlackListedServersFrom()
 	{
-		HashSet<String> blockFrom = new HashSet<>();
-		for(String s : config.getStringList("Home.FromServersBlocked"))
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedFrom", new LinkedList<>())));
+	}
+
+	public Set<String> getTPBlackListedServersTo()
+	{
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedTo", new LinkedList<>())));
+	}
+	//endregion
+
+	//region Home getter
+	public boolean isHomeHandlerEnabled()
+	{
+		return getConfigE().getBoolean("Home.Global", true);
+	}
+
+	public boolean isHomeDelayed()
+	{
+		return getConfigE().getBoolean("Home.Delayed", false);
+	}
+
+	public Set<String> getHomeBlackListedServersFrom()
+	{
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedFrom", new LinkedList<>())));
+	}
+
+	public Set<String> getHomeBlackListedServersTo()
+	{
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedTo", new LinkedList<>())));
+	}
+	//endregion
+
+	//region Join Leave Info
+	public boolean isJoinLeaveInfoEnabled()
+	{
+		return getConfigE().getBoolean("InfoOnPartnerJoinLeave.Enable", true);
+	}
+
+	public long getJoinInfoDelay()
+	{
+		return getConfigE().getLong("InfoOnPartnerJoinLeave.JoinDelay", 0);
+	}
+	//endregion
+
+	//region Misc getter
+	public boolean useUpdater()
+	{
+		return getConfigE().getBoolean("Misc.AutoUpdate", true);
+	}
+	//endregion
+	//endregion
+
+	private static List<String> toLowerCase(List<String> strings)
+	{
+		List<String> outList = new LinkedList<>();
+		for(String str : strings)
 		{
-			blockFrom.add(s.toLowerCase());
+			outList.add(str.toLowerCase());
 		}
-		return blockFrom;
-	}
-	
-	public boolean getTPGlobal()
-	{
-		return config.getBoolean("TP.Global");
-	}
-	
-	public boolean getTPDelayed()
-	{
-		return config.getBoolean("TP.Delayed");
-	}
-	
-	public HashSet<String> getTPFromServersBlocked()
-	{
-		HashSet<String> blockFrom = new HashSet<>();
-		for(String s : config.getStringList("TP.FromServersBlocked"))
-		{
-			blockFrom.add(s.toLowerCase());
-		}
-		return blockFrom;
-	}
-	
-	// DB Settings
-	public String getMySQLHost()
-	{
-		return config.getString("Database.MySQL.Host");
-	}
-	
-	public String getMySQLDatabase()
-	{
-		return config.getString("Database.MySQL.Database");
-	}
-	
-	public String getMySQLUser()
-	{
-		return config.getString("Database.MySQL.User");
-	}
-	
-	public String getMySQLPassword()
-	{
-		return config.getString("Database.MySQL.Password");
-	}
-
-	public String getMySQLProperties()
-	{
-		List<String> list = config.getStringList("Database.MySQL.Properties");
-		StringBuilder str = new StringBuilder();
-		if(list != null)
-		{
-			for(String s : list)
-			{
-				str.append("&").append(s);
-			}
-		}
-		return str.toString();
-	}
-
-	public int getMySQLMaxConnections()
-	{
-		return Math.max(1, config.getInt("Database.MySQL.MaxConnections", 2));
-	}
-
-	public String getUUIDType()
-	{
-		return config.getString("Database.UUID_Type", "auto");
-	}
-
-	public String getUserTable()
-	{
-		return config.getString("Database.Tables.User", "marry_players");
-	}
-	
-	public String getHomesTable()
-	{
-		return config.getString("Database.Tables.Home", "marry_home");
-	}
-	
-	public String getPartnersTable()
-	{
-		return config.getString("Database.Tables.Partner", "marry_partners");
-	}
-	
-	public boolean getUpdatePlayer()
-	{
-		return config.getBoolean("Database.UpdatePlayer", true);
-	}
-
-	public boolean isV2InfoDisabled()
-	{
-		return config.getBoolean("Misc.DisableV2Info", false);
+		return outList;
 	}
 }

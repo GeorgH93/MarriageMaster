@@ -1,0 +1,197 @@
+# MarriageMaster Config File
+
+# Language Settings
+Language:
+  # Defines the used language and the corresponding file used. The corresponding language file will be placed next to the config.yml named: <Language>.yml
+  Language: en
+  # Options:
+  #     Overwrite (deletes all changes from the file and extracts a new language file)
+  #     Upgrade (extracts a new language file and copy's all settings from the old language file)
+  #     Update (adds the default (english) text values for all missing values, just some basic formatting)
+  UpdateMode: Upgrade
+
+# Database Settings
+Database:
+  # SQLite = data stored in SQLite file, MySQL = data stored in MySQL database (see selection below), Shared = use shared connection pool from PCGF PluginLib
+  Type: SQLite
+  # It is highly recommended to use uuids. Not using uuids will have a negative performance impact on startup (and re-syncs if BungeeCord is enabled).
+  UseUUIDs: true
+  # Defines the storage format for UUIDs for compatibility with other plugins (shared user table).
+  # true: format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  # false: format: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+  UseUUIDSeparators: false
+  # Options: auto, online, offline | auto will decide based on the server online mode option.
+  # If you are using BungeeCord, set it to whatever you use on your BungeeCord server!!!
+  UUID_Type: auto
+  SQL:
+    Host: 'localhost'
+    Database: 'minecraft'
+    User: 'minecraft'
+    Password: 'minecraft'
+    # The max amount of connections to the database the connection pool will open.
+    # You may want to adjust this setting based on the load of your database server and the amount of players.
+    MaxConnections: 2
+    # Allows to set the connection properties.
+    # Properties: ["useSSL=false"]
+    Properties: []
+    Tables:
+      User: marry_players
+      Partner: marry_partners
+      Home: marry_home
+      Priest: marry_priests
+  # Settings controlling the cache behavior of the plugin. You may can optimize it a little bit depending on your player count, ram or cpu bottlenecks.
+  Cache:
+    UnCache:
+      # The strategie used to uncache offline players. Options
+      #     interval (offline players get uncached every x seconds)
+      #     intervalChecked (like interval, but also ensures that the player is already offline for at lest the interval time, add's a cpu overhead)
+      #     ondisconnect (player instantly gets uncached as soon as he disconnects from the server, may adds overhead if other plugins try to access the player data when they go offline, also it may be problematic for players with unstable connections)
+      #     ondisconnectdelayed (player gets uncached x seconds after he went offline, adds overhead on disconnect, you shouldn't use this with a lot of players joining and leaving.)
+      Strategie: interval
+      # Used for the interval based uncaching algorithms. Also used as delay for ondisconnectdelayed. Value in seconds. Default: 600 = 10 minutes
+      Interval: 600
+      Delay: 600
+
+Marriage:
+  # Defines if players need to get married by a priest or if they can marry each other on their own.
+  RequirePriest: true
+  # This option defines if a priest is needed to divorce 2 players or if they can divorce on their own.
+  # Options: true, false, auto (auto will copy the RequirePriest value)
+  DivorceRequiresPriest: auto
+  AllowMultiplePartners: false
+  # This setting disables the "/marry setpriest" command players can still be promoted to a priest with the "marry.priest" permission.
+  DisableSetPriestCommand: false
+  Surnames:
+    Enable: false
+    Force: false
+    # Surname requirements
+    AllowColors: false
+    AllowedCharacters: A-Za-z
+    # Values below 3 will be set to 3
+    MinLength: 3
+    # Values below the in length will be set to the min length
+    MaxLength: 16
+  AnnounceOnMarriage: true
+  Confirmation:
+    Enable: true
+    AutoDialog: true
+    BothPlayersOnDivorce: false
+    OtherPlayerOnSelfDivorce: false
+
+InfoOnPartnerJoinLeave:
+  Enable: true
+  # Delay for online partners info on join. In seconds
+  JoinDelay: 0
+
+# The prefix options do not work with all chat plugins
+# If your chat plugin support placeholder APIs it would be better to use them! More details: https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Prefix:
+  Enable: false
+  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}
+  String: "<heart>{PartnerName}<heart>"
+  OnLineBeginning: true
+# This may don't work with all chat plugins!
+Suffix:
+  Enable: false
+  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}
+  String: "{Surname}"
+
+Gift:
+  Enable: true
+  AllowInCreative: false
+
+Kiss:
+  Enable: true
+  # Time between two kisses in seconds
+  WaitTime: 10
+  # How many hearths should be spawned
+  HearthCount: 50
+
+List:
+  UseFooter: true
+  EntriesPerPage: 8
+
+PvP:
+  AllowBlocking: true
+
+BonusXp:
+  Enable: true
+  # Values less or equals 1 will disable the bonus xp, but still allows to split xp between players
+  Multiplier: 2
+  # If enabled the picked up xp will be split between both players. Only works if bonus xp is enabled.
+  SplitXpOnPickup: true
+
+HealthRegain:
+  Enable: true
+  Multiplier: 2
+
+Chat:
+  Global: true
+
+# Ranges for actions
+# -1 no range limit and no world limit, 0 no range limit but in the same world, >= 1 range limit in meters/blocks
+Range:
+  Marry: 25.0
+  Divorce: 25.0
+  Backpack: 5
+  Gift: 0
+  Kiss: 2
+  KissInteract: 5
+  Hug: 2
+  HearthVisible: 128
+  BonusXP: 10
+  Heal: 3
+
+# This settings will be used for all teleports (home and to partner)
+Teleport:
+  Delay: false
+  # Time in seconds
+  DelayTime: 3
+  # List of worlds where you can't teleport to
+  BlacklistedWorlds: []
+  # This option controls whether a safety check is performed before the player is teleported.
+  CheckSafety: true
+  # If this option is enabled the partner has to accept the teleport request before the player will be teleported. Only applicable for teleporting to another player.
+  RequireConfirmation: false
+
+BackpackShare:
+  Enable: true
+
+Economy:
+  Enable: false
+  Marry: 100.0
+  Divorce: 100.0
+  Tp: 25.0
+  Gift: 10.0
+  HomeTp: 25.0
+  SetHome: 100.0
+
+# Allows the execution of commands on certain events related to the marriage
+CommandExecutor:
+  Enable: false
+  # General information about the command executor:
+  # The commands can contain placeholders in the format {PlaceholderName} (The {} is part of the name. The available placeholders are listed right about the event).
+  # Every event can executed multiple commands in the list. Commands do not have to start with / !
+  # Commands to be executed:
+  # Will be executed when two players marry, without a priest
+  # Allowed placeholders: {Player1}, {Player2}
+  # OnMarry: [ "eco give {Player1} 100", "pex user {Player2} add example.perm" ]
+  OnMarry: []
+  # Will be executed when two players marry by a priest
+  # Allowed placeholders: {Player1}, {Player2}, {Priest}
+  OnMarryWithPriest: []
+  # Will be executed when two players get divorced, without a priest
+  # Allowed placeholders: {Player1}, {Player2}
+  OnDivorce: []
+  # Will be executed when two players get divorced through a priest
+  # Allowed placeholders: {Player1}, {Player2}, {Priest}
+  OnDivorceWithPriest: []
+
+Misc:
+  # When auto update is disabled you still can use the build in update function manually with /marry update
+  AutoUpdate: true
+  # Enable this option if you are in a BungeeCord environment. It is also recommended to install the plugin on your BungeeCord server
+  UseBungeeCord: false
+
+# Config File Version. Don't touch it!
+Version: 93

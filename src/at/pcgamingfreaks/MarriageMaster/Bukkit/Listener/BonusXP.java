@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,42 +17,58 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerExpChangeEvent;
-
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.BonusXPDropEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 
 public class BonusXP implements Listener
 {
-	private MarriageMaster plugin;
+	private final MarriageMaster plugin;
+	private final double range, multiplier;
 
 	public BonusXP(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
+		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
+		multiplier = marriagemaster.getConfiguration().getBonusXpMultiplier();
 	}
 
-	@EventHandler
-	public void onXPPickup(PlayerExpChangeEvent event)
-    {
-    	try
-	    {
-		    Player player = event.getPlayer();
-		    Player partner = plugin.DB.GetPlayerPartner(player);
-		    if(partner != null && partner.isOnline())
-		    {
-			    if(plugin.InRadius(player, partner, plugin.config.GetRange("BonusXP")))
-			    {
-				    int xp = (int) Math.ceil((event.getAmount() / 2.0) * plugin.config.GetBonusXPAmount());
-				    event.setAmount(xp);
-				    partner.giveExp(xp);
-			    }
-		    }
-	    }
-		catch(Exception e)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onEntityDeath(EntityDeathEvent event)
+	{
+		if(event.getEntityType() != EntityType.PLAYER)
 		{
-			e.printStackTrace();
+			Player killer = event.getEntity().getKiller();
+			if(killer != null)
+			{
+				MarriagePlayer player = plugin.getPlayerData(killer);
+				if(player.isMarried())
+				{
+					Marriage marriage = player.getNearestPartnerMarriageData();
+					if(marriage != null)
+					{
+						MarriagePlayer partner = marriage.getPartner(player);
+						if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
+						{
+							int xp = (int) Math.round((event.getDroppedExp() * multiplier));
+							BonusXPDropEvent bonusXPDropEvent = new BonusXPDropEvent(player, marriage, xp);
+							plugin.getServer().getPluginManager().callEvent(bonusXPDropEvent);
+							if(!bonusXPDropEvent.isCancelled())
+							{
+								event.setDroppedExp(bonusXPDropEvent.getAmount());
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

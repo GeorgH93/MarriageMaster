@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,36 +17,45 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.BonusHealEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-
 public class RegainHealth implements Listener
 {
-	private MarriageMaster plugin;
+	private final MarriageMaster plugin;
+	private final double range, multiplier;
 
-	public RegainHealth(MarriageMaster marriagemaster) 
+	public RegainHealth(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
+		range = plugin.getConfiguration().getRangeSquared("Heal");
+		multiplier = plugin.getConfiguration().getHPRegainMultiplier();
 	}
 
-	@EventHandler
-	public void onHeal(EntityRegainHealthEvent event) 
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onHeal(EntityRegainHealthEvent event)
 	{
-		if (event.getEntity() instanceof Player)
+		if(event.getEntity() instanceof Player)
 		{
-			Player player = (Player) event.getEntity();
-			if(player != null)
+			MarriagePlayer player = plugin.getPlayerData((Player) event.getEntity());
+			if(player.isMarried())
 			{
-				Player otherPlayer = plugin.DB.GetPlayerPartner(player);
-				if(otherPlayer != null && otherPlayer.isOnline())
+				Marriage marriage = player.getNearestPartnerMarriageData();
+				if(marriage != null && marriage.inRangeSquared(range))
 				{
-					if(plugin.InRadius(player, otherPlayer, plugin.config.GetRange("Heal")))
+					BonusHealEvent bonusHealEvent = new BonusHealEvent(player, marriage, event.getAmount() * multiplier, event.getRegainReason());
+					plugin.getServer().getPluginManager().callEvent(bonusHealEvent);
+					if(!bonusHealEvent.isCancelled())
 					{
-						event.setAmount((double)plugin.config.GetHealthRegainAmount());
+						event.setAmount(bonusHealEvent.getAmount());
 					}
 				}
 			}

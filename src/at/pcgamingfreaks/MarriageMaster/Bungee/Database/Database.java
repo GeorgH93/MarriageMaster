@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,43 +17,58 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import java.util.UUID;
+import at.pcgamingfreaks.MarriageMaster.API.Home;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Database.UnCacheStrategies.UnCacheStrategie;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import net.md_5.bungee.api.event.PostLoginEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
-public class Database
+import java.util.UUID;
+
+public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, MarriageData, Home> implements Listener
 {
-	protected MarriageMaster plugin;
-	
-	public Database(MarriageMaster marriagemaster) { plugin = marriagemaster; }
-	
-	public void disable() {}
-	
-	public void updatePlayer(ProxiedPlayer player) {}
-	
-	public String getPartner(ProxiedPlayer player) { return null; }
-	
-	public UUID getPartnerUUID(ProxiedPlayer player) { return null; }
-	
-	public ProxiedPlayer getPartnerPlayer(ProxiedPlayer player)
+	private final UnCacheStrategie unCacheStrategie;
+
+	public Database(MarriageMaster plugin)
 	{
-		UUID partner = getPartnerUUID(player);
-		if(partner != null)
-		{
-			return plugin.getProxy().getPlayer(partner);
-		}
-		return null;
+		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfig(), plugin.getDescription().getName(), plugin.getDataFolder(), true, true);
+		unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
+		plugin.getProxy().getPluginManager().registerListener(plugin, this);
+		loadRunnable.run();
 	}
-	
-	public String getHomeServer(ProxiedPlayer player) { return null; }
-	
-	public String limitText(String text, int len)
+
+	@Override
+	public void close()
 	{
-		if(text != null && text.length() > len)
+		plugin.getProxy().getPluginManager().unregisterListener(this);
+		unCacheStrategie.close(); // Killing the uncache strategie
+		super.close();
+	}
+
+	@Override
+	public MarriagePlayerData getPlayer(UUID uuid)
+	{
+		MarriagePlayerData player = cache.getPlayer(uuid);
+		if(player == null)
 		{
-			return text.substring(0, len);
+			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
+			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
+			ProxiedPlayer pPlayer = plugin.getProxy().getPlayer(uuid);
+			player = new MarriagePlayerData(uuid, pPlayer != null ? pPlayer.getName() : "Unknown");
+			cache.cache(player); // Let's put the new player into the cache
+			load(player);
 		}
-		return text;
+		return player;
+	}
+
+	@SuppressWarnings("unused")
+	@EventHandler(priority = Byte.MIN_VALUE) // We want to start the loading of the player as soon as he connects, so he probably is ready as soon as someone requests the player.
+	public void onPlayerLoginEvent(PostLoginEvent event)
+	{
+		getPlayer(event.getPlayer().getUniqueId()); // This will load the player if he isn't loaded yet
 	}
 }

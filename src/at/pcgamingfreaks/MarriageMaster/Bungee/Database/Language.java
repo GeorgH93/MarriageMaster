@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2015 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,128 +17,49 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
-
-import com.google.common.io.ByteStreams;
+import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
+import at.pcgamingfreaks.YamlFileManager;
 
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.config.Configuration;
-import net.md_5.bungee.config.ConfigurationProvider;
-import net.md_5.bungee.config.YamlConfiguration;
+import net.md_5.bungee.api.plugin.Plugin;
 
-public class Language
+import org.jetbrains.annotations.NotNull;
+
+public class Language extends at.pcgamingfreaks.Bungee.Language implements ILanguage
 {
-	private MarriageMaster plugin;
-	private Configuration lang;
-	private ConfigurationProvider langprovider;
-	private static final int LANG_VERSION = 1;
-	
-	public Language(MarriageMaster marriagemaster)
+	private static final int LANG_VERSION = 92, UPGRADE_THRESHOLD = 92, PRE_V2_VERSIONS = 90;
+
+	public Language(final @NotNull Plugin plugin)
 	{
-		plugin = marriagemaster;
-		langprovider = ConfigurationProvider.getProvider(YamlConfiguration.class);
-		LoadLang();
+		super(plugin, LANG_VERSION, UPGRADE_THRESHOLD);
 	}
-	
-	public void Reload()
+
+	@Override
+	protected void doUpdate()
+	{}
+
+	@Override
+	protected void doUpgrade(final @NotNull YamlFileManager oldLang)
 	{
-		LoadLang();
+		super.doUpgrade(oldLang);
 	}
-	
-	private void LoadLang()
+
+	@Override
+	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		File file = new File(plugin.getDataFolder(), "lang_" + plugin.config.getLanguage() + ".yml");
-		if(!file.exists())
-		{
-			ExtractLangFile(file);
-		}
-		try
-		{
-			lang = langprovider.load(file);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		UpdateLangFile(file);
+		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
 	}
-	
-	private void ExtractLangFile(File file)
+
+	@Override
+	public @NotNull String getTranslatedPlaceholder(@NotNull String key)
 	{
-		try
-		{
-			if(file.exists())
-			{
-				file.delete();
-	        }
-            file.createNewFile();
-            try (InputStream is = plugin.getResourceAsStream("Lang/bungee_" + plugin.config.getLanguage() + ".yml"); OutputStream os = new FileOutputStream(file))
-            {
-                ByteStreams.copy(is, os);
-            }
-            catch(Exception e)
-            {
-            	try (InputStream is = plugin.getResourceAsStream("Lang/bungee_en.yml"); OutputStream os = new FileOutputStream(file))
-                {
-                    ByteStreams.copy(is, os);
-                }
-            }
-            plugin.log.info("Lang extracted successfully!");
-        }
-		catch (IOException e)
-		{
-            e.printStackTrace();
-        }
+		throw new RuntimeException("Placeholders are not available on BungeeCord!");
 	}
-	
-	private boolean UpdateLangFile(File file)
+
+	@Override
+	public @NotNull String getDialog(@NotNull String key)
 	{
-		if(plugin.config.getLanguageUpdateMode().equalsIgnoreCase("overwrite") && lang.getInt("Version") < LANG_VERSION)
-		{
-			ExtractLangFile(file);
-			LoadLang();
-			plugin.log.info(getString("Console.LangUpdated"));
-			return true;
-		}
-		else
-		{
-			switch(lang.getInt("Version"))
-			{
-				case 0: break;
-				case LANG_VERSION: return false;
-				default: plugin.log.info("Lang File Version newer than expected!"); return false;
-			}
-			lang.set("Version", LANG_VERSION);
-			try
-			{
-				langprovider.save(lang, file);
-				plugin.log.info("Config File has been updated.");
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				return false;
-			}
-		}
-		return true;
+		throw new RuntimeException("Dialog is not available on BungeeCord!");
 	}
-	
-	//Geter
-	public String getString(String Option)
-	{
-		return ChatColor.translateAlternateColorCodes('&', lang.getString("Language." + Option));
-	}
-	
-	public BaseComponent[] getReady(String Option)
-	{
-		return TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', lang.getString("Language." + Option)));
-	}
+
 }

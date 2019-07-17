@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2014-2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,195 +17,232 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+import at.pcgamingfreaks.Bungee.Message.Message;
+import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.DelayableTeleportAction;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriageMasterPlugin;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.CommandManagerImplementation;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Config;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Database;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Language;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.JoinLeaveInfo;
+import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
+import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.NoDatabaseWorker;
+import at.pcgamingfreaks.MarriageMaster.IUpdater;
+import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
+import at.pcgamingfreaks.Updater.Updater;
 
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 
-import at.pcgamingfreaks.MarriageMaster.Bungee.Commands.*;
-import at.pcgamingfreaks.MarriageMaster.Bungee.Database.*;
-import at.pcgamingfreaks.MarriageMaster.Updater.UpdateResult;
+import org.jetbrains.annotations.NotNull;
 
-public class MarriageMaster extends Plugin
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Collection;
+import java.util.UUID;
+
+public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpdater
 {
-	public Logger log;
-    public Config config;
-    public Language lang;
-    public Database DB;
+	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance = null;
 
-    public static final String PLUGIN_CHANNEL = "marriagemaster:main";
-    
-    // Worker
-    public Chat chat = null;
-    public Home home = null;
-    public TP tp = null;
-    
-    // EventListener
-    public EventListener listener;
-    
-    // Global Messages
-    public BaseComponent[] Message_NoPermission, Message_NotMarried, Message_PartnerOffline;
-    
-    @Override
-    public void onEnable()
+	private Config config = null;
+	@Getter private Language language = null;
+	private Database DB = null;
+	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
+	private CommandManagerImplementation commandManager = new CommandManagerImplementation(this);
+
+	// Global Settings
+	private boolean multiMarriage = false, selfMarriage = false, selfDivorce = false, surnamesEnabled = false, surnamesForced = false;
+
+
+	// Global Translations
+	public Message messageNoPermission, messageNotMarried, messagePartnerOffline, messageNotFromConsole, messageTargetPartnerNotFound, messagePlayerNotMarried, messagePlayersNotMarried;
+	public String helpPartnerNameVariable;
+
+	@Override
+	public void onEnable()
 	{
-		log = getLogger();
-		PluginLoad();
-		log.info(lang.getString("Console.Enabled"));
-	}
-    
-    public void PluginLoad()
-    {
-    	// Loading base Data
+		setInstance(this);
 		config = new Config(this);
-		lang = new Language(this);
-		DB = new MySQL(this);
-		// Check for updates
-		if(config.getUseUpdater())
+		language = new Language(this);
+		if(!config.isLoaded())
 		{
-			Update();
+			getLogger().info(ConsoleColor.RED + "Failed to enable plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
+			return;
 		}
-		// Load Global Messages
-		Message_NoPermission	= lang.getReady("Ingame.NoPermission");
-		Message_NotMarried		= lang.getReady("Ingame.NotMarried");
-		Message_PartnerOffline	= lang.getReady("Ingame.PartnerOffline");
-		// Load Worker
-		if(config.getChatGlobal())
+		if(config.useUpdater()) update(null); // Check for updates
+		if(load()) // Load Plugin
 		{
-			chat = new Chat(this);
+			getLogger().info(ConsoleColor.GREEN + "Marriage Master has been enabled! " + ConsoleColor.YELLOW + " :) " + ConsoleColor.RESET);
 		}
-		if(config.getHomeGlobal())
+		else
 		{
-			home = new Home(this);
+			getLogger().info(ConsoleColor.RED + "Failed to enable plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 		}
-		if(config.getTPGlobal())
-		{
-			tp = new TP(this);
-		}
-		// Register Listener
-		listener = new EventListener(this);
-		getProxy().getPluginManager().registerListener(this, listener);
-		getProxy().registerChannel(PLUGIN_CHANNEL);
-		// Register Commands
-			// We dont have any commands that should only be executed on the bungee, so we use the chat event to catch them and use our own chat worker
-			// Register sub Commands for /marry
-		if(config.getChatGlobal())
-		{
-			listener.RegisterMarrySubCommand(chat, "c", "chat", "chattoggle", config.getChatToggleCommand(), "listenchat");
-		}
-		listener.RegisterMarrySubCommand(new Update(this), "update");
-		listener.RegisterMarrySubCommand(new Reload(this), "reload");
-		if(config.getHomeGlobal())
-		{
-			listener.RegisterMarrySubCommand(home, "home");
-		}
-		if(config.getTPGlobal())
-		{
-			listener.RegisterMarrySubCommand(tp, "tp");
-		}
-    }
-    
-    public void doReload(final ProxiedPlayer sender)
-    {
-    	getProxy().getScheduler().schedule(this, new Runnable() {
-			@Override
-			public void run()
-			{
-				Disable();
-				PluginLoad();
-				broadcastPluginMessage("reload"); // Send reload through plugin channel to all servers
-				sender.sendMessage(new TextComponent(ChatColor.BLUE + "Reloaded!"));
-			}}, 1L, TimeUnit.SECONDS);
-    }
-    
-    public void Disable()
-    {
-    	DB.disable();
-    	DB = null;
-    	lang = null;
-    	config = null;
-    	listener = null;
-    	getProxy().getPluginManager().unregisterListeners(this);
-    	getProxy().getPluginManager().unregisterCommands(this);
-    }
-	 
+	}
+
 	@Override
 	public void onDisable()
 	{
-		String disabled = lang.getString("Console.Disabled");
-		// Check for updates
-		if(config.getUseUpdater())
+		if(config != null && config.isLoaded() && DB != null)
 		{
-			Update();
+			if(config.useUpdater()) update(null); // Check for updates
+			unload();
 		}
-		Disable();
-		log.info(disabled);
+		getLogger().info(ConsoleColor.RED + "Marriage Master has been disabled. " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 	}
-	
-	public void broadcastPluginMessage(String message)
+
+	private boolean load()
 	{
-		byte[] bytesOut = null;
-		try
+		// Loading base Data
+		if(!config.isLoaded() || !language.load(config.getLanguage(), config.getLanguageUpdateMode()))
 		{
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	        DataOutputStream out = new DataOutputStream(stream);
-	        out.writeUTF(message);
-	        out.flush();
-	        bytesOut = stream.toByteArray();
-	        out.close();
+			// If we ever reach this code there must be a serious problem, someone probably has put an outdated version of one of our libs into his problem.
+			getLogger().warning(ConsoleColor.RED + "A critical error occurred! The plugin failed to load!" + ConsoleColor.RESET);
+			return false;
 		}
-		catch (Exception e)
+		DB = new Database(this);
+		if(!DB.available())
 		{
-			log.warning("Failed sending message!");
-			e.printStackTrace();
+			getLogger().warning(ConsoleColor.RED + "Failed to connect to database! Please adjust your settings and retry!" + ConsoleColor.RESET);
+			new NoDatabaseWorker(this); // Starts the worker that informs everyone with reload permission that the database connection failed.
+			return false;
 		}
-		Set<Entry<String, ServerInfo>> serverList = getProxy().getServers().entrySet();
-		for(Entry<String, ServerInfo> e : serverList)
-		{
-			e.getValue().sendData(PLUGIN_CHANNEL, bytesOut, true);
-		}
+		// Load data
+		surnamesEnabled = config.isSurnamesEnabled();
+		multiMarriage   = config.areMultiplePartnersAllowed();
+		selfMarriage    = config.isSelfMarriageAllowed();
+		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
+
+		// Load global translations
+		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
+		messageNotFromConsole        = language.getMessage("NotFromConsole");
+		messageNotMarried            = language.getMessage("Ingame.NotMarried");
+		messageNoPermission          = language.getMessage("Ingame.NoPermission");
+		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
+		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName\\}", "%s");
+		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
+
+		// Register Events
+		pluginChannelCommunicator = new PluginChannelCommunicator(this);
+		if(config.isJoinLeaveInfoEnabled()) getProxy().getPluginManager().registerListener(this, new JoinLeaveInfo(this));
+
+		commandManager.init();
+
+		return true;
 	}
-	
-	public void sendPluginMessage(String message, ServerInfo server)
+
+	private void unload()
 	{
-		try
-		{
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	        DataOutputStream out = new DataOutputStream(stream);
-	        out.writeUTF(message);
-	        out.flush();
-			server.sendData(PLUGIN_CHANNEL, stream.toByteArray(), true);
-			out.close();
-		}
-		catch (Exception e)
-		{
-			log.warning("Failed sending message to server: " + server.getName());
-			e.printStackTrace();
-		}
-    }
-	
-	public void Update()
-	{
-		Updater updater = new Updater(this, true, 74734);
-		updater.update(new at.pcgamingfreaks.MarriageMaster.Updater.Updater.UpdaterResponse()
-		{
-			@Override
-			public void onDone(UpdateResult result)
-			{
-				if(result == UpdateResult.UPDATE_AVAILABLE_V2)
-				{
-					new MarriageMasterV2IsAvailable(MarriageMaster.this);
-				}
-			}
-		});
+		commandManager.close();
+		getProxy().getPluginManager().unregisterCommands(this);
+		getProxy().getPluginManager().unregisterListeners(this);
+		DB.close();
+		pluginChannelCommunicator.close();
+		pluginChannelCommunicator = null;
 	}
+
+	public void reload()
+	{
+		unload();
+		config.reload();
+		load();
+		//getProxy().getPluginManager().callEvent(new MarriageMasterReloadEvent());
+	}
+
+	public Config getConfig()
+	{
+		return config;
+	}
+
+	public Database getDatabase()
+	{
+		return DB;
+	}
+
+	@Override
+	public Updater createUpdater(UpdateProvider updateProvider)
+	{
+		return new at.pcgamingfreaks.Bungee.Updater(this, true, updateProvider);
+	}
+
+	@Override
+	public boolean isRelease()
+	{
+		return getDescription().getVersion().contains("Release");
+	}
+
+	//region API Stuff
+	@Override
+	public @NotNull MarriagePlayer getPlayerData(@NotNull ProxiedPlayer proxiedPlayer)
+	{
+		return DB.getPlayer(proxiedPlayer.getUniqueId());
+	}
+
+	@Override
+	public @NotNull MarriagePlayer getPlayerData(@NotNull UUID uuid)
+	{
+		return DB.getPlayer(uuid);
+	}
+
+	@Override
+	public @NotNull MarriagePlayer getPlayerData(@NotNull String name)
+	{
+		return null;
+	}
+
+	@Override
+	public @NotNull Collection<? extends Marriage> getMarriages()
+	{
+		return DB.getCache().getLoadedMarriages();
+	}
+
+	@Override
+	public boolean areMultiplePartnersAllowed()
+	{
+		return multiMarriage;
+	}
+
+	@Override
+	public boolean isSelfMarriageAllowed()
+	{
+		return selfMarriage;
+	}
+
+	@Override
+	public boolean isSelfDivorceAllowed()
+	{
+		return selfDivorce;
+	}
+
+	@Override
+	public boolean isSurnamesEnabled()
+	{
+		return surnamesEnabled;
+	}
+
+	@Override
+	public boolean isSurnamesForced()
+	{
+		return surnamesForced;
+	}
+
+	@Override
+	public void doDelayableTeleportAction(@NotNull DelayableTeleportAction action)
+	{
+
+	}
+
+	@Override
+	public @NotNull CommandManagerImplementation getCommandManager()
+	{
+		return commandManager;
+	}
+	//endregion
 }

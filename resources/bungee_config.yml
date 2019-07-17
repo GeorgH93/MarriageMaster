@@ -1,20 +1,29 @@
 # MarriageMaster BungeeCord Config File.
 
 # Language Settings
-Language: en
-LanguageUpdateMode: Overwrite
+Language:
+  # Defines the used language and the corresponding file used. The corresponding language file will be placed next to the config.yml named: <Language>.yml
+  Language: en
+  # Options:
+  #     Overwrite (deletes all changes from the file and extracts a new language file)
+  #     Upgrade (extracts a new language file and copy's all settings from the old language file)
+  #     Update (adds the default (english) text values for all missing values, just some basic formatting)
+  UpdateMode: Upgrade
 
-# Send join info to pardner on player join/leave
-InformOnPartnerJoin: true
-# Delay in seconds
-DelayMessageForJoiningPlayer: 1
+InfoOnPartnerJoinLeave:
+  Enable: true
+  # Delay for online partners info on join. In seconds
+  JoinDelay: 0
+
+Marriage:
+  AllowMultiplePartners: false
+  Surnames:
+    Enable: false
+    Force: false
 
 Chat:
   # If turned off the marry chat function will be handled by the bukkit server (Private chat will only work if both players are on the same server)
   Global: true
-  # Alternative command to set the default chat to the marry chat
-  ToggleCommand: 'ctoggle'
-  PrivateFormat: '<heart> %1$s&r => %2$s: %3$s'
 
 Home:
   # If turned off the marry home function will be handled by the bukkit server (homes will only work if the player is on the same server as his home)
@@ -22,39 +31,59 @@ Home:
   # Disable delay on the bukkit server!
   Delayed: false
   # List of Servers where it's not possible to teleport from
-  FromServersBlocked: []
+  BlockedFrom: []
+  # List of Servers where it's not possible to teleport to
+  BlockedTo: []
 
-TP:
+Teleport:
   # If turned off the marry tp function will be handled by the bukkit server (tp will only work if both players are on the same server)
   Global: true
   # Disable delay on the bukkit server!
   Delayed: false
   # List of Servers where it's not possible to teleport from
-  FromServersBlocked: []
+  BlockedFrom: []
+  # List of Servers where it's not possible to teleport to
+  BlockedTo: []
 
 Database:
+  # MySQL = data stored in MySQL database (see selection below)
+  Type: MySQL
   # Disable UpdatePlayer in the plugin config of your bukkit server!!!
   UpdatePlayer: true
-  # Defines if uuids are in online or offline mode
-  UUID_Type: online
+  UseUUIDs: true
+  UseUUIDSeparators: false
   # MySQL Settings must match the settings in your bukkit plugin config.
-  MySQL:
-    Host: localhost:3306
+  SQL:
+    Host: localhost
     Database: minecraft
     User: minecraft
     Password: minecraft
-    Properties: []
     MaxConnections: 2
-  Tables:
-    User: marry_players
-    Home: marry_home
-    Partner: marry_partners
+    # Allows to set the connection properties.
+    # Properties: ["useSSL=false"]
+    Properties: []
+    Tables:
+      User: marry_players
+      Partner: marry_partners
+      Home: marry_home
+      Priest: marry_priests
+  # Settings controlling the cache behavior of the plugin. You may can optimize it a little bit depending on your player count, ram or cpu bottlenecks.
+  Cache:
+    UnCache:
+      # The strategie used to uncache offline players. Options
+      #     interval (offline players get uncached every x seconds)
+      #     intervalChecked (like interval, but also ensures that the player is already offline for at lest the interval time, add's a cpu overhead)
+      #     ondisconnect (player instantly gets uncached as soon as he disconnects from the server, may adds overhead if other plugins try to access the player data when they go offline, also it may be problematic for players with unstable connections)
+      #     ondisconnectdelayed (player gets uncached x seconds after he went offline, adds overhead on disconnect, you shouldn't use this with a lot of players joining and leaving.)
+      Strategie: interval
+      # Used for the interval based uncaching algorithms. Also used as delay for ondisconnectdelayed. Value in seconds. Default: 600 = 10 minutes
+      Interval: 600
+      Delay: 600
 
 Misc:
   # Only Downloads the update to the "updates" folder. You will have to move it manually or let you system move it in the startup script.
   # If turned off you still can use /marry update to download the update
   AutoUpdate: true
-  DisableV2Info: false
 
 # Config File Version. Don't touch it!
-Version: 7
+Version: 100

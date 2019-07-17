@@ -1,5 +1,6 @@
-name: MarriageMaster
-author: GeorgH93
-website: http://dev.bukkit.org/bukkit-plugins/marriage-master/
-main: at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster
-version: ${project.version}
+name: "${project.name}"
+author: "${author}"
+website: "${project.url}"
+main: "${bungeeMainClass}"
+depends: [${dependencies}]
+version: "${version}"
