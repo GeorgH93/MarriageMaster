@@ -27,6 +27,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Getter;
+
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +37,7 @@ import java.util.Set;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
+	@Getter private boolean upgradedFromV1 = false;
 	private static final int CONFIG_VERSION = 93, UPGRADE_THRESHOLD = 93, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
@@ -51,6 +54,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		{
 			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfigE());
 			new UpgradedInfo(MarriageMaster.getInstance());
+			upgradedFromV1 = true;
 		}
 		else
 		{

@@ -117,6 +117,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			failedToEnablePlugin();
 			return;
 		}
+		if(config.isUpgradedFromV1()) config.reload();
 		if(config.useUpdater()) update(null); // Check for updates
 		language = new Language(this);
 		BackpackIntegrationManager.initIntegration();
