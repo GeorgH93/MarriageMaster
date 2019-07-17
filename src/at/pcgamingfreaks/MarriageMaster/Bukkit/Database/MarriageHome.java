@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.PluginChannelCommunicator;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.Objects;
@@ -42,7 +41,7 @@ public class MarriageHome extends Home
 
 	public MarriageHome(String worldName, double x, double y, double z, String homeServer)
 	{
-		this(new Location(Bukkit.getWorld(worldName), x, y, z), homeServer);
+		super(worldName, homeServer, x, y, z);
 	}
 
 	@Override
