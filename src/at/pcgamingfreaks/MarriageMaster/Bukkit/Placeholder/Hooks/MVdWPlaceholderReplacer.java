@@ -36,7 +36,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 		boolean MVdW = true;
 		for(String placeholder : placeholderManager.getPlaceholders().keySet())
 		{
-			MVdW &= PlaceholderAPI.registerPlaceholder(plugin, placeholder, this);
+			MVdW &= PlaceholderAPI.registerPlaceholder(plugin, "marriagemaster_" + placeholder, this);
 		}
 		if(MVdW)
 		{
@@ -59,7 +59,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 	public String onPlaceholderReplace(PlaceholderReplaceEvent placeholderReplaceEvent)
 	{
 		if(placeholderManager == null) return "Marriage Master is not running";
-		return placeholderManager.replacePlaceholder(placeholderReplaceEvent.getPlayer(), placeholderReplaceEvent.getPlaceholder());
+		return placeholderManager.replacePlaceholder(placeholderReplaceEvent.getPlayer(), placeholderReplaceEvent.getPlaceholder().substring(15));
 	}
 
 	@Override
