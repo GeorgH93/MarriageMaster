@@ -212,6 +212,10 @@ public final class OldFileUpdater
 			newConfig.set("Database.UseUUIDs", oldYAML.getBoolean("UseUUIDs", true));
 			newConfig.set("Database.UUID_Type", oldYAML.getString("UUID_Type", "auto"));
 			newConfig.set("Database.Type", oldYAML.getString("Database.Type", "SQLite"));
+			if(oldYAML.getString("Database.Type", "SQLite").equalsIgnoreCase("mysql"))
+			{
+				newConfig.set("Database.SQL.Tables.Fields.PriestID", "priest_id");
+			}
 			newConfig.set("Database.SQL.Host", oldYAML.getString("Database.MySQL.Host", "localhost"));
 			newConfig.set("Database.SQL.Database", oldYAML.getString("Database.MySQL.Database", "minecraft"));
 			newConfig.set("Database.SQL.User", oldYAML.getString("Database.MySQL.User", "minecraft"));

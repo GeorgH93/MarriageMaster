@@ -71,6 +71,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 				getConfigE().set("Home.Delayed", oldConfig.getYamlE().getBoolean("Home.Delayed", false));
 				getConfigE().set("Home.Global", oldConfig.getYamlE().getBoolean("Home.Global", true));
 				getConfigE().set("Home.BlockedFrom", oldConfig.getYamlE().getStringList("Home.BlockedFrom", new LinkedList<>()));
+				getConfigE().set("Database.SQL.Tables.Fields.PriestID", "priest_id");
 			}
 			catch(Exception e)
 			{

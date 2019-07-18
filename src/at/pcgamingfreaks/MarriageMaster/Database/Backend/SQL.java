@@ -49,7 +49,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	// Table Names
 	protected String tablePlayers = "marry_players", tableMarriages = "marry_partners", tablePriests = "marry_priests", tableHomes = "marry_home";
 	//region Field Names
-	protected String fieldPlayerID = "player_id", fieldName = "name", fieldUUID = "uuid", fieldShareBackpack = "sharebackpack", fieldSurname = "surname"; // Player
+	protected String fieldPlayerID = "player_id", fieldName = "name", fieldUUID = "uuid", fieldShareBackpack = "sharebackpack", fieldPriestID = "player_id", fieldSurname = "surname"; // Player
 	protected String fieldMarryID = "marry_id", fieldPlayer1 = "player1", fieldPlayer2 = "player2", fieldPriest = "priest", fieldPVPState = "pvp_state", fieldDate = "date"; // Marriage
 	protected String fieldHomeX = "home_x", fieldHomeY = "home_y", fieldHomeZ = "home_z", fieldHomeWorld = "home_world", fieldHomeServer = "home_server"; // Home
 	//endregion
@@ -59,10 +59,10 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@Language("SQL") protected String queryPvPState = "UPDATE {TMarriages} SET {FPvPState}=? WHERE {FMarryID}=?;", querySetSurname = "UPDATE {TMarriages} SET {FSurname}=? WHERE {FMarryID}=?;";
 	@Language("SQL") protected String queryDelMarriage = "DELETE FROM {TMarriages} WHERE {FMarryID}=?;", querySetBackpackShareState = "UPDATE {TPlayers} SET {FShareBackpack}=? WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate}) VALUES (?,?,?,?,?);", queryLoadHome = "SELECT * FROM {THomes} WHERE {FMarryID}=?";
-	@Language("SQL") protected String querySetPriest = "REPLACE INTO {TPriests} ({FPlayerID}) VALUE (?);", queryRemovePriest = "DELETE FROM {TPriests} WHERE {FPlayerID}=?;";
+	@Language("SQL") protected String querySetPriest = "REPLACE INTO {TPriests} ({FPriestID}) VALUE (?);", queryRemovePriest = "DELETE FROM {TPriests} WHERE {FPriestID}=?;";
 	@Language("SQL") protected String queryLoadPlayer = "SELECT * FROM {TPlayers} WHERE {FUUID}=?;", queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) VALUES (?,?,?);";
-	@Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPlayerID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
-	@Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPlayerID} FROM {TPriests};";
+	@Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPriestID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
+	@Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPriestID} FROM {TPriests};";
 	@Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages}", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
 	@Language("SQL") protected String queryGetUnsetOrInvalidUUIDs = "SELECT {FPlayerID},{FName},{FUUID} FROM {TPlayers} WHERE {FUUID} IS NULL OR {FUUID} ", queryFixUUIDs = "UPDATE {TPlayers} SET {FUUID}=? WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryPlayerID = "SELECT {FPlayerID} FROM {TPlayers} WHERE {FUUID}=?;", queryUpdatePlayer = "UPDATE {TPlayers} SET {FName}=? WHERE {FPlayerID}=?;";
@@ -129,6 +129,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		fieldName           = dbConfig.getSQLField("PlayerName",   fieldName);
 		fieldUUID           = dbConfig.getSQLField("PlayerUUID",   fieldUUID);
 		fieldShareBackpack  = dbConfig.getSQLField("PlayerShareBackpack", fieldShareBackpack);
+		fieldPriestID       = dbConfig.getSQLField("PriestID",     fieldPriestID);
 		fieldMarryID        = dbConfig.getSQLField("MarryID",      fieldMarryID);
 		fieldPlayer1        = dbConfig.getSQLField("MarryPlayer1", fieldPlayer1);
 		fieldPlayer1        = dbConfig.getSQLField("MarryPlayer2", fieldPlayer1);
@@ -197,7 +198,8 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				.replaceAll("\\{FPlayerID}", fieldPlayerID).replaceAll("\\{FName}", fieldName).replaceAll("\\{FUUID}", fieldUUID).replaceAll("\\{FShareBackpack}", fieldShareBackpack) // Player fields
 				.replaceAll("\\{FMarryID}", fieldMarryID).replaceAll("\\{FSurname}", fieldSurname).replaceAll("\\{FPlayer1}", fieldPlayer1).replaceAll("\\{FPlayer2}", fieldPlayer2) // Marriage fields
 				.replaceAll("\\{FPriest}", fieldPriest).replaceAll("\\{FPvPState}", fieldPVPState).replaceAll("\\{FDate}", fieldDate).replaceAll("\\{FHomeServer}", fieldHomeServer)
-				.replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ).replaceAll("\\{FHomeWorld}", fieldHomeWorld); // Home fields
+				.replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ).replaceAll("\\{FHomeWorld}", fieldHomeWorld) // Home fields
+				.replaceAll("\\{FPriestID}", fieldPriestID);
 	}
 
 	protected void checkDatabase()
@@ -207,8 +209,8 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			@Language("SQL")
 			String queryTPlayers = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
 			                                           "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
-			       queryTPriests = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} (\n{FPlayerID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPlayerID}),\nCONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID}" +
-					                                   " FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
+			       queryTPriests = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} (\n{FPriestID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPriestID}),\nCONSTRAINT fk_{TPriests}_{TPlayers}_{FPriestID}" +
+					                                   " FOREIGN KEY ({FPriestID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
 			       queryTMarriages = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n{FPlayer2} INT UNSIGNED NOT NULL,\n" +
 					                                     "{FPriest} INT UNSIGNED NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n{FDate} DATETIME NOT NULL DEFAULT NOW(),\n" +
 					                                     "PRIMARY KEY ({FMarryID}),\nINDEX {FPlayer1}_idx ({FPlayer1}),\nINDEX {FPlayer2}_idx ({FPlayer2}),\nINDEX {FPriest}_idx ({FPriest}),\n" +
