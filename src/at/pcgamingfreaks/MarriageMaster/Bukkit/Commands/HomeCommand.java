@@ -235,6 +235,13 @@ public class HomeCommand extends MarryCommand
 			{
 				if(marriage.getHome().isOnThisServer())
 				{
+					if(marriage.getHome().getLocation().getWorld() == null)
+					{
+						plugin.getLogger().info("Home world " + marriage.getHome().getWorldName() + " does not exist. Deleting home.");
+						marriage.setHome(null);
+						player.send(messageNoHome);
+						return;
+					}
 					player.getPlayerOnline().teleport(marriage.getHome().getLocation());
 					player.send(messageTPed);
 				}
