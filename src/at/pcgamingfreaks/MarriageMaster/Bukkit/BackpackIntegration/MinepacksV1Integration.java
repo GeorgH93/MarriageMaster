@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import lombok.Getter;
+
 import java.util.MissingResourceException;
 
 class MinepacksV1Integration implements IBackpackIntegration
@@ -31,12 +33,14 @@ class MinepacksV1Integration implements IBackpackIntegration
 	private static final String PLUGIN_NAME = "MinePacks";
 	private static final Version MIN_VERSION = new Version("1.17.7");
 	private MinePacks minepacks;
+	@Getter private final String version;
 
 	public MinepacksV1Integration() throws NullPointerException, BackpackPluginIncompatibleException
 	{
 		Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
 		if(!(bukkitPlugin instanceof MinePacks)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);
-		Version installedVersion = new Version(bukkitPlugin.getDescription().getVersion(), true);
+		version = bukkitPlugin.getDescription().getVersion();
+		Version installedVersion = new Version(version, true);
 		if(MIN_VERSION.newerThan(installedVersion))
 		{
 			throw new BackpackPluginIncompatibleException("Your Minepacks version is outdated! Please update in order to use it with this plugin!\n" +
@@ -55,5 +59,11 @@ class MinepacksV1Integration implements IBackpackIntegration
 	public void close()
 	{
 		minepacks = null;
+	}
+
+	@Override
+	public String getName()
+	{
+		return PLUGIN_NAME;
 	}
 }

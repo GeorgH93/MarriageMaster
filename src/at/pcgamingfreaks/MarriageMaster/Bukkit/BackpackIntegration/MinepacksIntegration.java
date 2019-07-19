@@ -24,6 +24,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import lombok.Getter;
+
 import java.util.MissingResourceException;
 
 public class MinepacksIntegration implements IBackpackIntegration
@@ -31,12 +33,14 @@ public class MinepacksIntegration implements IBackpackIntegration
 	private static final String PLUGIN_NAME = "Minepacks";
 	private static final Version MIN_VERSION = new Version("2.0");
 	private MinepacksPlugin minepacks;
+	@Getter private final String version;
 
 	public MinepacksIntegration() throws NullPointerException, BackpackPluginIncompatibleException
 	{
 		Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
 		if(!(bukkitPlugin instanceof MinepacksPlugin)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);
-		Version installedVersion = new Version(bukkitPlugin.getDescription().getVersion(), true);
+		this.version = bukkitPlugin.getDescription().getVersion();
+		Version installedVersion = new Version(version, true);
 		if(MIN_VERSION.newerThan(installedVersion))
 		{
 			throw new BackpackPluginIncompatibleException("Your Minepacks version is outdated! Please update in order to use it with this plugin!\n" +
@@ -55,5 +59,11 @@ public class MinepacksIntegration implements IBackpackIntegration
 	public void close()
 	{
 		minepacks = null;
+	}
+
+	@Override
+	public String getName()
+	{
+		return PLUGIN_NAME;
 	}
 }

@@ -20,16 +20,20 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class VersionCommand extends MarryCommand
 {
+	MarriageMaster plugin;
 	public VersionCommand(MarriageMaster plugin)
 	{
 		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), "marry.version", plugin.getLanguage().getCommandAliases("Version"));
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -41,6 +45,23 @@ public class VersionCommand extends MarryCommand
 		sender.sendMessage("PCGF PluginLib: " +  at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion());
 		/*end[STANDALONE]*/
 		sender.sendMessage("Server: " +  plugin.getServer().getVersion());
+		if(plugin.getBackpacksIntegration() != null)
+		{
+			sender.sendMessage(plugin.getBackpacksIntegration().getName() + ": " + plugin.getBackpacksIntegration().getVersion());
+		}
+		Plugin pl;
+		if(plugin.getConfiguration().isEconomyEnabled() && (pl = Bukkit.getPluginManager().getPlugin("Vault")) != null && pl.isEnabled())
+		{
+			sender.sendMessage("Vault: " + pl.getDescription().getVersion());
+		}
+		if((pl = Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI")) != null && pl.isEnabled())
+		{
+			sender.sendMessage("MVdWPlaceholderAPI: " + pl.getDescription().getVersion());
+		}
+		if((pl = Bukkit.getPluginManager().getPlugin("PlaceholderAPI")) != null && pl.isEnabled())
+		{
+			sender.sendMessage("PlaceholderAPI: " + pl.getDescription().getVersion());
+		}
 		sender.sendMessage("#####  End Marriage Master version info  #####");
 	}
 
