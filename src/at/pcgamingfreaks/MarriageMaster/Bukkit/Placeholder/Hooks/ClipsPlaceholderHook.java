@@ -22,10 +22,12 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
+import java.io.File;
 import java.util.List;
 
 public class ClipsPlaceholderHook extends PlaceholderExpansion implements PlaceholderAPIHook
@@ -37,6 +39,24 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	{
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
+		//region Check for Marriage Master eCloud
+		Plugin papi = plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI");
+		if(papi != null)
+		{
+			File marriageMasterEcloud = new File(papi.getDataFolder(), "expansions" + File.separator + "Expansion-MarriageMaster.jar");
+			if(marriageMasterEcloud.exists())
+			{
+				if(marriageMasterEcloud.delete())
+				{
+					plugin.getLogger().info("Marriage Master PAPI eCloud extension deleted! It is not needed and not compatible with Marriage Master v2.0 and newer.");
+				}
+				else
+				{
+					plugin.getLogger().warning("Failed to delete Marriage Master PAPI eCloud extension! Please remove it!\nIt is not needed and not compatible with Marriage Master v2.0 and newer.");
+				}
+			}
+		}
+		//endregion
 		if(this.register())
 		{
 			this.plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully registered!" + ConsoleColor.RESET);
@@ -44,7 +64,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 		else
 		{
 			this.plugin.getLogger().info(ConsoleColor.RED + "PlaceholderAPI hook failed to registered!" + ConsoleColor.RESET);
-			this.plugin.getLogger().info("If you currently have the eCloud version installed please remove it and try again!");
+			this.plugin.getLogger().info("If you currently have the eCloud extension installed please remove it and try again!");
 		}
 	}
 
