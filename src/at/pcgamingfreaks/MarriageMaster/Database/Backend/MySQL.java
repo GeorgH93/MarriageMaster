@@ -36,6 +36,8 @@ import java.util.logging.Logger;
 
 public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends SQL<MARRIAGE_PLAYER, MARRIAGE, HOME>
 {
+	private Version serverVersion = null;
+
 	public MySQL(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform, final @NotNull DatabaseConfiguration dbConfig, final boolean bungee, final boolean surname,
 	                 final @NotNull Cache<MARRIAGE_PLAYER, MARRIAGE> cache, final @NotNull Logger logger, final @Nullable ConnectionProvider connectionProvider, final @NotNull String pluginName)
 	{
@@ -70,34 +72,40 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 		super.buildQuerys();
 	}
 
+	void queryDatabaseVersion(final @NotNull Connection connection)
+	{
+		try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT VERSION();"))
+		{
+			if(rs.next())
+			{
+				String version = rs.getString(1);
+				logger.info("MySQL Server version: " + version);
+				serverVersion = new Version(version);
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		if(serverVersion == null)
+		{
+			logger.warning("Unable to obtain MySQL server version.");
+			serverVersion = new Version("1.0");
+		}
+	}
+
 	@Override
 	protected void checkDatabase()
 	{
 		try(Connection connection = getConnection())
 		{
+			queryDatabaseVersion(connection);
 			String dateDefault = "NOW()";
-			try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT VERSION();"))
+			if(serverVersion.olderThan(new Version("6.0")))
 			{
-				if(rs.next())
+				try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery("SELECT NOW();"))
 				{
-					String version = rs.getString(1);
-					logger.info("MySQL Server version: " + version);
-					Version server = new Version(version);
-					if(server.olderThan(new Version("6.0")))
-					{
-						try(ResultSet rsNow = stmt.executeQuery("SELECT NOW();"))
-						{
-							if(rsNow.next())
-							{
-								dateDefault = rs.getString(1);
-							}
-							else
-							{
-								dateDefault = "2019-07-19 12:12:12";
-							}
-							dateDefault = "'" + dateDefault + "'";
-						}
-					}
+					dateDefault = "'" + ((rs.next()) ? rs.getString(1) : "2019-07-19 12:12:12") + "'";
 				}
 			}
 			@Language("SQL")
