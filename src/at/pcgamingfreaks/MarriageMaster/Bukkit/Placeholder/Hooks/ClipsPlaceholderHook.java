@@ -39,24 +39,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	{
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
-		//region Check for Marriage Master eCloud
-		Plugin papi = plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI");
-		if(papi != null)
-		{
-			File marriageMasterEcloud = new File(papi.getDataFolder(), "expansions" + File.separator + "Expansion-MarriageMaster.jar");
-			if(marriageMasterEcloud.exists())
-			{
-				if(marriageMasterEcloud.delete())
-				{
-					plugin.getLogger().info("Marriage Master PAPI eCloud extension deleted! It is not needed and not compatible with Marriage Master v2.0 and newer.");
-				}
-				else
-				{
-					plugin.getLogger().warning("Failed to delete Marriage Master PAPI eCloud extension! Please remove it!\nIt is not needed and not compatible with Marriage Master v2.0 and newer.");
-				}
-			}
-		}
-		//endregion
+		removeECouldFile();
 		if(this.register())
 		{
 			this.plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully registered!" + ConsoleColor.RESET);
@@ -66,6 +49,34 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 			this.plugin.getLogger().info(ConsoleColor.RED + "PlaceholderAPI hook failed to registered!" + ConsoleColor.RESET);
 			this.plugin.getLogger().info("If you currently have the eCloud extension installed please remove it and try again!");
 		}
+	}
+
+	private void removeECouldFile()
+	{
+		Plugin papi = plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI");
+		if(papi != null)
+		{
+			File eCloudFolder = new File(papi.getDataFolder(), "expansions");
+			if(eCloudFolder.exists())
+			{
+				File[] marriageMasterFiles = { new File(eCloudFolder,  "Expansion-MarriageMaster.jar"), new File(eCloudFolder,  "Expansion-MarriageMaster_3WNs7dj.jar") };
+				for(File file : marriageMasterFiles)
+				{
+					if(file.exists())
+					{
+						if(file.delete())
+						{
+							plugin.getLogger().info("Marriage Master PAPI eCloud extension deleted! It is not needed and not compatible with Marriage Master v2.0 and newer.");
+						}
+						else
+						{
+							plugin.getLogger().warning("Failed to delete Marriage Master PAPI eCloud extension! Please remove it!\nIt is not needed and not compatible with Marriage Master v2.0 and newer.");
+						}
+					}
+				}
+			}
+		}
+
 	}
 
 	@Override
