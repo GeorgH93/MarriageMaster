@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -28,12 +29,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ListCommand extends MarryCommand
 {
-	private static final Pattern PAGE_REGEX = Pattern.compile("(?<page>\\d+)(?<op>\\+\\d+|-\\d+|\\+\\+|--)");
 	private final int entriesPerPage;
 	private final Message messageHeadlineMain, messageFooter, messageListFormat, messageNoMarriedPlayers;
 	private final boolean useFooter;
@@ -57,22 +55,11 @@ public class ListCommand extends MarryCommand
 		int page = 0;
 		if(args.length == 1)
 		{
-			Matcher matcher = PAGE_REGEX.matcher(args[0]);
-			if(matcher.matches())
+			try
 			{
-				page = Integer.parseInt(matcher.group("page"));
-				if(matcher.group("op") != null)
-				{
-					switch(matcher.group("op"))
-					{
-						case "++": page++; break;
-						case "--": page--; break;
-						default: page += Integer.parseInt(matcher.group("op")); break;
-					}
-				}
-				if(--page < 0) page = 0; // To convert the input to a valid array range
+				page = StringUtils.parsePageNumber(args[0]);
 			}
-			else
+			catch(NumberFormatException ignored)
 			{
 				((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
 				return;
