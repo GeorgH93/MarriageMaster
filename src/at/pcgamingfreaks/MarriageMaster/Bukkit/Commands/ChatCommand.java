@@ -403,12 +403,6 @@ public class ChatCommand extends MarryCommand implements Listener
 		{
 			return null;
 		}
-
-		@Override
-		public List<HelpData> getHelp(@NotNull CommandSender requester)
-		{
-			return null;
-		}
 	}
 
 	public static class ChatListenCommand extends MarryCommand
