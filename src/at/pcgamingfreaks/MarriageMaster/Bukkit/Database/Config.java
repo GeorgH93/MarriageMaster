@@ -35,7 +35,7 @@ import java.util.Set;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 93, UPGRADE_THRESHOLD = 93, PRE_V2_VERSIONS = 90;
+	private static final int CONFIG_VERSION = 94, UPGRADE_THRESHOLD = 94, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
 	{
@@ -55,6 +55,10 @@ public class Config extends Configuration implements DatabaseConfiguration
 		else
 		{
 			super.doUpgrade(oldConfig);
+			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy"))
+			{
+				getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
+			}
 		}
 	}
 

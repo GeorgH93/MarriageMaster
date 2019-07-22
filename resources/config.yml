@@ -126,7 +126,8 @@ HealthRegain:
   Multiplier: 2
 
 Chat:
-  Global: true
+  Enabled: true
+  AllowSurveillance: false
 
 # Ranges for actions
 # -1 no range limit and no world limit, 0 no range limit but in the same world, >= 1 range limit in meters/blocks
@@ -194,4 +195,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 93
+Version: 94
