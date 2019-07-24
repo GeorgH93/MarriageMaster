@@ -1,7 +1,4 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 92
-LanguageName: "English"
-Author: "GeorgH93"
 Language:
   NotFromConsole: "&cThis command can't be used from the console!"
   # Global Wildcards: <heart> and <smallheart>
@@ -142,7 +139,7 @@ Language:
       PriestOff: "Priest {DisplayName}&r is now offline, wedding called off."
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
       Self:
-        NotYourself: "[\"\",{\"text\":\"You are not allowed to marry yourself.\",\"color\":\"red\"}]"
+        NotYourself: "[\"\",{\"text\":\"You can't marry yourself.\",\"color\":\"red\"}]"
         NotInRange: "[\"\",{\"text\":\"The player is not in range! He needs to be within {Range} blocks!\",\"color\":\"red\"}]"
         AlreadyMarried: "[{\"text\":\"You are already married with \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\"!\"}]"
         OtherAlreadyMarried: "[{\"text\":\"\",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" is already married!\"}]"
@@ -154,6 +151,7 @@ Language:
         Confirm: "{DisplayName}&r wants to marry you. Accept the marriage with /marry accept or deny it with /marry deny."
         RequestSent: "Marriage request sent."
         PlayerOff: "{DisplayName}&r is now offline, wedding called off."
+        NotOnYourOwn: "[\"\",{\"text\":\"You can't perform your own wedding. Please ask a priest to perform the wedding for you.\",\"color\":\"red\"}]"
     Divorce:
       Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" has divorced \"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" from \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
       DivorcedPlayer: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" has divorced your marriage with \"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\".\"}]"
@@ -337,3 +335,11 @@ Placeholders:
   # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
   NotMarried:
     Default: "not married"
+
+# The name of the language represented by the language file
+LanguageName: "English"
+# The author of the language file
+Author: "GeorgH93"
+
+# Language file version. Don't touch it!
+Version: 93

@@ -1,7 +1,4 @@
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
-Version: 92
-LanguageName: "German"
-Author: "GeorgH93"
 Language:
   # Global Wildcards: <heart> and <smallheart>
   NotFromConsole: "&cDieser Befehl kann nicht von der Konsole aus verwendet werden!"
@@ -154,6 +151,7 @@ Language:
         Confirm: "{DisplayName}&r will dich heiraten. Akzeptiere die Hochzeit mit /marry accept oder lehne sie mit /marry deny ab."
         RequestSent: "Heiratsanfrage gesendet."
         PlayerOff: "{DisplayName}&r ist nun offline. Die Hochzeit wurde abgesagt."
+        NotOnYourOwn: "[\"\",{\"text\":\"Du kannst nicht deine eigene Hochzeit durchführen. Bitte Frage einen Priester um unterstützung.\",\"color\":\"red\"}]"
     Divorce:
       Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" hat \"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" von \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\" geschieden.\"}]"
       DivorcedPlayer: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" hat deine Hochzeit mit \"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\" geschieden.\"}]"
@@ -336,3 +334,11 @@ Placeholders:
   # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
   NotMarried:
     Default: "nicht verheiratet"
+
+# The name of the language represented by the language file
+LanguageName: "German"
+# The author of the language file
+Author: "GeorgH93"
+
+# Language file version. Don't touch it!
+Version: 93
