@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -59,7 +59,6 @@ public class MarryMarryCommand extends MarryCommand
 		descriptionSelf = plugin.getLanguage().getTranslated("Commands.Description.MarrySelf");
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{

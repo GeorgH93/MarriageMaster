@@ -324,7 +324,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull OfflinePlayer player)
 	{
-		return database.getPlayer(player.getUniqueId());
+		return database.getPlayer(player);
 	}
 
 	@Override

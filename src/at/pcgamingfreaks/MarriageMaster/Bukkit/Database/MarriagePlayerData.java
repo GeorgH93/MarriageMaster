@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, IMessage> implements MarriagePlayer
@@ -45,7 +44,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 
 	public MarriagePlayerData(final @NotNull OfflinePlayer player)
 	{
-		super(player.getUniqueId(), Objects.requireNonNull(player.getName()));
+		super(player.getUniqueId(), player.getName() != null ? player.getName() : "Unknown");
 	}
 
 	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name, final boolean sharesBackpack, final boolean priest, final @Nullable Object databaseKey)

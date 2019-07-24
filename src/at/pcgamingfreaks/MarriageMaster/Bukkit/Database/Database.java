@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -54,15 +55,29 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		HandlerList.unregisterAll(this);
 	}
 
+	public MarriagePlayerData getPlayer(OfflinePlayer bPlayer)
+	{
+		MarriagePlayerData player = cache.getPlayer(bPlayer.getUniqueId());
+		if(player == null)
+		{
+			player = new MarriagePlayerData(bPlayer);
+			cache.cache(player); // Let's put the new player into the cache
+			load(player);
+		}
+		return player;
+	}
+
 	@Override
 	public MarriagePlayerData getPlayer(UUID uuid)
 	{
 		MarriagePlayerData player = cache.getPlayer(uuid);
 		if(player == null)
 		{
+			OfflinePlayer bPlayer = Bukkit.getPlayer(uuid);
+			if(bPlayer == null) bPlayer = Bukkit.getOfflinePlayer(uuid);
 			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
 			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
-			player = new MarriagePlayerData(Bukkit.getOfflinePlayer(uuid));
+			player = new MarriagePlayerData(bPlayer);
 			cache.cache(player); // Let's put the new player into the cache
 			load(player);
 		}
@@ -78,7 +93,7 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		{
 			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
 			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
-			player = new MarriagePlayerData(Bukkit.getOfflinePlayer(uuid));
+			player = new MarriagePlayerData(event.getPlayer());
 			cache.cache(player); // Let's put the new player into the cache
 		}
 		load(player);
