@@ -81,7 +81,7 @@ Language:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"Es gibt keine verheirateten Spieler.\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"Liste der verheirateten Spieler\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"Seite {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"}]"
-      Footer: "[{\"text\":\"### Seite {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"},{\"text\":\" ###\"}]"
+      Footer: "[{\"text\":\"<<< Vorherige Seite <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" Seite {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Nächste Seite >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"Du kannst deinem Partner nicht weh tun wenn du wenn PvP nicht aktiviert ist.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"Du hast PvP mit mit deinem Partner nun aktiviert.\",\"color\":\"green\"}]"
