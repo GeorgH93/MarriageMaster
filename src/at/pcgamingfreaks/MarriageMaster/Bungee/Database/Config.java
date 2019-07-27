@@ -48,7 +48,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 				getConfigE().set("InfoOnPartnerJoinLeave.Enable", oldConfig.getYamlE().getBoolean("InformOnPartnerJoin", true));
 				getConfigE().set("InfoOnPartnerJoinLeave.JoinDelay", oldConfig.getYamlE().getInt("DelayMessageForJoiningPlayer", 0));
 				getConfigE().set("Database.UseUUIDs", oldConfig.getYamlE().getBoolean("UseUUIDs", true));
-				getConfigE().set("Database.UUID_Type ", oldConfig.getYamlE().getString("UUID_Type", "auto"));
+				getConfigE().set("Database.UUID_Type", oldConfig.getYamlE().getString("UUID_Type", "auto"));
 				getConfigE().set("Database.Type", oldConfig.getYamlE().getString("Database.Type", "SQLite"));
 				getConfigE().set("Database.SQL.Host", oldConfig.getYamlE().getString("Database.MySQL.Host", "localhost"));
 				getConfigE().set("Database.SQL.Database", oldConfig.getYamlE().getString("Database.MySQL.Database", "minecraft"));

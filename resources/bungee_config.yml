@@ -52,6 +52,9 @@ Database:
   UpdatePlayer: true
   UseUUIDs: true
   UseUUIDSeparators: false
+  # Options: auto, online, offline | auto will decide based on the server online mode option.
+  # If you are using BungeeCord, set it to whatever you use on your BungeeCord server!!!
+  UUID_Type: auto
   # MySQL Settings must match the settings in your bukkit plugin config.
   SQL:
     Host: localhost
