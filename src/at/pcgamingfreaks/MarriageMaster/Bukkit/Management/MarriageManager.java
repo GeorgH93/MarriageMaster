@@ -42,7 +42,7 @@ import java.util.Date;
 
 public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
-	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME;
+	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
 
 	private final MarriageMaster plugin;
 	private final String  surnameNotAllowedCharactersRex, dialogDoYouWant, dialogMarried;
@@ -66,7 +66,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		}
 		else
 		{
-			surnameNotAllowedCharactersRex = "[^" + plugin.getConfiguration().getSurnamesAllowedCharacters() + ((surnameAllowColors) ? "&§" : "") + "]";
+			surnameNotAllowedCharactersRex = "[^" + plugin.getConfiguration().getSurnamesAllowedCharacters() + "]";
 		}
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
@@ -162,14 +162,17 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	@Override
 	public String cleanupSurname(String surname)
 	{
-		if(surname == null || surname.isEmpty())
-		{
-			return null;
-		}
+		if(surname == null || surname.isEmpty()) return null;
+
 		surname = surname.replace('§', '&').replaceAll("&k", "");
 		if(surnameNotAllowedCharactersRex != null)
 		{
-			surname = surname.replaceAll(surnameNotAllowedCharactersRex, "");
+			String s = surname.replaceAll(COLOR_CODE_REGEX, "");
+			String surnameCleaned = s.replaceAll(surnameNotAllowedCharactersRex, "");
+			if(!s.equals(surnameCleaned))
+			{ // Surname contains not allowed chars
+				surname = surnameCleaned; //TODO add back colors
+			}
 		}
 		return (surnameAllowColors) ? ChatColor.translateAlternateColorCodes('&', surname) : surname;
 	}
