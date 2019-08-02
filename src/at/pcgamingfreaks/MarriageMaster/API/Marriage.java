@@ -62,6 +62,17 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	@Nullable String getSurname();
 
 	/**
+	 * Gets the surname of the married players.
+	 *
+	 * @return The surname of the couple. Empty string if no surname is set.
+	 */
+	default @NotNull String getSurnameString()
+	{
+		String surname = getSurname();
+		return surname != null ? surname : "";
+	}
+
+	/**
 	 * Sets the surname of the married players.
 	 *
 	 * @param surname The new surname for the couple. null to remove surname.
