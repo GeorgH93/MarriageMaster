@@ -1,18 +1,18 @@
 /*
- * Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *   GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
@@ -68,7 +68,7 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 	{
 		if(prefix != null)
 		{
-			return String.format(prefix, marriage.getSurname(), partner.getName(), partner.getDisplayName(), HEART_RED, ((useMagicHeart) ? (ChatColor.COLOR_CHAR + CHAT_COLORS[marriage.hashCode() & 15] + HEART) : ""));
+			return String.format(prefix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), HEART_RED, ((useMagicHeart) ? (ChatColor.COLOR_CHAR + CHAT_COLORS[marriage.hashCode() & 15] + HEART) : ""));
 		}
 		return "";
 	}
@@ -78,7 +78,7 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 	{
 		if(suffix != null)
 		{
-			return String.format(suffix, marriage.getSurname(), partner.getName(), partner.getDisplayName());
+			return String.format(suffix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName());
 		}
 		return "";
 	}
