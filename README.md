@@ -17,7 +17,7 @@
 [licenseImg]: https://img.shields.io/github/license/GeorgH93/MarriageMaster.svg
 [ci]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/
 [ciImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/badge/icon
-[apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?label=api-version&query=%2F%2Flatest[1]&url=https%3A%2F%2Frepo.pcgamingfreaks.at%2Frepository%2Fmaven-snapshots%2Fat%2Fpcgamingfreaks%2FMarriageMaster-API%2Fmaven-metadata.xml
+[apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?label=api-version&query=%2F%2Frelease[1]&url=https%3A%2F%2Frepo.pcgamingfreaks.at%2Frepository%2Fmaven-releases%2Fat%2Fpcgamingfreaks%2FMarriageMaster-API%2Fmaven-metadata.xml
 [api]: https://github.com/GeorgH93/MarriageMaster/tree/API
 [apiJavaDoc]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/javadoc/
 [apiBuilds]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/
