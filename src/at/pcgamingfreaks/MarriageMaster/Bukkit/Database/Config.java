@@ -28,14 +28,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 94, UPGRADE_THRESHOLD = 94, PRE_V2_VERSIONS = 90;
+	private static final int CONFIG_VERSION = 95, UPGRADE_THRESHOLD = 95, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
 	{
@@ -257,6 +254,26 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 
 	public boolean isBonusXPSplitOnPickupEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SplitXpOnPickup", true);
+	}
+
+	public boolean isSkillApiBonusXPEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SkillAPI.Enable", false);
+	}
+
+	public List<String> getSkillApiBonusXpBlockedSources()
+	{
+		return getConfigE().getStringList("BonusXp.SkillAPI.ExcludeSources", new LinkedList<>());
+	}
+
+	public double getSkillApiBonusXpMultiplier()
+	{
+		return getConfigE().getDouble("BonusXp.Multiplier", 2);
+	}
+
+	public boolean isSkillApiBonusXPSplitOnPickupEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.SplitXpOnPickup", true);
 	}

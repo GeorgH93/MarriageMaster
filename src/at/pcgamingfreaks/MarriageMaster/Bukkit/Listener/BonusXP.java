@@ -50,21 +50,18 @@ public class BonusXP implements Listener
 			if(killer != null)
 			{
 				MarriagePlayer player = plugin.getPlayerData(killer);
-				if(player.isMarried())
+				Marriage marriage = player.getNearestPartnerMarriageData();
+				if(marriage != null)
 				{
-					Marriage marriage = player.getNearestPartnerMarriageData();
-					if(marriage != null)
+					MarriagePlayer partner = marriage.getPartner(player);
+					if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 					{
-						MarriagePlayer partner = marriage.getPartner(player);
-						if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
+						int xp = (int) Math.round((event.getDroppedExp() * multiplier));
+						BonusXPDropEvent bonusXPDropEvent = new BonusXPDropEvent(player, marriage, xp);
+						plugin.getServer().getPluginManager().callEvent(bonusXPDropEvent);
+						if(!bonusXPDropEvent.isCancelled())
 						{
-							int xp = (int) Math.round((event.getDroppedExp() * multiplier));
-							BonusXPDropEvent bonusXPDropEvent = new BonusXPDropEvent(player, marriage, xp);
-							plugin.getServer().getPluginManager().callEvent(bonusXPDropEvent);
-							if(!bonusXPDropEvent.isCancelled())
-							{
-								event.setDroppedExp(bonusXPDropEvent.getAmount());
-							}
+							event.setDroppedExp(bonusXPDropEvent.getAmount());
 						}
 					}
 				}

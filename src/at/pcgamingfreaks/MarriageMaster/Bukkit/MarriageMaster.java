@@ -219,6 +219,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		{
 			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickup(this), this);
+			if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXP(this), this);
 		}
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);

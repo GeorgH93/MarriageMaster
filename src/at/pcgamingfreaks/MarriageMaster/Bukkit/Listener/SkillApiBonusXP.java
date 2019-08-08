@@ -17,46 +17,63 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.BonusXPSplitEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import com.sucy.skill.SkillAPI;
+import com.sucy.skill.api.enums.ExpSource;
+import com.sucy.skill.api.event.PlayerExperienceGainEvent;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerExpChangeEvent;
 
-public class BonusXpSplitOnPickup implements Listener
+import java.util.HashSet;
+
+public class SkillApiBonusXP implements Listener
 {
 	private final MarriageMaster plugin;
-	private final double range;
+	private final double range, multiplier;
+	private final boolean split;
+	private final HashSet<ExpSource> blockedSources = new HashSet<>();
 
-	public BonusXpSplitOnPickup(MarriageMaster marriagemaster)
+	public SkillApiBonusXP(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
+		split = marriagemaster.getConfiguration().isSkillApiBonusXPSplitOnPickupEnabled();
+		multiplier = marriagemaster.getConfiguration().getSkillApiBonusXpMultiplier() * (split ? 0.5 : 1);
+		blockedSources.add(ExpSource.COMMAND);
+		for(String source : plugin.getConfiguration().getSkillApiBonusXpBlockedSources())
+		{
+			try
+			{
+				blockedSources.add(ExpSource.valueOf(source.toUpperCase()));
+			}
+			catch(IllegalArgumentException ignored)
+			{
+				plugin.getLogger().info("Unknown SkillAPI XP Source: " + source);
+			}
+		}
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onEntityDeath(PlayerExpChangeEvent event)
+	public void onGainExperience(PlayerExperienceGainEvent event)
 	{
-		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
+		if(blockedSources.contains(event.getSource())) return;
+		MarriagePlayer player = plugin.getPlayerData(event.getPlayerData().getPlayer());
 		Marriage marriage = player.getNearestPartnerMarriageData();
 		if(marriage != null)
 		{
 			MarriagePlayer partner = marriage.getPartner(player);
 			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 			{
-				double amount = event.getAmount() / 2.0;
-				int xpPlayer = (int) Math.round((amount)), xpPartner = (int) amount;
-				BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
-				plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
-				if(!xpSplitEvent.isCancelled())
+				double xp = event.getExp() * multiplier;
+				event.setExp((int) xp);
+				if(split)
 				{
-					event.setAmount(xpSplitEvent.getAmount());
-					if(xpPartner > 0) //noinspection ConstantConditions
-						partner.getPlayerOnline().giveExp(xpPartner); // If the partner is near he/she must also be online
+					SkillAPI.getPlayerData(partner.getPlayer()).giveExp(xp, ExpSource.COMMAND);
 				}
 			}
 		}
