@@ -32,7 +32,7 @@ import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 95, UPGRADE_THRESHOLD = 95, PRE_V2_VERSIONS = 90;
+	private static final int CONFIG_VERSION = 96, UPGRADE_THRESHOLD = CONFIG_VERSION, PRE_V2_VERSIONS = 90;
 	
 	public Config(JavaPlugin plugin)
 	{
@@ -276,6 +276,35 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public boolean isSkillApiBonusXPSplitEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.SkillAPI.SplitXp", true);
+	}
+
+	public boolean isMcMMOBonusXPEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.McMMO.Enable", false);
+	}
+
+	public Set<String> getMcMMOBonusXpBlockedSources()
+	{
+		Set<String> blockedSources = new HashSet<>();
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSources", new LinkedList<>()).forEach(source -> blockedSources.add(source.toUpperCase()));
+		return blockedSources;
+	}
+
+	public Set<String> getMcMMOBonusXpBlockedSkills()
+	{
+		Set<String> blockedSkills = new HashSet<>();
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSkills", new LinkedList<>()).forEach(source -> blockedSkills.add(source.toUpperCase()));
+		return blockedSkills;
+	}
+
+	public float getMcMMOBonusXpMultiplier()
+	{
+		return getConfigE().getFloat("BonusXp.McMMO.Multiplier", 2);
+	}
+
+	public boolean isMcMMOBonusXPSplitEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.McMMO.SplitXp", true);
 	}
 	//endregion
 

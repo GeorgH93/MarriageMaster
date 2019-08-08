@@ -70,6 +70,10 @@
 			<name>MVdW Public Repositories</name>
 			<url>http://repo.mvdw-software.com/content/repositories/mvdw-software/</url>
 		</repository>
+		<repository>
+			<id>CodeMC</id>
+			<url>https://repo.codemc.org/repository/maven-public/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -162,6 +166,13 @@
 			<groupId>com.sucy</groupId>
 			<artifactId>SkillAPI</artifactId>
 			<version>3.108</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- mcMMO -->
+		<dependency>
+			<groupId>com.gmail.nossr50.mcMMO</groupId>
+			<artifactId>mcMMO</artifactId>
+			<version>2.1.100</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Lombok -->

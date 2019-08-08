@@ -42,6 +42,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -219,7 +220,17 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		{
 			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickup(this), this);
-			if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXP(this), this);
+		}
+		if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXP(this), this);
+		if(config.isMcMMOBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("mcMMO"))
+		{
+			Plugin mcMMO = getServer().getPluginManager().getPlugin("mcMMO");
+			if(mcMMO != null)
+			{
+				if(new Version(mcMMO.getDescription().getVersion()).olderThan(new Version("2"))) getServer().getPluginManager().registerEvents(new McMMOClassicBonusXP(this), this);
+				else getServer().getPluginManager().registerEvents(new McMMOBonusXP(this), this);
+			}
+
 		}
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
