@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -42,7 +43,7 @@ public class SkillApiBonusXP implements Listener
 	{
 		plugin = marriagemaster;
 		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
-		split = marriagemaster.getConfiguration().isSkillApiBonusXPSplitOnPickupEnabled();
+		split = marriagemaster.getConfiguration().isSkillApiBonusXPSplitEnabled();
 		multiplier = marriagemaster.getConfiguration().getSkillApiBonusXpMultiplier() * (split ? 0.5 : 1);
 		blockedSources.add(ExpSource.COMMAND);
 		for(String source : plugin.getConfiguration().getSkillApiBonusXpBlockedSources())
@@ -56,6 +57,7 @@ public class SkillApiBonusXP implements Listener
 				plugin.getLogger().info("Unknown SkillAPI XP Source: " + source);
 			}
 		}
+		plugin.getLogger().info(ConsoleColor.GREEN + "SkillAPI hooked" + ConsoleColor.RESET);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

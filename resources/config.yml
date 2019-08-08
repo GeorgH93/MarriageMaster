@@ -121,11 +121,11 @@ BonusXp:
   # If enabled the picked up xp will be split between both players. Only works if bonus xp is enabled.
   SplitXpOnPickup: true
   SkillAPI:
-    Enable: true
+    Enable: false
     # List of sources that should be excluded from the xp boost. Always includes the command source.
     ExcludeSources: []
     Multiplier: 2
-    SplitXpOnPickup: true
+    SplitXp: true
 
 HealthRegain:
   Enable: true

@@ -270,12 +270,12 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public double getSkillApiBonusXpMultiplier()
 	{
-		return getConfigE().getDouble("BonusXp.Multiplier", 2);
+		return getConfigE().getDouble("BonusXp.SkillAPI.Multiplier", 2);
 	}
 
-	public boolean isSkillApiBonusXPSplitOnPickupEnabled()
+	public boolean isSkillApiBonusXPSplitEnabled()
 	{
-		return getConfigE().getBoolean("BonusXp.SplitXpOnPickup", true);
+		return getConfigE().getBoolean("BonusXp.SkillAPI.SplitXp", true);
 	}
 	//endregion
 
