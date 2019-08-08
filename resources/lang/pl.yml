@@ -1,4 +1,4 @@
-Version: 93
+Version: 2
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&cNie można użyć tej komendy w konsoli!"
@@ -14,7 +14,7 @@ Language:
     PlayerNotFound: "[\"\",{\"text\":\"Nie udało się znaleźć \\\"{PlayerName}\\\"!\",\"color\":\"red\"}]"
     PlayerNotOnline: "[\"\",{\"text\":\"\\\"{PlayerName}\\\" jest offline!\",\"color\":\"red\"}]"
     PlayersNotMarried: "[\"\",{\"text\":\"Gracze nie są w związku!\",\"color\":\"red\"}]"
-    MarriageNotExact: "[\"\",{\"text\":\"Przepraszamy, ale jest więcej niż jedno małżeńśtwo pasującego do Twojego zapytania!\",\"color\":\"red\"}]"
+    MarriageNotExact: "[\"\",{\"text\":\"Przepraszamy, ale jest więcej niż jedno małżeństwo pasującego do Twojego zapytania!\",\"color\":\"red\"}]"
     JoinLeaveInfo:
       PartnerOnline: "[\"\",{\"text\":\"Twój partner jest online.\",\"color\":\"green\"}]"
       PartnerOffline: "[\"\",{\"text\":\"Twój partner jest offline.\",\"color\":\"gray\"}]"
