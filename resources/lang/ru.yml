@@ -1,7 +1,4 @@
 # Translation by Stashenko
-Version: 90
-  LanguageName: "Russian"
-  Author: "Stashenko"
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&cЭта команда не может использоваться с консоли!"
@@ -43,7 +40,7 @@ Language:
       TargetSet: "[\"\",{\"text\":\"Переключен семейный чат.\",\"color\":\"green\"}]"
       DisplayNameAll: "Все партнеры"
       # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
-      Format: "[\"\",{\"text\":\"&lt;heart&gt;\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" =&gt; \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
+      Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Вы можете передовать предметы своему партнеру, когда находитесь в режиме выживания.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"У вас нет предмета.\",\"color\":\"red\"}]"
@@ -80,10 +77,10 @@ Language:
       # No Json!!!
       DateFormat: "yyyy.MM.dd 'at' HH:mm:ss"
     List:
-      Format: "&2{Player1DisplayName} &lt;heart&gt; &2{Player2DisplayName}"
+      Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"Нет женатых игроков.\",\"color\":\"red\"}]"
-      Headline: "[\"\",{\"text\":\"Список замужних игроков\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"страница {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} &lt;page&gt;\",\"color\":\"gray\"}]"
-      Footer: "[{\"text\":\"### Страница {CurrentPage} из {MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} &lt;page&gt;\",\"color\":\"gray\"},{\"text\":\" ###\"}]"
+      Headline: "[\"\",{\"text\":\"Список замужних игроков\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"страница {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"}]"
+      Footer: "[{\"text\":\"### Страница {CurrentPage} из {MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"},{\"text\":\" ###\"}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"Вы не можете нанести урон своему партнеру, если у вас отключено PvP.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"Вы включили PvP со своим партнером.\",\"color\":\"green\"}]"
@@ -126,7 +123,7 @@ Language:
       AlreadyOpenRequest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" никто не ответил на брак.\",\"color\":\"red\"}]"
       YouCalledOff: "Вы отменили свадьбу."
       PlayerCalledOff: "{DisplayName} &rотменил свадьбу."
-      Confirm: "{PriestDisplayName}&r хочет женить вас {PlayerDisplayName}&r. Принять предложение /marry accept или отклонить /marry deny."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" хочет женить вас \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Принять предложение \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" или отклонить \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       PriestOff: "Священник {DisplayName}&r вышел из игры, свадьба отменена."
       PlayerOff: "{DisplayName}&r вышел из игры, свадьба отменена."
       Self:
@@ -139,7 +136,7 @@ Language:
         Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" поженился \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
         YouCalledOff: "Вы отменили свадьбу."
         PlayerCalledOff: "{DisplayName}&r отменил свадьбу."
-        Confirm: "{DisplayName}&r хочет жениться на вас. Принять предложение /marry accept или отклонить /marry deny"
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" хочет жениться на вас. Принять предложение \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" или отклонить \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
         RequestSent: "Запрос на брак отправлен."
         PlayerOff: "{DisplayName}&r вышел из игры, свадьба отменена."
     Divorce:
@@ -154,7 +151,7 @@ Language:
       YouCancelledPriest: "[{\"text\":\"Вы отменили развод \",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" и \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\"!\"}]"
       Deny: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" отменили развод!\",\"color\":\"red\"}]"
       YouDeny: "[{\"text\":\"Вы отменили развод с \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\".\"}]"
-      Confirm: "{PriestDisplayName}&r хочет развести вас с {PartnerDisplayName}. Принять развод /marry accept или отклонить /marry deny"
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" хочет развести вас с \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName}&r\"},{\"text\":\". Принять развод \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" или отклонить \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       NotInRange: "[\"\",{\"text\":\"Игрок далеко! Он должен быть в пределах {Range} блоков!\",\"color\":\"green\"}]"
       Self:
         Divorced: "[{\"text\":\"Вы развелись \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\". Теперь вы свободны.\"}]"
@@ -162,7 +159,7 @@ Language:
         Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" развёлся с \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
         PlayerOff: "{DisplayName}&r вышел из игры, развод отменен."
         RequestSent: "Запрос на развод отправлен игроку {DisplayName}&r."
-        Confirm: "{DisplayName}&r хочет развестись с вами. Принять развод /marry accept или отклонить /marry deny"
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" хочет развестись с вами. Принять развод \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" или отклонить  \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
         Deny: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" отклонил ваш запрос на развод!\",\"color\":\"red\"}]"
         YouDeny: "[{\"text\":\"Вы отклонили игроку \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\" запрос на развод.\"}]"
         Cancelled: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" отклонил запрос на развод.\",\"color\":\"red\"}]"
@@ -322,3 +319,11 @@ Command:
     - cancel
   Deny:
     - deny
+
+# The name of the language represented by the language file
+LanguageName: "Russian"
+# The author of the language file
+Author: "Stashenko"
+
+# Language file version. Don't touch it!
+Version: 90

@@ -1,4 +1,3 @@
-Version: 2
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&cNie można użyć tej komendy w konsoli!"
@@ -261,8 +260,7 @@ Placeholders:
   # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
   NotMarried:
     Default: "not married"
-LanguageName: "Polish"
-Author: "Nacioszeczek"
+
 Command:
   Switches:
     On:
@@ -338,3 +336,11 @@ Command:
     - cancel
   Deny:
     - deny
+
+# The name of the language represented by the language file
+LanguageName: "Polish"
+# The author of the language file
+Author: "Nacioszeczek"
+
+# Language file version. Don't touch it!
+Version: 93
