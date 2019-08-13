@@ -69,7 +69,7 @@ git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
 mvn package
 ```
-The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>.jar`.
+The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>.jar`.
 
 ### Standalone version:
 This version works without the PCGF-PluginLib, however some API features are not available.
@@ -78,7 +78,7 @@ git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
 mvn package -P Standalone,ExcludeBadRabbit
 ```
-The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>-Standalone.jar`.
+The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>-Standalone.jar`.
 
 ### Release version:
 This is the version of the plugin published on dev.bukkit.org and spigotmc.org.
@@ -88,7 +88,7 @@ cd MarriageMaster
 mvn clean install -P Standalone,ExcludeBadRabbit
 mvn clean package -P Release
 ```
-The final file will be in the `target` folder, named `Minepacks-<CurrentVersion>-Release.jar`.
+The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>-Release.jar`.
 
 ## API:
 Marriage Master V2 comes with a very powerful API that allows you to change almost everything about this plugin.
