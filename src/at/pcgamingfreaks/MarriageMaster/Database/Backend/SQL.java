@@ -386,8 +386,16 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			logger.info("Writing marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
 			{
-				cache.cache(platform.produceMarriage((MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.priest),
-				                                     sm.date, sm.surname, sm.pvp, null, sm.marryID));
+				MARRIAGE_PLAYER player1 = (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), player2 = (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID);
+				if(player1 != null && player2 != null)
+				{
+					cache.cache(platform.produceMarriage((MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID),
+					                                     (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.priest), sm.date, sm.surname, sm.pvp, null, sm.marryID));
+				}
+				else
+				{
+					logger.warning("Player " + (player1 == null ? "1" : "2") + " for marriage " + sm.marryID + " has not been loaded. Skipping");
+				}
 			}
 			logger.info("Marriages loaded into cache");
 		}
