@@ -145,7 +145,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	protected void buildQuerys()
 	{
-		if(!bungee)
+		if(!useBungee)
 		{
 			queryUpdateHome = queryUpdateHome.replaceAll(",\\{FHomeServer}", "").replace("(?,?,?,?,?,?)", "(?,?,?,?,?)");
 		}
@@ -466,7 +466,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			while(rs.next())
 			{
-				String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
+				String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
 				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
 			}
 			for(Object marriage : cache.getLoadedMarriages())
@@ -498,7 +498,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					{
 						if(rs.next())
 						{
-							String homeServer = (bungee) ? rs.getString(fieldHomeServer) : null;
+							String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
 							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
 						}
 						else
@@ -518,29 +518,23 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@Override
 	public void load(final @NotNull MARRIAGE_PLAYER player)
 	{
-		if(player.getDatabaseKey() == null || bungee)
-		{
-			runAsync(() -> {
-				try(Connection connection = getConnection())
+		runAsync(() -> {
+			try(Connection connection = getConnection())
+			{
+				if(player.getDatabaseKey() == null)
 				{
-					if((player.getDatabaseKey() != null && !bungee) || queryPlayer(player, connection))
-					{
-						if(useUUIDs && player.isOnline())
-						{
-							update(player, connection);
-						}
-					}
-					else
-					{
-						add(player, connection);
-					}
+					if(!queryPlayer(player, connection)) add(player, connection);
 				}
-				catch(SQLException e)
+				else if(useUUIDs && player.isOnline())
 				{
-					e.printStackTrace();
+					update(player, connection);
 				}
-			});
-		}
+			}
+			catch(SQLException e)
+			{
+				e.printStackTrace();
+			}
+		});
 	}
 
 	protected void add(final MARRIAGE_PLAYER player, final Connection connection) throws SQLException
@@ -581,29 +575,35 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	protected boolean queryPlayer(final MARRIAGE_PLAYER player, final Connection connection) throws SQLException
 	{
-		try(PreparedStatement psQuery = connection.prepareStatement(queryLoadPlayer))
+		int dbId;
+		try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayer))
 		{
-			psQuery.setString(1, getUsedPlayerIdentifier(player));
-			try(ResultSet rs = psQuery.executeQuery())
+			ps.setString(1, getUsedPlayerIdentifier(player));
+			try(ResultSet rs = ps.executeQuery())
 			{
 				if(rs.next())
 				{
-					player.setDatabaseKey(rs.getInt(fieldPlayerID));
+					dbId = rs.getInt(fieldPlayerID);
+					player.setDatabaseKey(dbId);
 					cache.addDbKey(player);
 					player.setSharesBackpack(rs.getBoolean(fieldShareBackpack));
-					try(PreparedStatement ps = connection.prepareStatement(queryIsPriest))
+					if(useUUIDs && player.isOnline() && !rs.getString(fieldName).equals(player.getPlayer()))
 					{
-						ps.setInt(1, rs.getInt(fieldPlayerID));
-						try(ResultSet resultSet = ps.executeQuery())
-						{
-							player.setPriestData(resultSet.next());
-						}
+						update(player, connection);
 					}
-					return true;
 				}
+				else return false;
 			}
 		}
-		return false;
+		try(PreparedStatement ps = connection.prepareStatement(queryIsPriest))
+		{
+			ps.setInt(1, dbId);
+			try(ResultSet rs = ps.executeQuery())
+			{
+				player.setPriestData(rs.next());
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -628,7 +628,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		else
 		{
-			if(bungee)
+			if(useBungee)
 			{
 				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getWorldName(), home.getHomeServer());
 			}
