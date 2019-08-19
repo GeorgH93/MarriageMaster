@@ -32,7 +32,7 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	/**
 	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.
 	 *
-	 * @return The nearest partner. null if not married, partner is offline or partner is in an other world.
+	 * @return The marriage with the nearest partner, random marriage if none of the partners is online. null if not married.
 	 */
 	@Nullable Marriage getNearestPartnerMarriageData();
 
