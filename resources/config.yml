@@ -14,7 +14,7 @@ Language:
 Database:
   # SQLite = data stored in SQLite file, MySQL = data stored in MySQL database (see selection below), Shared = use shared connection pool from PCGF PluginLib
   Type: SQLite
-  # It is highly recommended to use uuids. Not using uuids will have a negative performance impact on startup (and re-syncs if BungeeCord is enabled).
+  # It is highly recommended to use uuids. Not using uuids might cause unexpected behaviour.
   UseUUIDs: true
   # Defines the storage format for UUIDs for compatibility with other plugins (shared user table).
   # true: format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
