@@ -90,12 +90,18 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		MarriagePlayerData player = cache.getPlayer(event.getPlayer().getUniqueId());
 		if(player == null)
 		{
-			// We cache all our married players on startup, we also load unmarried players on join. If there is no data for him in the cache we return a new player.
-			// It's very likely that he was only requested in order to show a info about his marriage status. When someone change the player the database will fix him anyway.
 			player = new MarriagePlayerData(event.getPlayer());
-			cache.cache(player); // Let's put the new player into the cache
+			cache.cache(player);
 		}
-		load(player);
+		if(player.getDatabaseKey() == null)
+		{
+			if(bungee)
+			{
+				final MarriagePlayerData fPlayer = player;
+				plugin.getServer().getScheduler().runTaskLater(plugin, () -> load(fPlayer), 10);
+			}
+			else load(player);
+		}
 	}
 
 	public void resync()
