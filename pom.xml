@@ -68,7 +68,7 @@
 		<repository>
 			<id>mvdw-software</id>
 			<name>MVdW Public Repositories</name>
-			<url>http://repo.mvdw-software.be/content/groups/public/</url>
+			<url>http://repo.mvdw-software.com/content/groups/public/</url>
 		</repository>
 	</repositories>
 

@@ -127,7 +127,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority= EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void onChat(ChatEvent event)
 	{
 		if(event.isCommand())

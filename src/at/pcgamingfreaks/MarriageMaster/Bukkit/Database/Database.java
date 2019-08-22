@@ -103,11 +103,4 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 			else load(player);
 		}
 	}
-
-	public void resync()
-	{
-		logger.info("Performing resync with database");
-		cache.clear();
-		platform.runAsync(loadRunnable, 0); // Performs the resync async
-	}
 }

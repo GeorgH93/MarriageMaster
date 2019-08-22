@@ -241,6 +241,13 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		backend.divorce(marriage);
 		if(bungee && communicatorBase != null) communicatorBase.divorce(marriage);
 	}
+
+	public void resync()
+	{
+		logger.info("Performing resync with database");
+		cache.clear();
+		platform.runAsync(loadRunnable, 0); // Performs the resync async
+	}
 	//endregion
 
 	private class LoadRunnable implements Runnable

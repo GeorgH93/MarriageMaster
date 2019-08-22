@@ -273,7 +273,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						ps.executeBatch();
 						ok = true;
 					}
-					catch(SQLException e)
+					catch(SQLException ignored)
 					{
 						Iterator<UpdateUUIDsHelper> updateUUIDsHelperIterator = toUpdate.iterator();
 						while(updateUUIDsHelperIterator.hasNext())

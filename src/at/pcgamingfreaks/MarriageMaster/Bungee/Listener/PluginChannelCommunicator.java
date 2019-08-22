@@ -62,7 +62,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority= EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPluginMessage(PluginMessageEvent event)
 	{
 		if(!(event.getSender() instanceof Server)) return;
