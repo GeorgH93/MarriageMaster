@@ -48,7 +48,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 		this.cache = cache;
 		useUUIDs = dbConfig.useUUIDs();
 		useUUIDSeparators = dbConfig.useUUIDSeparators();
-		useOnlineUUIDs = dbConfig.getUseOnlineUUIDs();
+		useOnlineUUIDs = dbConfig.useOnlineUUIDs();
 	}
 
 	@Override

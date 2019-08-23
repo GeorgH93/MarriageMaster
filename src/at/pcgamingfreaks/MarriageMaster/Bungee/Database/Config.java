@@ -23,10 +23,7 @@ import at.pcgamingfreaks.YamlFileManager;
 
 import net.md_5.bungee.api.plugin.Plugin;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
@@ -116,9 +113,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	//region Database getter
 	@Override
-	public boolean getUseOnlineUUIDs()
+	public boolean useOnlineUUIDs()
 	{
-		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase();
+		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase(Locale.ENGLISH);
 		if(type.equals("auto"))
 		{
 			return plugin.getProxy().getConfig().isOnlineMode();
