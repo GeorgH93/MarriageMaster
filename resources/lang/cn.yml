@@ -1,7 +1,6 @@
 ##########################################
 #汉化 by Fur_Xia & Freak(Ye_Yang_Dada)   #
 ##########################################
-Version: 93
 #为了简化定制和翻译过程，请查看编辑器： http://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&c这条指令不能在控制台中使用！"
@@ -343,3 +342,7 @@ Command:
     - cancel
   Deny:
     - deny
+
+# Language file version. Don't touch it!
+Version: 93
+Revision: 3

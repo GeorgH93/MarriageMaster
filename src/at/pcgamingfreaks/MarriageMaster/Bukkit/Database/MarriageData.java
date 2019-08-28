@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriageDataBase;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,21 +33,26 @@ import java.util.Date;
 
 public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender, Home> implements Marriage
 {
+	private final ChatColor marriageColor;
+
 	//region Constructors
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname,
 	                    final boolean pvpEnabled, final @Nullable Home home, final @Nullable Object databaseKey)
 	{
 		super(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
+		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
 	}
 
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname)
 	{
 		super(player1, player2, priest, weddingDate, surname);
+		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
 	}
 
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @Nullable String surname)
 	{
 		super(player1, player2, priest, surname);
+		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
 	}
 	//endregion
 
@@ -106,5 +112,12 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	{
 		return isBothOnline() && MarriageMaster.getInstance().isInRangeSquared(getPartner1().getPlayerOnline(), getPartner2().getPlayerOnline(), maxDistanceSquared);
 	}
+
+	@Override
+	public @NotNull ChatColor getMarriageColor()
+	{
+		return marriageColor;
+	}
+
 	//endregion
 }

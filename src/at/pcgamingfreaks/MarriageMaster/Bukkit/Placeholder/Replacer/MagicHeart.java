@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import org.bukkit.OfflinePlayer;
 public class MagicHeart extends PlaceholderReplacerBase
 {
 	private static final String HEART = "\u2764" + ChatColor.WHITE;
-	private static final char[] CHAT_COLORS = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
 	public MagicHeart(MarriageMaster plugin)
 	{
@@ -38,6 +37,6 @@ public class MagicHeart extends PlaceholderReplacerBase
 	{
 		MarriagePlayer marriagePlayer = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return marriagePlayer.isMarried() ? ChatColor.COLOR_CHAR + CHAT_COLORS[marriagePlayer.getMarriageData().hashCode() & 15] + HEART : valueNotMarried;
+		return marriagePlayer.isMarried() ? marriagePlayer.getMarriageData().getMarriageColor() + HEART : valueNotMarried;
 	}
 }
