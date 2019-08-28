@@ -94,6 +94,8 @@ public class PlaceholderManager
 		placeholders.put("MagicHeart", new MagicHeart(plugin));
 		placeholders.put("Magic_Heart", placeholders.get("MagicHeart"));
 		placeholders.put("Heart", new Heart(plugin));
+		placeholders.put("Prefix", new Prefix(plugin));
+		placeholders.put("Suffix", new Suffix(plugin));
 		placeholders.put("Married", placeholders.get("Heart"));
 		placeholders.put("IsMarried", new IsMarried(plugin));
 		placeholders.put("IsPriest", new IsPriest(plugin));
@@ -115,6 +117,10 @@ public class PlaceholderManager
 		placeholders.put("Home_World", placeholders.get("HomeWorld"));
 		if(plugin.areMultiplePartnersAllowed())
 		{
+			placeholders.put("NearestPrefix", new NearestPrefix(plugin));
+			placeholders.put("Nearest_Prefix", placeholders.get("NearestPrefix"));
+			placeholders.put("NearestSuffix", new NearestSuffix(plugin));
+			placeholders.put("Nearest_Suffix", placeholders.get("NearestSuffix"));
 			placeholders.put("NearestPartnerName", new NearestPartnerName(plugin));
 			placeholders.put("Nearest_PartnerName", placeholders.get("NearestPartnerName"));
 			placeholders.put("Nearest_Partner_Name", placeholders.get("NearestPartnerName"));

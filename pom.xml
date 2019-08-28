@@ -140,6 +140,12 @@
 			<artifactId>MinePacks</artifactId>
 			<version>1.18.1</version>
 			<scope>provided</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>at.pcgamingfreaks</groupId>
+					<artifactId>PluginLib</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- MVdW Placeholder API -->
 		<dependency>
