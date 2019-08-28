@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home>
@@ -46,4 +48,12 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	 * @return True if they are within the given distance. False if not or one is offline or both of them are offline.
 	 */
 	boolean inRangeSquared(double maxDistanceSquared);
+
+	/**
+	 * Gets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marraiges have the same color.
+	 * The color is applied random.
+	 *
+	 * @return The color of the marriage.
+	 */
+	@NotNull ChatColor getMarriageColor();
 }
