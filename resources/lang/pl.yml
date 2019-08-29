@@ -1,4 +1,3 @@
-Version: 93
 # To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&cNie można użyć tej komendy w konsoli!"
@@ -14,7 +13,7 @@ Language:
     PlayerNotFound: "[\"\",{\"text\":\"Nie udało się znaleźć \\\"{PlayerName}\\\"!\",\"color\":\"red\"}]"
     PlayerNotOnline: "[\"\",{\"text\":\"\\\"{PlayerName}\\\" jest offline!\",\"color\":\"red\"}]"
     PlayersNotMarried: "[\"\",{\"text\":\"Gracze nie są w związku!\",\"color\":\"red\"}]"
-    MarriageNotExact: "[\"\",{\"text\":\"Przepraszamy, ale jest więcej niż jedno małżeńśtwo pasującego do Twojego zapytania!\",\"color\":\"red\"}]"
+    MarriageNotExact: "[\"\",{\"text\":\"Przepraszamy, ale jest więcej niż jedno małżeństwo pasującego do Twojego zapytania!\",\"color\":\"red\"}]"
     JoinLeaveInfo:
       PartnerOnline: "[\"\",{\"text\":\"Twój partner jest online.\",\"color\":\"green\"}]"
       PartnerOffline: "[\"\",{\"text\":\"Twój partner jest offline.\",\"color\":\"gray\"}]"
@@ -56,13 +55,13 @@ Language:
       TPed: "[\"\",{\"text\":\"Teleportowano Cię do domu.\",\"color\":\"green\"}]"
       Set: "[\"\",{\"text\":\"Dom został zapisany.\",\"color\":\"green\"}]"
       BlockedFrom: "[\"\",{\"text\":\"Nie możesz się stąd przenieść do domu.\",\"color\":\"red\"}]"
-      BlockedTo: "[\"\",{\"text\":\"Nie masz uprawnień aby przeteleportować się do domu. Please move it.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"Nie masz uprawnień aby przeteleportować się do domu. Przemieść go.\",\"color\":\"red\"}]"
     Kiss:
       Kissed: "[\"\",{\"text\":\"Pocałowałeś swojego partnera\",\"color\":\"yellow\"}]"
       Kissed_SendMethod: "action_bar"
       GotKissed: "[\"\",{\"text\":\"Twój partner Cię pocałował\",\"color\":\"yellow\"}]"
       GotKissed_SendMethod: "action_bar"
-      TooFarAway: "[\"\",{\"text\":\"Jesteś za daleko aby pocałować partnera. (Maksymalnie {Distance} bloków)\",\"color\":\"red\"}]"
+      TooFarAway: "[\"\",{\"text\":\"Jesteś za daleko aby pocałować partnera. (Maksymalna odległość to {Distance} bloków)\",\"color\":\"red\"}]"
       # Options: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"Musisz poczekać {Time} sekund aby ponownie pocałować partnera.\",\"color\":\"red\"}]"
     Hug:
@@ -70,7 +69,7 @@ Language:
       Hugged_SendMethod: "action_bar"
       GotHugged: "[\"\",{\"text\":\"Twój partner Cię przytulił\",\"color\":\"yellow\"}]"
       GotHugged_SendMethod: "action_bar"
-      TooFarAway: "[\"\",{\"text\":\"Jesteś za daleko aby przytulić partnera. (Maksymalnie {Distance} bloków)\",\"color\":\"red\"}]"
+      TooFarAway: "[\"\",{\"text\":\"Jesteś za daleko aby przytulić partnera. (Maksymalna odległość to {Distance} bloków)\",\"color\":\"red\"}]"
     Seen:
       # Options: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} jest aktualnie \",\"extra\":[{\"text\":\"online\",\"color\":\"green\"},{\"text\":\".\"}]}]"
@@ -96,7 +95,7 @@ Language:
       WorldNotAllowed: "[\"\",{\"text\":\"Twój partner jest w świecie gdzie teleportacja jest wyłączona.\",\"color\":\"red\"}]"
       Moved: "[\"\",{\"text\":\"Teleportacja anulowana! Ruszyłeś się!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Teleportacja w ciągu {Time} sekund! Nie ruszaj się!\",\"color\":\"red\"}]"
-      BlockedFrom: "[\"\",{\"text\":\"You are not allowed to teleport to your partner from here.\",\"color\":\"red\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"Nie możesz teleportować się do partnera z tego miejsca.\",\"color\":\"red\"}]"
       BlockedTo: "[\"\",{\"text\":\"Nie możesz teleportować się w miejsce pobytu partnera.\",\"color\":\"red\"}]"
       Request:
         Notification: "[\"\",{\"text\":\"{DisplayName}&r chce się do Ciebie teleportować. Zaakceptuj używając \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" lub odrzuć używając \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
@@ -113,17 +112,17 @@ Language:
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" jest od teraz księdzem.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" wyrzucił Cię z posady księdza.\",\"color\":\"red\"}]"
       YouFiredAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" już nie jest księdzem.\",\"color\":\"green\"}]"
-      PerPermission: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" jest księdzem używając permisji. Nie możesz go wyrzucić komendą!!\",\"color\":\"red\"}]"
+      PerPermission: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" jest księdzem przez permisje. Nie możesz go wyrzucić komendą!\",\"color\":\"red\"}]"
     Surname:
       SetSuccessful: "[\"\",{\"text\":\"Zmieniono nazwisko.\",\"color\":\"green\"}]"
       SetFailed: "[\"\",{\"text\":\"Nie udało się zmienić nazwiska.\",\"color\":\"red\"}]"
-      ToShort: "[\"\",{\"text\":\"Nazwisko jest za krótkie. Musi mieć minimum {MinLength} znaków długości.\",\"color\":\"red\"}]"
-      ToLong: "[\"\",{\"text\":\"Nazwisko jest za długie. Nie może mieć więcej niz {MaxLength} znaków.\",\"color\":\"red\"}]"
+      ToShort: "[\"\",{\"text\":\"Nazwisko jest za krótkie. Musi mieć minimum {MinLength} znaków.\",\"color\":\"red\"}]"
+      ToLong: "[\"\",{\"text\":\"Nazwisko jest za długie. Nie może mieć więcej niż {MaxLength} znaków.\",\"color\":\"red\"}]"
       AlreadyUsed: "[\"\",{\"text\":\"Nazwisko jest już w użyciu!\",\"color\":\"red\"}]"
     Requests:
       NothingToAccept: "[\"\",{\"text\":\"Nie ma nic do zaakceptowania.\",\"color\":\"red\"}]"
       NothingToDeny: "[\"\",{\"text\":\"Nie ma nic do odrzucenia.\",\"color\":\"red\"}]"
-      NothingToCancel: "[\"\",{\"text\":\"There is no open request to cancel.\",\"color\":\"red\"}]"
+      NothingToCancel: "[\"\",{\"text\":\"Nie ma żadnej prośby do anulowania.\",\"color\":\"red\"}]"
     Marry:
       # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"Nie możesz ożenić \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" z nim samym.\"}]"
@@ -233,7 +232,7 @@ Language:
       Kiss: "Całujesz partnera"
       Hug: "Przytulasz partnera"
       Seen: "Pokazuje kiedy ostatnio Twój partner był online."
-      Marry: "Ożenia dwóch graczy."
+      Marry: "Daje ślub dwóm graczom."
       MarrySelf: "Wysyła prośbę o ślub do innego gracza."
       Divorce: "Rozwodzi dwóch graczy."
       DivorceSelf: "Zostawia Twojego partnera."
@@ -261,8 +260,7 @@ Placeholders:
   # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
   NotMarried:
     Default: "not married"
-LanguageName: "Polish"
-Author: "Nacioszeczek"
+
 Command:
   Switches:
     On:
@@ -338,3 +336,12 @@ Command:
     - cancel
   Deny:
     - deny
+
+# The name of the language represented by the language file
+LanguageName: "Polish"
+# The author of the language file
+Author: "Nacioszeczek"
+
+# Language file version. Don't touch it!
+Version: 93
+Revision: 4

@@ -48,7 +48,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	protected static final String MESSAGE_CLEANING_DB_CACHE = "Cleaning database cache.", MESSAGE_DB_CACHE_CLEANED = "Database cache cleaned.";
 	//endregion
 
-	private final boolean bungee;
+	protected final boolean bungee;
 	protected final Logger logger;
 	protected final MARRIAGE_MASTER plugin;
 	protected final Cache<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA> cache = new Cache<>();
@@ -116,7 +116,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		return backend != null;
 	}
 
-	public boolean useBungee()
+	public final boolean useBungee()
 	{
 		return bungee;
 	}
@@ -240,6 +240,13 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 	{
 		backend.divorce(marriage);
 		if(bungee && communicatorBase != null) communicatorBase.divorce(marriage);
+	}
+
+	public void resync()
+	{
+		logger.info("Performing resync with database");
+		cache.clear();
+		platform.runAsync(loadRunnable, 0); // Performs the resync async
 	}
 	//endregion
 

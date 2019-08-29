@@ -194,7 +194,9 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull String name)
 	{
-		return null;
+		ProxiedPlayer player = getProxy().getPlayer(name);
+		if(player == null) throw new RuntimeException("BungeeCord does not provide player objects for offline players!"); //TODO return correct player if the player is in the cache
+		return getPlayerData(player);
 	}
 
 	@Override

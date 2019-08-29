@@ -30,12 +30,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 {
-	private static final String HEART = "\u2764" + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART, HEART_GRAY = ChatColor.GRAY + HEART;
-	private static final char[] CHAT_COLORS = new char[]{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+	private static final String HEART = "\u2764" + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART, HEART_GRAY = ChatColor.GRAY + HEART, STATUS_HEART_NM = HEART_GRAY + " %1$s";
 
 	private final MarriageMaster plugin;
 	private final String prefix, suffix;
-	private final boolean useStatusHeart, useMagicHeart, prefixOnLineBeginning;
+	private final boolean useStatusHeart, prefixOnLineBeginning;
 
 	public ChatPrefixSuffix(MarriageMaster marriagemaster)
 	{
@@ -45,14 +44,12 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 			prefix = plugin.getConfiguration().getPrefix().replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s")
 					.replaceAll("\\{StatusHeart}", "%4\\$s").replaceAll("\\{MagicHeart}", "%5\\$s");
 			useStatusHeart = plugin.getConfiguration().getPrefix().contains("{StatusHeart}");
-			useMagicHeart  = plugin.getConfiguration().getPrefix().contains("{MagicHeart}");
 			prefixOnLineBeginning = plugin.getConfiguration().isPrefixOnLineBeginning();
 		}
 		else
 		{
 			prefix = null;
 			useStatusHeart = false;
-			useMagicHeart  = false;
 			prefixOnLineBeginning = false;
 		}
 		if(plugin.getConfiguration().isSuffixEnabled() && plugin.getConfiguration().getSuffix() != null)
@@ -68,7 +65,7 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 	{
 		if(prefix != null)
 		{
-			return String.format(prefix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), HEART_RED, ((useMagicHeart) ? (ChatColor.COLOR_CHAR + CHAT_COLORS[marriage.hashCode() & 15] + HEART) : ""));
+			return String.format(prefix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), HEART_RED, marriage.getMarriageColor() + HEART);
 		}
 		return "";
 	}
@@ -116,7 +113,7 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 			}
 			else
 			{
-				format = format.replace("%1$s", HEART_GRAY + " %1$s");
+				format = format.replace("%1$s", STATUS_HEART_NM);
 			}
 			changed = true;
 		}

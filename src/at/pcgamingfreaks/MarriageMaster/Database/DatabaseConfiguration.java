@@ -40,7 +40,7 @@ public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
 		return getConfigE().getBoolean("Database.UseUUIDSeparators", false);
 	}
 
-	boolean getUseOnlineUUIDs();
+	boolean useOnlineUUIDs();
 
 	default @NotNull String getSQLTableUser()
 	{

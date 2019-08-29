@@ -33,22 +33,22 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 {
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected final IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform;
-	protected final boolean bungee, useUUIDs, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
+	protected final boolean useBungee, useUUIDs, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
 	protected final Cache cache;
 	protected final Logger logger;
 	@Setter protected MarriageSavedCallback marriageSavedCallback = null;
 
-	protected DatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform, final @NotNull DatabaseConfiguration dbConfig, final boolean bungee, final boolean surnameEnabled,
+	protected DatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform, final @NotNull DatabaseConfiguration dbConfig, final boolean useBungee, final boolean surnameEnabled,
 	                          final @NotNull Cache<MARRIAGE_PLAYER, MARRIAGE> cache, final @NotNull Logger logger)
 	{
 		this.platform = platform;
-		this.bungee = bungee;
+		this.useBungee = useBungee;
 		this.logger = logger;
 		this.surnameEnabled = surnameEnabled;
 		this.cache = cache;
 		useUUIDs = dbConfig.useUUIDs();
 		useUUIDSeparators = dbConfig.useUUIDSeparators();
-		useOnlineUUIDs = dbConfig.getUseOnlineUUIDs();
+		useOnlineUUIDs = dbConfig.useOnlineUUIDs();
 	}
 
 	@Override

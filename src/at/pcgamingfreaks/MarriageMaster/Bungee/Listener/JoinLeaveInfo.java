@@ -44,7 +44,7 @@ public class JoinLeaveInfo extends JoinLeaveInfoBase implements Listener
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority= EventPriority.NORMAL)
+	@EventHandler(priority = Byte.MAX_VALUE)
 	public void onLogin(PostLoginEvent event)
 	{
 		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
@@ -55,7 +55,7 @@ public class JoinLeaveInfo extends JoinLeaveInfoBase implements Listener
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority=EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onDisconnect(PlayerDisconnectEvent event)
 	{
 		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());

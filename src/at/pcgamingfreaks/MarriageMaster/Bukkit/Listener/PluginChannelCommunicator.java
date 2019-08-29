@@ -22,7 +22,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.PluginChannelCommunicatorBase;
 
@@ -136,6 +135,43 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 					if(player != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", player, inputStream.readUTF()));
 				}
 				break;
+			//region Sync settings
+			case "UseUUIDs":
+				{
+					String useUUIDsString = inputStream.readUTF();
+					logger.info(useUUIDsString);
+					boolean useUUIdDs = Boolean.parseBoolean(useUUIDsString);
+					if(useUUIdDs != plugin.getConfiguration().useUUIDs())
+					{
+						logger.warning("UseUUIDs setting does not match value on BungeeCord! Changing config ...");
+						plugin.getConfiguration().setUseUUIDs(useUUIdDs);
+						logger.info("UseUUIDs setting has been set to " + useUUIdDs + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+					}
+				}
+				break;
+			case "UseUUIDSeparators":
+				{
+					boolean useUUIDSeparators = Boolean.parseBoolean(inputStream.readUTF());
+					if(useUUIDSeparators != plugin.getConfiguration().useUUIDSeparators())
+					{
+						logger.warning("UseUUIDSeparators setting does not match value on BungeeCord! Changing config ...");
+						plugin.getConfiguration().setUseUUIDSeparators(useUUIDSeparators);
+						logger.info("UseUUIDSeparators setting has been set to " + useUUIDSeparators + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+					}
+				}
+				break;
+			case "UUID_Type":
+				{
+					String type = inputStream.readUTF();
+					if((type.equals("online") && !plugin.getConfiguration().useOnlineUUIDs()) || (type.equals("offline") && plugin.getConfiguration().useOnlineUUIDs()))
+					{
+						logger.warning("UUID_Type setting does not match value on BungeeCord! Changing config ...");
+						plugin.getConfiguration().setUUIDType(type);
+						logger.info("UUID_Type setting has been set to " + type + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+					}
+				}
+				break;
+			//endregion
 			default: return false;
 		}
 		return true;
@@ -157,7 +193,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		// If the server is empty and a player joins the server we have to do a re-sync
 		if(plugin.getServer().getOnlinePlayers().size() == 1)
 		{
-			((Database) database).resync();
+			database.resync();
 		}
 	}
 

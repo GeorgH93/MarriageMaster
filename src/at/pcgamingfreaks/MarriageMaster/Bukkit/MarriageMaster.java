@@ -55,7 +55,7 @@ import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.15-SNAPSHOT";
+	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.17-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
@@ -97,7 +97,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 		// Check if running as standalone edition
 		/*if[STANDALONE]
-		getLogger().info("Starting Minepacks in standalone mode!");
+		getLogger().info("Starting Marriage Master in standalone mode!");
 		if(getServer().getPluginManager().isPluginEnabled("PCGF_PluginLib"))
 		{
 			getLogger().info("You do have the PCGF_PluginLib installed. You may consider switching to the default version of the plugin to reduce memory load and unlock additional features.");

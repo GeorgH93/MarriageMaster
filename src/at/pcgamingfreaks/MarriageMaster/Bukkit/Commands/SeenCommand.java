@@ -38,7 +38,7 @@ public class SeenCommand extends MarryCommand
 
 	public SeenCommand(MarriageMaster plugin)
 	{
-		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), "marry.seen", true, false, plugin.getLanguage().getCommandAliases("seen"));
+		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), "marry.seen", true, true, plugin.getLanguage().getCommandAliases("seen"));
 
 		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLang().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss"));
 		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{Date\\}", "%2\\$s").replaceAll("\\{CountTotalDays\\}", "%3\\$d").replaceAll("\\{Count\\}", "%4\\$s");

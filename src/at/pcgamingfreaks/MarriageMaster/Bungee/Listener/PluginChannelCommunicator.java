@@ -49,6 +49,10 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		this.plugin = plugin;
 		plugin.getProxy().registerChannel(CHANNEL_MARRIAGE_MASTER);
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
+
+		sendMessage(buildStringMessage("UseUUIDs", plugin.getConfig().useUUIDs() + ""), true);
+		sendMessage(buildStringMessage("UseUUIDSeparators", plugin.getConfig().useUUIDSeparators() + ""), true);
+		sendMessage(buildStringMessage("UUID_Type", plugin.getConfig().useOnlineUUIDs() ? "online" : "offline"), true);
 	}
 
 	public void setHomeCommand(HomeCommand home)
@@ -62,7 +66,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority= EventPriority.NORMAL)
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPluginMessage(PluginMessageEvent event)
 	{
 		if(!(event.getSender() instanceof Server)) return;
@@ -92,13 +96,18 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		return true;
 	}
 
-	@Override
-	protected void sendMessage(final @NotNull byte[] data)
+	protected void sendMessage(final @NotNull byte[] data, boolean queue)
 	{
 		for(Map.Entry<String, ServerInfo> server : plugin.getProxy().getServers().entrySet())
 		{
-			server.getValue().sendData(CHANNEL_MARRIAGE_MASTER, data, false);
+			server.getValue().sendData(CHANNEL_MARRIAGE_MASTER, data, queue);
 		}
+	}
+
+	@Override
+	protected void sendMessage(final @NotNull byte[] data)
+	{
+		sendMessage(data, false);
 	}
 
 	public void sendMessage(final @NotNull ServerInfo server, String... msg)

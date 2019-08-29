@@ -36,8 +36,8 @@ public abstract class JoinLeaveInfoBase
 		messageOnline        = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnline");
 		messageOffline       = language.getMessage("Ingame.JoinLeaveInfo.PartnerOffline");
 		messageAllOffline    = language.getMessage("Ingame.JoinLeaveInfo.AllPartnersOffline");
-		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti");
-		messageNowOnline     = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti").replaceAll("\\{OnlinePartners}", "%1\\$s");
+		messageNowOnline     = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageNowOffline    = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		multiOnlineFormat    = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		multiOnlineSeparator = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineSeparator");

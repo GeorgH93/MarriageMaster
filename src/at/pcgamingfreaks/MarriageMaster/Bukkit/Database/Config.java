@@ -79,7 +79,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public boolean isSelfDivorceAllowed()
 	{
-		String val = getConfigE().getString("Marriage.DivorceRequiresPriest", "auto").trim().toLowerCase();
+		String val = getConfigE().getString("Marriage.DivorceRequiresPriest", "auto").trim().toLowerCase(Locale.ENGLISH);
 		switch(val)
 		{
 			case "on":
@@ -324,32 +324,43 @@ public class Config extends Configuration implements DatabaseConfiguration
 	@Override
 	public @NotNull String getDatabaseType()
 	{
-		return getConfigE().getString("Database.Type", "SQLite").toLowerCase();
+		return getConfigE().getString("Database.Type", "SQLite").toLowerCase(Locale.ENGLISH);
 	}
 
 	@Override
 	public void setDatabaseType(final @NotNull String newType)
 	{
-		getConfigE().set("Database.Type", newType);
-		try
-		{
-			save();
-		}
-		catch(FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
+		set("Database.Type", newType);
+		trySave();
 	}
 
 	@Override
-	public boolean getUseOnlineUUIDs()
+	public boolean useOnlineUUIDs()
 	{
-		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase();
+		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase(Locale.ENGLISH);
 		if(type.equals("auto"))
 		{
 			return plugin.getServer().getOnlineMode();
 		}
 		return type.equals("online");
+	}
+
+	public void setUseUUIDs(boolean useUUIDs)
+	{
+		set("Database.UseUUIDs", useUUIDs);
+		trySave();
+	}
+
+	public void setUseUUIDSeparators(boolean useUUIDSeparators)
+	{
+		set("Database.UseUUIDSeparators", useUUIDSeparators);
+		trySave();
+	}
+
+	public void setUUIDType(String type)
+	{
+		set("Database.UUID_Type", type);
+		trySave();
 	}
 	//endregion
 
@@ -480,4 +491,16 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 	//endregion
 	//endregion
+
+	private void trySave()
+	{
+		try
+		{
+			save();
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }
