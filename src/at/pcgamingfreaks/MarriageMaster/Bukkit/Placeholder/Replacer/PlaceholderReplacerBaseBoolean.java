@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,26 +21,30 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
 {
-	private static final String PLACEHOLDER_BOOLEAN_KEY = "Boolean.";
+	private static final String PLACEHOLDER_BOOLEAN_KEY = ".Boolean.", KEY_TRUE = "True", KEY_FALSE = "False";
 	protected final String valueTrue, valueFalse;
 
 	public PlaceholderReplacerBaseBoolean(@NotNull MarriageMaster plugin)
 	{
 		super(plugin);
-		valueTrue = getBooleanPlaceholderValue("True");
-		valueFalse = getBooleanPlaceholderValue("False");
+		valueTrue = getBooleanPlaceholderValue(this.getClass().getSimpleName(), KEY_TRUE);
+		valueFalse = getBooleanPlaceholderValue(this.getClass().getSimpleName(), KEY_FALSE);
 	}
 
-	protected @NotNull String getBooleanPlaceholderValue(String placeholder)
+	protected @NotNull String getBooleanPlaceholderValue(final @NotNull String placeholder, final @NotNull String booleanKey)
 	{
-		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_BOOLEAN_KEY + placeholder);
-		if(!msg.equals(messageNotFound))
+		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(placeholder + PLACEHOLDER_BOOLEAN_KEY + booleanKey);
+		if(!msg.equals(messageNotFound) && !msg.equals("NULL")) return msg;
+		msg = this.plugin.getLanguage().getTranslatedPlaceholder("Default" + PLACEHOLDER_BOOLEAN_KEY + booleanKey);
+		if(msg.equals(messageNotFound) || msg.equals("NULL"))
 		{
-			return msg;
+			return booleanKey.toLowerCase(Locale.ENGLISH);
 		}
-		return placeholder.toLowerCase();
+		return msg;
 	}
 
 	protected @NotNull String toString(boolean bool)

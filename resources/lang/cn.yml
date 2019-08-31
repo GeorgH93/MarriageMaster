@@ -238,7 +238,7 @@ Language:
       Marry: "让两个玩家结婚。"
       MarrySelf: "向其他玩家发送结婚请求."
       Divorce: "让两个玩家离婚"
-      DivorceSelf: 与您的伴侣离婚。"
+      DivorceSelf: "与您的伴侣离婚。"
       Surname: "改变一对夫妇的姓氏。"
       SurnameSelf: "从您和您的伴侣那里改变姓氏。"
       Update: "检查是否有可用的更新并下载。"
@@ -253,20 +253,7 @@ Dialog:
   AndDoYouWant: "{Player2Name},您也愿意与 {Player1Name} 在这个服务器结婚吗?"
   Married: "我现在宣布您们是伴侣了,您们可以互相亲吻对方了a.a"
   YesIWant: "是的,我愿意!"
-  NoIDontWant: 不,我不愿意!"
-# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-Placeholders:
-  Boolean:
-    True: "true"
-    False: "false"
-  # NULL 将返回空值而不是字符串（如果使用的占位符API不允许NULL，则返回NULL字符串）
-  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-  NotMarried:
-    Default: "未婚"
-#语言名称
-LanguageName: "Chinese"
-#语言文本制作人MCBBS id
-Author: "Fur_Xia & Freak(Ye_Yang_Dada)"
+  NoIDontWant: "不,我不愿意!"
 Command:
   Switches:
     On:
@@ -343,6 +330,35 @@ Command:
   Deny:
     - deny
 
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "未婚"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+
+#语言名称
+LanguageName: "Chinese"
+#语言文本制作人MCBBS id
+Author: "Fur_Xia & Freak(Ye_Yang_Dada)"
+
 # Language file version. Don't touch it!
-Version: 93
-Revision: 3
+Version: 94
+Revision: 1

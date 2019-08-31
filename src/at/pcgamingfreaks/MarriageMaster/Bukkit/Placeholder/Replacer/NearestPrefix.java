@@ -22,9 +22,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestPrefix extends PlaceholderReplacerBase
+public class NearestPrefix extends PlaceholderReplacerBaseValue
 {
 	private final PrefixSuffixFormatter formatter;
 
@@ -35,14 +35,9 @@ public class NearestPrefix extends PlaceholderReplacerBase
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer mp = plugin.getPlayerData(player);
-		if(mp.isMarried())
-		{
-			Marriage marriage = mp.getNearestPartnerMarriageData();
-			return formatter.formatPrefix(marriage, marriage.getPartner(mp));
-		}
-		return valueNotMarried;
+		Marriage marriage = player.getNearestPartnerMarriageData();
+		return formatter.formatPrefix(marriage, marriage.getPartner(player));
 	}
 }

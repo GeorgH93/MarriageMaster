@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,31 +21,29 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class PartnerDisplayNameList extends PlaceholderReplacerBase
+public class PartnerDisplayNameList extends PlaceholderReplacerBaseValue
 {
+	private final String valueSeparator;
+
 	public PartnerDisplayNameList(MarriageMaster plugin)
 	{
 		super(plugin);
+		valueSeparator = getNotMarriedPlaceholderValue("Separator");
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		int count = playerData.getMultiMarriageData().size(), i = 0;
-		if(playerData.isMarried() && count > 0)
+		StringBuilder stringBuilder = new StringBuilder();
+		String separator = "";
+		for(Marriage marriage : player.getMultiMarriageData())
 		{
-			StringBuilder stringBuilder = new StringBuilder();
-			for(Marriage marriage : playerData.getMultiMarriageData())
-			{
-				//noinspection ConstantConditions
-				stringBuilder.append(marriage.getPartner(playerData).getDisplayName());
-				if(++i < count) stringBuilder.append(", ");
-			}
-			return stringBuilder.toString();
+			//noinspection ConstantConditions
+			stringBuilder.append(separator).append(marriage.getPartner(player).getDisplayName());
+			separator = valueSeparator;
 		}
-		return valueNotMarried;
+		return stringBuilder.toString();
 	}
 }

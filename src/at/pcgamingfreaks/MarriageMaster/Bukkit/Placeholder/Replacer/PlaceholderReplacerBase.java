@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,39 +17,53 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
-	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried.";
+	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried", PLACEHOLDER_DEFAULT_KEY = "Default.", NULL_MAGIC = "NULL";
 
 	protected final MarriageMaster plugin;
-	protected final String messageNotFound;
-	protected final String valueNotMarried;
+	protected final String messageNotFound, valueNotMarried;
 
-	public PlaceholderReplacerBase(@NotNull MarriageMaster plugin)
+	public PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 		this.messageNotFound = plugin.getLanguage().getTranslatedPlaceholder("this.key.should.not.exist");
-		valueNotMarried = getNotMarriedPlaceholderValue(this.getClass().getSimpleName());
+		valueNotMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
 	}
 
-	protected @Nullable String getNotMarriedPlaceholderValue(@NotNull String placeholder)
+	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholderKey)
 	{
-		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + placeholder);
+		return getNotMarriedPlaceholderValue(this.getClass().getSimpleName(), placeholderKey);
+	}
+
+	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
+	{
+		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(placeholder + "." + placeholderKey);
 		if(!msg.equals(messageNotFound))
 		{
-			return msg.equals("NULL") ? null : msg;
+			return msg.equals(NULL_MAGIC) ? null : msg;
 		}
-		msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + "Default");
-		if(msg.equals(messageNotFound) || msg.equals("NULL"))
-		{
-			msg = null;
-		}
+		msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
+		if(msg.equals(messageNotFound) || msg.equals(NULL_MAGIC)) return null;
 		return msg;
 	}
+
+	@Override
+	public @Nullable String replace(OfflinePlayer player)
+	{
+		MarriagePlayer playerData = plugin.getPlayerData(player);
+		if(playerData.isMarried()) return replaceMarried(playerData);
+		return valueNotMarried;
+	}
+
+	protected @Nullable String replaceMarried(MarriagePlayer player) { throw new NotImplementedException("The replaceMarried method for the placeholder has not been implemented!"); }
 }

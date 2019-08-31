@@ -20,9 +20,9 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestSurname extends PlaceholderReplacerBase
+public class NearestSurname extends PlaceholderReplacerBaseValue
 {
 	public NearestSurname(MarriageMaster plugin)
 	{
@@ -30,10 +30,8 @@ public class NearestSurname extends PlaceholderReplacerBase
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		//noinspection ConstantConditions
-		return playerData.isMarried() ? playerData.getNearestPartnerMarriageData().getSurnameString() : valueNotMarried;
+		return player.getNearestPartnerMarriageData().getSurnameString();
 	}
 }

@@ -328,13 +328,27 @@ Dialog:
   NoIDontWant: "No, I will not!"
 # This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Placeholders:
-  Boolean:
-    True: true
-    False: false
-  # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
-  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-  NotMarried:
-    Default: "not married"
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "not married"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
 
 # The name of the language represented by the language file
 LanguageName: "English"
@@ -342,5 +356,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 93
+Version: 94
 Revision: 2

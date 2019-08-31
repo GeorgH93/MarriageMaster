@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,9 +20,9 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestPartnerName extends PlaceholderReplacerBase
+public class NearestPartnerName extends PlaceholderReplacerBaseValue
 {
 	public NearestPartnerName(MarriageMaster plugin)
 	{
@@ -30,10 +30,9 @@ public class NearestPartnerName extends PlaceholderReplacerBase
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return playerData.isMarried() ? playerData.getNearestPartnerMarriageData().getPartner(playerData).getName() : valueNotMarried;
+		return player.getNearestPartnerMarriageData().getPartner(player).getName();
 	}
 }

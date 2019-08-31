@@ -17,22 +17,18 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
-public class MagicHeart extends PlaceholderReplacerBaseValue
+abstract class PlaceholderReplacerBaseValueHome extends PlaceholderReplacerBaseValue
 {
-	public MagicHeart(MarriageMaster plugin)
+	private static final String PLACEHOLDER_NO_HOME_KEY = "NoHome";
+	protected final String valueNoHome;
+
+	public PlaceholderReplacerBaseValueHome(@NotNull MarriageMaster plugin)
 	{
 		super(plugin);
-	}
-
-	@Override
-	protected @Nullable String replaceMarried(MarriagePlayer player)
-	{
-		//noinspection ConstantConditions
-		return player.getMarriageData().getMarriageColor() + valueMarried;
+		valueNoHome = getNotMarriedPlaceholderValue(PLACEHOLDER_NO_HOME_KEY);
 	}
 }

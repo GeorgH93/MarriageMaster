@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
-	private static final int LANG_VERSION = 93, UPGRADE_THRESHOLD = 93, PRE_V2_VERSIONS = 90;
+	private static final int LANG_VERSION = 94, UPGRADE_THRESHOLD = 94, PRE_V2_VERSIONS = 90;
 
 	public Language(@NotNull JavaPlugin plugin)
 	{
@@ -58,7 +58,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return ChatColor.translateAlternateColorCodes('&', getLangE().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return ChatColor.translateAlternateColorCodes('&', getLangE().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", "\u2764").replaceAll("<smallheart>", "\u2665");
 	}
 
 	@Override
