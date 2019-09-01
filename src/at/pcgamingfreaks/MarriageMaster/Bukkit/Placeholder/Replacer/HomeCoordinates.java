@@ -17,14 +17,16 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
-public class HasNearestHome extends PlaceholderReplacerBaseBoolean
+public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
 {
-	public HasNearestHome(MarriageMaster plugin)
+	public HomeCoordinates(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
@@ -32,7 +34,12 @@ public class HasNearestHome extends PlaceholderReplacerBaseBoolean
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		//noinspection ConstantConditions
-		return toString(player.getNearestPartnerMarriageData().isHomeSet());
+		Marriage marriageData = player.getMarriageData();
+		if(marriageData != null && marriageData.isHomeSet())
+		{
+			Location location = marriageData.getHome().getLocation();
+			return String.format(valueMarried, location.getX(), location.getY(), location.getZ());
+		}
+		return valueNoHome;
 	}
 }

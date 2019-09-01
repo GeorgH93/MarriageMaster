@@ -107,6 +107,9 @@ public class PlaceholderManager
 		placeholders.put("Surname", new Surname(plugin));
 		placeholders.put("HasHome", new HasHome(plugin));
 		placeholders.put("Has_Home", placeholders.get("HasHome"));
+		placeholders.put("Home", new Home(plugin));
+		placeholders.put("HomeCoordinates", new HomeCoordinates(plugin));
+		placeholders.put("Home_Coordinates", placeholders.get("HomeCoordinates"));
 		placeholders.put("HomeX", new HomeX(plugin));
 		placeholders.put("Home_X", placeholders.get("HomeX"));
 		placeholders.put("HomeY", new HomeY(plugin));
@@ -129,8 +132,15 @@ public class PlaceholderManager
 			placeholders.put("Nearest_Partner_DisplayName", placeholders.get("NearestPartnerDisplayName"));
 			placeholders.put("NearestSurname", new NearestSurname(plugin));
 			placeholders.put("Nearest_Surname", placeholders.get("NearestSurname"));
-			placeholders.put("HasNearestHome", new HasNearestHome(plugin));
+			placeholders.put("HasNearestHome", new NearestHasHome(plugin));
 			placeholders.put("Has_Nearest_Home", placeholders.get("HasNearestHome"));
+			placeholders.put("Nearest_Has_Home", placeholders.get("HasNearestHome"));
+			placeholders.put("NearestHasHome", placeholders.get("HasNearestHome"));
+			placeholders.put("NearestHome", new NearestHome(plugin));
+			placeholders.put("Nearest_Home", placeholders.get("NearestHome"));
+			placeholders.put("NearestHomeCoordinates", new Home(plugin));
+			placeholders.put("Nearest_HomeCoordinates", placeholders.get("NearestHomeCoordinates"));
+			placeholders.put("Nearest_Home_Coordinates", placeholders.get("NearestHomeCoordinates"));
 			placeholders.put("NearestHomeX", new NearestHomeX(plugin));
 			placeholders.put("Nearest_HomeX", placeholders.get("NearestHomeX"));
 			placeholders.put("Nearest_Home_X", placeholders.get("NearestHomeX"));
