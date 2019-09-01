@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = { "Nearest_HomeCoordinates", "Nearest_Home_Coordinates" })
 public class NearestHomeCoordinates extends PlaceholderReplacerBaseValueHome
 {
 	public NearestHomeCoordinates(MarriageMaster plugin)
@@ -34,7 +35,7 @@ public class NearestHomeCoordinates extends PlaceholderReplacerBaseValueHome
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		Marriage marriageData = player.getMarriageData();
+		Marriage marriageData = player.getNearestPartnerMarriageData();
 		if(marriageData != null && marriageData.isHomeSet())
 		{
 			Location location = marriageData.getHome().getLocation();

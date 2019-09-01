@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = { "Nearest_HomeWorld", "Nearest_Home_World" })
 public class NearestHomeWorld extends PlaceholderReplacerBaseValueHome
 {
 	public NearestHomeWorld(MarriageMaster plugin)

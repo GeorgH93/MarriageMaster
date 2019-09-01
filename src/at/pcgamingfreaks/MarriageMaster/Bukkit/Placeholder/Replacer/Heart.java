@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Married")
 public class Heart extends PlaceholderReplacerBaseValue
 {
 	public Heart(MarriageMaster plugin)

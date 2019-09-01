@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Home_X")
 public class HomeX extends PlaceholderReplacerBaseValueHome
 {
 	public HomeX(MarriageMaster plugin)

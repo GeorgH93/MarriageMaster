@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Home_Coordinates")
 public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
 {
 	public HomeCoordinates(MarriageMaster plugin)

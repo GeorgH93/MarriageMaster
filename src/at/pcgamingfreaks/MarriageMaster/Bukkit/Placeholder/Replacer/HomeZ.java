@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Home_Z")
 public class HomeZ extends PlaceholderReplacerBaseValueHome
 {
 	public HomeZ(MarriageMaster plugin)

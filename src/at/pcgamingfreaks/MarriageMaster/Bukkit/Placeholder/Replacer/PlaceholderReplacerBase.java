@@ -26,6 +26,10 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
 abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
 	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried", PLACEHOLDER_DEFAULT_KEY = "Default.", NULL_MAGIC = "NULL";
@@ -42,7 +46,7 @@ abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 
 	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholderKey)
 	{
-		return getNotMarriedPlaceholderValue(this.getClass().getSimpleName(), placeholderKey);
+		return getNotMarriedPlaceholderValue(getName(), placeholderKey);
 	}
 
 	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
@@ -66,4 +70,30 @@ abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 	}
 
 	protected @Nullable String replaceMarried(MarriagePlayer player) { throw new NotImplementedException("The replaceMarried method for the placeholder has not been implemented!"); }
+
+	@Override
+	public @NotNull String getName()
+	{
+		if(getClass().isAnnotationPresent(PlaceholderName.class))
+		{
+			String name = getClass().getAnnotation(PlaceholderName.class).name();
+			if(!name.isEmpty()) return name;
+		}
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public @NotNull Collection<String> getAliases()
+	{
+		List<String> aliasesList = new LinkedList<>();
+		if(getClass().isAnnotationPresent(PlaceholderName.class))
+		{
+			String[] aliases = getClass().getAnnotation(PlaceholderName.class).aliases();
+			for(String alias : aliases)
+			{
+				if(!alias.isEmpty()) aliasesList.add(alias);
+			}
+		}
+		return aliasesList;
+	}
 }

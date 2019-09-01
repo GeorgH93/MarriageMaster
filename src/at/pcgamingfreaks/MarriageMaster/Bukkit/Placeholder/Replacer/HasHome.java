@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Has_Home")
 public class HasHome extends PlaceholderReplacerBaseBoolean
 {
 	public HasHome(MarriageMaster plugin)

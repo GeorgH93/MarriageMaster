@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Partner_DisplayName")
 public class PartnerDisplayName extends PlaceholderReplacerBaseValue
 {
 	public PartnerDisplayName(MarriageMaster plugin)

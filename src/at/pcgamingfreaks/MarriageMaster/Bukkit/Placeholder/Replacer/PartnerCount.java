@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.OfflinePlayer;
 
+@PlaceholderName(aliases = "Partner_Count")
 public class PartnerCount extends PlaceholderReplacerBaseValue
 {
 	public PartnerCount(MarriageMaster plugin)

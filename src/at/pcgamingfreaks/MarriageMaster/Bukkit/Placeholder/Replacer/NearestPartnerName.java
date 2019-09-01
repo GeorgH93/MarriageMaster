@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = { "Nearest_PartnerName", "Nearest_Partner_Name" })
 public class NearestPartnerName extends PlaceholderReplacerBaseValue
 {
 	public NearestPartnerName(MarriageMaster plugin)

@@ -17,25 +17,15 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jetbrains.annotations.Nullable;
-
-@PlaceholderName(aliases = { "Nearest_HomeY", "Nearest_Home_Y" })
-public class NearestHomeY extends PlaceholderReplacerBaseValueHome
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@interface PlaceholderName
 {
-	public NearestHomeY(MarriageMaster plugin)
-	{
-		super(plugin);
-	}
-
-	@Override
-	protected @Nullable String replaceMarried(MarriagePlayer player)
-	{
-		Marriage marriageData = player.getNearestPartnerMarriageData();
-		//noinspection ConstantConditions
-		return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getY() + "" : valueNoHome;
-	}
+	String name() default "";
+	String[] aliases() default "";
 }

@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Nearest_Suffix")
 public class NearestSuffix extends PlaceholderReplacerBaseValue
 {
 	private final PrefixSuffixFormatter formatter;

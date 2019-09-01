@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = { "Partner_List", "PartnerNameList", "Partner_Name_List" })
 public class PartnerList extends PlaceholderReplacerBaseValue
 {
 	private final String valueSeparator;

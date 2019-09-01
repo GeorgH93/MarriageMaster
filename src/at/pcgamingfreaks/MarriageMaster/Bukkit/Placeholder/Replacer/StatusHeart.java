@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderName(aliases = "Status_Heart")
 public class StatusHeart extends PlaceholderReplacerBaseValue
 {
 	public StatusHeart(MarriageMaster plugin)
