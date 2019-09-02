@@ -15,20 +15,27 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted.NearestHomeZFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValueHome;
 
-import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = "Home_Coordinates")
-public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
+import java.text.DecimalFormat;
+
+@PlaceholderName(aliases = { "Nearest_HomeZ", "Nearest_Home_Z" })
+@PlaceholderFormatted(formattedClass = NearestHomeZFormatted.class)
+public class NearestHomeZ extends PlaceholderReplacerBaseValueHome
 {
-	public HomeCoordinates(MarriageMaster plugin)
+	ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() -> new DecimalFormat("#.0"));
+
+	public NearestHomeZ(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
@@ -36,12 +43,8 @@ public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		Marriage marriageData = player.getMarriageData();
-		if(marriageData != null && marriageData.isHomeSet())
-		{
-			Location location = marriageData.getHome().getLocation();
-			return String.format(valueMarried, location.getX(), location.getY(), location.getZ());
-		}
-		return valueNoHome;
+		Marriage marriageData = player.getNearestPartnerMarriageData();
+		//noinspection ConstantConditions
+		return marriageData.isHomeSet() ? format.get().format(marriageData.getHome().getLocation().getZ()) : valueNoHome;
 	}
 }

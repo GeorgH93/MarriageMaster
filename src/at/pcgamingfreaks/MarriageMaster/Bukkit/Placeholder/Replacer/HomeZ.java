@@ -20,12 +20,20 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.HomeZFormatted;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.text.DecimalFormat;
+
 @PlaceholderName(aliases = "Home_Z")
+@PlaceholderFormatted(formattedClass = HomeZFormatted.class)
 public class HomeZ extends PlaceholderReplacerBaseValueHome
 {
+	ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() -> new DecimalFormat("#.0"));
+
 	public HomeZ(MarriageMaster plugin)
 	{
 		super(plugin);
@@ -36,6 +44,6 @@ public class HomeZ extends PlaceholderReplacerBaseValueHome
 	{
 		Marriage marriageData = player.getMarriageData();
 		//noinspection ConstantConditions
-		return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getZ() + "" : valueNoHome;
+		return marriageData.isHomeSet() ? format.get().format(marriageData.getHome().getLocation().getZ()) : valueNoHome;
 	}
 }

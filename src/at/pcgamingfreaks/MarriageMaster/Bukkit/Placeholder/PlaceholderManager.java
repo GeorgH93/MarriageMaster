@@ -22,6 +22,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.ClipsPlaceholde
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.MVdWPlaceholderReplacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.PlaceholderAPIHook;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.*;
+import at.pcgamingfreaks.Reflection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -127,8 +129,23 @@ public class PlaceholderManager
 
 	public void registerPlaceholder(PlaceholderReplacer placeholder)
 	{
+		if(placeholder.getClass().isAnnotationPresent(PlaceholderFormatted.class))
+		{
+			try
+			{
+				PlaceholderFormatted pfa = placeholder.getClass().getAnnotation(PlaceholderFormatted.class);
+				if(placeholder.getFormat() != null && placeholder.getFormat().matches(pfa.formatRuleDetectionRegex()))
+					placeholder = (PlaceholderReplacer) Reflection.getConstructor(pfa.formattedClass(), MarriageMaster.class).newInstance(plugin);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return;
+			}
+		}
 		placeholders.put(placeholder.getName(), placeholder);
-		placeholder.getAliases().forEach(alias -> placeholders.put(alias, placeholder));
+		final PlaceholderReplacer finalPlaceholder = placeholder;
+		placeholder.getAliases().forEach(alias -> placeholders.put(alias, finalPlaceholder));
 	}
 
 	public List<String> getPlaceholdersList()

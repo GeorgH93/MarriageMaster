@@ -15,18 +15,22 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted.NearestPartnerDisplayNameFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = { "Nearest_HomeY", "Nearest_Home_Y" })
-public class NearestHomeY extends PlaceholderReplacerBaseValueHome
+@PlaceholderName(aliases = { "Nearest_PartnerDisplayName", "Nearest_Partner_DisplayName" })
+@PlaceholderFormatted(formattedClass = NearestPartnerDisplayNameFormatted.class)
+public class NearestPartnerDisplayName extends PlaceholderReplacerBaseValue
 {
-	public NearestHomeY(MarriageMaster plugin)
+	public NearestPartnerDisplayName(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
@@ -34,8 +38,7 @@ public class NearestHomeY extends PlaceholderReplacerBaseValueHome
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		Marriage marriageData = player.getNearestPartnerMarriageData();
 		//noinspection ConstantConditions
-		return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getY() + "" : valueNoHome;
+		return player.getNearestPartnerMarriageData().getPartner(player).getDisplayName();
 	}
 }

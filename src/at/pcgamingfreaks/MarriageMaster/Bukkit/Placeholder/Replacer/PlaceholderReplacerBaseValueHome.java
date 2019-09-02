@@ -21,7 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.NotNull;
 
-abstract class PlaceholderReplacerBaseValueHome extends PlaceholderReplacerBaseValue
+public abstract class PlaceholderReplacerBaseValueHome extends PlaceholderReplacerBaseValue
 {
 	private static final String PLACEHOLDER_NO_HOME_KEY = "NoHome";
 	protected final String valueNoHome;

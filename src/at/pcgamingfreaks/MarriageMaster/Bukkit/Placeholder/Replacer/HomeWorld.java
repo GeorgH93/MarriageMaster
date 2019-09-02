@@ -20,10 +20,14 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.HomeWorldFormatted;
 
 import org.jetbrains.annotations.Nullable;
 
 @PlaceholderName(aliases = "Home_World")
+@PlaceholderFormatted(formattedClass = HomeWorldFormatted.class)
 public class HomeWorld extends PlaceholderReplacerBaseValueHome
 {
 	public HomeWorld(MarriageMaster plugin)

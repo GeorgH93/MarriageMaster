@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -30,17 +31,16 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-abstract class PlaceholderReplacerBase implements PlaceholderReplacer
+public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
 	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried", PLACEHOLDER_DEFAULT_KEY = "Default.", NULL_MAGIC = "NULL";
 
 	protected final MarriageMaster plugin;
-	protected final String messageNotFound, valueNotMarried;
+	protected final String valueNotMarried;
 
 	public PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		this.messageNotFound = plugin.getLanguage().getTranslatedPlaceholder("this.key.should.not.exist");
 		valueNotMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
 	}
 
@@ -51,14 +51,16 @@ abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 
 	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
 	{
-		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(placeholder + "." + placeholderKey);
-		if(!msg.equals(messageNotFound))
+		String p = placeholder + "." + placeholderKey, msg;
+		if(plugin.getLanguage().isPlaceholderSet(p))
 		{
-			return msg.equals(NULL_MAGIC) ? null : msg;
+			msg = this.plugin.getLanguage().getTranslatedPlaceholder(p);
 		}
-		msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
-		if(msg.equals(messageNotFound) || msg.equals(NULL_MAGIC)) return null;
-		return msg;
+		else
+		{
+			msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
+		}
+		return msg.equals(NULL_MAGIC) ? null : msg;
 	}
 
 	@Override
@@ -95,5 +97,11 @@ abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 			}
 		}
 		return aliasesList;
+	}
+
+	@Override
+	public @Nullable String getFormat()
+	{
+		return null;
 	}
 }

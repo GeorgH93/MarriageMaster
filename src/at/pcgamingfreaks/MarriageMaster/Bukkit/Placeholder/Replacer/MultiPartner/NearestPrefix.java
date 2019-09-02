@@ -15,33 +15,32 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
-import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = "Home_Coordinates")
-public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
+@PlaceholderName(aliases = "Nearest_Prefix")
+public class NearestPrefix extends PlaceholderReplacerBaseValue
 {
-	public HomeCoordinates(MarriageMaster plugin)
+	private final PrefixSuffixFormatter formatter;
+
+	public NearestPrefix(MarriageMaster plugin)
 	{
 		super(plugin);
+		formatter = plugin.getPrefixSuffixFormatter();
 	}
 
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		Marriage marriageData = player.getMarriageData();
-		if(marriageData != null && marriageData.isHomeSet())
-		{
-			Location location = marriageData.getHome().getLocation();
-			return String.format(valueMarried, location.getX(), location.getY(), location.getZ());
-		}
-		return valueNoHome;
+		Marriage marriage = player.getNearestPartnerMarriageData();
+		return formatter.formatPrefix(marriage, marriage.getPartner(player));
 	}
 }

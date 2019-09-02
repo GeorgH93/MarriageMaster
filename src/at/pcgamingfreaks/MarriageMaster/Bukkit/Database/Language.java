@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
 	private static final int LANG_VERSION = 95, UPGRADE_THRESHOLD = 95, PRE_V2_VERSIONS = 90;
+	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = "\u2764", SMALLHEART = "\u2665";
 
 	public Language(@NotNull JavaPlugin plugin)
 	{
@@ -52,18 +53,23 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
+	}
+
+	public boolean isPlaceholderSet(final @NotNull String key)
+	{
+		return getLangE().isSet(PLACEHOLDERS_KEY + key);
 	}
 
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return ChatColor.translateAlternateColorCodes('&', getLangE().getString("Placeholders." + key, "&cPlaceholder not found")).replaceAll("<heart>", "\u2764").replaceAll("<smallheart>", "\u2665");
+		return ChatColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, "&cPlaceholder not found")).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
 	}
 
 	@Override
 	public @NotNull String getDialog(final @NotNull String key)
 	{
-		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
 	}
 }

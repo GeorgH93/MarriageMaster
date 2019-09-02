@@ -20,8 +20,9 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-abstract class PlaceholderReplacerBaseValue extends PlaceholderReplacerBase
+public abstract class PlaceholderReplacerBaseValue extends PlaceholderReplacerBase
 {
 	private static final String PLACEHOLDER_MARRIED_KEY = "Married";
 	protected final String valueMarried;
@@ -30,5 +31,11 @@ abstract class PlaceholderReplacerBaseValue extends PlaceholderReplacerBase
 	{
 		super(plugin);
 		valueMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_MARRIED_KEY);
+	}
+
+	@Override
+	public @Nullable String getFormat()
+	{
+		return valueMarried;
 	}
 }

@@ -15,36 +15,36 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted.NearestHomeYFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValueHome;
 
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = { "Partner_List", "PartnerNameList", "Partner_Name_List" })
-public class PartnerList extends PlaceholderReplacerBaseValue
-{
-	private final String valueSeparator;
+import java.text.DecimalFormat;
 
-	public PartnerList(MarriageMaster plugin)
+@PlaceholderName(aliases = { "Nearest_HomeY", "Nearest_Home_Y" })
+@PlaceholderFormatted(formattedClass = NearestHomeYFormatted.class)
+public class NearestHomeY extends PlaceholderReplacerBaseValueHome
+{
+	ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() -> new DecimalFormat("#.0"));
+
+	public NearestHomeY(MarriageMaster plugin)
 	{
 		super(plugin);
-		valueSeparator = getNotMarriedPlaceholderValue("Separator");
 	}
 
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		String separator = "";
-		for(Marriage marriage : player.getMultiMarriageData())
-		{
-			//noinspection ConstantConditions
-			stringBuilder.append(separator).append(marriage.getPartner(player).getName());
-			separator = valueSeparator;
-		}
-		return stringBuilder.toString();
+		Marriage marriageData = player.getNearestPartnerMarriageData();
+		//noinspection ConstantConditions
+		return marriageData.isHomeSet() ? format.get().format(marriageData.getHome().getLocation().getY()) : valueNoHome;
 	}
 }

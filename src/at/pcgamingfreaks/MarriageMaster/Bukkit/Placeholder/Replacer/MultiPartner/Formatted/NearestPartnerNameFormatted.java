@@ -15,17 +15,19 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.NearestPartnerName;
 
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = { "HasNearestHome", "Has_Nearest_Home", "Nearest_Has_Home" })
-public class NearestHasHome extends PlaceholderReplacerBaseBoolean
+@PlaceholderName(name = "NearestPartnerName", aliases = { "Nearest_PartnerName", "Nearest_Partner_Name" })
+public class NearestPartnerNameFormatted extends NearestPartnerName
 {
-	public NearestHasHome(MarriageMaster plugin)
+	public NearestPartnerNameFormatted(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
@@ -33,7 +35,6 @@ public class NearestHasHome extends PlaceholderReplacerBaseBoolean
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		//noinspection ConstantConditions
-		return toString(player.getNearestPartnerMarriageData().isHomeSet());
+		return String.format(valueMarried, super.replaceMarried(player));
 	}
 }

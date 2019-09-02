@@ -23,9 +23,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
+public abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
 {
-	private static final String PLACEHOLDER_BOOLEAN_KEY = ".Boolean.", KEY_TRUE = "True", KEY_FALSE = "False";
+	private static final String PLACEHOLDER_BOOLEAN_KEY = "Boolean.", KEY_TRUE = "True", KEY_FALSE = "False";
 	protected final String valueTrue, valueFalse;
 
 	public PlaceholderReplacerBaseBoolean(@NotNull MarriageMaster plugin)
@@ -37,14 +37,8 @@ abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
 
 	protected @NotNull String getBooleanPlaceholderValue(final @NotNull String placeholder, final @NotNull String booleanKey)
 	{
-		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(placeholder + PLACEHOLDER_BOOLEAN_KEY + booleanKey);
-		if(!msg.equals(messageNotFound) && !msg.equals("NULL")) return msg;
-		msg = this.plugin.getLanguage().getTranslatedPlaceholder("Default" + PLACEHOLDER_BOOLEAN_KEY + booleanKey);
-		if(msg.equals(messageNotFound) || msg.equals("NULL"))
-		{
-			return booleanKey.toLowerCase(Locale.ENGLISH);
-		}
-		return msg;
+		String val = getNotMarriedPlaceholderValue(placeholder, PLACEHOLDER_BOOLEAN_KEY + booleanKey);
+		return (val == null) ? booleanKey.toLowerCase(Locale.ENGLISH) : val;
 	}
 
 	protected @NotNull String toString(boolean bool)

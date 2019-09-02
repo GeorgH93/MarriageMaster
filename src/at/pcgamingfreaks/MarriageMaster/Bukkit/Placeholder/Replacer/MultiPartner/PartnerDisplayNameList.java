@@ -15,25 +15,38 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = { "Nearest_PartnerDisplayName", "Nearest_Partner_DisplayName" })
-public class NearestPartnerDisplayName extends PlaceholderReplacerBaseValue
+@PlaceholderName(aliases = { "PartnerDisplayName_List", "Partner_DisplayName_List" })
+public class PartnerDisplayNameList extends PlaceholderReplacerBaseValue
 {
-	public NearestPartnerDisplayName(MarriageMaster plugin)
+	private final String valueSeparator;
+
+	public PartnerDisplayNameList(MarriageMaster plugin)
 	{
 		super(plugin);
+		valueSeparator = getNotMarriedPlaceholderValue("Separator");
 	}
 
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		//noinspection ConstantConditions
-		return player.getNearestPartnerMarriageData().getPartner(player).getDisplayName();
+		StringBuilder stringBuilder = new StringBuilder();
+		String separator = "";
+		for(Marriage marriage : player.getMultiMarriageData())
+		{
+			//noinspection ConstantConditions
+			stringBuilder.append(separator).append(marriage.getPartner(player).getDisplayName());
+			separator = valueSeparator;
+		}
+		return stringBuilder.toString();
 	}
 }

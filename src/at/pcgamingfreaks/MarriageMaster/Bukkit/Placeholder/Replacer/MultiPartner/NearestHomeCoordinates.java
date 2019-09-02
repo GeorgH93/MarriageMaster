@@ -15,36 +15,34 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValueHome;
 
+import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = { "PartnerDisplayName_List", "Partner_DisplayName_List" })
-public class PartnerDisplayNameList extends PlaceholderReplacerBaseValue
+@PlaceholderName(aliases = { "Nearest_HomeCoordinates", "Nearest_Home_Coordinates" })
+public class NearestHomeCoordinates extends PlaceholderReplacerBaseValueHome
 {
-	private final String valueSeparator;
-
-	public PartnerDisplayNameList(MarriageMaster plugin)
+	public NearestHomeCoordinates(MarriageMaster plugin)
 	{
 		super(plugin);
-		valueSeparator = getNotMarriedPlaceholderValue("Separator");
 	}
 
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		String separator = "";
-		for(Marriage marriage : player.getMultiMarriageData())
+		Marriage marriageData = player.getNearestPartnerMarriageData();
+		if(marriageData != null && marriageData.isHomeSet())
 		{
-			//noinspection ConstantConditions
-			stringBuilder.append(separator).append(marriage.getPartner(player).getDisplayName());
-			separator = valueSeparator;
+			Location location = marriageData.getHome().getLocation();
+			return String.format(valueMarried, location.getX(), location.getY(), location.getZ());
 		}
-		return stringBuilder.toString();
+		return valueNoHome;
 	}
 }

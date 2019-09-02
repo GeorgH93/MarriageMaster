@@ -19,10 +19,14 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.PartnerDisplayNameFormatted;
 
 import org.jetbrains.annotations.Nullable;
 
 @PlaceholderName(aliases = "Partner_DisplayName")
+@PlaceholderFormatted(formattedClass = PartnerDisplayNameFormatted.class)
 public class PartnerDisplayName extends PlaceholderReplacerBaseValue
 {
 	public PartnerDisplayName(MarriageMaster plugin)

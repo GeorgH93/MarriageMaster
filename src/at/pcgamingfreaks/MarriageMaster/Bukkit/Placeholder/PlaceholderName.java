@@ -15,26 +15,17 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import org.jetbrains.annotations.Nullable;
-
-@PlaceholderName(aliases = "Has_Home")
-public class HasHome extends PlaceholderReplacerBaseBoolean
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface PlaceholderName
 {
-	public HasHome(MarriageMaster plugin)
-	{
-		super(plugin);
-	}
-
-	@Override
-	protected @Nullable String replaceMarried(MarriagePlayer player)
-	{
-		//noinspection ConstantConditions
-		return toString(player.getMarriageData().isHomeSet());
-	}
+	String name() default "";
+	String[] aliases() default "";
 }

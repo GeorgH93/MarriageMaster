@@ -19,10 +19,14 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.PartnerCountFormatted;
 
 import org.bukkit.OfflinePlayer;
 
 @PlaceholderName(aliases = "Partner_Count")
+@PlaceholderFormatted(formattedClass = PartnerCountFormatted.class)
 public class PartnerCount extends PlaceholderReplacerBaseValue
 {
 	public PartnerCount(MarriageMaster plugin)

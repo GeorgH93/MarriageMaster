@@ -19,9 +19,12 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.SurnameFormatted;
 
 import org.jetbrains.annotations.Nullable;
 
+@PlaceholderFormatted(formattedClass = SurnameFormatted.class)
 public class Surname extends PlaceholderReplacerBaseValue
 {
 	public Surname(MarriageMaster plugin)

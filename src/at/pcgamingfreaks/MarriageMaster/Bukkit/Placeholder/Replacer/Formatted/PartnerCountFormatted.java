@@ -15,30 +15,27 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.OfflinePlayer;
 
-@PlaceholderName(aliases = "Nearest_Suffix")
-public class NearestSuffix extends PlaceholderReplacerBaseValue
+@PlaceholderName(name = "PartnerCount", aliases = "Partner_Count")
+public class PartnerCountFormatted extends PlaceholderReplacerBaseValue
 {
-	private final PrefixSuffixFormatter formatter;
-
-	public NearestSuffix(MarriageMaster plugin)
+	public PartnerCountFormatted(MarriageMaster plugin)
 	{
 		super(plugin);
-		formatter = plugin.getPrefixSuffixFormatter();
 	}
 
 	@Override
-	protected @Nullable String replaceMarried(MarriagePlayer player)
+	public String replace(OfflinePlayer player)
 	{
-		Marriage marriage = player.getNearestPartnerMarriageData();
-		return formatter.formatSuffix(marriage, marriage.getPartner(player));
+		MarriagePlayer playerData = plugin.getPlayerData(player);
+		return String.format(valueMarried, playerData.getPartners().size());
 	}
 }

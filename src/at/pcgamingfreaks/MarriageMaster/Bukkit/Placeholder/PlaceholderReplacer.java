@@ -29,4 +29,5 @@ public interface PlaceholderReplacer
 
 	@NotNull String getName();
 	@NotNull Collection<String> getAliases();
+	@Nullable String getFormat();
 }

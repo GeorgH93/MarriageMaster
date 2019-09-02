@@ -15,7 +15,11 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder;
+
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
+
+import org.intellij.lang.annotations.RegExp;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,8 +28,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@interface PlaceholderName
+public @interface PlaceholderFormatted
 {
-	String name() default "";
-	String[] aliases() default "";
+	Class<? extends PlaceholderReplacerBaseValue> formattedClass();
+	@RegExp String formatRuleDetectionRegex() default ".*%(?:\\d+\\$)?[+-]?(?:[ 0]|'.{1})?-?\\d*(?:\\.\\d+)?[bcdeEufFgGosxX].*";
 }
