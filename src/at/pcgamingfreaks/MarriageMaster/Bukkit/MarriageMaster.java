@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementa
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
@@ -211,7 +212,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
 		marriageManager = new MarriageManager(this);
-		prefixSuffixFormatter = new ChatPrefixSuffix(this);
+		prefixSuffixFormatter = new PrefixSuffixFormatterImpl(this);
 
 		// Register Events
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);
@@ -236,6 +237,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
 		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
+		if(getConfiguration().isPrefixEnabled() || getConfiguration().isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
 
 		placeholderManager = new PlaceholderManager(this);
 		return true;

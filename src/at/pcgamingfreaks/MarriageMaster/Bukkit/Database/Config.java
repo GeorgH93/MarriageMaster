@@ -52,10 +52,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		else
 		{
 			super.doUpgrade(oldConfig);
-			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy"))
-			{
-				getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
-			}
+			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy")) getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
 		}
 	}
 
@@ -391,17 +388,17 @@ public class Config extends Configuration implements DatabaseConfiguration
 	//region Prefix/Suffix
 	public boolean isPrefixEnabled()
 	{
-		return getConfigE().getBoolean("Prefix.Enable", true);
+		return getConfigE().getBoolean("Prefix.Enable", false) && !getPrefix().isEmpty();
 	}
 
 	public boolean isSuffixEnabled()
 	{
-		return getConfigE().getBoolean("Suffix.Enable", true);
+		return getConfigE().getBoolean("Suffix.Enable", false) && !getSuffix().isEmpty();
 	}
 
-	public String getPrefix()
+	public @NotNull String getPrefix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "<heart>{PartnerName}<heart>").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
 	}
 
 	public boolean isPrefixOnLineBeginning()
@@ -409,9 +406,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("Prefix.OnLineBeginning", true);
 	}
 
-	public String getSuffix()
+	public @NotNull String getSuffix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "<heart>{PartnerName}<heart>").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
 	}
 	//endregion
 

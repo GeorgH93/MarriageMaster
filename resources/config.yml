@@ -87,7 +87,7 @@ InfoOnPartnerJoinLeave:
 # If your chat plugin support placeholder APIs it would be better to use them! More details: https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Prefix:
   Enable: false
-  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}
+  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}, {StatusHeart}, {MagicHeart}
   String: "<heart>{PartnerName}<heart>"
   OnLineBeginning: true
 # This may don't work with all chat plugins!
