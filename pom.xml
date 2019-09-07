@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.pcgamingfreaks</groupId>
 	<artifactId>MarriageMaster</artifactId>
-	<version>2.0.12</version>
+	<version>2.0.13</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:GeorgH93/MarriageMaster.git</connection>
@@ -428,6 +428,9 @@
 											<excludes>
 												<exclude>at.pcgamingfreaks.MarriageMaster.**</exclude> <!-- Marriage Master will be relocated in the next rule -->
 												<exclude>at.pcgamingfreaks.**.IMessage</exclude> <!-- Workaround to solve problems with release builds -->
+												<!-- Prevent the relocation of Minepacks -->
+												<exclude>at.pcgamingfreaks.Minepacks.**</exclude>
+												<exclude>at.pcgamingfreaks.MinePacks.**</exclude>
 											</excludes>
 										</relocation>
 										<relocation>
