@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Configuration;
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
@@ -191,7 +192,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		Set<String> blackListedWorlds = new HashSet<>();
 		for(String world : getConfigE().getStringList("Teleport.BlacklistedWorlds", new LinkedList<>()))
 		{
-			blackListedWorlds.add(world.toLowerCase());
+			blackListedWorlds.add(world.toLowerCase(Locale.ENGLISH));
 		}
 		return blackListedWorlds;
 	}
@@ -294,6 +295,14 @@ public class Config extends Configuration implements DatabaseConfiguration
 			return plugin.getServer().getOnlineMode();
 		}
 		return type.equals("online");
+	}
+
+	@Override
+	public boolean useUUIDs()
+	{
+		boolean uuid = getConfigE().getBoolean("Database.UseUUIDs", true);
+		if(!uuid) logger.warning(ConsoleColor.RED + "Disabling UUIDs is not recommended and can lead to unexpected behaviour. Please consider enabling UUIDs. The option will be removed with v2.1." + ConsoleColor.RESET);
+		return uuid;
 	}
 
 	public void setUseUUIDs(boolean useUUIDs)
