@@ -337,7 +337,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			{
 				while(rs.next())
 				{
-					priests.add(rs.getInt(fieldPlayerID));
+					priests.add(rs.getInt(fieldPriestID));
 				}
 			}
 			catch(Exception e)
