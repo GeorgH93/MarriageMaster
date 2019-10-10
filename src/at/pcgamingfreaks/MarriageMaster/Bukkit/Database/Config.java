@@ -111,7 +111,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public double getRangeSquared(String option)
 	{
 		double range = getConfigE().getDouble("Range." + option, 625.0);
-		return range * range;
+		return (range > 0) ? range * range : range;
 	}
 
 	public boolean isMarryAnnouncementEnabled()
