@@ -48,6 +48,17 @@ Language:
       ItemSent: "[{\"text\":\"You have sent your partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
       # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Your partner has sent you \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where it is not allowed to receive gifts.\",\"color\":\"red\"}]"
+      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r wants to gift you \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". Accept the gift with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "Gift request sent to your partner."
+        Denied: "You denied the gift of your partner."
+        DeniedPartner: "Your partner denied the gift. Your item has been refunded."
+        Canceled: "You canceled your gift request."
+        CanceledPartner: "Your partner canceled the gift request. Your item has been refunded."
+        CanceledDisconnectRequester: "Your partner went offline. Gift request canceled. Your item has been refunded."
+        CanceledDisconnectTarget: "Your partner went offline. Gift request canceled."
     Home:
       Deleted: "[\"\",{\"text\":\"Homepoint successfully deleted.\",\"color\":\"green\"}]"
       PlayerNoHome: "[\"\",{\"text\":\"The player doesn't have a home yet.\",\"color\":\"red\"}]"
@@ -368,5 +379,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 95
+Version: 96
 Revision: 2

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
-	private static final int LANG_VERSION = 95, UPGRADE_THRESHOLD = 95, PRE_V2_VERSIONS = 90;
+	private static final int LANG_VERSION = 96, UPGRADE_THRESHOLD = 96, PRE_V2_VERSIONS = 90;
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = "\u2764", SMALLHEART = "\u2665";
 
 	public Language(@NotNull JavaPlugin plugin)

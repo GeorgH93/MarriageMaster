@@ -48,6 +48,16 @@ Language:
       ItemSent: "[{\"text\":\"Du hast deinem Partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
       # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Dein Partner hat dir \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
+      WorldNotAllowed: "[\"\",{\"text\":\"Dein Partner ist in einer Welt in der es nicht erlaubt ist Geschenke zu empfangen.\",\"color\":\"red\"}]"
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r will dir \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" schenken. Nimm das Geschenk mit \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" an oder lehne es mit \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\" ab.\"}]"
+        WaitForConfirmation: "Geschenks-Anfrage an deinen Partner gesendet."
+        Denied: "Du hast das Geschenk von deinem Partner abgelehnt."
+        DeniedPartner: "Dein Partner hat dein Geschenk abgelehnt."
+        Canceled: "Du hast deine Geschenks-Anfrage abgebrochen."
+        CanceledPartner: "Dein Partner hat seine Geschenks-Anfrage abgebrochen."
+        CanceledDisconnectRequester: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
+        CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
     Home:
       Deleted: "[\"\",{\"text\":\"Dein Zuhause wurde erfolgreich gelöscht.\",\"color\":\"green\"}]"
       PlayerNoHome: "[\"\",{\"text\":\"Der Spieler hat noch kein Zuhause.\",\"color\":\"red\"}]"
@@ -367,5 +377,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 95
+Version: 96
 Revision: 1
