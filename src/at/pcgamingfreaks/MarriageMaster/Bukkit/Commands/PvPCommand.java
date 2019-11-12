@@ -25,8 +25,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -186,20 +186,23 @@ public class PvPCommand extends MarryCommand implements Listener
 	@EventHandler
 	public void onPlayerDamage(EntityDamageByEntityEvent event)
 	{
-		if(event.getEntity() instanceof Player && (event.getDamager() instanceof Player || (event.getDamager() instanceof Arrow && ((Arrow)event.getDamager()).getShooter() instanceof Player)))
+		if(event.getEntity() instanceof Player)
 		{
-			Player bPlayer = (Player)((event.getDamager() instanceof Player) ? event.getDamager() : ((Arrow)event.getDamager()).getShooter());
-			MarriagePlayer player = getMarriagePlugin().getPlayerData(bPlayer);
+			Player dmgSource = null;
+			if(event.getDamager() instanceof Player) dmgSource = (Player) event.getDamager();
+			else if(event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player) dmgSource = (Player) ((Projectile) event.getDamager()).getShooter();
+			else return;
+			MarriagePlayer player = getMarriagePlugin().getPlayerData(dmgSource);
 			Marriage marriage = player.getMarriageData(getMarriagePlugin().getPlayerData((Player) event.getEntity()));
 			if(marriage != null && !marriage.isPVPEnabled())
 			{
-				messagePvPIsOff.send(bPlayer);
+				messagePvPIsOff.send(dmgSource);
 				event.setCancelled(true);
 			}
 		}
 	}
 
-	private abstract class PvPSubCommand extends MarryCommand
+	private static abstract class PvPSubCommand extends MarryCommand
 	{
 		public PvPSubCommand(JavaPlugin plugin, String name, String description, String permission, boolean mustBeMarried, boolean partnerSelectorInHelpForMoreThanOnePartner, String... aliases)
 		{

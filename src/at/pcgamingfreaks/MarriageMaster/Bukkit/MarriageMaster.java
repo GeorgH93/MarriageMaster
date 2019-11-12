@@ -356,7 +356,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Override
 	public boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared)
 	{
-		return Utils.inRange(player1, player2, rangeSquared, RANGE_LIMIT_PERM);
+		return Utils.inRangeSquared(player1, player2, rangeSquared, RANGE_LIMIT_PERM);
 	}
 
 	@Override

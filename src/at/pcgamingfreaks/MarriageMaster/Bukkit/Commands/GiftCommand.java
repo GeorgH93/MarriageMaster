@@ -114,7 +114,8 @@ public class GiftCommand extends MarryCommand
 						messageNoItemInHand.send(sender);
 						return;
 					}
-					if(bPartner.getInventory().firstEmpty() == -1)
+					int slot = bPartner.getInventory().firstEmpty();
+					if(slot == -1)
 					{
 						messagePartnerInvFull.send(sender);
 						return;
@@ -124,7 +125,7 @@ public class GiftCommand extends MarryCommand
 					if(!event.isCancelled())
 					{
 						its = event.getItemStack();
-						bPartner.getInventory().addItem(its);
+						bPartner.getInventory().setItem(slot, its);
 						if(DUAL_WIELDING_MC) bPlayer.getInventory().setItemInMainHand(null); else bPlayer.getInventory().setItemInHand(null);
 						final String itemJson = (Utils.convertItemStackToJson(its, plugin.getLogger()));
 						final String itemName = itemNameResolver.getName(its);

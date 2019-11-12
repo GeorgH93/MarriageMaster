@@ -192,17 +192,6 @@
 			<version>1.16.16</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- ASM for the extra bit of black magic -->
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>7.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-util</artifactId>
-			<version>7.1</version>
-		</dependency>
 		<!-- region unit test dependencies -->
 		<!-- region JUnit 5 -->
 		<dependency>
@@ -456,13 +445,15 @@
 											<excludes>
 												<exclude>at.pcgamingfreaks.MarriageMaster.**</exclude> <!-- Marriage Master will be relocated in the next rule -->
 												<exclude>at.pcgamingfreaks.**.IMessage</exclude> <!-- Workaround to solve problems with release builds -->
+												<!-- Prevent the relocation of Minepacks -->
+												<exclude>at.pcgamingfreaks.Minepacks.**</exclude>
+												<exclude>at.pcgamingfreaks.MinePacks.**</exclude>
 											</excludes>
 										</relocation>
 										<relocation>
 											<pattern>at.pcgamingfreaks.MarriageMaster</pattern>
 											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone</shadedPattern>
 											<includes>
-												<include>at.pcgamingfreaks.MarriageMaster.API.MarryCommand</include>
 												<include>at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand</include>
 												<include>at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand</include>
 											</includes>
@@ -543,17 +534,12 @@
 											<include>at.pcgamingfreaks:MarriageMaster-API</include>
 											<include>at.pcgamingfreaks:BadRabbit</include>
 											<include>at.pcgamingfreaks:MarriageMaster</include>
-											<include>org.ow2.asm:*</include>
 										</includes>
 									</artifactSet>
 									<relocations>
 										<relocation>
 											<pattern>at.pcgamingfreaks.BadRabbit</pattern>
 											<shadedPattern>at.pcgamingfreaks.MarriageMaster</shadedPattern>
-										</relocation>
-										<relocation>
-											<pattern>org.objectweb</pattern>
-											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs.org.objectweb</shadedPattern>
 										</relocation>
 									</relocations>
 								</configuration>

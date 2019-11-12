@@ -78,8 +78,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		bothOnDivorce    = plugin.getConfiguration().isConfirmationBothPlayersOnDivorceEnabled();
 		autoDialog       = plugin.getConfiguration().isMarryConfirmationAutoDialogEnabled();
 		otherPlayerOnSelfDivorce = plugin.getConfiguration().isConfirmationOtherPlayerOnSelfDivorceEnabled();
-		rangeMarrySquared   = rangeMarry * rangeMarry;
-		rangeDivorceSquared = rangeDivorce * rangeDivorce;
+		rangeMarrySquared   = (rangeMarry > 0) ? rangeMarry * rangeMarry : rangeMarry;
+		rangeDivorceSquared = (rangeDivorce > 0) ? rangeDivorce * rangeDivorce : rangeDivorce;
 
 		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
 		dialogMarried       = plugin.getLanguage().getDialog("Married");

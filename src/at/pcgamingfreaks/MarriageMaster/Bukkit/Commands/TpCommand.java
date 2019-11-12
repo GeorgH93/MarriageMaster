@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
@@ -34,11 +35,22 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class TpCommand extends MarryCommand
 {
+	private static final Set<Material> BAD_MATS = new HashSet<>();
+
+	static
+	{
+		BAD_MATS.add(Material.AIR);
+		BAD_MATS.add(Material.FIRE);
+		BAD_MATS.add(Material.LAVA);
+		BAD_MATS.add(Material.CACTUS);
+	}
+
 	private final Message messageTeleport, messageTeleportTo, messageUnsafe, messageToUnsafe, messagePartnerVanished, messageWorldNotAllowed;
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner;
 	private final Message messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
@@ -136,7 +148,9 @@ public class TpCommand extends MarryCommand
 			if(b != null && !b.isEmpty())
 			{
 				mat = b.getType();
-				if(!(mat.equals(Material.FIRE) || mat.equals(Material.AIR) || mat.equals(Material.LAVA) || mat.equals(Material.CACTUS)) && ((b1 == null || b1.isEmpty()) && (b2 == null || b2.isEmpty())))
+				if(!BAD_MATS.contains(mat) &&
+						(b1 == null || MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? b1.isPassable() : b1.isEmpty()) &&
+						(b2 == null || MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? b2.isPassable() : b2.isEmpty()))
 				{
 					loc = b.getLocation();
 					loc.setY(loc.getY() + 1);

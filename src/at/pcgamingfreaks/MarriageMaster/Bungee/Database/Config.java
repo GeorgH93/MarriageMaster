@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.Bungee.Configuration;
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.YamlFileManager;
 
@@ -121,6 +122,14 @@ public class Config extends Configuration implements DatabaseConfiguration
 			return plugin.getProxy().getConfig().isOnlineMode();
 		}
 		return type.equals("online");
+	}
+
+	@Override
+	public boolean useUUIDs()
+	{
+		boolean uuid = getConfigE().getBoolean("Database.UseUUIDs", true);
+		if(!uuid) logger.warning(ConsoleColor.RED + "Disabling UUIDs is not recommended and can lead to unexpected behaviour. Please consider enabling UUIDs. The option will be removed with v2.1." + ConsoleColor.RESET);
+		return uuid;
 	}
 	//endregion
 

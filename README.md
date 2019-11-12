@@ -54,14 +54,22 @@ Marriage Master is a Bukkit/Spigot plugin that allows you to marry another playe
 - [Placeholders][wikiPlaceholders]
 - [API][api] - The plugin has a very powerful API for developers
 
-## Build from source:
-The plugin can be build in 3 different configurations.
+## Requirements:
+### Runtime requirements:
+* Java 8
+* Bukkit, Spigot or Paper for Minecraft 1.7.10 or newer; or Uranium for Minecraft 1.7.10
+* (Optional) BungeeCord or Waterfall for Minecraft 1.7.10 or newer
+* (Optional) [Vault](https://www.spigotmc.org/resources/vault.34315/) (for economy features)
+* (Optional) [PCGF PluginLib](https://github.com/GeorgH93/PCGF_PluginLib) ([Advantages of using the PCGF PluginLib](https://github.com/GeorgH93/MarriageMaster/wiki/Build-and-Mode-comparison#Advantages-of-using-the-PCGF-PluginLib))
 
-### Build requirements
-
+### Build requirements:
 * JDK for Java 8
 * Maven 3
 * git
+
+## Build from source:
+The plugin can be build in 3 different configurations.
+All the details about the different build configs and runtime modes can be found [here](https://github.com/GeorgH93/MarriageMaster/wiki/Build-and-Mode-comparison).
 
 ### Normal version:
 ```
