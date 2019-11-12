@@ -99,6 +99,10 @@ Suffix:
 Gift:
   Enable: true
   AllowInCreative: false
+  # List of worlds where players can't receive gifts
+  BlacklistedWorlds: []
+  # If this option is enabled the partner has to accept the gift.
+  RequireConfirmation: false
 
 Kiss:
   Enable: true

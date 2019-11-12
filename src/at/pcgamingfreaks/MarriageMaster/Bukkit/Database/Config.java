@@ -231,6 +231,21 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		return getConfigE().getBoolean("Gift.AllowInCreative", false);
 	}
+
+	public boolean isGiftRequireConfirmationEnabled()
+	{
+		return getConfigE().getBoolean("Gift.RequireConfirmation", false);
+	}
+
+	public Set<String> getGiftBlackListedWorlds()
+	{
+		Set<String> blackListedWorlds = new HashSet<>();
+		for(String world : getConfigE().getStringList("Gift.BlacklistedWorlds", new LinkedList<>()))
+		{
+			blackListedWorlds.add(world.toLowerCase());
+		}
+		return blackListedWorlds;
+	}
 	//endregion
 
 	// PvP command settings
