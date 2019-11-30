@@ -50,7 +50,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		plugin.getProxy().registerChannel(CHANNEL_MARRIAGE_MASTER);
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 
-		sendMessage(buildStringMessage("UseUUIDs", plugin.getConfig().useUUIDs() + ""), true);
+		sendMessage(buildStringMessage("UseUUIDs", "true"), true);
 		sendMessage(buildStringMessage("UseUUIDSeparators", plugin.getConfig().useUUIDSeparators() + ""), true);
 		sendMessage(buildStringMessage("UUID_Type", plugin.getConfig().useOnlineUUIDs() ? "online" : "offline"), true);
 	}

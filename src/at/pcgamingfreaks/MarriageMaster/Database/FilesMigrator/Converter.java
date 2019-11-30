@@ -33,7 +33,7 @@ public class Converter
 		logger.info("Loading config file ...");
 		logger.info("Config file loaded.");
 
-		Files f = new Files(config.useUUIDs(), logger, pluginDir);
+		Files f = new Files(config.getConfigE().getBoolean("Database.UseUUIDs", true), logger, pluginDir);
 		Set<MigrationPlayer> players = f.getPlayers();
 		Set<MigrationMarriage> marriages = f.getMarriages();
 		f.close();
@@ -48,6 +48,7 @@ public class Converter
 		{
 			newDB.migrateMarriage(m);
 		}
+		newDB.checkUUIDs();
 		logger.info("Finished writing marriages to " + newDB.getDatabaseTypeName() + " database.");
 		config.setDatabaseType(newDB.getDatabaseTypeName());
 		logger.info("Finished migrating files to " + newDB.getDatabaseTypeName() + " database.");

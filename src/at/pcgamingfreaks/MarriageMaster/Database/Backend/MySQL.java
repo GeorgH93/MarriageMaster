@@ -65,10 +65,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 	@Override
 	protected void buildQuerys()
 	{
-		if(useUUIDs)
-		{
-			queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) SELECT ?,?,? FROM (SELECT 1) AS `tmp` WHERE NOT EXISTS (SELECT * FROM {TPlayers} WHERE {FUUID}=?);";
-		}
+		queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) SELECT ?,?,? FROM (SELECT 1) AS `tmp` WHERE NOT EXISTS (SELECT * FROM {TPlayers} WHERE {FUUID}=?);";
 		super.buildQuerys();
 	}
 

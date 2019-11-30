@@ -154,12 +154,6 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			queryMarry         = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
 			queryLoadMarriages = "SELECT {FMarryID},{FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname} FROM {TMarriages}";
 		}
-		if(!useUUIDs)
-		{
-			queryAddPlayer  = queryAddPlayer.replace(",{FUUID}", "").replaceAll("\\?,\\?\\);", "?);");
-			queryLoadPlayer = queryLoadPlayer.replace("{FUUID}", "{FName}");
-			queryPlayerID   = queryPlayerID.replace("{FUUID}", "{FName}");
-		}
 		queryGetUnsetOrInvalidUUIDs += (useUUIDSeparators) ? "NOT LIKE '%-%-%-%-%';" : "LIKE '%-%';";
 		setTableAndFieldNames();
 	}
@@ -222,7 +216,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	//endregion
 
 	@Override
-	protected void checkUUIDs()
+	public void checkUUIDs()
 	{
 		try(Connection connection = getConnection())
 		{
@@ -370,7 +364,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					{
 						while(rs.next())
 						{
-							MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
+							MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
 							                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
 							cache.cache(player);
 						}
@@ -448,7 +442,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			{
 				if(rs.next())
 				{
-					MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(useUUIDs ? fieldUUID : fieldName)), rs.getString(fieldName),
+					MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName),
 					                                                false, rs.getBoolean(fieldShareBackpack), rs.getInt(fieldPlayerID));
 					cache.cache(player);
 					return player;
@@ -525,7 +519,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				{
 					if(!queryPlayer(player, connection)) add(player, connection);
 				}
-				else if(useUUIDs && player.isOnline())
+				else if(player.isOnline())
 				{
 					update(player, connection);
 				}
@@ -543,9 +537,9 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			int i = 1;
 			psAdd.setString(i++, player.getName());
-			if(useUUIDs) psAdd.setString(i++, getUsedPlayerIdentifier(player));
+			psAdd.setString(i++, getUsedPlayerIdentifier(player));
 			psAdd.setBoolean(i++, player.isSharingBackpack());
-			if(psAdd.getParameterMetaData().getParameterCount() == i && useUUIDs)
+			if(psAdd.getParameterMetaData().getParameterCount() == i)
 			{
 				psAdd.setString(i, getUsedPlayerIdentifier(player));
 			}
@@ -587,7 +581,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					player.setDatabaseKey(dbId);
 					cache.addDbKey(player);
 					player.setSharesBackpack(rs.getBoolean(fieldShareBackpack));
-					if(useUUIDs && player.isOnline() && !rs.getString(fieldName).equals(player.getPlayer()))
+					if(player.isOnline() && !rs.getString(fieldName).equals(player.getPlayer()))
 					{
 						update(player, connection);
 					}
@@ -692,7 +686,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			int i = 1;
 			ps.setString(i++, player.name);
-			if(useUUIDs) ps.setString(i++, useUUIDSeparators ? player.uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : player.uuid);
+			ps.setString(i++, useUUIDSeparators ? player.uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : player.uuid);
 			ps.setBoolean(i, player.shareBackpack);
 			ps.executeUpdate();
 			try(ResultSet rs = ps.getGeneratedKeys())
@@ -706,7 +700,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					logger.info("No auto ID for player \"" + player.name + "\", try to load id from database ...");
 					try(PreparedStatement ps2 = connection.prepareStatement(queryLoadPlayer))
 					{
-						ps2.setString(1, (useUUIDs ? player.uuid : player.name));
+						ps2.setString(1, player.uuid);
 						try(ResultSet rs2 = ps2.executeQuery())
 						{
 							if(rs2.next())
