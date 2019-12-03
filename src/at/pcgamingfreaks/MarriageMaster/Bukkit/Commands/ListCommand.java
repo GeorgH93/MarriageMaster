@@ -52,22 +52,22 @@ public class ListCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		int page = 0;
-		if(args.length == 1)
-		{
-			try
-			{
-				page = StringUtils.parsePageNumber(args[0]);
-			}
-			catch(NumberFormatException ignored)
-			{
-				((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
-				return;
-			}
-		}
 		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
 		if(couples.size() > 0) // There are married couples
 		{
+			int page = 0;
+			if(args.length == 1)
+			{
+				try
+				{
+					page = StringUtils.parsePageNumber(args[0]);
+				}
+				catch(NumberFormatException ignored)
+				{
+					((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
+					return;
+				}
+			}
 			int c = entriesPerPage, availablePages = (int) Math.ceil(couples.size() / (float)entriesPerPage);
 			if(page >= availablePages)
 			{

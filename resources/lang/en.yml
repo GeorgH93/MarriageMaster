@@ -93,6 +93,11 @@ Language:
       NoMarriedPlayers: "[\"\",{\"text\":\"There are no married players.\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"Married players list\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
       Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "[\"\",{\"text\":\"There are no priests online.\",\"color\":\"red\"}]"
+      Headline: "[\"\",{\"text\":\"Online priests\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"You can't hurt your partner if you have PvP disabled.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"You have now enabled PvP with your partner.\",\"color\":\"green\"}]"
@@ -236,6 +241,7 @@ Language:
       DelHomeOther: "Deletes the home of a married player."
       Help: "Shows all available commands and their description."
       List: "Lists all married players."
+      ListPriests: "Lists all currently online priests."
       PvP: "Changes PvP status with partner."
       PvPOn: "Enables PvP with partner."
       PvPOff: "Disables PvP with partner."
@@ -315,6 +321,8 @@ Command:
     - pvpoff
   List:
     - list
+  ListPriests:
+    - listpriests
   Tp:
     - tp
   Marry:
@@ -379,5 +387,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 96
-Revision: 2
+Version: 97
+Revision: 1

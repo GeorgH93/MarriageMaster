@@ -69,6 +69,9 @@ permissions:
   marry.list:
     description: Allows you to use the List command
     default: true
+  marry.listpriests:
+    description: Allows you to use the list priests command
+    default: true
   marry.pvp:
     description: Allows you to enable/disable pvp with the partner
     default: true

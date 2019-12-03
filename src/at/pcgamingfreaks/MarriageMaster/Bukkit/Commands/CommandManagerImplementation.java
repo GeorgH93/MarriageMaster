@@ -92,6 +92,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 
 		// Init MarriageMaster commands
 		registerSubCommand(new ListCommand(plugin));
+		registerSubCommand(new ListPriestsCommand(plugin));
 		marryActionCommand = new MarryMarryCommand(plugin);
 		registerSubCommand(marryActionCommand);
 		registerSubCommand(new MarryDivorceCommand(plugin));

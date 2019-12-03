@@ -92,6 +92,11 @@ Language:
       NoMarriedPlayers: "[\"\",{\"text\":\"Es gibt keine verheirateten Spieler.\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"Liste der verheirateten Spieler\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"Seite {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"}]"
       Footer: "[{\"text\":\"<<< Vorherige Seite <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Seite {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Nächste Seite >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoMarriedPlayers: "[\"\",{\"text\":\"Es sind gerade keine Priester online.\",\"color\":\"red\"}]"
+      Headline: "[\"\",{\"text\":\"Liste an Priestern\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"Seite {CurrentPage}/{MaxPage}\",\"color\":\"gold\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"/{MainCommand} {SubCommand} <page>\",\"color\":\"gray\"}]"
+      Footer: "[{\"text\":\"<<< Vorherige Seite <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Seite {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Nächste Seite >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"Du kannst deinem Partner nicht weh tun wenn du wenn PvP nicht aktiviert ist.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"Du hast PvP mit mit deinem Partner nun aktiviert.\",\"color\":\"green\"}]"
@@ -235,6 +240,7 @@ Language:
       DelHomeOther: "Löscht das Zuhause eines verheirateten Spielers."
       Help: "Zeigt alle möglichen Befehle und deren Hilfe."
       List: "Zeigt alle verheirateten Spieler an."
+      ListPriests: "Zeigt alle Priester die gerade online sind an."
       PvP: "Ändert den Pvp Status mit deinem Partner."
       PvPOn: "Aktiviert PvP mit deinem Partner."
       PvPOff: "Deaktiviert PvP mit deinem Partner."
@@ -313,6 +319,8 @@ Command:
     - pvpoff
   List:
     - list
+  ListPriests:
+    - listpriests
   Tp:
     - tp
   Marry:
@@ -377,5 +385,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 96
+Version: 97
 Revision: 1
