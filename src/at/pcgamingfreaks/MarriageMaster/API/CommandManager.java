@@ -62,6 +62,14 @@ public interface CommandManager<MARRY_COMMAND extends MarryCommand, COMMAND_SEND
 	boolean isAllSwitch(@Nullable String str);
 
 	/**
+	 * Checks if a string is a remove switch in the used language file.
+	 *
+	 * @param str The string that should be checked.
+	 * @return True if it is a remove switch, false if not.
+	 */
+	boolean isRemoveSwitch(@Nullable String str);
+
+	/**
 	 * Gets the translation for the on switch.
 	 *
 	 * @return The translation for on.
@@ -88,6 +96,13 @@ public interface CommandManager<MARRY_COMMAND extends MarryCommand, COMMAND_SEND
 	 * @return The translation for all.
 	 */
 	@NotNull String getAllSwitchTranslation();
+
+	/**
+	 * Gets the translation for the remove switch.
+	 *
+	 * @return The translation for remove.
+	 */
+	@NotNull String getRemoveSwitchTranslation();
 
 	/**
 	 * Creates the tab complete list for polygamy and the partner names.
