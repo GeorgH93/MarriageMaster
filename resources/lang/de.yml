@@ -267,15 +267,30 @@ Command:
       - on
       - true
       - yes
+      - ja
+      - an
     Off:
       - off
       - false
       - no
+      - aus
+      - nein
     Toggle:
       - toggle
       - switch
     All:
       - all
+      - alle
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
+      - loeschen
+      - löschen
+      - entfernen
   Backpack:
     - backpack
     - bp
@@ -385,5 +400,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 97
+Version: 98
 Revision: 1

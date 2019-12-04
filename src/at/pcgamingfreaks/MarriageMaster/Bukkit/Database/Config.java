@@ -96,7 +96,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public boolean isSurnamesForced()
 	{
-		return getConfigE().getBoolean("Marriage.Surnames.Forced", false);
+		return getConfigE().getBoolean("Marriage.Surnames.Force", false);
 	}
 
 	public double getRange(String option)

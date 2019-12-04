@@ -45,7 +45,7 @@ import java.util.List;
 public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
 {
 	private MarriageMaster plugin;
-	private String[] switchesOn, switchesOff, switchesToggle, switchesAll;
+	private String[] switchesOn, switchesOff, switchesToggle, switchesAll, switchesRemove;
 	private RegisterablePluginCommand marryCommand;
 	private MarryCommand marryActionCommand;
 	private Message helpFormat;
@@ -62,6 +62,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		switchesOff     = plugin.getLanguage().getSwitch("Off",    "off");
 		switchesToggle  = plugin.getLanguage().getSwitch("Toggle", "toggle");
 		switchesAll     = plugin.getLanguage().getSwitch("All",    "all");
+		switchesRemove  = plugin.getLanguage().getSwitch("Remove", "remove");
 
 		// Registering the marriage command with our translated aliases
 		marryCommand = new RegisterablePluginCommand(plugin, "marry", plugin.getLanguage().getCommandAliases("marry"));
@@ -201,6 +202,12 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	}
 
 	@Override
+	public boolean isRemoveSwitch(@Nullable String str)
+	{
+		return StringUtils.arrayContainsIgnoreCase(switchesRemove, str);
+	}
+
+	@Override
 	public @NotNull String getOnSwitchTranslation()
 	{
 		return switchesOn[0];
@@ -222,6 +229,12 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public @NotNull String getAllSwitchTranslation()
 	{
 		return switchesAll[0];
+	}
+
+	@Override
+	public @NotNull String getRemoveSwitchTranslation()
+	{
+		return switchesRemove[0];
 	}
 
 	@Override

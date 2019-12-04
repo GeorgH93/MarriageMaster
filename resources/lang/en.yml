@@ -262,6 +262,7 @@ Language:
       SetPriest: "Promotes/Demotes a player to a priest."
       Reload: "Reloads the config of the plugin."
       Version: "Prints the version details about the plugin and it's dependencies."
+# The fist option in the list will be the one displayed in the commands help
 Command:
   Switches:
     On:
@@ -277,6 +278,13 @@ Command:
       - switch
     All:
       - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
   Backpack:
     - backpack
     - bp
@@ -387,5 +395,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 97
+Version: 98
 Revision: 1
