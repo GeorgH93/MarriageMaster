@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.YamlFileManager;
 
 import net.md_5.bungee.api.ChatColor;
@@ -27,11 +28,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class Language extends at.pcgamingfreaks.Bungee.Language implements ILanguage
 {
-	private static final int LANG_VERSION = 92, UPGRADE_THRESHOLD = 92, PRE_V2_VERSIONS = 90;
-
 	public Language(final @NotNull Plugin plugin)
 	{
-		super(plugin, LANG_VERSION, UPGRADE_THRESHOLD);
+		super(plugin, MagicValues.LANG_VERSION, MagicValues.LANG_VERSION);
 	}
 
 	@Override
@@ -47,7 +46,7 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	@Override
 	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + "\u2764").replaceAll("<smallheart>", ChatColor.RED + "\u2665");
+		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART).replaceAll("<smallheart>", ChatColor.RED + MagicValues.SYMBOL_SMALL_HEART);
 	}
 
 	@Override

@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,12 +27,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
-	private static final int LANG_VERSION = 98, UPGRADE_THRESHOLD = 98, PRE_V2_VERSIONS = 90;
-	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = "\u2764", SMALLHEART = "\u2665";
+	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
 
 	public Language(@NotNull JavaPlugin plugin)
 	{
-		super(plugin, LANG_VERSION, UPGRADE_THRESHOLD);
+		super(plugin, MagicValues.LANG_VERSION, MagicValues.LANG_VERSION);
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	protected void doUpgrade(@NotNull at.pcgamingfreaks.YamlFileManager oldLang)
 	{
-		if(oldLang.getVersion() < PRE_V2_VERSIONS)
+		if(oldLang.getVersion() < MagicValues.LANG_PRE_V2_VERSIONS)
 		{
 			OldFileUpdater.updateLanguage(oldLang.getYamlE(), getLang());
 		}

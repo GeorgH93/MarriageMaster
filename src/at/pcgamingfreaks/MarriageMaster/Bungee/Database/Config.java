@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.Bungee.Configuration;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.YamlFileManager;
 
 import net.md_5.bungee.api.plugin.Plugin;
@@ -27,17 +28,15 @@ import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 100;
-
 	public Config(Plugin plugin)
 	{
-		super(plugin, CONFIG_VERSION, 100);
+		super(plugin, MagicValues.BUNGEE_CONFIG_VERSION, MagicValues.BUNGEE_CONFIG_VERSION);
 	}
 
 	@Override
 	protected void doUpgrade(YamlFileManager oldConfig)
 	{
-		if(oldConfig.getVersion() < 100)
+		if(oldConfig.getVersion() < MagicValues.CONFIG_PRE_V2_VERSIONS)
 		{
 			try
 			{

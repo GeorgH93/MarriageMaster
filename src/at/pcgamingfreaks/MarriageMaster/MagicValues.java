@@ -15,18 +15,11 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter;
+package at.pcgamingfreaks.MarriageMaster;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.MagicValues;
-
-import org.bukkit.ChatColor;
-import org.jetbrains.annotations.NotNull;
-
-public interface IMarriageAndPartnerFormatter
+public class MagicValues
 {
-	String HEART = MagicValues.SYMBOL_HEART + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART;
-
-	@NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner);
+	public static final int LANG_VERSION = 98, LANG_PRE_V2_VERSIONS = 90;
+	public static final int CONFIG_VERSION = 96, BUNGEE_CONFIG_VERSION = 96, CONFIG_PRE_V2_VERSIONS = 90;
+	public static final String SYMBOL_HEART = "\u2764", SYMBOL_SMALL_HEART = "\u2665";
 }

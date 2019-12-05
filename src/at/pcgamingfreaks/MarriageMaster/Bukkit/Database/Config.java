@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,11 +33,9 @@ import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 96, UPGRADE_THRESHOLD = CONFIG_VERSION, PRE_V2_VERSIONS = 90;
-	
 	public Config(JavaPlugin plugin)
 	{
-		super(plugin, CONFIG_VERSION, UPGRADE_THRESHOLD);
+		super(plugin, MagicValues.CONFIG_VERSION, MagicValues.CONFIG_VERSION);
 		languageKey = "Language.Language";
 		languageUpdateKey = "Language.UpdateMode";
 	}
@@ -44,7 +43,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	@Override
 	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldConfig)
 	{
-		if(oldConfig.getVersion() < PRE_V2_VERSIONS)
+		if(oldConfig.getVersion() < MagicValues.CONFIG_PRE_V2_VERSIONS)
 		{
 			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfigE());
 			new UpgradedInfo(MarriageMaster.getInstance());
@@ -407,7 +406,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getPrefix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
 	}
 
 	public boolean isPrefixOnLineBeginning()
@@ -417,7 +416,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getSuffix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
 	}
 	//endregion
 

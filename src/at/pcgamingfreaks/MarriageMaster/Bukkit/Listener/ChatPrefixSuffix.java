@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.IMarriageAndPartnerFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -32,7 +33,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChatPrefixSuffix implements Listener
 {
-	private static final String HEART = "\u2764" + ChatColor.WHITE, HEART_GRAY = ChatColor.GRAY + HEART + " ", STATUS_HEART_NM = HEART_GRAY + "%1$s";
+	private static final String HEART = MagicValues.SYMBOL_HEART + ChatColor.WHITE, HEART_GRAY = ChatColor.GRAY + HEART + " ", STATUS_HEART_NM = HEART_GRAY + "%1$s";
 
 	private final MarriageMaster plugin;
 	private final IMarriageAndPartnerFormatter prefixFormatter, suffixFormatter;
