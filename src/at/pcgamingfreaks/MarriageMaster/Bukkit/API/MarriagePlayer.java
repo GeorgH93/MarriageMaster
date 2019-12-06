@@ -30,11 +30,28 @@ import java.util.List;
 public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, IMessage>
 {
 	/**
-	 * Gets the partner that is the nearest to the player. Only if both players are in the same world.
+	 * Gets the marriage with the partner that is the nearest to the player.
 	 *
 	 * @return The marriage with the nearest partner, random marriage if none of the partners is online. null if not married.
 	 */
 	@Nullable Marriage getNearestPartnerMarriageData();
+
+	/**
+	 * Gets the marriage with the partner that is the nearest to the player.
+	 *
+	 * @return The marriage with the nearest partner, random marriage if none of the partners is online. null if not married.
+	 */
+	default @Nullable Marriage getNearestPartnerMarriage()
+	{
+		return getNearestPartnerMarriageData();
+	}
+
+	/**
+	 * Gets the partner that is the nearest to the player.
+	 *
+	 * @return The partner nearest to the player, a random partner if none of the partners is online. null if not married.
+	 */
+	@Nullable MarriagePlayer getNearestPartner();
 
 	/**
 	 * Gets the open request the player can accept or deny.
