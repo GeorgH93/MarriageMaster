@@ -148,6 +148,14 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
+	public @Nullable MarriagePlayer getNearestPartner()
+	{
+		Marriage nearest = getNearestPartnerMarriage();
+		if(nearest == null) return null;
+		return nearest.getPartner(this);
+	}
+
+	@Override
 	public void send(@NotNull IMessage message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
