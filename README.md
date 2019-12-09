@@ -8,15 +8,17 @@
 [bukkit]: http://dev.bukkit.org/bukkit-plugins/marriage-master/
 [issues]: https://github.com/GeorgH93/MarriageMaster/issues
 [wiki]: https://github.com/GeorgH93/MarriageMaster/wiki
-[wiki_faq]: https://github.com/GeorgH93/MarriageMaster/wiki/faq
+[wiki_faq]: https://github.com/GeorgH93/MarriageMaster/wiki/FAQ
 [wikiPermissions]: https://github.com/GeorgH93/MarriageMaster/wiki/Permissions
 [wikiPlaceholders]: https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 [release]: https://github.com/GeorgH93/MarriageMaster/releases/latest
 [releaseImg]: https://img.shields.io/github/release/GeorgH93/MarriageMaster.svg?label=github%20release
 [license]: https://github.com/GeorgH93/MarriageMaster/blob/master/LICENSE
 [licenseImg]: https://img.shields.io/github/license/GeorgH93/MarriageMaster.svg
-[ci]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/
-[ciImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20V2/badge/icon
+[ci]: https://ci.pcgamingfreaks.at/job/MarriageMaster/
+[ciImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster/badge/icon
+[ciDev]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20Dev/
+[ciDevImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20Dev/badge/icon
 [apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?label=api-version&query=%2F%2Frelease[1]&url=https%3A%2F%2Frepo.pcgamingfreaks.at%2Frepository%2Fmaven-releases%2Fat%2Fpcgamingfreaks%2FMarriageMaster-API%2Fmaven-metadata.xml
 [api]: https://github.com/GeorgH93/MarriageMaster/tree/API
 [apiJavaDoc]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/javadoc/
@@ -112,9 +114,10 @@ For more details about the API please check the following links.
 * [Issue tracker][issues]
   * [new feature request][requestFeature]
   * [new bug report][reportBug]
-* [Faq][wiki_faq]
+* [FAQ][wiki_faq]
 
 ## Links
 * [Spigot][spigot]
 * [Dev Bukkit][bukkit]
-* [Build Server][ci]
+* [Build Server - Master Builds ![ciImg]][ci]
+* [Build Server - Dev Builds ![ciDevImg]][ciDev]
