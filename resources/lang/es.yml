@@ -1,0 +1,341 @@
+Version: 93
+# To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
+Language:
+  NotFromConsole: "&cEste comando no puede ser utilizado desde la consola."
+  # Global Wildcards: <heart> and <smallheart>
+  Ingame:
+    NoPermission: "[\"\",{\"text\":\"No tienes permiso para hacer eso.\",\"color\":\"red\"}]"
+    NaN: "[\"\",{\"text\":\"El valor ingresado no es un número!\",\"color\":\"red\"}]"
+    NotMarried: "[\"\",{\"text\":\"No estás casado.\",\"color\":\"red\"}]"
+    PartnerOffline: "[\"\",{\"text\":\"Tu pareja no se encuentra en este momento.\",\"color\":\"red\"}]"
+    PartnerNotInRange: "[\"\",{\"text\":\"Tu pareja está demasiado lejos.\",\"color\":\"red\"}]"
+    TargetPartnerNotFound: "[\"\",{\"text\":\"No se ha encontrado a la pareja seleccionada!\",\"color\":\"red\"}]"
+    PlayerNotMarried: "[\"\",{\"text\":\"\\\"{PlayerName}\\\" no está casado/a!\",\"color\":\"red\"}]"
+    PlayerNotFound: "[\"\",{\"text\":\"No se pudo encontrar a \\\"{PlayerName}\\\"!\",\"color\":\"red\"}]"
+    PlayerNotOnline: "[\"\",{\"text\":\"\\\"{PlayerName}\\\" no se encuentra en este momento!\",\"color\":\"red\"}]"
+    PlayersNotMarried: "[\"\",{\"text\":\"Los jugadores no están casados!\",\"color\":\"red\"}]"
+    MarriageNotExact: "[\"\",{\"text\":\"Lo sentimos, pero hay más de un matrimonio que coincide con su solicitud!\",\"color\":\"red\"}]"
+    JoinLeaveInfo:
+      PartnerOnline: "[\"\",{\"text\":\"Tu pareja está conectada.\",\"color\":\"green\"}]"
+      PartnerOffline: "[\"\",{\"text\":\"Tu pareja no se encuentra en este momento.\",\"color\":\"red\"}]"
+      AllPartnersOffline: "[\"\",{\"text\":\"Tus parejas no se encuentran en este momento.\",\"color\":\"red\"}]"
+      PartnerOnlineMulti: "[\"\",{\"text\":\"Parejas conectadas: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
+      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      MultiOnlineFormat: "{DisplayName}"
+      # No JSON!!!
+      MultiOnlineSeparator: "&r, "
+      PartnerNowOnline: "[\"\",{\"text\":\"Tu pareja se ha conectado.\",\"color\":\"green\"}]"
+      PartnerNowOffline: "[\"\",{\"text\":\"Tu pareja se ha desconectado.\",\"color\":\"red\"}]"
+    Backpack:
+      OnlyInSurvival: "[\"\",{\"text\":\"Solo puedes acceder a la mochila de tu pareja en modo supervivencia.\",\"color\":\"red\"}]"
+      ShareOn: "[\"\",{\"text\":\"Ahora compartes tu mochila con tu pareja.\",\"color\":\"green\"}]"
+      ShareOff: "[\"\",{\"text\":\"Ya no compartes tu mochila con tu pareja.\",\"color\":\"red\"}]"
+      Opened: "[\"\",{\"text\":\"Tu pareja ha abierto tu mochila.\",\"color\":\"green\"}]"
+      ShareDenied: "[\"\",{\"text\":\"Tu pareja no te ha dado acceso a su mochila.\",\"color\":\"red\"}]"
+    Chat:
+      Joined: "[\"\",{\"text\":\"Has establecido tu chat al modo privado de matrimonio.\",\"color\":\"green\"}]"
+      Left: "[\"\",{\"text\":\"Has establecido tu chat al modo público.\",\"color\":\"green\"}]"
+      ListeningStarted: "[\"\",{\"text\":\"Ahora estás escuchando el chat privado de matrimonio.\",\"color\":\"green\"}]"
+      ListeningStopped: "[\"\",{\"text\":\"Ya no estás escuchando el chat privado de matrimonio.\",\"color\":\"green\"}]"
+      TargetSet: "[\"\",{\"text\":\"Se ha establecido el objetivo (jugador) del chat privado.\",\"color\":\"green\"}]"
+      DisplayNameAll: "Todas las parejas"
+      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
+    Gift:
+      OnlyInSurvival: "[\"\",{\"text\":\"Solo puedes dar regalos a tu pareja en modo supervivencia.\",\"color\":\"red\"}]"
+      NoItemInHand: "[\"\",{\"text\":\"No estás sosteniendo un ítem.\",\"color\":\"red\"}]"
+      PartnerInvFull: "[\"\",{\"text\":\"Tu pareja no tiene espacio en su inventario.\",\"color\":\"red\"}]"
+      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemSent: "[{\"text\":\"Le has enviado a tu pareja \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemReceived: "[{\"text\":\"Tu pareja te ha enviado \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+    Home:
+      Deleted: "[\"\",{\"text\":\"Punto de inicio eliminado con éxito.\",\"color\":\"green\"}]"
+      PlayerNoHome: "[\"\",{\"text\":\"El jugador aún no tiene un hogar.\",\"color\":\"red\"}]"
+      NoHome: "[\"\",{\"text\":\"Aún no tienes un hogar.\",\"color\":\"red\"}]"
+      TPed: "[\"\",{\"text\":\"Has sido teletransportado a tu hogar.\",\"color\":\"green\"}]"
+      Set: "[\"\",{\"text\":\"El punto de inicio ha sido guardado.\",\"color\":\"green\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"No puedes teletransportarte a casa desde aquí.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"No puedes teletransportarte a tu casa. Por favor, muévete.\",\"color\":\"red\"}]"
+    Kiss:
+      Kissed: "[\"\",{\"text\":\"&eHas besado a tu pareja!\"}]"
+      Kissed_SendMethod: "action_bar"
+      GotKissed: "[\"\",{\"text\":\"&eTu pareja te ha besado!\"}]"
+      GotKissed_SendMethod: "action_bar"
+      TooFarAway: "[\"\",{\"text\":\"Estás demasiado lejos para besar a tu pareja. (Máximo {Distance} bloques)\",\"color\":\"red\"}]"
+      # Options: {Time}, {TimeLeft} in seconds
+      Wait: "[\"\",{\"text\":\"Tienes que esperar {Time} segundos para besar a tu pareja otra vez.\",\"color\":\"red\"}]"
+    Hug:
+      Hugged: "[\"\",{\"text\":\"&eHas abrazado a tu pareja!\"}]"
+      Hugged_SendMethod: "action_bar"
+      GotHugged: "[\"\",{\"text\":\"&eTu pareja te ha abrazado!\"}]"
+      GotHugged_SendMethod: "action_bar"
+      TooFarAway: "[\"\",{\"text\":\"Estás demasiado lejos para abrazar a tu pareja. (Máximo {Distance} bloques)\",\"color\":\"red\"}]"
+    Seen:
+      # Options: {Name}, {DisplayName}
+      CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} está \",\"extra\":[{\"text\":\"conectado/a\",\"color\":\"green\"},{\"text\":\".\"}]}]"
+      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      LastSeen: "[\"\",{\"text\":\"{Name} fue visto por última vez el \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"hace {Count}\"}},{\"text\":\".\"}]}]"
+      # No Json!!!
+      DateFormat: "dd.MM.yyyy 'a las' HH:mm:ss"
+    List:
+      Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
+      NoMarriedPlayers: "[\"\",{\"text\":\"No hay jugadores casados.\",\"color\":\"red\"}]"
+      Headline: "[\"\",{\"text\":\"Lista de parejas\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"mostrando la página {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
+      Footer: "[{\"text\":\"<<< Anterior <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" Mostrando la página {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Siguiente >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
+    PvP:
+      IsDisabled: "[\"\",{\"text\":\"No puedes golpear a tu pareja si tienes desactivado el combate (PvP).\",\"color\":\"red\"}]"
+      On: "[\"\",{\"text\":\"Has activado el combate (PvP) con tu pareja.\",\"color\":\"green\"}]"
+      Off: "[\"\",{\"text\":\"Has desactivado el combate (PvP) con tu pareja.\",\"color\":\"green\"}]"
+    TP:
+      PartnerVanished: "[\"\",{\"text\":\"No puedes teletransportarte si tu pareja está en modo vanish.\",\"color\":\"red\"}]"
+      Teleport: "[\"\",{\"text\":\"Teletransportandose hacia tu pareja...\",\"color\":\"green\"}]"
+      TeleportTo: "[\"\",{\"text\":\"Tu pareja se está teletransportando hacia ti...\",\"color\":\"green\"}]"
+      Unsafe: "[\"\",{\"text\":\"Teletransporte cancelado! No sobrevivirías!\",\"color\":\"red\"}]"
+      ToUnsafe: "[\"\",{\"text\":\"Tu pareja estaba a punto de teletransportarse hacia ti, pero no sobreviviría!\",\"color\":\"red\"}]"
+      WorldNotAllowed: "[\"\",{\"text\":\"Tu pareja está en un mundo donde no se permite teletransportarse.\",\"color\":\"red\"}]"
+      Moved: "[\"\",{\"text\":\"Teletransporte cancelado! Te has movido!\",\"color\":\"red\"}]"
+      DontMove: "[\"\",{\"text\":\"Teletransportandose en {Time} segundos! No te muevas!\",\"color\":\"red\"}]"
+      BlockedFrom: "[\"\",{\"text\":\"No puedes teletransportarte hacia tu pareja desde aquí.\",\"color\":\"red\"}]"
+      BlockedTo: "[\"\",{\"text\":\"No puedes teletransportarte a donde está tu pareja.\",\"color\":\"red\"}]"
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r quiere teletransportarse hacia ti. Para aceptar utiliza \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\", para rechazarla \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "Por favor, espere hasta que su pareja acepte el teletransporte."
+        Denied: "Has rechazado la solicitud de teletransporte de tu pareja."
+        DeniedPartner: "Tu pareja rechazó la solicitud de teletransporte."
+        Canceled: "Has cancelado tu solicitud de teletransporte."
+        CanceledPartner: "Tu pareja canceló la solicitud de teletransporte."
+        CanceledDisconnectRequester: "Tu pareja se ha desconectado. Solicitud de teletransporte cancelada."
+        CanceledDisconnectTarget: "Tu pareja se ha desconectado. Solicitud de teletransporte cancelada."
+    SetPriest:
+      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" te ha nombrado sacerdote.\",\"color\":\"green\"}]"
+      YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ha sido nombrado sacerdote.\",\"color\":\"green\"}]"
+      FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" te ha despedido como sacerdote.\",\"color\":\"red\"}]"
+      YouFiredAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ya no es sacerdote.\",\"color\":\"green\"}]"
+      PerPermission: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ha sido nombrado sacerdote mediante permisos. No puedes despedirlo usando comandos!\",\"color\":\"red\"}]"
+    Surname:
+      SetSuccessful: "[\"\",{\"text\":\"Apellido cambiado con éxito.\",\"color\":\"green\"}]"
+      SetFailed: "[\"\",{\"text\":\"Error al cambiar el apellido.\",\"color\":\"red\"}]"
+      ToShort: "[\"\",{\"text\":\"El apellido ingresado es demasiado corto. Debe tener al menos {MinLength} caracteres.\",\"color\":\"red\"}]"
+      ToLong: "[\"\",{\"text\":\"El apellido ingresado es demasiado largo. Debe tener más de {MaxLength} caracteres.\",\"color\":\"red\"}]"
+      AlreadyUsed: "[\"\",{\"text\":\"El apellido ingresado ya está siendo utilizado!\",\"color\":\"red\"}]"
+    Requests:
+      NothingToAccept: "[\"\",{\"text\":\"No hay ni una solicitud para aceptar.\",\"color\":\"red\"}]"
+      NothingToDeny: "[\"\",{\"text\":\"No hay ni una solicitud para rechazar.\",\"color\":\"red\"}]"
+      NothingToCancel: "[\"\",{\"text\":\"No hay ni una solicitud para cancelar.\",\"color\":\"red\"}]"
+    Marry:
+      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      NotWithHimself: "[{\"text\":\"No puedes casar a \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" consigo mismo.\"}]"
+      AlreadyMarried: "[{\"text\":\"No puedes casar a jugadores ya casados. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" ya está casado.\"}]"
+      SurnameNeeded: "[\"\",{\"text\":\"Necesitas un apellido para casar a la pareja.\",\"color\":\"red\"}]"
+      Married: "[{\"text\":\"Has casado a \",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" con \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
+      HasMarried: "[\"\",{\"text\":\"{PriestDisplayName}\"},{\"text\":\" te ha casado con \",\"color\":\"green\"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\".\",\"color\":\"green\"}]"
+      Broadcast: "[\"\",{\"text\":\"{PriestDisplayName}\"},{\"text\":\" ha casado a \",\"color\":\"green\",\"extra\":[{\"text\":\"{Player1DisplayName}\"},{\"text\":\" con \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]}]"
+      NotInRange: "[\"\",{\"text\":\"Los jugadores no están dentro del alcance! Necesitan estar dentro de {Range} bloques!\",\"color\":\"red\"}]"
+      AlreadyOpenRequest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ya tiene una solicitud de matrimonio no respondida.\",\"color\":\"red\"}]"
+      YouCalledOff: "Has cancelado la boda."
+      PlayerCalledOff: "{DisplayName}&r ha cancelado la boda."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" quiere casarte con \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Para aceptar utiliza \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\", para rechazarla \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      PriestOff: "El sacerdote {DisplayName}&r se ha desconectado, se canceló la boda."
+      PlayerOff: "El jugador {DisplayName}&r se ha desconectado, se canceló la boda."
+      Self:
+        NotYourself: "[\"\",{\"text\":\"No te puedes casar contigo mismo.\",\"color\":\"red\"}]"
+        NotInRange: "[\"\",{\"text\":\"El jugador no está dentro del alcance! Debe estar dentro de {Range} bloques!\",\"color\":\"red\"}]"
+        AlreadyMarried: "[{\"text\":\"Ya estás casado con \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\"!\"}]"
+        OtherAlreadyMarried: "[{\"text\":\"\",\"color\":\"red\"},{\"text\":\"El jugador {DisplayName}\"},{\"text\":\" ya está casado!\"}]"
+        AlreadyOpenRequest: "[\"\",{\"text\":\"Ya tienes una solicitud de matrimonio no respondida.\",\"color\":\"red\"}]"
+        Married: "[{\"text\":\"Te has casado con \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\".\"}]"
+        Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" se ha casado con \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
+        YouCalledOff: "Has cancelado la boda."
+        PlayerCalledOff: "{DisplayName}&r ha cancelado la boda."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" te ha propuesto matrimonio. Para aceptar utiliza \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\", para rechazarla \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        RequestSent: "Solicitud de matrimonio enviada."
+        PlayerOff: "El jugador {DisplayName}&r se ha desconectado, se canceló la boda."
+        NotOnYourOwn: "[\"\",{\"text\":\"No puedes realizar tu propia boda. Pídale a un sacerdote que realice la boda por ti.\",\"color\":\"red\"}]"
+    Divorce:
+      Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" ha divorciado a \"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" de \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
+      DivorcedPlayer: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" te ha divorciado de \"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\".\"}]"
+      Divorced: "[{\"text\":\"Has divorciado a \",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" y \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
+      PlayerOff: "El jugador {DisplayName}&r se ha desconectado, se canceló el divorcio."
+      PriestOff: "El sacerdote {DisplayName}&r se ha desconectado, se canceló el divorcio."
+      PlayerCancelled: "[{\"text\":\"\",\"color\":\"red\"},{\"text\":\"{PlayerDisplayName}\"},{\"text\":\" canceló el divorcio con \"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\"!\"}]"
+      PriestCancelled: "[{\"text\":\"\",\"color\":\"red\"},{\"text\":\"{PriestDisplayName}\"},{\"text\":\" canceló el divorcio entre tú y \"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\"!\"}]"
+      YouCancelled: "[{\"text\":\"Has cancelado tu divorcio con \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\"!\"}]"
+      YouCancelledPriest: "[{\"text\":\"Has cancelado el divorcio de \",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" y \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\"!\"}]"
+      Deny: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" rechazó el divorcio!\",\"color\":\"red\"}]"
+      YouDeny: "[{\"text\":\"Has rechazado el divorcio con \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\".\"}]"
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" quiere divorciarte de \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\". Para aceptar utiliza \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\", para rechazarla \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      NotInRange: "[\"\",{\"text\":\"Los jugadores no están dentro del alcance! Deben estar dentro de {Range} bloques!\",\"color\":\"green\"}]"
+      Self:
+        Divorced: "[{\"text\":\"Has dejado a \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\". Ya eres libre.\"}]"
+        DivorcedPlayer: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" te ha dejado. Ya eres libre.\",\"color\":\"green\"}]"
+        Broadcast: "[{\"text\":\"\",\"color\":\"green\"},{\"text\":\"{Player1DisplayName}\"},{\"text\":\" se ha divorciado de \"},{\"text\":\"{Player2DisplayName}\"},{\"text\":\".\"}]"
+        PlayerOff: "El jugador {DisplayName}&r se ha desconectado, se canceló el divorcio."
+        RequestSent: "Solicitud de divorcio enviada a {DisplayName}&r."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" quiere divorciarse de ti. Para aceptar utiliza \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\", para rechazarla \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        Deny: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ha rechazado tu solicitud de divorcio!\",\"color\":\"red\"}]"
+        YouDeny: "[{\"text\":\"Has rechazado la solicitud de divorcio de \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\".\"}]"
+        Cancelled: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" canceló su solicitud de divorcio!\",\"color\":\"red\"}]"
+        YouCancelled: "[{\"text\":\"Has cancelado tu solicitud de divorcio con \",\"color\":\"green\"},{\"text\":\"{DisplayName}\"},{\"text\":\"!\"}]"
+        NotInRange: "[\"\",{\"text\":\"Tu pareja no está dentro del alcance! Debes estar dentro de {Range} bloques!\",\"color\":\"green\"}]"
+    Economy:
+      NotEnough: "[\"\",{\"text\":\"No tienes suficiente dinero! Necesitas {Cost} {CurrencyName} para eso.\",\"color\":\"red\"}]"
+      PartnerNotEnough: "[\"\",{\"text\":\"Tu pareja no tiene suficiente dinero!\",\"color\":\"red\"}]"
+      PriestMarryNotEnough: "[\"\",{\"text\":\"Los jugadores que intentas casar no tienen suficiente dinero.\",\"color\":\"red\"}]"
+      PriestDivorceNotEnough: "[\"\",{\"text\":\"Los jugadores que intentas divorciar no tienen suficiente dinero.\",\"color\":\"red\"}]"
+      MarriagePaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por tu matrimonio (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+      DivorcePaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por la anulación de tu matrimonio (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+      HomeTPPaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por el teletransporte hacia tu hogar (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+      SetHomePaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por el punto de inicio de tu hogar (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+      TpPaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por el teletransporte (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+      GiftPaid: "[\"\",{\"text\":\"Has pagado {Cost} {CurrencyName} por el regalo hacia tu pareja (Quedan {Remaining} {CurrencyName}).\",\"color\":\"green\"}]"
+    Admin:
+      Reloading: "&1Recargando..."
+      Reloaded: "&1Recargado!"
+      CheckingForUpdates: "&1Comprobando actualizaciones..."
+      Updated: "[\"\",{\"text\":\"Plugin actualizado, se cargará en el próximo reinicio.\",\"color\":\"yellow\"}]"
+      NoUpdate: "[\"\",{\"text\":\"No hay actualizaciones disponibles.\",\"color\":\"gold\"}]"
+      UpdateFail: "[\"\",{\"text\":\"Ha ocurrido un problema al buscar actualizaciones! Por favor, revise la consola!\",\"color\":\"red\"}]"
+      # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
+      UpdateAvailable: "[{\"text\":\"Hay una actualización disponible! Ve a \\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\"}},{\"text\":\"\\\" para descargarla!\"}]"
+    Help:
+      Header: "&6### Comandos de Marriage Master ###"
+      Footer: "&6#############################"
+  Commands:
+    HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
+    # No color codes please
+    PlayerNameVariable: "player_name"
+    PartnerNameVariable: "partner_name"
+    SurnameVariable: "surname"
+    MessageVariable: "message"
+    Description:
+      Backpack: "Abre la mochila de tu pareja."
+      BackpackOn: "Permite que tu pareja use tu mochila."
+      BackpackOff: "No permite que tu pareja use tu mochila."
+      Chat: "Chat privado con tu pareja."
+      ChatSetTarget: "Cambia el objetivo (jugador) del mensaje privado. Si no se cambia, todas las parejas recibirán el mensaje."
+      ChatToggle: "Alterna tu chat para que sea privado con tu pareja."
+      ChatListen: "Muestra todos los mensajes enviados por un jugador casado a su pareja."
+      Gift: "Regala el ítem en tu mano a tu pareja."
+      Home: "Te teletransporta a tu punto de inicio de tu hogar."
+      HomeOther: "Te teletransporta al hogar de jugadores casados."
+      SetHome: "Establece tu punto de inicio de tu hogar."
+      SetHomeOther: "Establece el hogar de un jugador casado."
+      DelHome: "Elimina tu punto de inicio de tu hogar."
+      DelHomeOther: "Elimina el hogar de un jugador casado."
+      Help: "Muestra todos los comandos disponibles y su descripción."
+      List: "Enumera a todos los jugadores casados."
+      PvP: "Cambia el estado del combate (PvP) con tu pareja."
+      PvPOn: "Habilita el combate (PvP) con la pareja."
+      PvPOff: "Deshabilita el combate (PvP) con la pareja."
+      Tp: "Te teletransporta hacia tu pareja."
+      Kiss: "Besar a tu pareja."
+      Hug: "Abrazar a tu pareja."
+      Seen: "Muestra cuándo tu pareja fue vista por última vez."
+      Marry: "Casar a dos jugadores."
+      MarrySelf: "Envía una solicitud de matrimonio a otro jugador."
+      Divorce: "Divorciar a dos jugadores."
+      DivorceSelf: "Dejar a tu pareja."
+      Surname: "Cambiar el apellido de una pareja."
+      SurnameSelf: "Cambiar el apellido de tu pareja y de ti."
+      Update: "Comprueba si hay una actualización disponible y la descarga."
+      Accept: "Acepta una solicitud."
+      Cancel: "Cancela una solicitud."
+      Deny: "Rechaza una solicitud."
+      SetPriest: "Promueve/Degrada un jugador a sacerdote."
+      Reload: "Vuelva a cargar la configuración del plugin."
+      Version: "Muestra los detalles de la versión acerca del plugin y sus dependencias."
+Dialog:
+  DoYouWant: "{Player1Name}, quieres casarte con {Player2Name}, en este servidor?"
+  AndDoYouWant: "Y tú {Player2Name}, quieres casarte con {Player1Name} en este servidor?"
+  Married: "Ahora los declaro marido y mujer. Ahora pueden besarse."
+  YesIWant: "¡Sí, lo haré!"
+  NoIDontWant: "¡No, no lo haré!"
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  Boolean:
+    True: "verdadero"
+    False: "falso"
+  # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
+  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+  NotMarried:
+    Default: "soltero"
+LanguageName: "Español"
+Author: "Matsuneitor"
+Revision: "2"
+Command:
+  Switches:
+    On:
+      - on
+      - true
+      - yes
+    Off:
+      - off
+      - false
+      - no
+    Toggle:
+      - toggle
+      - switch
+    All:
+      - all
+  Backpack:
+    - backpack
+    - bp
+  Chat:
+    - chat
+  ChatSetTarget:
+    - settarget
+    - target
+  ChatToggle:
+    - chattoggle
+  ChatListen:
+    - listenchat
+    - chatlisten
+  Gift:
+    - gift
+    - send
+    - give
+  Help:
+    - help
+  Home:
+    - home
+  SetHome:
+    - sethome
+    - definehome
+    - savehome
+  DelHome:
+    - delhome
+    - deletehome
+    - unsethome
+  PvP:
+    - pvp
+  Kiss:
+    - kiss
+  Hug:
+    - hug
+  Seen:
+    - seen
+    - lastOnline
+  PvPOn:
+    - pvpon
+  PvPOff:
+    - pvpoff
+  List:
+    - list
+  Tp:
+    - tp
+  Marry:
+    - marry
+  Divorce:
+    - divorce
+  Update:
+    - update
+  Version:
+    - version
+  Accept:
+    - accept
+  Cancel:
+    - cancel
+  Deny:
+    - deny
