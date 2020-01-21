@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -92,16 +92,17 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 			//noinspection ConstantConditions
 			MarriagePlayer partner = marriage.getPartner(player);
 			String p = formatPrefix(marriage, partner), s = formatSuffix(marriage, partner);
-			changed = !p.equals("") || !s.equals("");
+			if(!p.equals("")) { p += " "; changed = true; }
+			if(!s.equals("")) { s += " "; changed = true; }
 			if(changed)
 			{
 				if(prefixOnLineBeginning)
 				{
-					format = p + ' ' + format.replace("%1$s", "%1$s " + s);
+					format = p + format.replace("%1$s", "%1$s " + s);
 				}
 				else
 				{
-					format = format.replace("%1$s", p + " %1$s " + s);
+					format = format.replace("%1$s", p + "%1$s " + s);
 				}
 			}
 		}
