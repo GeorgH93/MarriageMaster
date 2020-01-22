@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.MarriageMaster.IUpdater;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
 import at.pcgamingfreaks.Updater.Updater;
@@ -56,7 +57,6 @@ import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.17-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
@@ -105,7 +105,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		else[STANDALONE]*/
 		// Not standalone so we should check the version of the PluginLib
-		if(at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion().olderThan(new Version(MIN_PCGF_PLUGIN_LIB_VERSION)))
+		if(at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion().olderThan(new Version(MagicValues.MIN_PCGF_PLUGIN_LIB_VERSION)))
 		{
 			getLogger().warning("You are using an outdated version of the PCGF PluginLib! Please update it!");
 			failedToEnablePlugin();
