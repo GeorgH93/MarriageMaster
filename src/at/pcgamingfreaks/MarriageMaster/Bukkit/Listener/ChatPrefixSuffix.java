@@ -71,8 +71,10 @@ public class ChatPrefixSuffix implements Listener
 			//noinspection ConstantConditions
 			final MarriagePlayer partner = marriage.getPartner(player);
 			//noinspection ConstantConditions
-			final String p = prefixFormatter.format(marriage, partner), s = suffixFormatter.format(marriage, partner);
-			changed = true;
+			String p = prefixFormatter.format(marriage, partner), s = suffixFormatter.format(marriage, partner);
+			if(p.length() == 1) p = "";
+			if(s.length() == 1) s = "";
+			changed = !p.isEmpty() || !s.isEmpty();
 			if(prefixOnLineBeginning)
 			{
 				format = p + format.replace("%1$s", "%1$s" + s);

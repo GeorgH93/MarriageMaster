@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ public class PrefixSuffixFormatterImpl implements at.pcgamingfreaks.MarriageMast
 			return new PrefixFormatter(prefixFormat.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s")
 					                                               .replaceAll("\\{StatusHeart}", "%4\\$s").replaceAll("\\{MagicHeart}", "%5\\$s"));
 		}
-		else return new StaticStringFormatter((prefixFormat.length() > 0) ? prefixFormat + " " : "");
+		else return new StaticStringFormatter(prefixFormat);
 	}
 
 	public static IMarriageAndPartnerFormatter produceSuffixFormatter(final @NotNull String suffixFormat)
@@ -50,7 +50,7 @@ public class PrefixSuffixFormatterImpl implements at.pcgamingfreaks.MarriageMast
 		{
 			return new SuffixFormatter(suffixFormat.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s"));
 		}
-		else return new StaticStringFormatter((suffixFormat.length() > 0) ? suffixFormat + " " : "");
+		else return new StaticStringFormatter(suffixFormat);
 	}
 
 	@Override
