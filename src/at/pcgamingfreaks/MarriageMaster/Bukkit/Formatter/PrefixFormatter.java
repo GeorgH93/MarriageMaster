@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,31 +15,25 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 
-public class NearestHomeY extends PlaceholderReplacerBase
+public class PrefixFormatter implements IMarriageAndPartnerFormatter
 {
-	public NearestHomeY(MarriageMaster plugin)
+	private final String format;
+
+	public PrefixFormatter(final @NotNull String format)
 	{
-		super(plugin);
+		this.format = format;
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	public @NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		if(playerData.isMarried())
-		{
-			Marriage marriageData = playerData.getNearestPartnerMarriageData();
-			//noinspection ConstantConditions
-			return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getY() + "" : valueNotMarried;
-		}
-		return null;
+		return String.format(format, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), HEART_RED, marriage.getMarriageColor() + HEART);
 	}
 }

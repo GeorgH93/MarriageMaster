@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,26 +20,30 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.HomeYFormatted;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class HomeY extends PlaceholderReplacerBase
+import java.text.DecimalFormat;
+
+@PlaceholderName(aliases = "Home_Y")
+@PlaceholderFormatted(formattedClass = HomeYFormatted.class)
+public class HomeY extends PlaceholderReplacerBaseValueHome
 {
+	ThreadLocal<DecimalFormat> format = ThreadLocal.withInitial(() -> new DecimalFormat("#.0"));
+
 	public HomeY(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		if(playerData.isMarried())
-		{
-			Marriage marriageData = playerData.getMarriageData();
-			//noinspection ConstantConditions
-			return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getY() + "" : valueNotMarried;
-		}
-		return null;
+		Marriage marriageData = player.getMarriageData();
+		//noinspection ConstantConditions
+		return marriageData.isHomeSet() ? format.get().format(marriageData.getHome().getLocation().getY()) : valueNoHome;
 	}
 }

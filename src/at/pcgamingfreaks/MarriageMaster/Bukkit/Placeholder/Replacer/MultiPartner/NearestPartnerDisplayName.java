@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,14 +15,20 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted.NearestPartnerDisplayNameFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestPartnerDisplayName extends PlaceholderReplacerBase
+@PlaceholderName(aliases = { "Nearest_PartnerDisplayName", "Nearest_Partner_DisplayName" })
+@PlaceholderFormatted(formattedClass = NearestPartnerDisplayNameFormatted.class)
+public class NearestPartnerDisplayName extends PlaceholderReplacerBaseValue
 {
 	public NearestPartnerDisplayName(MarriageMaster plugin)
 	{
@@ -30,10 +36,9 @@ public class NearestPartnerDisplayName extends PlaceholderReplacerBase
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return playerData.isMarried() ? playerData.getNearestPartnerMarriageData().getPartner(playerData).getDisplayName() : valueNotMarried;
+		return player.getNearestPartnerMarriageData().getPartner(player).getDisplayName();
 	}
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,11 +28,13 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementa
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.MarriageMaster.IUpdater;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
 import at.pcgamingfreaks.Updater.Updater;
@@ -42,6 +44,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +57,6 @@ import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.17-SNAPSHOT";
 	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
@@ -103,7 +105,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		else[STANDALONE]*/
 		// Not standalone so we should check the version of the PluginLib
-		if(at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion().olderThan(new Version(MIN_PCGF_PLUGIN_LIB_VERSION)))
+		if(at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion().olderThan(new Version(MagicValues.MIN_PCGF_PLUGIN_LIB_VERSION)))
 		{
 			getLogger().warning("You are using an outdated version of the PCGF PluginLib! Please update it!");
 			failedToEnablePlugin();
@@ -210,7 +212,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
 		marriageManager = new MarriageManager(this);
-		prefixSuffixFormatter = new ChatPrefixSuffix(this);
+		prefixSuffixFormatter = new PrefixSuffixFormatterImpl(this);
 
 		// Register Events
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);
@@ -220,10 +222,22 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXP(this), this);
 			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickup(this), this);
 		}
+		if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXP(this), this);
+		if(config.isMcMMOBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("mcMMO"))
+		{
+			Plugin mcMMO = getServer().getPluginManager().getPlugin("mcMMO");
+			if(mcMMO != null)
+			{
+				if(new Version(mcMMO.getDescription().getVersion()).olderThan(new Version("2"))) getServer().getPluginManager().registerEvents(new McMMOClassicBonusXP(this), this);
+				else getServer().getPluginManager().registerEvents(new McMMOBonusXP(this), this);
+			}
+
+		}
 		if(config.isHPRegainEnabled()) getServer().getPluginManager().registerEvents(new RegainHealth(this), this);
 		if(config.isJoinLeaveInfoEnabled()) getServer().getPluginManager().registerEvents(new JoinLeaveInfo(this), this);
 		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
+		if(getConfiguration().isPrefixEnabled() || getConfiguration().isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
 
 		placeholderManager = new PlaceholderManager(this);
 		return true;

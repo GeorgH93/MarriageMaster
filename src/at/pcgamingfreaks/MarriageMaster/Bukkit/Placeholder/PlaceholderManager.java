@@ -22,6 +22,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.ClipsPlaceholde
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.MVdWPlaceholderReplacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.PlaceholderAPIHook;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.*;
+import at.pcgamingfreaks.Reflection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -88,65 +90,62 @@ public class PlaceholderManager
 
 	private void generatePlaceholdersMap()
 	{
-		//TODO: change registry of placeholders to annotation
-		placeholders.put("StatusHeart", new StatusHeart(plugin));
-		placeholders.put("Status_Heart", placeholders.get("StatusHeart"));
-		placeholders.put("MagicHeart", new MagicHeart(plugin));
-		placeholders.put("Magic_Heart", placeholders.get("MagicHeart"));
-		placeholders.put("Heart", new Heart(plugin));
-		placeholders.put("Married", placeholders.get("Heart"));
-		placeholders.put("IsMarried", new IsMarried(plugin));
-		placeholders.put("IsPriest", new IsPriest(plugin));
-		placeholders.put("Partner", new PartnerName(plugin));
-		placeholders.put("PartnerName", placeholders.get("Partner"));
-		placeholders.put("Partner_Name", placeholders.get("Partner"));
-		placeholders.put("PartnerDisplayName", new PartnerDisplayName(plugin));
-		placeholders.put("Partner_DisplayName", placeholders.get("PartnerDisplayName"));
-		placeholders.put("Surname", new Surname(plugin));
-		placeholders.put("HasHome", new HasHome(plugin));
-		placeholders.put("Has_Home", placeholders.get("HasHome"));
-		placeholders.put("HomeX", new HomeX(plugin));
-		placeholders.put("Home_X", placeholders.get("HomeX"));
-		placeholders.put("HomeY", new HomeY(plugin));
-		placeholders.put("Home_Y", placeholders.get("HomeY"));
-		placeholders.put("HomeZ", new HomeZ(plugin));
-		placeholders.put("Home_Z", placeholders.get("HomeZ"));
-		placeholders.put("HomeWorld", new HomeWorld(plugin));
-		placeholders.put("Home_World", placeholders.get("HomeWorld"));
+		registerPlaceholder(new HasHome(plugin));
+		registerPlaceholder(new Heart(plugin));
+		registerPlaceholder(new Home(plugin));
+		registerPlaceholder(new HomeCoordinates(plugin));
+		registerPlaceholder(new HomeWorld(plugin));
+		registerPlaceholder(new HomeX(plugin));
+		registerPlaceholder(new HomeY(plugin));
+		registerPlaceholder(new HomeZ(plugin));
+		registerPlaceholder(new IsMarried(plugin));
+		registerPlaceholder(new IsPriest(plugin));
+		registerPlaceholder(new PartnerCount(plugin));
+		registerPlaceholder(new PartnerDisplayName(plugin));
+		registerPlaceholder(new PartnerName(plugin));
+		registerPlaceholder(new Prefix(plugin));
+		registerPlaceholder(new Suffix(plugin));
+		registerPlaceholder(new Surname(plugin));
+		registerPlaceholder(new StatusHeart(plugin));
+
 		if(plugin.areMultiplePartnersAllowed())
 		{
-			placeholders.put("NearestPartnerName", new NearestPartnerName(plugin));
-			placeholders.put("Nearest_PartnerName", placeholders.get("NearestPartnerName"));
-			placeholders.put("Nearest_Partner_Name", placeholders.get("NearestPartnerName"));
-			placeholders.put("NearestPartnerDisplayName", new NearestPartnerDisplayName(plugin));
-			placeholders.put("Nearest_PartnerDisplayName", placeholders.get("NearestPartnerDisplayName"));
-			placeholders.put("Nearest_Partner_DisplayName", placeholders.get("NearestPartnerDisplayName"));
-			placeholders.put("NearestSurname", new NearestSurname(plugin));
-			placeholders.put("Nearest_Surname", placeholders.get("NearestSurname"));
-			placeholders.put("HasNearestHome", new HasNearestHome(plugin));
-			placeholders.put("Has_Nearest_Home", placeholders.get("HasNearestHome"));
-			placeholders.put("NearestHomeX", new NearestHomeX(plugin));
-			placeholders.put("Nearest_HomeX", placeholders.get("NearestHomeX"));
-			placeholders.put("Nearest_Home_X", placeholders.get("NearestHomeX"));
-			placeholders.put("NearestHomeY", new NearestHomeY(plugin));
-			placeholders.put("Nearest_HomeY", placeholders.get("NearestHomeY"));
-			placeholders.put("Nearest_Home_Y", placeholders.get("NearestHomeY"));
-			placeholders.put("NearestHomeZ", new NearestHomeZ(plugin));
-			placeholders.put("Nearest_HomeZ", placeholders.get("NearestHomeZ"));
-			placeholders.put("Nearest_Home_Z", placeholders.get("NearestHomeZ"));
-			placeholders.put("NearestHomeWorld", new NearestHomeWorld(plugin));
-			placeholders.put("Nearest_HomeWorld", placeholders.get("NearestHomeWorld"));
-			placeholders.put("Nearest_Home_World", placeholders.get("NearestHomeWorld"));
-			placeholders.put("PartnerCount", new PartnerCount(plugin));
-			placeholders.put("Partner_Count", placeholders.get("PartnerCount"));
-			placeholders.put("PartnerList", new PartnerList(plugin));
-			placeholders.put("Partner_List", placeholders.get("PartnerList"));
-			placeholders.put("PartnerNameList", placeholders.get("PartnerList"));
-			placeholders.put("Partner_Name_List", placeholders.get("PartnerList"));
-			placeholders.put("PartnerDisplayNameList", new PartnerDisplayNameList(plugin));
-			placeholders.put("PartnerDisplayName_List", placeholders.get("PartnerDisplayNameList"));
-			placeholders.put("Partner_DisplayName_List", placeholders.get("PartnerDisplayNameList"));
+			registerPlaceholder(new NearestPrefix(plugin));
+			registerPlaceholder(new NearestSuffix(plugin));
+			registerPlaceholder(new NearestPartnerName(plugin));
+			registerPlaceholder(new NearestPartnerDisplayName(plugin));
+			registerPlaceholder(new NearestSurname(plugin));
+			registerPlaceholder(new NearestHasHome(plugin));
+			registerPlaceholder(new NearestHome(plugin));
+			registerPlaceholder(new NearestHomeCoordinates(plugin));
+			registerPlaceholder(new NearestHomeX(plugin));
+			registerPlaceholder(new NearestHomeY(plugin));
+			registerPlaceholder(new NearestHomeZ(plugin));
+			registerPlaceholder(new NearestHomeWorld(plugin));
+			registerPlaceholder(new PartnerList(plugin));
+			registerPlaceholder(new PartnerDisplayNameList(plugin));
 		}
+	}
+
+	public void registerPlaceholder(PlaceholderReplacer placeholder)
+	{
+		if(placeholder.getClass().isAnnotationPresent(PlaceholderFormatted.class))
+		{
+			try
+			{
+				PlaceholderFormatted pfa = placeholder.getClass().getAnnotation(PlaceholderFormatted.class);
+				if(placeholder.getFormat() != null && placeholder.getFormat().matches(pfa.formatRuleDetectionRegex()))
+					placeholder = (PlaceholderReplacer) Reflection.getConstructor(pfa.formattedClass(), MarriageMaster.class).newInstance(plugin);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return;
+			}
+		}
+		placeholders.put(placeholder.getName(), placeholder);
+		final PlaceholderReplacer finalPlaceholder = placeholder;
+		placeholder.getAliases().forEach(alias -> placeholders.put(alias, finalPlaceholder));
 	}
 
 	public List<String> getPlaceholdersList()

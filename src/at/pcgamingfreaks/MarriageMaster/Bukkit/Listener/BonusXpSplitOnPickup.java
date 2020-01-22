@@ -42,24 +42,21 @@ public class BonusXpSplitOnPickup implements Listener
 	public void onEntityDeath(PlayerExpChangeEvent event)
 	{
 		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
-		if(player.isMarried())
+		Marriage marriage = player.getNearestPartnerMarriageData();
+		if(marriage != null)
 		{
-			Marriage marriage = player.getNearestPartnerMarriageData();
-			if(marriage != null)
+			MarriagePlayer partner = marriage.getPartner(player);
+			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 			{
-				MarriagePlayer partner = marriage.getPartner(player);
-				if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
+				double amount = event.getAmount() / 2.0;
+				int xpPlayer = (int) Math.round((amount)), xpPartner = (int) amount;
+				BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
+				plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
+				if(!xpSplitEvent.isCancelled())
 				{
-					double amount = event.getAmount() / 2.0;
-					int xpPlayer = (int) Math.round((amount)), xpPartner = (int) amount;
-					BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
-					plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
-					if(!xpSplitEvent.isCancelled())
-					{
-						event.setAmount(xpSplitEvent.getAmount());
-						if(xpPartner > 0) //noinspection ConstantConditions
-							partner.getPlayerOnline().giveExp(xpPartner); // If the partner is near he/she must also be online
-					}
+					event.setAmount(xpSplitEvent.getAmount());
+					if(xpPartner > 0) //noinspection ConstantConditions
+						partner.getPlayerOnline().giveExp(xpPartner); // If the partner is near he/she must also be online
 				}
 			}
 		}

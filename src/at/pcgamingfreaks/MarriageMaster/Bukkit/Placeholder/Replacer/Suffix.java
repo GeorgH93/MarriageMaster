@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,33 +19,25 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class PartnerList extends PlaceholderReplacerBase
+public class Suffix extends PlaceholderReplacerBaseValue
 {
-	public PartnerList(MarriageMaster plugin)
+	private final PrefixSuffixFormatter formatter;
+
+	public Suffix(MarriageMaster plugin)
 	{
 		super(plugin);
+		formatter = plugin.getPrefixSuffixFormatter();
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		int count = playerData.getMultiMarriageData().size(), i = 0;
-		if(playerData.isMarried() && count > 0)
-		{
-			StringBuilder stringBuilder = new StringBuilder();
-			for(Marriage marriage : playerData.getMultiMarriageData())
-			{
-				//noinspection ConstantConditions
-				stringBuilder.append(marriage.getPartner(playerData).getName());
-				if(++i < count) stringBuilder.append(", ");
-			}
-			return stringBuilder.toString();
-		}
-		return valueNotMarried;
+		Marriage marriage = player.getMarriageData();
+		return formatter.formatSuffix(marriage, marriage.getPartner(player));
 	}
 }

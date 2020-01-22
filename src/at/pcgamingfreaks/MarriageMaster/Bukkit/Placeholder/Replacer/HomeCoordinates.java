@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,32 +20,28 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
-public class PartnerDisplayNameList extends PlaceholderReplacerBase
+@PlaceholderName(aliases = "Home_Coordinates")
+public class HomeCoordinates extends PlaceholderReplacerBaseValueHome
 {
-	public PartnerDisplayNameList(MarriageMaster plugin)
+	public HomeCoordinates(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		int count = playerData.getMultiMarriageData().size(), i = 0;
-		if(playerData.isMarried() && count > 0)
+		Marriage marriageData = player.getMarriageData();
+		if(marriageData != null && marriageData.isHomeSet())
 		{
-			StringBuilder stringBuilder = new StringBuilder();
-			for(Marriage marriage : playerData.getMultiMarriageData())
-			{
-				//noinspection ConstantConditions
-				stringBuilder.append(marriage.getPartner(playerData).getDisplayName());
-				if(++i < count) stringBuilder.append(", ");
-			}
-			return stringBuilder.toString();
+			Location location = marriageData.getHome().getLocation();
+			return String.format(valueMarried, location.getX(), location.getY(), location.getZ());
 		}
-		return valueNotMarried;
+		return valueNoHome;
 	}
 }

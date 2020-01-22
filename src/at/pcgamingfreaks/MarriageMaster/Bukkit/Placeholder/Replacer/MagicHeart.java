@@ -19,24 +19,22 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class MagicHeart extends PlaceholderReplacerBase
+@PlaceholderName(aliases = "Magic_Heart")
+public class MagicHeart extends PlaceholderReplacerBaseValue
 {
-	private static final String HEART = "\u2764" + ChatColor.WHITE;
-
 	public MagicHeart(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer marriagePlayer = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return marriagePlayer.isMarried() ? marriagePlayer.getMarriageData().getMarriageColor() + HEART : valueNotMarried;
+		return player.getMarriageData().getMarriageColor() + valueMarried;
 	}
 }

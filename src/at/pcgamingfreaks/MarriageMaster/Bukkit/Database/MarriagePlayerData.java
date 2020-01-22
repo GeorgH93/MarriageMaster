@@ -138,13 +138,21 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 		for(Marriage marriage : getMultiMarriageData())
 		{
 			double dist = marriage.getDistance();
-			if(dist < distanceNearest || distanceNearest == -1)
+			if(dist > 0 && (dist < distanceNearest || distanceNearest == -1))
 			{
 				distanceNearest = dist;
 				nearest = marriage;
 			}
 		}
 		return nearest;
+	}
+
+	@Override
+	public @Nullable MarriagePlayer getNearestPartner()
+	{
+		Marriage nearest = getNearestPartnerMarriage();
+		if(nearest == null) return null;
+		return nearest.getPartner(this);
 	}
 
 	@Override

@@ -15,25 +15,26 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.Formatted;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.NearestSurname;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestSurname extends PlaceholderReplacerBase
+@PlaceholderName(name = "NearestSurname", aliases = "Nearest_Surname")
+public class NearestSurnameFormatted extends NearestSurname
 {
-	public NearestSurname(MarriageMaster plugin)
+	public NearestSurnameFormatted(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		//noinspection ConstantConditions
-		return playerData.isMarried() ? playerData.getNearestPartnerMarriageData().getSurnameString() : valueNotMarried;
+		return String.format(valueMarried, super.replaceMarried(player));
 	}
 }

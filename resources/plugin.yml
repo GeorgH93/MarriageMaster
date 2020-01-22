@@ -6,7 +6,7 @@ main: "${bukkitMainClass}"
 version: "${version}"
 api-version: "1.13"
 depend: [${dependencies}]
-softdepend: [ Vault, Minepacks, MinePacks, MVdWPlaceholderAPI, PlaceholderAPI ${soft-dependencies} ]
+softdepend: [ Vault, Minepacks, MinePacks, MVdWPlaceholderAPI, PlaceholderAPI, SkillAPI, mcMMO ${soft-dependencies} ]
 
 permissions:
   marry.*:
@@ -68,6 +68,9 @@ permissions:
     default: true
   marry.list:
     description: Allows you to use the List command
+    default: true
+  marry.listpriests:
+    description: Allows you to use the list priests command
     default: true
   marry.pvp:
     description: Allows you to enable/disable pvp with the partner

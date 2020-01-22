@@ -48,7 +48,6 @@ Teleport:
 Database:
   # MySQL = data stored in MySQL database (see selection below)
   Type: MySQL
-  UseUUIDs: true
   UseUUIDSeparators: false
   # Options: auto, online, offline | auto will decide based on the server online mode option.
   # If you are using BungeeCord, set it to whatever you use on your BungeeCord server!!!

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,31 +15,32 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.PlaceholderReplacerBaseValue;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class NearestHomeZ extends PlaceholderReplacerBase
+@PlaceholderName(aliases = "Nearest_Suffix")
+public class NearestSuffix extends PlaceholderReplacerBaseValue
 {
-	public NearestHomeZ(MarriageMaster plugin)
+	private final PrefixSuffixFormatter formatter;
+
+	public NearestSuffix(MarriageMaster plugin)
 	{
 		super(plugin);
+		formatter = plugin.getPrefixSuffixFormatter();
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
-		if(playerData.isMarried())
-		{
-			Marriage marriageData = playerData.getNearestPartnerMarriageData();
-			//noinspection ConstantConditions
-			return marriageData.isHomeSet() ? marriageData.getHome().getLocation().getZ() + "" : valueNotMarried;
-		}
-		return null;
+		Marriage marriage = player.getNearestPartnerMarriageData();
+		return formatter.formatSuffix(marriage, marriage.getPartner(player));
 	}
 }

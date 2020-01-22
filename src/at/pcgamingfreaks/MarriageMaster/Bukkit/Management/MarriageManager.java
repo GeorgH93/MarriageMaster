@@ -163,6 +163,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	public String cleanupSurname(String surname)
 	{
 		if(surname == null || surname.isEmpty()) return null;
+		if(plugin.getCommandManager().isRemoveSwitch(surname) || "null".equalsIgnoreCase(surname) || "none".equalsIgnoreCase(surname)) return null;
 
 		surname = surname.replace('§', '&').replaceAll("&k", "");
 		if(surnameNotAllowedCharactersRex != null)
@@ -206,7 +207,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	@Override
 	public void setSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
 	{
-		surname = (!plugin.isSurnamesEnabled() && (surname.equalsIgnoreCase("null") || surname.equalsIgnoreCase("none") || surname.equalsIgnoreCase("remove"))) ? null : cleanupSurname(surname);
+		surname = cleanupSurname(surname);
 		if(surname == null && plugin.isSurnamesForced())
 		{
 			messageSurnameFailed.send(changer);

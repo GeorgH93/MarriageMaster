@@ -81,7 +81,7 @@ Language:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"Nie ma graczy w związkach małżeńskich.\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"Lista związków małżeńskich\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"strona {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
-      Footer: "[{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
+      Footer: "[{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"Nie możesz zranić partnera gdy masz wyłączone PvP.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"Włączyłeś PvP ze swoim partnerem.\",\"color\":\"green\"}]"
@@ -251,15 +251,6 @@ Dialog:
   Married: "Ogłaszam was mężem i żoną. Możecie się pocałować."
   YesIWant: "Tak, chcę!"
   NoIDontWant: "Nie chcę!"
-# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-Placeholders:
-  Boolean:
-    True: "true"
-    False: "false"
-  # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
-  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-  NotMarried:
-    Default: "not married"
 
 Command:
   Switches:
@@ -337,11 +328,47 @@ Command:
   Deny:
     - deny
 
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "not married"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+
 # The name of the language represented by the language file
 LanguageName: "Polish"
 # The author of the language file
 Author: "Nacioszeczek"
 
 # Language file version. Don't touch it!
-Version: 93
-Revision: 4
+Version: 95
+Revision: 1

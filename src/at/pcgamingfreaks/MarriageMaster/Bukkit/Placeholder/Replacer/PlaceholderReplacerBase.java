@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,39 +17,91 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer;
 
+import org.apache.commons.lang.NotImplementedException;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-abstract class PlaceholderReplacerBase implements PlaceholderReplacer
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
-	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried.";
+	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried", PLACEHOLDER_DEFAULT_KEY = "Default.", NULL_MAGIC = "NULL";
 
 	protected final MarriageMaster plugin;
-	protected final String messageNotFound;
 	protected final String valueNotMarried;
 
-	public PlaceholderReplacerBase(@NotNull MarriageMaster plugin)
+	public PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		this.messageNotFound = plugin.getLanguage().getTranslatedPlaceholder("this.key.should.not.exist");
-		valueNotMarried = getNotMarriedPlaceholderValue(this.getClass().getSimpleName());
+		valueNotMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
 	}
 
-	protected @Nullable String getNotMarriedPlaceholderValue(@NotNull String placeholder)
+	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholderKey)
 	{
-		String msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + placeholder);
-		if(!msg.equals(messageNotFound))
+		return getNotMarriedPlaceholderValue(getName(), placeholderKey);
+	}
+
+	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
+	{
+		String p = placeholder + "." + placeholderKey, msg;
+		if(plugin.getLanguage().isPlaceholderSet(p))
 		{
-			return msg.equals("NULL") ? null : msg;
+			msg = this.plugin.getLanguage().getTranslatedPlaceholder(p);
 		}
-		msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_NOT_MARRIED_KEY + "Default");
-		if(msg.equals(messageNotFound) || msg.equals("NULL"))
+		else
 		{
-			msg = null;
+			msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
 		}
-		return msg;
+		return msg.equals(NULL_MAGIC) ? null : msg;
+	}
+
+	@Override
+	public @Nullable String replace(OfflinePlayer player)
+	{
+		MarriagePlayer playerData = plugin.getPlayerData(player);
+		if(playerData.isMarried()) return replaceMarried(playerData);
+		return valueNotMarried;
+	}
+
+	protected @Nullable String replaceMarried(MarriagePlayer player) { throw new NotImplementedException("The replaceMarried method for the placeholder has not been implemented!"); }
+
+	@Override
+	public @NotNull String getName()
+	{
+		if(getClass().isAnnotationPresent(PlaceholderName.class))
+		{
+			String name = getClass().getAnnotation(PlaceholderName.class).name();
+			if(!name.isEmpty()) return name;
+		}
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
+	public @NotNull Collection<String> getAliases()
+	{
+		List<String> aliasesList = new LinkedList<>();
+		if(getClass().isAnnotationPresent(PlaceholderName.class))
+		{
+			String[] aliases = getClass().getAnnotation(PlaceholderName.class).aliases();
+			for(String alias : aliases)
+			{
+				if(!alias.isEmpty()) aliasesList.add(alias);
+			}
+		}
+		return aliasesList;
+	}
+
+	@Override
+	public @Nullable String getFormat()
+	{
+		return null;
 	}
 }

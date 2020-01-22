@@ -48,6 +48,17 @@ Language:
       ItemSent: "[{\"text\":\"You have sent your partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
       # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Your partner has sent you \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where it is not allowed to receive gifts.\",\"color\":\"red\"}]"
+      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r wants to gift you \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". Accept the gift with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "Gift request sent to your partner."
+        Denied: "You denied the gift of your partner."
+        DeniedPartner: "Your partner denied the gift. Your item has been refunded."
+        Canceled: "You canceled your gift request."
+        CanceledPartner: "Your partner canceled the gift request. Your item has been refunded."
+        CanceledDisconnectRequester: "Your partner went offline. Gift request canceled. Your item has been refunded."
+        CanceledDisconnectTarget: "Your partner went offline. Gift request canceled."
     Home:
       Deleted: "[\"\",{\"text\":\"Homepoint successfully deleted.\",\"color\":\"green\"}]"
       PlayerNoHome: "[\"\",{\"text\":\"The player doesn't have a home yet.\",\"color\":\"red\"}]"
@@ -81,7 +92,12 @@ Language:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"There are no married players.\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"Married players list\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
-      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "[\"\",{\"text\":\"There are no priests online.\",\"color\":\"red\"}]"
+      Headline: "[\"\",{\"text\":\"Online priests\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"You can't hurt your partner if you have PvP disabled.\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"You have now enabled PvP with your partner.\",\"color\":\"green\"}]"
@@ -225,6 +241,7 @@ Language:
       DelHomeOther: "Deletes the home of a married player."
       Help: "Shows all available commands and their description."
       List: "Lists all married players."
+      ListPriests: "Lists all currently online priests."
       PvP: "Changes PvP status with partner."
       PvPOn: "Enables PvP with partner."
       PvPOff: "Disables PvP with partner."
@@ -245,6 +262,7 @@ Language:
       SetPriest: "Promotes/Demotes a player to a priest."
       Reload: "Reloads the config of the plugin."
       Version: "Prints the version details about the plugin and it's dependencies."
+# The fist option in the list will be the one displayed in the commands help
 Command:
   Switches:
     On:
@@ -260,6 +278,13 @@ Command:
       - switch
     All:
       - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
   Backpack:
     - backpack
     - bp
@@ -304,6 +329,8 @@ Command:
     - pvpoff
   List:
     - list
+  ListPriests:
+    - listpriests
   Tp:
     - tp
   Marry:
@@ -328,13 +355,39 @@ Dialog:
   NoIDontWant: "No, I will not!"
 # This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Placeholders:
-  Boolean:
-    True: true
-    False: false
-  # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
-  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-  NotMarried:
-    Default: "not married"
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "not married"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
 
 # The name of the language represented by the language file
 LanguageName: "English"
@@ -342,5 +395,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 93
-Revision: 2
+Version: 98
+Revision: 1

@@ -18,11 +18,11 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Configuration;
-import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,11 +33,9 @@ import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	private static final int CONFIG_VERSION = 94, UPGRADE_THRESHOLD = 94, PRE_V2_VERSIONS = 90;
-	
 	public Config(JavaPlugin plugin)
 	{
-		super(plugin, CONFIG_VERSION, UPGRADE_THRESHOLD);
+		super(plugin, MagicValues.CONFIG_VERSION, MagicValues.CONFIG_VERSION);
 		languageKey = "Language.Language";
 		languageUpdateKey = "Language.UpdateMode";
 	}
@@ -45,7 +43,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	@Override
 	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldConfig)
 	{
-		if(oldConfig.getVersion() < PRE_V2_VERSIONS)
+		if(oldConfig.getVersion() < MagicValues.CONFIG_PRE_V2_VERSIONS)
 		{
 			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfigE());
 			new UpgradedInfo(MarriageMaster.getInstance());
@@ -53,10 +51,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		else
 		{
 			super.doUpgrade(oldConfig);
-			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy"))
-			{
-				getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
-			}
+			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy")) getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
 		}
 	}
 
@@ -100,7 +95,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public boolean isSurnamesForced()
 	{
-		return getConfigE().getBoolean("Marriage.Surnames.Forced", false);
+		return getConfigE().getBoolean("Marriage.Surnames.Force", false);
 	}
 
 	public double getRange(String option)
@@ -235,6 +230,21 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		return getConfigE().getBoolean("Gift.AllowInCreative", false);
 	}
+
+	public boolean isGiftRequireConfirmationEnabled()
+	{
+		return getConfigE().getBoolean("Gift.RequireConfirmation", false);
+	}
+
+	public Set<String> getGiftBlackListedWorlds()
+	{
+		Set<String> blackListedWorlds = new HashSet<>();
+		for(String world : getConfigE().getStringList("Gift.BlacklistedWorlds", new LinkedList<>()))
+		{
+			blackListedWorlds.add(world.toLowerCase());
+		}
+		return blackListedWorlds;
+	}
 	//endregion
 
 	// PvP command settings
@@ -257,6 +267,55 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public boolean isBonusXPSplitOnPickupEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.SplitXpOnPickup", true);
+	}
+
+	public boolean isSkillApiBonusXPEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SkillAPI.Enable", false);
+	}
+
+	public List<String> getSkillApiBonusXpBlockedSources()
+	{
+		return getConfigE().getStringList("BonusXp.SkillAPI.ExcludeSources", new LinkedList<>());
+	}
+
+	public double getSkillApiBonusXpMultiplier()
+	{
+		return getConfigE().getDouble("BonusXp.SkillAPI.Multiplier", 2);
+	}
+
+	public boolean isSkillApiBonusXPSplitEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SkillAPI.SplitXp", true);
+	}
+
+	public boolean isMcMMOBonusXPEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.McMMO.Enable", false);
+	}
+
+	public Set<String> getMcMMOBonusXpBlockedSources()
+	{
+		Set<String> blockedSources = new HashSet<>();
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSources", new LinkedList<>()).forEach(source -> blockedSources.add(source.toUpperCase()));
+		return blockedSources;
+	}
+
+	public Set<String> getMcMMOBonusXpBlockedSkills()
+	{
+		Set<String> blockedSkills = new HashSet<>();
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSkills", new LinkedList<>()).forEach(source -> blockedSkills.add(source.toUpperCase()));
+		return blockedSkills;
+	}
+
+	public float getMcMMOBonusXpMultiplier()
+	{
+		return getConfigE().getFloat("BonusXp.McMMO.Multiplier", 2);
+	}
+
+	public boolean isMcMMOBonusXPSplitEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.McMMO.SplitXp", true);
 	}
 	//endregion
 
@@ -295,20 +354,6 @@ public class Config extends Configuration implements DatabaseConfiguration
 			return plugin.getServer().getOnlineMode();
 		}
 		return type.equals("online");
-	}
-
-	@Override
-	public boolean useUUIDs()
-	{
-		boolean uuid = getConfigE().getBoolean("Database.UseUUIDs", true);
-		if(!uuid) logger.warning(ConsoleColor.RED + "Disabling UUIDs is not recommended and can lead to unexpected behaviour. Please consider enabling UUIDs. The option will be removed with v2.1." + ConsoleColor.RESET);
-		return uuid;
-	}
-
-	public void setUseUUIDs(boolean useUUIDs)
-	{
-		set("Database.UseUUIDs", useUUIDs);
-		trySave();
 	}
 
 	public void setUseUUIDSeparators(boolean useUUIDSeparators)
@@ -351,17 +396,17 @@ public class Config extends Configuration implements DatabaseConfiguration
 	//region Prefix/Suffix
 	public boolean isPrefixEnabled()
 	{
-		return getConfigE().getBoolean("Prefix.Enable", true);
+		return getConfigE().getBoolean("Prefix.Enable", false) && !getPrefix().isEmpty();
 	}
 
 	public boolean isSuffixEnabled()
 	{
-		return getConfigE().getBoolean("Suffix.Enable", true);
+		return getConfigE().getBoolean("Suffix.Enable", false) && !getSuffix().isEmpty();
 	}
 
-	public String getPrefix()
+	public @NotNull String getPrefix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "<heart>{PartnerName}<heart>").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
 	}
 
 	public boolean isPrefixOnLineBeginning()
@@ -369,9 +414,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("Prefix.OnLineBeginning", true);
 	}
 
-	public String getSuffix()
+	public @NotNull String getSuffix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "<heart>{PartnerName}<heart>").replace("<heart>", ChatColor.RED + "\u2764" + ChatColor.WHITE));
+		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
 	}
 	//endregion
 

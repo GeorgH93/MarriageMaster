@@ -237,15 +237,6 @@ Dialog:
   Married: "Объявляю вас, мужем и женой. Теперь вы можешь поцеловать друг друга."
   YesIWant: "Да, я согласен!"
   NoIDontWant: "Нет, я не согласен!"
-# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-Placeholders:
-  Boolean:
-    True: "true"
-    False: "false"
-  # NULL will return a null value instead of the string (empty string if the used placeholder api doesn't allow null values).
-  # https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
-  NotMarried:
-    Default: "не состоит в браке"
 Command:
   Switches:
     On:
@@ -319,6 +310,42 @@ Command:
     - cancel
   Deny:
     - deny
+
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "не состоит в браке"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
 
 # The name of the language represented by the language file
 LanguageName: "Russian"

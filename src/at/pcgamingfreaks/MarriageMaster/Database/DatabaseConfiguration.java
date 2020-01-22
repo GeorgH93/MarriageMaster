@@ -30,8 +30,6 @@ public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
 		return getConfigE().getString("Database.Type", "MySQL").toLowerCase();
 	}
 
-	boolean useUUIDs();
-
 	default boolean useUUIDSeparators()
 	{
 		return getConfigE().getBoolean("Database.UseUUIDSeparators", false);

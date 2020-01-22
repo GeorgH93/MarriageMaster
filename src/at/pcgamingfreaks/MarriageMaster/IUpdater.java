@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 public interface IUpdater
 {
 	int BUKKIT_PROJECT_ID = 74734;
-	String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB_DEV = "MarriageMaster V2", JENKINS_JOB_MASTER = "MarriageMaster";
+	String JENKINS_URL = "https://ci.pcgamingfreaks.at", JENKINS_JOB_DEV = "MarriageMaster Dev", JENKINS_JOB_MASTER = "MarriageMaster";
 
 	Updater createUpdater(UpdateProvider updateProvider);
 

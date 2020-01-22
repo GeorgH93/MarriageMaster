@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2019 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,23 +17,23 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class Heart extends PlaceholderReplacerBase
+@PlaceholderName(aliases = "Married")
+public class Heart extends PlaceholderReplacerBaseValue
 {
-	private static final String heartRed = ChatColor.RED + "\u2764" + ChatColor.WHITE;
-
 	public Heart(MarriageMaster plugin)
 	{
 		super(plugin);
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		return plugin.getPlayerData(player).isMarried() ? heartRed : valueNotMarried;
+		return valueMarried;
 	}
 }

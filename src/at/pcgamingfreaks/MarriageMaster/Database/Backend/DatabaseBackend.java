@@ -33,7 +33,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 {
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected final IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform;
-	protected final boolean useBungee, useUUIDs, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
+	protected final boolean useBungee, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
 	protected final Cache cache;
 	protected final Logger logger;
 	@Setter protected MarriageSavedCallback marriageSavedCallback = null;
@@ -46,7 +46,6 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 		this.logger = logger;
 		this.surnameEnabled = surnameEnabled;
 		this.cache = cache;
-		useUUIDs = dbConfig.useUUIDs();
 		useUUIDSeparators = dbConfig.useUUIDSeparators();
 		useOnlineUUIDs = dbConfig.useOnlineUUIDs();
 	}
@@ -56,33 +55,19 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 
 	public void startup() throws Exception
 	{
-		if(useUUIDs) checkUUIDs();
+		checkUUIDs();
 	}
 
 	public abstract boolean supportsBungeeCord();
 
 	protected String getUsedPlayerIdentifier(MARRIAGE_PLAYER player)
 	{
-		if(useUUIDs)
-		{
-			return useUUIDSeparators ? player.getUUID().toString() : player.getUUID().toString().replaceAll("-", "");
-		}
-		else
-		{
-			return player.getName();
-		}
+		return useUUIDSeparators ? player.getUUID().toString() : player.getUUID().toString().replaceAll("-", "");
 	}
 
 	protected @NotNull UUID getUUIDFromIdentifier(final @NotNull String identifier)
 	{
-		if(useUUIDs)
-		{
-			return UUID.fromString((useUUIDSeparators) ? identifier : identifier.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
-		}
-		else
-		{
-			return platform.uuidFromName(identifier);
-		}
+		return UUID.fromString((useUUIDSeparators) ? identifier : identifier.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5"));
 	}
 
 	protected void runAsync(final @NotNull Runnable runnable)
@@ -97,7 +82,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 
 	public abstract @NotNull String getDatabaseTypeName();
 
-	protected abstract void checkUUIDs();
+	public abstract void checkUUIDs();
 
 	public abstract void loadAll();
 

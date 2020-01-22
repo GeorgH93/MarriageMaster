@@ -19,98 +19,74 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.PrefixSuffixFormatter;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.IMarriageAndPartnerFormatter;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.NotNull;
 
-public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
+public class ChatPrefixSuffix implements Listener
 {
-	private static final String HEART = "\u2764" + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART, HEART_GRAY = ChatColor.GRAY + HEART, STATUS_HEART_NM = HEART_GRAY + " %1$s";
+	private static final String HEART = MagicValues.SYMBOL_HEART + ChatColor.WHITE, HEART_GRAY = ChatColor.GRAY + HEART + " ", STATUS_HEART_NM = HEART_GRAY + "%1$s";
 
 	private final MarriageMaster plugin;
-	private final String prefix, suffix;
+	private final IMarriageAndPartnerFormatter prefixFormatter, suffixFormatter;
 	private final boolean useStatusHeart, prefixOnLineBeginning;
 
-	public ChatPrefixSuffix(MarriageMaster marriagemaster)
+	public ChatPrefixSuffix(final @NotNull MarriageMaster plugin)
 	{
-		plugin = marriagemaster;
-		if(plugin.getConfiguration().isPrefixEnabled() && plugin.getConfiguration().getPrefix() != null)
+		this.plugin = plugin;
+		if(plugin.getConfiguration().isPrefixEnabled())
 		{
-			prefix = plugin.getConfiguration().getPrefix().replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s")
-					.replaceAll("\\{StatusHeart}", "%4\\$s").replaceAll("\\{MagicHeart}", "%5\\$s");
+			final String prefix = plugin.getConfiguration().getPrefix();
+			prefixFormatter = PrefixSuffixFormatterImpl.producePrefixFormatter(prefix.isEmpty() ? "" : prefix + " ");
 			useStatusHeart = plugin.getConfiguration().getPrefix().contains("{StatusHeart}");
 			prefixOnLineBeginning = plugin.getConfiguration().isPrefixOnLineBeginning();
 		}
 		else
 		{
-			prefix = null;
+			prefixFormatter = PrefixSuffixFormatterImpl.producePrefixFormatter("");
 			useStatusHeart = false;
 			prefixOnLineBeginning = false;
 		}
-		if(plugin.getConfiguration().isSuffixEnabled() && plugin.getConfiguration().getSuffix() != null)
-		{
-			suffix = plugin.getConfiguration().getSuffix().replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s");
-		}
-		else suffix = null;
-		if(plugin.getConfiguration().isPrefixEnabled() || plugin.getConfiguration().isSuffixEnabled()) plugin.getServer().getPluginManager().registerEvents(this, plugin);
-	}
-
-	@Override
-	public String formatPrefix(Marriage marriage, MarriagePlayer partner)
-	{
-		if(prefix != null)
-		{
-			return String.format(prefix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), HEART_RED, marriage.getMarriageColor() + HEART);
-		}
-		return "";
-	}
-
-	@Override
-	public String formatSuffix(Marriage marriage, MarriagePlayer partner)
-	{
-		if(suffix != null)
-		{
-			return String.format(suffix, marriage.getSurnameString(), partner.getName(), partner.getDisplayName());
-		}
-		return "";
+		final String suffix = plugin.getConfiguration().getSuffix();
+		suffixFormatter = PrefixSuffixFormatterImpl.produceSuffixFormatter(plugin.getConfiguration().isSuffixEnabled() && !suffix.isEmpty() ? " " + suffix : "");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerChat(AsyncPlayerChatEvent event)
+	public void onPlayerChat(final AsyncPlayerChatEvent event)
 	{
 		String format = event.getFormat();
 		boolean changed = false;
-		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
+		final MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
 		if(player.isMarried())
 		{
-			Marriage marriage = player.getMarriageData();
+			final Marriage marriage = player.getMarriageData();
 			//noinspection ConstantConditions
-			MarriagePlayer partner = marriage.getPartner(player);
-			String p = formatPrefix(marriage, partner), s = formatSuffix(marriage, partner);
-			if(!p.equals("")) { p += " "; changed = true; }
-			if(!s.equals("")) { s += " "; changed = true; }
-			if(changed)
+			final MarriagePlayer partner = marriage.getPartner(player);
+			//noinspection ConstantConditions
+			final String p = prefixFormatter.format(marriage, partner), s = suffixFormatter.format(marriage, partner);
+			changed = true;
+			if(prefixOnLineBeginning)
 			{
-				if(prefixOnLineBeginning)
-				{
-					format = p + format.replace("%1$s", "%1$s " + s);
-				}
-				else
-				{
-					format = format.replace("%1$s", p + "%1$s " + s);
-				}
+				format = p + format.replace("%1$s", "%1$s" + s);
+			}
+			else
+			{
+				format = format.replace("%1$s", p + "%1$s" + s);
 			}
 		}
 		else if(useStatusHeart)
 		{
 			if(prefixOnLineBeginning)
 			{
-				format = HEART_GRAY + ' ' + format;
+				format = HEART_GRAY + format;
 			}
 			else
 			{
@@ -118,9 +94,6 @@ public class ChatPrefixSuffix implements Listener, PrefixSuffixFormatter
 			}
 			changed = true;
 		}
-		if(changed)
-		{
-			event.setFormat(format);
-		}
+		if(changed) event.setFormat(format);
 	}
 }

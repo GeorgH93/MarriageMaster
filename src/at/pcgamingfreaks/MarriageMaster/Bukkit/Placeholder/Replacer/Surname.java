@@ -19,10 +19,13 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderFormatted;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.Formatted.SurnameFormatted;
 
-import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.Nullable;
 
-public class Surname extends PlaceholderReplacerBase
+@PlaceholderFormatted(formattedClass = SurnameFormatted.class)
+public class Surname extends PlaceholderReplacerBaseValue
 {
 	public Surname(MarriageMaster plugin)
 	{
@@ -30,10 +33,9 @@ public class Surname extends PlaceholderReplacerBase
 	}
 
 	@Override
-	public String replace(OfflinePlayer player)
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		MarriagePlayer playerData = plugin.getPlayerData(player);
 		//noinspection ConstantConditions
-		return playerData.isMarried() ? playerData.getMarriageData().getSurnameString() : valueNotMarried;
+		return player.getMarriageData().getSurnameString();
 	}
 }

@@ -44,36 +44,36 @@ public class ListCommand extends MarryCommand
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
 		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player2Name}", "%2\\$s").replaceAll("\\{Player1DisplayName}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s").replaceAll("\\{Surname}", "%5\\$s");
-		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s");
-		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s");
+		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
+		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
 		messageNoMarriedPlayers   = plugin.getLanguage().getMessage("Ingame.List.NoMarriedPlayers");
 	}
 
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		int page = 0;
-		if(args.length == 1)
-		{
-			try
-			{
-				page = StringUtils.parsePageNumber(args[0]);
-			}
-			catch(NumberFormatException ignored)
-			{
-				((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
-				return;
-			}
-		}
 		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
 		if(couples.size() > 0) // There are married couples
 		{
+			int page = 0;
+			if(args.length == 1)
+			{
+				try
+				{
+					page = StringUtils.parsePageNumber(args[0]);
+				}
+				catch(NumberFormatException ignored)
+				{
+					((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
+					return;
+				}
+			}
 			int c = entriesPerPage, availablePages = (int) Math.ceil(couples.size() / (float)entriesPerPage);
 			if(page >= availablePages)
 			{
 				page = availablePages - 1;
 			}
-			messageHeadlineMain.send(sender, page + 1, availablePages, mainCommandAlias, alias);
+			messageHeadlineMain.send(sender, page + 1, availablePages, mainCommandAlias, alias, page, page + 2);
 			Iterator<? extends Marriage> couplesIterator = couples.iterator();
 			for(int i = 0; couplesIterator.hasNext() && i < page * entriesPerPage; i++)
 			{
@@ -86,7 +86,7 @@ public class ListCommand extends MarryCommand
 			}
 			if(useFooter)
 			{
-				messageFooter.send(sender, page + 1, availablePages, mainCommandAlias, alias);
+				messageFooter.send(sender, page + 1, availablePages, mainCommandAlias, alias, page, page + 2);
 			}
 		}
 		else

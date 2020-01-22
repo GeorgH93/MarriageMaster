@@ -139,13 +139,10 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 			case "UseUUIDs":
 				{
 					String useUUIDsString = inputStream.readUTF();
-					logger.info(useUUIDsString);
 					boolean useUUIdDs = Boolean.parseBoolean(useUUIDsString);
-					if(useUUIdDs != plugin.getConfiguration().useUUIDs())
+					if(!useUUIdDs)
 					{
-						logger.warning("UseUUIDs setting does not match value on BungeeCord! Changing config ...");
-						plugin.getConfiguration().setUseUUIDs(useUUIdDs);
-						logger.info("UseUUIDs setting has been set to " + useUUIdDs + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+						logger.warning("Your BungeeCord version of Marriage Master is outdated! And you have disabled the UseUUIDs setting on BungeeCord! Changing config ...");
 					}
 				}
 				break;

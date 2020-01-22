@@ -29,7 +29,8 @@ import java.util.List;
 
 public class VersionCommand extends MarryCommand
 {
-	MarriageMaster plugin;
+	private final MarriageMaster plugin;
+
 	public VersionCommand(MarriageMaster plugin)
 	{
 		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), "marry.version", plugin.getLanguage().getCommandAliases("Version"));
@@ -61,6 +62,14 @@ public class VersionCommand extends MarryCommand
 		if((pl = Bukkit.getPluginManager().getPlugin("PlaceholderAPI")) != null && pl.isEnabled())
 		{
 			sender.sendMessage("PlaceholderAPI: " + pl.getDescription().getVersion());
+		}
+		if(plugin.getConfiguration().isSkillApiBonusXPEnabled() && (pl = Bukkit.getPluginManager().getPlugin("SkillAPI")) != null && pl.isEnabled())
+		{
+			sender.sendMessage("SkillAPI: " + pl.getDescription().getVersion());
+		}
+		if(plugin.getConfiguration().isMcMMOBonusXPEnabled() && (pl = Bukkit.getPluginManager().getPlugin("mcMMO")) != null && pl.isEnabled())
+		{
+			sender.sendMessage("mcMMO: " + pl.getDescription().getVersion());
 		}
 		sender.sendMessage("#####  End Marriage Master version info  #####");
 	}
