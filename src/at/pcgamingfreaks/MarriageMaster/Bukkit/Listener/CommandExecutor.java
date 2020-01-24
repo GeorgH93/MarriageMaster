@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ public class CommandExecutor implements Listener
 	public void onMarry(final MarriedEvent event)
 	{
 		final Marriage marriage = event.getMarriageData();
-		if(marriage.getPriest() == null)
+		if(marriage.getPriest() == null || marriage.getPriest().equals(marriage.getPartner1()) || marriage.getPriest().equals(marriage.getPartner2()))
 		{
 			for(String command : commandsOnMarry)
 			{
