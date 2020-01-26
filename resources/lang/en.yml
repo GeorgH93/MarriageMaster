@@ -15,15 +15,21 @@ Language:
     PlayersNotMarried: "[\"\",{\"text\":\"The players aren't married!\",\"color\":\"red\"}]"
     MarriageNotExact: "[\"\",{\"text\":\"We are sorry, but there is more than one marriage matching your request!\",\"color\":\"red\"}]"
     JoinLeaveInfo:
+      # Only used for players with 1 partner
       PartnerOnline: "[\"\",{\"text\":\"Your partner is online.\",\"color\":\"green\"}]"
+      # Only used for players with 1 partner
       PartnerOffline: "[\"\",{\"text\":\"Your partner is offline.\",\"color\":\"gray\"}]"
+      # Only used for players with more than 1 partner
       AllPartnersOffline: "[\"\",{\"text\":\"All your partners are offline.\",\"color\":\"gray\"}]"
+      # Only used for players with more than 1 partner
       PartnerOnlineMulti: "[\"\",{\"text\":\"Following partners are online: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"Your partner is now online.\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"Your partner is now offline.\",\"color\":\"gray\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"You can only access your partner's backpack when you are in survival mode.\",\"color\":\"red\"}]"
@@ -38,18 +44,18 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"You are no longer listening to the marry chat.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Private chat target set.\",\"color\":\"green\"}]"
       DisplayNameAll: "All Partners"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"You can only gift items to your partner when you are in survival mode.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"You are not holding an item.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"Your partner has no empty space in his inventory.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"You have sent your partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Your partner has sent you \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
       WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where it is not allowed to receive gifts.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       Request:
         Notification: "[\"\",{\"text\":\"{DisplayName}&r wants to gift you \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". Accept the gift with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
         WaitForConfirmation: "Gift request sent to your partner."
@@ -73,7 +79,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&eYour partner has kissed you!\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"You are too far away to kiss your partner. (Max {Distance} blocks)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"You have to wait {Time} seconds to kiss your partner again.\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&eYou have hugged your partner!\"}]"
@@ -82,9 +88,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"You are too far away to hug your partner. (Max {Distance} blocks)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} is currently \",\"extra\":[{\"text\":\"online\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} was last seen on \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "yyyy-MM-dd 'at' HH:mm:ss"
@@ -123,7 +129,7 @@ Language:
         CanceledDisconnectRequester: "Your partner went offline. Teleport request canceled."
         CanceledDisconnectTarget: "Your partner went offline. Teleport request canceled."
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" has made you a priest.\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" now is a priest.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" has fired you as a priest.\",\"color\":\"red\"}]"
@@ -140,7 +146,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"There is no open request to deny.\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"There is no open request to cancel.\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"You can't marry \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" with himself.\"}]"
       AlreadyMarried: "[{\"text\":\"You can't marry players that are already married. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" is already married.\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"You need a surname for the couple to marry.\",\"color\":\"red\"}]"
