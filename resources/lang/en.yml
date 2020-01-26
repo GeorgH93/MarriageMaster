@@ -87,7 +87,7 @@ Language:
       # Options: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} was last seen on \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
-      DateFormat: "yyyy.MM.dd 'at' HH:mm:ss"
+      DateFormat: "yyyy-MM-dd 'at' HH:mm:ss"
     List:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "[\"\",{\"text\":\"There are no married players.\",\"color\":\"red\"}]"

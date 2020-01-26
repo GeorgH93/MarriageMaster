@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 		for(Marriage marriage : getMultiMarriageData())
 		{
 			double dist = marriage.getDistance();
-			if(dist > 0 && (dist < distanceNearest || distanceNearest == -1))
+			if((dist > 0 && dist < distanceNearest) || distanceNearest == -1)
 			{
 				distanceNearest = dist;
 				nearest = marriage;
