@@ -273,7 +273,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Override
 	public Updater createUpdater(final @NotNull UpdateProvider updateProvider)
 	{
-		return new at.pcgamingfreaks.Bukkit.Updater(this, this.getFile(), true, updateProvider);
+		return new at.pcgamingfreaks.Bukkit.Updater(this, true, updateProvider);
 	}
 
 	public Config getConfiguration()

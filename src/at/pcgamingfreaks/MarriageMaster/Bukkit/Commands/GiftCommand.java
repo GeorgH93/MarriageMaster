@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,6 @@ import java.util.Set;
 
 public class GiftCommand extends MarryCommand
 {
-	private static final boolean DUAL_WIELDING_MC = MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9);
 	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed;
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner, messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
 	private final double range;
@@ -125,7 +124,7 @@ public class GiftCommand extends MarryCommand
 				final Player bPartner = partner.getPlayerOnline();
 				if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
 				{
-					ItemStack its = DUAL_WIELDING_MC ? bPlayer.getInventory().getItemInMainHand() : bPlayer.getInventory().getItemInHand();
+					ItemStack its = MCVersion.isDualWieldingMC() ? bPlayer.getInventory().getItemInMainHand() : bPlayer.getInventory().getItemInHand();
 					if(its == null || its.getType() == Material.AIR || its.getAmount() == 0)
 					{
 						messageNoItemInHand.send(sender);
@@ -149,7 +148,7 @@ public class GiftCommand extends MarryCommand
 						its = event.getItemStack();
 						final String itemJson = (Utils.convertItemStackToJson(its, plugin.getLogger()));
 						final String itemName = itemNameResolver.getName(its);
-						if(DUAL_WIELDING_MC) bPlayer.getInventory().setItemInMainHand(null);
+						if(MCVersion.isDualWieldingMC()) bPlayer.getInventory().setItemInMainHand(null);
 						else bPlayer.getInventory().setItemInHand(null);
 						if(requireConfirmation)
 						{
