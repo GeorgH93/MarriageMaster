@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -56,8 +56,8 @@ public class GiftCommand extends MarryCommand
 		messageGiftsOnlyInSurvival = plugin.getLanguage().getMessage("Ingame.Gift.OnlyInSurvival");
 		messageNoItemInHand        = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
 		messagePartnerInvFull      = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
-		messageItemSent            = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{ItemAmount\\}", "%1\\$d").replaceAll("\\{ItemName\\}", "%2\\$s").replaceAll("\\{ItemMetaJSON\\}", "%3\\$s");
-		messageItemReceived        = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{ItemAmount\\}", "%1\\$d").replaceAll("\\{ItemName\\}", "%2\\$s").replaceAll("\\{ItemMetaJSON\\}", "%3\\$s");
+		messageItemSent            = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount\\}", "%3\\$d").replaceAll("\\{ItemName\\}", "%4\\$s").replaceAll("\\{ItemMetaJSON\\}", "%5\\$s");
+		messageItemReceived        = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount\\}", "%3\\$d").replaceAll("\\{ItemName\\}", "%4\\$s").replaceAll("\\{ItemMetaJSON\\}", "%5\\$s");
 		messageWorldNotAllowed     = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
 
 		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount\\}", "%3\\$d").replaceAll("\\{ItemName\\}", "%4\\$s").replaceAll("\\{ItemMetaJSON\\}", "%5\\$s");
@@ -160,8 +160,8 @@ public class GiftCommand extends MarryCommand
 						else
 						{
 							bPartner.getInventory().setItem(slot, its);
-							messageItemSent.send(sender, its.getAmount(), itemName, itemJson);
-							messageItemReceived.send(bPartner, its.getAmount(), itemName, itemJson);
+							messageItemSent.send(sender, bPartner.getName(), bPartner.getDisplayName(), its.getAmount(), itemName, itemJson);
+							messageItemReceived.send(bPartner, bPlayer.getName(), bPlayer.getDisplayName(), its.getAmount(), itemName, itemJson);
 						}
 					}
 				}

@@ -50,10 +50,10 @@ Language:
       OnlyInSurvival: "[\"\",{\"text\":\"You can only gift items to your partner when you are in survival mode.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"You are not holding an item.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"Your partner has no empty space in his inventory.\",\"color\":\"red\"}]"
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"You have sent your partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
-      ItemReceived: "[{\"text\":\"Your partner has sent you \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemReceived: "[{\"text\":\"Your \",\"color\":\"green\"},{\"text\":\"partner\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{DisplayName}\"}},{\"text\":\" has sent you \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
       WorldNotAllowed: "[\"\",{\"text\":\"Your partner is in a world where it is not allowed to receive gifts.\",\"color\":\"red\"}]"
       # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       Request:
