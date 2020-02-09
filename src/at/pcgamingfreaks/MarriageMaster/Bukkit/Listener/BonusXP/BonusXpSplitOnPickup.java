@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,50 +15,45 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.BonusXPSplitEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
-public class BonusXpSplitOnPickup implements Listener
+public class BonusXpSplitOnPickup extends BonusXpBase<PlayerExpChangeEvent, Object> implements Listener
 {
-	private final MarriageMaster plugin;
-	private final double range;
-
-	public BonusXpSplitOnPickup(MarriageMaster marriagemaster)
+	public BonusXpSplitOnPickup(MarriageMaster plugin)
 	{
-		plugin = marriagemaster;
-		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
+		super(plugin, 1, true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onEntityDeath(PlayerExpChangeEvent event)
 	{
-		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
-		Marriage marriage = player.getNearestPartnerMarriageData();
-		if(marriage != null)
+		process(event, event.getPlayer(), event.getAmount(), null);
+	}
+
+	@Override
+	protected void setEventExp(PlayerExpChangeEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
+
+	@Override
+	protected void splitWithPartner(PlayerExpChangeEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	{
+		int xpPlayer = (int) Math.round((xp)), xpPartner = (int) xp;
+		BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
+		plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
+		if(!xpSplitEvent.isCancelled())
 		{
-			MarriagePlayer partner = marriage.getPartner(player);
-			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
-			{
-				double amount = event.getAmount() / 2.0;
-				int xpPlayer = (int) Math.round((amount)), xpPartner = (int) amount;
-				BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
-				plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
-				if(!xpSplitEvent.isCancelled())
-				{
-					event.setAmount(xpSplitEvent.getAmount());
-					if(xpPartner > 0) //noinspection ConstantConditions
-						partner.getPlayerOnline().giveExp(xpPartner); // If the partner is near he/she must also be online
-				}
-			}
+			event.setAmount(xpSplitEvent.getAmount());
+			if(xpPartner > 0) partner.giveExp(xpPartner); // If the partner is near he/she must also be online
 		}
 	}
 }

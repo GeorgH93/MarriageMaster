@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,52 +15,48 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.entity.Player;
 
-import org.bukkit.event.Listener;
-import org.jetbrains.annotations.NotNull;
-
-abstract class McMMOBonusXPBase<XP_TYPE> implements Listener
+public abstract class BonusXpBase<EVENT, XP_TYPE>
 {
 	protected final MarriageMaster plugin;
-	protected final double range;
-	protected final float multiplier;
+	protected final double range, multiplier;
 	protected final boolean split;
 
-	protected McMMOBonusXPBase(final @NotNull MarriageMaster marriagemaster)
+	protected BonusXpBase(MarriageMaster plugin, double multiplier, boolean split)
 	{
-		plugin = marriagemaster;
+		this.plugin = plugin;
+		this.split = split;
+		this.multiplier = multiplier * (split ? 0.5f : 1.0f);
 		range = plugin.getConfiguration().getRangeSquared("BonusXP");
-		split = plugin.getConfiguration().isMcMMOBonusXPSplitEnabled();
-		multiplier = plugin.getConfiguration().getMcMMOBonusXpMultiplier() * (split ? 0.5f : 1.0f);
 	}
 
-	protected void onGainXp(final @NotNull McMMOPlayerXpGainEvent event, final @NotNull XP_TYPE type)
+	protected void process(EVENT event, Player eventPlayer, double xp, XP_TYPE xpType)
 	{
-		MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
+		MarriagePlayer player = plugin.getPlayerData(eventPlayer);
 		Marriage marriage = player.getNearestPartnerMarriageData();
 		if(marriage != null)
 		{
 			MarriagePlayer partner = marriage.getPartner(player);
 			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 			{
-				float xp = event.getRawXpGained() * multiplier;
-				event.setRawXpGained(xp);
+				xp *= multiplier;
+				setEventExp(event, xp, xpType, player, marriage);
 				if(split)
 				{
-					addXp(UserManager.getPlayer(partner.getPlayerOnline()), xp, type);
+					splitWithPartner(event, partner.getPlayerOnline(), xp, xpType, player, marriage);
 				}
 			}
 		}
 	}
 
-	protected abstract void addXp(McMMOPlayer player, float xp, XP_TYPE type);
+	protected abstract void setEventExp(EVENT event, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
+
+	protected abstract void splitWithPartner(EVENT event, Player partner, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
 }
