@@ -22,34 +22,37 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
-public class BonusXpSplitOnPickup extends BonusXpBase<PlayerExpChangeEvent, Object> implements Listener
+public class BonusXpSplitOnPickupListener implements Listener, IBonusXpListener<PlayerExpChangeEvent, Object>
 {
-	public BonusXpSplitOnPickup(MarriageMaster plugin)
+	private final IBonusXpCalculator<PlayerExpChangeEvent, Object> calculator;
+
+	public BonusXpSplitOnPickupListener(MarriageMaster plugin)
 	{
-		super(plugin, 1, true);
+		calculator = new NearestPartnerBonusXpCalculator<>(plugin, 1, true, this);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onEntityDeath(PlayerExpChangeEvent event)
 	{
-		process(event, event.getPlayer(), event.getAmount(), null);
+		calculator.process(event, event.getPlayer(), event.getAmount(), null);
 	}
 
 	@Override
-	protected void setEventExp(PlayerExpChangeEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
+	public void setEventExp(PlayerExpChangeEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
 
 	@Override
-	protected void splitWithPartner(PlayerExpChangeEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	public void splitWithPartner(PlayerExpChangeEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
 	{
 		int xpPlayer = (int) Math.round((xp)), xpPartner = (int) xp;
 		BonusXPSplitEvent xpSplitEvent = new BonusXPSplitEvent(player, marriage, xpPlayer);
-		plugin.getServer().getPluginManager().callEvent(xpSplitEvent);
+		Bukkit.getServer().getPluginManager().callEvent(xpSplitEvent);
 		if(!xpSplitEvent.isCancelled())
 		{
 			event.setAmount(xpSplitEvent.getAmount());

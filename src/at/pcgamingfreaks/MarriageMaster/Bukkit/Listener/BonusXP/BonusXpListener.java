@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,11 +30,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-public class BonusXp extends BonusXpBase<EntityDeathEvent, Object> implements Listener
+public class BonusXpListener implements Listener, IBonusXpListener<EntityDeathEvent, Object>
 {
-	public BonusXp(MarriageMaster plugin)
+	private final IBonusXpCalculator<EntityDeathEvent, Object> calculator;
+
+	public BonusXpListener(MarriageMaster plugin)
 	{
-		super(plugin, plugin.getConfiguration().getBonusXpMultiplier(), false);
+		calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getBonusXpMultiplier(), false, this);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -44,16 +47,16 @@ public class BonusXp extends BonusXpBase<EntityDeathEvent, Object> implements Li
 			Player killer = event.getEntity().getKiller();
 			if(killer != null)
 			{
-				process(event, killer, event.getDroppedExp(), null);
+				calculator.process(event, killer, event.getDroppedExp(), null);
 			}
 		}
 	}
 
 	@Override
-	protected void setEventExp(EntityDeathEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	public void setEventExp(EntityDeathEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
 	{
 		BonusXPDropEvent bonusXPDropEvent = new BonusXPDropEvent(player, marriage, (int) Math.round(xp));
-		plugin.getServer().getPluginManager().callEvent(bonusXPDropEvent);
+		Bukkit.getServer().getPluginManager().callEvent(bonusXPDropEvent);
 		if(!bonusXPDropEvent.isCancelled())
 		{
 			event.setDroppedExp(bonusXPDropEvent.getAmount());
@@ -61,5 +64,5 @@ public class BonusXp extends BonusXpBase<EntityDeathEvent, Object> implements Li
 	}
 
 	@Override
-	protected void splitWithPartner(EntityDeathEvent entityDeathEvent, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
+	public void splitWithPartner(EntityDeathEvent entityDeathEvent, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
 }

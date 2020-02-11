@@ -23,21 +23,24 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.entity.Player;
 
-public abstract class BonusXpBase<EVENT, XP_TYPE>
+public final class NearestPartnerBonusXpCalculator<EVENT, XP_TYPE> implements IBonusXpCalculator<EVENT, XP_TYPE>
 {
-	protected final MarriageMaster plugin;
-	protected final double range, multiplier;
-	protected final boolean split;
+	private final MarriageMaster plugin;
+	private final double range, multiplier;
+	private final boolean split;
+	private final IBonusXpListener<EVENT, XP_TYPE> eventListener;
 
-	protected BonusXpBase(MarriageMaster plugin, double multiplier, boolean split)
+	protected NearestPartnerBonusXpCalculator(MarriageMaster plugin, double multiplier, boolean split, IBonusXpListener<EVENT, XP_TYPE> eventListener)
 	{
 		this.plugin = plugin;
 		this.split = split;
 		this.multiplier = multiplier * (split ? 0.5f : 1.0f);
+		this.eventListener = eventListener;
 		range = plugin.getConfiguration().getRangeSquared("BonusXP");
 	}
 
-	protected void process(EVENT event, Player eventPlayer, double xp, XP_TYPE xpType)
+	@Override
+	public void process(EVENT event, Player eventPlayer, double xp, XP_TYPE xpType)
 	{
 		MarriagePlayer player = plugin.getPlayerData(eventPlayer);
 		Marriage marriage = player.getNearestPartnerMarriageData();
@@ -47,16 +50,12 @@ public abstract class BonusXpBase<EVENT, XP_TYPE>
 			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
 			{
 				xp *= multiplier;
-				setEventExp(event, xp, xpType, player, marriage);
+				eventListener.setEventExp(event, xp, xpType, player, marriage);
 				if(split)
 				{
-					splitWithPartner(event, partner.getPlayerOnline(), xp, xpType, player, marriage);
+					eventListener.splitWithPartner(event, partner.getPlayerOnline(), xp, xpType, player, marriage);
 				}
 			}
 		}
 	}
-
-	protected abstract void setEventExp(EVENT event, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
-
-	protected abstract void splitWithPartner(EVENT event, Player partner, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
 }

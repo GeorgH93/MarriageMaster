@@ -220,17 +220,17 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		getServer().getPluginManager().registerEvents(new OpenRequestCloser(), this);
 		if(config.isBonusXPEnabled())
 		{
-			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXp(this), this);
-			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickup(this), this);
+			if(config.getBonusXpMultiplier() > 1) getServer().getPluginManager().registerEvents(new BonusXpListener(this), this);
+			if(config.isBonusXPSplitOnPickupEnabled()) getServer().getPluginManager().registerEvents(new BonusXpSplitOnPickupListener(this), this);
 		}
-		if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXp(this), this);
+		if(config.isSkillApiBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("SkillAPI")) getServer().getPluginManager().registerEvents(new SkillApiBonusXpListener(this), this);
 		if(config.isMcMMOBonusXPEnabled() && getServer().getPluginManager().isPluginEnabled("mcMMO"))
 		{
 			Plugin mcMMO = getServer().getPluginManager().getPlugin("mcMMO");
 			if(mcMMO != null)
 			{
-				if(new Version(mcMMO.getDescription().getVersion()).olderThan(new Version("2"))) getServer().getPluginManager().registerEvents(new McMMOClassicBonusXp(this), this);
-				else getServer().getPluginManager().registerEvents(new McMMOBonusXp(this), this);
+				if(new Version(mcMMO.getDescription().getVersion()).olderThan(new Version("2"))) getServer().getPluginManager().registerEvents(new McMMOClassicBonusXpListener(this), this);
+				else getServer().getPluginManager().registerEvents(new McMMOBonusXpListener(this), this);
 			}
 
 		}

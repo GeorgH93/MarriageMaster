@@ -34,13 +34,14 @@ import org.bukkit.event.Listener;
 import java.util.HashSet;
 import java.util.Locale;
 
-public class SkillApiBonusXp extends BonusXpBase<PlayerExperienceGainEvent, Object> implements Listener
+public class SkillApiBonusXpListener implements Listener, IBonusXpListener<PlayerExperienceGainEvent, Object>
 {
+	private final IBonusXpCalculator<PlayerExperienceGainEvent, Object> calculator;
 	private final HashSet<ExpSource> blockedSources = new HashSet<>();
 
-	public SkillApiBonusXp(MarriageMaster plugin)
+	public SkillApiBonusXpListener(MarriageMaster plugin)
 	{
-		super(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), plugin.getConfiguration().isSkillApiBonusXPSplitEnabled());
+		calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), plugin.getConfiguration().isSkillApiBonusXPSplitEnabled(), this);
 		blockedSources.add(ExpSource.COMMAND);
 		for(String source : plugin.getConfiguration().getSkillApiBonusXpBlockedSources())
 		{
@@ -60,18 +61,18 @@ public class SkillApiBonusXp extends BonusXpBase<PlayerExperienceGainEvent, Obje
 	public void onGainExperience(PlayerExperienceGainEvent event)
 	{
 		if(blockedSources.contains(event.getSource())) return;
-		process(event, event.getPlayerData().getPlayer(), event.getExp(), null);
+		calculator.process(event, event.getPlayerData().getPlayer(), event.getExp(), null);
 	}
 
 
 	@Override
-	protected void setEventExp(PlayerExperienceGainEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	public void setEventExp(PlayerExperienceGainEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
 	{
 		event.setExp((int) Math.round(xp));
 	}
 
 	@Override
-	protected void splitWithPartner(PlayerExperienceGainEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	public void splitWithPartner(PlayerExperienceGainEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
 	{
 		SkillAPI.getPlayerData(partner).giveExp((int) Math.round(xp), ExpSource.COMMAND);
 	}

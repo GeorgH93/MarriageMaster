@@ -33,14 +33,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class McMMOBonusXp extends McMMOBonusXpBase<PrimarySkillType> implements Listener
+public class McMMOBonusXpListener extends McMMOBonusXpBaseListener<PrimarySkillType> implements Listener
 {
 	private final Set<XPGainReason> blockedSources = new HashSet<>();
 	private final Set<PrimarySkillType> blockedSkills = new HashSet<>();
 
-	public McMMOBonusXp(final @NotNull MarriageMaster marriagemaster)
+	public McMMOBonusXpListener(final @NotNull MarriageMaster plugin)
 	{
-		super(marriagemaster);
+		super(plugin);
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSkills().forEach(skill -> blockedSkills.add(PrimarySkillType.valueOf(skill)));
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSources().forEach(source -> blockedSources.add(XPGainReason.valueOf(source)));
 		plugin.getLogger().info(ConsoleColor.GREEN + "mcMMO v2 hooked" + ConsoleColor.RESET);

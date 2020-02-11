@@ -29,28 +29,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-abstract class McMMOBonusXpBase<XP_TYPE> extends BonusXpBase<McMMOPlayerXpGainEvent, XP_TYPE> implements Listener
+abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpListener<McMMOPlayerXpGainEvent, XP_TYPE>
 {
-	protected McMMOBonusXpBase(final @NotNull MarriageMaster plugin)
+	private final IBonusXpCalculator<McMMOPlayerXpGainEvent, XP_TYPE> calculator;
+
+	protected McMMOBonusXpBaseListener(final @NotNull MarriageMaster plugin)
 	{
-		super(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), plugin.getConfiguration().isMcMMOBonusXPSplitEnabled());
+		calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), plugin.getConfiguration().isMcMMOBonusXPSplitEnabled(), this);
 	}
 
 	protected void onGainXp(final @NotNull McMMOPlayerXpGainEvent event, final @NotNull XP_TYPE type)
 	{
-		process(event, event.getPlayer(), event.getRawXpGained(), type);
+		calculator.process(event, event.getPlayer(), event.getRawXpGained(), type);
 	}
 
 	protected abstract void addXp(McMMOPlayer player, float xp, XP_TYPE type);
 
 	@Override
-	protected void setEventExp(McMMOPlayerXpGainEvent event, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage)
+	public void setEventExp(McMMOPlayerXpGainEvent event, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage)
 	{
 		event.setRawXpGained((float) xp);
 	}
 
 	@Override
-	protected void splitWithPartner(McMMOPlayerXpGainEvent event, Player partner, double xp, XP_TYPE type, MarriagePlayer player, Marriage marriage)
+	public void splitWithPartner(McMMOPlayerXpGainEvent event, Player partner, double xp, XP_TYPE type, MarriagePlayer player, Marriage marriage)
 	{
 		addXp(UserManager.getPlayer(partner), (float) xp, type);
 	}

@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-public class McMMOClassicBonusXp extends McMMOBonusXpBase<Object> implements Listener
+public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object> implements Listener
 {
 	private static final Method GET_XP_GAIN_REASON = Reflection.getMethodIncludeParents(McMMOPlayerXpGainEvent.class, "getXpGainReason");
 	private static final Method GET_SKILL = Reflection.getMethodIncludeParents(McMMOPlayerXpGainEvent.class, "getSkill");
@@ -42,9 +42,9 @@ public class McMMOClassicBonusXp extends McMMOBonusXpBase<Object> implements Lis
 
 	private final Set<String> blockedSources, blockedSkills;
 
-	public McMMOClassicBonusXp(final @NotNull MarriageMaster marriagemaster)
+	public McMMOClassicBonusXpListener(final @NotNull MarriageMaster plugin)
 	{
-		super(marriagemaster);
+		super(plugin);
 		blockedSkills = plugin.getConfiguration().getMcMMOBonusXpBlockedSkills();
 		blockedSources = plugin.getConfiguration().getMcMMOBonusXpBlockedSources();
 		plugin.getLogger().info(ConsoleColor.GREEN + "mcMMO classic hooked" + ConsoleColor.RESET);
