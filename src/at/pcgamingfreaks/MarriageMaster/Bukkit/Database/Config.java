@@ -269,6 +269,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("BonusXp.SplitXpOnPickup", true);
 	}
 
+	public boolean isBonusXPSplitOnPickupWithAllEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SplitWithAllPartnersInRange", true) && isBonusXPSplitOnPickupEnabled();
+	}
+
 	public boolean isSkillApiBonusXPEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.SkillAPI.Enable", false);
@@ -289,6 +294,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("BonusXp.SkillAPI.SplitXp", true);
 	}
 
+	public boolean isSkillApiBonusXPSplitWithAllEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.SkillAPI.SplitWithAllPartnersInRange", true) && isSkillApiBonusXPSplitEnabled();
+	}
+
 	public boolean isMcMMOBonusXPEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.McMMO.Enable", false);
@@ -297,14 +307,14 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public Set<String> getMcMMOBonusXpBlockedSources()
 	{
 		Set<String> blockedSources = new HashSet<>();
-		getConfigE().getStringList("BonusXp.McMMO.ExcludeSources", new LinkedList<>()).forEach(source -> blockedSources.add(source.toUpperCase()));
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSources", new LinkedList<>()).forEach(source -> blockedSources.add(source.toUpperCase(Locale.ENGLISH)));
 		return blockedSources;
 	}
 
 	public Set<String> getMcMMOBonusXpBlockedSkills()
 	{
 		Set<String> blockedSkills = new HashSet<>();
-		getConfigE().getStringList("BonusXp.McMMO.ExcludeSkills", new LinkedList<>()).forEach(source -> blockedSkills.add(source.toUpperCase()));
+		getConfigE().getStringList("BonusXp.McMMO.ExcludeSkills", new LinkedList<>()).forEach(source -> blockedSkills.add(source.toUpperCase(Locale.ENGLISH)));
 		return blockedSkills;
 	}
 
@@ -316,6 +326,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public boolean isMcMMOBonusXPSplitEnabled()
 	{
 		return getConfigE().getBoolean("BonusXp.McMMO.SplitXp", true);
+	}
+
+	public boolean isMcMMOBonusXPSplitWithAllEnabled()
+	{
+		return getConfigE().getBoolean("BonusXp.McMMO.SplitWithAllPartnersInRange", true) && isMcMMOBonusXPSplitEnabled();
 	}
 	//endregion
 

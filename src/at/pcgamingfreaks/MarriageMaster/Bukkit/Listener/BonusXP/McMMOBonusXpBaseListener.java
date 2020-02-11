@@ -35,7 +35,10 @@ abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpLi
 
 	protected McMMOBonusXpBaseListener(final @NotNull MarriageMaster plugin)
 	{
-		calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), plugin.getConfiguration().isMcMMOBonusXPSplitEnabled(), this);
+		if(plugin.getConfiguration().isMcMMOBonusXPSplitWithAllEnabled())
+			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), this);
+		else
+			calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), plugin.getConfiguration().isMcMMOBonusXPSplitEnabled(), this);
 	}
 
 	protected void onGainXp(final @NotNull McMMOPlayerXpGainEvent event, final @NotNull XP_TYPE type)

@@ -41,7 +41,10 @@ public class SkillApiBonusXpListener implements Listener, IBonusXpListener<Playe
 
 	public SkillApiBonusXpListener(MarriageMaster plugin)
 	{
-		calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), plugin.getConfiguration().isSkillApiBonusXPSplitEnabled(), this);
+		if(plugin.getConfiguration().isSkillApiBonusXPSplitWithAllEnabled())
+			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), this);
+		else
+			calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), plugin.getConfiguration().isSkillApiBonusXPSplitEnabled(), this);
 		blockedSources.add(ExpSource.COMMAND);
 		for(String source : plugin.getConfiguration().getSkillApiBonusXpBlockedSources())
 		{

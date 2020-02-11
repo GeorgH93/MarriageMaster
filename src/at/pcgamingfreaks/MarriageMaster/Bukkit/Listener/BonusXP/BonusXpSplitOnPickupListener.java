@@ -35,7 +35,10 @@ public class BonusXpSplitOnPickupListener implements Listener, IBonusXpListener<
 
 	public BonusXpSplitOnPickupListener(MarriageMaster plugin)
 	{
-		calculator = new NearestPartnerBonusXpCalculator<>(plugin, 1, true, this);
+		if(plugin.getConfiguration().isBonusXPSplitOnPickupWithAllEnabled())
+			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, 1, this);
+		else
+			calculator = new NearestPartnerBonusXpCalculator<>(plugin, 1, true, this);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

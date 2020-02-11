@@ -122,6 +122,8 @@ BonusXp:
   Multiplier: 2
   # If enabled the picked up xp will be split between both players. So each player will receive (xp * multiplier / 2) xp
   SplitXpOnPickup: true
+  # If enabled the xp will be split with all partners that are in range. So each player will receive (xp * multiplier / count_partners_in_range) xp. Requires that SplitXpOnPickup is enabled.
+  SplitWithAllPartnersInRange: false
   SkillAPI:
     Enable: false
     # List of sources that should be excluded from the xp boost. The command source is always excluded!
@@ -129,11 +131,15 @@ BonusXp:
     Multiplier: 2
     # If split is enabled the multiplied amount will be split between both partners. So each player will receive (xp * multiplier / 2) xp
     SplitXp: true
+    # If enabled the xp will be split with all partners that are in range. So each player will receive (xp * multiplier / count_partners_in_range) xp. Requires that SplitXp is enabled.
+    SplitWithAllPartnersInRange: false
   McMMO:
     Enable: false
     Multiplier: 2
     # If split is enabled the multiplied amount will be split between both partners. So each player will receive (xp * multiplier / 2) xp
     SplitXp: true
+    # If enabled the xp will be split with all partners that are in range. So each player will receive (xp * multiplier / count_partners_in_range) xp. Requires that SplitXp is enabled.
+    SplitWithAllPartnersInRange: false
     # List of sources that should be excluded from the xp boost.
     ExcludeSources: [ "COMMAND" ]
     # List of skills that should be excluded from the xp boost.
@@ -213,4 +219,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 96
+Version: 97
