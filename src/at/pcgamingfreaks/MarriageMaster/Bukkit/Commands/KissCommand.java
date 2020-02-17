@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,8 +41,6 @@ import java.util.Map;
 
 public class KissCommand extends MarryCommand implements Listener
 {
-	private static final boolean DUAL_HAND_MC = MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9);
-
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
 	private final double interactRange, range, rangeSquared, hearthVisibleRange;
 	private final int waitTime, hearthCount;
@@ -141,7 +139,7 @@ public class KissCommand extends MarryCommand implements Listener
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
-		if((!DUAL_HAND_MC || event.getHand().equals(EquipmentSlot.HAND)) && event.getPlayer().isSneaking() && event.getPlayer().hasPermission("marry.kiss") && event.getRightClicked() instanceof Player)
+		if((!MCVersion.isDualWieldingMC() || event.getHand().equals(EquipmentSlot.HAND)) && event.getPlayer().isSneaking() && event.getPlayer().hasPermission("marry.kiss") && event.getRightClicked() instanceof Player)
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData(event.getPlayer());
 			Long time = wait.get(player);
