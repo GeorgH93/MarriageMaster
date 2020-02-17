@@ -22,11 +22,13 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"您的伴侣不在线。\",\"color\":\"gray\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"所有情侣都不在线。\",\"color\":\"gray\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"以下情侣在线: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"您的伴侣现在在线了。\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"您的伴侣现在下线了。\",\"color\":\"gray\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"您只有在生存模式下才可使用您伴侣的背包。\",\"color\":\"red\"}]"
@@ -41,15 +43,15 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"您现已关闭监听所有伴侣的私人聊天模式\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"私聊伴侣的设置已完成。\",\"color\":\"green\"}]"
       DisplayNameAll: "All Partners"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"您只可以在您是生存模式下送礼物给您的伴侣。\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"您手上没有物品。\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"您伴侣的背包没有空余空间了。\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"您送给了您伴侣\",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"您伴侣送您了\",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
     Home:
       Deleted: "[\"\",{\"text\":\"婚房删除成功。\",\"color\":\"green\"}]"
@@ -65,7 +67,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&e您的伴侣吻了您！\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"您离您的伴侣太远了，您亲不到Ta。 (Max {Distance} blocks)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"您需要等待{Time}秒才能再次亲您的伴侣。\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&e您拥抱了您的伴侣！\"}]"
@@ -74,9 +76,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"您离您的伴侣太远了，您抱不到Ta。 (Max {Distance} blocks)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} 已经\",\"extra\":[{\"text\":\"上线了\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name}上一次上线是在\",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "yyyy.MM.dd 'at' HH:mm:ss"
@@ -110,7 +112,7 @@ Language:
         CanceledDisconnectRequester: "您伴侣下线了。传送请求已取消。"
         CanceledDisconnectTarget: "您伴侣下线了。传送请求已取消。"
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"雇佣您作为神父。\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"现在是个神父了。\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"被取消神父职位。\",\"color\":\"red\"}]"
@@ -127,7 +129,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"没有请求需要被拒绝。\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"没有请求需要被取消。\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"您不可以和\",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\"在一起。\"}]"
       AlreadyMarried: "[{\"text\":\"您不可以和已经有伴侣的人在一起。\",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\"已经结婚了。\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"您需要为您的伴侣添加一个姓氏。\",\"color\":\"red\"}]"

@@ -19,11 +19,13 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"Dein Partner ist offline.\",\"color\":\"gray\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"Alle deine Partner sind offline.\",\"color\":\"gray\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"Folgende deiner Partner sind online: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"Dein Partner ist nun online.\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"Dein Partner ist nun offline.\",\"color\":\"gray\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"Du kannst nur im Survival-Mode auf den Rucksack deines Partners zugreifen.\",\"color\":\"red\"}]"
@@ -38,15 +40,15 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"Du siehst nun nicht mehr länger den Marry-Chat.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Ziel des privaten Chats gesetzt.\",\"color\":\"green\"}]"
       DisplayNameAll: "Alle Partner"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Du kannst deinem Partner nur im Survival-Modus Items schenken.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"Du haltest kein Item in der Hand.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"Dein Partner hat keinen freien Platz in seinem Rucksack.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Du hast deinem Partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Dein Partner hat dir \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
       WorldNotAllowed: "[\"\",{\"text\":\"Dein Partner ist in einer Welt in der es nicht erlaubt ist Geschenke zu empfangen.\",\"color\":\"red\"}]"
       Request:
@@ -72,7 +74,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&eDein Partner hat dich geküsst!\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Du bist zu weit entfernt um deinen Partner zu küssen. (Maximal {Distance} Blöcke)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"Du musst {Time} Sekunden warten bevor du deinen Partner erneut küssen darfst.\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&eDu hast deinen Partner umarmt!\"}]"
@@ -81,9 +83,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Du bist zu weit entfernt um deinen Partner zu umarmen. (Maximal {Distance} Blöcke)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} ist zur Zeit \",\"extra\":[{\"text\":\"online\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} wurde zuletzt gesehen am \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"vor {Count}\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "dd.MM.yyyy 'um' HH:mm:ss"
@@ -122,7 +124,7 @@ Language:
         CanceledDisconnectRequester: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
         CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Teleportations-Anfrage wurde abgebrochen."
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" hat dich zu einem Priester gemacht.\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ist nun ein Priester.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" hat dich als Priester gefeuert.\",\"color\":\"red\"}]"
@@ -139,7 +141,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"Es ist keine ausstehende Anfrage abzulehnen.\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"Es ist keine ausstehende Anfrage abzubrechen.\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"Du kannst \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" nicht mit sich selbst verheiraten.\"}]"
       AlreadyMarried: "[{\"text\":\"Du kannst keine Spieler verheiraten die bereits verheiratet sind. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" ist bereits verheiratet.\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"Du benötigst einen Nachnamen für das zu verheiratende Paar.\",\"color\":\"red\"}]"

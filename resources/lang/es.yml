@@ -20,11 +20,13 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"Tu pareja no se encuentra en este momento.\",\"color\":\"red\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"Tus parejas no se encuentran en este momento.\",\"color\":\"red\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"Parejas conectadas: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"Tu pareja se ha conectado.\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"Tu pareja se ha desconectado.\",\"color\":\"red\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"Solo puedes acceder a la mochila de tu pareja en modo supervivencia.\",\"color\":\"red\"}]"
@@ -39,15 +41,15 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"Ya no estás escuchando el chat privado de matrimonio.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Se ha establecido el objetivo (jugador) del chat privado.\",\"color\":\"green\"}]"
       DisplayNameAll: "Todas las parejas"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Solo puedes dar regalos a tu pareja en modo supervivencia.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"No estás sosteniendo un ítem.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"Tu pareja no tiene espacio en su inventario.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Le has enviado a tu pareja \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Tu pareja te ha enviado \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
     Home:
       Deleted: "[\"\",{\"text\":\"Punto de inicio eliminado con éxito.\",\"color\":\"green\"}]"
@@ -63,7 +65,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&eTu pareja te ha besado!\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Estás demasiado lejos para besar a tu pareja. (Máximo {Distance} bloques)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"Tienes que esperar {Time} segundos para besar a tu pareja otra vez.\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&eHas abrazado a tu pareja!\"}]"
@@ -72,9 +74,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Estás demasiado lejos para abrazar a tu pareja. (Máximo {Distance} bloques)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} está \",\"extra\":[{\"text\":\"conectado/a\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} fue visto por última vez el \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"hace {Count}\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "dd.MM.yyyy 'a las' HH:mm:ss"
@@ -108,7 +110,7 @@ Language:
         CanceledDisconnectRequester: "Tu pareja se ha desconectado. Solicitud de teletransporte cancelada."
         CanceledDisconnectTarget: "Tu pareja se ha desconectado. Solicitud de teletransporte cancelada."
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" te ha nombrado sacerdote.\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" ha sido nombrado sacerdote.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" te ha despedido como sacerdote.\",\"color\":\"red\"}]"
@@ -125,7 +127,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"No hay ni una solicitud para rechazar.\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"No hay ni una solicitud para cancelar.\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"No puedes casar a \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" consigo mismo.\"}]"
       AlreadyMarried: "[{\"text\":\"No puedes casar a jugadores ya casados. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" ya está casado.\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"Necesitas un apellido para casar a la pareja.\",\"color\":\"red\"}]"

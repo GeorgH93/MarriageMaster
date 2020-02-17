@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-public class McMMOClassicBonusXP extends McMMOBonusXPBase<Object> implements Listener
+public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object> implements Listener
 {
 	private static final Method GET_XP_GAIN_REASON = Reflection.getMethodIncludeParents(McMMOPlayerXpGainEvent.class, "getXpGainReason");
 	private static final Method GET_SKILL = Reflection.getMethodIncludeParents(McMMOPlayerXpGainEvent.class, "getSkill");
@@ -42,9 +42,9 @@ public class McMMOClassicBonusXP extends McMMOBonusXPBase<Object> implements Lis
 
 	private final Set<String> blockedSources, blockedSkills;
 
-	public McMMOClassicBonusXP(final @NotNull MarriageMaster marriagemaster)
+	public McMMOClassicBonusXpListener(final @NotNull MarriageMaster plugin)
 	{
-		super(marriagemaster);
+		super(plugin);
 		blockedSkills = plugin.getConfiguration().getMcMMOBonusXpBlockedSkills();
 		blockedSources = plugin.getConfiguration().getMcMMOBonusXpBlockedSources();
 		plugin.getLogger().info(ConsoleColor.GREEN + "mcMMO classic hooked" + ConsoleColor.RESET);

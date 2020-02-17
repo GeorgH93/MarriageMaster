@@ -20,11 +20,13 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"Ваш партнер офлайн.\",\"color\":\"gray\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"Все ваши партнеры офлайн.\",\"color\":\"gray\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"Следующие партнеры онлайн: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"Ваш партнер сейчас в сети.\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"Ваш партнер сейчас не в сети.\",\"color\":\"gray\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"Вы можете получить доступ к рюкзаку своего партнера только в режиме выживания.\",\"color\":\"red\"}]"
@@ -39,15 +41,15 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"Вы не слушаете семейный чат.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Переключен семейный чат.\",\"color\":\"green\"}]"
       DisplayNameAll: "Все партнеры"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Вы можете передовать предметы своему партнеру, когда находитесь в режиме выживания.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"У вас нет предмета.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"У вашего партнера нет свободного места в инвентаре.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Вы отправили своему партнера \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Ваш партнер отправил вам \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
     Home:
       Deleted: "[\"\",{\"text\":\"Домашняя точка успешно удалена.\",\"color\":\"green\"}]"
@@ -61,7 +63,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&eВаш партнер поцеловал вас!\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Вы слишком далеко, чтобы поцеловать своего партнера. (Макс. {Distance} блока)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"Подождите {Time} секунд, чтобы поцеловать своего партнера снова.\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&eВы обняли своего партнера!\"}]"
@@ -70,9 +72,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Вы слишком далеко, чтобы обнять своего партнера. (Макс. {Distance} блока)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} сейчас \",\"extra\":[{\"text\":\"в сети\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} последняя активность \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "yyyy.MM.dd 'at' HH:mm:ss"
@@ -95,7 +97,7 @@ Language:
       Moved: "[\"\",{\"text\":\"Телепортация отменена! Вы двигались!\",\"color\":\"red\"}]"
       DontMove: "[\"\",{\"text\":\"Телепортация через {Time} секунд! Не двигайтесь!\",\"color\":\"red\"}]"
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" сделал вас священником.\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" теперь священник.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" уволил вас из священников.\",\"color\":\"red\"}]"
@@ -112,7 +114,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"Нет запроса об отказе.\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"Нет запроса на отмену.\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"Вы не можете жениться \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" с самим собой.\"}]"
       AlreadyMarried: "[{\"text\":\"Вы не можете жениться на тех, кто уже женился. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" уже состоит в браке.\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"Вам нужна фамилия для пары, чтобы жениться.\",\"color\":\"red\"}]"

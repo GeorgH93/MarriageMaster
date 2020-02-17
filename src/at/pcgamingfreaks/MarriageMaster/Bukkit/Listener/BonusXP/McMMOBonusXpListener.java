@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -33,14 +33,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class McMMOBonusXP extends McMMOBonusXPBase<PrimarySkillType> implements Listener
+public class McMMOBonusXpListener extends McMMOBonusXpBaseListener<PrimarySkillType> implements Listener
 {
 	private final Set<XPGainReason> blockedSources = new HashSet<>();
 	private final Set<PrimarySkillType> blockedSkills = new HashSet<>();
 
-	public McMMOBonusXP(final @NotNull MarriageMaster marriagemaster)
+	public McMMOBonusXpListener(final @NotNull MarriageMaster plugin)
 	{
-		super(marriagemaster);
+		super(plugin);
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSkills().forEach(skill -> blockedSkills.add(PrimarySkillType.valueOf(skill)));
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSources().forEach(source -> blockedSources.add(XPGainReason.valueOf(source)));
 		plugin.getLogger().info(ConsoleColor.GREEN + "mcMMO v2 hooked" + ConsoleColor.RESET);

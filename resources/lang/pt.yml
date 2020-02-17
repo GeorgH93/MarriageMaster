@@ -20,11 +20,13 @@ Language:
       PartnerOffline: "[\"\",{\"text\":\"Seu parceiro está offline.\",\"color\":\"gray\"}]"
       AllPartnersOffline: "[\"\",{\"text\":\"Todos seus parceiros estão offline.\",\"color\":\"gray\"}]"
       PartnerOnlineMulti: "[\"\",{\"text\":\"Parceiros online: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
-      # Options: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOnline: "[\"\",{\"text\":\"Seu parceiro está online agora.\",\"color\":\"green\"}]"
+      # Placeholders: {Name}, {DisplayName}
       PartnerNowOffline: "[\"\",{\"text\":\"Seu parceiro está offline agora.\",\"color\":\"gray\"}]"
     Backpack:
       OnlyInSurvival: "[\"\",{\"text\":\"Você só pode acessar a mochila do seu parceiro no modo sobrevivência.\",\"color\":\"red\"}]"
@@ -39,15 +41,15 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"Você não pode mais ler mensagens do seu parceiro.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Chat privado ativado.\",\"color\":\"green\"}]"
       DisplayNameAll: "Todos parceiros"
-      # Options: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
       Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Você só pode enviar presentes no modo sobrevivência.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"Você não está segurando um item.\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"Seu parceiro não tem espaço no inventário.\",\"color\":\"red\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Você enviou para seu parceiro \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Options: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Seu parceiro enviou para você \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
     Home:
       Deleted: "[\"\",{\"text\":\"Local deletado com sucesso.\",\"color\":\"green\"}]"
@@ -63,7 +65,7 @@ Language:
       GotKissed: "[\"\",{\"text\":\"&eSeu parceiro beijou você!\"}]"
       GotKissed_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Você está muito longe para beijar seu parceiro. (Max {Distance} blocos)\",\"color\":\"red\"}]"
-      # Options: {Time}, {TimeLeft} in seconds
+      # Placeholders: {Time}, {TimeLeft} in seconds
       Wait: "[\"\",{\"text\":\"Você deve esperar {Time} segundos para beijar seu parceiro novamente.\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&eVocê abraçou seu parceiro!\"}]"
@@ -72,9 +74,9 @@ Language:
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "[\"\",{\"text\":\"Você está muito longe para abraçar seu parceiro. (Max {Distance} blocos)\",\"color\":\"red\"}]"
     Seen:
-      # Options: {Name}, {DisplayName}
+      # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "[\"\",{\"text\":\"{DisplayName} está \",\"extra\":[{\"text\":\"online\",\"color\":\"green\"},{\"text\":\".\"}]}]"
-      # Options: {Name}, {Date}, {Count}, {CountTotalDays}
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} visto por último em \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
       DateFormat: "yyyy.MM.dd 'às' HH:mm:ss"
@@ -108,7 +110,7 @@ Language:
         CanceledDisconnectRequester: "Seu parceiro saiu! Teleporte cancelado."
         CanceledDisconnectTarget: "Seu parceiro saiu! Teleporte cancelado."
     SetPriest:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       MadeYouAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"  fez de você um padre.\",\"color\":\"green\"}]"
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" agora é um padre.\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" despediu você de ser padre.\",\"color\":\"red\"}]"
@@ -125,7 +127,7 @@ Language:
       NothingToDeny: "[\"\",{\"text\":\"Não há um pedido aberto para negar.\",\"color\":\"red\"}]"
       NothingToCancel: "[\"\",{\"text\":\"Não há um pedido aberto para cancelar.\",\"color\":\"red\"}]"
     Marry:
-      # Options: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "[{\"text\":\"Você não pode casar \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" com ele mesmo.\"}]"
       AlreadyMarried: "[{\"text\":\"You can't marry players that are already married. \",\"color\":\"red\"},{\"text\":\"{DisplayName}\"},{\"text\":\" is already married.\"}]"
       SurnameNeeded: "[\"\",{\"text\":\"You need a surname for the couple to marry.\",\"color\":\"red\"}]"

@@ -15,12 +15,16 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
-public class MagicValues
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+
+import org.bukkit.entity.Player;
+
+public interface IBonusXpListener<EVENT, XP_TYPE>
 {
-	public static final int LANG_VERSION = 98, LANG_PRE_V2_VERSIONS = 90;
-	public static final int CONFIG_VERSION = 97, BUNGEE_CONFIG_VERSION = 96, CONFIG_PRE_V2_VERSIONS = 90;
-	public static final String SYMBOL_HEART = "\u2764", SYMBOL_SMALL_HEART = "\u2665";
-	public static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.20-SNAPSHOT";
+	void setEventExp(EVENT event, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
+
+	void splitWithPartner(EVENT event, Player partner, double xp, XP_TYPE xpType, MarriagePlayer player, Marriage marriage);
 }

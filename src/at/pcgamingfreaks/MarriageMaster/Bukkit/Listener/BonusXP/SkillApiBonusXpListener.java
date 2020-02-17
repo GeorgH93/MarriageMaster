@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
+package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
@@ -26,31 +26,31 @@ import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.enums.ExpSource;
 import com.sucy.skill.api.event.PlayerExperienceGainEvent;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import java.util.HashSet;
+import java.util.Locale;
 
-public class SkillApiBonusXP implements Listener
+public class SkillApiBonusXpListener implements Listener, IBonusXpListener<PlayerExperienceGainEvent, Object>
 {
-	private final MarriageMaster plugin;
-	private final double range, multiplier;
-	private final boolean split;
+	private final IBonusXpCalculator<PlayerExperienceGainEvent, Object> calculator;
 	private final HashSet<ExpSource> blockedSources = new HashSet<>();
 
-	public SkillApiBonusXP(MarriageMaster marriagemaster)
+	public SkillApiBonusXpListener(MarriageMaster plugin)
 	{
-		plugin = marriagemaster;
-		range = marriagemaster.getConfiguration().getRangeSquared("BonusXP");
-		split = marriagemaster.getConfiguration().isSkillApiBonusXPSplitEnabled();
-		multiplier = marriagemaster.getConfiguration().getSkillApiBonusXpMultiplier() * (split ? 0.5 : 1);
+		if(plugin.getConfiguration().isSkillApiBonusXPSplitWithAllEnabled())
+			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), this);
+		else
+			calculator = new NearestPartnerBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), plugin.getConfiguration().isSkillApiBonusXPSplitEnabled(), this);
 		blockedSources.add(ExpSource.COMMAND);
 		for(String source : plugin.getConfiguration().getSkillApiBonusXpBlockedSources())
 		{
 			try
 			{
-				blockedSources.add(ExpSource.valueOf(source.toUpperCase()));
+				blockedSources.add(ExpSource.valueOf(source.toUpperCase(Locale.ENGLISH)));
 			}
 			catch(IllegalArgumentException ignored)
 			{
@@ -64,20 +64,19 @@ public class SkillApiBonusXP implements Listener
 	public void onGainExperience(PlayerExperienceGainEvent event)
 	{
 		if(blockedSources.contains(event.getSource())) return;
-		MarriagePlayer player = plugin.getPlayerData(event.getPlayerData().getPlayer());
-		Marriage marriage = player.getNearestPartnerMarriageData();
-		if(marriage != null)
-		{
-			MarriagePlayer partner = marriage.getPartner(player);
-			if(partner != null && partner.isOnline() && marriage.inRangeSquared(range))
-			{
-				double xp = event.getExp() * multiplier;
-				event.setExp((int) xp);
-				if(split)
-				{
-					SkillAPI.getPlayerData(partner.getPlayer()).giveExp(xp, ExpSource.COMMAND);
-				}
-			}
-		}
+		calculator.process(event, event.getPlayerData().getPlayer(), event.getExp(), null);
+	}
+
+
+	@Override
+	public void setEventExp(PlayerExperienceGainEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	{
+		event.setExp((int) Math.round(xp));
+	}
+
+	@Override
+	public void splitWithPartner(PlayerExperienceGainEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	{
+		SkillAPI.getPlayerData(partner).giveExp((int) Math.round(xp), ExpSource.COMMAND);
 	}
 }
