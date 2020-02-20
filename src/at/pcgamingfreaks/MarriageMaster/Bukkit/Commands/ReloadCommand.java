@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ public class ReloadCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		messageReloading.broadcast();
+		messageReloading.send(sender);
 		((MarriageMaster) getMarriagePlugin()).reload();
-		messageReloaded.broadcast();
+		messageReloaded.send(sender);
 	}
 
 	@Override
