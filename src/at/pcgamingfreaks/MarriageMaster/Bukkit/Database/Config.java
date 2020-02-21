@@ -50,8 +50,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 		else
 		{
-			super.doUpgrade(oldConfig);
-			if(oldConfig.getYamlE().isSet("Marriage.AllowPolygamy")) getConfigE().set("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
+			super.doUpgrade(oldConfig, new HashMap<>(), oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)"));
 		}
 	}
 
