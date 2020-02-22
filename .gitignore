@@ -44,6 +44,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Temp files
+*.tmp
 
 
 # =========================
@@ -52,7 +54,9 @@ Temporary Items
 *.classpath
 *.project
 *.prefs
-/target/
+target/
 /bin/
 *.iml
 /.idea/
+
+.flattened-pom.xml

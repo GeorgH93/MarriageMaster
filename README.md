@@ -20,7 +20,7 @@
 [ciDev]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20Dev/
 [ciDevImg]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20Dev/badge/icon
 [apiVersionImg]: https://img.shields.io/badge/dynamic/xml.svg?label=api-version&query=%2F%2Frelease[1]&url=https%3A%2F%2Frepo.pcgamingfreaks.at%2Frepository%2Fmaven-releases%2Fat%2Fpcgamingfreaks%2FMarriageMaster-API%2Fmaven-metadata.xml
-[api]: https://github.com/GeorgH93/MarriageMaster/tree/API
+[api]: https://github.com/GeorgH93/MarriageMaster/tree/master/MarriageMaster-API
 [apiJavaDoc]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/javadoc/
 [apiBuilds]: https://ci.pcgamingfreaks.at/job/MarriageMaster%20API/
 [featureRequestsImg]: https://img.shields.io/github/issues/GeorgH93/MarriageMaster/enhancement.svg?label=feature%20requests
@@ -79,7 +79,7 @@ git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
 mvn package
 ```
-The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>.jar`.
+The final file will be in the `MarriageMaster/target` folder, named `MarriageMaster-<CurrentVersion>.jar`.
 
 ### Standalone version:
 This version works without the PCGF-PluginLib, however some API features are not available.
@@ -88,7 +88,7 @@ git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
 mvn package -P Standalone,ExcludeBadRabbit
 ```
-The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>-Standalone.jar`.
+The final file will be in the `MarriageMaster/target` folder, named `MarriageMaster-<CurrentVersion>-Standalone.jar`.
 
 ### Release version:
 This is the version of the plugin published on dev.bukkit.org and spigotmc.org.
@@ -98,7 +98,7 @@ cd MarriageMaster
 mvn clean install -P Standalone,ExcludeBadRabbit
 mvn clean package -P Release
 ```
-The final file will be in the `target` folder, named `MarriageMaster-<CurrentVersion>-Release.jar`.
+The final file will be in the `MarriageMaster/target` folder, named `MarriageMaster-<CurrentVersion>-Release.jar`.
 
 ## API:
 Marriage Master V2 comes with a very powerful API that allows you to change almost everything about this plugin.
