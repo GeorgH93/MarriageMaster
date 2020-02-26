@@ -1,7 +1,9 @@
 ##########################################
 #汉化 by Fur_Xia & Freak(Ye_Yang_Dada)   #
+#汉化版本更新 by Fur_Xia                             #
 ##########################################
 #为了简化定制和翻译过程，请查看编辑器： http://ptp.pcgamingfreaks.at
+Version: 98
 Language:
   NotFromConsole: "&c这条指令不能在控制台中使用！"
   # Global Wildcards: <heart> and <smallheart>
@@ -18,9 +20,13 @@ Language:
     PlayersNotMarried: "[\"\",{\"text\":\"这名玩家没有结婚\",\"color\":\"red\"}]"
     MarriageNotExact: "[\"\",{\"text\":\"很抱歉，但是有不止一个婚姻符合您的要求！\",\"color\":\"red\"}]"
     JoinLeaveInfo:
+      # Only used for players with 1 partner
       PartnerOnline: "[\"\",{\"text\":\"您的伴侣在线。\",\"color\":\"green\"}]"
+      # Only used for players with 1 partner
       PartnerOffline: "[\"\",{\"text\":\"您的伴侣不在线。\",\"color\":\"gray\"}]"
+      # Only used for players with more than 1 partner
       AllPartnersOffline: "[\"\",{\"text\":\"所有情侣都不在线。\",\"color\":\"gray\"}]"
+      # Only used for players with more than 1 partner
       PartnerOnlineMulti: "[\"\",{\"text\":\"以下情侣在线: \",\"color\":\"green\"},{\"text\":\"{OnlinePartners}\",\"color\":\"white\"}]"
       # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
@@ -49,10 +55,21 @@ Language:
       OnlyInSurvival: "[\"\",{\"text\":\"您只可以在您是生存模式下送礼物给您的伴侣。\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"您手上没有物品。\",\"color\":\"red\"}]"
       PartnerInvFull: "[\"\",{\"text\":\"您伴侣的背包没有空余空间了。\",\"color\":\"red\"}]"
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"您送给了您伴侣\",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"您伴侣送您了\",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      WorldNotAllowed: "[\"\",{\"text\":\"你的伴侣在无法接收礼物的世界。\",\"color\":\"red\"}]"
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r 想要送给你 \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". 若想接收，请输入 \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 。 若想拒绝，请输入 \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"。\"}]"
+        WaitForConfirmation: "礼物成功送至您伴侣手中。"
+        Denied: "您拒绝了您伴侣赠送的礼物。"
+        DeniedPartner: "您的伴侣拒绝了您的礼物。您的物品已被退回。"
+        Canceled: "您取消了赠送物品的请求。"
+        CanceledPartner: "您的伴侣取消了赠送物品的请求。物品已被退回。"
+        CanceledDisconnectRequester: "您的伴侣下线了，赠送物品请求自动取消。物品已被退回。"
+        CanceledDisconnectTarget: "您的伴侣下线了，赠送物品请求已取消。"
     Home:
       Deleted: "[\"\",{\"text\":\"婚房删除成功。\",\"color\":\"green\"}]"
       PlayerNoHome: "[\"\",{\"text\":\"这名玩家还没有设置婚房。\",\"color\":\"red\"}]"
@@ -66,9 +83,9 @@ Language:
       Kissed_SendMethod: "action_bar"
       GotKissed: "[\"\",{\"text\":\"&e您的伴侣吻了您！\"}]"
       GotKissed_SendMethod: "action_bar"
-      TooFarAway: "[\"\",{\"text\":\"您离您的伴侣太远了，您亲不到Ta。 (Max {Distance} blocks)\",\"color\":\"red\"}]"
+      TooFarAway: "[\"\",{\"text\":\"您离您的伴侣太远了，您吻不到Ta。 (Max {Distance} blocks)\",\"color\":\"red\"}]"
       # Placeholders: {Time}, {TimeLeft} in seconds
-      Wait: "[\"\",{\"text\":\"您需要等待{Time}秒才能再次亲您的伴侣。\",\"color\":\"red\"}]"
+      Wait: "[\"\",{\"text\":\"您需要等待{Time}秒才能再次吻您的伴侣。\",\"color\":\"red\"}]"
     Hug:
       Hugged: "[\"\",{\"text\":\"&e您拥抱了您的伴侣！\"}]"
       Hugged_SendMethod: "action_bar"
@@ -87,6 +104,11 @@ Language:
       NoMarriedPlayers: "[\"\",{\"text\":\"没有已结婚玩家。\",\"color\":\"red\"}]"
       Headline: "[\"\",{\"text\":\"已结婚玩家列表\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"页数： {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
       Footer: "[{\"text\":\"<<< 前一页 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}--\"}},{\"text\":\" 页数： {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 后一页 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {CurrentPage}++\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "[\"\",{\"text\":\"There are no priests online.\",\"color\":\"red\"}]"
+      Headline: "[\"\",{\"text\":\"Online priests\",\"color\":\"yellow\"},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"showing page {CurrentPage}/{MaxPage}\",\"color\":\"gold\"}]"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "[\"\",{\"text\":\"您伤不到您的伴侣，如果您关闭了PvP。\",\"color\":\"red\"}]"
       On: "[\"\",{\"text\":\"您开启了您与您伴侣之间的PvP。\",\"color\":\"green\"}]"
@@ -117,7 +139,7 @@ Language:
       YouMadeAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"现在是个神父了。\",\"color\":\"green\"}]"
       FiredYou: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"被取消神父职位。\",\"color\":\"red\"}]"
       YouFiredAPriest: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\"不是神父了。\",\"color\":\"green\"}]"
-      PerPermission: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" is set as a priest per permission. You can't fire him per command!\",\"color\":\"red\"}]"
+      PerPermission: "[\"\",{\"text\":\"{DisplayName}\"},{\"text\":\" 由权限组设为神父。您无法使用指令解除其神父身份。\",\"color\":\"red\"}]"
     Surname:
       SetSuccessful: "[\"\",{\"text\":\"姓氏变了。\",\"color\":\"green\"}]"
       SetFailed: "[\"\",{\"text\":\"改变姓氏失败。\",\"color\":\"red\"}]"
@@ -230,6 +252,7 @@ Language:
       DelHomeOther: "删除一名已婚玩家的婚房。"
       Help: "显示所有可用命令及其说明。"
       List: "查看服务器上所有的已婚玩家。"
+      ListPriests: "Lists all currently online priests."
       PvP: "更改与伴侣的PVP状态。"
       PvPOn: "与您的伴侣启用PVP。"
       PvPOff: "与您的伴侣关闭PVP。"
@@ -256,6 +279,45 @@ Dialog:
   Married: "我现在宣布您们是伴侣了,您们可以互相亲吻对方了a.a"
   YesIWant: "是的,我愿意!"
   NoIDontWant: "不,我不愿意!"
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: "true"
+      False: "false"
+    NotMarried: "未婚"
+    NoHome: "no home"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+LanguageName: "Chinese"
+Author: "Fur_Xia & Freak(Ye_Yang_Dada)"
+Revision: "1"
+# The fist option in the list will be the one displayed in the commands help
 Command:
   Switches:
     On:
@@ -271,6 +333,13 @@ Command:
       - switch
     All:
       - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
   Backpack:
     - backpack
     - bp
@@ -315,6 +384,8 @@ Command:
     - pvpoff
   List:
     - list
+  ListPriests:
+    - listpriests
   Tp:
     - tp
   Marry:
@@ -331,6 +402,7 @@ Command:
     - cancel
   Deny:
     - deny
+
 
 # This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Placeholders:
@@ -371,7 +443,7 @@ Placeholders:
 #语言名称
 LanguageName: "Chinese"
 #语言文本制作人MCBBS id
-Author: "Fur_Xia & Freak(Ye_Yang_Dada)"
+Author: "Fur_Xia"
 
 # Language file version. Don't touch it!
 Version: 95
