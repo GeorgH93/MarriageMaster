@@ -12,12 +12,12 @@
 
 [![Logo][banner]][spigot]
 
-This branch holds the API for the MarriageMaster plugin.
+This folder contains the API for the MarriageMaster plugin.
 
 [![ciImg]][ci] [![apiVersionImg]][apiJavaDoc] [![licenseImg]][license]
 
-## Adding it to your plugin
-### Maven
+## Adding it to your plugin:
+### Maven:
 The API is available through maven.
 #### Repository:
 ```
@@ -56,6 +56,6 @@ public MarriageMasterPlugin getMarriageMaster() {
 ```
 You can now use the returned `MarriageMasterPlugin` object to interact with the MarriageMaster plugin.
 
-## Links
+## Links:
 * [JavaDoc][apiJavaDoc]
 * [API Build Server][apiBuilds]
