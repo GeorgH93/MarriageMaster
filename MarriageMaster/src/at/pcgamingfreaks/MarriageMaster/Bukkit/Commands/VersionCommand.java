@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@ public class VersionCommand extends MarryCommand
 		sender.sendMessage("PCGF PluginLib: " +  at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance().getVersion());
 		/*end[STANDALONE]*/
 		sender.sendMessage("Server: " +  plugin.getServer().getVersion());
+		sender.sendMessage("Java: " + System.getProperty("java.version"));
 		if(plugin.getBackpacksIntegration() != null)
 		{
 			sender.sendMessage(plugin.getBackpacksIntegration().getName() + ": " + plugin.getBackpacksIntegration().getVersion());
