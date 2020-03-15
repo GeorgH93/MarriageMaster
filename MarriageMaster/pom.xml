@@ -65,8 +65,13 @@
 		<!-- BadRabbit -->
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>BadRabbit</artifactId>
-			<version>1.3</version>
+			<artifactId>BadRabbit-Bukkit</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>BadRabbit-Bungee</artifactId>
+			<version>1.5</version>
 		</dependency>
 		<!-- Vault -->
 		<dependency>
@@ -456,7 +461,8 @@
 									<artifactSet>
 										<includes>
 											<include>at.pcgamingfreaks:MarriageMaster-API</include>
-											<include>at.pcgamingfreaks:BadRabbit</include>
+											<include>at.pcgamingfreaks:BadRabbit-Bukkit</include>
+											<include>at.pcgamingfreaks:BadRabbit-Bungee</include>
 											<include>at.pcgamingfreaks:MarriageMaster</include>
 										</includes>
 									</artifactSet>
