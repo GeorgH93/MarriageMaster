@@ -409,8 +409,8 @@ Placeholders:
   # The default formatting data that should be used if nothing else is specified
   Default:
     Boolean:
-      True: true
-      False: false
+      True: "已婚"
+      False: "未婚"
     NotMarried: "未婚"
     NoHome: "no home"
     Separator: "&r, "
