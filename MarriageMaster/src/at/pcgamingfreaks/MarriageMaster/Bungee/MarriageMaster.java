@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 		messageNoPermission          = language.getMessage("Ingame.NoPermission");
 		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
 		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName\\}", "%s");
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
 		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
 
 		// Register Events
