@@ -39,12 +39,16 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	public Database(@NotNull MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfiguration(), plugin.getDescription().getName(), plugin.getDataFolder(), plugin.getConfiguration().isBungeeEnabled(), false);
-		unCacheStrategie  = UnCacheStrategie.getUnCacheStrategie(cache);
-		Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-		if(!plugin.getConfiguration().isBungeeEnabled() || plugin.getServer().getOnlinePlayers().size() > 0)
+		if(available())
 		{
-			new Thread(loadRunnable).start(); // Load async
+			unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
+			Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+			if(!plugin.getConfiguration().isBungeeEnabled() || plugin.getServer().getOnlinePlayers().size() > 0)
+			{
+				new Thread(loadRunnable).start(); // Load async
+			}
 		}
+		else unCacheStrategie = null;
 	}
 
 	@Override

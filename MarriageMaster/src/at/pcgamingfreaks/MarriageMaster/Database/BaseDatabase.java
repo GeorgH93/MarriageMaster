@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,8 +65,12 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		this.platform = platform;
 		this.bungee = bungee;
 		backend = getDatabaseBackend(platform, dbConfig, bungee, plugin.isSurnamesEnabled(), cache, logger, pluginName, dataFolder, bungeeSupportRequired);
-		setInstance(this);
-		loadRunnable = new LoadRunnable();
+		if(available())
+		{
+			setInstance(this);
+			loadRunnable = new LoadRunnable();
+		}
+		else loadRunnable = null;
 	}
 
 	public DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> getDatabaseBackend(final @NotNull IPlatformSpecific<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> platform,
@@ -96,7 +100,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 			{
 				if(bungeeSupportRequired)
 				{
-					logger.warning("Database type not supported on BungeeCord!");
+					logger.severe("Database type not supported on BungeeCord!");
 					return null;
 				}
 				if(bungee)
@@ -107,7 +111,10 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 			db.startup();
 			return db;
 		}
-		catch(Exception ignored){ ignored.printStackTrace(); } //TODO remove stacktrace after beta
+		catch(Exception ignored)
+		{
+			logger.severe("Failed to initialize database backend!");
+		}
 		return null;
 	}
 

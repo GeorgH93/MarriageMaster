@@ -36,9 +36,13 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	public Database(MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfig(), plugin.getDescription().getName(), plugin.getDataFolder(), true, true);
-		unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
-		plugin.getProxy().getPluginManager().registerListener(plugin, this);
-		loadRunnable.run();
+		if(available())
+		{
+			unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
+			plugin.getProxy().getPluginManager().registerListener(plugin, this);
+			loadRunnable.run();
+		}
+		else unCacheStrategie = null;
 	}
 
 	@Override
