@@ -39,6 +39,7 @@ permissions:
     description: Gives acces to all user functions
     children:
       marry.list: true
+      marry.listpriests: true
       marry.pvp: true
       marry.tp: true
       marry.home.*: true
