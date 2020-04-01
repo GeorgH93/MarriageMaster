@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
 {
@@ -159,13 +160,12 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	{
 		if(args.length > 0)
 		{
-			SubCommand subCommand = subCommandMap.get(args[0].toLowerCase());
+			SubCommand subCommand = subCommandMap.get(args[0].toLowerCase(Locale.ENGLISH));
 			if(subCommand != null)
 			{
 				subCommand.doExecute(sender, alias, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
 				return true;
 			}
-			@SuppressWarnings("deprecation")
 			Player target = plugin.getServer().getPlayer(args[0]);
 			if(target != null && args.length <= 2)
 			{
@@ -274,7 +274,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args)
 	{
 		List<String> results = super.onTabComplete(sender, command, alias, args);
-		if(results != null && args.length == 1 && marryActionCommand.canUse(sender))
+		if(results != null && ((args.length == 1 && marryActionCommand.canUse(sender)) || (results.size() == 0 && args.length == 2 && (!(sender instanceof Player) || plugin.getPlayerData((Player) sender).isPriest()))))
 		{
 			results.addAll(marryActionCommand.tabComplete(sender, alias, "marry", args));
 		}

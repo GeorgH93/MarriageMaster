@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class MarryMarryCommand extends MarryCommand
 {
@@ -151,10 +152,12 @@ public class MarryMarryCommand extends MarryCommand
 	{
 		if(args.length == 0 || !canUse(sender)) return null;
 		List<String> names = new LinkedList<>();
-		String arg = args[args.length - 1].toLowerCase();
+		String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
+		final boolean excludeVanished = !sender.hasPermission("marry.bypass.vanish");
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
-			if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase().startsWith(arg))
+			if(excludeVanished && sender instanceof Player && !((Player) sender).canSee(player)) continue; // Hide vanished players
+			if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 			{
 				names.add(player.getName());
 			}

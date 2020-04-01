@@ -35,6 +35,7 @@ permissions:
       marry.bypass.backpackgamemode: true
       marry.bypass.worldblacklist: true
       marry.bypass.tpconfirmation: true
+      marry.bypass.vanish: true
   marry.user:
     description: Gives acces to all user functions
     children:
@@ -141,6 +142,9 @@ permissions:
     default: op
   marry.bypass.tpconfirmation:
     description: Allows to bypass the teleport confirmation request
+    default: op
+  marry.bypass.vanish:
+    description: Allows to use tab complete on vanished players.
     default: op
   marry.offlinedivorce:
     description: Allows a priest to divorce players when only one of them is online.
