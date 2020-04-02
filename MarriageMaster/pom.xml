@@ -50,10 +50,25 @@
 	</repositories>
 
 	<dependencies>
-		<!-- Marriage Master API -->
+		<!-- Marriage Master Modules -->
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>MarriageMaster-API</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-BackpackIntegration</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-Minepacks</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-MinepacksLegacy</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<!-- PCGF Plugin Lib -->
@@ -83,25 +98,6 @@
 				<exclusion>
 					<groupId>org.bukkit</groupId>
 					<artifactId>bukkit</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<!-- Minepacks -->
-		<dependency>
-			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>Minepacks-API</artifactId>
-			<version>2.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>MinePacks</artifactId>
-			<version>1.18.1</version>
-			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>at.pcgamingfreaks</groupId>
-					<artifactId>PluginLib</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -235,7 +231,7 @@
 							<minimizeJar>false</minimizeJar>
 							<artifactSet>
 								<includes>
-									<include>at.pcgamingfreaks:MarriageMaster-API</include>
+									<include>at.pcgamingfreaks:MarriageMaster-*</include>
 								</includes>
 							</artifactSet>
 						</configuration>
@@ -350,7 +346,7 @@
 									<outputDirectory>${project.build.directory}</outputDirectory>
 									<artifactSet>
 										<includes>
-											<include>at.pcgamingfreaks:MarriageMaster-API</include>
+											<include>at.pcgamingfreaks:MarriageMaster-*</include>
 											<include>at.pcgamingfreaks:PluginLib</include>
 										</includes>
 									</artifactSet>
@@ -460,7 +456,7 @@
 									<minimizeJar>false</minimizeJar>
 									<artifactSet>
 										<includes>
-											<include>at.pcgamingfreaks:MarriageMaster-API</include>
+											<include>at.pcgamingfreaks:MarriageMaster-*</include>
 											<include>at.pcgamingfreaks:BadRabbit-Bukkit</include>
 											<include>at.pcgamingfreaks:BadRabbit-Bungee</include>
 											<include>at.pcgamingfreaks:MarriageMaster</include>

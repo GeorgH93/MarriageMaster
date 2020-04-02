@@ -17,9 +17,11 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration;
 
+import org.jetbrains.annotations.NotNull;
+
 public class BackpackPluginIncompatibleException extends RuntimeException
 {
-	public BackpackPluginIncompatibleException(String message)
+	public BackpackPluginIncompatibleException(final @NotNull String message)
 	{
 		super(message);
 	}

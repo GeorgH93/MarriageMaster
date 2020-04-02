@@ -17,40 +17,41 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration;
 
-import at.pcgamingfreaks.Minepacks.Bukkit.API.MinepacksPlugin;
+import at.pcgamingfreaks.MinePacks.MinePacks;
 import at.pcgamingfreaks.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import lombok.Getter;
 
 import java.util.MissingResourceException;
 
-public class MinepacksIntegration implements IBackpackIntegration
+class MinepacksV1Integration implements IBackpackIntegration
 {
-	private static final String PLUGIN_NAME = "Minepacks";
-	private static final Version MIN_VERSION = new Version("2.0");
-	private MinepacksPlugin minepacks;
+	private static final String PLUGIN_NAME = "MinePacks";
+	private static final Version MIN_VERSION = new Version("1.17.7");
+	private MinePacks minepacks;
 	@Getter private final String version;
 
-	public MinepacksIntegration() throws NullPointerException, BackpackPluginIncompatibleException
+	public MinepacksV1Integration() throws NullPointerException, BackpackPluginIncompatibleException
 	{
 		Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
-		if(!(bukkitPlugin instanceof MinepacksPlugin)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);
-		this.version = bukkitPlugin.getDescription().getVersion();
+		if(!(bukkitPlugin instanceof MinePacks)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);
+		version = bukkitPlugin.getDescription().getVersion();
 		Version installedVersion = new Version(version, true);
 		if(MIN_VERSION.newerThan(installedVersion))
 		{
 			throw new BackpackPluginIncompatibleException("Your Minepacks version is outdated! Please update in order to use it with this plugin!\n" +
 					                                              "You have installed: " + installedVersion + " Required: " + MIN_VERSION);
 		}
-		minepacks = (MinepacksPlugin) bukkitPlugin;
+		minepacks = (MinePacks) bukkitPlugin;
 	}
 
 	@Override
-	public void openBackpack(Player opener, Player owner, boolean editable)
+	public void openBackpack(final @NotNull Player opener, final @NotNull Player owner, final boolean editable)
 	{
 		minepacks.openBackpack(opener, owner, editable);
 	}
@@ -62,7 +63,7 @@ public class MinepacksIntegration implements IBackpackIntegration
 	}
 
 	@Override
-	public String getName()
+	public @NotNull String getName()
 	{
 		return PLUGIN_NAME;
 	}

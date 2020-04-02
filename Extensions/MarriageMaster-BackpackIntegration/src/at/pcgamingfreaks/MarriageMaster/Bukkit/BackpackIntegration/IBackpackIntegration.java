@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,13 +18,35 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public interface IBackpackIntegration
 {
-	void openBackpack(Player opener, Player owner, boolean editable);
+	/**
+	 * Opens the backpack of another player.
+	 *
+	 * @param opener The player that opens the backpack.
+	 * @param owner The owner of the backpack.
+	 * @param editable Weather or not the player that has opened the backpack should be able to edit the content of the backpack.
+	 */
+	void openBackpack(final @NotNull Player opener, final @NotNull Player owner, boolean editable);
 
+	/**
+	 * Disables the integration withe the backpack plugin.
+	 */
 	void close();
 
-	String getName();
-	String getVersion();
+	/**
+	 * Gets the name of the used backpack plugin.
+	 *
+	 * @return The name of the backpack plugin.
+	 */
+	@NotNull String getName();
+
+	/**
+	 * Gets the version of the used backpack plugin.
+	 *
+	 * @return The version of the backpack plugin.
+	 */
+	@NotNull String getVersion();
 }
