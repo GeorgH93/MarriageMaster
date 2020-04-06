@@ -19,7 +19,8 @@ package at.pcgamingfreaks.MarriageMaster;
 
 public class Permissions
 {
-	public static final String BASE = "marry.";
+	private static final String BASE = "marry.";
+	private static final String BYPASS = BASE + "bypass.";
 	public static final String BACKPACK = BASE + "backpack";
 	public static final String CHAT = BASE + "chat";
 	public static final String CHAT_COLOR = CHAT + ".color";
@@ -43,6 +44,17 @@ public class Permissions
 	public static final String SET_PRIEST = BASE + "setpriest";
 	public static final String CHANGE_SURNAME = BASE + "changesurname";
 	public static final String TP = BASE + "tp";
+	public static final String BYPASS_BACKPACK_GAME_MODE = BYPASS + "backpackgamemode";
+	public static final String BYPASS_DELAY = BYPASS + "delay";
+	public static final String BYPASS_RANGELIMIT = BYPASS + "rangelimit";
+	public static final String BYPASS_GIFT_GAME_MODE = BYPASS + "giftgamemode";
+	public static final String BYPASS_WORLD_BLACKLIST = BYPASS + "worldblacklist";
+	public static final String BYPASS_TP_CONFIRMATION = BYPASS + "tpconfirmation";
+	public static final String BYPASS_VANISH = BYPASS + "vanish";
+	public static final String LISTEN_CHAT = BASE + "listenchat";
+	public static final String LISTEN_CHAT_AUTO_JOIN = LISTEN_CHAT + ".autojoin";
+	public static final String AUTO_ACCEPT_TP_REQUEST = BASE + "autoaccept.tprequest";
+	public static final String OFFLINEDIVORCE = BASE + "offlinedivorce";
 	public static final String UPDATE = BASE + "update";
 	public static final String RELOAD = BASE + "reload";
 	public static final String VERSION = BASE + "version";

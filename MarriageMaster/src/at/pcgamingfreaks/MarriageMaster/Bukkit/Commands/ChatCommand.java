@@ -228,8 +228,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onJoin(PlayerJoinEvent event)
 	{
-		//noinspection SpellCheckingInspection
-		if(allowChatSurveillance && event.getPlayer().hasPermission("marry.listenchat.autojoin"))
+		if(allowChatSurveillance && event.getPlayer().hasPermission(Permissions.LISTEN_CHAT_AUTO_JOIN))
 		{
 			listeners.add(event.getPlayer());
 		}
@@ -412,7 +411,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		public ChatListenCommand(MarriageMaster plugin, ChatCommand chatCommand)
 		{
-			super(plugin, "listenchat", plugin.getLanguage().getTranslated("Commands.Description.ChatListen"), "marry.listenchat", true, plugin.getLanguage().getCommandAliases("ChatListen"));
+			super(plugin, "listenchat", plugin.getLanguage().getTranslated("Commands.Description.ChatListen"), Permissions.LISTEN_CHAT, true, plugin.getLanguage().getCommandAliases("ChatListen"));
 
 			this.chatCommand = chatCommand;
 		}

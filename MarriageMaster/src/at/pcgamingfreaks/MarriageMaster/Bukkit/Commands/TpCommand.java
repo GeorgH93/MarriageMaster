@@ -103,8 +103,7 @@ public class TpCommand extends MarryCommand
 		}
 		else if(partner.isOnline())
 		{
-			//noinspection SpellCheckingInspection
-			if(requireConfirmation && !(player.hasPermission("marry.bypass.tpconfirmation") || partner.hasPermission("marry.autoaccept.tprequest")))
+			if(requireConfirmation && !(player.hasPermission(Permissions.BYPASS_TP_CONFIRMATION) || partner.hasPermission(Permissions.AUTO_ACCEPT_TP_REQUEST)))
 			{
 				messageWaitForConfirmation.send(sender);
 				getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new TpRequest(player, partner));
@@ -168,7 +167,7 @@ public class TpCommand extends MarryCommand
 		if(player.canSee(partner))
 		{
 			//noinspection SpellCheckingInspection
-			if(!blacklistedWorlds.contains(partner.getLocation().getWorld().getName().toLowerCase()) || player.hasPermission("marry.bypass.worldblacklist"))
+			if(!blacklistedWorlds.contains(partner.getLocation().getWorld().getName().toLowerCase()) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
 			{
 				Location loc = partner.getLocation();
 				if(safetyCheck && (loc = getSaveLoc(loc)) == null)

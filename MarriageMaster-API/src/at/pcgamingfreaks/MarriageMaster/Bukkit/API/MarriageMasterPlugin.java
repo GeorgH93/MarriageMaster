@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 * @param player2 The second player to be checked.
 	 * @param range The range in which the two players should be.
 	 * @return True if the players are within the given range, false if not.
-	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 *         Also True if one of the players has the "marry.bypass.rangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
 	 */
 	boolean isInRange(@NotNull Player player1, @NotNull Player player2, double range);
 
@@ -42,7 +42,7 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 * @param player2 The second player to be checked.
 	 * @param rangeSquared The squared distance in which the two players should be.
 	 * @return True if the players are within the given range, false if not.
-	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 *         Also True if one of the players has the "marry.bypass.rangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
 	 */
 	boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared);
 
@@ -53,7 +53,7 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 * @param player2 The second player to be checked.
 	 * @param range The range in which the two players should be.
 	 * @return True if the players are within the given range, false if not.
-	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 *         Also True if one of the players has the "marry.bypass.rangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
 	 */
 	default boolean isInRange(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, double range)
 	{
@@ -68,7 +68,7 @@ public interface MarriageMasterPlugin extends at.pcgamingfreaks.MarriageMaster.A
 	 * @param player2 The second player to be checked.
 	 * @param rangeSquared The squared distance in which the two players should be.
 	 * @return True if the players are within the given range, false if not.
-	 *         Also True if one of the players has the "marry.bypassrangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
+	 *         Also True if one of the players has the "marry.bypass.rangelimit" permission, the range is 0 and both players are in the same world or the range is below 0.
 	 */
 	default boolean isInRangeSquared(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, double rangeSquared)
 	{

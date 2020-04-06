@@ -154,7 +154,7 @@ public class MarryMarryCommand extends MarryCommand
 		if(args.length == 0 || !canUse(sender)) return null;
 		List<String> names = new LinkedList<>();
 		String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
-		final boolean excludeVanished = !sender.hasPermission("marry.bypass.vanish");
+		final boolean excludeVanished = !sender.hasPermission(Permissions.BYPASS_VANISH);
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(excludeVanished && sender instanceof Player && !((Player) sender).canSee(player)) continue; // Hide vanished players

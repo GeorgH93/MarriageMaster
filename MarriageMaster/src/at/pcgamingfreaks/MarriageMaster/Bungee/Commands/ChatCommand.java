@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatCommand extends MarryCommand implements Listener
 {
@@ -164,10 +165,10 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			else
 			{
-				String arg = args[args.length - 1].toLowerCase();
+				String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 				for(ProxiedPlayer player : plugin.getProxy().getPlayers())
 				{
-					if(player.getName().toLowerCase().startsWith(arg))
+					if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 					{
 						data.add(player.getName());
 					}
@@ -390,7 +391,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		public ChatListenCommand(MarriageMaster plugin, ChatCommand chatCommand)
 		{
-			super(plugin, "listenchat", plugin.getLanguage().getTranslated("Commands.Description.ChatListen"), "marry.listenchat", true, plugin.getLanguage().getCommandAliases("ChatListen"));
+			super(plugin, "listenchat", plugin.getLanguage().getTranslated("Commands.Description.ChatListen"), Permissions.LISTEN_CHAT, true, plugin.getLanguage().getCommandAliases("ChatListen"));
 
 			this.chatCommand = chatCommand;
 		}

@@ -121,7 +121,7 @@ public class BackpackCommand extends MarryCommand
 	private void openBackpack(MarriagePlayer opener, MarriagePlayer partner)
 	{
 		Player sender = opener.getPlayerOnline();
-		if(sender.getGameMode() == GameMode.SURVIVAL || sender.hasPermission("marry.bypass.backpackgamemode")) //TODO use minepacks settings
+		if(sender.getGameMode() == GameMode.SURVIVAL || sender.hasPermission(Permissions.BYPASS_BACKPACK_GAME_MODE)) //TODO use minepacks settings
 		{
 			Player partnerPlayer = partner.getPlayerOnline();
 			if(partnerPlayer == null || !partnerPlayer.isOnline())

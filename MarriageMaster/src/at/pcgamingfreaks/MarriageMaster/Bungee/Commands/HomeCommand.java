@@ -43,7 +43,7 @@ public class HomeCommand extends MarryCommand
 
 	public HomeCommand(MarriageMaster plugin)
 	{
-		super(plugin, "home", plugin.getLanguage().getTranslated("Commands.Description.Home"), "marry.home", false, true, plugin.getLanguage().getCommandAliases("Home"));
+		super(plugin, "home", plugin.getLanguage().getTranslated("Commands.Description.Home"), Permissions.HOME, false, true, plugin.getLanguage().getCommandAliases("Home"));
 
 		messageNoHome          = plugin.getLanguage().getMessage("Ingame.Home.NoHome");
 		messagePlayerNoHome    = plugin.getLanguage().getMessage("Ingame.Home.PlayerNoHome");
@@ -91,7 +91,7 @@ public class HomeCommand extends MarryCommand
 						//noinspection ConstantConditions
 						if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase(Locale.ENGLISH)))
 						{
-							if(delayed && !player.hasPermission("marry.bypass.delay"))
+							if(delayed && !player.hasPermission(Permissions.BYPASS_DELAY))
 							{
 								//noinspection ConstantConditions
 								communicator.sendMessage(((ProxiedPlayer) sender).getServer().getInfo(), "delayHome", player.getUUID().toString(), marriage.getPartner(player).getUUID().toString());

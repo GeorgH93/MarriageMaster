@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -44,7 +45,7 @@ public class TpCommand extends MarryCommand
 
 	public TpCommand(MarriageMaster plugin)
 	{
-		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), "marry.tp", true, true, plugin.getLanguage().getCommandAliases("Tp"));
+		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), Permissions.TP, true, true, plugin.getLanguage().getCommandAliases("Tp"));
 
 		blockedFrom = plugin.getConfig().getTPBlackListedServersFrom();
 		blockedTo = plugin.getConfig().getTPBlackListedServersTo();
@@ -79,7 +80,7 @@ public class TpCommand extends MarryCommand
 			{
 				if(!blockedTo.contains(partner.getPlayer().getServer().getInfo().getName().toLowerCase()))
 				{
-					if(delayed && !sender.hasPermission("marry.bypass.delay"))
+					if(delayed && !sender.hasPermission(Permissions.BYPASS_DELAY))
 					{
 						communicator.sendMessage(player.getPlayer().getServer().getInfo(), "delayTP", player.getUUID().toString(), player.getUUID().toString());
 					}

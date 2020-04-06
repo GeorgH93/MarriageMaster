@@ -36,6 +36,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.MarriageMaster.IUpdater;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
 import at.pcgamingfreaks.Updater.Updater;
@@ -58,7 +59,6 @@ import java.util.UUID;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
 {
-	private static final String RANGE_LIMIT_PERM = "marry.bypass.rangelimit";
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
 
@@ -351,13 +351,13 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Override
 	public boolean isInRange(@NotNull Player player1, @NotNull Player player2, double range)
 	{
-		return Utils.inRange(player1, player2, range, RANGE_LIMIT_PERM);
+		return Utils.inRange(player1, player2, range, Permissions.BYPASS_RANGELIMIT);
 	}
 
 	@Override
 	public boolean isInRangeSquared(@NotNull Player player1, @NotNull Player player2, double rangeSquared)
 	{
-		return Utils.inRangeSquared(player1, player2, rangeSquared, RANGE_LIMIT_PERM);
+		return Utils.inRangeSquared(player1, player2, rangeSquared, Permissions.BYPASS_RANGELIMIT);
 	}
 
 	@Override
@@ -365,7 +365,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	{
 		//noinspection ConstantConditions
 		if(action == null) return;
-		if(action.getDelay() == 0 || action.getPlayer().hasPermission("marry.bypass.delay"))
+		if(action.getDelay() == 0 || action.getPlayer().hasPermission(Permissions.BYPASS_DELAY))
 		{
 			action.run();
 		}

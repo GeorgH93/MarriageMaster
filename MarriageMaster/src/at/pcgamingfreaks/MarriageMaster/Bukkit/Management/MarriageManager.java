@@ -469,7 +469,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 					Player bPriest = priest.getPlayerOnline();
 					if(marryPriestTestCanMarry(player1, player2, bPriest))
 					{
-						if(priest.hasPermission("marry.bypass.rangelimit") || (plugin.isInRangeSquared(player1, player2, rangeMarrySquared) && plugin.isInRangeSquared(priest, player1, rangeMarrySquared) &&
+						if(priest.hasPermission(Permissions.BYPASS_RANGELIMIT) || (plugin.isInRangeSquared(player1, player2, rangeMarrySquared) && plugin.isInRangeSquared(priest, player1, rangeMarrySquared) &&
 								plugin.isInRangeSquared(priest, player2, rangeMarrySquared)))
 						{
 							if(!confirm)
@@ -597,7 +597,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				if(!otherPlayer.isOnline())
 				{
 					// Self divorce with offline partner
-					if(divorceBy.hasPermission("marry.offlinedivorce"))
+					if(divorceBy.hasPermission(Permissions.OFFLINEDIVORCE))
 					{
 						selfFinishDivorce(marriage, divorceBy);
 					}
@@ -666,7 +666,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			{
 				if(marriage.isBothOnline())
 				{
-					if(divorceBy.hasPermission("marry.bypass.rangelimit") || (plugin.isInRange(divorceBy, marriage.getPartner1(), rangeDivorce) && plugin.isInRange(divorceBy, marriage.getPartner2(), rangeDivorce)))
+					if(divorceBy.hasPermission(Permissions.BYPASS_RANGELIMIT) || (plugin.isInRange(divorceBy, marriage.getPartner1(), rangeDivorce) && plugin.isInRange(divorceBy, marriage.getPartner2(), rangeDivorce)))
 					{
 						if(confirm)
 						{
@@ -696,7 +696,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 						divorceBy.send(messageDivorceNotInRange, rangeDivorce);
 					}
 				}
-				else if(divorceBy.hasPermission("marry.offlinedivorce"))
+				else if(divorceBy.hasPermission(Permissions.OFFLINEDIVORCE))
 				{
 					if(!marriage.getPartner1().isOnline() && !marriage.getPartner2().isOnline()) // Both are offline
 					{
