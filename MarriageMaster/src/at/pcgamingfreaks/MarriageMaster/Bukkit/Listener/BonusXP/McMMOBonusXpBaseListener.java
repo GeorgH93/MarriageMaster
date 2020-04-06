@@ -57,6 +57,8 @@ abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpLi
 	@Override
 	public void splitWithPartner(McMMOPlayerXpGainEvent event, Player partner, double xp, XP_TYPE type, MarriagePlayer player, Marriage marriage)
 	{
-		addXp(UserManager.getPlayer(partner), (float) xp, type);
+		McMMOPlayer mcMMOPartner = UserManager.getPlayer(partner);
+		if(mcMMOPartner == null) return;
+		addXp(mcMMOPartner, (float) xp, type);
 	}
 }
