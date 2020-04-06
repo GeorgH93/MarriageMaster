@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,7 @@ public class BackpackCommand extends MarryCommand
 
 	public BackpackCommand(MarriageMaster plugin)
 	{
-		super(plugin, "backpack", plugin.getLanguage().getTranslated("Commands.Description.Backpack"), "marry.backpack", true, plugin.getLanguage().getCommandAliases("Backpack"));
+		super(plugin, "backpack", plugin.getLanguage().getTranslated("Commands.Description.Backpack"), Permissions.BACKPACK, true, plugin.getLanguage().getCommandAliases("Backpack"));
 
 		messageOnlyInSurvival = plugin.getLanguage().getMessage("Ingame.Backpack.OnlyInSurvival");
 		messageShareOn        = plugin.getLanguage().getMessage("Ingame.Backpack.ShareOn");

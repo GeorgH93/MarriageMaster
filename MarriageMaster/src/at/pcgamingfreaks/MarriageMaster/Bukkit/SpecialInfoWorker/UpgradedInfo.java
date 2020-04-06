@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,21 +20,19 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.entity.Player;
 
-public class UpgradedInfo implements Listener
+public class UpgradedInfo extends SpecialInfoBase
 {
-	private final MarriageMaster plugin;
 	private final Message messagePluginUpgraded;
 
 	public UpgradedInfo(MarriageMaster plugin)
 	{
-		this.plugin = plugin;
+		super(plugin, Permissions.RELOAD);
 	    Bukkit.getPluginManager().registerEvents(this, plugin);
 		// I don't load this message from the config. He just upgraded, the messages in the config would probably be exactly the same.
 		messagePluginUpgraded = new MessageBuilder("Marriage Master", MessageColor.GOLD).append(" has been upgraded to ", MessageColor.AQUA)
@@ -43,18 +41,9 @@ public class UpgradedInfo implements Listener
 				.append("However it's recommended to manually check them to make sure that all of your settings are still how you like them (there are many new options).", MessageColor.AQUA).getMessage();
 	}
 
-	@EventHandler
-	public void onJoin(final PlayerJoinEvent event)
+	@Override
+	protected void sendMessage(Player player)
 	{
-		if(event.getPlayer().hasPermission("marry.reload")) // If the player has the right to reload the config he hopefully also has access to the config or at least know the person that has access.
-		{
-			Bukkit.getScheduler().runTaskLater(plugin, () -> {
-				// If he has the permissions he probably also has access to the configs or at least he knows someone who has access to the configs.
-				if(event.getPlayer().isOnline() && event.getPlayer().hasPermission("marry.reload"))
-				{
-					messagePluginUpgraded.send(event.getPlayer());
-				}
-			}, 3 * 20L); // Run with a 3 seconds delay
-		}
+		messagePluginUpgraded.send(player);
 	}
 }

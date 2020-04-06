@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
 
 import net.md_5.bungee.api.ChatColor;
@@ -49,14 +50,14 @@ public class ChatCommand extends MarryCommand implements Listener
 
 	public ChatCommand(@NotNull MarriageMaster plugin)
 	{
-		super(plugin, "chat", plugin.getLanguage().getTranslated("Commands.Description.Chat"), "marry.chat", true, true, plugin.getLanguage().getCommandAliases("Chat"));
+		super(plugin, "chat", plugin.getLanguage().getTranslated("Commands.Description.Chat"), Permissions.CHAT, true, true, plugin.getLanguage().getCommandAliases("Chat"));
 
 		messageJoined           = plugin.getLanguage().getMessage("Ingame.Chat.Joined");
 		messageLeft             = plugin.getLanguage().getMessage("Ingame.Chat.Left");
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName\\}", "%1\\$s").replaceAll("\\{ReceiverDisplayName\\}", "%2\\$s").replaceAll("\\{Message\\}", "%3\\$s").replaceAll("\\{SenderName\\}", "%4\\$s").replaceAll("\\{ReceiverName\\}", "%5\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpText                = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget");
@@ -303,11 +304,11 @@ public class ChatCommand extends MarryCommand implements Listener
 
 			msg = msg.replace('§', '&'); // Remove all color codes from the message.
 			// Checks if person has permission to use color codes
-			if(player.hasPermission("marry.chat.color"))
+			if(player.hasPermission(Permissions.CHAT_COLOR))
 			{
 				msg = ChatColor.translateAlternateColorCodes('&', msg);
 			}
-			if(player.hasPermission("marry.chat.format"))
+			if(player.hasPermission(Permissions.CHAT_FORMAT))
 			{
 				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
 			}
@@ -315,7 +316,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
 			}
-			if(player.hasPermission("marry.chat.magic"))
+			if(player.hasPermission(Permissions.CHAT_MAGIC))
 			{
 				msg = msg.replaceAll("&k", "§k");
 			}
@@ -353,7 +354,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		public ChatToggleCommand(MarriageMaster plugin, ChatCommand chatCommand)
 		{
-			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), "marry.chat", true, plugin.getLanguage().getCommandAliases("ChatToggle"));
+			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), Permissions.CHAT, true, plugin.getLanguage().getCommandAliases("ChatToggle"));
 
 			this.chatCommand = chatCommand;
 		}

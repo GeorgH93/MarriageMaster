@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ public interface IUpdater
 
 	Logger getLogger();
 
-	default Updater update(final @Nullable at.pcgamingfreaks.Updater.Updater.UpdaterResponse response)
+	default Updater update(final @Nullable at.pcgamingfreaks.Updater.UpdateResponseCallback response)
 	{
 		UpdateProvider updateProvider;
 		if(isRelease())

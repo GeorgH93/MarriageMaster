@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class ReloadCommand extends MarryCommand
 
 	public ReloadCommand(MarriageMaster plugin)
 	{
-		super(plugin, "reload", plugin.getLanguage().getTranslated("Commands.Description.Reload"), "marry.reload", plugin.getLanguage().getCommandAliases("Reload"));
+		super(plugin, "reload", plugin.getLanguage().getTranslated("Commands.Description.Reload"), Permissions.RELOAD, plugin.getLanguage().getCommandAliases("Reload"));
 
 		// Load messages
 		messageReloading = plugin.getLanguage().getMessage("Ingame.Admin.Reloading");

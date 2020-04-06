@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.Bukkit;
@@ -57,7 +58,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 	public ChatCommand(MarriageMaster plugin)
 	{
-		super(plugin, "chat", plugin.getLanguage().getTranslated("Commands.Description.Chat"), "marry.chat", true, true, plugin.getLanguage().getCommandAliases("Chat"));
+		super(plugin, "chat", plugin.getLanguage().getTranslated("Commands.Description.Chat"), Permissions.CHAT, true, true, plugin.getLanguage().getCommandAliases("Chat"));
 		this.plugin = plugin;
 
 		messageJoined           = plugin.getLanguage().getMessage("Ingame.Chat.Joined");
@@ -329,11 +330,11 @@ public class ChatCommand extends MarryCommand implements Listener
 
 			msg = msg.replace('§', '&'); // Remove all color codes from the message.
 			// Checks if person has permission to use color codes
-			if(sender.hasPermission("marry.chat.color"))
+			if(sender.hasPermission(Permissions.CHAT_COLOR))
 			{
 				msg = ChatColor.translateAlternateColorCodes('&', msg);
 			}
-			if(sender.hasPermission("marry.chat.format"))
+			if(sender.hasPermission(Permissions.CHAT_FORMAT))
 			{
 				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
 			}
@@ -341,7 +342,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
 			}
-			if(sender.hasPermission("marry.chat.magic"))
+			if(sender.hasPermission(Permissions.CHAT_MAGIC))
 			{
 				msg = msg.replaceAll("&k", "§k");
 			}
@@ -381,7 +382,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		public ChatToggleCommand(MarriageMaster plugin, ChatCommand chatCommand)
 		{
-			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), "marry.chat", true, plugin.getLanguage().getCommandAliases("ChatToggle"));
+			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), Permissions.CHAT, true, plugin.getLanguage().getCommandAliases("ChatToggle"));
 
 			this.chatCommand = chatCommand;
 		}

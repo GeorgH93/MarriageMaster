@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.config.ServerInfo;
@@ -30,10 +31,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class HomeCommand extends MarryCommand
@@ -70,14 +68,14 @@ public class HomeCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((ProxiedPlayer) sender);
-		if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
+		if(player.isMarried() || (sender.hasPermission(Permissions.HOME_OTHERS) && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 		{
 			Marriage marriage = getTargetedMarriage(sender, player, args);
 			if(marriage != null)
 			{
 				if(!marriage.isHomeSet()) // no home set
 				{
-					if(sender.hasPermission("marry.home.others") && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
+					if(sender.hasPermission(Permissions.HOME_OTHERS) && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
 					{
 						messagePlayerNoHome.send(sender);
 					}
@@ -88,10 +86,10 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					if(!blockedFrom.contains(((ProxiedPlayer) sender).getServer().getInfo().getName().toLowerCase()))
+					if(!blockedFrom.contains(((ProxiedPlayer) sender).getServer().getInfo().getName().toLowerCase(Locale.ENGLISH)))
 					{
 						//noinspection ConstantConditions
-						if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase()))
+						if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase(Locale.ENGLISH)))
 						{
 							if(delayed && !player.hasPermission("marry.bypass.delay"))
 							{
@@ -125,13 +123,13 @@ public class HomeCommand extends MarryCommand
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		List<String> names = getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
-		if(sender.hasPermission("marry.home.others"))
+		if(sender.hasPermission(Permissions.HOME_OTHERS))
 		{
 			if(names == null) names = new LinkedList<>();
-			String arg = args[args.length - 1].toLowerCase();
+			String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 			for(ProxiedPlayer player : plugin.getProxy().getPlayers())
 			{
-				if(!names.contains(player.getName()) && !sender.getName().equals(player.getName()) && player.getName().toLowerCase().startsWith(arg))
+				if(!names.contains(player.getName()) && !sender.getName().equals(player.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 				{
 					names.add(player.getName());
 				}
@@ -147,7 +145,7 @@ public class HomeCommand extends MarryCommand
 	@Override
 	public boolean canUse(@NotNull CommandSender sender)
 	{
-		return super.canUse(sender) && (sender.hasPermission("marry.home.others") || getMarriagePlugin().getPlayerData((ProxiedPlayer) sender).isMarried());
+		return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((ProxiedPlayer) sender).isMarried());
 	}
 
 	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
@@ -155,7 +153,7 @@ public class HomeCommand extends MarryCommand
 		Marriage marriage;
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
-			if(args.length == 2 && sender.hasPermission("marry.home.others"))
+			if(args.length == 2 && sender.hasPermission(Permissions.HOME_OTHERS))
 			{
 				MarriagePlayer target1 = getMarriagePlugin().getPlayerData(args[0]), target2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(target1.isMarried() && target2.isMarried() && target1.isPartner(target2))
@@ -193,7 +191,7 @@ public class HomeCommand extends MarryCommand
 		}
 		else
 		{
-			if(args.length == 1 && sender.hasPermission("marry.home.others"))
+			if(args.length == 1 && sender.hasPermission(Permissions.HOME_OTHERS))
 			{
 				MarriagePlayer target = getMarriagePlugin().getPlayerData(args[0]);
 				if(target.isMarried())

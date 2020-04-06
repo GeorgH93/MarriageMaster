@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class SetPriestCommand extends MarryCommand
 {
@@ -38,18 +40,17 @@ public class SetPriestCommand extends MarryCommand
 
 	public SetPriestCommand(MarriageMaster plugin)
 	{
-		super(plugin, "setpriest", plugin.getLanguage().getTranslated("Commands.Description.SetPriest"), "marry.setpriest", plugin.getLanguage().getCommandAliases("SetPriest"));
+		super(plugin, "setpriest", plugin.getLanguage().getTranslated("Commands.Description.SetPriest"), Permissions.SET_PRIEST, plugin.getLanguage().getCommandAliases("SetPriest"));
 
-		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 
 		helpParam = "<" + plugin.helpPlayerNameVariable + ">";
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -62,7 +63,7 @@ public class SetPriestCommand extends MarryCommand
 				bTarget = Bukkit.getPlayer(arg);
 				if(bTarget != null)
 				{
-					if(bTarget.hasPermission("marry.priest"))
+					if(bTarget.hasPermission(Permissions.PRIEST))
 					{
 						messagePerPermission.send(sender, bTarget.getName(), bTarget.getDisplayName());
 					}
@@ -100,11 +101,11 @@ public class SetPriestCommand extends MarryCommand
 	{
 		if(args.length > 0)
 		{
-			String name, arg = args[args.length - 1].toLowerCase();
+			String name, arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 			List<String> names = new LinkedList<>();
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
-				name = player.getName().toLowerCase();
+				name = player.getName().toLowerCase(Locale.ENGLISH);
 				if(!name.equalsIgnoreCase(sender.getName()) && name.startsWith(arg))
 				{
 					names.add(name);

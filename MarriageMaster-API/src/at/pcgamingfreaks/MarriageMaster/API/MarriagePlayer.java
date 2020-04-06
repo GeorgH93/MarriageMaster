@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 
 	/**
 	 * Checks if the represented player is a priest.
-	 * If the player is online the check will include the players permissions ("marry.priest" permission).
+	 * If the player is online the check will include the players permissions (Permissions.PRIEST permission).
 	 * If the player is offline only the database will be checked.
 	 *
 	 * @return True if the player is a priest. False if not.

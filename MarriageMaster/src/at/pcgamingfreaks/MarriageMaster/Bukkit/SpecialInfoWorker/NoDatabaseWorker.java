@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Reflection;
 
@@ -28,17 +29,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.EventHandler;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * This worker will inform the admin that the plugin failed to connect to the database, he hopefully is able to solve the problem.
  * It registers a new command that only allows to reload the plugin to prevent unnecessary downtime for the server cause of restarts.
  */
-public class NoDatabaseWorker implements Listener, CommandExecutor
+public class NoDatabaseWorker extends SpecialInfoBase implements  CommandExecutor
 {
 	private MarriageMaster plugin;
 	private RegisterablePluginCommand command;
@@ -46,6 +45,7 @@ public class NoDatabaseWorker implements Listener, CommandExecutor
 
 	public NoDatabaseWorker(MarriageMaster plugin)
 	{
+		super(plugin, Permissions.RELOAD);
 		this.plugin = plugin;
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 		command = new RegisterablePluginCommand(plugin, "marry");
@@ -55,18 +55,10 @@ public class NoDatabaseWorker implements Listener, CommandExecutor
 				.append("Please check your configuration and reload the plugin (", MessageColor.RED).append("/marry reload", MessageColor.BLUE).command("/marry reload").append(")!", MessageColor.RED).getMessage();
 	}
 
-	@EventHandler
-	public void onJoin(final PlayerJoinEvent event)
+	@Override
+	protected void sendMessage(Player player)
 	{
-		if(event.getPlayer().hasPermission("marry.reload")) // If the player has the right to reload the config he hopefully also has access to the config or at least know the person that has access.
-		{
-			Bukkit.getScheduler().runTaskLater(plugin, () -> {
-				if(event.getPlayer().isOnline())
-				{
-					messageDBProblem.send(event.getPlayer());
-				}
-			}, 3*20L);
-		}
+		messageDBProblem.send(player);
 	}
 
 	@Override
@@ -78,7 +70,7 @@ public class NoDatabaseWorker implements Listener, CommandExecutor
 		}
 		else
 		{
-			if(commandSender.hasPermission("marry.reload"))
+			if(commandSender.hasPermission(Permissions.RELOAD))
 			{
 				command.unregisterCommand();
 				HandlerList.unregisterAll(this);

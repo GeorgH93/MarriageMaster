@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +33,7 @@ public class UpdateCommand extends MarryCommand
 
 	public UpdateCommand(MarriageMaster plugin)
 	{
-		super(plugin, "update", plugin.getLanguage().getTranslated("Commands.Description.Update"), "marry.update", plugin.getLanguage().getCommandAliases("Update"));
+		super(plugin, "update", plugin.getLanguage().getTranslated("Commands.Description.Update"), Permissions.UPDATE, plugin.getLanguage().getCommandAliases("Update"));
 
 		messageCheckingForUpdates   = plugin.getLanguage().getMessage("Ingame.Admin.CheckingForUpdates");
 		messageUpdated              = plugin.getLanguage().getMessage("Ingame.Admin.Updated");

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class RequestAcceptCommand extends MarryCommand
 
 	public RequestAcceptCommand(MarriageMaster plugin)
 	{
-		super(plugin, "accept", plugin.getLanguage().getTranslated("Commands.Description.Accept"), "marry.accept", true, plugin.getLanguage().getCommandAliases("Accept"));
+		super(plugin, "accept", plugin.getLanguage().getTranslated("Commands.Description.Accept"), Permissions.ACCEPT, true, plugin.getLanguage().getCommandAliases("Accept"));
 
 		messageNothingToAccept = plugin.getLanguage().getMessage("Ingame.Requests.NothingToAccept");
 	}

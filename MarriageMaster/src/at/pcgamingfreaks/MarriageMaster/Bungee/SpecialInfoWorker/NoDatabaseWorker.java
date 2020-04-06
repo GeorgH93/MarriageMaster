@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.Bungee.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Reflection;
 
@@ -38,7 +39,7 @@ public class NoDatabaseWorker extends Command implements Listener
 
 	public NoDatabaseWorker(MarriageMaster plugin)
 	{
-		super("marry", "marry.reload");
+		super("marry", Permissions.RELOAD);
 		this.plugin = plugin;
 		plugin.getProxy().getPluginManager().registerCommand(plugin, this);
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
@@ -50,10 +51,10 @@ public class NoDatabaseWorker extends Command implements Listener
 	@EventHandler
 	public void onJoin(final PostLoginEvent event)
 	{
-		if(event.getPlayer() != null && event.getPlayer().hasPermission("marry.reload"))
+		if(event.getPlayer() != null && event.getPlayer().hasPermission(Permissions.RELOAD))
 		{
 			plugin.getProxy().getScheduler().schedule(plugin, () -> {
-				if(event.getPlayer() != null && event.getPlayer().hasPermission("marry.reload"))
+				if(event.getPlayer() != null && event.getPlayer().hasPermission(Permissions.RELOAD))
 				{
 					messageDBProblem.send(event.getPlayer());
 				}

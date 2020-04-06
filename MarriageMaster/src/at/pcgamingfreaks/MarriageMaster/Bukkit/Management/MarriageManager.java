@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestMarryAc
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -419,7 +420,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		{
 			if(player1.equals(priest) || player2.equals(priest)) // Self marry
 			{
-				if(plugin.isSelfMarriageAllowed() && priest.hasPermission("marry.selfmarry"))
+				if(plugin.isSelfMarriageAllowed() && priest.hasPermission(Permissions.SELF_MARRY))
 				{
 					MarriagePlayer otherPlayer = (player1.equals(priest)) ? player2 : player1;
 					if(player1.equals(player2))
@@ -589,7 +590,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		if(!divorceBy.isOnline()) return;
 		if(marriage.hasPlayer(divorceBy)) // Self divorce
 		{
-			if(plugin.isSelfDivorceAllowed() && divorceBy.hasPermission("marry.selfdivorce"))
+			if(plugin.isSelfDivorceAllowed() && divorceBy.hasPermission(Permissions.SELF_DIVORCE))
 			{
 				MarriagePlayer otherPlayer = marriage.getPartner(divorceBy);
 				//noinspection ConstantConditions

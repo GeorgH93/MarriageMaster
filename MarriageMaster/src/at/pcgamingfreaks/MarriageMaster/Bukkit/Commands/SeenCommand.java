@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Calendar.TimeSpan;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,11 +39,11 @@ public class SeenCommand extends MarryCommand
 
 	public SeenCommand(MarriageMaster plugin)
 	{
-		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), "marry.seen", true, true, plugin.getLanguage().getCommandAliases("seen"));
+		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), Permissions.SEEN, true, true, plugin.getLanguage().getCommandAliases("seen"));
 
 		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLang().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss"));
-		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{Date\\}", "%2\\$s").replaceAll("\\{CountTotalDays\\}", "%3\\$d").replaceAll("\\{Count\\}", "%4\\$s");
-		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{Date}", "%2\\$s").replaceAll("\\{CountTotalDays}", "%3\\$d").replaceAll("\\{Count}", "%4\\$s");
+		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 	}
 
 	@Override

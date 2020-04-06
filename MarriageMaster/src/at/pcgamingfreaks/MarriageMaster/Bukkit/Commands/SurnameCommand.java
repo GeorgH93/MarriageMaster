@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class SurnameCommand extends MarryCommand
 {
@@ -36,7 +38,7 @@ public class SurnameCommand extends MarryCommand
 
 	public SurnameCommand(MarriageMaster plugin)
 	{
-		super(plugin, "surname", plugin.getLanguage().getTranslated("Commands.Description.Surname"), "marry.changesurname", plugin.getLanguage().getCommandAliases("Surname"));
+		super(plugin, "surname", plugin.getLanguage().getTranslated("Commands.Description.Surname"), Permissions.CHANGE_SURNAME, plugin.getLanguage().getCommandAliases("Surname"));
 
 		descSelf         = plugin.getLanguage().getTranslated("Commands.Description.SurnameSelf");
 		helpSurnameParam = "<" + plugin.getLanguage().getTranslated("Commands.SurnameVariable") + ">";
@@ -56,9 +58,9 @@ public class SurnameCommand extends MarryCommand
 	{
 		final String newSurname = args[args.length - 1];
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission("marry.selfmarry") && player.isMarried())
+		if(!(sender instanceof Player) || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY) && player.isMarried())
 		{
-			if(args.length == 1 && getMarriagePlugin().isSelfMarriageAllowed() && player != null && sender.hasPermission("marry.selfmarry"))
+			if(args.length == 1 && getMarriagePlugin().isSelfMarriageAllowed() && player != null && sender.hasPermission(Permissions.SELF_MARRY))
 			{
 				if(player.getPartners().size() == 1)
 				{
@@ -98,7 +100,7 @@ public class SurnameCommand extends MarryCommand
 						player2.getMarriageData().setSurname(newSurname, sender);
 					}
 				}
-				else if(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission("marry.selfmarry"))
+				else if(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY))
 				{
 					if(player.isMarried())
 					{
@@ -161,10 +163,10 @@ public class SurnameCommand extends MarryCommand
 			if(!(sender instanceof Player) || player.isPriest())
 			{
 				List<String> names = new LinkedList<>();
-				String name = sender.getName().toLowerCase(), arg = args[args.length - 1].toLowerCase(), tmp;
+				String name = sender.getName().toLowerCase(Locale.ENGLISH), arg = args[args.length - 1].toLowerCase(Locale.ENGLISH), tmp;
 				for(Player p : Bukkit.getOnlinePlayers())
 				{
-					tmp = p.getName().toLowerCase();
+					tmp = p.getName().toLowerCase(Locale.ENGLISH);
 					if(tmp.equals(name) || tmp.startsWith(arg))
 					{
 						names.add(p.getName());
@@ -185,7 +187,7 @@ public class SurnameCommand extends MarryCommand
 	{
 		List<HelpData> help = new LinkedList<>();
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
-		if(player != null && player.isMarried() && getMarriagePlugin().isSelfMarriageAllowed() && requester.hasPermission("marry.selfmarry"))
+		if(player != null && player.isMarried() && getMarriagePlugin().isSelfMarriageAllowed() && requester.hasPermission(Permissions.SELF_MARRY))
 		{
 			if(player.getPartners().size() > 1)
 			{

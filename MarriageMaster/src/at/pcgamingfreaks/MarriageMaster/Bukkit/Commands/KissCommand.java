@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.KissEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -49,7 +50,7 @@ public class KissCommand extends MarryCommand implements Listener
 
 	public KissCommand(MarriageMaster plugin)
 	{
-		super(plugin, "kiss", plugin.getLanguage().getTranslated("Commands.Description.Kiss"), "marry.kiss", true, false, plugin.getLanguage().getCommandAliases("Kiss"));
+		super(plugin, "kiss", plugin.getLanguage().getTranslated("Commands.Description.Kiss"), Permissions.KISS, true, false, plugin.getLanguage().getCommandAliases("Kiss"));
 
 		wait = new HashMap<>();
 		particleSpawner = ParticleSpawner.getParticleSpawner();
@@ -139,7 +140,7 @@ public class KissCommand extends MarryCommand implements Listener
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event)
 	{
-		if((!MCVersion.isDualWieldingMC() || event.getHand().equals(EquipmentSlot.HAND)) && event.getPlayer().isSneaking() && event.getPlayer().hasPermission("marry.kiss") && event.getRightClicked() instanceof Player)
+		if((!MCVersion.isDualWieldingMC() || event.getHand().equals(EquipmentSlot.HAND)) && event.getPlayer().isSneaking() && event.getPlayer().hasPermission(Permissions.KISS) && event.getRightClicked() instanceof Player)
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData(event.getPlayer());
 			Long time = wait.get(player);

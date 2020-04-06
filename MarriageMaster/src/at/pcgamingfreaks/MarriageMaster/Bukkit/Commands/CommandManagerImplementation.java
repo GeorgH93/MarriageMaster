@@ -29,6 +29,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Reflection;
 import at.pcgamingfreaks.StringUtils;
 
@@ -266,7 +267,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			((MarriagePlayerData) p).addRequest(request);
 		}
 		((MarriagePlayerData) request.getPlayerThatHasToAccept()).addRequest(request);
-		if(!request.getPlayerThatHasToAccept().hasPermission("marry.accept")) request.deny(request.getPlayerThatHasToAccept());
+		if(!request.getPlayerThatHasToAccept().hasPermission(Permissions.ACCEPT)) request.deny(request.getPlayerThatHasToAccept());
 		return true;
 	}
 

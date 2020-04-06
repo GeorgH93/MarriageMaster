@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -30,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class MarryDivorceCommand extends MarryCommand
 {
@@ -52,7 +54,7 @@ public class MarryDivorceCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce")))
+		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE)))
 		{
 			if((!(sender instanceof Player) || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
 			{
@@ -104,7 +106,7 @@ public class MarryDivorceCommand extends MarryCommand
 					}
 				}
 			}
-			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission("marry.selfdivorce") &&
+			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE) &&
 					(getMarriagePlugin().areMultiplePartnersAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
@@ -148,16 +150,16 @@ public class MarryDivorceCommand extends MarryCommand
 		if(!(sender instanceof Player) || marriagePlayerData.isPriest())
 		{
 			names = new LinkedList<>();
-			String arg = args[args.length - 1].toLowerCase();
+			String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
-				if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase().startsWith(arg))
+				if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 				{
 					names.add(player.getName());
 				}
 			}
 		}
-		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission("marry.selfdivorce"))
+		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE))
 		{
 			names = marriagePlayerData.getMatchingPartnerNames(args[args.length - 1]);
 		}
@@ -169,7 +171,7 @@ public class MarryDivorceCommand extends MarryCommand
 	{
 		List<HelpData> help = new LinkedList<>();
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
-		if(requester instanceof Player && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (requester.hasPermission("marry.selfmarry") || requester.hasPermission("marry.selfdivorce")))
+		if(requester instanceof Player && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (requester.hasPermission(Permissions.SELF_MARRY) || requester.hasPermission(Permissions.SELF_DIVORCE)))
 		{
 			if(player.getPartners().size() > 1)
 			{

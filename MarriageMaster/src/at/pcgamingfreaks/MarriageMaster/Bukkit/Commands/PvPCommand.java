@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,7 +47,7 @@ public class PvPCommand extends MarryCommand implements Listener
 
 	public PvPCommand(MarriageMaster plugin)
 	{
-		super(plugin, "pvp", plugin.getLanguage().getTranslated("Commands.Description.PvP"), "marry.pvp", true, true, plugin.getLanguage().getCommandAliases("PvP"));
+		super(plugin, "pvp", plugin.getLanguage().getTranslated("Commands.Description.PvP"), Permissions.PVP, true, true, plugin.getLanguage().getCommandAliases("PvP"));
 		this.plugin = plugin;
 
 		messagePvPOn    = plugin.getLanguage().getMessage("Ingame.PvP.On");
@@ -246,7 +247,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	{
 		public PvPOnCommand(MarriageMaster plugin)
 		{
-			super(plugin, "pvpon", plugin.getLanguage().getTranslated("Commands.Description.PvPOn"), "marry.pvp", true, true, plugin.getLanguage().getCommandAliases("PvPOn"));
+			super(plugin, "pvpon", plugin.getLanguage().getTranslated("Commands.Description.PvPOn"), Permissions.PVP, true, true, plugin.getLanguage().getCommandAliases("PvPOn"));
 		}
 
 		@Override
@@ -265,7 +266,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	{
 		public PvPOffCommand(MarriageMaster plugin)
 		{
-			super(plugin, "pvpoff", plugin.getLanguage().getTranslated("Commands.Description.PvPOff"), "marry.pvp", true, true, plugin.getLanguage().getCommandAliases("PvPOff"));
+			super(plugin, "pvpoff", plugin.getLanguage().getTranslated("Commands.Description.PvPOff"), Permissions.PVP, true, true, plugin.getLanguage().getCommandAliases("PvPOff"));
 		}
 
 		@Override

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HugEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -37,13 +38,13 @@ public class HugCommand extends MarryCommand
 
 	public HugCommand(MarriageMaster plugin)
 	{
-		super(plugin, "hug", plugin.getLanguage().getTranslated("Commands.Description.Hug"), "marry.hug", true, false, plugin.getLanguage().getCommandAliases("Hug"));
+		super(plugin, "hug", plugin.getLanguage().getTranslated("Commands.Description.Hug"), Permissions.HUG, true, false, plugin.getLanguage().getCommandAliases("Hug"));
 
 		range             = plugin.getConfiguration().getRange("Hug");
 		rangeSquared      = plugin.getConfiguration().getRangeSquared("Hug");
 		messageHugged     = plugin.getLanguage().getMessage("Ingame.Hug.Hugged");
 		messageGotHugged  = plugin.getLanguage().getMessage("Ingame.Hug.GotHugged");
-		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance\\}", "%.1f");
+		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance}", "%.1f");
 	}
 
 	@Override

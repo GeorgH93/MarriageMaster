@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.CommandSender;
@@ -38,7 +39,7 @@ public class ListPriestsCommand extends MarryCommand
 
 	public ListPriestsCommand(MarriageMaster plugin)
 	{
-		super(plugin, "listpriests", plugin.getLanguage().getTranslated("Commands.Description.ListPriests"), "marry.listpriests", plugin.getLanguage().getCommandAliases("ListPriests"));
+		super(plugin, "listpriests", plugin.getLanguage().getTranslated("Commands.Description.ListPriests"), Permissions.LIST_PRIESTS, plugin.getLanguage().getCommandAliases("ListPriests"));
 
 		useFooter        = plugin.getConfiguration().useListFooter();
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();

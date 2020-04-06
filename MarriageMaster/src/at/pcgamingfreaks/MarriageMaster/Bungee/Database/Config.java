@@ -18,6 +18,8 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.Bungee.Configuration;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.YamlFileManager;
@@ -74,6 +76,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 				plugin.getLogger().warning("There was a problem upgrading the old config file into the new config file.");
 				e.printStackTrace();
 			}
+			new UpgradedInfo(MarriageMaster.getInstance());
 		}
 		else
 		{

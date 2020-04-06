@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -33,7 +34,7 @@ public class VersionCommand extends MarryCommand
 
 	public VersionCommand(MarriageMaster plugin)
 	{
-		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), "marry.version", plugin.getLanguage().getCommandAliases("Version"));
+		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), Permissions.VERSION, plugin.getLanguage().getCommandAliases("Version"));
 		this.plugin = plugin;
 	}
 

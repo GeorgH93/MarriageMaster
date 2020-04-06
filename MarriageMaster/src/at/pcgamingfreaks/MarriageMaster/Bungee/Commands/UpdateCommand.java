@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import net.md_5.bungee.api.CommandSender;
 
@@ -33,7 +34,7 @@ public class UpdateCommand extends MarryCommand
 
 	public UpdateCommand(MarriageMaster plugin)
 	{
-		super(plugin, "update", plugin.getLanguage().getTranslated("Commands.Description.Update"), "marry.update", plugin.getLanguage().getCommandAliases("Update"));
+		super(plugin, "update", plugin.getLanguage().getTranslated("Commands.Description.Update"), Permissions.UPDATE, plugin.getLanguage().getCommandAliases("Update"));
 
 		messageCheckingForUpdates   = plugin.getLanguage().getMessage("Ingame.Admin.CheckingForUpdates");
 		messageUpdated              = plugin.getLanguage().getMessage("Ingame.Admin.Updated");

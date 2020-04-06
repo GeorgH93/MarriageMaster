@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageHome;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -35,17 +36,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeCommand extends MarryCommand
 {
-	private MarriageMaster plugin;
+	private final MarriageMaster plugin;
 	private MarryCommand setHomeCommand, delHomeCommand;
 	private final Message messagePlayerNoHome, messageNoHome, messageTPed;
 	private final long delayTime;
 
 	public HomeCommand(MarriageMaster plugin)
 	{
-		super(plugin, "home", plugin.getLanguage().getTranslated("Commands.Description.Home"), "marry.home", false, true, plugin.getLanguage().getCommandAliases("Home"));
+		super(plugin, "home", plugin.getLanguage().getTranslated("Commands.Description.Home"), Permissions.HOME, false, true, plugin.getLanguage().getCommandAliases("Home"));
 		this.plugin = plugin;
 
 		messagePlayerNoHome = plugin.getLanguage().getMessage("Ingame.Home.PlayerNoHome");
@@ -97,7 +99,7 @@ public class HomeCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-		if(player.isMarried() ||(sender.hasPermission("marry.home.others") &&
+		if(player.isMarried() ||(sender.hasPermission(Permissions.HOME_OTHERS) &&
 				((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 		{
 			Marriage marriage = getTargetedMarriage(sender, player, args);
@@ -105,7 +107,7 @@ public class HomeCommand extends MarryCommand
 			{
 				if(!marriage.isHomeSet()) // no home set
 				{
-					if(sender.hasPermission("marry.home.others") && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
+					if(sender.hasPermission(Permissions.HOME_OTHERS) && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
 					{
 						messagePlayerNoHome.send(sender);
 					}
@@ -135,16 +137,16 @@ public class HomeCommand extends MarryCommand
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		List<String> names = getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
-		if(sender.hasPermission("marry.home.others"))
+		if(sender.hasPermission(Permissions.HOME_OTHERS))
 		{
 			if(names == null)
 			{
 				names = new LinkedList<>();
 			}
-			String arg = args[args.length - 1].toLowerCase();
+			String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
-				if(!names.contains(player.getName()) && !sender.getName().equals(player.getName()) && player.getName().toLowerCase().startsWith(arg))
+				if(!names.contains(player.getName()) && !sender.getName().equals(player.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 				{
 					names.add(player.getName());
 				}
@@ -160,7 +162,7 @@ public class HomeCommand extends MarryCommand
 	@Override
 	public boolean canUse(@NotNull CommandSender sender)
 	{
-		return super.canUse(sender) && (sender.hasPermission("marry.home.others") || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
+		return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
 	}
 
 	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
@@ -168,7 +170,7 @@ public class HomeCommand extends MarryCommand
 		Marriage marriage;
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
-			if(args.length == 2 && sender.hasPermission("marry.home.others"))
+			if(args.length == 2 && sender.hasPermission(Permissions.HOME_OTHERS))
 			{
 				MarriagePlayer target1 = getMarriagePlugin().getPlayerData(args[0]), target2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(target1.isMarried() && target2.isMarried() && target1.isPartner(target2))
@@ -206,7 +208,7 @@ public class HomeCommand extends MarryCommand
 		}
 		else
 		{
-			if(args.length == 1 && sender.hasPermission("marry.home.others"))
+			if(args.length == 1 && sender.hasPermission(Permissions.HOME_OTHERS))
 			{
 				MarriagePlayer target = getMarriagePlugin().getPlayerData(args[0]);
 				if(target.isMarried())
@@ -294,7 +296,7 @@ public class HomeCommand extends MarryCommand
 
 		public SetHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{
-			super(plugin, "sethome", plugin.getLanguage().getTranslated("Commands.Description.SetHome"), "marry.sethome", false, true, plugin.getLanguage().getCommandAliases("SetHome"));
+			super(plugin, "sethome", plugin.getLanguage().getTranslated("Commands.Description.SetHome"), Permissions.HOME_SET, false, true, plugin.getLanguage().getCommandAliases("SetHome"));
 			this.homeCommand = homeCommand;
 			messageSet = plugin.getLanguage().getMessage("Ingame.Home.Set");
 		}
@@ -303,7 +305,7 @@ public class HomeCommand extends MarryCommand
 		public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-			if(player.isMarried() || (sender.hasPermission("marry.home.others") &&
+			if(player.isMarried() || (sender.hasPermission(Permissions.HOME_OTHERS) &&
 					((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 			{
 				Marriage marriage = getTargetedMarriage(sender, player, args);
@@ -333,7 +335,7 @@ public class HomeCommand extends MarryCommand
 		@Override
 		public boolean canUse(@NotNull CommandSender sender)
 		{
-			return super.canUse(sender) && (sender.hasPermission("marry.home.others") || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
+			return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
 		}
 	}
 
@@ -344,7 +346,7 @@ public class HomeCommand extends MarryCommand
 
 		public DelHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{
-			super(plugin, "delhome", plugin.getLanguage().getTranslated("Commands.Description.DelHome"), "marry.delhome", false, true, plugin.getLanguage().getCommandAliases("DelHome"));
+			super(plugin, "delhome", plugin.getLanguage().getTranslated("Commands.Description.DelHome"), Permissions.HOME_DEL, false, true, plugin.getLanguage().getCommandAliases("DelHome"));
 			this.homeCommand = homeCommand;
 			messageHomeDeleted = plugin.getLanguage().getMessage("Ingame.Home.Deleted");
 		}
@@ -371,7 +373,7 @@ public class HomeCommand extends MarryCommand
 			else
 			{
 				MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-				if(player.isMarried() || (sender.hasPermission("marry.home.others") && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
+				if(player.isMarried() || (sender.hasPermission(Permissions.HOME_OTHERS) && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 				{
 					Marriage marriage = getTargetedMarriage(sender, player, args);
 					if(marriage != null)
@@ -401,7 +403,7 @@ public class HomeCommand extends MarryCommand
 		@Override
 		public boolean canUse(@NotNull CommandSender sender)
 		{
-			return super.canUse(sender) && (sender.hasPermission("marry.home.others") || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
+			return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
 		}
 	}
 }

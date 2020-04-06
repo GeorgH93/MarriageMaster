@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -172,7 +173,7 @@ public class MarryMarryCommand extends MarryCommand
 		{
 			List<HelpData> help = new LinkedList<>();
 			MarriagePlayer marriagePlayerData = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-			if(sender instanceof Player && getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission("marry.selfmarry"))
+			if(sender instanceof Player && getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY))
 			{
 				help.add(new HelpData(getTranslatedName(), helpSelf, descriptionSelf));
 			}
@@ -191,7 +192,7 @@ public class MarryMarryCommand extends MarryCommand
 	@Override
 	public boolean canUse(@NotNull CommandSender sender)
 	{
-		if(sender instanceof Player && !(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission("marry.selfmarry")))
+		if(sender instanceof Player && !(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY)))
 		{
 			MarriagePlayer marriagePlayerData = getMarriagePlugin().getPlayerData((Player) sender);
 			return marriagePlayerData.isPriest();

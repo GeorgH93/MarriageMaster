@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.IMessage;
 
 import com.google.common.base.Charsets;
@@ -120,7 +121,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	@Override
 	public boolean isPriest()
 	{
-		return priest || hasPermission("marry.priest");
+		return priest || hasPermission(Permissions.PRIEST);
 	}
 
 	@Override

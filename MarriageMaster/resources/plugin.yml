@@ -9,7 +9,7 @@ depend: [${dependencies}]
 softdepend: [ Vault, Minepacks, MinePacks, MVdWPlaceholderAPI, PlaceholderAPI, SkillAPI, mcMMO ${soft-dependencies} ]
 
 permissions:
-  marry.*:
+  marry.everything:
     description: Gives access to all MarriageMaster commands
     children:
       marry.user: true
@@ -43,8 +43,8 @@ permissions:
       marry.listpriests: true
       marry.pvp: true
       marry.tp: true
-      marry.home.*: true
-      marry.chat.*: true
+      marry.home.user: true
+      marry.chat.user: true
       marry.gift: true
       marry.backpack: true
       marry.kiss: true
@@ -54,17 +54,18 @@ permissions:
       marry.selfdivorce: true
       marry.changesurname: true
       marry.accept: true
-  marry.chat.*:
+  marry.chat.user:
     description: Gives acces to all private message formats
     children:
       marry.chat: true
       marry.chat.color: true
       marry.chat.format: true
       marry.chat.magic: true
-  marry.home.*:
+  marry.home.user:
+    children:
       marry.home: true
-      marry.sethome: true
-      marry.delhome: true
+      marry.home.set: true
+      marry.home.del: true
   marry.accept:
     description: Allows the player to accept confirmation requests
     default: true
@@ -84,9 +85,15 @@ permissions:
     description: Allows the player to teleport to his home
     default: true
   marry.sethome:
+    children:
+      marry.home.set: true
+  marry.home.set:
     description: Allows the player to set the home point
     default: true
   marry.delhome:
+    children:
+      marry.home.del: true
+  marry.home.del:
     description: Allows the player to delete his home point
     default: true
   marry.chat:

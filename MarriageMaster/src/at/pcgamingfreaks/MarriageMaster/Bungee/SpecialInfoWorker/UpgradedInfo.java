@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.Bungee.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -48,18 +49,13 @@ public class UpgradedInfo implements Listener
 	@EventHandler
 	public void onJoin(final PostLoginEvent event)
 	{
-		if(event.getPlayer() != null && event.getPlayer().hasPermission("marry.reload"))
+		if(event.getPlayer() != null && event.getPlayer().hasPermission(Permissions.RELOAD))
 		{
-			plugin.getProxy().getScheduler().schedule(plugin, new Runnable()
-			{
-				@Override
-				public void run()
+			plugin.getProxy().getScheduler().schedule(plugin, () -> {
+				// If he has the permissions he probably also has access to the configs or at least he knows someone who has access to the configs.
+				if(event.getPlayer() != null && event.getPlayer().hasPermission(Permissions.RELOAD))
 				{
-					// If he has the permissions he probably also has access to the configs or at least he knows someone who has access to the configs.
-					if(event.getPlayer() != null && event.getPlayer().hasPermission("marry.reload"))
-					{
-						messagePluginUpgraded.send(event.getPlayer());
-					}
+					messagePluginUpgraded.send(event.getPlayer());
 				}
 			}, 10, TimeUnit.SECONDS);
 		}

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.TPEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -60,7 +61,7 @@ public class TpCommand extends MarryCommand
 
 	public TpCommand(MarriageMaster plugin)
 	{
-		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), "marry.tp", true, true, plugin.getLanguage().getCommandAliases("Tp"));
+		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), Permissions.TP, true, true, plugin.getLanguage().getCommandAliases("Tp"));
 
 		blacklistedWorlds   = plugin.getConfiguration().getTPBlackListedWorlds();
 		safetyCheck         = plugin.getConfiguration().getSafetyCheck();
