@@ -31,11 +31,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Locale;
 
 public class SkillApiBonusXpListener implements Listener, IBonusXpListener<PlayerExperienceGainEvent, Object>
 {
+	private final Method setExpMethod;
 	private final IBonusXpCalculator<PlayerExperienceGainEvent, Object> calculator;
 	private final HashSet<ExpSource> blockedSources = new HashSet<>();
 
@@ -57,6 +59,18 @@ public class SkillApiBonusXpListener implements Listener, IBonusXpListener<Playe
 				plugin.getLogger().info("Unknown SkillAPI XP Source: " + source);
 			}
 		}
+
+		//region try to figure out if the used SkillAPI plugin is the premium or the free version
+		Method setExpMethod = null;
+		try
+		{
+			//noinspection JavaReflectionMemberAccess
+			setExpMethod = PlayerExperienceGainEvent.class.getDeclaredMethod("setExp", double.class);
+		}
+		catch(NoSuchMethodException ignored) {}
+		this.setExpMethod = setExpMethod;
+		//endregion
+
 		plugin.getLogger().info(ConsoleColor.GREEN + "SkillAPI hooked" + ConsoleColor.RESET);
 	}
 
@@ -67,11 +81,18 @@ public class SkillApiBonusXpListener implements Listener, IBonusXpListener<Playe
 		calculator.process(event, event.getPlayerData().getPlayer(), event.getExp(), null);
 	}
 
-
 	@Override
 	public void setEventExp(PlayerExperienceGainEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
 	{
-		event.setExp((int) Math.round(xp));
+		if(setExpMethod != null)
+		{
+			try
+			{
+				setExpMethod.invoke(event, xp);
+			}
+			catch(Exception e) { e.printStackTrace(); }
+		}
+		else event.setExp((int) Math.round(xp));
 	}
 
 	@Override
