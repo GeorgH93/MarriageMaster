@@ -43,7 +43,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	@Getter private boolean married = false;
 	@Getter @Setter	private Object databaseKey = null;
 	private MARRIAGE privateChatTarget = null;
-	private Map<MARRIAGE_PLAYER, MARRIAGE> partnersMarriages = new ConcurrentHashMap<>();
+	private final Map<MARRIAGE_PLAYER, MARRIAGE> partnersMarriages = new ConcurrentHashMap<>();
 
 	//region Constructor
 	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name)
@@ -100,6 +100,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	{
 		partnersMarriages.remove(marriage.getPartner(this));
 		married = partnersMarriages.size() > 0;
+		if(privateChatTarget.equals(marriage)) privateChatTarget = null;
 	}
 	//endregion
 
@@ -153,7 +154,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	@Override
 	public boolean isPrivateChatDefault()
 	{
-		return privateChat;
+		return privateChat && isMarried();
 	}
 
 	@Override

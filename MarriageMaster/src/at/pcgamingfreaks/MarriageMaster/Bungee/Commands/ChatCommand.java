@@ -195,7 +195,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChat(ChatEvent event)
 	{
-		if(!(event.getSender() instanceof ProxiedPlayer)) return;
+		if(!(event.getSender() instanceof ProxiedPlayer) || event.isCommand()) return;
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((ProxiedPlayer) event.getSender());
 		if(player.isPrivateChatDefault())
 		{
