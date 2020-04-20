@@ -100,7 +100,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	{
 		partnersMarriages.remove(marriage.getPartner(this));
 		married = partnersMarriages.size() > 0;
-		if(privateChatTarget.equals(marriage)) privateChatTarget = null;
+		if(marriage.equals(privateChatTarget)) privateChatTarget = null;
 	}
 	//endregion
 
