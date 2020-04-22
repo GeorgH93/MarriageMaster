@@ -34,6 +34,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Getter;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +65,7 @@ public class HomeCommand extends MarryCommand
 	}
 
 	@Override
-	public void registerSubCommands()
+	public void afterRegister()
 	{
 		setHomeCommand = new SetHomeCommand(plugin, this);
 		plugin.getCommandManager().registerSubCommand(setHomeCommand);
@@ -72,7 +74,7 @@ public class HomeCommand extends MarryCommand
 	}
 
 	@Override
-	public void unRegisterSubCommands()
+	public void beforeUnregister()
 	{
 		plugin.getCommandManager().unRegisterSubCommand(setHomeCommand);
 		setHomeCommand.close();
@@ -261,25 +263,21 @@ public class HomeCommand extends MarryCommand
 
 	private class TeleportHome implements DelayableTeleportAction
 	{
-		private MarriagePlayer player;
-		private Marriage marriage;
+		@Getter private final Player player;
+		private final MarriagePlayer marriagePlayer;
+		private final Marriage marriage;
 
 		public TeleportHome(MarriagePlayer player, Marriage marriage)
 		{
-			this.player = player;
+			this.marriagePlayer = player;
 			this.marriage = marriage;
+			this.player = player.getPlayerOnline();
 		}
 
 		@Override
 		public void run()
 		{
-			doTheTP(player, marriage);
-		}
-
-		@Override
-		public @NotNull Player getPlayer()
-		{
-			return player.getPlayerOnline();
+			doTheTP(marriagePlayer, marriage);
 		}
 
 		@Override
@@ -341,8 +339,8 @@ public class HomeCommand extends MarryCommand
 
 	public class DelHomeCommand extends MarryCommand
 	{
-		private HomeCommand homeCommand;
-		private Message messageHomeDeleted;
+		private final HomeCommand homeCommand;
+		private final Message messageHomeDeleted;
 
 		public DelHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
 		{

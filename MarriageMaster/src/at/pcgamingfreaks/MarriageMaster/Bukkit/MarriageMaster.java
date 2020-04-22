@@ -373,15 +373,15 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		{
 			if(action.getPlayer().isOnline())
 			{
-				final Location p_loc = action.getPlayer().getLocation();
-				final double p_hea = action.getPlayer().getHealth();
+				final Location oldLocation = action.getPlayer().getLocation();
+				final double oldHealth = action.getPlayer().getHealth();
 				messageDontMove.send(action.getPlayer(), action.getDelay()/20L);
 				getServer().getScheduler().runTaskLater(this, () -> {
 					if(action.getPlayer().isOnline())
 					{
 						//noinspection ConstantConditions
-						if(p_hea <= action.getPlayer().getHealth() && p_loc.getX() == action.getPlayer().getLocation().getX() && p_loc.getY() == action.getPlayer().getLocation().getY() &&
-								p_loc.getZ() == action.getPlayer().getLocation().getZ() && p_loc.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
+						if(oldHealth <= action.getPlayer().getHealth() && oldLocation.getX() == action.getPlayer().getLocation().getX() && oldLocation.getY() == action.getPlayer().getLocation().getY() &&
+								oldLocation.getZ() == action.getPlayer().getLocation().getZ() && oldLocation.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
 						{
 							action.run();
 						}

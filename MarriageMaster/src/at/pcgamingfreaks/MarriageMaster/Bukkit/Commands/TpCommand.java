@@ -166,7 +166,6 @@ public class TpCommand extends MarryCommand
 	{
 		if(player.canSee(partner))
 		{
-			//noinspection SpellCheckingInspection
 			if(!blacklistedWorlds.contains(partner.getLocation().getWorld().getName().toLowerCase()) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
 			{
 				Location loc = partner.getLocation();
