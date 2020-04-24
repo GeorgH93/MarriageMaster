@@ -50,13 +50,13 @@ public class ListPriestsCommand extends MarryCommand
 		messageNoPriestsOnline    = plugin.getLanguage().getMessage("Ingame.ListPriests.NoPriestsOnline");
 	}
 
-	private ArrayList<MarriagePlayer> collectOnlinePriests()
+	private ArrayList<MarriagePlayer> collectOnlinePriests(final @NotNull CommandSender sender)
 	{
 		ArrayList<MarriagePlayer> priests = new ArrayList<>();
 		for(Player player : plugin.getServer().getOnlinePlayers())
 		{
 			MarriagePlayer marriagePlayer = getMarriagePlugin().getPlayerData(player);
-			if(marriagePlayer.isPriest()) priests.add(marriagePlayer);
+			if(marriagePlayer.isPriest() && (!(sender instanceof Player) || ((Player) sender).canSee(player))) priests.add(marriagePlayer);
 		}
 		return priests;
 	}
@@ -64,7 +64,7 @@ public class ListPriestsCommand extends MarryCommand
 	@Override
 	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
-		ArrayList<? extends MarriagePlayer> priests = collectOnlinePriests();
+		ArrayList<? extends MarriagePlayer> priests = collectOnlinePriests(sender);
 		if(priests.size() > 0) // There are priests online
 		{
 			int page = 0;
