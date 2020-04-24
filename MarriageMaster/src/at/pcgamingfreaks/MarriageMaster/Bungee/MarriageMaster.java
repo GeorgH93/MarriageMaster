@@ -54,10 +54,14 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	@Getter private Language language = null;
 	private Database DB = null;
 	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
-	private CommandManagerImplementation commandManager = new CommandManagerImplementation(this);
+	private final CommandManagerImplementation commandManager = new CommandManagerImplementation(this);
 
 	// Global Settings
-	private boolean multiMarriage = false, selfMarriage = false, selfDivorce = false, surnamesEnabled = false, surnamesForced = false;
+	private boolean multiMarriage = false;
+	private boolean selfMarriage = false;
+	private final boolean selfDivorce = false;
+	private boolean surnamesEnabled = false;
+	private boolean surnamesForced = false;
 
 
 	// Global Translations
@@ -238,7 +242,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	@Override
 	public void doDelayableTeleportAction(@NotNull DelayableTeleportAction action)
 	{
-
+		//TODO
 	}
 
 	@Override

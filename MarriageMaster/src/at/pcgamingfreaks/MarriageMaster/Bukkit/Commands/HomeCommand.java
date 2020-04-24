@@ -34,6 +34,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.LinkedList;
@@ -261,23 +262,16 @@ public class HomeCommand extends MarryCommand
 		}
 	}
 
+	@AllArgsConstructor
 	private class TeleportHome implements DelayableTeleportAction
 	{
-		@Getter private final Player player;
-		private final MarriagePlayer marriagePlayer;
+		@Getter private final MarriagePlayer player;
 		private final Marriage marriage;
-
-		public TeleportHome(MarriagePlayer player, Marriage marriage)
-		{
-			this.marriagePlayer = player;
-			this.marriage = marriage;
-			this.player = player.getPlayerOnline();
-		}
 
 		@Override
 		public void run()
 		{
-			doTheTP(marriagePlayer, marriage);
+			doTheTP(player, marriage);
 		}
 
 		@Override

@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.CommandManagerImplementa
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Config;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
@@ -168,7 +169,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		// Loading base Data
 		if(!config.isLoaded() || !language.load(config))
 		{
-			getLogger().warning(ConsoleColor.RED + "Configuration or language file not loaded correct! Disable plugin." + ConsoleColor.RESET);
+			getLogger().warning(ConsoleColor.RED + "Configuration or language file not loaded correct! Disabling plugin." + ConsoleColor.RESET);
 			setEnabled(false);
 			return false;
 		}
@@ -371,26 +372,30 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		else
 		{
-			if(action.getPlayer().isOnline())
+			final Player player = action.getPlayer().getPlayerOnline();
+			final MarriagePlayerData playerData = (MarriagePlayerData) action.getPlayer();
+			if(action.getPlayer().isOnline() && player != null)
 			{
-				final Location oldLocation = action.getPlayer().getLocation();
-				final double oldHealth = action.getPlayer().getHealth();
-				messageDontMove.send(action.getPlayer(), action.getDelay()/20L);
-				getServer().getScheduler().runTaskLater(this, () -> {
+				final Location oldLocation = player.getLocation();
+				final double oldHealth = player.getHealth();
+				messageDontMove.send(player, action.getDelay()/20L);
+				if(playerData.getDelayedTpTask() != null) playerData.getDelayedTpTask().cancel();
+				playerData.setDelayedTpTask(getServer().getScheduler().runTaskLater(this, () -> {
+					playerData.setDelayedTpTask(null);
 					if(action.getPlayer().isOnline())
 					{
 						//noinspection ConstantConditions
-						if(oldHealth <= action.getPlayer().getHealth() && oldLocation.getX() == action.getPlayer().getLocation().getX() && oldLocation.getY() == action.getPlayer().getLocation().getY() &&
-								oldLocation.getZ() == action.getPlayer().getLocation().getZ() && oldLocation.getWorld().getName().equalsIgnoreCase(action.getPlayer().getLocation().getWorld().getName()))
+						if(oldHealth <= player.getHealth() && oldLocation.getX() == player.getLocation().getX() && oldLocation.getY() == player.getLocation().getY() &&
+								oldLocation.getZ() == player.getLocation().getZ() && oldLocation.getWorld().getName().equalsIgnoreCase(player.getLocation().getWorld().getName()))
 						{
 							action.run();
 						}
 						else
 						{
-							messageMoved.send(action.getPlayer());
+							messageMoved.send(player);
 						}
 					}
-				}, action.getDelay());
+				}, action.getDelay()));
 			}
 		}
 	}

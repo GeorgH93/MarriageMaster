@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -118,8 +118,8 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 				break;
 			case "delayHome":
 				{
-					Player player = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
-					if(player != null) plugin.doDelayableTeleportAction(new DelayedAction("home", player, inputStream.readUTF()));
+					MarriagePlayer player = plugin.getPlayerData(UUID.fromString(inputStream.readUTF()));
+					if(player.isOnline()) plugin.doDelayableTeleportAction(new DelayedAction("home", player, inputStream.readUTF()));
 				}
 				break;
 			case "tp":
@@ -131,8 +131,8 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 				break;
 			case "delayTP":
 				{
-					Player player = plugin.getServer().getPlayer(UUID.fromString(inputStream.readUTF()));
-					if(player != null) plugin.doDelayableTeleportAction(new DelayedAction("tp", player, inputStream.readUTF()));
+					MarriagePlayer player = plugin.getPlayerData(UUID.fromString(inputStream.readUTF()));
+					if(player.isOnline()) plugin.doDelayableTeleportAction(new DelayedAction("tp", player, inputStream.readUTF()));
 				}
 				break;
 			//region Sync settings
@@ -217,10 +217,10 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	//region helper classes
 	private class DelayedAction implements DelayableTeleportAction
 	{
-		@Getter private final Player player;
+		@Getter private final MarriagePlayer player;
 		private final String command, partnerUUID;
 
-		public DelayedAction(String command, Player player, String partnerUUID)
+		public DelayedAction(String command, MarriagePlayer player, String partnerUUID)
 		{
 			this.command = command;
 			this.player = player;
@@ -230,7 +230,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		@Override
 		public void run()
 		{
-			sendMessage(command, player.getUniqueId().toString(), partnerUUID);
+			sendMessage(command, player.getUUID().toString(), partnerUUID);
 		}
 
 		@Override

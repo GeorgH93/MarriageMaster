@@ -36,6 +36,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,7 +129,7 @@ public class TpCommand extends MarryCommand
 		Bukkit.getPluginManager().callEvent(event);
 		if(!event.isCancelled())
 		{
-			getMarriagePlugin().doDelayableTeleportAction(new TpToPartner(player.getPlayerOnline(), partner.getPlayerOnline()));
+			getMarriagePlugin().doDelayableTeleportAction(new TpToPartner(player, partner.getPlayerOnline()));
 		}
 	}
 
@@ -192,26 +195,16 @@ public class TpCommand extends MarryCommand
 		}
 	}
 
+	@AllArgsConstructor
 	private class TpToPartner implements DelayableTeleportAction
 	{
-		private final Player player, partner;
-
-		public TpToPartner(Player player1, Player player2)
-		{
-			player  = player1;
-			partner = player2;
-		}
+		@Getter private final MarriagePlayer player;
+		private final Player partner;
 
 		@Override
 		public void run()
 		{
-			doTheTP(player, partner);
-		}
-
-		@Override
-		public @NotNull Player getPlayer()
-		{
-			return player;
+			doTheTP(player.getPlayerOnline(), partner);
 		}
 
 		@Override

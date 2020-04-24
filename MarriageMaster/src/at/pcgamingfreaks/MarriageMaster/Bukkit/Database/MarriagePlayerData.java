@@ -30,8 +30,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +44,8 @@ import java.util.UUID;
 public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, IMessage> implements MarriagePlayer
 {
 	private AcceptPendingRequest openRequest = null;
-	private List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
+	private final List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
+	@Getter	@Setter	private BukkitTask delayedTpTask = null;
 
 	public MarriagePlayerData(final @NotNull OfflinePlayer player)
 	{

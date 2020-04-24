@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,11 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
-import net.md_5.bungee.api.connection.ProxiedPlayer;
-
 /**
  * The interface defines all the functions used for a delayed teleport with health/move check.
  */
 @SuppressWarnings("unused")
-public interface DelayableTeleportAction extends at.pcgamingfreaks.MarriageMaster.API.DelayableTeleportAction<ProxiedPlayer>
+public interface DelayableTeleportAction extends at.pcgamingfreaks.MarriageMaster.API.DelayableTeleportAction<MarriagePlayer>
 {}
