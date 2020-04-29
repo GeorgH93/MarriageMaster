@@ -92,7 +92,7 @@ public class EconomyHandler implements Listener
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean basicBillPlayer(MarriagePlayer player, double cost, Message successMessage)
 	{
-		if(hasPlayerEnoughMoney(player, costTp) && billPlayer(player, costTp))
+		if(hasPlayerEnoughMoney(player, cost) && billPlayer(player, cost))
 		{
 			if(player.isOnline()) player.send(successMessage, cost, econ.getBalance(player.getPlayer()), econ.currencyNamePlural());
 			return true;
