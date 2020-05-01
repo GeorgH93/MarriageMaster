@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee;
 
+import at.pcgamingfreaks.Bungee.ManagedUpdater;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.DelayableTeleportAction;
@@ -30,9 +31,6 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.JoinLeaveInfo;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.NoDatabaseWorker;
-import at.pcgamingfreaks.MarriageMaster.IUpdater;
-import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
-import at.pcgamingfreaks.Updater.Updater;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -46,10 +44,11 @@ import lombok.Setter;
 import java.util.Collection;
 import java.util.UUID;
 
-public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpdater
+public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 {
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance = null;
 
+	@Getter private ManagedUpdater updater;
 	private Config config = null;
 	@Getter private Language language = null;
 	private Database DB = null;
@@ -71,22 +70,23 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	@Override
 	public void onEnable()
 	{
+		updater = new ManagedUpdater(this);
 		setInstance(this);
 		config = new Config(this);
 		language = new Language(this);
 		if(!config.isLoaded())
 		{
-			getLogger().info(ConsoleColor.RED + "Failed to enable plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
+			getLogger().info(ConsoleColor.RED + "Failed to enable the plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 			return;
 		}
-		if(config.useUpdater()) update(null); // Check for updates
+		if(config.useUpdater()) updater.update(); // Check for updates
 		if(load()) // Load Plugin
 		{
 			getLogger().info(ConsoleColor.GREEN + "Marriage Master has been enabled! " + ConsoleColor.YELLOW + " :) " + ConsoleColor.RESET);
 		}
 		else
 		{
-			getLogger().info(ConsoleColor.RED + "Failed to enable plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
+			getLogger().info(ConsoleColor.RED + "Failed to enable the plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 		}
 	}
 
@@ -95,9 +95,10 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	{
 		if(config != null && config.isLoaded() && DB != null)
 		{
-			if(config.useUpdater()) update(null); // Check for updates
+			if(config.useUpdater()) updater.update(); // Check for updates
 			unload();
 		}
+		updater.waitForAsyncOperation(); // Wait for updates to finish
 		getLogger().info(ConsoleColor.RED + "Marriage Master has been disabled. " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 	}
 
@@ -168,18 +169,6 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IUpd
 	public Database getDatabase()
 	{
 		return DB;
-	}
-
-	@Override
-	public Updater createUpdater(UpdateProvider updateProvider)
-	{
-		return new at.pcgamingfreaks.Bungee.Updater(this, true, updateProvider);
-	}
-
-	@Override
-	public boolean isRelease()
-	{
-		return getDescription().getVersion().contains("Release");
 	}
 
 	//region API Stuff

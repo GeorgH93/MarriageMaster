@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
+import at.pcgamingfreaks.Bukkit.ManagedUpdater;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Utils;
 import at.pcgamingfreaks.ConsoleColor;
@@ -35,12 +36,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
-import at.pcgamingfreaks.MarriageMaster.IUpdater;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
-import at.pcgamingfreaks.Updater.UpdateProviders.UpdateProvider;
-import at.pcgamingfreaks.Updater.Updater;
 import at.pcgamingfreaks.Version;
 
 import org.bukkit.Location;
@@ -58,12 +56,13 @@ import lombok.Setter;
 import java.util.Collection;
 import java.util.UUID;
 
-public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IUpdater
+public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
 
 	// Global Objects
+	@Getter private ManagedUpdater updater;
 	private Config config = null;
 	@Getter private Language language = null;
 	@Getter private Database database = null;
@@ -82,18 +81,11 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	public Message messageNotANumber, messageNoPermission, messageNotFromConsole, messageNotMarried, messagePartnerOffline, messagePartnerNotInRange, messageTargetPartnerNotFound,
 					messagePlayerNotFound, messagePlayerNotMarried, messagePlayerNotOnline, messagePlayersNotMarried, messageMoved, messageDontMove, messageMarriageNotExact;
 
-	/*if[STANDALONE]
-	@Override
-	public boolean isRunningInStandaloneMode()
-	{
-		return true;
-	}
-	end[STANDALONE]*/
-
 	//region Loading and Unloading the plugin
 	@Override
 	public void onEnable()
 	{
+		updater = new ManagedUpdater(this);
 		setInstance(this);
 		setVersion(new Version(this.getDescription().getVersion()));
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
@@ -121,7 +113,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			failedToEnablePlugin();
 			return;
 		}
-		if(config.useUpdater()) update(null); // Check for updates
+		if(config.useUpdater()) updater.update(); // Check for updates
 		language = new Language(this);
 		BackpackIntegrationManager.initIntegration();
 		backpacksIntegration = BackpackIntegrationManager.getIntegration();
@@ -136,7 +128,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 	private void failedToEnablePlugin()
 	{
-		getLogger().info(ConsoleColor.RED + "Failed to enable plugin!" + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
+		getLogger().info(ConsoleColor.RED + "Failed to enable the plugin!" + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 		this.setEnabled(false);
 		instance = null;
 	}
@@ -144,15 +136,14 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Override
 	public void onDisable()
 	{
-		Updater updater = null;
 		if(config != null && config.isLoaded() && database != null)
 		{
-			if(config.useUpdater()) updater = update(null); // Check for updates
+			if(config.useUpdater()) updater.update(); // Check for updates
 			unload();
 		}
 		if(placeholderManager != null) placeholderManager.close();
 		setInstance(null);
-		if(updater != null) updater.waitForAsyncOperation();
+		updater.waitForAsyncOperation();
 		getLogger().info(StringUtils.getPluginDisabledMessage("Marriage Master"));
 	}
 
@@ -264,19 +255,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		marriageManager.close();
 	}
 	//endregion
-
-
-	@Override
-	public boolean isRelease()
-	{
-		return getDescription().getVersion().contains("Release");
-	}
-
-	@Override
-	public Updater createUpdater(final @NotNull UpdateProvider updateProvider)
-	{
-		return new at.pcgamingfreaks.Bukkit.Updater(this, true, updateProvider);
-	}
 
 	public Config getConfiguration()
 	{

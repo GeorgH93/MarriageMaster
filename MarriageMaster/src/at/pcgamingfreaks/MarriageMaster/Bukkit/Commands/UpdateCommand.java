@@ -46,10 +46,7 @@ public class UpdateCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		messageCheckingForUpdates.send(sender);
-		/*if_not[STANDALONE]*/
-		((at.pcgamingfreaks.PluginLib.Bukkit.PluginLib) at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance()).update(null); // Make the PluginLib to check for updates too
-		/*end[STANDALONE]*/
-		((MarriageMaster) getMarriagePlugin()).update(result -> {
+		((MarriageMaster) getMarriagePlugin()).getUpdater().update(result -> {
 			switch(result)
 			{
 				case SUCCESS: messageUpdated.send(sender); break;
@@ -58,6 +55,9 @@ public class UpdateCommand extends MarryCommand
 				default: messageUpdateFail.send(sender); break;
 			}
 		});
+		/*if_not[STANDALONE]*/
+		((at.pcgamingfreaks.PluginLib.Bukkit.PluginLib) at.pcgamingfreaks.PluginLib.Bukkit.PluginLib.getInstance()).getUpdater().update(); // Make the PluginLib to check for updates too
+		/*end[STANDALONE]*/
 	}
 
 	@Override
