@@ -26,7 +26,7 @@ jobs:
     - name: Build with Maven
       run: |
         mvn -B install package --file pom.xml
-        cp Minepacks/target/M*.jar artifacts/
+        cp MarriageMaster/target/M*.jar artifacts/
 
     - name: Publish to GitHub Packages Apache Maven
       run: 'mvn deploy -s $GITHUB_WORKSPACE/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
@@ -36,12 +36,12 @@ jobs:
     - name: Build with Maven (Standalone)
       run: |
         mvn -B clean install package --file pom.xml -P Standalone,ExcludeBadRabbit
-        mv Minepacks/target/M*-Standalone.jar artifacts/
+        mv MarriageMaster/target/M*-Standalone.jar artifacts/
 
     - name: Build with Maven (Release)
       run: |
         mvn -B clean package --file pom.xml -P Release
-        mv Minepacks/target/M*-Release.jar artifacts/
+        mv MarriageMaster/target/M*-Release.jar artifacts/
 
     - name: Upload the artifacts
       uses: skx/github-action-publish-binaries@master
