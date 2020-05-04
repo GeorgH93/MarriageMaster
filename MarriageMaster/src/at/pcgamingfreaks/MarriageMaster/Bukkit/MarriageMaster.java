@@ -113,6 +113,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			failedToEnablePlugin();
 			return;
 		}
+		updater.setChannel(config.getUpdateChannel());
 		if(config.useUpdater()) updater.update(); // Check for updates
 		language = new Language(this);
 		BackpackIntegrationManager.initIntegration();
@@ -164,6 +165,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			setEnabled(false);
 			return false;
 		}
+		updater.setChannel(config.getUpdateChannel());
 
 		// Loading data
 		surnamesEnabled = config.isSurnamesEnabled();

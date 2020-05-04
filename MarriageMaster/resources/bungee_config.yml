@@ -82,8 +82,10 @@ Database:
 
 Misc:
   # Only Downloads the update to the "updates" folder. You will have to move it manually or let you system move it in the startup script.
-  # If turned off you still can use /marry update to download the update
-  AutoUpdate: true
+  AutoUpdate:
+    # When auto update is disabled you still can use the build in update function manually with /marry update
+    Enable: true
+    Channel: ${updateChannel}
 
 # Config File Version. Don't touch it!
-Version: 100
+Version: 101

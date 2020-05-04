@@ -50,7 +50,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 		else
 		{
-			super.doUpgrade(oldConfig, new HashMap<>(), oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)"));
+			Map<String, String> reMappings = new HashMap<>();
+			if(oldConfig.getVersion() < 98) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
+			super.doUpgrade(oldConfig, reMappings, oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)"));
 		}
 	}
 
@@ -240,7 +242,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		Set<String> blackListedWorlds = new HashSet<>();
 		for(String world : getConfigE().getStringList("Gift.BlacklistedWorlds", new LinkedList<>()))
 		{
-			blackListedWorlds.add(world.toLowerCase());
+			blackListedWorlds.add(world.toLowerCase(Locale.ENGLISH));
 		}
 		return blackListedWorlds;
 	}
@@ -483,7 +485,18 @@ public class Config extends Configuration implements DatabaseConfiguration
 	//region Misc getter
 	public boolean useUpdater()
 	{
-		return getConfigE().getBoolean("Misc.AutoUpdate", true);
+		return getConfigE().getBoolean("Misc.AutoUpdate.Enable", getConfigE().getBoolean("Misc.AutoUpdate", true));
+	}
+
+	public String getUpdateChannel()
+	{
+		String channel = getConfigE().getString("Misc.AutoUpdate.Channel", "Release");
+		if("Release".equals(channel) || "Master".equals(channel) || "Dev".equals(channel))
+		{
+			return channel;
+		}
+		else logger.info("Unknown update Channel: " + channel);
+		return null;
 	}
 
 	public boolean isBungeeEnabled()

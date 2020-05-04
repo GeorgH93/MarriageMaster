@@ -213,10 +213,12 @@ CommandExecutor:
   OnDivorceWithPriest: []
 
 Misc:
-  # When auto update is disabled you still can use the build in update function manually with /marry update
-  AutoUpdate: true
+  AutoUpdate:
+    # When auto update is disabled you still can use the build in update function manually with /marry update
+    Enable: true
+    Channel: ${updateChannel}
   # Enable this option if you are in a BungeeCord environment. It is also recommended to install the plugin on your BungeeCord server
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 97
+Version: 98

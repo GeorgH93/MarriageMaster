@@ -79,6 +79,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 			getLogger().info(ConsoleColor.RED + "Failed to enable the plugin! " + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 			return;
 		}
+		updater.setChannel(config.getUpdateChannel());
 		if(config.useUpdater()) updater.update(); // Check for updates
 		if(load()) // Load Plugin
 		{
@@ -111,6 +112,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 			getLogger().warning(ConsoleColor.RED + "A critical error occurred! The plugin failed to load!" + ConsoleColor.RESET);
 			return false;
 		}
+		updater.setChannel(config.getUpdateChannel());
 		DB = new Database(this);
 		if(!DB.available())
 		{
