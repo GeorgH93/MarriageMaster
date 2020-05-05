@@ -3,7 +3,6 @@
 #汉化版本更新 by Fur_Xia                             #
 ##########################################
 #为了简化定制和翻译过程，请查看编辑器： http://ptp.pcgamingfreaks.at
-Version: 98
 Language:
   NotFromConsole: "&c这条指令不能在控制台中使用！"
   # Global Wildcards: <heart> and <smallheart>
@@ -252,7 +251,7 @@ Language:
       DelHomeOther: "删除一名已婚玩家的婚房。"
       Help: "显示所有可用命令及其说明。"
       List: "查看服务器上所有的已婚玩家。"
-      ListPriests: "Lists all currently online priests."
+      ListPriests: "在线神父名单"
       PvP: "更改与伴侣的PVP状态。"
       PvPOn: "与您的伴侣启用PVP。"
       PvPOff: "与您的伴侣关闭PVP。"
@@ -287,7 +286,7 @@ Placeholders:
       True: "true"
       False: "false"
     NotMarried: "未婚"
-    NoHome: "no home"
+    NoHome: "未设置婚房"
     Separator: "&r, "
   Heart:
     Married: "&c<heart>&f"
@@ -412,7 +411,7 @@ Placeholders:
       True: "已婚"
       False: "未婚"
     NotMarried: "未婚"
-    NoHome: "no home"
+    NoHome: "未设置婚房"
     Separator: "&r, "
   Heart:
     Married: "&c<heart>&f"
@@ -446,5 +445,5 @@ LanguageName: "Chinese"
 Author: "Fur_Xia"
 
 # Language file version. Don't touch it!
-Version: 95
+Version: 98
 Revision: 1
