@@ -29,7 +29,7 @@ jobs:
         cp MarriageMaster/target/M*.jar artifacts/
 
     - name: Publish to GitHub Packages Apache Maven
-      run: 'mvn deploy -s $GITHUB_WORKSPACE/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
+      run: 'mvn deploy -pl MarriageMaster,MarriageMaster-API -s $GITHUB_WORKSPACE/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
