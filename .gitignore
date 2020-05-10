@@ -47,6 +47,8 @@ Temporary Items
 # Temp files
 *.tmp
 
+# Shell script
+*.sh
 
 # =========================
 # IDE Project Files
