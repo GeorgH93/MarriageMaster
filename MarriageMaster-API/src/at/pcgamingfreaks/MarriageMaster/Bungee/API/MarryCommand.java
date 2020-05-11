@@ -33,17 +33,16 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "FieldCanBeLocal", "FieldMayBeFinal"})
 public abstract class MarryCommand extends SubCommand implements at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
 {
-	private static final MarriageMasterPlugin marriagePlugin = null;
-	protected Plugin plugin;
+	private static MarriageMasterPlugin marriagePlugin = null;
+	protected final Plugin plugin;
 
-	@SuppressWarnings("FieldCanBeLocal")
-	private static final String helpPartnerSelector    = "<partner name>";
-	private static final Message messageNoPermission   = new Message(ChatColor.RED + "You don't have the permission to do that.");
-	private static final Message messageNotFromConsole = new Message(ChatColor.RED + "This command can't be used from console!");
-	private static final Message messageNotMarried     = new Message(ChatColor.RED + "You are not married!");
+	private static String helpPartnerSelector    = "<partner name>";
+	private static Message messageNoPermission   = new Message(ChatColor.RED + "You don't have the permission to do that.");
+	private static Message messageNotFromConsole = new Message(ChatColor.RED + "This command can't be used from console!");
+	private static Message messageNotMarried     = new Message(ChatColor.RED + "You are not married!");
 	private boolean playerOnly = false, mustBeMarried = false, partnerSelectorInHelp = false;
 	private static Method showHelp;
 
