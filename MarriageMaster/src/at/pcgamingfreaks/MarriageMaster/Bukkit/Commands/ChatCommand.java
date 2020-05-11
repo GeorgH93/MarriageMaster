@@ -41,9 +41,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatCommand extends MarryCommand implements Listener
@@ -66,7 +64,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName\\}", "%1\\$s").replaceAll("\\{ReceiverDisplayName\\}", "%2\\$s").replaceAll("\\{Message\\}", "%3\\$s").replaceAll("\\{SenderName\\}", "%4\\$s").replaceAll("\\{ReceiverName\\}", "%5\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
@@ -76,7 +74,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	}
 
 	@Override
-	public void registerSubCommands()
+	public void afterRegister()
 	{
 		chatToggleCommand = new ChatToggleCommand(plugin, this);
 		plugin.getCommandManager().registerSubCommand(chatToggleCommand);
@@ -88,7 +86,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	}
 
 	@Override
-	public void unRegisterSubCommands()
+	public void beforeUnregister()
 	{
 		plugin.getCommandManager().unRegisterSubCommand(chatToggleCommand);
 		chatToggleCommand.close();
@@ -131,7 +129,6 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
 			{
-				@SuppressWarnings("deprecation") // We can't expect the players to know their partners uuid
 				Player target = Bukkit.getPlayer(args[1]);
 				if(target != null && player.isPartner(target))
 				{
@@ -180,10 +177,10 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			else
 			{
-				String arg = args[args.length - 1].toLowerCase();
+				String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 				for(Player player : Bukkit.getOnlinePlayers())
 				{
-					if(player.getName().toLowerCase().startsWith(arg))
+					if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
 					{
 						data.add(player.getName());
 					}
@@ -220,13 +217,13 @@ public class ChatCommand extends MarryCommand implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void onLeave(PlayerQuitEvent event)
+	public void onPlayerLeave(PlayerQuitEvent event)
 	{
 		if(allowChatSurveillance) listeners.remove(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-	public void onJoin(PlayerJoinEvent event)
+	public void onPlayerJoin(PlayerJoinEvent event)
 	{
 		if(allowChatSurveillance && event.getPlayer().hasPermission(Permissions.LISTEN_CHAT_AUTO_JOIN))
 		{
@@ -298,80 +295,85 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 		}
 
-		if(!receivers.isEmpty())
+		if(receivers.isEmpty())
 		{
-			// Fire Event
-			if(receivers.size() == 1)
-			{
-				MarryChatEvent marryChatEvent = new MarryChatEvent(sender, receivers.get(0), msg);
-				Bukkit.getPluginManager().callEvent(marryChatEvent);
-				if(marryChatEvent.isCancelled())
-				{
-					return;
-				}
-				msg = marryChatEvent.getMessage();
-			}
-			else
-			{
-				MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, receivers, msg);
-				Bukkit.getPluginManager().callEvent(marryChatEvent);
-				if(marryChatEvent.isCancelled() || receivers.isEmpty())
-				{
-					return;
-				}
-				msg = marryChatEvent.getMessage();
-				if(receivers.size() == 1)
-				{
-					//noinspection ConstantConditions
-					receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
-				}
-			}
+			sender.send(plugin.messagePartnerOffline);
+			return;
+		}
 
-			msg = msg.replace('§', '&'); // Remove all color codes from the message.
-			// Checks if person has permission to use color codes
-			if(sender.hasPermission(Permissions.CHAT_COLOR))
-			{
-				msg = ChatColor.translateAlternateColorCodes('&', msg);
-			}
-			if(sender.hasPermission(Permissions.CHAT_FORMAT))
-			{
-				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
-			}
-			else
-			{
-				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
-			}
-			if(sender.hasPermission(Permissions.CHAT_MAGIC))
-			{
-				msg = msg.replaceAll("&k", "§k");
-			}
-			else
-			{
-				msg = msg.replaceAll("§k", "&k");
-			}
-			// Send the message
-			List<Player> playerReceivers = new LinkedList<>(listeners); // Copy the listeners since we need to send the message to them anyway
-			playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
-			if(receiver == null) // Add the receivers to the list
-			{
-				for(Marriage target : receivers)
-				{
-					//noinspection ConstantConditions
-					playerReceivers.add(target.getPartner(sender).getPlayerOnline());
-				}
-			}
-			else
-			{
-				playerReceivers.add(receiver); // Add the receiver to the list
-			}
-			String receiverDisplayName = (receiver != null) ? receiver.getDisplayName() : displayNameAll, receiverName = (receiver != null) ? receiver.getName() : displayNameAll;
-			privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
-			if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
+		//region Fire Event
+		if(receivers.size() == 1)
+		{
+			MarryChatEvent marryChatEvent = new MarryChatEvent(sender, receivers.get(0), msg);
+			Bukkit.getPluginManager().callEvent(marryChatEvent);
+			if(marryChatEvent.isCancelled()) return;
+			msg = marryChatEvent.getMessage();
 		}
 		else
 		{
-			sender.send(plugin.messagePartnerOffline);
+			MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, receivers, msg);
+			Bukkit.getPluginManager().callEvent(marryChatEvent);
+			if(marryChatEvent.isCancelled() || receivers.isEmpty()) return;
+			msg = marryChatEvent.getMessage();
+			if(receivers.size() == 1)
+			{
+				//noinspection ConstantConditions
+				receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
+			}
 		}
+		//endregion
+
+		msg = cleanupMessage(msg, sender);
+
+		// Send the message
+		List<Player> playerReceivers;
+		if(receiver == null) // Add the receivers to the list
+		{
+			playerReceivers = new ArrayList<>(listeners.size() + receivers.size() + 1);
+			for(Marriage target : receivers)
+			{
+				//noinspection ConstantConditions
+				Player p = target.getPartner(sender).getPlayerOnline();
+				if(!listeners.contains(p)) playerReceivers.add(p);
+			}
+		}
+		else
+		{
+			playerReceivers = new ArrayList<>(listeners.size() + 2);
+			if(listeners.contains(receiver)) playerReceivers.add(receiver); // Add the receiver to the list if not one of the listeners
+		}
+		if(!listeners.contains(sender.getPlayerOnline())) playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
+		playerReceivers.addAll(listeners); // Copy the listeners since we need to send the message too
+		String receiverDisplayName = (receiver != null) ? receiver.getDisplayName() : displayNameAll, receiverName = (receiver != null) ? receiver.getName() : displayNameAll;
+		privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
+		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
+	}
+
+	private static @NotNull String cleanupMessage(@NotNull String msg, final @NotNull MarriagePlayer sender)
+	{
+		msg = msg.replace('§', '&'); // Remove all color codes from the message.
+		// Checks if person has permission to use color codes
+		if(sender.hasPermission(Permissions.CHAT_COLOR))
+		{
+			msg = ChatColor.translateAlternateColorCodes('&', msg);
+		}
+		if(sender.hasPermission(Permissions.CHAT_FORMAT))
+		{
+			msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
+		}
+		else
+		{
+			msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
+		}
+		if(sender.hasPermission(Permissions.CHAT_MAGIC))
+		{
+			msg = msg.replaceAll("&k", "§k");
+		}
+		else
+		{
+			msg = msg.replaceAll("§k", "&k");
+		}
+		return msg;
 	}
 
 
