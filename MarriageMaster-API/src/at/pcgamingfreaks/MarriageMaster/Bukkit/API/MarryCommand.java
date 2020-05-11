@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2016, 2018 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,8 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
-import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Command.SubCommand;
+import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
 
 import org.bukkit.ChatColor;
@@ -35,14 +35,14 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class MarryCommand extends SubCommand implements at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
 {
-	private static MarriageMasterPlugin marriagePlugin = null;
+	private static final MarriageMasterPlugin marriagePlugin = null;
 	protected JavaPlugin plugin;
 
 	@SuppressWarnings("FieldCanBeLocal")
-	private static String helpPartnerSelector    = "<partner name>";
-	private static Message messageNoPermission   = new Message(ChatColor.RED + "You don't have the permission to do that.");
-	private static Message messageNotFromConsole = new Message(ChatColor.RED + "This command can't be used from console!");
-	private static Message messageNotMarried     = new Message(ChatColor.RED + "You are not married!");
+	private static final String helpPartnerSelector    = "<partner name>";
+	private static final Message messageNoPermission   = new Message(ChatColor.RED + "You don't have the permission to do that.");
+	private static final Message messageNotFromConsole = new Message(ChatColor.RED + "This command can't be used from console!");
+	private static final Message messageNotMarried     = new Message(ChatColor.RED + "You are not married!");
 	private static Method showHelp;
 	private boolean playerOnly = false, mustBeMarried = false, partnerSelectorInHelp = false;
 
@@ -167,11 +167,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 		{
 			messageNotFromConsole.send(sender);
 		}
-		else if(getPermission() != null && !sender.hasPermission(getPermission()))
-		{
-			messageNoPermission.send(sender);
-		}
-		else
+		else if(getPermission() == null || sender.hasPermission(getPermission()))
 		{
 			return tabComplete(sender, mainCommandAlias, alias, args);
 		}

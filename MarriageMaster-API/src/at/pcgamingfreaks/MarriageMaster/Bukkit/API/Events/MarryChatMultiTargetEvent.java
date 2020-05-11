@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,12 +30,11 @@ import java.util.List;
 /**
  * Event is fired right before the private message of a player is sent to his partner. All the checks are done. We just await your approval.
  */
-@SuppressWarnings("unused")
 public class MarryChatMultiTargetEvent extends Event implements Cancellable
 {
 	private boolean cancelled = false;
-	private MarriagePlayer player;
-	private List<Marriage> marriageData;
+	private final MarriagePlayer player;
+	private final List<Marriage> marriageData;
 	private String message;
 
 	/**
@@ -45,6 +44,7 @@ public class MarryChatMultiTargetEvent extends Event implements Cancellable
 	 */
 	public MarryChatMultiTargetEvent(@NotNull MarriagePlayer player, @NotNull List<Marriage> marriageData, @NotNull String message)
 	{
+		super(true);
 		this.player = player;
 		this.marriageData = marriageData;
 		this.message = message;

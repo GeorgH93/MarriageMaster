@@ -192,7 +192,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	}
 
 	@SuppressWarnings("unused")
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.HIGH)
 	public void onChat(ChatEvent event)
 	{
 		if(!(event.getSender() instanceof ProxiedPlayer) || event.isCommand()) return;

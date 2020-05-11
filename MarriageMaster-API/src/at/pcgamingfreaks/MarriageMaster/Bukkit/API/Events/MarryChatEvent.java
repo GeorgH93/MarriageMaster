@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,12 +28,11 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Event is fired right before the private message of a player is sent to his partner. All the checks are done. We just await your approval.
  */
-@SuppressWarnings("unused")
 public class MarryChatEvent extends Event implements Cancellable
 {
 	private boolean cancelled = false;
-	private MarriagePlayer player;
-	private Marriage marriageData;
+	private final MarriagePlayer player;
+	private final Marriage marriageData;
 	private String message;
 
 	/**
@@ -41,8 +40,9 @@ public class MarryChatEvent extends Event implements Cancellable
 	 * @param marriageData Marriage data of the player containing the partner that should get the message.
 	 * @param message The message sent from the player.
 	 */
-	public MarryChatEvent(@NotNull MarriagePlayer player, @NotNull Marriage marriageData, @NotNull String message)
+	public MarryChatEvent(final @NotNull MarriagePlayer player, final @NotNull Marriage marriageData, final @NotNull String message)
 	{
+		super(true);
 		this.player = player;
 		this.marriageData = marriageData;
 		this.message = message;

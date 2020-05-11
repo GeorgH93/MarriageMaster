@@ -116,52 +116,54 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-		if(args.length == 0)
-		{
-			showHelp(sender, mainCommandAlias);
-		}
-		else
-		{
-			if(getMarriagePlugin().getCommandManager().isToggleSwitch(args[0]))
+		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
+			if(args.length == 0)
 			{
-				toggleChatSetting(player);
-			}
-			else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
-			{
-				Player target = Bukkit.getPlayer(args[1]);
-				if(target != null && player.isPartner(target))
-				{
-					player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
-					messageTargetSet.send(sender);
-				}
-				else
-				{
-					plugin.messageTargetPartnerNotFound.send(sender);
-				}
+				showHelp(sender, mainCommandAlias);
 			}
 			else
 			{
-				//noinspection ConstantConditions
-				if(player.getPrivateChatTarget() == null || player.getPrivateChatTarget().getPartner(player).isOnline())
+				if(getMarriagePlugin().getCommandManager().isToggleSwitch(args[0]))
 				{
-					StringBuilder stringBuilder = new StringBuilder();
-					for(int i = 0; i < args.length; i++)
+					toggleChatSetting(player);
+				}
+				else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+				{
+					Player target = Bukkit.getPlayer(args[1]);
+					if(target != null && player.isPartner(target))
 					{
-						if(i != 0)
-						{
-							stringBuilder.append(" ");
-						}
-						stringBuilder.append(args[i]);
+						player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
+						messageTargetSet.send(sender);
 					}
-					doChat(player, stringBuilder.toString()); // Doing the actual chat message logic
+					else
+					{
+						plugin.messageTargetPartnerNotFound.send(sender);
+					}
 				}
 				else
 				{
-					plugin.messagePartnerOffline.send(sender);
+					//noinspection ConstantConditions
+					if(player.getPrivateChatTarget() == null || player.getPrivateChatTarget().getPartner(player).isOnline())
+					{
+						StringBuilder stringBuilder = new StringBuilder();
+						for(int i = 0; i < args.length; i++)
+						{
+							if(i != 0)
+							{
+								stringBuilder.append(" ");
+							}
+							stringBuilder.append(args[i]);
+						}
+						doChat(player, stringBuilder.toString()); // Doing the actual chat message logic
+					}
+					else
+					{
+						plugin.messagePartnerOffline.send(sender);
+					}
 				}
 			}
-		}
+		});
 	}
 
 	@Override
@@ -210,9 +212,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(player.isPrivateChatDefault())
 		{
 			event.setCancelled(true);
-			final String msg = event.getMessage();
-			// Sync the execution of the chat event with the main thread. We check a lot of stuff with the bukkit api which is not thread save!
-			Bukkit.getScheduler().runTask(plugin, () -> doChat(player, msg));
+			doChat(player, event.getMessage());
 		}
 	}
 
@@ -266,23 +266,21 @@ public class ChatCommand extends MarryCommand implements Listener
 
 	private void doChat(final MarriagePlayer sender, String msg)
 	{
-		List<Marriage> receivers = new LinkedList<>();
+		List<Marriage> receivers = new ArrayList<>(sender.getMultiMarriageData().size());
 		Player receiver = null;
 		if(sender.getPrivateChatTarget() == null)
 		{
-			MarriagePlayer p = null;
+			MarriagePlayer last = null;
 			for(Marriage m : sender.getMultiMarriageData())
 			{
-				p = m.getPartner(sender);
+				MarriagePlayer p = m.getPartner(sender);
 				if(p != null && p.isOnline() && p.getPlayerOnline() != null)
 				{
+					last = p;
 					receivers.add(m);
 				}
 			}
-			if(receivers.size() == 1 && p != null)
-			{
-				receiver = p.getPlayerOnline();
-			}
+			if(receivers.size() == 1) receiver = last.getPlayerOnline();
 		}
 		else
 		{
@@ -340,7 +338,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		else
 		{
 			playerReceivers = new ArrayList<>(listeners.size() + 2);
-			if(listeners.contains(receiver)) playerReceivers.add(receiver); // Add the receiver to the list if not one of the listeners
+			if(!listeners.contains(receiver)) playerReceivers.add(receiver); // Add the receiver to the list if not one of the listeners
 		}
 		if(!listeners.contains(sender.getPlayerOnline())) playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
 		playerReceivers.addAll(listeners); // Copy the listeners since we need to send the message too
