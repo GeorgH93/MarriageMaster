@@ -35,6 +35,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,7 +50,6 @@ public class TpCommand extends MarryCommand
 
 	static
 	{
-		BAD_MATS.add(Material.AIR);
 		BAD_MATS.add(Material.FIRE);
 		BAD_MATS.add(Material.LAVA);
 		BAD_MATS.add(Material.CACTUS);
@@ -139,28 +139,35 @@ public class TpCommand extends MarryCommand
 		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 	}
 
-	private Location getSaveLoc(Location loc)
+	private @Nullable Location getSaveLoc(@NotNull Location loc)
 	{
-		Material mat;
+		Material mat, matB1, matB2;
 		World w = loc.getWorld();
+		if(w == null) return null;
 		int x = loc.getBlockX(), y = loc.getBlockY() - 1, z = loc.getBlockZ(), miny = y - 10;
 		Block b, b1 = w.getBlockAt(x, y + 1, z), b2 = w.getBlockAt(x, y + 2, z);
+		matB1 = b1 == null ? Material.AIR : b1.getType();
+		matB2 = b2 == null ? Material.AIR : b1.getType();
 		for(loc = null; y > 0 && y > miny && loc == null; y--)
 		{
 			b = w.getBlockAt(x, y, z);
+			mat = b == null ? Material.AIR : b.getType();
 			if(b != null && !b.isEmpty())
 			{
-				mat = b.getType();
-				if(!BAD_MATS.contains(mat) &&
-						(b1 == null || MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? b1.isPassable() : b1.isEmpty()) &&
-						(b2 == null || MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? b2.isPassable() : b2.isEmpty()))
+				if((!BAD_MATS.contains(mat) && mat != Material.AIR) &&
+						(b1 == null || (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? (b1.isPassable() && !BAD_MATS.contains(matB1)) : b1.isEmpty())) &&
+						(b2 == null || (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? (b2.isPassable() && !BAD_MATS.contains(matB2)) : b2.isEmpty())))
 				{
 					loc = b.getLocation();
+					loc.setX(loc.getX() + 0.5);
 					loc.setY(loc.getY() + 1);
+					loc.setZ(loc.getZ() + 0.5);
 				}
 			}
 			b2 = b1;
+			matB2 = matB1;
 			b1 = b;
+			matB1 = mat;
 		}
 		return loc;
 	}
