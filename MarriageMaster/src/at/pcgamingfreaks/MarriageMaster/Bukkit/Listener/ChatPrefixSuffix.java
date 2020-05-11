@@ -37,7 +37,7 @@ public class ChatPrefixSuffix implements Listener
 
 	private final MarriageMaster plugin;
 	private final IMarriageAndPartnerFormatter prefixFormatter, suffixFormatter;
-	private final boolean useStatusHeart, prefixOnLineBeginning;
+	private final boolean useStatusHeartPrefix, useStatusHeartSuffix, prefixOnLineBeginning;
 
 	public ChatPrefixSuffix(final @NotNull MarriageMaster plugin)
 	{
@@ -45,18 +45,20 @@ public class ChatPrefixSuffix implements Listener
 		if(plugin.getConfiguration().isPrefixEnabled())
 		{
 			final String prefix = plugin.getConfiguration().getPrefix();
+			useStatusHeartPrefix = prefix.contains("{StatusHeart}");
 			prefixFormatter = PrefixSuffixFormatterImpl.produceFormatter(prefix.isEmpty() ? "" : prefix + " ");
-			useStatusHeart = plugin.getConfiguration().getPrefix().contains("{StatusHeart}");
 			prefixOnLineBeginning = plugin.getConfiguration().isPrefixOnLineBeginning();
 		}
 		else
 		{
 			prefixFormatter = PrefixSuffixFormatterImpl.produceFormatter("");
-			useStatusHeart = false;
+			useStatusHeartPrefix = false;
 			prefixOnLineBeginning = false;
 		}
-		final String suffix = plugin.getConfiguration().getSuffix();
-		suffixFormatter = PrefixSuffixFormatterImpl.produceFormatter(plugin.getConfiguration().isSuffixEnabled() && !suffix.isEmpty() ? " " + suffix : "");
+		String suffix = !plugin.getConfiguration().isSuffixEnabled() ? plugin.getConfiguration().getSuffix() : "";
+		if(!suffix.isEmpty()) suffix = " " + suffix;
+		useStatusHeartSuffix = suffix.contains("{StatusHeart}");
+		suffixFormatter = PrefixSuffixFormatterImpl.produceFormatter(suffix);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -84,17 +86,32 @@ public class ChatPrefixSuffix implements Listener
 				format = format.replace("%1$s", p + "%1$s" + s);
 			}
 		}
-		else if(useStatusHeart)
+		else
 		{
-			if(prefixOnLineBeginning)
+			if(useStatusHeartPrefix)
 			{
-				format = HEART_GRAY + format;
+				if(prefixOnLineBeginning)
+				{
+					format = HEART_GRAY + format;
+				}
+				else
+				{
+					format = format.replace("%1$s", STATUS_HEART_NM);
+				}
+				changed = true;
 			}
-			else
+			if(useStatusHeartSuffix)
 			{
-				format = format.replace("%1$s", STATUS_HEART_NM);
+				if(prefixOnLineBeginning)
+				{
+					format = HEART_GRAY + format;
+				}
+				else
+				{
+					format = format.replace("%1$s", "%1$s " + HEART_GRAY);
+				}
+				changed = true;
 			}
-			changed = true;
 		}
 		if(changed) event.setFormat(format);
 	}
