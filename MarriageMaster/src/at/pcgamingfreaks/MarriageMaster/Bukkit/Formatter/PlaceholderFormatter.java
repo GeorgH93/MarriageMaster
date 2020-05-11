@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2020 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,11 +22,11 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.jetbrains.annotations.NotNull;
 
-public class SuffixFormatter implements IMarriageAndPartnerFormatter
+public class PlaceholderFormatter implements IMarriageAndPartnerFormatter
 {
 	private final String format;
 
-	public SuffixFormatter(final @NotNull String format)
+	public PlaceholderFormatter(final @NotNull String format)
 	{
 		this.format = format;
 	}
@@ -34,6 +34,6 @@ public class SuffixFormatter implements IMarriageAndPartnerFormatter
 	@Override
 	public @NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner)
 	{
-		return String.format(format, marriage.getSurnameString(), partner.getName(), partner.getDisplayName());
+		return String.format(format, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), marriage.getMarriageColor() + HEART);
 	}
 }

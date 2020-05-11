@@ -30,27 +30,18 @@ public class PrefixSuffixFormatterImpl implements at.pcgamingfreaks.MarriageMast
 
 	public PrefixSuffixFormatterImpl(MarriageMaster plugin)
 	{
-		prefixFormatter = producePrefixFormatter(plugin.getConfiguration().getPrefix());
-		suffixFormatter = produceSuffixFormatter(plugin.getConfiguration().getSuffix());
+		prefixFormatter = produceFormatter(plugin.getConfiguration().getPrefix());
+		suffixFormatter = produceFormatter(plugin.getConfiguration().getSuffix());
 	}
 
-	public static IMarriageAndPartnerFormatter producePrefixFormatter(final @NotNull String prefixFormat)
+	public static IMarriageAndPartnerFormatter produceFormatter(@NotNull String format)
 	{
-		if(StringUtils.indexOfAny(prefixFormat, new String[]{ "{Surname}", "{PartnerName}", "{PartnerDisplayName}", "{StatusHeart}", "{MagicHeart}" }) != -1)
+		format = format.replaceAll("\\{StatusHeart}", at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.IMarriageAndPartnerFormatter.HEART_RED);
+		if(StringUtils.indexOfAny(format, new String[]{ "{Surname}", "{PartnerName}", "{PartnerDisplayName}", "{MagicHeart}" }) != -1)
 		{
-			return new PrefixFormatter(prefixFormat.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s")
-					                                               .replaceAll("\\{StatusHeart}", "%4\\$s").replaceAll("\\{MagicHeart}", "%5\\$s"));
+			return new PlaceholderFormatter(format.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s").replaceAll("\\{MagicHeart}", "%4\\$s"));
 		}
-		else return new StaticStringFormatter(prefixFormat);
-	}
-
-	public static IMarriageAndPartnerFormatter produceSuffixFormatter(final @NotNull String suffixFormat)
-	{
-		if(StringUtils.indexOfAny(suffixFormat, new String[]{ "{Surname}", "{PartnerName}", "{PartnerDisplayName}" }) != -1)
-		{
-			return new SuffixFormatter(suffixFormat.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s"));
-		}
-		else return new StaticStringFormatter(suffixFormat);
+		else return new StaticStringFormatter(format);
 	}
 
 	@Override

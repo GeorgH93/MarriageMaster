@@ -81,17 +81,16 @@ InfoOnPartnerJoinLeave:
   # Delay for online partners info on join. In seconds
   JoinDelay: 0
 
-# The prefix/suffix options do not work with all chat plugins
+# The prefix/suffix options do not work with all chat plugins!
 # If your chat plugin support placeholder APIs it would be better to use them! More details: https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Prefix:
   Enable: false
   # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}, {StatusHeart}, {MagicHeart}
   String: "<heart>{PartnerName}<heart>"
   OnLineBeginning: true
-# This may don't work with all chat plugins!
 Suffix:
   Enable: false
-  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}
+  # Placeholders: {Surname}, {PartnerName}, {PartnerDisplayName}, {StatusHeart}, {MagicHeart}
   String: "{Surname}"
 
 Gift:

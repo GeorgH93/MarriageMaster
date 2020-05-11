@@ -45,18 +45,18 @@ public class ChatPrefixSuffix implements Listener
 		if(plugin.getConfiguration().isPrefixEnabled())
 		{
 			final String prefix = plugin.getConfiguration().getPrefix();
-			prefixFormatter = PrefixSuffixFormatterImpl.producePrefixFormatter(prefix.isEmpty() ? "" : prefix + " ");
+			prefixFormatter = PrefixSuffixFormatterImpl.produceFormatter(prefix.isEmpty() ? "" : prefix + " ");
 			useStatusHeart = plugin.getConfiguration().getPrefix().contains("{StatusHeart}");
 			prefixOnLineBeginning = plugin.getConfiguration().isPrefixOnLineBeginning();
 		}
 		else
 		{
-			prefixFormatter = PrefixSuffixFormatterImpl.producePrefixFormatter("");
+			prefixFormatter = PrefixSuffixFormatterImpl.produceFormatter("");
 			useStatusHeart = false;
 			prefixOnLineBeginning = false;
 		}
 		final String suffix = plugin.getConfiguration().getSuffix();
-		suffixFormatter = PrefixSuffixFormatterImpl.produceSuffixFormatter(plugin.getConfiguration().isSuffixEnabled() && !suffix.isEmpty() ? " " + suffix : "");
+		suffixFormatter = PrefixSuffixFormatterImpl.produceFormatter(plugin.getConfiguration().isSuffixEnabled() && !suffix.isEmpty() ? " " + suffix : "");
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
