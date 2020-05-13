@@ -205,7 +205,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		return help;
 	}
 
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onChat(AsyncPlayerChatEvent event)
 	{
 		final MarriagePlayer player = getMarriagePlugin().getPlayerData(event.getPlayer());
