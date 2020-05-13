@@ -72,8 +72,5 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 *
 	 * @return The represented player. Null if the player is offline.
 	 */
-	default @Nullable Player getPlayerOnline()
-	{
-		return getPlayer().getPlayer();
-	}
+	@Nullable Player getPlayerOnline();
 }

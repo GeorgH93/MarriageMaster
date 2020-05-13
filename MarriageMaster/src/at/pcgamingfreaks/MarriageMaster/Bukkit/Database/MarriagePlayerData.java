@@ -99,21 +99,21 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	@Override
 	public @NotNull String getDisplayName()
 	{
-		Player bukkitPlayer = Bukkit.getPlayer(getUUID());
+		Player bukkitPlayer = getPlayerOnline();
 		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : ChatColor.GRAY + getName();
 	}
 
 	@Override
 	public boolean hasPermission(@NotNull String permission)
 	{
-		Player bukkitPlayer = Bukkit.getPlayer(getUUID());
+		Player bukkitPlayer = getPlayerOnline();
 		return bukkitPlayer != null && bukkitPlayer.hasPermission(permission);
 	}
 
 	@Override
 	public boolean isOnline()
 	{
-		return Bukkit.getPlayer(getUUID()) != null;
+		return getPlayerOnline() != null;
 	}
 
 	@Override
@@ -126,6 +126,12 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	@NotNull public List<AcceptPendingRequest> getRequestsToCancel()
 	{
 		return canCloseRequests;
+	}
+
+	@Override
+	public @Nullable Player getPlayerOnline()
+	{
+		return Bukkit.getPlayer(getUUID());
 	}
 
 	@Override

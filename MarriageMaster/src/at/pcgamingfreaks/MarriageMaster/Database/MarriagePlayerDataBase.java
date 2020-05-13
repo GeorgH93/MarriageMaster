@@ -22,8 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.IMessage;
-
-import com.google.common.base.Charsets;
+import at.pcgamingfreaks.UUIDConverter;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +48,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name)
 	{
 		this.name = name;
-		this.uuid = (uuid != null) ? uuid : UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8));
+		this.uuid = (uuid != null) ? uuid : UUIDConverter.getUUIDFromNameAsUUID(name, false);
 		this.hash = this.uuid.hashCode();
 	}
 
