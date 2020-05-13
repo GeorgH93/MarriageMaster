@@ -144,11 +144,13 @@ public class TpCommand extends MarryCommand
 		Material mat, matB1, matB2;
 		World w = loc.getWorld();
 		if(w == null) return null;
-		int x = loc.getBlockX(), y = loc.getBlockY() - 1, z = loc.getBlockZ(), miny = y - 10;
+		int y = loc.getBlockY(), i;
+		if(loc.getY() - y < 0.001) y--;
+		int x = loc.getBlockX(), z = loc.getBlockZ(), miny = Math.max(y - 10, 1);
 		Block b, b1 = w.getBlockAt(x, y + 1, z), b2 = w.getBlockAt(x, y + 2, z);
 		matB1 = b1 == null ? Material.AIR : b1.getType();
 		matB2 = b2 == null ? Material.AIR : b1.getType();
-		for(loc = null; y > 0 && y > miny && loc == null; y--)
+		for(loc = null, i = 0; y > 0 && y > miny && loc == null; y--, i++)
 		{
 			b = w.getBlockAt(x, y, z);
 			mat = b == null ? Material.AIR : b.getType();
