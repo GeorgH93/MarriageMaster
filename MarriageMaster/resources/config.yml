@@ -183,7 +183,9 @@ BackpackShare:
 
 Economy:
   Enable: false
+  # Each of the two players will have to pay half of the amount. Example: cost=100 -> player_a has to pay 50 and player_b has to pay 50
   Marry: 100.0
+  # Each of the two players will have to pay half of the amount. Example: cost=100 -> player_a has to pay 50 and player_b has to pay 50
   Divorce: 100.0
   Tp: 25.0
   Gift: 10.0
