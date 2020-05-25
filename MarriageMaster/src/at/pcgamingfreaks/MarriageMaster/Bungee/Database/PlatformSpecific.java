@@ -59,12 +59,6 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 	}
 
 	@Override
-	public @NotNull UUID uuidFromName(final @NotNull String name)
-	{
-		return null; //TODO bungee doesn't have offline players that can be used to get the uuid
-	}
-
-	@Override
 	public void runAsync(final @NotNull Runnable runnable, final long delay)
 	{
 		if(delay > 0)

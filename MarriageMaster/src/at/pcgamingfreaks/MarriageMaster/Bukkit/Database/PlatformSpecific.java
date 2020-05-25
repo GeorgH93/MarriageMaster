@@ -57,12 +57,6 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 	}
 
 	@Override
-	public UUID uuidFromName(@NotNull String name)
-	{
-		return Bukkit.getOfflinePlayer(name).getUniqueId();
-	}
-
-	@Override
 	public void runAsync(final @NotNull Runnable runnable, final long delay)
 	{
 		if(delay < 1)
