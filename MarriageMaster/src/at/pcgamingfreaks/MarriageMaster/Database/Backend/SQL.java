@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends DatabaseBackend<MARRIAGE_PLAYER, MARRIAGE, HOME> implements SQLBasedDatabase
 {
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
+	private static final Random RANDOM = new Random();
 
 	protected final ConnectionProvider connectionProvider; // Connection provider
 
@@ -511,26 +512,30 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@Override
 	public void load(final @NotNull MARRIAGE_PLAYER player)
 	{
-		runAsync(() -> {
-			try(Connection connection = getConnection())
-			{
-				if(player.getDatabaseKey() == null)
-				{
-					if(!queryPlayer(player, connection)) add(player, connection);
-				}
-				else if(player.isOnline())
-				{
-					update(player, connection);
-				}
-			}
-			catch(SQLException e)
-			{
-				e.printStackTrace();
-			}
-		});
+		runAsync(() -> doLoad(player));
 	}
 
-	protected void add(final MARRIAGE_PLAYER player, final Connection connection) throws SQLException
+	protected void doLoad(final @NotNull MARRIAGE_PLAYER player)
+	{
+		try(Connection connection = getConnection())
+		{
+			if(player.getDatabaseKey() == null)
+			{
+				if(!queryPlayer(player, connection)) add(player, connection);
+			}
+			else if(player.isOnline())
+			{
+				update(player, connection);
+			}
+		}
+		catch(SQLException e)
+		{
+			if(e instanceof SQLTransactionRollbackException) runAsync(() -> doLoad(player), RANDOM.nextInt(4)); // Retry on deadlock
+			else e.printStackTrace();
+		}
+	}
+
+	protected void add(final @NotNull MARRIAGE_PLAYER player, final @NotNull Connection connection) throws SQLException
 	{
 		try(PreparedStatement psAdd = connection.prepareStatement(queryAddPlayer, Statement.RETURN_GENERATED_KEYS))
 		{
