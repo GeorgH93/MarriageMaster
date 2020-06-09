@@ -55,7 +55,7 @@ public class ChatPrefixSuffix implements Listener
 			useStatusHeartPrefix = false;
 			prefixOnLineBeginning = false;
 		}
-		String suffix = !plugin.getConfiguration().isSuffixEnabled() ? plugin.getConfiguration().getSuffix() : "";
+		String suffix = plugin.getConfiguration().isSuffixEnabled() ? plugin.getConfiguration().getSuffix() : "";
 		if(!suffix.isEmpty()) suffix = " " + suffix;
 		useStatusHeartSuffix = suffix.contains("{StatusHeart}");
 		suffixFormatter = PrefixSuffixFormatterImpl.produceFormatter(suffix);
