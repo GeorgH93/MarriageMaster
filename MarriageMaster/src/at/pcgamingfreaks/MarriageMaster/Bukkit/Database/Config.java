@@ -482,6 +482,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 	//endregion
 
+	public String getDefaultCommand()
+	{
+		return getConfigE().getString("DefaultCommand", "help");
+	}
+
 	//region Misc getter
 	public boolean useUpdater()
 	{

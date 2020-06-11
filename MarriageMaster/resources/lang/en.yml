@@ -223,6 +223,27 @@ Language:
     Help:
       Header: "&6### Marriage Master Commands ###"
       Footer: "&6#############################"
+      # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
+      CustomHelp:
+        # Will be used if the player is married
+        Married:
+          - " &3__&b&lMarry Commands&r&3__"
+          - ""
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" kiss your partner","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" tp to your partner","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" talk private whit your partner","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" give your partners things","color":"aqua"}]'
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+        # Will be used if the player is a priest
+        Priest:
+          - " &3__&b&lMarry&r&3__"
+          - "&b You can marry players by using /marry marry <player1> <player2>"
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+        # Will be used if the player is neither married nor a priest
+        Default:
+          - " &3__&b&lMarry&r&3__"
+          - "&cYou must be married to use this command"
+
   Commands:
     HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
     # No color codes please
@@ -401,5 +422,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 98
+Version: 99
 Revision: 1

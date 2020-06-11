@@ -51,9 +51,9 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	}
 
 	@Override
-	public @NotNull String getTranslated(final @NotNull String key)
+	public @NotNull String translateColorCodes(@NotNull String string)
 	{
-		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
+		return super.translateColorCodes(string).replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
 	}
 
 	public boolean isPlaceholderSet(final @NotNull String key)

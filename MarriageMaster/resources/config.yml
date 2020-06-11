@@ -213,6 +213,10 @@ CommandExecutor:
   # Allowed placeholders: {Player1}, {Player2}, {Priest}
   OnDivorceWithPriest: []
 
+# The command that should be used if no sub-command was used.
+# Options: help (/marry help), custom_help (will display the messages defined in the language file in Language.Ingame.Help.CustomHelp)
+DefaultCommand: "help"
+
 Misc:
   AutoUpdate:
     # When auto update is disabled you still can use the build in update function manually with /marry update
@@ -222,4 +226,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 98
+Version: 99
