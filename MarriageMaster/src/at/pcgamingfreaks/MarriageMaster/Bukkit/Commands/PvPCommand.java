@@ -99,12 +99,12 @@ public class PvPCommand extends MarryCommand implements Listener
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		if(args.length < 1)
 		{
 			showHelp(sender, mainCommandAlias);
 			return;
 		}
+		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		Marriage marriage;
 		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2)
 		{
@@ -153,14 +153,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
-		{
-			return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
-		}
-		else
-		{
-			return null;
-		}
+		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 	}
 
 	@Override
