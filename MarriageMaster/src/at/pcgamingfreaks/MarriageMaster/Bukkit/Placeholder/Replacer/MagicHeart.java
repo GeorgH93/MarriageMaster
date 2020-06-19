@@ -23,7 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
 import org.jetbrains.annotations.Nullable;
 
-@PlaceholderName(aliases = "Magic_Heart")
+@PlaceholderName(aliases = { "Magic_Heart", "ColorHeart", "Color_Heart", "ColoredHeart", "Colored_Heart" })
 public class MagicHeart extends PlaceholderReplacerBaseValue
 {
 	public MagicHeart(MarriageMaster plugin)
