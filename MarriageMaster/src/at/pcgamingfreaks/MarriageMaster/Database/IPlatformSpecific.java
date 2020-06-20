@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ public interface IPlatformSpecific<MARRIAGE_PLAYER extends MarriagePlayerDataBas
 {
 	MARRIAGE_PLAYER producePlayer(final @Nullable UUID uuid, final @NotNull String name, boolean priest, final boolean sharesBackpack, final @Nullable Object databaseKey);
 	MARRIAGE produceMarriage(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate,
-	                                         final @Nullable String surname, final boolean pvpEnabled, final @Nullable HOME home, final @Nullable Object databaseKey);
+	                         final @Nullable String surname, final boolean pvpEnabled, final MessageColor color, final @Nullable HOME home, final @Nullable Object databaseKey);
 	HOME produceHome(final @NotNull String name, final @NotNull String world, final @Nullable String server, final double x, final double y, final double z);
 
 	/**

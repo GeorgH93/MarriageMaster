@@ -54,6 +54,7 @@ permissions:
       marry.selfdivorce: true
       marry.changesurname: true
       marry.accept: true
+      marry.setcolor: true
   marry.chat.user:
     description: Gives acces to all private message formats
     children:
@@ -122,6 +123,9 @@ permissions:
     default: true
   marry.seen:
     description: Allows to check when your partner was online the last time
+    default: true
+  marry.setcolor:
+    description: Allows to change the color of the marriage
     default: true
   marry.selfmarry:
     description: Allows to marry an other player without a priest

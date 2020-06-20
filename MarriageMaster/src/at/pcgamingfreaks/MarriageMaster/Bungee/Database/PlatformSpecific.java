@@ -21,6 +21,7 @@ import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Database.IPlatformSpecific;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -47,9 +48,9 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 
 	@Override
 	public @NotNull MarriageData produceMarriage(final @NotNull MarriagePlayerData player1, final @NotNull MarriagePlayerData player2, final @Nullable MarriagePlayerData priest,
-	                                             final @NotNull Date weddingDate, final @Nullable String surname, final boolean pvpEnabled, final @Nullable Home home, final @Nullable Object databaseKey)
+	                                             final @NotNull Date weddingDate, final @Nullable String surname, final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable Home home, final @Nullable Object databaseKey)
 	{
-		return new MarriageData(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
+		return new MarriageData(player1, player2, priest, weddingDate, surname, pvpEnabled, color, home, databaseKey);
 	}
 
 	@Override

@@ -42,6 +42,7 @@ public class Permissions
 	public static final String SEEN = BASE + "seen";
 	public static final String PRIEST = BASE + "priest";
 	public static final String SET_PRIEST = BASE + "setpriest";
+	public static final String SET_COLOR = BASE + "setcolor";
 	public static final String CHANGE_SURNAME = BASE + "changesurname";
 	public static final String TP = BASE + "tp";
 	public static final String BYPASS_BACKPACK_GAME_MODE = BYPASS + "backpackgamemode";

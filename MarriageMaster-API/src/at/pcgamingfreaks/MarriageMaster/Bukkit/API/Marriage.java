@@ -50,10 +50,19 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	boolean inRangeSquared(double maxDistanceSquared);
 
 	/**
-	 * Gets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marraiges have the same color.
-	 * The color is applied random.
+	 * Gets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marriages have the same color.
+	 * The default color is random. But can be changed.
 	 *
 	 * @return The color of the marriage.
 	 */
+	@Deprecated
 	@NotNull ChatColor getMarriageColor();
+
+	/**
+	 * Sets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marriages have the same color.
+	 *
+	 * @param color the color that should be set for the marriage.
+	 */
+	@Deprecated
+	void setMarriageColor(@NotNull ChatColor color);
 }

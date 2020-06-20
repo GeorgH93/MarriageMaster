@@ -17,22 +17,26 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database.Helper;
 
+import at.pcgamingfreaks.Message.MessageColor;
+
 import java.util.Date;
 
 public class StructMarriageSQL
 {
 	public int marryID, p1ID, p2ID, priest;
 	public boolean pvp;
+	public MessageColor color;
 	public String surname;
 	public Date date;
 
-	public StructMarriageSQL(int id, int p1, int p2, int priest, boolean pvp, String surname, java.sql.Timestamp date)
+	public StructMarriageSQL(int id, int p1, int p2, int priest, boolean pvp, String color, String surname, java.sql.Timestamp date)
 	{
 		marryID = id;
 		p1ID = p1;
 		p2ID = p2;
 		this.priest = priest;
 		this.pvp = pvp;
+		this.color = color == null ? null : MessageColor.valueOf(color);
 		this.surname = surname;
 		this.date = new Date(date.getTime());
 	}

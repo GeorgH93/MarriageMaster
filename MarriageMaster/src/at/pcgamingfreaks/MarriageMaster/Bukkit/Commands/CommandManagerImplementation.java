@@ -123,6 +123,10 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		registerSubCommand(new HugCommand(plugin));
 		registerSubCommand(new SeenCommand(plugin));
+		if(plugin.getConfiguration().isAllowPlayersToChangeMarriageColor())
+		{
+			registerSubCommand(new SetColorCommand(plugin));
+		}
 		if(plugin.getConfiguration().isSurnamesEnabled())
 		{
 			registerSubCommand(new SurnameCommand(plugin));

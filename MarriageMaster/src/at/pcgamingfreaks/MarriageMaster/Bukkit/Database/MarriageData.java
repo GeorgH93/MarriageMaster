@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriageDataBase;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -33,26 +34,21 @@ import java.util.Date;
 
 public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender, Home> implements Marriage
 {
-	private final ChatColor marriageColor;
-
 	//region Constructors
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname,
-	                    final boolean pvpEnabled, final @Nullable Home home, final @Nullable Object databaseKey)
+	                    final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable Home home, final @Nullable Object databaseKey)
 	{
-		super(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
-		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
+		super(player1, player2, priest, weddingDate, surname, pvpEnabled, color, home, databaseKey);
 	}
 
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname)
 	{
 		super(player1, player2, priest, weddingDate, surname);
-		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
 	}
 
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @Nullable String surname)
 	{
 		super(player1, player2, priest, surname);
-		marriageColor = Utils.CHAT_COLORS[hashCode() & 15];
 	}
 	//endregion
 
@@ -116,8 +112,13 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	@Override
 	public @NotNull ChatColor getMarriageColor()
 	{
-		return marriageColor;
+		return ChatColor.getByChar(getColor().getCode());
 	}
 
+	@Override
+	public void setMarriageColor(@NotNull ChatColor color)
+	{
+		setColor(MessageColor.getFromCode(color.getChar()));
+	}
 	//endregion
 }

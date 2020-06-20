@@ -21,6 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriageDataBase;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import net.md_5.bungee.api.CommandSender;
 
@@ -33,9 +34,9 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 {
 	//region Constructors
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname,
-	                    final boolean pvpEnabled, final @Nullable Home home, final @Nullable Object databaseKey)
+	                    final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable Home home, final @Nullable Object databaseKey)
 	{
-		super(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
+		super(player1, player2, priest, weddingDate, surname, pvpEnabled, color, home, databaseKey);
 	}
 
 	public MarriageData(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, final @Nullable MarriagePlayer priest, final @NotNull Date weddingDate, final @Nullable String surname)

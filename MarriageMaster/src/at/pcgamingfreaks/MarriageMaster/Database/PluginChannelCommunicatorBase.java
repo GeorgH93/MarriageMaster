@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -87,6 +88,16 @@ public abstract class PluginChannelCommunicatorBase
 							}
 						}
 						break;
+					case "updateMarriageColor":
+						{
+							MarriageDataBase marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(in.readUTF()));
+							if(marriage != null)
+							{
+								String color = in.readUTF();
+								marriage.updateColor(color.equalsIgnoreCase("null") ? null : MessageColor.valueOf(color));
+							}
+						}
+					break;
 					case "updateSurname":
 						{
 							MarriageDataBase marriage = database.getCache().getMarriageFromDbKey(Integer.parseInt(in.readUTF()));
@@ -169,6 +180,11 @@ public abstract class PluginChannelCommunicatorBase
 	public void updatePvP(MarriageDataBase marriage)
 	{
 		if(marriage.getDatabaseKey() != null) sendMessage("updatePvP", marriage.getDatabaseKey().toString(), "" + marriage.isPVPEnabled());
+	}
+
+	public void updateMarriageColor(MarriageDataBase marriage)
+	{
+		if(marriage.getDatabaseKey() != null) sendMessage("updateMarriageColor", marriage.getDatabaseKey().toString(), "" + marriage.getColor());
 	}
 
 	public void updateSurname(MarriageDataBase marriage)

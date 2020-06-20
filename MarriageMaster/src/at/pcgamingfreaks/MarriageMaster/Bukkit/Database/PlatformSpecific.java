@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.Database.IPlatformSpecific;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,9 +46,9 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 
 	@Override
 	public MarriageData produceMarriage(final @NotNull MarriagePlayerData player1, final @NotNull MarriagePlayerData player2, final @Nullable MarriagePlayerData priest, final @NotNull Date weddingDate,
-	                                    final @Nullable String surname, final boolean pvpEnabled, final @Nullable MarriageHome home, final @Nullable Object databaseKey)
+	                                    final @Nullable String surname, final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable MarriageHome home, final @Nullable Object databaseKey)
 	{
-		return new MarriageData(player1, player2, priest, weddingDate, surname, pvpEnabled, home, databaseKey);
+		return new MarriageData(player1, player2, priest, weddingDate, surname, pvpEnabled, color, home, databaseKey);
 	}
 
 	@Override

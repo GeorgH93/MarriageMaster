@@ -487,6 +487,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getString("DefaultCommand", "help");
 	}
 
+	public boolean isAllowPlayersToChangeMarriageColor()
+	{
+		return getConfigE().getBoolean("AllowPlayersToChangeMarriageColor", true);
+	}
+
 	//region Misc getter
 	public boolean useUpdater()
 	{

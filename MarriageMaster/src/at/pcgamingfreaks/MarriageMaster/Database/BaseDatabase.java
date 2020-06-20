@@ -220,6 +220,12 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		if(bungee && communicatorBase != null) communicatorBase.updatePvP(marriage);
 	}
 
+	public void updateMarriageColor(final MARRIAGE_DATA marriage)
+	{
+		backend.updateMarriageColor(marriage);
+		if(bungee && communicatorBase != null) communicatorBase.updateMarriageColor(marriage);
+	}
+
 	public void updateBackpackShareState(final MARRIAGE_PLAYER_DATA player)
 	{
 		backend.updateBackpackShareState(player);

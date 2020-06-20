@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,11 +40,12 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	@Getter @NotNull private String chatPrefix;
 	@Getter private HOME home;
 	private boolean pvpEnabled;
+	@Nullable private MessageColor color;
 	@Getter @Setter	private Object databaseKey;
 
 	//region Constructors
 	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname,
-	                        final boolean pvpEnabled, final @Nullable HOME home, final @Nullable Object databaseKey)
+	                        final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable HOME home, final @Nullable Object databaseKey)
 	{
 		this.player1 = player1;
 		this.player2 = player2;
@@ -53,6 +55,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		this.weddingDate = (Date) weddingDate.clone();
 		this.databaseKey = databaseKey;
 		this.home = home;
+		this.color = color;
 		this.chatPrefix = ""; // TODO implement in db
 		if(player1 instanceof MarriagePlayerDataBase && player2 instanceof MarriagePlayerDataBase)
 		{
@@ -64,7 +67,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 
 	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname)
 	{
-		this(player1, player2, priest, weddingDate, surname, false, null, null);
+		this(player1, player2, priest, weddingDate, surname, false, null, null, null);
 	}
 
 	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @Nullable String surname)
@@ -165,6 +168,23 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	{
 		this.pvpEnabled = pvpEnabled;
 		BaseDatabase.getInstance().updatePvPState(this);
+	}
+
+	public void setColor(final @Nullable MessageColor color)
+	{
+		this.color = color;
+		BaseDatabase.getInstance().updateMarriageColor(this);
+	}
+
+	public void updateColor(final @Nullable MessageColor color)
+	{
+		this.color = color;
+	}
+
+	public @NotNull MessageColor getColor()
+	{
+		if(color != null) return color;
+		return MessageColor.values()[hash & 0x0F];
 	}
 
 	@Override

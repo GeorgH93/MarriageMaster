@@ -98,6 +98,8 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 
 	public abstract void updateSurname(final @NotNull MARRIAGE marriage);
 
+	public abstract void updateMarriageColor(final @NotNull MARRIAGE marriage);
+
 	public abstract void marry(final @NotNull MARRIAGE marriage);
 
 	public abstract void divorce(final @NotNull MARRIAGE marriage);

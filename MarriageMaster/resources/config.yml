@@ -216,6 +216,8 @@ CommandExecutor:
 # The command that should be used if no sub-command was used.
 # Options: help (/marry help), custom_help (will display the messages defined in the language file in Language.Ingame.Help.CustomHelp)
 DefaultCommand: "help"
+# The marriage color is used for the magic/colored heart and is set to an random value by default.
+AllowPlayersToChangeMarriageColor: true
 
 Misc:
   AutoUpdate:
@@ -226,4 +228,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 99
+Version: 100
