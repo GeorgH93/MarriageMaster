@@ -21,6 +21,7 @@
 		<version>${project.version}-T${timestamp}</version>
 		<dependencies>PCGF_PluginLib</dependencies>
 		<soft-dependencies/>
+		<soft-dependencies-bungee/>
 		<bukkitMainClass>${project.groupId}.${project.artifactId}.Bukkit.${project.artifactId}</bukkitMainClass>
 		<bungeeMainClass>${project.groupId}.${project.artifactId}.Bungee.${project.artifactId}</bungeeMainClass>
 		<releaseType>Normal</releaseType>
@@ -429,6 +430,7 @@
 				<version>${project.version}-Release</version>
 				<dependencies/>
 				<soft-dependencies>, PCGF_PluginLib</soft-dependencies>
+				<soft-dependencies-bungee>PCGF_PluginLib</soft-dependencies-bungee>
 				<bukkitMainClass>${project.groupId}.${project.artifactId}.Bukkit.${project.artifactId}BadRabbit</bukkitMainClass>
 				<bungeeMainClass>${project.groupId}.${project.artifactId}.Bungee.${project.artifactId}BadRabbit</bungeeMainClass>
 				<releaseType>Release</releaseType>

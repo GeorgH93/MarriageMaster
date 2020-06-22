@@ -2,5 +2,6 @@ name: "${project.name}"
 author: "${author}"
 website: "${project.url}"
 main: "${bungeeMainClass}"
-depends: [${dependencies}]
 version: "${version}"
+depends: [${dependencies}]
+softdepend: [${soft-dependencies-bungee}]
