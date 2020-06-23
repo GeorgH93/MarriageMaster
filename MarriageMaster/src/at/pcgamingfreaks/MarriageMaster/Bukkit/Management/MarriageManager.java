@@ -31,9 +31,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAc
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -43,7 +43,7 @@ import java.util.Date;
 
 public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
-	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = ChatColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
+	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = MessageColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
 
 	private final MarriageMaster plugin;
 	private final String  surnameNotAllowedCharactersRex, dialogDoYouWant, dialogMarried;
@@ -176,7 +176,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				surname = surnameCleaned; //TODO add back colors
 			}
 		}
-		return (surnameAllowColors) ? ChatColor.translateAlternateColorCodes('&', surname) : surname;
+		return (surnameAllowColors) ? MessageColor.translateAlternateColorCodes('&', surname) : surname;
 	}
 
 	@Override

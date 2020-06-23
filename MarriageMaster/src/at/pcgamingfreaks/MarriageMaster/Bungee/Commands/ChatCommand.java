@@ -24,9 +24,9 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -307,7 +307,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			// Checks if person has permission to use color codes
 			if(player.hasPermission(Permissions.CHAT_COLOR))
 			{
-				msg = ChatColor.translateAlternateColorCodes('&', msg);
+				msg = MessageColor.translateAlternateColorCodes('&', msg);
 			}
 			if(player.hasPermission(Permissions.CHAT_FORMAT))
 			{

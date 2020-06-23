@@ -20,8 +20,8 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.Message.MessageColor;
 
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +53,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String translateColorCodes(@NotNull String string)
 	{
-		return super.translateColorCodes(string).replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
+		return super.translateColorCodes(string).replaceAll("<heart>", MessageColor.RED + HEART).replaceAll("<smallheart>", MessageColor.RED + SMALLHEART);
 	}
 
 	public boolean isPlaceholderSet(final @NotNull String key)
@@ -64,12 +64,12 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return ChatColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, "&cPlaceholder not found")).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
+		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, "&cPlaceholder not found")).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
 	}
 
 	@Override
 	public @NotNull String getDialog(final @NotNull String key)
 	{
-		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", ChatColor.RED + HEART).replaceAll("<smallheart>", ChatColor.RED + SMALLHEART);
+		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", MessageColor.RED + HEART).replaceAll("<smallheart>", MessageColor.RED + SMALLHEART);
 	}
 }

@@ -26,10 +26,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -353,7 +353,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		// Checks if person has permission to use color codes
 		if(sender.hasPermission(Permissions.CHAT_COLOR))
 		{
-			msg = ChatColor.translateAlternateColorCodes('&', msg);
+			msg = MessageColor.translateAlternateColorCodes('&', msg);
 		}
 		if(sender.hasPermission(Permissions.CHAT_FORMAT))
 		{

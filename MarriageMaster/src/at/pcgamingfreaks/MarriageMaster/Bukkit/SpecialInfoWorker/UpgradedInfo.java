@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageFormat;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class UpgradedInfo extends SpecialInfoBase
 	    Bukkit.getPluginManager().registerEvents(this, plugin);
 		// I don't load this message from the config. He just upgraded, the messages in the config would probably be exactly the same.
 		messagePluginUpgraded = new MessageBuilder("Marriage Master", MessageColor.GOLD).append(" has been upgraded to ", MessageColor.AQUA)
-				.append(MarriageMaster.getInstance().getDescription().getVersion(), MessageColor.BLUE, MessageColor.BOLD).append(".", MessageColor.AQUA).appendNewLine()
+				.append(MarriageMaster.getInstance().getDescription().getVersion(), MessageColor.BLUE, MessageFormat.BOLD).append(".", MessageColor.AQUA).appendNewLine()
 				.append("All of your settings and changes to the language file have been copied into the new format.", MessageColor.AQUA).appendNewLine()
 				.append("However it's recommended to manually check them to make sure that all of your settings are still how you like them (there are many new options).", MessageColor.AQUA).getMessage();
 	}

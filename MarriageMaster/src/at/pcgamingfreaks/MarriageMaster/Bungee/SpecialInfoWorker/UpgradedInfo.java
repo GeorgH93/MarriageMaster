@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Bungee.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageFormat;
 
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -31,8 +32,8 @@ import java.util.concurrent.TimeUnit;
 
 public class UpgradedInfo implements Listener
 {
-	private MarriageMaster plugin;
-	private Message messagePluginUpgraded;
+	private final MarriageMaster plugin;
+	private final Message messagePluginUpgraded;
 
 	public UpgradedInfo(MarriageMaster plugin)
 	{
@@ -40,7 +41,7 @@ public class UpgradedInfo implements Listener
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 		// I don't load this message from the config. He just upgraded, the messages in the config would probably be exactly the same.
 		messagePluginUpgraded = new MessageBuilder("Marriage Master", MessageColor.GOLD).append(" has been upgraded to ", MessageColor.AQUA)
-				.append(plugin.getDescription().getVersion(), MessageColor.BLUE, MessageColor.BOLD).append(".", MessageColor.AQUA).appendNewLine()
+				.append(plugin.getDescription().getVersion(), MessageColor.BLUE, MessageFormat.BOLD).append(".", MessageColor.AQUA).appendNewLine()
 				.append("All of your settings and changes to the language file have been copied into the new files.", MessageColor.AQUA).appendNewLine()
 				.append("However it's recommended to manually check them to make sure that all of your settings are how you like them (there are many new options).", MessageColor.AQUA).getMessage();
 	}

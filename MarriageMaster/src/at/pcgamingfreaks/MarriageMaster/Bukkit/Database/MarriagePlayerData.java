@@ -24,9 +24,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -100,7 +100,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	public @NotNull String getDisplayName()
 	{
 		Player bukkitPlayer = getPlayerOnline();
-		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : ChatColor.GRAY + getName();
+		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : MessageColor.GRAY + getName();
 	}
 
 	@Override

@@ -20,13 +20,13 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.Message.MessageColor;
 
-import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public interface IMarriageAndPartnerFormatter
 {
-	String HEART = MagicValues.SYMBOL_HEART + ChatColor.WHITE, HEART_RED = ChatColor.RED + HEART;
+	String HEART = MagicValues.SYMBOL_HEART + MessageColor.WHITE, HEART_RED = MessageColor.RED + HEART;
 
 	@NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner);
 }

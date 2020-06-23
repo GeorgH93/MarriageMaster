@@ -19,9 +19,9 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.YamlFileManager;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +46,7 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	@Override
 	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		return super.getTranslated(key).replaceAll("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART).replaceAll("<smallheart>", ChatColor.RED + MagicValues.SYMBOL_SMALL_HEART);
+		return super.getTranslated(key).replaceAll("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART).replaceAll("<smallheart>", MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART);
 	}
 
 	@Override

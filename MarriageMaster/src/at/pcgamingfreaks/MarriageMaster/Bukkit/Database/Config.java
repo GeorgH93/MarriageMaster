@@ -23,8 +23,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.Message.MessageColor;
 
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -422,7 +422,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getPrefix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
+		return MessageColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
 	}
 
 	public boolean isPrefixOnLineBeginning()
@@ -432,7 +432,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getSuffix()
 	{
-		return ChatColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", ChatColor.RED + MagicValues.SYMBOL_HEART + ChatColor.WHITE));
+		return MessageColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
 	}
 	//endregion
 
