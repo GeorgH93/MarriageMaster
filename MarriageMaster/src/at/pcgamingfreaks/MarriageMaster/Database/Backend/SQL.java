@@ -64,7 +64,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@Language("SQL") protected String queryLoadPlayer = "SELECT * FROM {TPlayers} WHERE {FUUID}=?;", queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) VALUES (?,?,?);";
 	@Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPriestID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPriestID} FROM {TPriests};";
-	@Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages}", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
+	@Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages};", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
 	@Language("SQL") protected String queryGetUnsetOrInvalidUUIDs = "SELECT {FPlayerID},{FName},{FUUID} FROM {TPlayers} WHERE {FUUID} IS NULL OR {FUUID} ", queryFixUUIDs = "UPDATE {TPlayers} SET {FUUID}=? WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryPlayerID = "SELECT {FPlayerID} FROM {TPlayers} WHERE {FUUID}=?;", queryUpdatePlayer = "UPDATE {TPlayers} SET {FName}=? WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryUpdateMarriageColor = "UPDATE {TMarriages} SET {FColor}=? WHERE {FMarryID}=?;";
@@ -155,7 +155,6 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		if(surnameEnabled)
 		{
 			queryMarry         = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
-			queryLoadMarriages = "SELECT {FMarryID},{FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname} FROM {TMarriages}";
 		}
 		queryGetUnsetOrInvalidUUIDs += (useUUIDSeparators) ? "NOT LIKE '%-%-%-%-%';" : "LIKE '%-%';";
 		setTableAndFieldNames();

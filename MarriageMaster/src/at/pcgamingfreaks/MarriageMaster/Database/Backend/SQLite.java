@@ -66,7 +66,7 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL," +
 					                                      "CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE);"));
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TMarriages} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FPlayer1} INT NOT NULL,{FPlayer2} INT NOT NULL," +
-					                                      "{FPriest} INT NULL,{FSurname} VARCHAR(45) NULL,{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,{FDate} DATE NOT NULL," +
+					                                      "{FPriest} INT NULL,{FSurname} VARCHAR(45) NULL,{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,{FDate} DATE NOT NULL, {FColor} VARCHAR(20) DEFAULT NULL," +
 					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
 					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
 					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE);"));
