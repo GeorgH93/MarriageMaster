@@ -57,7 +57,7 @@ Marriage:
   # Options: true, false, auto (auto will copy the RequirePriest value)
   DivorceRequiresPriest: auto
   AllowMultiplePartners: false
-  # This setting disables the "/marry setpriest" command players can still be promoted to a priest with the Permissions.PRIEST permission.
+  # This setting disables the "/marry setpriest" command players can still be promoted to a priest with the "marry.priest" permission.
   DisableSetPriestCommand: false
   Surnames:
     Enable: false
