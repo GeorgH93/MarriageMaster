@@ -38,6 +38,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
@@ -87,39 +88,39 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
-		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength\\}", surnameMinLength + "").replaceAll("\\{MaxLength\\}", surnameMaxLength + "");
-		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength\\}", surnameMinLength + "").replaceAll("\\{MaxLength\\}", surnameMaxLength + "");
+		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength}", surnameMinLength + "").replaceAll("\\{MaxLength}", surnameMaxLength + "");
+		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength}", surnameMinLength + "").replaceAll("\\{MaxLength}", surnameMaxLength + "");
 		messageSurnameAlreadyUsed      = getMSG("Ingame.Surname.AlreadyUsed");
 
-		messageAlreadyMarried          = getMSG("Ingame.Marry.AlreadyMarried").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageNotWithHimself          = getMSG("Ingame.Marry.NotWithHimself").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageAlreadyMarried          = getMSG("Ingame.Marry.AlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageNotWithHimself          = getMSG("Ingame.Marry.NotWithHimself").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageSurnameNeeded           = getMSG("Ingame.Marry.SurnameNeeded");
-		messageMarried                 = getMSG("Ingame.Marry.Married").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
-		messageHasMarried              = getMSG("Ingame.Marry.HasMarried").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
-		messageBroadcastMarriage       = getMSG("Ingame.Marry.Broadcast").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{Player1Name\\}", "%3\\$s").replaceAll("\\{Player1DisplayName\\}", "%4\\$s").replaceAll("\\{Player2Name\\}", "%5\\$s").replaceAll("\\{Player2DisplayName\\}", "%6\\$s");
-		messageNotInRange              = getMSG("Ingame.Marry.NotInRange").replaceAll("\\{Range\\}", "%.1f");
-		messageAlreadyOpenRequest      = getMSG("Ingame.Marry.AlreadyOpenRequest").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageMarried                 = getMSG("Ingame.Marry.Married").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		messageHasMarried              = getMSG("Ingame.Marry.HasMarried").replaceAll("\\{PriestName}", "%1\\$s").replaceAll("\\{PriestDisplayName}", "%2\\$s").replaceAll("\\{PartnerName}", "%3\\$s").replaceAll("\\{PartnerDisplayName}", "%4\\$s");
+		messageBroadcastMarriage       = getMSG("Ingame.Marry.Broadcast").replaceAll("\\{PriestName}", "%1\\$s").replaceAll("\\{PriestDisplayName}", "%2\\$s").replaceAll("\\{Player1Name}", "%3\\$s").replaceAll("\\{Player1DisplayName}", "%4\\$s").replaceAll("\\{Player2Name}", "%5\\$s").replaceAll("\\{Player2DisplayName}", "%6\\$s");
+		messageNotInRange              = getMSG("Ingame.Marry.NotInRange").replaceAll("\\{Range}", "%.1f");
+		messageAlreadyOpenRequest      = getMSG("Ingame.Marry.AlreadyOpenRequest").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 
-		messageSelfConfirm             = getMSG("Ingame.Marry.Self.Confirm").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageSelfConfirm             = getMSG("Ingame.Marry.Self.Confirm").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageNotYourself             = getMSG("Ingame.Marry.Self.NotYourself");
-		messageSelfNotInRange          = getMSG("Ingame.Marry.Self.NotInRange").replaceAll("\\{Range\\}", "%.1f");
-		messageSelfAlreadyMarried      = getMSG("Ingame.Marry.Self.AlreadyMarried").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageSelfNotInRange          = getMSG("Ingame.Marry.Self.NotInRange").replaceAll("\\{Range}", "%.1f");
+		messageSelfAlreadyMarried      = getMSG("Ingame.Marry.Self.AlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageSelfMarryRequestSent    = getMSG("Ingame.Marry.Self.RequestSent");
-		messageSelfOtherAlreadyMarried = getMSG("Ingame.Marry.Self.OtherAlreadyMarried").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageSelfOtherAlreadyMarried = getMSG("Ingame.Marry.Self.OtherAlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageSelfAlreadyOpenRequest  = getMSG("Ingame.Marry.Self.AlreadyOpenRequest");
 		messageSelfNotOnYourOwn        = getMSG("Ingame.Marry.Self.NotOnYourOwn");
 
-		messageDivorced                = getMSG("Ingame.Divorce.Divorced").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
-		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
-		messageBroadcastDivorce        = getMSG("Ingame.Divorce.Broadcast").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{Player1Name\\}", "%3\\$s").replaceAll("\\{Player1DisplayName\\}", "%4\\$s").replaceAll("\\{Player2Name\\}", "%5\\$s").replaceAll("\\{Player2DisplayName\\}", "%6\\$s");
-		messageDivorceNotInRange       = getMSG("Ingame.Divorce.NotInRange").replaceAll("\\{Range\\}", "%.1f");
+		messageDivorced                = getMSG("Ingame.Divorce.Divorced").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").replaceAll("\\{PriestName}", "%1\\$s").replaceAll("\\{PriestDisplayName}", "%2\\$s").replaceAll("\\{PartnerName}", "%3\\$s").replaceAll("\\{PartnerDisplayName}", "%4\\$s");
+		messageBroadcastDivorce        = getMSG("Ingame.Divorce.Broadcast").replaceAll("\\{PriestName}", "%1\\$s").replaceAll("\\{PriestDisplayName}", "%2\\$s").replaceAll("\\{Player1Name}", "%3\\$s").replaceAll("\\{Player1DisplayName}", "%4\\$s").replaceAll("\\{Player2Name}", "%5\\$s").replaceAll("\\{Player2DisplayName}", "%6\\$s");
+		messageDivorceNotInRange       = getMSG("Ingame.Divorce.NotInRange").replaceAll("\\{Range}", "%.1f");
 
-		messageSelfDivorced            = getMSG("Ingame.Divorce.Self.Divorced").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorceConfirm      = getMSG("Ingame.Divorce.Self.Confirm").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorcedPlayer      = getMSG("Ingame.Divorce.Self.DivorcedPlayer").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfBroadcastDivorce    = getMSG("Ingame.Divorce.Self.Broadcast").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
-		messageSelfDivorceRequestSent  = getMSG("Ingame.Divorce.Self.RequestSent").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorceNotInRange   = getMSG("Ingame.Divorce.Self.NotInRange").replaceAll("\\{Range\\}", "%.1f");
+		messageSelfDivorced            = getMSG("Ingame.Divorce.Self.Divorced").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageSelfDivorceConfirm      = getMSG("Ingame.Divorce.Self.Confirm").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageSelfDivorcedPlayer      = getMSG("Ingame.Divorce.Self.DivorcedPlayer").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageSelfBroadcastDivorce    = getMSG("Ingame.Divorce.Self.Broadcast").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		messageSelfDivorceRequestSent  = getMSG("Ingame.Divorce.Self.RequestSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageSelfDivorceNotInRange   = getMSG("Ingame.Divorce.Self.NotInRange").replaceAll("\\{Range}", "%.1f");
 
 		//region init messages of request classes
 		SelfMarryAcceptRequest.loadMessages(plugin);
@@ -292,7 +293,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	//endregion
 
 	//region marry helper function
-	private boolean marrySurnameTest(CommandSender priest, String surname)
+	private boolean marrySurnameTest(final @NotNull CommandSender priest, final @Nullable String surname)
 	{
 		if(plugin.isSurnamesEnabled() && surname != null && !surname.isEmpty())
 		{
@@ -326,7 +327,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		return true;
 	}
 
-	private boolean marryOnlineTest(CommandSender priest, OfflinePlayer player1, OfflinePlayer player2)
+	private boolean marryOnlineTest(final @NotNull CommandSender priest, final @NotNull OfflinePlayer player1, final @NotNull OfflinePlayer player2)
 	{
 		if(!player1.isOnline())
 		{
@@ -336,10 +337,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		{
 			plugin.messagePlayerNotOnline.send(priest, player2.getName());
 		}
-		else
-		{
-			return true;
-		}
+		else return true;
 		return false;
 	}
 
@@ -703,7 +701,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 						if(confirm) // We can't confirm if both are offline!
 						{
 							// We don't have to test but I don't want to copy the message sending over
-							marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayerOnline(), marriage.getPartner2().getPlayerOnline());
+							marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayer(), marriage.getPartner2().getPlayer());
 						}
 						else
 						{
@@ -748,7 +746,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				else
 				{
 					// We don't have to test but I don't want to copy the message sending over
-					marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayerOnline(), marriage.getPartner2().getPlayerOnline());
+					marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayer(), marriage.getPartner2().getPlayer());
 				}
 			}
 			else
