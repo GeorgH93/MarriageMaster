@@ -75,4 +75,13 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	{
 		getPlayer(event.getPlayer().getUniqueId()); // This will load the player if he isn't loaded yet
 	}
+
+	@Override
+	protected void loadOnlinePlayers()
+	{
+		for(ProxiedPlayer proxiedPlayer : plugin.getProxy().getPlayers())
+		{
+			getPlayer(proxiedPlayer.getUniqueId());
+		}
+	}
 }

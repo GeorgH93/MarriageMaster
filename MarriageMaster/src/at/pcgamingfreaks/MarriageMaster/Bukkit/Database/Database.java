@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -91,10 +92,15 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	@EventHandler(priority = EventPriority.LOWEST) // We want to start the loading of the player as soon as he connects, so he probably is ready as soon as someone requests the player.
 	public void onPlayerLoginEvent(PlayerJoinEvent event) // This will load the player if he isn't loaded yet
 	{
-		MarriagePlayerData player = cache.getPlayer(event.getPlayer().getUniqueId());
+		handlePlayerJoin(event.getPlayer());
+	}
+
+	private void handlePlayerJoin(final Player bPlayer)
+	{
+		MarriagePlayerData player = cache.getPlayer(bPlayer.getUniqueId());
 		if(player == null)
 		{
-			player = new MarriagePlayerData(event.getPlayer());
+			player = new MarriagePlayerData(bPlayer);
 			cache.cache(player);
 		}
 		if(bungee)
@@ -104,11 +110,20 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 				final MarriagePlayerData fPlayer = player;
 				plugin.getServer().getScheduler().runTaskLater(plugin, () -> load(fPlayer), 10);
 			}
-			else if(!player.getName().equals(event.getPlayer().getName()))
+			else if(!player.getName().equals(bPlayer.getName()))
 			{
-				player.setName(event.getPlayer().getName());
+				player.setName(bPlayer.getName());
 			}
 		}
 		else load(player);
+	}
+
+	@Override
+	protected void loadOnlinePlayers()
+	{
+		for(Player player : Bukkit.getServer().getOnlinePlayers())
+		{
+			handlePlayerJoin(player);
+		}
 	}
 }

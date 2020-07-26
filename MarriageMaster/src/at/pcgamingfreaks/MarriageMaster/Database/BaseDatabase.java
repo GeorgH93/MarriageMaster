@@ -188,14 +188,14 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		cache.cache(marriage);
 	}
 
-	//region abstract stuff
 	public abstract MARRIAGE_PLAYER_DATA getPlayer(UUID uuid);
+
+	protected abstract void loadOnlinePlayers();
 
 	protected void load(final @NotNull MARRIAGE_PLAYER_DATA player)
 	{
 		backend.load(player);
 	}
-	//endregion
 
 	//region data management methods
 	public void loadMarriage(final int marriageId)
@@ -270,6 +270,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 		{
 			backend.loadAll();
 			cache.reCacheSurnames();
+			loadOnlinePlayers();
 		}
 	}
 }
