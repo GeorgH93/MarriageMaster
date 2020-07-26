@@ -25,11 +25,12 @@ import at.pcgamingfreaks.MarriageMaster.Permissions;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReloadCommand extends MarryCommand
 {
-	private final Message messageReloading, messageReloaded;
+	private final Message messageReloading, messageReloaded, messageReloadingDatabase;
 
 	public ReloadCommand(MarriageMaster plugin)
 	{
@@ -38,19 +39,35 @@ public class ReloadCommand extends MarryCommand
 		// Load messages
 		messageReloading = plugin.getLanguage().getMessage("Ingame.Admin.Reloading");
 		messageReloaded  = plugin.getLanguage().getMessage("Ingame.Admin.Reloaded");
+		messageReloadingDatabase = plugin.getLanguage().getMessage("Ingame.Admin.ReloadingDatabase");
 	}
 
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		messageReloading.send(sender);
-		((MarriageMaster) getMarriagePlugin()).reload();
-		messageReloaded.send(sender);
+		if(args.length == 0)
+		{
+			messageReloading.send(sender);
+			((MarriageMaster) getMarriagePlugin()).reload();
+			messageReloaded.send(sender);
+		}
+		if (args.length == 1 && args[0].equalsIgnoreCase("database"))
+		{
+			messageReloadingDatabase.send(sender);
+			((MarriageMaster) getMarriagePlugin()).getDatabase().resync();
+			plugin.getServer().getScheduler().runTaskLater(plugin, () -> messageReloaded.send(sender), 20);
+		}
 	}
 
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
+		if(args.length == 1 && "database".startsWith(args[0]))
+		{
+			List<String> tab = new ArrayList<>(1);
+			tab.add("database");
+			return tab;
+		}
 		return null;
 	}
 }

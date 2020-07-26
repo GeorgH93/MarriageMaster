@@ -220,6 +220,7 @@ Language:
     Admin:
       Reloading: "&1Reloading ..."
       Reloaded: "&1Reloaded!"
+      ReloadingDatabase: '["",{"text":"Reloading database ","color":"aqua","extra":[{"text":".","color":"gold"},{"text":".","color":"red"},{"text":".","color":"green"}]}]'
       CheckingForUpdates: "&1Checking for updates ..."
       Updated: "[\"\",{\"text\":\"Plugin updated, will be loaded on next restart/reload.\",\"color\":\"yellow\"}]"
       NoUpdate: "[\"\",{\"text\":\"No plugin update available.\",\"color\":\"gold\"}]"
@@ -431,5 +432,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 100
+Version: 101
 Revision: 1

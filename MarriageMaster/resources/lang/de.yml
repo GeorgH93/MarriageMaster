@@ -214,6 +214,7 @@ Language:
     Admin:
       Reloading: "&1Lade neu ..."
       Reloaded: "&1Neu geladen!"
+      ReloadingDatabase: "&1Datenbank wird neu geladen ..."
       CheckingForUpdates: "&1Suche Updates ..."
       Updated: "[\"\",{\"text\":\"Plugin aktualisiert. Es wird nach dem nächsten Neustart/Reload neu geladen.\",\"color\":\"yellow\"}]"
       NoUpdate: "[\"\",{\"text\":\"Kein Plugin-Update verfügbar.\",\"color\":\"gold\"}]"
@@ -444,5 +445,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 100
+Version: 101
 Revision: 1
