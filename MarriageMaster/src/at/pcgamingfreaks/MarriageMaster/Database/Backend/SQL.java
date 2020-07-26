@@ -154,7 +154,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		if(surnameEnabled)
 		{
-			queryMarry         = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
+			queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
 		}
 		queryGetUnsetOrInvalidUUIDs += (useUUIDSeparators) ? "NOT LIKE '%-%-%-%-%';" : "LIKE '%-%';";
 		setTableAndFieldNames();
@@ -589,10 +589,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					player.setDatabaseKey(dbId);
 					cache.addDbKey(player);
 					player.setSharesBackpack(rs.getBoolean(fieldShareBackpack));
-					if(player.isOnline() && !rs.getString(fieldName).equals(player.getPlayer()))
-					{
-						update(player, connection);
-					}
+					update(player, connection);
 				}
 				else return false;
 			}
