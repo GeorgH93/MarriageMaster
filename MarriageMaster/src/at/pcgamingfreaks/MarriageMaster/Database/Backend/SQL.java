@@ -45,6 +45,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
 	private static final Random RANDOM = new Random();
 
+	protected final @NotNull DatabaseConfiguration dbConfig;
 	protected final ConnectionProvider connectionProvider; // Connection provider
 
 	//region Query related variables
@@ -75,8 +76,9 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	              final @NotNull Cache<MARRIAGE_PLAYER, MARRIAGE> cache, final @NotNull Logger logger, @NotNull ConnectionProvider connectionProvider)
 	{
 		super(platform, dbConfig, bungee, surname, cache, logger);
+		this.dbConfig = dbConfig;
 		this.connectionProvider = connectionProvider;
-		loadTableAndFieldNames(dbConfig);
+		loadTableAndFieldNames();
 		buildQuerys();
 	}
 
@@ -119,7 +121,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		return "";
 	}
 
-	protected void loadTableAndFieldNames(final @NotNull DatabaseConfiguration dbConfig)
+	protected void loadTableAndFieldNames()
 	{
 		// Load table names from config
 		tablePlayers   = dbConfig.getSQLTableUser();

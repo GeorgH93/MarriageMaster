@@ -64,11 +64,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 				getConfigE().set("Chat.Global", oldConfig.getYamlE().getBoolean("Chat.Global", true));
 				getConfigE().set("Teleport.Delayed", oldConfig.getYamlE().getBoolean("TP.Delayed", false));
 				getConfigE().set("Teleport.Global", oldConfig.getYamlE().getBoolean("TP.Global", true));
-				getConfigE().set("Teleport.BlockedFrom", oldConfig.getYamlE().getStringList("TP.BlockedFrom", new LinkedList<>()));
-				getConfigE().set("Teleport.BlockedTo", oldConfig.getYamlE().getStringList("TP.BlockedTo", new LinkedList<>()));
+				getConfigE().set("Teleport.BlockedFrom", oldConfig.getYamlE().getStringList("TP.BlockedFrom", new ArrayList<>(0)));
+				getConfigE().set("Teleport.BlockedTo", oldConfig.getYamlE().getStringList("TP.BlockedTo", new ArrayList<>(0)));
 				getConfigE().set("Home.Delayed", oldConfig.getYamlE().getBoolean("Home.Delayed", false));
 				getConfigE().set("Home.Global", oldConfig.getYamlE().getBoolean("Home.Global", true));
-				getConfigE().set("Home.BlockedFrom", oldConfig.getYamlE().getStringList("Home.BlockedFrom", new LinkedList<>()));
+				getConfigE().set("Home.BlockedFrom", oldConfig.getYamlE().getStringList("Home.BlockedFrom", new ArrayList<>(0)));
 				getConfigE().set("Database.SQL.Tables.Fields.PriestID", "priest_id");
 			}
 			catch(Exception e)
@@ -215,7 +215,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		List<String> outList = new LinkedList<>();
 		for(String str : strings)
 		{
-			outList.add(str.toLowerCase());
+			outList.add(str.toLowerCase(Locale.ENGLISH));
 		}
 		return outList;
 	}

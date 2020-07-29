@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
+import at.pcgamingfreaks.Configuration;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.ConnectionProvider.MySQLConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
@@ -28,10 +29,8 @@ import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.io.FileNotFoundException;
+import java.sql.*;
 import java.util.logging.Logger;
 
 public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends SQL<MARRIAGE_PLAYER, MARRIAGE, HOME>
@@ -106,10 +105,8 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 				}
 			}
 			@Language("SQL")
-			String queryTPlayers = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
+			String  queryTPlayers = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPlayers} (\n{FPlayerID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FName} VARCHAR(16) NOT NULL,\n{FUUID} CHAR(36) DEFAULT NULL,\n" +
 					                                           "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0,\nPRIMARY KEY ({FPlayerID}),\nUNIQUE INDEX {FUUID}_UNIQUE ({FUUID})\n)" + getEngine() + ";"),
-					queryTPriests = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} (\n{FPriestID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPriestID}),\nCONSTRAINT fk_{TPriests}_{TPlayers}_{FPriestID}" +
-							                                    " FOREIGN KEY ({FPriestID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";"),
 					queryTMarriages = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TMarriages} (\n{FMarryID} INT UNSIGNED NOT NULL AUTO_INCREMENT,\n{FPlayer1} INT UNSIGNED NOT NULL,\n" +
 							                                      "{FPlayer2} INT UNSIGNED NOT NULL,\n{FPriest} INT UNSIGNED NULL,\n{FSurname} VARCHAR(45) NULL,\n{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,\n" +
 							                                      "{FDate} DATETIME NOT NULL DEFAULT " + dateDefault + ",\n{FColor} VARCHAR(20) NULL DEFAULT NULL,\n" +
@@ -121,13 +118,63 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 							                                  "{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" + ((useBungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
 							                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
 			DBTools.updateDB(connection, queryTPlayers);
-			DBTools.updateDB(connection, queryTPriests);
 			DBTools.updateDB(connection, queryTMarriages);
 			DBTools.updateDB(connection, queryTHomes);
+			checkPriestsTable(connection);
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+		}
+	}
+
+	private void checkPriestsTable(final @NotNull Connection connection) throws SQLException
+	{
+		boolean exists = false;
+		try(PreparedStatement preparedStatement = connection.prepareStatement("SHOW TABLES LIKE ?;"))
+		{
+			preparedStatement.setString(1, tablePriests);
+			try(ResultSet rs = preparedStatement.executeQuery())
+			{
+				if(rs.next())
+				{ // Table exists
+					exists = true;
+				}
+			}
+		}
+
+		if(exists)
+		{
+			try(Statement stmt = connection.createStatement())
+			{
+				try(ResultSet rs = stmt.executeQuery(replacePlaceholders("SHOW KEYS FROM {TPriests} WHERE Key_name = 'PRIMARY'")))
+				{
+					if(rs.next())
+					{
+						String primKey = rs.getString("Column_name");
+						if(!primKey.equalsIgnoreCase(fieldPriestID))
+						{
+							logger.warning("PriestId field name currently used (" + primKey + ") in the database does not math the configured one in the config (" + fieldPriestID + ")!\n" +
+									               "If you would like to change the name of the field please change both the name in the database and the config.\nChanging config to: " + primKey);
+							dbConfig.getConfigE().set("Database.SQL.Tables.Fields.PriestID", primKey);
+							try
+							{
+								((Configuration) dbConfig).save();
+							}
+							catch(FileNotFoundException e)
+							{
+								e.printStackTrace();
+							}
+							fieldPriestID = primKey;
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			@Language("SQL") String queryTPriests = replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} (\n{FPriestID} INT UNSIGNED NOT NULL,\nPRIMARY KEY ({FPriestID}),\nCONSTRAINT fk_{TPriests}_{TPlayers}_{FPriestID}" + " FOREIGN KEY ({FPriestID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
+			DBTools.updateDB(connection, queryTPriests);
 		}
 	}
 }
