@@ -227,7 +227,7 @@ Misc:
     # When auto update is disabled you still can use the build in update function manually with /marry update
     Enable: true
     Channel: ${updateChannel}
-  # Enable this option if you are in a BungeeCord environment. It is also recommended to install the plugin on your BungeeCord server
+  # Enable this option if you are in a BungeeCord environment. Please also install the plugin on your BungeeCord server to allow the data to be synchronized across all your servers.
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
