@@ -178,7 +178,10 @@ Teleport:
   # If this option is enabled the partner has to accept the teleport request before the player will be teleported. Only applicable for teleporting to another player.
   RequireConfirmation: false
 
+# Config options for sharing backpacks between partners
+# Currently the only supported backpack plugin is Minepacks
 BackpackShare:
+  # Enables the backpack sharing feature (with supported plugins)
   Enable: true
 
 Economy:
