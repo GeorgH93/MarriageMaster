@@ -41,7 +41,7 @@ UpdateProviders:
 
 UpdateChannels:
   Release:
-    Release: [ Bukkit, Spigot, GitHubRelease ]
+    Release: [ Bukkit, GitHubRelease, Spigot ]
     Standalone: [ GitHubStandalone ]
     Normal: [ GitHub ]
   Master:
