@@ -56,6 +56,11 @@ public class SurnameCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
+		if(args.length == 0)
+		{
+			showHelp(sender, mainCommandAlias);
+			return;
+		}
 		final String newSurname = args[args.length - 1];
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(!(sender instanceof Player) || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY) && player.isMarried())
