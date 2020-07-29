@@ -22,12 +22,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.plugin.Plugin;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-import java.io.File;
 import java.util.List;
 
 public class ClipsPlaceholderHook extends PlaceholderExpansion implements PlaceholderAPIHook
@@ -39,7 +37,6 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	{
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
-		removeECouldFile();
 		if(this.register())
 		{
 			this.plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully registered!" + ConsoleColor.RESET);
@@ -51,34 +48,6 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 		}
 	}
 
-	private void removeECouldFile()
-	{
-		Plugin papi = plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI");
-		if(papi != null)
-		{
-			File eCloudFolder = new File(papi.getDataFolder(), "expansions");
-			if(eCloudFolder.exists())
-			{
-				File[] marriageMasterFiles = { new File(eCloudFolder,  "Expansion-MarriageMaster.jar"), new File(eCloudFolder,  "Expansion-MarriageMaster_3WNs7dj.jar") };
-				for(File file : marriageMasterFiles)
-				{
-					if(file.exists())
-					{
-						if(file.delete())
-						{
-							plugin.getLogger().info("Marriage Master PAPI eCloud extension deleted! It is not needed and not compatible with Marriage Master v2.0 and newer.");
-						}
-						else
-						{
-							plugin.getLogger().warning("Failed to delete Marriage Master PAPI eCloud extension! Please remove it!\nIt is not needed and not compatible with Marriage Master v2.0 and newer.");
-						}
-					}
-				}
-			}
-		}
-
-	}
-
 	@Override
 	public String onRequest(OfflinePlayer player, String identifier)
 	{
@@ -88,7 +57,29 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	@Override
 	public void close()
 	{
-		if(PlaceholderAPI.unregisterExpansion(this))
+		boolean result = false;
+		// PAPI changed how to unregister an expansion with v2.10.7. The old method was removed and a new added within the same update.
+		// This hack should make it work on servers that have already updated and servers that have not yet updated.
+		try
+		{
+			result = (boolean) PlaceholderAPI.class.getDeclaredMethod("unregisterExpansion", PlaceholderExpansion.class).invoke(null, this);
+		}
+		catch(NoSuchMethodException ignored)
+		{ //TODO update once
+			try
+			{
+				result = (boolean) PlaceholderExpansion.class.getDeclaredMethod("unregister").invoke(this);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		if(result)
 		{
 			plugin.getLogger().info(ConsoleColor.GREEN + "PlaceholderAPI hook was successfully unregistered!" + ConsoleColor.RESET);
 		}
