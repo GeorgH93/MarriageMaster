@@ -27,9 +27,7 @@
 		<releaseType>Normal</releaseType>
 		<updateChannel>Release</updateChannel>
 
-		<junit-platform.version>1.2.0</junit-platform.version>
-		<junit-jupiter.version>5.2.0</junit-jupiter.version>
-		<mockito.version>2.27.0</mockito.version>
+		<mockito.version>3.4.4</mockito.version>
 	</properties>
 
 	<repositories>
@@ -145,33 +143,9 @@
 		<!-- region unit test dependencies -->
 		<!-- region JUnit 5 -->
 		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-engine</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit-jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<version>${junit-jupiter.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-params</artifactId>
-			<version>${junit-jupiter.version}</version>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.6.2</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- endregion -->
@@ -245,19 +219,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.junit.platform</groupId>
-						<artifactId>junit-platform-surefire-provider</artifactId>
-						<version>${junit-platform.version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.junit.jupiter</groupId>
-						<artifactId>junit-jupiter-engine</artifactId>
-						<version>${junit-jupiter.version}</version>
-					</dependency>
-				</dependencies>
+				<version>2.22.2</version>
 			</plugin>
 			<!-- Creates the coverage report -->
 			<!--<plugin>
