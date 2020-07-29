@@ -65,7 +65,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 			result = (boolean) PlaceholderAPI.class.getDeclaredMethod("unregisterExpansion", PlaceholderExpansion.class).invoke(null, this);
 		}
 		catch(NoSuchMethodException ignored)
-		{ //TODO update once
+		{
 			try
 			{
 				result = (boolean) PlaceholderExpansion.class.getDeclaredMethod("unregister").invoke(this);
