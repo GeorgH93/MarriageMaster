@@ -40,8 +40,8 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"Du siehst nun nicht mehr länger den Marry-Chat.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Ziel des privaten Chats gesetzt.\",\"color\":\"green\"}]"
       DisplayNameAll: "Alle Partner"
-      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
-      Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
+      Format: "[\"\",{\"text\":\"{MagicHeart}\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"Du kannst deinem Partner nur im Survival-Modus Items schenken.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"Du haltest kein Item in der Hand.\",\"color\":\"red\"}]"

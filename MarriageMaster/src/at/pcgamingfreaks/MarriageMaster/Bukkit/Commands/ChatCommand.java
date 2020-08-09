@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
@@ -64,7 +65,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
@@ -299,6 +300,8 @@ public class ChatCommand extends MarryCommand implements Listener
 			return;
 		}
 
+		String magicHeart = MagicValues.RED_HEART;
+
 		//region Fire Event
 		if(receivers.size() == 1)
 		{
@@ -306,6 +309,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			Bukkit.getPluginManager().callEvent(marryChatEvent);
 			if(marryChatEvent.isCancelled()) return;
 			msg = marryChatEvent.getMessage();
+			magicHeart = receivers.get(0).getMarriageColor() + MagicValues.SYMBOL_HEART + MessageColor.RESET;
 		}
 		else
 		{
@@ -317,6 +321,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				//noinspection ConstantConditions
 				receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
+				magicHeart = receivers.get(0).getMarriageColor() + MagicValues.SYMBOL_HEART + MessageColor.RESET;
 			}
 		}
 		//endregion
@@ -343,8 +348,8 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(!listeners.contains(sender.getPlayerOnline())) playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
 		playerReceivers.addAll(listeners); // Copy the listeners since we need to send the message too
 		String receiverDisplayName = (receiver != null) ? receiver.getDisplayName() : displayNameAll, receiverName = (receiver != null) ? receiver.getName() : displayNameAll;
-		privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
-		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName);
+		privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName, magicHeart);
+		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName, magicHeart);
 	}
 
 	private static @NotNull String cleanupMessage(@NotNull String msg, final @NotNull MarriagePlayer sender)

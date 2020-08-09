@@ -44,8 +44,8 @@ Language:
       ListeningStopped: "[\"\",{\"text\":\"You are no longer listening to the marry chat.\",\"color\":\"green\"}]"
       TargetSet: "[\"\",{\"text\":\"Private chat target set.\",\"color\":\"green\"}]"
       DisplayNameAll: "All Partners"
-      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}
-      Format: "[\"\",{\"text\":\"<heart>\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
+      Format: "[\"\",{\"text\":\"{MagicHeart}\"},{\"text\":\" {SenderDisplayName}\"},{\"text\":\" => \",\"color\":\"gold\"},{\"text\":\"{ReceiverDisplayName}\"},{\"text\":\": \",\"color\":\"white\"},{\"text\":\"{Message}\"}]"
     Gift:
       OnlyInSurvival: "[\"\",{\"text\":\"You can only gift items to your partner when you are in survival mode.\",\"color\":\"red\"}]"
       NoItemInHand: "[\"\",{\"text\":\"You are not holding an item.\",\"color\":\"red\"}]"
