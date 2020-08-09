@@ -17,11 +17,12 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
+import at.pcgamingfreaks.Message.MessageColor;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("unused")
 public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home>
 {
 	/**
@@ -54,6 +55,7 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	 * The default color is random. But can be changed.
 	 *
 	 * @return The color of the marriage.
+	 * @deprecated Replaced by {@link Marriage#getColor()}
 	 */
 	@Deprecated
 	@NotNull ChatColor getMarriageColor();
@@ -62,6 +64,7 @@ public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<
 	 * Sets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marriages have the same color.
 	 *
 	 * @param color the color that should be set for the marriage.
+	 * @deprecated Replaced by {@link Marriage#setColor(MessageColor)}
 	 */
 	@Deprecated
 	void setMarriageColor(@NotNull ChatColor color);

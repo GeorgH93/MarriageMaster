@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +35,6 @@ public class PlaceholderFormatter implements IMarriageAndPartnerFormatter
 	@Override
 	public @NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner)
 	{
-		return String.format(format, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), marriage.getMarriageColor() + HEART);
+		return String.format(format, marriage.getSurnameString(), partner.getName(), partner.getDisplayName(), marriage.getMarriageColor() + MagicValues.HEART_AND_RESET);
 	}
 }

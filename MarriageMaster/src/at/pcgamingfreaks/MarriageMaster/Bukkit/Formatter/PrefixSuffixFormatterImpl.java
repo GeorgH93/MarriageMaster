@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class PrefixSuffixFormatterImpl implements at.pcgamingfreaks.MarriageMast
 
 	public static IMarriageAndPartnerFormatter produceFormatter(@NotNull String format)
 	{
-		format = format.replaceAll("\\{StatusHeart}", at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.IMarriageAndPartnerFormatter.HEART_RED);
+		format = format.replaceAll("\\{StatusHeart}", MagicValues.RED_HEART);
 		if(StringUtils.indexOfAny(format, new String[]{ "{Surname}", "{PartnerName}", "{PartnerDisplayName}", "{MagicHeart}" }) != -1)
 		{
 			return new PlaceholderFormatter(format.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s").replaceAll("\\{MagicHeart}", "%4\\$s"));

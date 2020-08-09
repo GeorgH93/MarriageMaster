@@ -21,5 +21,4 @@ import at.pcgamingfreaks.MarriageMaster.API.Home;
 
 import net.md_5.bungee.api.CommandSender;
 
-@SuppressWarnings("unused")
 public interface Marriage extends at.pcgamingfreaks.MarriageMaster.API.Marriage<MarriagePlayer, CommandSender, Home> {}

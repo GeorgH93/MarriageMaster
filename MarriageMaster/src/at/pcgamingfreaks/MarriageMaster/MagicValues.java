@@ -23,6 +23,6 @@ public class MagicValues
 {
 	public static final int LANG_VERSION = 101, LANG_PRE_V2_VERSIONS = 90;
 	public static final int CONFIG_VERSION = 100, BUNGEE_CONFIG_VERSION = 101, CONFIG_PRE_V2_VERSIONS = 90;
-	public static final String SYMBOL_HEART = "\u2764", SYMBOL_SMALL_HEART = "\u2665", RED_HEART = MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.RESET;
+	public static final String SYMBOL_HEART = "\u2764", SYMBOL_SMALL_HEART = "\u2665", HEART_AND_RESET = SYMBOL_HEART + MessageColor.WHITE, RED_HEART = MessageColor.RED + HEART_AND_RESET;
 	public static final String MIN_PCGF_PLUGIN_LIB_VERSION = "1.0.26-SNAPSHOT";
 }

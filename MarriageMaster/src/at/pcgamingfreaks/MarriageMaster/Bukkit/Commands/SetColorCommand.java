@@ -25,7 +25,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -88,7 +87,7 @@ public class SetColorCommand extends MarryCommand
 		else
 		{
 			//noinspection ConstantConditions
-			marriage.setMarriageColor(ChatColor.getByChar(color.getCode()));
+			marriage.setColor(color);
 			messageColorSet.send(sender);
 		}
 	}

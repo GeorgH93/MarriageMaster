@@ -309,7 +309,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			Bukkit.getPluginManager().callEvent(marryChatEvent);
 			if(marryChatEvent.isCancelled()) return;
 			msg = marryChatEvent.getMessage();
-			magicHeart = receivers.get(0).getMarriageColor() + MagicValues.SYMBOL_HEART + MessageColor.RESET;
+			magicHeart = receivers.get(0).getMagicHeart();
 		}
 		else
 		{
@@ -321,7 +321,7 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				//noinspection ConstantConditions
 				receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
-				magicHeart = receivers.get(0).getMarriageColor() + MagicValues.SYMBOL_HEART + MessageColor.RESET;
+				magicHeart = receivers.get(0).getMagicHeart();
 			}
 		}
 		//endregion

@@ -17,12 +17,13 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
+import at.pcgamingfreaks.Message.MessageColor;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-@SuppressWarnings("unused")
 public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home>
 {
 	/**
@@ -172,4 +173,21 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * Prefix is limited to 20 chars, everything beyond will be ignored.
 	 */
 	void setMarriageChatMessagePrefix(@NotNull String prefix);
+
+	/**
+	 * Sets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marriages have the same color.
+	 *
+	 * @param color the color that should be set for the marriage.
+	 */
+	void setColor(final @Nullable MessageColor color);
+
+	/**
+	 * Gets the color of the marriage, since there are only 16 colors available in Minecraft it is possible that two or more marriages have the same color.
+	 * The default color is random. But can be changed.
+	 *
+	 * @return The color of the marriage.
+	 */
+	@NotNull MessageColor getColor();
+
+	@NotNull String getMagicHeart();
 }

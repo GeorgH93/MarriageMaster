@@ -86,7 +86,7 @@ public class ListCommand extends MarryCommand
 			{
 				Marriage couple = couplesIterator.next();
 				messageListFormat.send(sender, couple.getPartner1().getName(), couple.getPartner2().getName(), couple.getPartner1().getDisplayName(), couple.getPartner2().getDisplayName(),
-				                       couple.getSurnameString(), couple.getMarriageColor() + MagicValues.SYMBOL_HEART + MessageColor.RESET);
+				                       couple.getSurnameString(), couple.getMagicHeart());
 			}
 			if(useFooter)
 			{

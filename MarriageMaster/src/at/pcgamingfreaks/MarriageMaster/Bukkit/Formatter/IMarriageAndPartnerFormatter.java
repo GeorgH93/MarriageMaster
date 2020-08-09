@@ -26,7 +26,5 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IMarriageAndPartnerFormatter
 {
-	String HEART = MagicValues.SYMBOL_HEART + MessageColor.WHITE, HEART_RED = MessageColor.RED + HEART;
-
 	@NotNull String format(final @NotNull Marriage marriage, final @NotNull MarriagePlayer partner);
 }

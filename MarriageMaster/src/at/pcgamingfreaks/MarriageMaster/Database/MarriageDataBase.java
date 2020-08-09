@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 
 import org.jetbrains.annotations.NotNull;
@@ -170,10 +171,19 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		BaseDatabase.getInstance().updatePvPState(this);
 	}
 
-	public void setColor(final @Nullable MessageColor color)
+	@Override
+	public void setColor(@Nullable MessageColor color)
 	{
-		this.color = color;
+		//noinspection ObjectEquality
+		if(color == null || color == MessageColor.RESET) this.color = null; // == is fine here! There is only one instance that equals reset
+		else this.color = color.isRGB() ? color.getFallbackColor() : color;
 		BaseDatabase.getInstance().updateMarriageColor(this);
+	}
+
+	@Override
+	public @NotNull String getMagicHeart()
+	{
+		return getColor() + MagicValues.HEART_AND_RESET;
 	}
 
 	public void updateColor(final @Nullable MessageColor color)
@@ -181,8 +191,9 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		this.color = color;
 	}
 
+	@Override
 	public @NotNull MessageColor getColor()
-	{
+	{ //TODO the default should be calculated only once
 		if(color != null) return color;
 		return MessageColor.values()[hash & 0x0F];
 	}

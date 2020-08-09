@@ -110,12 +110,14 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 
 	@Override
+	@Deprecated
 	public @NotNull ChatColor getMarriageColor()
 	{
 		return ChatColor.getByChar(getColor().getCode());
 	}
 
 	@Override
+	@Deprecated
 	public void setMarriageColor(@NotNull ChatColor color)
 	{
 		setColor(MessageColor.getFromCode(color.getChar()));

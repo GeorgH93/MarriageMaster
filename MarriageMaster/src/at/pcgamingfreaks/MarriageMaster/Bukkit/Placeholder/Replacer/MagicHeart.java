@@ -35,6 +35,6 @@ public class MagicHeart extends PlaceholderReplacerBaseValue
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
 		//noinspection ConstantConditions
-		return player.getMarriageData().getMarriageColor() + valueMarried;
+		return player.getMarriageData().getColor() + valueMarried;
 	}
 }
