@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
@@ -58,7 +59,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpText                = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget");
@@ -340,7 +341,9 @@ public class ChatCommand extends MarryCommand implements Listener
 			{
 				playerReceivers.add(receiver); // Add the receiver to the list
 			}
-			privateMessageFormat.send(playerReceivers, player.getDisplayName(), (receiver != null) ? receiver.getDisplayName() : displayNameAll, msg, player.getName(), (receiver != null) ? receiver.getName() : displayNameAll);
+			String magicHeart = MagicValues.RED_HEART;
+			if(receivers.size() == 1) magicHeart = receivers.get(0).getMagicHeart();
+			privateMessageFormat.send(playerReceivers, player.getDisplayName(), (receiver != null) ? receiver.getDisplayName() : displayNameAll, msg, player.getName(), (receiver != null) ? receiver.getName() : displayNameAll, magicHeart);
 		}
 		else
 		{
