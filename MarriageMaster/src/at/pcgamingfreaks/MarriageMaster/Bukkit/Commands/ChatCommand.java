@@ -51,7 +51,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, privateMessageFormat, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
-	private final String[] setTargetParameters;
+	private final String[] setTargetParameters, switchesToggle;
 	private final boolean allowChatSurveillance;
 	private MarryCommand chatToggleCommand, chatListenCommand;
 
@@ -70,6 +70,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget", new String[] { "target", "settarget" });
+		switchesToggle  = plugin.getLanguage().getSwitch("Toggle", "toggle");
 		allowChatSurveillance = plugin.getConfiguration().isChatSurveillanceEnabled();
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -170,7 +171,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		List<String> data = new LinkedList<>();
+		List<String> data = new ArrayList<>();
 		if(args.length > 0)
 		{
 			if(args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
@@ -180,10 +181,19 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			else
 			{
+				if(args.length == 1)
+				{
+					String arg = args[0].toLowerCase(Locale.ENGLISH);
+					for(String s : switchesToggle)
+					{
+						if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
+					}
+				}
+				Player playerSender = (Player) sender;
 				String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
 				for(Player player : Bukkit.getOnlinePlayers())
 				{
-					if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
+					if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg) && playerSender.canSee(player))
 					{
 						data.add(player.getName());
 					}
@@ -196,7 +206,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		List<HelpData> help = new LinkedList<>();
+		List<HelpData> help = new ArrayList<>();
 		help.add(new HelpData(getTranslatedName(), helpParameterMessage, getDescription()));
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
