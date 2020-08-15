@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
@@ -35,6 +36,6 @@ public class MagicHeart extends PlaceholderReplacerBaseValue
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
 		//noinspection ConstantConditions
-		return player.getMarriageData().getColor() + valueMarried;
+		return ((MarriageData) player.getMarriageData()).getMagicHeart() + valueMarried;
 	}
 }
