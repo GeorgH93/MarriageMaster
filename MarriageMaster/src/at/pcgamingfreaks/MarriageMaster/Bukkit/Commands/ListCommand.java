@@ -56,7 +56,7 @@ public class ListCommand extends MarryCommand
 	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
-		if(couples.size() == 0) // There are married couples
+		if(couples.size() > 0) // There are married couples
 		{
 			int page = 0;
 			if(args.length == 1)
