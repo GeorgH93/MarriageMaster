@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings("unused")
 public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER, MESSAGE extends IMessage>
 {
 	/**

@@ -19,14 +19,14 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
-import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class ListCommand extends MarryCommand
 	private final Message messageHeadlineMain, messageFooter, messageListFormat, messageNoMarriedPlayers;
 	private final boolean useFooter;
 
-	public ListCommand(MarriageMaster plugin)
+	public ListCommand(final @NotNull MarriageMaster plugin)
 	{
 		super(plugin, "list", plugin.getLanguage().getTranslated("Commands.Description.List"), Permissions.LIST, plugin.getLanguage().getCommandAliases("List"));
 
@@ -53,10 +53,10 @@ public class ListCommand extends MarryCommand
 	}
 
 	@Override
-	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
-		if(couples.size() > 0) // There are married couples
+		if(couples.size() == 0) // There are married couples
 		{
 			int page = 0;
 			if(args.length == 1)
@@ -72,21 +72,21 @@ public class ListCommand extends MarryCommand
 				}
 			}
 			int c = entriesPerPage, availablePages = (int) Math.ceil(couples.size() / (float)entriesPerPage);
-			if(page >= availablePages)
-			{
-				page = availablePages - 1;
-			}
+			page = Math.min(page, availablePages - 1);
 			messageHeadlineMain.send(sender, page + 1, availablePages, mainCommandAlias, alias, page, page + 2);
 			Iterator<? extends Marriage> couplesIterator = couples.iterator();
 			for(int i = 0; couplesIterator.hasNext() && i < page * entriesPerPage; i++)
 			{
 				couplesIterator.next();
 			}
+			final boolean isPlayer = sender instanceof Player;
 			while(couplesIterator.hasNext() && --c >= 0)
 			{
 				Marriage couple = couplesIterator.next();
-				messageListFormat.send(sender, couple.getPartner1().getName(), couple.getPartner2().getName(), couple.getPartner1().getDisplayName(), couple.getPartner2().getDisplayName(),
-				                       couple.getSurnameString(), couple.getMagicHeart());
+				MarriagePlayer p1 = couple.getPartner1(), p2 = couple.getPartner2();
+				String p1DName = isPlayer ? p1.getDisplayNameCheckVanished((Player) sender) : p1.getDisplayName();
+				String p2DName = isPlayer ? p2.getDisplayNameCheckVanished((Player) sender) : p2.getDisplayName();
+				messageListFormat.send(sender, p1.getName(), p2.getName(), p1DName, p2DName, couple.getSurnameString(), couple.getMagicHeart());
 			}
 			if(useFooter)
 			{
@@ -100,7 +100,7 @@ public class ListCommand extends MarryCommand
 	}
 
 	@Override
-	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		return null;
 	}

@@ -104,6 +104,13 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
+	public @NotNull String getDisplayNameCheckVanished(@NotNull Player player)
+	{
+		Player bukkitPlayer = getPlayerOnline();
+		return (bukkitPlayer != null && player.canSee(bukkitPlayer)) ? bukkitPlayer.getDisplayName() : MessageColor.GRAY + getName();
+	}
+
+	@Override
 	public boolean hasPermission(@NotNull String permission)
 	{
 		Player bukkitPlayer = getPlayerOnline();

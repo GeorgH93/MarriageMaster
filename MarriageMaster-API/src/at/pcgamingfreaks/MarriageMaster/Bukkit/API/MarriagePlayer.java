@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, IMessage>
 {
 	/**
@@ -73,4 +72,12 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @return The represented player. Null if the player is offline.
 	 */
 	@Nullable Player getPlayerOnline();
+
+	/**
+	 * Gets the display name of a player. But also checks if the given player can see the player. If not the offline display name will be used.
+	 *
+	 * @param player The player that should be check for visibility
+	 * @return The display name of the player. If the player is offline or the given player can't see the player, the offline display name will be used.
+	 */
+	@NotNull String getDisplayNameCheckVanished(@NotNull Player player);
 }
