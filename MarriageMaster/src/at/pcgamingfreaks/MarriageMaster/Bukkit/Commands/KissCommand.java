@@ -64,8 +64,8 @@ public class KissCommand extends MarryCommand implements Listener
 
 		messageKissed     = plugin.getLanguage().getMessage("Ingame.Kiss.Kissed");
 		messageGotKissed  = plugin.getLanguage().getMessage("Ingame.Kiss.GotKissed");
-		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Kiss.TooFarAway").replaceAll("\\{Distance\\}", "%.1f");
-		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time\\}", "%1\\$d").replaceAll("\\{TimeLeft\\}", "%2\\$.1f");
+		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Kiss.TooFarAway").replaceAll("\\{Distance}", "%.1f");
+		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}

@@ -19,7 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
-import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
+import at.pcgamingfreaks.Bukkit.Command.RegisterablePluginCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
@@ -39,9 +39,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NoDatabaseWorker extends SpecialInfoBase implements  CommandExecutor
 {
-	private MarriageMaster plugin;
-	private RegisterablePluginCommand command;
-	private Message messageDBProblem;
+	private final MarriageMaster plugin;
+	private final RegisterablePluginCommand command;
+	private final Message messageDBProblem;
 
 	public NoDatabaseWorker(MarriageMaster plugin)
 	{

@@ -63,8 +63,9 @@ public class PvPCommand extends MarryCommand implements Listener
 	}
 
 	@Override
-	public void registerSubCommands()
+	public void afterRegister()
 	{
+		super.afterRegister();
 		onCommand = new PvPOnCommand(plugin);
 		plugin.getCommandManager().registerSubCommand(onCommand);
 		offCommand = new PvPOffCommand(plugin);
@@ -72,7 +73,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	}
 
 	@Override
-	public void unRegisterSubCommands()
+	public void beforeUnregister()
 	{
 		plugin.getCommandManager().unRegisterSubCommand(onCommand);
 		onCommand.close();
@@ -182,7 +183,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	{
 		if(event.getEntity() instanceof Player)
 		{
-			Player dmgSource = null;
+			Player dmgSource;
 			if(event.getDamager() instanceof Player) dmgSource = (Player) event.getDamager();
 			else if(event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player) dmgSource = (Player) ((Projectile) event.getDamager()).getShooter();
 			else return;

@@ -486,7 +486,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public String getDefaultCommand()
 	{
-		return getConfigE().getString("DefaultCommand", "help");
+		return getConfigE().getString("DefaultCommand", "help").toLowerCase(Locale.ENGLISH);
 	}
 
 	public boolean isAllowPlayersToChangeMarriageColor()

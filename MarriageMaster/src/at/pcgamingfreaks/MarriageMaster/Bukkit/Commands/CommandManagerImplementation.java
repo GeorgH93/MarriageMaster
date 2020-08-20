@@ -19,8 +19,8 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Command.CommandExecutorWithSubCommandsGeneric;
 import at.pcgamingfreaks.Bukkit.Command.SubCommand;
+import at.pcgamingfreaks.Bukkit.Command.RegisterablePluginCommand;
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.Bukkit.RegisterablePluginCommand;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
@@ -46,7 +46,7 @@ import java.util.Locale;
 
 public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
 {
-	private MarriageMaster plugin;
+	private final MarriageMaster plugin;
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll, switchesRemove;
 	private RegisterablePluginCommand marryCommand;
 	private MarryCommand marryActionCommand;
@@ -72,7 +72,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		marryCommand.setExecutor(this);
 		marryCommand.setTabCompleter(this);
 
-		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").replaceAll("\\{MainCommand\\}", "%1\\$s").replaceAll("\\{SubCommand\\}", "%2\\$s").replaceAll("\\{Parameters\\}", "%3\\$s").replaceAll("\\{Description\\}", "%4\\$s");
+		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").replaceAll("\\{MainCommand}", "%1\\$s").replaceAll("\\{SubCommand}", "%2\\$s").replaceAll("\\{Parameters}", "%3\\$s").replaceAll("\\{Description}", "%4\\$s");
 
 		// Setting the help format for the marry commands as well as the no permissions and not from console message
 		try
@@ -144,7 +144,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		registerSubCommand(new RequestCancelCommand(plugin));
 
 		MarryCommand defaultCmd = subCommandMap.get("help");
-		switch(plugin.getConfiguration().getDefaultCommand().toLowerCase(Locale.ENGLISH))
+		switch(plugin.getConfiguration().getDefaultCommand())
 		{
 			case "customhelp": case "custom_help": defaultCmd = new CustomHelpCommand(plugin); break;
 		}
