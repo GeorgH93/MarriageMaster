@@ -124,6 +124,12 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
+	public long getLastPlayed()
+	{
+		return getPlayer().getLastPlayed();
+	}
+
+	@Override
 	public AcceptPendingRequest getOpenRequest()
 	{
 		return openRequest;

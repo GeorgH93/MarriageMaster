@@ -17,7 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.UnCacheStrategies.UnCacheStrategie;
+import at.pcgamingfreaks.Bukkit.Database.Cache.UnCacheStrategies.UnCacheStrategyMaker;
+import at.pcgamingfreaks.Database.Cache.BaseUnCacheStrategy;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
 
@@ -35,27 +36,27 @@ import java.util.UUID;
 
 public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, MarriageData, MarriageHome> implements Listener
 {
-	private final UnCacheStrategie unCacheStrategie;
+	private final BaseUnCacheStrategy unCacheStrategy;
 
 	public Database(@NotNull MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfiguration(), plugin.getDescription().getName(), plugin.getDataFolder(), plugin.getConfiguration().isBungeeEnabled(), false);
 		if(available())
 		{
-			unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
+			unCacheStrategy = UnCacheStrategyMaker.make(plugin, cache, plugin.getConfiguration());
 			Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
 			if(!plugin.getConfiguration().isBungeeEnabled() || plugin.getServer().getOnlinePlayers().size() > 0)
 			{
 				new Thread(loadRunnable).start(); // Load async
 			}
 		}
-		else unCacheStrategie = null;
+		else unCacheStrategy = null;
 	}
 
 	@Override
 	public void close()
 	{
-		unCacheStrategie.close(); // Killing the uncache strategie before killing the rest like the caches
+		unCacheStrategy.close(); // Killing the uncache strategy before killing the rest like the caches
 		super.close();
 		HandlerList.unregisterAll(this);
 	}

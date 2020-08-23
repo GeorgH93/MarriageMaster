@@ -17,8 +17,9 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
+import at.pcgamingfreaks.Bungee.Database.Cache.UnCacheStrategies.UnCacheStrategyMaker;
+import at.pcgamingfreaks.Database.Cache.BaseUnCacheStrategy;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
-import at.pcgamingfreaks.MarriageMaster.Bungee.Database.UnCacheStrategies.UnCacheStrategie;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.BaseDatabase;
 
@@ -31,25 +32,25 @@ import java.util.UUID;
 
 public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, MarriageData, Home> implements Listener
 {
-	private final UnCacheStrategie unCacheStrategie;
+	private final BaseUnCacheStrategy unCacheStrategy;
 
 	public Database(MarriageMaster plugin)
 	{
 		super(plugin, plugin.getLogger(), new PlatformSpecific(plugin), plugin.getConfig(), plugin.getDescription().getName(), plugin.getDataFolder(), true, true);
 		if(available())
 		{
-			unCacheStrategie = UnCacheStrategie.getUnCacheStrategie(cache);
+			unCacheStrategy = UnCacheStrategyMaker.make(plugin, cache, plugin.getConfig());
 			plugin.getProxy().getPluginManager().registerListener(plugin, this);
 			loadRunnable.run();
 		}
-		else unCacheStrategie = null;
+		else unCacheStrategy = null;
 	}
 
 	@Override
 	public void close()
 	{
 		plugin.getProxy().getPluginManager().unregisterListener(this);
-		unCacheStrategie.close(); // Killing the uncache strategie
+		unCacheStrategy.close(); // Killing the uncache strategie
 		super.close();
 	}
 
@@ -69,7 +70,6 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 		return player;
 	}
 
-	@SuppressWarnings("unused")
 	@EventHandler(priority = Byte.MIN_VALUE) // We want to start the loading of the player as soon as he connects, so he probably is ready as soon as someone requests the player.
 	public void onPlayerLoginEvent(PostLoginEvent event)
 	{

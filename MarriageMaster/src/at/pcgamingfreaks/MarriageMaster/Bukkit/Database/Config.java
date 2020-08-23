@@ -52,6 +52,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		{
 			Map<String, String> reMappings = new HashMap<>();
 			if(oldConfig.getVersion() < 98) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
+			if(oldConfig.getVersion() < 101) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			Collection<String> keysToKeep = oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)");
 			keysToKeep.add("Misc.ServerName");
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);

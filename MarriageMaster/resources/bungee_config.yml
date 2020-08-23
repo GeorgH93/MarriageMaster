@@ -70,12 +70,12 @@ Database:
   # Settings controlling the cache behavior of the plugin. You may can optimize it a little bit depending on your player count, ram or cpu bottlenecks.
   Cache:
     UnCache:
-      # The strategie used to uncache offline players. Options
+      # The strategy used to uncache offline players. Options
       #     interval (offline players get uncached every x seconds)
       #     intervalChecked (like interval, but also ensures that the player is already offline for at lest the interval time, add's a cpu overhead)
       #     ondisconnect (player instantly gets uncached as soon as he disconnects from the server, may adds overhead if other plugins try to access the player data when they go offline, also it may be problematic for players with unstable connections)
       #     ondisconnectdelayed (player gets uncached x seconds after he went offline, adds overhead on disconnect, you shouldn't use this with a lot of players joining and leaving.)
-      Strategie: interval
+      Strategy: interval
       # Used for the interval based uncaching algorithms. Also used as delay for ondisconnectdelayed. Value in seconds. Default: 600 = 10 minutes
       Interval: 600
       Delay: 600
@@ -88,4 +88,4 @@ Misc:
     Channel: ${updateChannel}
 
 # Config File Version. Don't touch it!
-Version: 101
+Version: 102

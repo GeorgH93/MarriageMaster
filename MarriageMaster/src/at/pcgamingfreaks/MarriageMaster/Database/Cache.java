@@ -17,6 +17,12 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
+import at.pcgamingfreaks.Database.Cache.ICacheablePlayer;
+import at.pcgamingfreaks.Database.Cache.IPlayerCache;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Caches the players and marriages for the plugin.
  */
-public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MARRIAGE_DATA extends MarriageDataBase>
+public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MARRIAGE_DATA extends MarriageDataBase> implements IPlayerCache
 {
 	private final Map<Object, MARRIAGE_PLAYER_DATA> databasePlayers = new ConcurrentHashMap<>(); // To resolve players from database key
 	private final Map<Object, MARRIAGE_DATA> databaseMarriages = new ConcurrentHashMap<>(); // To resolve marriages form database key
@@ -91,18 +97,18 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 	public void cache(MARRIAGE_PLAYER_DATA player)
 	{
 		players.put(player.getUUID(), player);
-		if(player instanceof DatabaseElement && ((DatabaseElement) player).getDatabaseKey() != null)
+		if(player.getDatabaseKey() != null)
 		{
-			databasePlayers.put(((DatabaseElement) player).getDatabaseKey(), player);
+			databasePlayers.put(player.getDatabaseKey(), player);
 		}
 	}
 
 	public void cache(MARRIAGE_DATA marriage)
 	{
 		marriages.add(marriage);
-		if(marriage instanceof DatabaseElement && ((DatabaseElement) marriage).getDatabaseKey() != null)
+		if(marriage.getDatabaseKey() != null)
 		{
-			databaseMarriages.put(((DatabaseElement) marriage).getDatabaseKey(), marriage);
+			databaseMarriages.put(marriage.getDatabaseKey(), marriage);
 		}
 		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
 		{
@@ -113,18 +119,18 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 	public void unCache(MARRIAGE_PLAYER_DATA player)
 	{
 		players.remove(player.getUUID());
-		if(player instanceof DatabaseElement && ((DatabaseElement) player).getDatabaseKey() != null)
+		if(player.getDatabaseKey() != null)
 		{
-			databasePlayers.remove(((DatabaseElement) player).getDatabaseKey());
+			databasePlayers.remove(player.getDatabaseKey());
 		}
 	}
 
 	public void unCache(MARRIAGE_DATA marriage)
 	{
 		marriages.remove(marriage);
-		if(marriage instanceof DatabaseElement && ((DatabaseElement) marriage).getDatabaseKey() != null)
+		if(marriage.getDatabaseKey() != null)
 		{
-			databaseMarriages.remove(((DatabaseElement) marriage).getDatabaseKey());
+			databaseMarriages.remove(marriage.getDatabaseKey());
 		}
 		if(marriage.getSurname() != null && !marriage.getSurname().isEmpty())
 		{
@@ -134,17 +140,17 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 
 	public void addDbKey(MARRIAGE_PLAYER_DATA player)
 	{
-		if(player instanceof DatabaseElement && ((DatabaseElement) player).getDatabaseKey() != null)
+		if(player.getDatabaseKey() != null)
 		{
-			databasePlayers.put(((DatabaseElement) player).getDatabaseKey(), player);
+			databasePlayers.put(player.getDatabaseKey(), player);
 		}
 	}
 
 	public void addDbKey(MARRIAGE_DATA marriage)
 	{
-		if(marriage instanceof DatabaseElement && ((DatabaseElement) marriage).getDatabaseKey() != null)
+		if(marriage.getDatabaseKey() != null)
 		{
-			databaseMarriages.put(((DatabaseElement) marriage).getDatabaseKey(), marriage);
+			databaseMarriages.put(marriage.getDatabaseKey(), marriage);
 		}
 	}
 
@@ -171,5 +177,23 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 	public void addSurname(MARRIAGE_DATA marriage)
 	{
 		surnames.put(marriage.getSurname(), marriage);
+	}
+
+	@Override
+	public @Nullable ICacheablePlayer getCachedPlayer(@NotNull UUID uuid)
+	{
+		return getPlayer(uuid);
+	}
+
+	@Override
+	public void unCache(@NotNull ICacheablePlayer player)
+	{
+		unCache((MARRIAGE_PLAYER_DATA) player);
+	}
+
+	@Override
+	public @NotNull Collection<? extends ICacheablePlayer> getCachedPlayers()
+	{
+		return getLoadedPlayers();
 	}
 }

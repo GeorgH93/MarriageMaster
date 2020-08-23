@@ -31,10 +31,14 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import lombok.Getter;
+
 import java.util.UUID;
 
 public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, ProxiedPlayer, IMessage> implements MarriagePlayer
 {
+	@Getter private long lastPlayed = 0;
+
 	public MarriagePlayerData(final @Nullable UUID uuid, final @NotNull String name)
 	{
 		super(uuid, name);
@@ -59,7 +63,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 
 	// API Functions
 	@Override
-	public @NotNull ProxiedPlayer getPlayer()
+	public @Nullable ProxiedPlayer getPlayer()
 	{
 		//TODO: Bungee has no offline player, so player can become null!
 		return ProxyServer.getInstance().getPlayer(getUUID());
@@ -74,7 +78,9 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	@Override
 	public boolean isOnline()
 	{
-		return getPlayer() != null;
+		boolean online = getPlayer() != null;
+		if(online) lastPlayed = System.currentTimeMillis();
+		return online;
 	}
 
 	@Override

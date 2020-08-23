@@ -17,13 +17,14 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
+import at.pcgamingfreaks.Database.Cache.IUnCacheStrategyConfig;
 import at.pcgamingfreaks.Database.DatabaseConnectionConfiguration;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
+public interface DatabaseConfiguration extends DatabaseConnectionConfiguration, IUnCacheStrategyConfig
 {
 	default @NotNull String getDatabaseType()
 	{
@@ -61,21 +62,6 @@ public interface DatabaseConfiguration extends DatabaseConnectionConfiguration
 	default @Nullable String getSQLField(@NotNull String field, @Nullable String defaultValue)
 	{
 		return getConfigE().getString("Database.SQL.Tables.Fields." + field, defaultValue);
-	}
-
-	default @NotNull String getUnCacheStrategie()
-	{
-		return getConfigE().getString("Database.Cache.UnCache.Strategie", "interval").toLowerCase();
-	}
-
-	default long getUnCacheInterval()
-	{
-		return getConfigE().getLong("Database.Cache.UnCache.Interval", 600) * 20L;
-	}
-
-	default long getUnCacheDelay()
-	{
-		return getConfigE().getLong("Database.Cache.UnCache.Delay", 600) * 20L;
 	}
 
 	default void setDatabaseType(final @NotNull String type) {}

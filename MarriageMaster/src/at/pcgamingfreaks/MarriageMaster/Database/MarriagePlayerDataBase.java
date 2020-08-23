@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database;
 
+import at.pcgamingfreaks.Database.Cache.ICacheablePlayer;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
@@ -33,7 +34,7 @@ import lombok.Setter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>
+public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>, ICacheablePlayer
 {
 	@Getter @Setter	private String name;
 	private final UUID uuid;
@@ -245,4 +246,11 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 		return partnersMarriages.get(player);
 	}
 	//endregion
+
+
+	@Override
+	public boolean canBeUncached()
+	{
+		return !isMarried() && !isPriest();
+	}
 }
