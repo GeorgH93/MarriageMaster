@@ -42,7 +42,7 @@ Database:
     UnCache:
       # The strategy used to uncache offline players. Options
       #     interval (offline players get uncached every x seconds)
-      #     intervalChecked (like interval, but also ensures that the player is already offline for at lest the interval time, add's a cpu overhead)
+      #     intervalChecked (like interval, but also ensures that the player is already offline for at lest the interval time)
       #     ondisconnect (player instantly gets uncached as soon as he disconnects from the server, may adds overhead if other plugins try to access the player data when they go offline, also it may be problematic for players with unstable connections)
       #     ondisconnectdelayed (player gets uncached x seconds after he went offline, adds overhead on disconnect, you shouldn't use this with a lot of players joining and leaving.)
       Strategy: interval
