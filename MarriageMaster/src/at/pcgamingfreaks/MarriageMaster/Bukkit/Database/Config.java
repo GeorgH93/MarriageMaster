@@ -215,7 +215,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public int getKissWaitTime()
 	{
-		return getConfigE().getInt("Kiss.WaitTime", 10) * 1000;
+		return (int) (getConfigE().getFloat("Kiss.WaitTime", 10.0f) * 1000);
 	}
 
 	public int getKissHearthCount()
