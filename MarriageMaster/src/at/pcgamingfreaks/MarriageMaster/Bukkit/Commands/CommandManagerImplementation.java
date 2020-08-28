@@ -138,17 +138,17 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		registerSubCommand(new UpdateCommand(plugin));
 		registerSubCommand(new ReloadCommand(plugin));
 		registerSubCommand(new VersionCommand(plugin));
-		registerSubCommand(new HelpCommand(plugin, commands)); // The help command needs the list of all existing commands to show the help
+		MarryCommand helpCommand = new HelpCommand(plugin, commands);
+		registerSubCommand(helpCommand); // The help command needs the list of all existing commands to show the help
 		registerSubCommand(new RequestAcceptCommand(plugin));
 		registerSubCommand(new RequestDenyCommand(plugin));
 		registerSubCommand(new RequestCancelCommand(plugin));
 
-		MarryCommand defaultCmd = subCommandMap.get("help");
 		switch(plugin.getConfiguration().getDefaultCommand())
 		{
-			case "customhelp": case "custom_help": defaultCmd = new CustomHelpCommand(plugin); break;
+			case "customhelp": case "custom_help": setDefaultSubCommand(new CustomHelpCommand(plugin)); break;
+			default: setDefaultSubCommand(helpCommand);
 		}
-		setDefaultSubCommand(defaultCmd);
 	}
 
 	@Override
