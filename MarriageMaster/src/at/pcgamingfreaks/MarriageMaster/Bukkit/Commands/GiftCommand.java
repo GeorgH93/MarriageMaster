@@ -191,13 +191,13 @@ public class GiftCommand extends MarryCommand
 	{
 		private final ItemStack item;
 		private final String itemJson, itemName;
-		private final MarriagePlayer receiver, sender;
+		private final MarriagePlayer recipient, sender;
 
-		public GiftRequest(final @NotNull ItemStack item, final @NotNull String itemJson, final @NotNull String itemName, final @NotNull MarriagePlayer receiver, final @NotNull MarriagePlayer sender)
+		public GiftRequest(final @NotNull ItemStack item, final @NotNull String itemJson, final @NotNull String itemName, final @NotNull MarriagePlayer recipient, final @NotNull MarriagePlayer sender)
 		{
-			super(receiver, sender);
+			super(recipient, sender);
 			this.item = item;
-			this.receiver = receiver;
+			this.recipient = recipient;
 			this.sender = sender;
 			this.itemName = itemName;
 			this.itemJson = itemJson;
@@ -206,16 +206,16 @@ public class GiftCommand extends MarryCommand
 		@Override
 		protected void onAccept()
 		{
-			int slot = receiver.getPlayerOnline().getInventory().firstEmpty();
+			int slot = recipient.getPlayerOnline().getInventory().firstEmpty();
 			if(slot == -1)
 			{
 				sender.send(messagePartnerInvFull);
 				refund();
 				return;
 			}
-			receiver.getPlayerOnline().getInventory().setItem(slot, item);
-			sender.send(messageItemSent, receiver.getName(), receiver.getDisplayName(), item.getAmount(), itemName, itemJson);
-			receiver.send(messageItemReceived, sender.getName(), sender.getDisplayName(), item.getAmount(), itemName, itemJson);
+			recipient.getPlayerOnline().getInventory().setItem(slot, item);
+			sender.send(messageItemSent, recipient.getName(), recipient.getDisplayName(), item.getAmount(), itemName, itemJson);
+			recipient.send(messageItemReceived, sender.getName(), sender.getDisplayName(), item.getAmount(), itemName, itemJson);
 		}
 
 		@Override

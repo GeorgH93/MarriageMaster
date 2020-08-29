@@ -277,8 +277,8 @@ public class ChatCommand extends MarryCommand implements Listener
 
 	private void doChat(final MarriagePlayer sender, String msg)
 	{
-		List<Marriage> receivers = new ArrayList<>(sender.getMultiMarriageData().size());
-		Player receiver = null;
+		List<Marriage> recipients = new ArrayList<>(sender.getMultiMarriageData().size());
+		Player recipient = null;
 		if(sender.getPrivateChatTarget() == null)
 		{
 			MarriagePlayer last = null;
@@ -288,10 +288,10 @@ public class ChatCommand extends MarryCommand implements Listener
 				if(p != null && p.isOnline() && p.getPlayerOnline() != null)
 				{
 					last = p;
-					receivers.add(m);
+					recipients.add(m);
 				}
 			}
-			if(receivers.size() == 1) receiver = last.getPlayerOnline();
+			if(recipients.size() == 1) recipient = last.getPlayerOnline();
 		}
 		else
 		{
@@ -299,12 +299,12 @@ public class ChatCommand extends MarryCommand implements Listener
 			OfflinePlayer player2 = sender.getPrivateChatTarget().getPartner(sender).getPlayer();
 			if(player2.isOnline() && player2.getPlayer() != null)
 			{
-				receiver = player2.getPlayer();
-				receivers.add(sender.getPrivateChatTarget());
+				recipient = player2.getPlayer();
+				recipients.add(sender.getPrivateChatTarget());
 			}
 		}
 
-		if(receivers.isEmpty())
+		if(recipients.isEmpty())
 		{
 			sender.send(plugin.messagePartnerOffline);
 			return;
@@ -313,25 +313,25 @@ public class ChatCommand extends MarryCommand implements Listener
 		String magicHeart = MagicValues.RED_HEART;
 
 		//region Fire Event
-		if(receivers.size() == 1)
+		if(recipients.size() == 1)
 		{
-			MarryChatEvent marryChatEvent = new MarryChatEvent(sender, receivers.get(0), msg);
+			MarryChatEvent marryChatEvent = new MarryChatEvent(sender, recipients.get(0), msg);
 			Bukkit.getPluginManager().callEvent(marryChatEvent);
 			if(marryChatEvent.isCancelled()) return;
 			msg = marryChatEvent.getMessage();
-			magicHeart = receivers.get(0).getMagicHeart();
+			magicHeart = recipients.get(0).getMagicHeart();
 		}
 		else
 		{
-			MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, receivers, msg);
+			MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, recipients, msg);
 			Bukkit.getPluginManager().callEvent(marryChatEvent);
-			if(marryChatEvent.isCancelled() || receivers.isEmpty()) return;
+			if(marryChatEvent.isCancelled() || recipients.isEmpty()) return;
 			msg = marryChatEvent.getMessage();
-			if(receivers.size() == 1)
+			if(recipients.size() == 1)
 			{
 				//noinspection ConstantConditions
-				receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
-				magicHeart = receivers.get(0).getMagicHeart();
+				recipient = recipients.get(0).getPartner(sender).getPlayerOnline();
+				magicHeart = recipients.get(0).getMagicHeart();
 			}
 		}
 		//endregion
@@ -339,27 +339,27 @@ public class ChatCommand extends MarryCommand implements Listener
 		msg = cleanupMessage(msg, sender);
 
 		// Send the message
-		List<Player> playerReceivers;
-		if(receiver == null) // Add the receivers to the list
+		List<Player> playerRecipients;
+		if(recipient == null) // Add the recipients to the list
 		{
-			playerReceivers = new ArrayList<>(listeners.size() + receivers.size() + 1);
-			for(Marriage target : receivers)
+			playerRecipients = new ArrayList<>(listeners.size() + recipients.size() + 1);
+			for(Marriage target : recipients)
 			{
 				//noinspection ConstantConditions
 				Player p = target.getPartner(sender).getPlayerOnline();
-				if(!listeners.contains(p)) playerReceivers.add(p);
+				if(!listeners.contains(p)) playerRecipients.add(p);
 			}
 		}
 		else
 		{
-			playerReceivers = new ArrayList<>(listeners.size() + 2);
-			if(!listeners.contains(receiver)) playerReceivers.add(receiver); // Add the receiver to the list if not one of the listeners
+			playerRecipients = new ArrayList<>(listeners.size() + 2);
+			if(!listeners.contains(recipient)) playerRecipients.add(recipient); // Add the recipient to the list if not one of the listeners
 		}
-		if(!listeners.contains(sender.getPlayerOnline())) playerReceivers.add(sender.getPlayerOnline()); // Add the sender to the list
-		playerReceivers.addAll(listeners); // Copy the listeners since we need to send the message too
-		String receiverDisplayName = (receiver != null) ? receiver.getDisplayName() : displayNameAll, receiverName = (receiver != null) ? receiver.getName() : displayNameAll;
-		privateMessageFormat.send(playerReceivers, sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName, magicHeart);
-		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), receiverDisplayName, msg, sender.getName(), receiverName, magicHeart);
+		if(!listeners.contains(sender.getPlayerOnline())) playerRecipients.add(sender.getPlayerOnline()); // Add the sender to the list
+		playerRecipients.addAll(listeners); // Copy the listeners since we need to send the message too
+		String recipientDisplayName = (recipient != null) ? recipient.getDisplayName() : displayNameAll, recipientName = (recipient != null) ? recipient.getName() : displayNameAll;
+		privateMessageFormat.send(playerRecipients, sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
+		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
 	}
 
 	private static @NotNull String cleanupMessage(@NotNull String msg, final @NotNull MarriagePlayer sender)

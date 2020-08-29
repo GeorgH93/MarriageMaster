@@ -155,8 +155,8 @@ Chat:
 # Ranges for actions
 # -1 no range limit and no world limit, 0 no range limit but in the same world, >= 1 range limit in meters/blocks
 Range:
-  Marry: 25.0
-  Divorce: 25.0
+  Marry: 25
+  Divorce: 25
   Backpack: 5
   Gift: 0
   Kiss: 2

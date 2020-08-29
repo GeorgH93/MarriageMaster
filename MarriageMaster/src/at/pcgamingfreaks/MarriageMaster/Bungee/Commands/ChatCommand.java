@@ -247,8 +247,8 @@ public class ChatCommand extends MarryCommand implements Listener
 
 	private void doChat(final MarriagePlayer sender, String msg)
 	{
-		List<Marriage> receivers = new LinkedList<>();
-		ProxiedPlayer receiver = null;
+		List<Marriage> recipients = new LinkedList<>();
+		ProxiedPlayer recipient = null;
 		if(getMarriagePlugin().areMultiplePartnersAllowed() && sender.getPrivateChatTarget() == null)
 		{
 			MarriagePlayer p = null;
@@ -257,12 +257,12 @@ public class ChatCommand extends MarryCommand implements Listener
 				p = m.getPartner(sender);
 				if(p != null && p.isOnline())
 				{
-					receivers.add(m);
+					recipients.add(m);
 				}
 			}
-			if(receivers.size() == 1 && p != null)
+			if(recipients.size() == 1 && p != null)
 			{
-				receiver = p.getPlayer();
+				recipient = p.getPlayer();
 			}
 		}
 		else
@@ -270,18 +270,18 @@ public class ChatCommand extends MarryCommand implements Listener
 			MarriagePlayer player2 = sender.getPartner();
 			if(player2 != null && player2.isOnline())
 			{
-				receiver = player2.getPlayer();
-				receivers.add(sender.getPrivateChatTarget());
+				recipient = player2.getPlayer();
+				recipients.add(sender.getPrivateChatTarget());
 			}
 		}
 
 		ProxiedPlayer player = sender.getPlayer(); // Get the sending player (for permission checks and sending the message.
-		if(!receivers.isEmpty())
+		if(!recipients.isEmpty())
 		{
 			// Fire Event
-			/*if(receivers.size() == 1)
+			/*if(recipients.size() == 1)
 			{
-				MarryChatEvent marryChatEvent = new MarryChatEvent(sender, receivers.get(0), msg);
+				MarryChatEvent marryChatEvent = new MarryChatEvent(sender, recipients.get(0), msg);
 				Bukkit.getPluginManager().callEvent(marryChatEvent);
 				if(marryChatEvent.isCancelled())
 				{
@@ -291,16 +291,16 @@ public class ChatCommand extends MarryCommand implements Listener
 			}
 			else
 			{
-				MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, receivers, msg);
+				MarryChatMultiTargetEvent marryChatEvent = new MarryChatMultiTargetEvent(sender, recipients, msg);
 				Bukkit.getPluginManager().callEvent(marryChatEvent);
-				if(marryChatEvent.isCancelled() || receivers.isEmpty())
+				if(marryChatEvent.isCancelled() || recipients.isEmpty())
 				{
 					return;
 				}
 				msg = marryChatEvent.getMessage();
-				if(receivers.size() == 1)
+				if(recipients.size() == 1)
 				{
-					receiver = receivers.get(0).getPartner(sender).getPlayerOnline();
+					recipient = recipients.get(0).getPartner(sender).getPlayerOnline();
 				}
 			}*/
 
@@ -327,23 +327,23 @@ public class ChatCommand extends MarryCommand implements Listener
 				msg = msg.replaceAll("§k", "&k");
 			}
 			// Send the message
-			List<ProxiedPlayer> playerReceivers = new LinkedList<>(listeners); // Copy the listeners since we need to send the message to them anyway
-			playerReceivers.add(player); // Add the sender to the list
-			if(receiver == null) // Add the receivers to the list
+			List<ProxiedPlayer> playerRecipients = new LinkedList<>(listeners); // Copy the listeners since we need to send the message to them anyway
+			playerRecipients.add(player); // Add the sender to the list
+			if(recipient == null) // Add the recipients to the list
 			{
-				for(Marriage target : receivers)
+				for(Marriage target : recipients)
 				{
 					//noinspection ConstantConditions
-					playerReceivers.add(target.getPartner(sender).getPlayer());
+					playerRecipients.add(target.getPartner(sender).getPlayer());
 				}
 			}
 			else
 			{
-				playerReceivers.add(receiver); // Add the receiver to the list
+				playerRecipients.add(recipient); // Add the recipient to the list
 			}
 			String magicHeart = MagicValues.RED_HEART;
-			if(receivers.size() == 1) magicHeart = receivers.get(0).getMagicHeart();
-			privateMessageFormat.send(playerReceivers, player.getDisplayName(), (receiver != null) ? receiver.getDisplayName() : displayNameAll, msg, player.getName(), (receiver != null) ? receiver.getName() : displayNameAll, magicHeart);
+			if(recipients.size() == 1) magicHeart = recipients.get(0).getMagicHeart();
+			privateMessageFormat.send(playerRecipients, player.getDisplayName(), (recipient != null) ? recipient.getDisplayName() : displayNameAll, msg, player.getName(), (recipient != null) ? recipient.getName() : displayNameAll, magicHeart);
 		}
 		else
 		{
