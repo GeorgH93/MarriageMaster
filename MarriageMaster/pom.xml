@@ -64,12 +64,12 @@
 		</dependency>
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>MarriageMaster-Minepacks</artifactId>
+			<artifactId>MarriageMaster-MinepacksV2</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>MarriageMaster-MinepacksLegacy</artifactId>
+			<artifactId>MarriageMaster-MinepacksV1</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<!-- PCGF Plugin Lib -->

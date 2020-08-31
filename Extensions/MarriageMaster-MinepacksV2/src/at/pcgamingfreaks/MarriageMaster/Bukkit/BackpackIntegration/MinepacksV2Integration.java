@@ -29,14 +29,14 @@ import lombok.Getter;
 
 import java.util.MissingResourceException;
 
-public class MinepacksIntegration implements IBackpackIntegration
+public class MinepacksV2Integration implements IBackpackIntegration
 {
 	private static final String PLUGIN_NAME = "Minepacks";
 	private static final Version MIN_VERSION = new Version("2.0");
 	private MinepacksPlugin minepacks;
 	@Getter private final String version;
 
-	public MinepacksIntegration() throws NullPointerException, BackpackPluginIncompatibleException
+	public MinepacksV2Integration() throws NullPointerException, BackpackPluginIncompatibleException
 	{
 		Plugin bukkitPlugin = Bukkit.getPluginManager().getPlugin(PLUGIN_NAME);
 		if(!(bukkitPlugin instanceof MinepacksPlugin)) throw new MissingResourceException("Plugin " + PLUGIN_NAME + " is not available!", this.getClass().getName(), PLUGIN_NAME);

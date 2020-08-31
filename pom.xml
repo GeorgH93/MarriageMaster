@@ -145,8 +145,8 @@
 	<modules>
 		<module>MarriageMaster-API</module>
 		<module>Extensions/MarriageMaster-BackpackIntegration</module>
-		<module>Extensions/MarriageMaster-MinepacksLegacy</module>
-		<module>Extensions/MarriageMaster-Minepacks</module>
+		<module>Extensions/MarriageMaster-MinepacksV1</module>
+		<module>Extensions/MarriageMaster-MinepacksV2</module>
 		<module>MarriageMaster</module>
 	</modules>
 
