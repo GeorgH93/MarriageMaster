@@ -74,7 +74,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	private PlaceholderManager placeholderManager = null;
 
 	// Global Settings
-	private boolean multiMarriage = false, selfMarriage = false, selfDivorce = false, surnamesEnabled = false, surnamesForced = false;
+	@Getter private boolean selfMarriageAllowed = false, selfDivorceAllowed = false, surnamesEnabled = false, surnamesForced = false;
+	private boolean multiplePartnersAllowed = false;
 
 	// Global Translations
 	public String helpPartnerNameVariable, helpPlayerNameVariable;
@@ -169,9 +170,9 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 
 		// Loading data
 		surnamesEnabled = config.isSurnamesEnabled();
-		multiMarriage   = config.areMultiplePartnersAllowed();
-		selfMarriage    = config.isSelfMarriageAllowed();
-		selfDivorce     = config.isSelfDivorceAllowed();
+		multiplePartnersAllowed = config.areMultiplePartnersAllowed();
+		selfMarriageAllowed = config.isSelfMarriageAllowed();
+		selfDivorceAllowed = config.isSelfDivorceAllowed();
 		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
 
 		database = new Database(this);
@@ -277,31 +278,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public boolean areMultiplePartnersAllowed()
 	{
-		return multiMarriage;
-	}
-
-	@Override
-	public boolean isSelfMarriageAllowed()
-	{
-		return selfMarriage;
-	}
-
-	@Override
-	public boolean isSelfDivorceAllowed()
-	{
-		return selfDivorce;
-	}
-
-	@Override
-	public boolean isSurnamesEnabled()
-	{
-		return surnamesEnabled;
-	}
-
-	@Override
-	public boolean isSurnamesForced()
-	{
-		return surnamesForced;
+		return multiplePartnersAllowed;
 	}
 
 	@Override
