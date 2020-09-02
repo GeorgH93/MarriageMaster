@@ -121,6 +121,7 @@
 						<ciManagement/>
 						<!--<url/><pluginRepositories/><distributionManagement/>-->
 					</pomElements>
+					<flattenedPomFilename>target/.flattened-pom.xml</flattenedPomFilename>
 				</configuration>
 				<executions>
 					<execution>
