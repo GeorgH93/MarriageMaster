@@ -346,33 +346,22 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			logger.info("Priests loaded");
 			// Load players
 			logger.info("Loading players ...");
-			//TODO validate the performance loss for individual querys to load the data
+			//TODO validate the performance loss for individual queries to load the data
 			if(!playerToLoad.isEmpty())
 			{
 				StringBuilder stringBuilder = new StringBuilder();
-				for(int ignored : playerToLoad)
+				for(int pid : playerToLoad)
 				{
-					if(stringBuilder.length() > 0)
-					{
-						stringBuilder.append(',');
-					}
-					stringBuilder.append('?');
+					if(stringBuilder.length() > 0) stringBuilder.append(',');
+					stringBuilder.append(pid);
 				}
-				try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
+				try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
 				{
-					int i = 0;
-					for(int pid : playerToLoad)
+					while(rs.next())
 					{
-						ps.setInt(++i, pid);
-					}
-					try(ResultSet rs = ps.executeQuery())
-					{
-						while(rs.next())
-						{
-							MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
-							                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
-							cache.cache(player);
-						}
+						MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
+						                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
+						cache.cache(player);
 					}
 				}
 				catch(Exception e)
