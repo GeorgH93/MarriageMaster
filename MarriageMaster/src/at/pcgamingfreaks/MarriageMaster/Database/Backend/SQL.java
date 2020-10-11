@@ -54,10 +54,10 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	//region Field Names
 	protected String fieldPlayerID = "player_id", fieldName = "name", fieldUUID = "uuid", fieldShareBackpack = "sharebackpack", fieldPriestID = "player_id", fieldSurname = "surname"; // Player
 	protected String fieldMarryID = "marry_id", fieldPlayer1 = "player1", fieldPlayer2 = "player2", fieldPriest = "priest", fieldPVPState = "pvp_state", fieldDate = "date", fieldColor = "color"; // Marriage
-	protected String fieldHomeX = "home_x", fieldHomeY = "home_y", fieldHomeZ = "home_z", fieldHomeWorld = "home_world", fieldHomeServer = "home_server"; // Home
+	protected String fieldHomeX = "home_x", fieldHomeY = "home_y", fieldHomeZ = "home_z", fieldHomeWorld = "home_world", fieldHomeServer = "home_server", fieldHomeYaw = "home_yaw", fieldHomePitch = "home_pitch"; // Home
 	//endregion
-	//region Querys
-	@Language("SQL") protected String queryDelHome = "DELETE FROM {THomes} WHERE {FMarryID}=?;", queryUpdateHome = "REPLACE INTO {THomes} ({FMarryID},{FHomeX},{FHomeY},{FHomeZ},{FHomeWorld},{FHomeServer}) VALUES (?,?,?,?,?,?);";
+	//region Queries
+	@Language("SQL") protected String queryDelHome = "DELETE FROM {THomes} WHERE {FMarryID}=?;", queryUpdateHome = "REPLACE INTO {THomes} ({FMarryID},{FHomeX},{FHomeY},{FHomeZ},{FHomeYaw},{FHomePitch},{FHomeWorld},{FHomeServer}) VALUES (?,?,?,?,?,?,?,?);";
 	@Language("SQL") protected String queryPvPState = "UPDATE {TMarriages} SET {FPvPState}=? WHERE {FMarryID}=?;", querySetSurname = "UPDATE {TMarriages} SET {FSurname}=? WHERE {FMarryID}=?;";
 	@Language("SQL") protected String queryDelMarriage = "DELETE FROM {TMarriages} WHERE {FMarryID}=?;", querySetBackpackShareState = "UPDATE {TPlayers} SET {FShareBackpack}=? WHERE {FPlayerID}=?;";
 	@Language("SQL") protected String queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate}) VALUES (?,?,?,?,?);", queryLoadHome = "SELECT * FROM {THomes} WHERE {FMarryID}=?";
@@ -79,7 +79,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		this.dbConfig = dbConfig;
 		this.connectionProvider = connectionProvider;
 		loadTableAndFieldNames();
-		buildQuerys();
+		buildQueries();
 	}
 
 	@Override
@@ -144,15 +144,17 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		fieldHomeX          = dbConfig.getSQLField("HomeX",        fieldHomeX);
 		fieldHomeY          = dbConfig.getSQLField("HomeY",        fieldHomeY);
 		fieldHomeZ          = dbConfig.getSQLField("HomeZ",        fieldHomeZ);
+		fieldHomeYaw        = dbConfig.getSQLField("HomeYaw",      fieldHomeYaw);
+		fieldHomePitch      = dbConfig.getSQLField("HomePitch",    fieldHomePitch);
 		fieldHomeWorld      = dbConfig.getSQLField("HomeWorld",    fieldHomeWorld);
 		fieldHomeServer     = dbConfig.getSQLField("HomeServer",   fieldHomeServer);
 	}
 
-	protected void buildQuerys()
+	protected void buildQueries()
 	{
 		if(!useBungee)
 		{
-			queryUpdateHome = queryUpdateHome.replaceAll(",\\{FHomeServer}", "").replace("(?,?,?,?,?,?)", "(?,?,?,?,?)");
+			queryUpdateHome = queryUpdateHome.replaceAll(",\\{FHomeServer}", "").replace("(?,?,?,?,?,?,?,?)", "(?,?,?,?,?,?,?)");
 		}
 		if(surnameEnabled)
 		{
@@ -196,8 +198,9 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				.replaceAll("\\{TPlayers}", tablePlayers).replaceAll("\\{TMarriages}", tableMarriages).replaceAll("\\{TPriests}", tablePriests).replaceAll("\\{THomes}", tableHomes) // Table names
 				.replaceAll("\\{FPlayerID}", fieldPlayerID).replaceAll("\\{FName}", fieldName).replaceAll("\\{FUUID}", fieldUUID).replaceAll("\\{FShareBackpack}", fieldShareBackpack) // Player fields
 				.replaceAll("\\{FMarryID}", fieldMarryID).replaceAll("\\{FSurname}", fieldSurname).replaceAll("\\{FPlayer1}", fieldPlayer1).replaceAll("\\{FPlayer2}", fieldPlayer2) // Marriage fields
-				.replaceAll("\\{FPriest}", fieldPriest).replaceAll("\\{FPvPState}", fieldPVPState).replaceAll("\\{FDate}", fieldDate).replaceAll("\\{FHomeServer}", fieldHomeServer).replaceAll("\\{FColor}", fieldColor)
-				.replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ).replaceAll("\\{FHomeWorld}", fieldHomeWorld) // Home fields
+				.replaceAll("\\{FPriest}", fieldPriest).replaceAll("\\{FPvPState}", fieldPVPState).replaceAll("\\{FDate}", fieldDate).replaceAll("\\{FColor}", fieldColor)
+				.replaceAll("\\{FHomeServer}", fieldHomeServer).replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ) // Home fields
+				.replaceAll("\\{FHomeYaw}", fieldHomeYaw).replaceAll("\\{FHomePitch}", fieldHomePitch).replaceAll("\\{FHomeWorld}", fieldHomeWorld)
 				.replaceAll("\\{FPriestID}", fieldPriestID);
 	}
 
@@ -456,7 +459,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			while(rs.next())
 			{
 				String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
+				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 			}
 			for(Object marriage : cache.getLoadedMarriages())
 			{
@@ -488,7 +491,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						if(rs.next())
 						{
 							String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ)));
+							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 						}
 						else
 						{
@@ -620,11 +623,11 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			if(useBungee)
 			{
-				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getWorldName(), home.getHomeServer());
+				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName(), home.getHomeServer());
 			}
 			else
 			{
-				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getWorldName());
+				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName());
 			}
 		}
 	}

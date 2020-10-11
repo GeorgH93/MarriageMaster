@@ -34,7 +34,7 @@ public interface IPlatformSpecific<MARRIAGE_PLAYER extends MarriagePlayerDataBas
 	MARRIAGE_PLAYER producePlayer(final @Nullable UUID uuid, final @NotNull String name, boolean priest, final boolean sharesBackpack, final @Nullable Object databaseKey);
 	MARRIAGE produceMarriage(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate,
 	                         final @Nullable String surname, final boolean pvpEnabled, final MessageColor color, final @Nullable HOME home, final @Nullable Object databaseKey);
-	HOME produceHome(final @NotNull String name, final @NotNull String world, final @Nullable String server, final double x, final double y, final double z);
+	HOME produceHome(final @NotNull String name, final @NotNull String world, final @Nullable String server, final double x, final double y, final double z, final float yaw, final float pitch);
 
 	/**
 	 * @param runnable The runnable that should be executed
@@ -42,4 +42,5 @@ public interface IPlatformSpecific<MARRIAGE_PLAYER extends MarriagePlayerDataBas
 	 */
 	void runAsync(@NotNull Runnable runnable, long delay);
 	@Nullable ConnectionProvider getExternalConnectionProvider(final @NotNull String dbType, final @NotNull Logger logger) throws SQLException;
+	@NotNull String getPluginVersion();
 }

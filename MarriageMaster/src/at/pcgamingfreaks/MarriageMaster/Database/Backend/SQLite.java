@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.ConnectionProvider.SQLiteConnectionProvider;
+import at.pcgamingfreaks.Database.DBTools;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Database.*;
 import at.pcgamingfreaks.Version;
@@ -61,6 +62,8 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 	{
 		try(Connection connection = getConnection(); Statement statement = connection.createStatement())
 		{
+			Version dbVersion = getDatabaseVersion(statement);
+
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPlayers} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL, {FName} VARCHAR(16) NOT NULL, {FUUID} CHAR(36) UNIQUE DEFAULT NULL, " +
 					                                      "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0);"));
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL," +
@@ -76,8 +79,16 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 			}
 			catch(SQLException ignored) {}
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {THomes} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FHomeX} DOUBLE NOT NULL,{FHomeY} DOUBLE NOT NULL," +
-					                                      "{FHomeZ} DOUBLE NOT NULL,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
+					                                      "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT DEFAULT 0, {FHomePitch} FLOAT DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
 					                                      "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE);"));
+			try
+			{
+				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomeYaw} FLOAT DEFAULT 0;"));
+				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomePitch} FLOAT DEFAULT 0;"));
+			}
+			catch(SQLException ignored) {}
+
+			DBTools.runStatement(connection, "INSERT OR REPLACE INTO `mariagemaster_metadata` (`key`, `value`) VALUES ('db_version',?);", platform.getPluginVersion());
 		}
 		catch(SQLException e)
 		{
@@ -86,10 +97,20 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 		}
 	}
 
-	@Override
-	protected void buildQuerys()
+	private @NotNull Version getDatabaseVersion(final @NotNull Statement stmt) throws SQLException
 	{
-		super.buildQuerys();
+		stmt.execute("CREATE TABLE IF NOT EXISTS `mariagemaster_metadata` (`key` CHAR(32) PRIMARY KEY NOT NULL, `value` TEXT);");
+		try(ResultSet rs = stmt.executeQuery("SELECT `value` FROM `mariagemaster_metadata` WHERE `key`='db_version';"))
+		{
+			if(rs.next()) return new Version(rs.getString("value"));
+		}
+		return new Version("0");
+	}
+
+	@Override
+	protected void buildQueries()
+	{
+		super.buildQueries();
 		querySetPriest  = querySetPriest .replace("REPLACE INTO", "INSERT OR REPLACE INTO").replace(" VALUE ", " VALUES ");
 		queryUpdateHome = queryUpdateHome.replace("REPLACE INTO", "INSERT OR REPLACE INTO");
 		queryAddPlayer  = queryAddPlayer .replace("INSERT IGNORE INTO", "INSERT OR IGNORE INTO");

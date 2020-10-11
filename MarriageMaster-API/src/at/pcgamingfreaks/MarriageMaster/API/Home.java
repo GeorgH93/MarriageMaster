@@ -20,18 +20,29 @@ package at.pcgamingfreaks.MarriageMaster.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import lombok.Getter;
+
 public class Home
 {
 	private final String homeServer, world;
-	private final double x, y, z;
+	@Getter private final double x, y, z;
+	@Getter private final float yaw, pitch;
 
+	@Deprecated
 	public Home(final @NotNull String world, final @Nullable String homeServer, final double x, final double y, final double z)
+	{
+		this(world, homeServer, x, y, z, 0, 0);
+	}
+
+	public Home(final @NotNull String world, final @Nullable String homeServer, final double x, final double y, final double z, final float yaw, final float pitch)
 	{
 		this.world = world;
 		this.homeServer = homeServer;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.yaw = yaw;
+		this.pitch = pitch;
 	}
 
 	/**
@@ -43,36 +54,6 @@ public class Home
 	public @Nullable String getHomeServer()
 	{
 		return homeServer;
-	}
-
-	/**
-	 * Gets the x position of the represented home.
-	 *
-	 * @return The x position.
-	 */
-	public double getX()
-	{
-		return x;
-	}
-
-	/**
-	 * Gets the y position of the represented home.
-	 *
-	 * @return The y position.
-	 */
-	public double getY()
-	{
-		return y;
-	}
-
-	/**
-	 * Gets the z position of the represented home.
-	 *
-	 * @return The z position.
-	 */
-	public double getZ()
-	{
-		return z;
 	}
 
 	/**

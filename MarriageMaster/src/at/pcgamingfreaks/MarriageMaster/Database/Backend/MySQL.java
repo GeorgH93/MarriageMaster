@@ -62,10 +62,10 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 	}
 
 	@Override
-	protected void buildQuerys()
+	protected void buildQueries()
 	{
 		queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) SELECT ?,?,? FROM (SELECT 1) AS `tmp` WHERE NOT EXISTS (SELECT * FROM {TPlayers} WHERE {FUUID}=?);";
-		super.buildQuerys();
+		super.buildQueries();
 	}
 
 	void queryDatabaseVersion(final @NotNull Connection connection)
@@ -115,7 +115,8 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
 							                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE\n)" + getEngine() + ";"),
 					queryTHomes = replacePlaceholders("CREATE TABLE IF NOT EXISTS {THomes} (\n{FMarryID} INT UNSIGNED NOT NULL,\n{FHomeX} DOUBLE NOT NULL,\n{FHomeY} DOUBLE NOT NULL,\n{FHomeZ} DOUBLE NOT NULL,\n" +
-							                                  "{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" + ((useBungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
+							                                  "{FHomeYaw} FLOAT DEFAULT 0,\n{FHomePitch} FLOAT DEFAULT 0,\n{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world',\n" +
+							                                  ((useBungee) ? "{FHomeServer} VARCHAR(45) DEFAULT NULL,\n" : "") + "PRIMARY KEY ({FMarryID}),\n" +
 							                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE\n)" + getEngine() + ";");
 			DBTools.updateDB(connection, queryTPlayers);
 			DBTools.updateDB(connection, queryTMarriages);

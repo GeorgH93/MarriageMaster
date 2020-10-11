@@ -52,9 +52,9 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 	}
 
 	@Override
-	public MarriageHome produceHome(final @NotNull String name, final @NotNull String world, final @Nullable String server, final double x, final double y, final double z)
+	public MarriageHome produceHome(final @NotNull String name, final @NotNull String world, final @Nullable String server, final double x, final double y, final double z, float yaw, float pitch)
 	{
-		return new MarriageHome(world, x, y, z, server);
+		return new MarriageHome(world, x, y, z, yaw, pitch, server);
 	}
 
 	@Override
@@ -89,5 +89,11 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 			/*end[STANDALONE]*/
 		}
 		return connectionProvider;
+	}
+
+	@Override
+	public @NotNull String getPluginVersion()
+	{
+		return plugin.getDescription().getVersion();
 	}
 }

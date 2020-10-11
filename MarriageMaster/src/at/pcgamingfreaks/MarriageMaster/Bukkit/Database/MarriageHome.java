@@ -39,9 +39,9 @@ public class MarriageHome extends Home
 		super(location, homeServer);
 	}
 
-	public MarriageHome(String worldName, double x, double y, double z, String homeServer)
+	public MarriageHome(String worldName, double x, double y, double z, float yaw, float pitch, String homeServer)
 	{
-		super(worldName, homeServer, x, y, z);
+		super(worldName, homeServer, x, y, z, yaw, pitch);
 	}
 
 	@Override
