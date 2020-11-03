@@ -28,11 +28,6 @@ jobs:
         mvn -B -s .github/workflows/settings.xml install package --file pom.xml
         cp MarriageMaster/target/M*.jar artifacts/
 
-    - name: Publish to GitHub Packages Apache Maven
-      run: 'mvn deploy -pl MarriageMaster,MarriageMaster-API -s $GITHUB_WORKSPACE/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-
     - name: Build with Maven (Standalone)
       run: |
         mvn -B -s .github/workflows/settings.xml clean install package --file pom.xml -P Standalone,ExcludeBadRabbit
@@ -49,3 +44,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: 'artifacts/M*'
+
+    - name: Publish to GitHub Packages Apache Maven
+      run: 'mvn clean install deploy -pl MarriageMaster,MarriageMaster-API -s $GITHUB_WORKSPACE/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
