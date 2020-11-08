@@ -79,12 +79,12 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 			}
 			catch(SQLException ignored) {}
 			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {THomes} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FHomeX} DOUBLE NOT NULL,{FHomeY} DOUBLE NOT NULL," +
-					                                      "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT DEFAULT 0, {FHomePitch} FLOAT DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
+					                                      "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT NOT NULL DEFAULT 0, {FHomePitch} FLOAT NOT NULL DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
 					                                      "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE);"));
 			try
 			{
-				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomeYaw} FLOAT DEFAULT 0;"));
-				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomePitch} FLOAT DEFAULT 0;"));
+				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomeYaw} FLOAT NOT NULL DEFAULT 0;"));
+				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomePitch} FLOAT NOT NULL DEFAULT 0;"));
 			}
 			catch(SQLException ignored) {}
 

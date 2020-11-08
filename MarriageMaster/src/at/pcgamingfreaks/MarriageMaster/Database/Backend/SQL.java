@@ -206,7 +206,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	protected abstract void checkDatabase();
 
-	//region Helper functions for async querys
+	//region Helper functions for async queries
 	protected void runAsync(final @NotNull Runnable runnable, final @NotNull DatabaseElement databaseElement)
 	{
 		runAsync(runnable, (databaseElement.getDatabaseKey() == null) ? RETRY_DELAY : 0);
