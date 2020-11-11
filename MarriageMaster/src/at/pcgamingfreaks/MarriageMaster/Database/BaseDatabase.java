@@ -85,7 +85,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 			DatabaseBackend<MARRIAGE_PLAYER_DATA, MARRIAGE_DATA, HOME> db;
 			switch((connectionProvider != null) ? connectionProvider.getDatabaseType() : dbType)
 			{
-				case "mysql": db = new MySQL<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName); break;
+				case "mysql": case "mariadb": db = new MySQL<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName); break;
 				case "sqlite": db = new SQLite<>(platform, dbConfig, bungee, surnameEnabled, cache, logger, connectionProvider, pluginName, dataFolder); break;
 				case "file":
 				case "files":
