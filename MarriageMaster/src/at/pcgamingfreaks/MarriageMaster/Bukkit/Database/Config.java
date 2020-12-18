@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Configuration;
+import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
@@ -27,6 +28,8 @@ import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+
+import jdk.nashorn.api.scripting.ScriptUtils;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -514,7 +517,17 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public boolean isBungeeEnabled()
 	{
-		return getConfigE().getBoolean("Misc.UseBungeeCord", false);
+		boolean useBungee = getConfigE().getBoolean("Misc.UseBungeeCord", false);
+		boolean spigotUsesBungee = Utils.detectBungeeCord();
+		if(useBungee && !spigotUsesBungee)
+		{
+			logger.warning("You have BungeeCord enabled, but it looks like you have not enabled it in your spigot.yml! You probably should check your configuration.");
+		}
+		else if(!useBungee && spigotUsesBungee && getDatabaseType().equals("mysql"))
+		{
+			logger.warning("Your server is running behind a BungeeCord server. If you are using the plugin please make sure to also enable the 'UseBungeeCord' config option.");
+		}
+		return useBungee;
 	}
 
 	public String getServerName()
