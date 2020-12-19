@@ -15,7 +15,7 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Database;
+package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
 import java.sql.Connection;
 import java.sql.SQLException;
