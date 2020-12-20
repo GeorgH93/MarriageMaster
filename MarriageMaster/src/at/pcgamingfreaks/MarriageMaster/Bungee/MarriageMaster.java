@@ -51,7 +51,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	@Getter private ManagedUpdater updater;
 	private Config config = null;
 	@Getter private Language language = null;
-	private Database DB = null;
+	private Database database = null;
 	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private final CommandManagerImplementation commandManager = new CommandManagerImplementation(this);
 
@@ -94,7 +94,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	@Override
 	public void onDisable()
 	{
-		if(config != null && config.isLoaded() && DB != null)
+		if(config != null && config.isLoaded() && database != null)
 		{
 			if(config.useUpdater()) updater.update(); // Check for updates
 			unload();
@@ -113,8 +113,8 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 			return false;
 		}
 		updater.setChannel(config.getUpdateChannel());
-		DB = new Database(this);
-		if(!DB.available())
+		database = new Database(this);
+		if(!database.available())
 		{
 			getLogger().warning(ConsoleColor.RED + "Failed to connect to database! Please adjust your settings and retry!" + ConsoleColor.RESET);
 			new NoDatabaseWorker(this); // Starts the worker that informs everyone with reload permission that the database connection failed.
@@ -150,7 +150,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 		commandManager.close();
 		getProxy().getPluginManager().unregisterCommands(this);
 		getProxy().getPluginManager().unregisterListeners(this);
-		DB.close();
+		database.close();
 		pluginChannelCommunicator.close();
 		pluginChannelCommunicator = null;
 	}
@@ -170,20 +170,20 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 
 	public Database getDatabase()
 	{
-		return DB;
+		return database;
 	}
 
 	//region API Stuff
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull ProxiedPlayer proxiedPlayer)
 	{
-		return DB.getPlayer(proxiedPlayer.getUniqueId());
+		return database.getPlayer(proxiedPlayer.getUniqueId());
 	}
 
 	@Override
 	public @NotNull MarriagePlayer getPlayerData(@NotNull UUID uuid)
 	{
-		return DB.getPlayer(uuid);
+		return database.getPlayer(uuid);
 	}
 
 	@Override
@@ -197,7 +197,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	@Override
 	public @NotNull Collection<? extends Marriage> getMarriages()
 	{
-		return DB.getCache().getLoadedMarriages();
+		return database.getCache().getLoadedMarriages();
 	}
 
 	@Override
