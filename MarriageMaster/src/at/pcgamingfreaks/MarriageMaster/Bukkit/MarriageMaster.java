@@ -36,6 +36,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
@@ -53,8 +54,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 {
@@ -367,5 +370,23 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	public @NotNull at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager getMarriageManager()
 	{
 		return marriageManager;
+	}
+
+	@Override
+	public @NotNull Collection<? extends MarriagePlayer> getPriestsOnline()
+	{
+		ArrayList<MarriagePlayer> priests = new ArrayList<>();
+		for(Player player : getServer().getOnlinePlayers())
+		{
+			MarriagePlayer marriagePlayer = getPlayerData(player);
+			if(marriagePlayer.isPriest()) priests.add(marriagePlayer);
+		}
+		return priests;
+	}
+
+	@Override
+	public @NotNull Collection<? extends MarriagePlayer> getPriests()
+	{
+		return database.getCache().getLoadedPlayers().stream().filter(MarriagePlayerDataBase::isPriest).collect(Collectors.toList());
 	}
 }

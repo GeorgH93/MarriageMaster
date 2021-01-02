@@ -18,12 +18,13 @@
 package at.pcgamingfreaks.MarriageMaster.API;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriagePlayer, MARRIAGE extends Marriage, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
+public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends MarriagePlayer, MARRIAGE extends Marriage, COMMAND_MANAGER extends CommandManager, DELAYABLE_TELEPORT_ACTION extends DelayableTeleportAction>
 {
 	/**
 	 * Checks if the plugin is running in standalone mode.
@@ -118,4 +119,20 @@ public interface MarriageMasterPlugin<PLAYER, MARRIAGE_PLAYER extends  MarriageP
 	 * @return The Marriage Master Command Manager.
 	 */
 	@NotNull COMMAND_MANAGER getCommandManager();
+
+	/**
+	 * Gets a list containing all currently online priests.
+	 * It does not differentiate between players that are a priest due to permission or setpriest command
+	 *
+	 * @return List containing all priests that are currently online.
+	 */
+	@NotNull Collection<? extends MARRIAGE_PLAYER> getPriestsOnline();
+
+	/**
+	 * Gets a list of all known priests.
+	 * This command will include all players that have been made a priest with the setpriest command and all players that are currently online and have the marry.priest permission.
+	 *
+	 * @return List containing all currently known priests.
+	 */
+	@NotNull Collection<? extends MARRIAGE_PLAYER> getPriests();
 }

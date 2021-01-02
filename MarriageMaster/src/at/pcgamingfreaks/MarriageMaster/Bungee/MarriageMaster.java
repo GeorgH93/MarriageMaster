@@ -31,6 +31,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.JoinLeaveInfo;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.NoDatabaseWorker;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -41,8 +42,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 {
@@ -241,5 +244,24 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	{
 		return commandManager;
 	}
+
+	@Override
+	public @NotNull Collection<? extends MarriagePlayer> getPriestsOnline()
+	{
+		ArrayList<MarriagePlayer> priests = new ArrayList<>();
+		for(ProxiedPlayer player : getProxy().getPlayers())
+		{
+			MarriagePlayer marriagePlayer = getPlayerData(player);
+			if(marriagePlayer.isPriest()) priests.add(marriagePlayer);
+		}
+		return priests;
+	}
+
+	@Override
+	public @NotNull Collection<? extends MarriagePlayer> getPriests()
+	{
+		return database.getCache().getLoadedPlayers().stream().filter(MarriagePlayerDataBase::isPriest).collect(Collectors.toList());
+	}
+
 	//endregion
 }
