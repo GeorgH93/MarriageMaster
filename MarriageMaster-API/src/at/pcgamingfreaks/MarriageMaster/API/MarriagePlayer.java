@@ -27,14 +27,21 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER, MESSAGE extends IMessage>
+public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER_OFFLINE, PLAYER_ONLINE, MESSAGE extends IMessage>
 {
 	/**
 	* Gets the Bukkit offline player that is represented by this marriage player data.
 	*
 	* @return The Bukkit player represented by this marriage player.
 	*/
-	@NotNull PLAYER getPlayer();
+	@NotNull PLAYER_OFFLINE getPlayer();
+
+	/**
+	 * Gets the bukkit player represented by the marriage player.
+	 *
+	 * @return The represented player. Null if the player is offline.
+	 */
+	@Nullable PLAYER_ONLINE getPlayerOnline();
 
 	/**
 	 * Gets the name of the player represented by this marriage player data.
@@ -56,6 +63,10 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @return True if the player is online, false if not.
 	 */
 	boolean isOnline();
+
+	boolean canSee(PLAYER_ONLINE player);
+
+	boolean canSee(MARRIAGE_PLAYER player);
 
 	/**
 	 * Gets the display name of the player represented by this marriage player data.
@@ -150,7 +161,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @param player The player to be checked.
 	 * @return True if they are married. False if not.
 	 */
-	boolean isPartner(@NotNull PLAYER player);
+	boolean isPartner(@NotNull PLAYER_OFFLINE player);
 
 	/**
 	 * Checks if the player is married with a given player.

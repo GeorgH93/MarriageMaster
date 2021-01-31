@@ -21,6 +21,5 @@ import at.pcgamingfreaks.Bungee.Message.IMessage;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-@SuppressWarnings("unused")
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, ProxiedPlayer, IMessage>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, ProxiedPlayer, ProxiedPlayer, IMessage>
 {}

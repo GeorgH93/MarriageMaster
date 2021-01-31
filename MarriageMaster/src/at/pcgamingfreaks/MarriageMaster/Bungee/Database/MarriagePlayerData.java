@@ -35,7 +35,7 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, ProxiedPlayer, IMessage> implements MarriagePlayer
+public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, ProxiedPlayer, ProxiedPlayer, IMessage> implements MarriagePlayer
 {
 	@Getter private long lastPlayed = 0;
 
@@ -70,6 +70,13 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
+	public @Nullable ProxiedPlayer getPlayerOnline()
+	{
+		//TODO: Bungee has no offline player, so player can become null!
+		return ProxyServer.getInstance().getPlayer(getUUID());
+	}
+
+	@Override
 	public boolean hasPermission(@NotNull String permission)
 	{
 		return isOnline() && getPlayer().hasPermission(permission);
@@ -81,6 +88,12 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 		boolean online = getPlayer() != null;
 		if(online) lastPlayed = System.currentTimeMillis();
 		return online;
+	}
+
+	@Override
+	public boolean canSee(ProxiedPlayer player)
+	{
+		return true;
 	}
 
 	@Override

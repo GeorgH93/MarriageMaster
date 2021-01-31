@@ -50,7 +50,8 @@ public abstract class JoinLeaveInfoBase
 		// Now online info
 		for(Object partner : player.getOnlinePartners())
 		{
-			((MarriagePlayer) partner).send(messageNowOnline, player.getName(), player.getDisplayName());
+			MarriagePlayer mpPartner = (MarriagePlayer) partner;
+			if(mpPartner.canSee(player)) mpPartner.send(messageNowOnline, player.getName(), player.getDisplayName());
 		}
 		// Online partners info
 		runTaskLater((player.getPartners().size() == 1) ? new OnePartnerRunnable(player) : new MultiPartnerRunnable(player));
@@ -60,7 +61,8 @@ public abstract class JoinLeaveInfoBase
 	{
 		for(Object partner : player.getOnlinePartners())
 		{
-			((MarriagePlayer) partner).send(messageNowOffline, player.getName(), player.getDisplayName());
+			MarriagePlayer mpPartner = (MarriagePlayer) partner;
+			if(mpPartner.canSee(player)) mpPartner.send(messageNowOffline, player.getName(), player.getDisplayName());
 		}
 	}
 
@@ -82,7 +84,7 @@ public abstract class JoinLeaveInfoBase
 				MarriagePlayer partner = player.getPartner();
 				if(partner != null)
 				{
-					player.send((partner.isOnline()) ? messageOnline : messageOffline);
+					player.send((partner.isOnline() && player.canSee(partner)) ? messageOnline : messageOffline);
 				}
 			}
 		}
@@ -103,20 +105,21 @@ public abstract class JoinLeaveInfoBase
 			if(player.isOnline())
 			{
 				Collection<? extends MarriagePlayer> onlinePartners = player.getOnlinePartners();
-				if(onlinePartners.isEmpty())
+				StringBuilder stringBuilder = new StringBuilder();
+				String separator = "";
+				for(MarriagePlayer p : onlinePartners)
+				{
+					if(!player.canSee(p)) continue;
+					stringBuilder.append(separator);
+					separator = multiOnlineSeparator;
+					stringBuilder.append(String.format(multiOnlineFormat, p.getName(), p.getDisplayName()));
+				}
+				if(stringBuilder.length() == 0)
 				{
 					player.send(messageAllOffline);
 				}
 				else
 				{
-					StringBuilder stringBuilder = new StringBuilder();
-					String separator = "";
-					for(MarriagePlayer p : onlinePartners)
-					{
-						stringBuilder.append(separator);
-						separator = multiOnlineSeparator;
-						stringBuilder.append(String.format(multiOnlineFormat, p.getName(), p.getDisplayName()));
-					}
 					player.send(messageOnlineMulti, stringBuilder.toString());
 				}
 			}

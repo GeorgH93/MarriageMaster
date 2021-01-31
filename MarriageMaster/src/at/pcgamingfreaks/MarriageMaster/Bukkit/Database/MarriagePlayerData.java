@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, IMessage> implements MarriagePlayer
+public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, CommandSender, Home, Marriage, OfflinePlayer, Player, IMessage> implements MarriagePlayer
 {
 	private AcceptPendingRequest openRequest = null;
 	private final List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
@@ -121,6 +121,14 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	public boolean isOnline()
 	{
 		return getPlayerOnline() != null;
+	}
+
+	@Override
+	public boolean canSee(final @NotNull Player player)
+	{
+		Player onlinePlayer = getPlayerOnline();
+		if(onlinePlayer == null) return true;
+		return onlinePlayer.canSee(player);
 	}
 
 	@Override

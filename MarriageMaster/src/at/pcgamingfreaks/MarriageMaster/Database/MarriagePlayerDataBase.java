@@ -34,7 +34,7 @@ import lombok.Setter;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, MESSAGE>, ICacheablePlayer
+public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, PLAYER_ONLINE, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, PLAYER_ONLINE, MESSAGE>, ICacheablePlayer
 {
 	@Getter @Setter	private String name;
 	private final UUID uuid;
@@ -107,6 +107,12 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	public abstract @Nullable String getOnlineName();
 
 	//region API Methods
+	@Override
+	public boolean canSee(final @NotNull MARRIAGE_PLAYER player)
+	{
+		return canSee((PLAYER_ONLINE) player.getPlayerOnline());
+	}
+
 	@Override
 	public @NotNull String getDisplayName()
 	{

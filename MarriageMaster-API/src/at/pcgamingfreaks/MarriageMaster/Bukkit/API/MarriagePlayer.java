@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, IMessage>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, Player, IMessage>
 {
 	/**
 	 * Gets the marriage with the partner that is the nearest to the player.
@@ -65,13 +65,6 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @return The requests the player can cancel.
 	 */
 	@NotNull List<AcceptPendingRequest> getRequestsToCancel();
-
-	/**
-	 * Gets the bukkit player represented by the marriage player.
-	 *
-	 * @return The represented player. Null if the player is offline.
-	 */
-	@Nullable Player getPlayerOnline();
 
 	/**
 	 * Gets the display name of a player. But also checks if the given player can see the player. If not the offline display name will be used.
