@@ -24,11 +24,13 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 public interface DatabaseConfiguration extends DatabaseConnectionConfiguration, IUnCacheStrategyConfig
 {
 	default @NotNull String getDatabaseType()
 	{
-		return getConfigE().getString("Database.Type", "MySQL").toLowerCase();
+		return getConfigE().getString("Database.Type", "MySQL").toLowerCase(Locale.ENGLISH);
 	}
 
 	default boolean useUUIDSeparators()
