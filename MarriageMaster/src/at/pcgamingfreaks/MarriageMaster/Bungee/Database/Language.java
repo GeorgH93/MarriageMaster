@@ -26,6 +26,9 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Language extends at.pcgamingfreaks.Bungee.Language implements ILanguage
 {
 	public Language(final @NotNull Plugin plugin)
@@ -40,7 +43,9 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	@Override
 	protected void doUpgrade(final @NotNull YamlFileManager oldLang)
 	{
-		super.doUpgrade(oldLang);
+		Map<String, String> remappings = new HashMap<>();
+		remappings.put("Command.Main", "Command.Marry");
+		super.doUpgrade(oldLang, remappings);
 	}
 
 	@Override

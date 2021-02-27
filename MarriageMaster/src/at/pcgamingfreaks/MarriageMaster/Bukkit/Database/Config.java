@@ -29,8 +29,6 @@ import at.pcgamingfreaks.Message.MessageColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import jdk.nashorn.api.scripting.ScriptUtils;
-
 import java.io.FileNotFoundException;
 import java.util.*;
 

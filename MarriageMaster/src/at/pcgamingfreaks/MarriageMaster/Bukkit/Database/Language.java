@@ -25,6 +25,9 @@ import at.pcgamingfreaks.Message.MessageColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
@@ -46,7 +49,9 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 		}
 		else
 		{
-			super.doUpgrade(oldLang);
+			Map<String, String> remappings = new HashMap<>();
+			remappings.put("Command.Main", "Command.Marry");
+			super.doUpgrade(oldLang, remappings);
 		}
 	}
 
