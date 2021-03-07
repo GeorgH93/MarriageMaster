@@ -48,8 +48,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatCommand extends MarryCommand implements Listener
 {
 	private final MarriageMaster plugin;
-	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, privateMessageFormat, messageTargetSet;
-	private final String displayNameAll, helpParameterMessage;
+	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, messageTargetSet;
+	private final String displayNameAll, helpParameterMessage, privateMessageFormat;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
 	private final String[] setTargetParameters, switchesToggle;
 	private final boolean allowChatSurveillance;
@@ -65,7 +65,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").getFallback().replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		//noinspection SpellCheckingInspection
@@ -358,8 +358,10 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(!listeners.contains(sender.getPlayerOnline())) playerRecipients.add(sender.getPlayerOnline()); // Add the sender to the list
 		playerRecipients.addAll(listeners); // Copy the listeners since we need to send the message too
 		String recipientDisplayName = (recipient != null) ? recipient.getDisplayName() : displayNameAll, recipientName = (recipient != null) ? recipient.getName() : displayNameAll;
-		privateMessageFormat.send(playerRecipients, sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
-		if(allowChatSurveillance) privateMessageFormat.send(plugin.getServer().getConsoleSender(), sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
+		String formattedMessage = String.format(privateMessageFormat, sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
+		Message message = new Message(formattedMessage);
+		message.send(playerRecipients);
+		if(allowChatSurveillance) plugin.getServer().getConsoleSender().sendMessage(formattedMessage);
 	}
 
 	private static @NotNull String cleanupMessage(@NotNull String msg, final @NotNull MarriagePlayer sender)
