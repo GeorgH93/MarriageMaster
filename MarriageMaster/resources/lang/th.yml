@@ -1,0 +1,439 @@
+# To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
+Language:
+  NotFromConsole: "&cThis command can't be used from the console!"
+  # Global Wildcards: <heart> and <smallheart>
+  Ingame:
+    NoPermission: "&cคุณไม่ได้รับอนุญาตให้ทำเช่นนั้น"
+    NaN: "&cค่าที่ป้อนไม่ใช่ตัวเลข!"
+    NotMarried: "&cคุณยังไม่ได้แต่งงาน"
+    PartnerOffline: "&cคู่ของคุณออฟไลน์อยู่."
+    PartnerNotInRange: "&cคู่ของคุณอยู่ไกลเกินไป."
+    TargetPartnerNotFound: "&cไม่พบคู่เป้าหมายของคุณ!"
+    PlayerNotMarried: "&c\"{PlayerName}\" ไม่ได้แต่งงาน!"
+    PlayerNotFound: "&cไม่สามารถค้นหา \"{PlayerName}\"!"
+    PlayerNotOnline: "&c\"{PlayerName}\" ไม่ออนไลน์!"
+    PlayersNotMarried: "&cผู้เล่นไม่ได้แต่งงาน!"
+    MarriageNotExact: "&cขออภัยมีการแต่งงานมากกว่าหนึ่งรายการที่ตรงกับคำขอของคุณ!"
+    JoinLeaveInfo:
+      # Only used for players with 1 partner
+      PartnerOnline: "&aคู่ของคุณ  ✓ online."
+      # Only used for players with 1 partner
+      PartnerOffline: "&7คู่ของคุณ  ✕ offline."
+      # Only used for players with more than 1 partner
+      AllPartnersOffline: "&7คู่ของคุณทั้งหมด offline."
+      # Only used for players with more than 1 partner
+      PartnerOnlineMulti: "&aคู่ของคุณ online: &r&f{OnlinePartners}"
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      MultiOnlineFormat: "{DisplayName}"
+      # No JSON!!!
+      MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOnline: "&aคู่ของคุณ  ✓ online."
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOffline: "&7คู่ของคุณ  ✕ offline."
+    Backpack:
+      OnlyInSurvival: "&cคุณสามารถเข้าถึงกระเป๋าเป้ของคู่รักได้เมื่ออยู่ในโหมดเอาชีวิตรอดเท่านั้น."
+      ShareOn: "&aตอนนี้คุณแชร์กระเป๋าเป้กับคู่ของคุณ."
+      ShareOff: "&cคุณไม่ได้ใช้กระเป๋าเป้ร่วมกับคนรักอีกต่อไป."
+      Opened: "&aคู่ของคุณเปิดกระเป๋าเป้ของคุณแล้ว."
+      ShareDenied: "&cคู่ของคุณไม่ให้คุณเข้าถึงกระเป๋าเป้ของเขา."
+    Chat:
+      Joined: "&aคุณได้ตั้งค่าการแชทของคุณเป็นแชทแต่งงานส่วนตัว."
+      Left: "&aคุณได้ตั้งค่าการแชทของคุณเป็นการแชทสาธารณะ."
+      ListeningStarted: "&aคุณกำลังฟังแชทแต่งงาน."
+      ListeningStopped: "&aคุณไม่ได้ฟังแชทแต่งงานอีกต่อไป."
+      TargetSet: "&aตั้งเป้าหมายแชทส่วนตัว."
+      DisplayNameAll: "คู่แต่งงานทั้งหมด"
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
+      Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
+    Gift:
+      OnlyInSurvival: "&cคุณสามารถมอบไอเท็มให้คู่ของคุณได้เมื่อคุณอยู่ในโหมดเอาชีวิตรอดเท่านั้น."
+      NoItemInHand: "&cคุณไม่ได้ถือสิ่งของ."
+      PartnerInvFull: "&cคู่ของคุณไม่มีพื้นที่ว่าง."
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemSent: "[{\"text\":\"คุณส่งของให้คู่รัก \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemReceived: "[{\"text\":\"Your \",\"color\":\"green\"},{\"text\":\"partner\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{DisplayName}\"}},{\"text\":\" has sent you \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
+      WorldNotAllowed: "&cคู่ของคุณอยู่ในโลกที่ไม่อนุญาตให้รับของขวัญ."
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r ต้องการให้ของขวัญคุณ \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\". Accept the gift with \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "ส่งคำขอของขวัญถึงคู่ของคุณแล้ว."
+        Denied: "คุณปฏิเสธของขวัญจากคู่ของคุณ."
+        DeniedPartner: "คู่ของคุณปฏิเสธของขวัญ รายการของคุณได้รับคืน."
+        Canceled: "คุณยกเลิกคำขอของขวัญของคุณ."
+        CanceledPartner: "คู่ของคุณยกเลิกคำขอของขวัญ รายการของคุณได้รับคืน."
+        CanceledDisconnectRequester: "คู่ของคุณออฟไลน์ คำขอของขวัญถูกยกเลิก รายการของคุณได้รับคืน."
+        CanceledDisconnectTarget: "คู่ของคุณออฟไลน์ คำขอของขวัญถูกยกเลิก."
+    Home:
+      Deleted: "&aบ้านถูกลบสำเร็จ."
+      PlayerNoHome: "&cผู้เล่นนี้ยังไม่มีบ้าน."
+      NoHome: "&cคุณยังไม่มีบ้าน."
+      TPed: "&aคุณถูกเคลื่อนย้ายไปที่บ้านของคุณแล้ว."
+      Set: "&aบันทึกบ้านแล้ว."
+      BlockedFrom: "&cคุณไม่ได้รับอนุญาตให้เทเลพอร์ตกลับบ้านจากที่นี่."
+      BlockedTo: "&cคุณไม่ได้รับอนุญาตให้เทเลพอร์ตไปที่บ้านของคุณ กรุณาย้ายที่ยืน."
+    Kiss:
+      Kissed: "&eคุณได้จูบคู่ของคุณ!"
+      Kissed_SendMethod: "action_bar"
+      GotKissed: "&eคู่ของคุณจูบคุณแล้ว!"
+      GotKissed_SendMethod: "action_bar"
+      TooFarAway: "&cคุณอยู่ไกลเกินไปที่จะจูบคู่ของคุณ. (ไกลสุด {Distance} blocks)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&cคุณต้องรอ {Time} วินาทีเพื่อจูบคู่ของคุณอีกครั้ง."
+    Hug:
+      Hugged: "&eคุณได้กอดคู่ของคุณ!"
+      Hugged_SendMethod: "action_bar"
+      GotHugged: "&eคู่ของคุณกอดคุณ!"
+      GotHugged_SendMethod: "action_bar"
+      TooFarAway: "&คุณอยู่ไกลเกินไปที่จะกอดคู่ของคุณ. (ไกลสุด {Distance} blocks)"
+    Seen:
+      # Placeholders: {Name}, {DisplayName}
+      CurrentlyOnline: "{DisplayName}&r ตอนนี้ &aonline&r."
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
+      LastSeen: "[\"\",{\"text\":\"{Name} was last seen on \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
+      # No Json!!!
+      DateFormat: "yyyy-MM-dd 'at' HH:mm:ss"
+    List:
+      # Placeholders: {Player1Name}, {Player1DisplayName}, {Player2Name}, {Player2DisplayName}, {Surname}, {MagicHeart}
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
+      NoMarriedPlayers: "&cไม่มีผู้เล่นที่แต่งงานแล้ว."
+      Headline: "&eรายชื่อผู้เล่นที่แต่งงานแล้ว&r&f - &r&6กำลังแสดงหน้า {CurrentPage}/{MaxPage}"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "&cไม่มีนักบวชออนไลน์."
+      Headline: "&eOnline priests&r&f - &r&6showing page {CurrentPage}/{MaxPage}"
+      Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    PvP:
+      IsDisabled: "&cคุณไม่สามารถทำร้ายคู่ของคุณได้หากคุณปิดการใช้งาน PvP."
+      On: "&aตอนนี้คุณได้เปิดใช้ PvP กับคู่รักของคุณแล้ว."
+      Off: "&aตอนนี้คุณได้ปิดการใช้งาน PvP กับคู่รักของคุณแล้ว."
+    TP:
+      PartnerVanished: "&cคุณไม่สามารถใช้เทเลพอร์ตได้หากคู่ของคุณใช้โหมดหายตัว."
+      Teleport: "&aTeleporting to partner..."
+      TeleportTo: "&aคู่ของคุณกำลังเทเลพอร์ตมาหาคุณ..."
+      Unsafe: "&cยกเลิกเทเลพอร์ต! ไม่ปลอดภัย!"
+      ToUnsafe: "&cคู่ของคุณกำลังจะเทเลพอร์ตมาหาคุณ แต่ถูกยกเลิกเทเลพอร์ต! ไม่ปลอดภัย!"
+      WorldNotAllowed: "&cคู่ของคุณอยู่ในโลกที่ไม่อนุญาตให้ใช้ tp."
+      Moved: "&cยกเลิกเทเลพอร์ต! คุณขยับตัว!"
+      DontMove: "&cเทเลพอร์ตใน {Time} วินาที! อย่าขยับ!"
+      BlockedFrom: "&cคุณไม่ได้รับอนุญาตให้เทเลพอร์ตไปยังคู่ของคุณจากที่นี่."
+      BlockedTo: "&cคุณไม่ได้รับอนุญาตให้เทเลพอร์ตไปยังที่ที่คู่ของคุณอยู่."
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r ต้องการเทเลพอร์ตมาหาคุณ ยอมรับการเทเลพอร์ตด้วย \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" หรือปฏิเสธด้วย \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\"}]"
+        WaitForConfirmation: "โปรดรอจนกว่าคู่ของคุณจะยอมรับการเทเลพอร์ต."
+        Denied: "คุณปฏิเสธคำขอเทเลพอร์ตของคู่รักของคุณ."
+        DeniedPartner: "คู่ของคุณปฏิเสธคำขอเทเลพอร์ต."
+        Canceled: "คุณยกเลิกคำขอเทเลพอร์ตของคุณ."
+        CanceledPartner: "คู่ของคุณยกเลิกคำขอเทเลพอร์ต."
+        CanceledDisconnectRequester: "คู่ของคุณออฟไลน์ ยกเลิกคำขอเทเลพอร์ตแล้ว."
+        CanceledDisconnectTarget: "คู่ของคุณออฟไลน์ ยกเลิกคำขอเทเลพอร์ตแล้ว."
+    SetColor:
+      UnknownColor: "&cไม่สามารถระบุสีได้ '{Input}'!"
+      NotAColor: "{Input} ไม่ใช่ค่าสี."
+      Set: "Color set."
+      Selection: '["",{"text":"โปรดคลิกว่าคุณต้องการให้หัวใจสำหรับการแต่งงานของคุณเป็นอย่างไร:"},{"text":"\n"},{"text":" ❤ ","color":"dark_red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_red"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &4dark red&r."}},{"text":" ❤ ","color":"red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} red"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &cred&r."}},{"text":" ❤ ","color":"gold","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gold"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &6gold&r."}},{"text":" ❤ ","color":"yellow","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} yellow"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &eyellow&r."}},{"text":" ❤ ","color":"dark_green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_green"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &2dark green&r."}},{"text":" ❤ ","color":"green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} green"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &agreen&r."}},{"text":" ❤ ","color":"aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} aqua"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &baqua&r."}},{"text":" ❤ ","color":"dark_aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_aqua"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &3dark aqua&r."}},{"text":" ❤ ","color":"dark_blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_blue"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &1dark blue&r."}},{"text":" ❤ ","color":"blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} blue"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &9blue&r."}},{"text":" ❤ ","color":"light_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} light_purple"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &dlight purple&r."}},{"text":" ❤ ","color":"dark_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_purple"},"hoverEvent":{"action":"show_text","value":"Sets the text of the heart to &5dark purple&r."}},{"text":" ❤ ","color":"white","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} white"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &fwhite&r."}},{"text":" ❤ ","color":"gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gray"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &7gray&r."}},{"text":" ❤ ","color":"dark_gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_gary"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น &8dark gray&r."}},{"text":" ❤ ","color":"black","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} black"},"hoverEvent":{"action":"show_text","value":"ตั้งค่าสีของหัวใจเป็น black."}}]'
+    SetPriest:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      MadeYouAPriest: "{DisplayName}&r&แต่งตั้งคุณเป็นนักบวช."
+      YouMadeAPriest: "{DisplayName}&r&ได้รับแต่งตั้งเป็นนักบวช."
+      FiredYou: "{DisplayName}&r&c ถูกปลดจากตำแหน่งนักบวช."
+      YouFiredAPriest: "{DisplayName}&r&ไม่ได้เป็นนักบวชอีกต่อไป."
+      PerPermission: "{DisplayName}&r&c is set as a priest per permission. You can't fire him per command!"
+    Surname:
+      SetSuccessful: "&aทำการเปลี่ยนนามสกุล."
+      SetFailed: "&cล้มเหลว ในการเปลี่ยนนามสกุล."
+      ToShort: "&cนามสกุลที่ระบุสั้นเกินไป ต้องมีความยาวอย่างน้อย {MinLength} ตัวอักษร."
+      ToLong: "&cนามสกุลที่ระบุยาวเกินไป ต้องมีความยาวไม่เกิน {MaxLength} ตัวอักษร."
+      AlreadyUsed: "&cนามสกุลที่ระบุมีการใช้งานแล้ว!"
+    Requests:
+      NothingToAccept: "&cไม่มีคำขอเปิดให้ยอมรับ."
+      NothingToDeny: "&cไม่มีคำขอที่จะปฏิเสธ."
+      NothingToCancel: "&cไม่มีคำขอให้ยกเลิก."
+    Marry:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      NotWithHimself: "&cคุณไม่สามารถแต่งงาน &r&c{DisplayName}&r&c กับตัวคุณเองได้."
+      AlreadyMarried: "&cคุณไม่สามารถแต่งงานกับผู้เล่นที่แต่งงานแล้วได้ &r&c{DisplayName}&r&c แต่งงานอยู่แล้ว."
+      SurnameNeeded: "&cคุณต้องมีนามสกุลสำหรับคู่รักที่จะแต่งงาน."
+      Married: "&aคุณแต่งงานแล้ว &r&a{Player1DisplayName}&r&และ &r&a{Player2DisplayName}&r&a."
+      HasMarried: "{PriestDisplayName}&r&ได้แต่งงาน &r{PartnerDisplayName}&r&a."
+      Broadcast: "{PriestDisplayName}&r&a has married {Player1DisplayName}&r&a with &r{Player2DisplayName}&r&a."
+      NotInRange: "&cผู้เล่นไม่อยู่ในระยะ! พวกเขาต้องอยู่ในช่วง {Range} blocks!"
+      AlreadyOpenRequest: "{DisplayName}&r&c มีคนหนึ่งที่ไม่ได้ตอบคำขอแต่งงาน."
+      YouCalledOff: "คุณได้เรียกงานแต่งงานออกไปแล้ว."
+      PlayerCalledOff: "{DisplayName}&r เรียกเชิญงานแต่งงาน."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" ต้องการให้คุณแต่งงานกับ \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". ยอมรับการแต่งงานด้วย \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" หรือปฏิเสธด้วย \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      PriestOff: "Priest {DisplayName}&r ขณะนี้ออฟไลน์งานแต่งงานถูกปิด."
+      PlayerOff: "{DisplayName}&r is now offline, wedding called off."
+      Self:
+        NotYourself: "&cคุณไม่สามารถแต่งงานกับตัวเองได้."
+        NotInRange: "&cเครื่องเล่นไม่อยู่ในระยะ! เขาต้องอยู่ภายใน {Range} blocks!"
+        AlreadyMarried: "&cคุณแต่งงานแล้วกับ &r&c{DisplayName}&r&c!"
+        OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c แต่งงานอยู่แล้ว!"
+        AlreadyOpenRequest: "&cคุณมีคนหนึ่งที่ไม่ได้ตอบคำขอแต่งงาน."
+        Married: "&aคุณแต่งงานแล้ว &r&a{DisplayName}&r&a."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a ได้แต่งงานแล้ว &r&a{Player2DisplayName}&r&a."
+        YouCalledOff: "You have called the wedding off."
+        PlayerCalledOff: "{DisplayName}&r ได้เรียกเชิญงานแต่งงาน."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" อยากแต่งงานกับคุณ ยอมรับการแต่งงานโดย \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" หรือปฏิเสธด้วย \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        RequestSent: "ส่งคำขอแต่งงานแล้ว."
+        PlayerOff: "{DisplayName}&r ขณะนี้ออฟไลน์งานแต่งงานถูกปิด."
+        NotOnYourOwn: "&cคุณไม่สามารถจัดงานแต่งงานของคุณเองได้ โปรดขอให้นักบวชทำพิธีแต่งงานให้คุณ."
+    Divorce:
+      Broadcast: "&a&r&a{PriestDisplayName}&r&a ได้หย่าร้าง &r&a{Player1DisplayName}&r&a ออกจาก &r&a{Player2DisplayName}&r&a."
+      DivorcedPlayer: "&a&r&a{PriestDisplayName}&r&a ได้หย่าร้างการแต่งงานของคุณกับ &r&a{PartnerDisplayName}&r&a."
+      Divorced: "&aคุณได้หย่าร้าง &r&a{Player1DisplayName}&r&a และ &r&a{Player2DisplayName}&r&a."
+      PlayerOff: "{DisplayName}&r ขณะนี้ออฟไลน์การหย่าร้างถูกยกเลิก."
+      PriestOff: "นักบวช {DisplayName}&r ขณะนี้ออฟไลน์การหย่าร้างถูกยกเลิก."
+      PlayerCancelled: "&c&r&c{PlayerDisplayName}&r&c ยกเลิกการหย่าร้างกับ &r&c{PartnerDisplayName}&r&c!"
+      PriestCancelled: "&c&r&c{PriestDisplayName}&r&c ยกเลิกการหย่าร้างระหว่างคุณและ &r&c{PartnerDisplayName}&r&c!"
+      YouCancelled: "&aคุณยกเลิกการหย่าร้างจาก &r&a{DisplayName}&r&a!"
+      YouCancelledPriest: "&aคุณยกเลิกการหย่าร้างของ &r&a{Player1DisplayName}&r&a และ &r&a{Player2DisplayName}&r&a!"
+      Deny: "{DisplayName}&r&c ปฏิเสธการหย่าร้าง!"
+      YouDeny: "&aคุณปฏิเสธการหย่าร้างจาก &r&a{DisplayName}&r&a."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" ต้องการหย่าร้างคุณออกจาก \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\". ยอมรับการหย่าร้างโดย \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" หรือยกเลิกโดย \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+      NotInRange: "&aผู้เล่นไม่อยู่ในระยะ! พวกเขาต้องอยู่ภายใน {Range} blocks!"
+      Self:
+        Divorced: "&aคุณไปจาก &r&a{DisplayName}&r&a. คุณเป็นอิสระแล้ว."
+        DivorcedPlayer: "{DisplayName}&r&a ได้จากคุณไปแล้ว ตอนนี้คุณเป็นอิสระแล้ว."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a ได้หย่าร้างจาก &r&a{Player2DisplayName}&r&a."
+        PlayerOff: "{DisplayName}&r ขณะนี้ออฟไลน์การหย่าร้างถูกยกเลิก."
+        RequestSent: "ส่งคำขอหย่าไปที่ {DisplayName}&r."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" ต้องการหย่าจากคุณ ยอมรับการหย่าร้างโดย \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" หรือยกเลิกโดย \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
+        Deny: "{DisplayName}&r&c ปฏิเสธคำขอหย่าของคุณ!"
+        YouDeny: "&aคุณปฏิเสธ คำขอหย่าของ&r&a{DisplayName}&r&a."
+        Cancelled: "{DisplayName}&r&c ยกเลิกคำขอหย่าของเขา!"
+        YouCancelled: "&aคุณยกเลิกคำขอหย่าจาก &r&a{DisplayName}&r&a!"
+        NotInRange: "&aคู่ของคุณไม่อยู่ในระยะ! คุณต้องอยู่ภายใน {Range} blocks!"
+    Economy:
+      NotEnough: "&cคุณมีเงินไม่พอ! คุณต้องมีเงิน {Cost} {CurrencyName} สำหรับการกระทำนี้."
+      PartnerNotEnough: "&cคู่ของคุณไม่มีเงินเพียงพอ!"
+      PriestMarryNotEnough: "&cผู้เล่นที่คุณพยายามจะแต่งงานมีเงินไม่เพียงพอ."
+      PriestDivorceNotEnough: "&cผู้เล่นที่คุณพยายามหย่าร้างไม่มีเงินเพียงพอ."
+      MarriagePaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} สำหรับงานแต่งของคุณ ( เงินที่เหลือ {Remaining} {CurrencyName} )."
+      DivorcePaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} สำหรับการยกเลิกการแต่งงานของคุณ ( เงินที่เหลือ {Remaining} {CurrencyName})."
+      HomeTPPaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} สำหรับการเทเลพอร์ตที่บ้านของคุณ ( เงินที่เหลือ {Remaining} {CurrencyName})."
+      SetHomePaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} เพื่อตั้งค่าบ้านของคุณ (เงินที่เหลือ {Remaining} {CurrencyName})."
+      TpPaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} สำหรับ Teleport (เงินที่เหลือ {Remaining} {CurrencyName})."
+      GiftPaid: "&aคุณใช้จ่ายเงิน {Cost} {CurrencyName} สำหรับการมอบสิ่งของให้กับคู่ของคุณ (เงินที่เหลือ {Remaining} {CurrencyName})."
+    Admin:
+      Reloading: "&1Reloading ..."
+      Reloaded: "&1Reloaded!"
+      ReloadingDatabase: '&bReloading database &6.&r&c.&r&a.&r'
+      CheckingForUpdates: "&1Checking for updates ..."
+      Updated: "&ePlugin updated, will be loaded on next restart/reload."
+      NoUpdate: "&6No plugin update available."
+      UpdateFail: "&cThere was a problem looking for updates! Please check the console!"
+      # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
+      UpdateAvailable: "[{\"text\":\"There is an update available! Please go to \\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\"}},{\"text\":\"\\\" to download it!\"}]"
+    Help:
+      Header: "&6### Marriage Master Commands ###"
+      Footer: "&6#############################"
+      # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
+      CustomHelp:
+        # Will be used if the player is married
+        Married:
+          - " &3__&b&lMarry Commands&r&3__"
+          - ""
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" จูบคู่ของคุณ","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" เทเลพอตไปหาคู่ของคุณ","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" พูดคุยส่วนตัวกับคู่ของคุณ","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" ส่งของขวัญให้คู่ของคุณ ","color":"aqua"}]'
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" สำหรับอ่านคำสั่งทั้งหมด"}]'
+        # Will be used if the player is a priest
+        Priest:
+          - " &3__&b&lMarry&r&3__"
+          - "&b คุณสามารถแต่งงานให้ผู้เล่นได้โดยใช้ /marry marry <player1> <player2>"
+          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" สำหรับอ่านคำสั่งทั้งหมด"}]'
+        # Will be used if the player is neither married nor a priest
+        Default:
+          - " &3__&b&lMarry&r&3__"
+          - "&cคุณต้องแต่งงานจึงจะใช้คำสั่งนี้ได้"
+
+  Commands:
+    HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
+    # No color codes please
+    PlayerNameVariable: "player_name"
+    PartnerNameVariable: "partner_name"
+    SurnameVariable: "surname"
+    MessageVariable: "message"
+    Description:
+      Backpack: "เปิดกระเป๋าเป้ของคู่คุณ."
+      BackpackOn: "อนุญาตให้คู่ของคุณใช้กระเป๋าเป้สะพายหลังของคุณ."
+      BackpackOff: "ไม่อนุญาตให้คู่ของคุณใช้กระเป๋าเป้สะพายหลังของคุณ."
+      Chat: "แชทส่วนตัวกับคู่ของคุณ."
+      ChatSetTarget: "เปลี่ยนเป้าหมายข้อความส่วนตัว หากไม่เปลี่ยน คู่ของคุณทั้งหมดจะได้รับข้อความ."
+      ChatToggle: "สลับการแชทของคุณให้เป็นส่วนตัวกับคู่ของคุณ."
+      ChatListen: "แสดงข้อความแชททั้งหมดที่ส่งจากผู้เล่นที่แต่งงานแล้วไปยังคู่ของเขา."
+      Gift: "มอบสิ่งของในมือให้กับคู่ของคุณ."
+      Home: "เทเลพอร์ตคุณไปที่บ้าน."
+      HomeOther: "เทเลพอร์ต ไปยังบ้านแต่งงาน."
+      SetHome: "ตั้งตำแหน่งบ้าน."
+      SetHomeOther: "ตั้งบ้านของผู้เล่นที่แต่งงานแล้ว."
+      DelHome: "ลบการตั้งค่าบ้าน."
+      DelHomeOther: "ลบบ้านของผู้เล่นที่แต่งงานแล้ว."
+      Help: "แสดงคำสั่งที่มีอยู่ทั้งหมดและคำอธิบาย."
+      List: "รายชื่อผู้เล่นที่แต่งงานแล้วทั้งหมด."
+      ListPriests: "แสดงรายชื่อนักบวชออนไลน์ทั้งหมดที่ออนไลน์."
+      PvP: "เปลี่ยนสถานะ PvP กับคู่รัก."
+      PvPOn: "เปิดใช้งาน PvP กับคู่รัก"
+      PvPOff: "ปิดการใช้งาน PvP กับพันธมิตร."
+      Tp: "เทเลพอร์ตคุณไปยังคู่ของคุณ."
+      Kiss: "คุณจูบคู่ของคุณ."
+      Hug: "คุณกอดคู่ของคุณ."
+      Seen: "แสดงสถานะคู่รักของคุณ ออนไลน์ครั้งล่าสุดตอนไหน."
+      Marry: "แต่งงานกับผู้เล่นสองคน."
+      MarrySelf: "ส่งคำขอแต่งงานไปยังผู้เล่นคนอื่น."
+      Divorce: "การหย่าร้างผู้เล่นสองคน."
+      DivorceSelf: "เพื่อลาจากคู่ของคุณ."
+      Surname: "เปลี่ยนนามสกุลของคู่รัก."
+      SurnameSelf: "เปลี่ยนนามสกุลจากคู่ของคุณและคุณ."
+      Update: "Checks if there is an update available and downloads it."
+      Accept: "ยอมรับคำขอ."
+      Cancel: "ยกเลิกคำขอ."
+      Deny: "ปฏิเสธคำขอ."
+      SetColor: "กำหนดสีของการแต่งงาน."
+      SetPriest: "แต่งตั้ง / ปลดตำแหน่ง ผู้เล่นเป็นนักบวช."
+      Reload: "Reloads the config of the plugin."
+      Version: "Prints the version details about the plugin and it's dependencies."
+# The fist option in the list will be the one displayed in the commands help
+Command:
+  Switches:
+    On:
+      - on
+      - true
+      - yes
+    Off:
+      - off
+      - false
+      - no
+    Toggle:
+      - toggle
+      - switch
+    All:
+      - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
+  Main:
+    - marry
+  Backpack:
+    - backpack
+    - bp
+  Chat:
+    - chat
+  ChatSetTarget:
+    - settarget
+    - target
+  ChatToggle:
+    - chattoggle
+  ChatListen:
+    - listenchat
+    - chatlisten
+  Gift:
+    - gift
+    - send
+    - give
+  Help:
+    - help
+  Home:
+    - home
+  SetHome:
+    - sethome
+    - definehome
+    - savehome
+  DelHome:
+    - delhome
+    - deletehome
+    - unsethome
+  PvP:
+    - pvp
+  Kiss:
+    - kiss
+  Hug:
+    - hug
+  Seen:
+    - seen
+    - lastOnline
+  PvPOn:
+    - pvpon
+  PvPOff:
+    - pvpoff
+  List:
+    - list
+  ListPriests:
+    - listpriests
+  Tp:
+    - tp
+  SetColor:
+    - setcolor
+  Marry:
+    - marry
+  Divorce:
+    - divorce
+  Update:
+    - update
+  Version:
+    - version
+  Accept:
+    - accept
+  Cancel:
+    - cancel
+  Deny:
+    - deny
+Dialog:
+  DoYouWant: "คุณ {Player1Name}, ต้องการแต่งานกับ {Player2Name} ที่เมือง Vineplus หรือไม่?"
+  AndDoYouWant: "และคุณ {Player2Name}, ต้องการแต่งงานกับ {Player1Name} ที่เมือง Vineplus หรือไม่?"
+  Married: "ขอประกาศว่าคุณทั้งคู่เป็นคู่รักกันแล้ว, ตอนนี้จูบกันได้เลย."
+  YesIWant: "ใช่, ฉันต้องการ!"
+  NoIDontWant: "ไม่, ฉันไม่ต้องการ!"
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "ไม่แต่งงาน"
+    NoHome: "ไม่มีบ้าน"
+    Separator: "&r, "
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+
+# The name of the language represented by the language file
+LanguageName: "Thai"
+# The author of the language file
+# Thai language file by Iceza_FT for Thailand
+Author: "GeorgH93"
+
+# Language file version. Don't touch it!
+Version: 102
+Revision: 1
