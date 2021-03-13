@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.ItemFilter;
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
 import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.Message.Message;
@@ -42,12 +43,13 @@ import java.util.Set;
 
 public class GiftCommand extends MarryCommand
 {
-	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed;
+	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed, messageItemNotAllowed;
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner, messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
 	private final double range;
 	private final boolean allowedInCreative, blacklistEnabled, requireConfirmation;
 	private final ItemNameResolver itemNameResolver;
 	private final Set<String> worldBlacklist;
+	private final ItemFilter itemFilter;
 
 	public GiftCommand(MarriageMaster plugin)
 	{
@@ -59,6 +61,7 @@ public class GiftCommand extends MarryCommand
 		messageItemSent            = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
 		messageItemReceived        = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
 		messageWorldNotAllowed     = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
+		messageItemNotAllowed      = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").replaceAll("\\{ItemName}", "%1\\$s");
 
 		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
 		messageWaitForConfirmation                = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
@@ -74,6 +77,18 @@ public class GiftCommand extends MarryCommand
 		worldBlacklist      = plugin.getConfiguration().getGiftBlackListedWorlds();
 		requireConfirmation = plugin.getConfiguration().isGiftRequireConfirmationEnabled();
 		blacklistEnabled    = worldBlacklist.size() > 0;
+
+		if(plugin.getConfiguration().isGiftItemFilterEnabled())
+		{
+			itemFilter = new ItemFilter(plugin.getConfiguration().isGiftItemFilterModeWhitelist());
+			itemFilter.addFilteredMaterials(plugin.getConfiguration().getItemFilterMaterials());
+			itemFilter.addFilteredNames(plugin.getConfiguration().getGiftItemFilterNames());
+			itemFilter.addFilteredLore(plugin.getConfiguration().getGiftItemFilterLore());
+		}
+		else
+		{
+			itemFilter = null;
+		}
 
 		/*if[STANDALONE]
 		itemNameResolver = new ItemNameResolver();
@@ -137,9 +152,16 @@ public class GiftCommand extends MarryCommand
 						messagePartnerInvFull.send(sender);
 						return;
 					}
-					if(blacklistEnabled && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase()))
+					if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase()))
 					{
 						player.send(messageWorldNotAllowed);
+						return;
+					}
+					System.out.println(sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER));
+					if((itemFilter != null && !sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER) && itemFilter.isItemBlocked(its)) ||
+							(((MarriageMaster) plugin).getBackpacksIntegration() != null && ((MarriageMaster) plugin).getBackpacksIntegration().isBackpackItem(its)))
+					{
+						player.send(messageItemNotAllowed, itemNameResolver.getName(its));
 						return;
 					}
 					GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);

@@ -48,10 +48,12 @@ public class Permissions
 	public static final String BYPASS_BACKPACK_GAME_MODE = BYPASS + "backpackgamemode";
 	public static final String BYPASS_DELAY = BYPASS + "delay";
 	public static final String BYPASS_RANGELIMIT = BYPASS + "rangelimit";
-	public static final String BYPASS_GIFT_GAME_MODE = BYPASS + "giftgamemode";
 	public static final String BYPASS_WORLD_BLACKLIST = BYPASS + "worldblacklist";
 	public static final String BYPASS_TP_CONFIRMATION = BYPASS + "tpconfirmation";
 	public static final String BYPASS_VANISH = BYPASS + "vanish";
+	public static final String BYPASS_GIFT_GAME_MODE = BYPASS + "gift.gamemode";
+	public static final String BYPASS_GIFT_WORLD = BYPASS + "gift.world";
+	public static final String BYPASS_GIFT_ITEM_FILTER = BYPASS + "gift.itemfilter";
 	public static final String LISTEN_CHAT = BASE + "listenchat";
 	public static final String LISTEN_CHAT_AUTO_JOIN = LISTEN_CHAT + ".autojoin";
 	public static final String AUTO_ACCEPT_TP_REQUEST = BASE + "autoaccept.tprequest";

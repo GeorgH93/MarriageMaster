@@ -51,6 +51,7 @@ Language:
       # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Dein Partner hat dir \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
       WorldNotAllowed: "&cDein Partner ist in einer Welt in der es nicht erlaubt ist Geschenke zu empfangen."
+      ItemNotAllowed: "&cEs ist dir nicht erlaubt {ItemName} &cdeinem Partner zu schenken."
       Request:
         Notification: "[\"\",{\"text\":\"{DisplayName}&r will dir \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" schenken. Nimm das Geschenk mit \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" an oder lehne es mit \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\" ab.\"}]"
         WaitForConfirmation: "Geschenks-Anfrage an deinen Partner gesendet."
@@ -320,6 +321,8 @@ Command:
       - loeschen
       - "löschen"
       - entfernen
+  Main:
+    - marry
   Backpack:
     - backpack
     - bp
@@ -445,5 +448,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 101
+Version: 103
 Revision: 1

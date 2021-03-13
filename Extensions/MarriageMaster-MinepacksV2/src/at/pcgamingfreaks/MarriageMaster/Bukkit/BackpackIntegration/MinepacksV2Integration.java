@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,8 +33,9 @@ import java.util.MissingResourceException;
 public class MinepacksV2Integration implements IBackpackIntegration
 {
 	private static final String PLUGIN_NAME = "Minepacks";
-	private static final Version MIN_VERSION = new Version("2.0");
+	private static final Version MIN_VERSION = new Version("2.0"), ITEM_FILTER_MIN_VERSION = new Version("2.3.8");
 	private MinepacksPlugin minepacks;
+	private final boolean supportsItemFilter;
 	@Getter private final String version;
 
 	public MinepacksV2Integration() throws NullPointerException, BackpackPluginIncompatibleException
@@ -47,6 +49,7 @@ public class MinepacksV2Integration implements IBackpackIntegration
 			throw new BackpackPluginIncompatibleException("Your Minepacks version is outdated! Please update in order to use it with this plugin!\n" +
 					                                              "You have installed: " + installedVersion + " Required: " + MIN_VERSION);
 		}
+		supportsItemFilter = ITEM_FILTER_MIN_VERSION.olderThan(installedVersion);
 		minepacks = (MinepacksPlugin) bukkitPlugin;
 	}
 
@@ -66,5 +69,12 @@ public class MinepacksV2Integration implements IBackpackIntegration
 	public @NotNull String getName()
 	{
 		return PLUGIN_NAME;
+	}
+
+	@Override
+	public boolean isBackpackItem(ItemStack item)
+	{
+		if(!supportsItemFilter) return false;
+		return minepacks.isBackpackItem(item);
 	}
 }

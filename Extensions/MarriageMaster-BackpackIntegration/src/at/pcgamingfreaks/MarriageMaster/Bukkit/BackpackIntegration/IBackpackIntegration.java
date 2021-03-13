@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.BackpackIntegration;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public interface IBackpackIntegration
@@ -49,4 +50,6 @@ public interface IBackpackIntegration
 	 * @return The version of the backpack plugin.
 	 */
 	@NotNull String getVersion();
+
+	boolean isBackpackItem(final ItemStack item);
 }

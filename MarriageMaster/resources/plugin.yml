@@ -31,11 +31,13 @@ permissions:
     children:
       marry.bypass.delay: true
       marry.bypass.rangelimit: true
-      marry.bypass.giftgamemode: true
       marry.bypass.backpackgamemode: true
       marry.bypass.worldblacklist: true
       marry.bypass.tpconfirmation: true
       marry.bypass.vanish: true
+      marry.bypass.gift.gamemode: true
+      marry.bypass.gift.world: true
+      marry.bypass.gift.itemfilter: true
   marry.user:
     description: Gives acces to all user functions
     children:
@@ -142,8 +144,14 @@ permissions:
   marry.bypass.rangelimit:
     description: Allows to bypass the range limits
     default: op
-  marry.bypass.giftgamemode:
+  marry.bypass.gift.gamemode:
     description: Allows to bypass gamemode check for item gifting
+    default: op
+  marry.bypass.gift.world:
+    description: Allows to bypass the world check for item gifting
+    default: op
+  marry.bypass.gift.itemfilter:
+    description: Allows to bypass the item filter for item gifting
     default: op
   marry.bypass.backpackgamemode:
     description: Allows to bypass gamemode check for opening the backpack of the partner

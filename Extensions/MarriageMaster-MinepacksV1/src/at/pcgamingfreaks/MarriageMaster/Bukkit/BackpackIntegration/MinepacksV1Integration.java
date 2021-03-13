@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,5 +67,11 @@ class MinepacksV1Integration implements IBackpackIntegration
 	public @NotNull String getName()
 	{
 		return PLUGIN_NAME;
+	}
+
+	@Override
+	public boolean isBackpackItem(ItemStack item)
+	{
+		return false;
 	}
 }

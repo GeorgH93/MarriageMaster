@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.Bukkit.Configuration;
+import at.pcgamingfreaks.Bukkit.MinecraftMaterial;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
@@ -25,7 +26,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.StringUtils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -249,6 +252,42 @@ public class Config extends Configuration implements DatabaseConfiguration
 			blackListedWorlds.add(world.toLowerCase(Locale.ENGLISH));
 		}
 		return blackListedWorlds;
+	}
+
+	public boolean isGiftItemFilterEnabled()
+	{
+		return getConfigE().getBoolean("Gift.ItemFilter.Enabled", false);
+	}
+
+	public Collection<MinecraftMaterial> getItemFilterMaterials()
+	{
+		List<String> stringMaterialList = getConfigE().getStringList("Gift.ItemFilter.Materials", new LinkedList<>());
+		Collection<MinecraftMaterial> blacklist = new ArrayList<>(stringMaterialList.size());
+		for(String item : stringMaterialList)
+		{
+			MinecraftMaterial mat = MinecraftMaterial.fromInput(item);
+			if(mat != null) blacklist.add(mat);
+		}
+		return blacklist;
+	}
+
+	public Set<String> getGiftItemFilterNames()
+	{
+		Set<String> names = new HashSet<>();
+		getConfigE().getStringList("Gift.ItemFilter.Names", new LinkedList<>()).forEach(name -> names.add(ChatColor.translateAlternateColorCodes('&', name)));
+		return names;
+	}
+
+	public Set<String> getGiftItemFilterLore()
+	{
+		Set<String> loreSet = new HashSet<>();
+		getConfigE().getStringList("Gift.ItemFilter.Lore", new LinkedList<>()).forEach(lore -> loreSet.add(ChatColor.translateAlternateColorCodes('&', lore)));
+		return loreSet;
+	}
+
+	public boolean isGiftItemFilterModeWhitelist()
+	{
+		return StringUtils.arrayContains(new String[]{ "whitelist", "allowlist" }, getConfigE().getString("Gift.ItemFilter.Mode", "blacklist").toLowerCase(Locale.ENGLISH));
 	}
 	//endregion
 

@@ -100,6 +100,18 @@ Gift:
   BlacklistedWorlds: []
   # If this option is enabled the partner has to accept the gift.
   RequireConfirmation: false
+  ItemFilter:
+    # Enables the item filter. Make sure to define items to be filtered.
+    Enabled: false
+    # Changes the filter mode, either blacklist (only unlisted materials are allowed) or whitelist (only listed materials are allowed)
+    Mode: blacklist
+    # Filter lists bellow. An item will be blocked (in blacklist mode) or allowed (in whitelist mode) if it matches on of the given filters.
+    # List of materials that should be filtered. Can be name or id (id only for MC versions older than 1.13!).
+    Materials: [ ]
+    # List of names that should be filtered. Must match the display name of the item exactly. & color codes will be converted automatically.
+    Names: [ ]
+    # List of lore that should be filtered. Can be a single line or all lines of the lore.
+    Lore: [ ]
 
 Kiss:
   Enable: true
@@ -231,4 +243,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 101
+Version: 102
