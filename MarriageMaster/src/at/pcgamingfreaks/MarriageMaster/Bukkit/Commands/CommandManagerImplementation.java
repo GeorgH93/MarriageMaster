@@ -67,7 +67,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		switchesRemove  = plugin.getLanguage().getSwitch("Remove", "remove");
 
 		// Registering the marriage command with our translated aliases
-		marryCommand = new RegisterablePluginCommand(plugin, "marry", plugin.getLanguage().getCommandAliases("main"));
+		marryCommand = new RegisterablePluginCommand(plugin, "marry", plugin.getLanguage().getCommandAliases("Main"));
 		marryCommand.registerCommand();
 		marryCommand.setExecutor(this);
 		marryCommand.setTabCompleter(this);
