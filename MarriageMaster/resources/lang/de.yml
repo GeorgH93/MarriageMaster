@@ -388,6 +388,8 @@ Command:
     - scheiden
   Update:
     - update
+  SetPriest:
+    - setpriest
   Version:
     - version
   Accept:

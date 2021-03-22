@@ -377,6 +377,8 @@ Command:
     - marry
   Divorce:
     - divorce
+  SetPriest:
+    - setpriest
   Update:
     - update
   Version:
