@@ -157,7 +157,6 @@ public class GiftCommand extends MarryCommand
 						player.send(messageWorldNotAllowed);
 						return;
 					}
-					System.out.println(sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER));
 					if((itemFilter != null && !sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER) && itemFilter.isItemBlocked(its)) ||
 							(((MarriageMaster) plugin).getBackpacksIntegration() != null && ((MarriageMaster) plugin).getBackpacksIntegration().isBackpackItem(its)))
 					{
