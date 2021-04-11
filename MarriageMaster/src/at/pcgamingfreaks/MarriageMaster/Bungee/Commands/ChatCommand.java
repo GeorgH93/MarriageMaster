@@ -38,6 +38,7 @@ import net.md_5.bungee.event.EventPriority;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -327,7 +328,8 @@ public class ChatCommand extends MarryCommand implements Listener
 				msg = msg.replaceAll("§k", "&k");
 			}
 			// Send the message
-			List<ProxiedPlayer> playerRecipients = new LinkedList<>(listeners); // Copy the listeners since we need to send the message to them anyway
+			List<ProxiedPlayer> playerRecipients = new ArrayList<>(listeners.size() + recipients.size() + 1); // Copy the listeners since we need to send the message to them anyway
+			playerRecipients.addAll(listeners);
 			playerRecipients.add(player); // Add the sender to the list
 			if(recipient == null) // Add the recipients to the list
 			{
