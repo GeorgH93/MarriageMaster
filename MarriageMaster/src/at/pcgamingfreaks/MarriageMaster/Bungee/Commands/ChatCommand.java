@@ -250,21 +250,19 @@ public class ChatCommand extends MarryCommand implements Listener
 	{
 		List<Marriage> recipients = new LinkedList<>();
 		ProxiedPlayer recipient = null;
-		if(getMarriagePlugin().areMultiplePartnersAllowed() && sender.getPrivateChatTarget() == null)
+		if(sender.getPrivateChatTarget() == null)
 		{
-			MarriagePlayer p = null;
+			MarriagePlayer last = null;
 			for(Marriage m : sender.getMultiMarriageData())
 			{
-				p = m.getPartner(sender);
-				if(p != null && p.isOnline())
+				MarriagePlayer p = m.getPartner(sender);
+				if(p != null && p.isOnline() && p.getPlayerOnline() != null)
 				{
+					last = p;
 					recipients.add(m);
 				}
 			}
-			if(recipients.size() == 1 && p != null)
-			{
-				recipient = p.getPlayer();
-			}
+			if(recipients.size() == 1) recipient = last.getPlayerOnline();
 		}
 		else
 		{
