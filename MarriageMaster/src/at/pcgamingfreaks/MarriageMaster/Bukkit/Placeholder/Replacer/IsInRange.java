@@ -17,32 +17,31 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
+import lombok.Getter;
 
-public abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacerBase
+public class IsInRange extends PlaceholderReplacerBaseBoolean
 {
-	private static final String PLACEHOLDER_BOOLEAN_KEY = "Boolean.", KEY_TRUE = "True", KEY_FALSE = "False";
-	protected final String valueTrue, valueFalse;
+	@Getter private final String name;
+	private final double range;
 
-	public PlaceholderReplacerBaseBoolean(final @NotNull MarriageMaster plugin)
+	public IsInRange(final @NotNull MarriageMaster plugin, final @NotNull Range range)
 	{
 		super(plugin);
-		valueTrue = getBooleanPlaceholderValue(this.getClass().getSimpleName(), KEY_TRUE);
-		valueFalse = getBooleanPlaceholderValue(this.getClass().getSimpleName(), KEY_FALSE);
+		this.name = this.getClass().getSimpleName() + range.name();
+		this.range = plugin.getConfiguration().getRangeSquared(range);
 	}
 
-	protected @NotNull String getBooleanPlaceholderValue(final @NotNull String placeholder, final @NotNull String booleanKey)
+	@Override
+	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		String val = getNotMarriedPlaceholderValue(placeholder, PLACEHOLDER_BOOLEAN_KEY + booleanKey);
-		return (val == null) ? booleanKey.toLowerCase(Locale.ENGLISH) : val;
-	}
-
-	protected @NotNull String toString(boolean bool)
-	{
-		return bool ? valueTrue : valueFalse;
+		//noinspection ConstantConditions
+		return toString(player.getNearestPartnerMarriage().inRangeSquared(range));
 	}
 }

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,19 +23,23 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.MVdWPlaceholder
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks.PlaceholderAPIHook;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer.MultiPartner.*;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.Reflection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class PlaceholderManager
 {
 	private static MVdWPlaceholderReplacer mVdWPlaceholderReplacer = null; // The MVdWPlaceholder API dose not allow to unregister hooked placeholders
 	private final MarriageMaster plugin;
 	private final Map<String, at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer> placeholders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	private final List<PlaceholderAPIHook> hooks = new LinkedList<>();
+	private final List<PlaceholderAPIHook> hooks = new ArrayList<>(2);
 	private final List<String> placeholdersList = new ArrayList<>();
 
 	public PlaceholderManager(MarriageMaster plugin)
@@ -108,6 +112,11 @@ public class PlaceholderManager
 		registerPlaceholder(new Surname(plugin));
 		registerPlaceholder(new StatusHeart(plugin));
 		registerPlaceholder(new MagicHeart(plugin));
+		for(Range range : Range.values())
+		{
+			if(range == Range.Marry) continue;
+			registerPlaceholder(new IsInRange(plugin, range));
+		}
 
 		if(plugin.areMultiplePartnersAllowed())
 		{
