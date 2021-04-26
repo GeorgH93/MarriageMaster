@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -72,7 +73,7 @@ public class GiftCommand extends MarryCommand
 		messageRequestCanceledDisconnectRequester = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 		messageRequestCanceledDisconnectTarget    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 
-		range               = plugin.getConfiguration().getRangeSquared("Gift");
+		range               = plugin.getConfiguration().getRangeSquared(Range.Gift);
 		allowedInCreative   = plugin.getConfiguration().isGiftAllowedInCreative();
 		worldBlacklist      = plugin.getConfiguration().getGiftBlackListedWorlds();
 		requireConfirmation = plugin.getConfiguration().isGiftRequireConfirmationEnabled();

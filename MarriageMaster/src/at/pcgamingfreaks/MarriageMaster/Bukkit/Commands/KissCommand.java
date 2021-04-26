@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.KissEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -55,10 +56,10 @@ public class KissCommand extends MarryCommand implements Listener
 		wait = new HashMap<>();
 		particleSpawner = ParticleSpawner.getParticleSpawner();
 
-		range              = plugin.getConfiguration().getRange("Kiss");
-		rangeSquared       = plugin.getConfiguration().getRangeSquared("Kiss");
-		interactRange      = plugin.getConfiguration().getRangeSquared("KissInteract");
-		hearthVisibleRange = plugin.getConfiguration().getRange("HearthVisible");
+		range              = plugin.getConfiguration().getRange(Range.Kiss);
+		rangeSquared       = plugin.getConfiguration().getRangeSquared(Range.Kiss);
+		interactRange      = plugin.getConfiguration().getRangeSquared(Range.KissInteract);
+		hearthVisibleRange = plugin.getConfiguration().getRange(Range.HearthVisible);
 		waitTime           = plugin.getConfiguration().getKissWaitTime();
 		hearthCount        = plugin.getConfiguration().getKissHearthCount();
 

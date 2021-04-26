@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.GameMode;
@@ -50,7 +51,7 @@ public class BackpackCommand extends MarryCommand
 		descriptionOn         = plugin.getLanguage().getTranslated("Commands.Description.BackpackOn");
 		descriptionOff        = plugin.getLanguage().getTranslated("Commands.Description.BackpackOff");
 
-		range = plugin.getConfiguration().getRangeSquared("Backpack");
+		range = plugin.getConfiguration().getRangeSquared(Range.Backpack);
 	}
 
 	@Override

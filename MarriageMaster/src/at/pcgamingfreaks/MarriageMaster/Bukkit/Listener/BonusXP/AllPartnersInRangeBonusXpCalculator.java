@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 
 import org.bukkit.entity.Player;
 
@@ -37,7 +38,7 @@ public final class AllPartnersInRangeBonusXpCalculator<EVENT, XP_TYPE> implement
 		this.plugin = plugin;
 		this.multiplier = multiplier;
 		this.eventListener = eventListener;
-		range = plugin.getConfiguration().getRangeSquared("BonusXP");
+		range = plugin.getConfiguration().getRangeSquared(Range.BonusXP);
 	}
 
 	@Override

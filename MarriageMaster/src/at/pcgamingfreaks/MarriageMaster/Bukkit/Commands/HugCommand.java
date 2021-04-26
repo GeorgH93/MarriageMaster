@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HugEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -40,8 +41,8 @@ public class HugCommand extends MarryCommand
 	{
 		super(plugin, "hug", plugin.getLanguage().getTranslated("Commands.Description.Hug"), Permissions.HUG, true, false, plugin.getLanguage().getCommandAliases("Hug"));
 
-		range             = plugin.getConfiguration().getRange("Hug");
-		rangeSquared      = plugin.getConfiguration().getRangeSquared("Hug");
+		range             = plugin.getConfiguration().getRange(Range.Hug);
+		rangeSquared      = plugin.getConfiguration().getRangeSquared(Range.Hug);
 		messageHugged     = plugin.getLanguage().getMessage("Ingame.Hug.Hugged");
 		messageGotHugged  = plugin.getLanguage().getMessage("Ingame.Hug.GotHugged");
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance}", "%.1f");

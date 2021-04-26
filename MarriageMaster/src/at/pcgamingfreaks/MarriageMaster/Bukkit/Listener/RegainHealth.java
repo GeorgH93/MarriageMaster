@@ -21,6 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.BonusHealEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,7 +37,7 @@ public class RegainHealth implements Listener
 	public RegainHealth(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
-		range = plugin.getConfiguration().getRangeSquared("Heal");
+		range = plugin.getConfiguration().getRangeSquared(Range.Heal);
 		multiplier = plugin.getConfiguration().getHPRegainMultiplier();
 	}
 

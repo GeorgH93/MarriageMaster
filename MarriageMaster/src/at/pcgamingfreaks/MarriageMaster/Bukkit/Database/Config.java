@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Bukkit.MinecraftMaterial;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
@@ -106,12 +107,12 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("Marriage.Surnames.Force", false);
 	}
 
-	public double getRange(String option)
+	public double getRange(Range option)
 	{
-		return getConfigE().getDouble("Range." + option, 25.0);
+		return getConfigE().getDouble("Range." + option.name(), 25.0);
 	}
 
-	public double getRangeSquared(String option)
+	public double getRangeSquared(Range option)
 	{
 		double range = getRange(option);
 		return (range > 0) ? range * range : range;

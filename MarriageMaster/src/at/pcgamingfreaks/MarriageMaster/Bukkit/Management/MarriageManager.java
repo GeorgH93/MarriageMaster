@@ -30,6 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestMarryAc
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 
@@ -73,8 +74,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
 
-		rangeMarry       = plugin.getConfiguration().getRange("Marry");
-		rangeDivorce     = plugin.getConfiguration().getRange("Divorce");
+		rangeMarry       = plugin.getConfiguration().getRange(Range.Marry);
+		rangeDivorce     = plugin.getConfiguration().getRange(Range.Divorce);
 		announceMarriage = plugin.getConfiguration().isMarryAnnouncementEnabled();
 		confirm          = plugin.getConfiguration().isMarryConfirmationEnabled();
 		bothOnDivorce    = plugin.getConfiguration().isConfirmationBothPlayersOnDivorceEnabled();
