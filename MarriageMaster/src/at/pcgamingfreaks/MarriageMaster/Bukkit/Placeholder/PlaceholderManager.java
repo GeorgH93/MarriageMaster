@@ -134,6 +134,11 @@ public class PlaceholderManager
 			registerPlaceholder(new NearestHomeWorld(plugin));
 			registerPlaceholder(new PartnerList(plugin));
 			registerPlaceholder(new PartnerDisplayNameList(plugin));
+			for(int i = 0; i < 10; i++)
+			{
+				registerPlaceholder(new PartnerNameId(plugin, i));
+				registerPlaceholder(new PartnerDisplayNameId(plugin, i));
+			}
 		}
 	}
 
