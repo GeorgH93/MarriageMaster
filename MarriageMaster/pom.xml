@@ -76,7 +76,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.30-SNAPSHOT</version>
+			<version>1.0.31-SNAPSHOT</version>
 		</dependency>
 		<!-- BadRabbit -->
 		<dependency>
