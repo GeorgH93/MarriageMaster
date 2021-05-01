@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -235,9 +236,34 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("Gift.Enable", true);
 	}
 
-	public boolean isGiftAllowedInCreative()
+	public Set<GameMode> getGiftAllowedGameModes()
 	{
-		return getConfigE().getBoolean("Gift.AllowInCreative", false);
+		List<String> allowedModes = getConfigE().getStringList("Gift.AllowedGameModesAllowed", new ArrayList<>(0));
+		List<GameMode> modes = new ArrayList<>(allowedModes.size());
+		for(String mode : allowedModes)
+		{
+			try
+			{
+				modes.add(GameMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
+			}
+			catch(Exception ignored) {}
+		}
+		return EnumSet.copyOf(modes);
+	}
+
+	public Set<GameMode> getGiftAllowedReceiveGameModes()
+	{
+		List<String> allowedModes = getConfigE().getStringList("Gift.AllowedGameModesReceive", new ArrayList<>(0));
+		List<GameMode> modes = new ArrayList<>(allowedModes.size());
+		for(String mode : allowedModes)
+		{
+			try
+			{
+				modes.add(GameMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
+			}
+			catch(Exception ignored) {}
+		}
+		return EnumSet.copyOf(modes);
 	}
 
 	public boolean isGiftRequireConfirmationEnabled()

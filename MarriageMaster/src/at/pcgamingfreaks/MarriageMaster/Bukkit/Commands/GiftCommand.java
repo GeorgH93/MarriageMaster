@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import at.pcgamingfreaks.Bukkit.ItemFilter;
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
 import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.Bukkit.Utils;
+import at.pcgamingfreaks.Bukkit.Util.InventoryUtils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.GiftEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
@@ -40,29 +40,32 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class GiftCommand extends MarryCommand
 {
-	private final Message messageGiftsOnlyInSurvival, messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed, messageItemNotAllowed;
+	private final Message messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed, messageItemNotAllowed, messageGameModeNotAllowedSender, messageGameModeNotAllowedReceiver;
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner, messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
 	private final double range;
-	private final boolean allowedInCreative, blacklistEnabled, requireConfirmation;
+	private final boolean blacklistEnabled, requireConfirmation;
 	private final ItemNameResolver itemNameResolver;
 	private final Set<String> worldBlacklist;
 	private final ItemFilter itemFilter;
+	private final Set<GameMode> allowedSendGameModes, allowedReceiveGameModes;
 
 	public GiftCommand(MarriageMaster plugin)
 	{
 		super(plugin, "gift", plugin.getLanguage().getTranslated("Commands.Description.Gift"), Permissions.GIFT, true, true, plugin.getLanguage().getCommandAliases("Gift"));
 
-		messageGiftsOnlyInSurvival = plugin.getLanguage().getMessage("Ingame.Gift.OnlyInSurvival");
-		messageNoItemInHand        = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
-		messagePartnerInvFull      = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
-		messageItemSent            = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
-		messageItemReceived        = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
-		messageWorldNotAllowed     = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
-		messageItemNotAllowed      = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").replaceAll("\\{ItemName}", "%1\\$s");
+		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").replaceAll("\\{AllowedGameModes}", "%1\\$s").replaceAll("\\{CurrentGameMode}", "%2\\$s");
+		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").replaceAll("\\{AllowedGameModes}", "%1\\$s").replaceAll("\\{CurrentGameMode}", "%2\\$s");
+		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
+		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
+		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
+		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
+		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
+		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").replaceAll("\\{ItemName}", "%1\\$s");
 
 		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
 		messageWaitForConfirmation                = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
@@ -73,11 +76,12 @@ public class GiftCommand extends MarryCommand
 		messageRequestCanceledDisconnectRequester = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 		messageRequestCanceledDisconnectTarget    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 
-		range               = plugin.getConfiguration().getRangeSquared(Range.Gift);
-		allowedInCreative   = plugin.getConfiguration().isGiftAllowedInCreative();
-		worldBlacklist      = plugin.getConfiguration().getGiftBlackListedWorlds();
-		requireConfirmation = plugin.getConfiguration().isGiftRequireConfirmationEnabled();
-		blacklistEnabled    = worldBlacklist.size() > 0;
+		range                   = plugin.getConfiguration().getRangeSquared(Range.Gift);
+		allowedSendGameModes    = plugin.getConfiguration().getGiftAllowedGameModes();
+		allowedReceiveGameModes = plugin.getConfiguration().getGiftAllowedReceiveGameModes();
+		requireConfirmation     = plugin.getConfiguration().isGiftRequireConfirmationEnabled();
+		worldBlacklist          = plugin.getConfiguration().getGiftBlackListedWorlds();
+		blacklistEnabled        = worldBlacklist.size() > 0;
 
 		if(plugin.getConfiguration().isGiftItemFilterEnabled())
 		{
@@ -112,13 +116,12 @@ public class GiftCommand extends MarryCommand
 		/*end[STANDALONE]*/
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		Player bPlayer = (Player) sender;
-		if(bPlayer.getGameMode().equals(GameMode.SURVIVAL) || allowedInCreative || bPlayer.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
+		if(allowedSendGameModes.contains(bPlayer.getGameMode()) || bPlayer.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
 		{
 			MarriagePlayer partner;
 			if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
@@ -153,7 +156,12 @@ public class GiftCommand extends MarryCommand
 						messagePartnerInvFull.send(sender);
 						return;
 					}
-					if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase()))
+					if(allowedSendGameModes.contains(bPartner.getGameMode()))
+					{
+						messageGameModeNotAllowedReceiver.send(sender, allowedReceiveGameModes.toString().toLowerCase(Locale.ENGLISH), bPlayer.getGameMode().name().toLowerCase(Locale.ENGLISH));
+						return;
+					}
+					if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase(Locale.ENGLISH)))
 					{
 						player.send(messageWorldNotAllowed);
 						return;
@@ -169,7 +177,7 @@ public class GiftCommand extends MarryCommand
 					if(!event.isCancelled())
 					{
 						its = event.getItemStack();
-						final String itemJson = (Utils.convertItemStackToJson(its, plugin.getLogger()));
+						final String itemJson = InventoryUtils.convertItemStackToJson(its, plugin.getLogger());
 						final String itemName = itemNameResolver.getName(its);
 						if(MCVersion.isDualWieldingMC()) bPlayer.getInventory().setItemInMainHand(null);
 						else bPlayer.getInventory().setItemInHand(null);
@@ -199,7 +207,7 @@ public class GiftCommand extends MarryCommand
 		}
 		else
 		{
-			messageGiftsOnlyInSurvival.send(sender);
+			messageGameModeNotAllowedSender.send(sender, allowedSendGameModes.toString().toLowerCase(Locale.ENGLISH), bPlayer.getGameMode().name().toLowerCase(Locale.ENGLISH));
 		}
 	}
 

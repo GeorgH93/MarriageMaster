@@ -44,7 +44,11 @@ Language:
       Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
     Gift:
       OnlyInSurvival: "&cDu kannst deinem Partner nur im Survival-Modus Items schenken."
-      NoItemInHand: "&cDu haltest kein Item in der Hand."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedSender: "&cDu kannst deinem Partner in deinem aktuellen Game-Mode keine Items schenken."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedReceiver: "&cDein Partner kann in aktuellen Game-Mode keine Items empfangen."
+      NoItemInHand: "&cDu hast kein Item in der Hand."
       PartnerInvFull: "&cDein Partner hat keinen freien Platz in seinem Rucksack."
       # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Du hast deinem Partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
@@ -450,5 +454,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 103
+Version: 104
 Revision: 1

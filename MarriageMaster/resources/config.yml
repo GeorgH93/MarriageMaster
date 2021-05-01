@@ -95,7 +95,8 @@ Suffix:
 
 Gift:
   Enable: true
-  AllowInCreative: false
+  AllowedGameModesAllowed: [ "SURVIVAL" ]
+  AllowedGameModesReceive: [ "SURVIVAL" ]
   # List of worlds where players can't receive gifts
   BlacklistedWorlds: []
   # If this option is enabled the partner has to accept the gift.
@@ -243,4 +244,4 @@ Misc:
   UseBungeeCord: false
 
 # Config File Version. Don't touch it!
-Version: 102
+Version: 103

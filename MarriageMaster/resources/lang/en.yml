@@ -47,7 +47,10 @@ Language:
       # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
       Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
     Gift:
-      OnlyInSurvival: "&cYou can only gift items to your partner when you are in survival mode."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedSender: "&cYou are not allowed to send gifts in your current game mode."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedReceiver: "&cYour partner can not receive gifts in it's current current game mode."
       NoItemInHand: "&cYou are not holding an item."
       PartnerInvFull: "&cYour partner has no empty space in his inventory."
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
@@ -437,5 +440,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 103
+Version: 104
 Revision: 1
