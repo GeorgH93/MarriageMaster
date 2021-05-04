@@ -36,24 +36,31 @@ import java.util.List;
 public class PartnerDisplayNameId extends PlaceholderReplacerBaseValue
 {
 	private final int id;
+	private final String noPartnerForSlot;
 
 	public PartnerDisplayNameId(final @NotNull MarriageMaster plugin, final int id)
 	{
 		super(plugin);
 		this.id = id;
+		noPartnerForSlot = getPlaceholderValue("NoPlaceholderForSlot");
 	}
 
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
 		Collection<? extends MarriagePlayer> partners = player.getPartners();
-		MarriagePlayer partner = player;
+		MarriagePlayer partner = null;
 		int i = 0;
 		for(MarriagePlayer p : partners)
 		{
-			partner = p;
-			if(i >= id) break;
+			if(i == id)
+			{
+				partner = p;
+				break;
+			}
+			i++;
 		}
+		if(partner == null) return noPartnerForSlot;
 		return partner.getDisplayName();
 	}
 

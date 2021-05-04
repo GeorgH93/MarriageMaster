@@ -37,7 +37,7 @@ public abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacer
 
 	protected @NotNull String getBooleanPlaceholderValue(final @NotNull String placeholder, final @NotNull String booleanKey)
 	{
-		String val = getNotMarriedPlaceholderValue(placeholder, PLACEHOLDER_BOOLEAN_KEY + booleanKey);
+		String val = getPlaceholderValue(placeholder, PLACEHOLDER_BOOLEAN_KEY + booleanKey);
 		return (val == null) ? booleanKey.toLowerCase(Locale.ENGLISH) : val;
 	}
 

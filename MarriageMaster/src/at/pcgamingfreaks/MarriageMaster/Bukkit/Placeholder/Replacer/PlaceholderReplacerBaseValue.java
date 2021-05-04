@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ public abstract class PlaceholderReplacerBaseValue extends PlaceholderReplacerBa
 	public PlaceholderReplacerBaseValue(@NotNull MarriageMaster plugin)
 	{
 		super(plugin);
-		valueMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_MARRIED_KEY);
+		valueMarried = getPlaceholderValue(PLACEHOLDER_MARRIED_KEY);
 	}
 
 	@Override

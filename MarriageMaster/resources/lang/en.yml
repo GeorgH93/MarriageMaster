@@ -408,6 +408,7 @@ Placeholders:
     NotMarried: "not married"
     NoHome: "no home"
     Separator: "&r, "
+    NoPartnerForSlot: ""
   Heart:
     Married: "&c<heart>&f"
     NotMarried: ""
@@ -434,11 +435,12 @@ Placeholders:
     # Order: x, y, z
     Married: "%1$.1f %2$.1f %3$.1f"
 
+
 # The name of the language represented by the language file
 LanguageName: "English"
 # The author of the language file
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 104
+Version: 105
 Revision: 1

@@ -75,7 +75,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	//region Global settings
 	public boolean areMultiplePartnersAllowed()
 	{
-		return getConfigE().getBoolean("Marriage.AllowMultiplePartners", getConfigE().getBoolean("Marriage.AllowPolygamy", false));
+		return getConfigE().getBoolean("Marriage.AllowMultiplePartners", false);
 	}
 
 	public boolean isSelfMarriageAllowed()
@@ -301,14 +301,14 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public Set<String> getGiftItemFilterNames()
 	{
 		Set<String> names = new HashSet<>();
-		getConfigE().getStringList("Gift.ItemFilter.Names", new LinkedList<>()).forEach(name -> names.add(ChatColor.translateAlternateColorCodes('&', name)));
+		getConfigE().getStringList("Gift.ItemFilter.Names", new ArrayList<>(0)).forEach(name -> names.add(ChatColor.translateAlternateColorCodes('&', name)));
 		return names;
 	}
 
 	public Set<String> getGiftItemFilterLore()
 	{
 		Set<String> loreSet = new HashSet<>();
-		getConfigE().getStringList("Gift.ItemFilter.Lore", new LinkedList<>()).forEach(lore -> loreSet.add(ChatColor.translateAlternateColorCodes('&', lore)));
+		getConfigE().getStringList("Gift.ItemFilter.Lore", new ArrayList<>(0)).forEach(lore -> loreSet.add(ChatColor.translateAlternateColorCodes('&', lore)));
 		return loreSet;
 	}
 
@@ -352,7 +352,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public List<String> getSkillApiBonusXpBlockedSources()
 	{
-		return getConfigE().getStringList("BonusXp.SkillAPI.ExcludeSources", new LinkedList<>());
+		return getConfigE().getStringList("BonusXp.SkillAPI.ExcludeSources", new ArrayList<>(0));
 	}
 
 	public double getSkillApiBonusXpMultiplier()

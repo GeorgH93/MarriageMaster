@@ -422,6 +422,7 @@ Placeholders:
     NotMarried: "nicht verheiratet"
     NoHome: "kein Zuhause"
     Separator: "&r, "
+    NoPartnerForSlot: ""
   Heart:
     Married: "&c<heart>&f"
     NotMarried: ""

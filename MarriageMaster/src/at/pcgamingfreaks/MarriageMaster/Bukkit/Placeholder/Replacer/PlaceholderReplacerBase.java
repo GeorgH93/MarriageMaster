@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,15 +41,15 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 	public PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		valueNotMarried = getNotMarriedPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
+		valueNotMarried = getPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
 	}
 
-	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholderKey)
+	protected @Nullable String getPlaceholderValue(final @NotNull String placeholderKey)
 	{
-		return getNotMarriedPlaceholderValue(getName(), placeholderKey);
+		return getPlaceholderValue(getName(), placeholderKey);
 	}
 
-	protected @Nullable String getNotMarriedPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
+	protected @Nullable String getPlaceholderValue(final @NotNull String placeholder, final @NotNull String placeholderKey)
 	{
 		String p = placeholder + "." + placeholderKey, msg;
 		if(plugin.getLanguage().isPlaceholderSet(p))
