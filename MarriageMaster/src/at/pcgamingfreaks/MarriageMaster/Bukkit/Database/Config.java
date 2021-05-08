@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.Version;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -39,7 +40,7 @@ import java.util.*;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
-	public Config(JavaPlugin plugin)
+	public Config(final @NotNull JavaPlugin plugin)
 	{
 		super(plugin, MagicValues.CONFIG_VERSION, MagicValues.CONFIG_VERSION);
 		languageKey = "Language.Language";
@@ -47,9 +48,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 
 	@Override
-	protected void doUpgrade(at.pcgamingfreaks.YamlFileManager oldConfig)
+	protected void doUpgrade(final @NotNull at.pcgamingfreaks.YamlFileManager oldConfig)
 	{
-		if(oldConfig.getVersion() < MagicValues.CONFIG_PRE_V2_VERSIONS)
+		if(oldConfig.version().olderThan(new Version(MagicValues.CONFIG_PRE_V2_VERSIONS)))
 		{
 			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfigE());
 			new UpgradedInfo(MarriageMaster.getInstance());
@@ -57,8 +58,8 @@ public class Config extends Configuration implements DatabaseConfiguration
 		else
 		{
 			Map<String, String> reMappings = new HashMap<>();
-			if(oldConfig.getVersion() < 98) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
-			if(oldConfig.getVersion() < 101) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
+			if(oldConfig.version().olderThan(new Version(98))) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
+			if(oldConfig.version().olderThan(new Version(101))) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			Collection<String> keysToKeep = oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)");
 			keysToKeep.add("Misc.ServerName");
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);
