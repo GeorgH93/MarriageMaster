@@ -18,6 +18,8 @@
 package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.DataHandler.ILoadableStringFieldsHolder;
+import at.pcgamingfreaks.DataHandler.Loadable;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
@@ -28,6 +30,8 @@ import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKe
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKeyRunnable;
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.StructMarriageSQL;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.DataHandler.HasPlaceholders;
+import at.pcgamingfreaks.DataHandler.IStringFieldsWithPlaceholdersHolder;
 import at.pcgamingfreaks.UUIDConverter;
 
 import org.intellij.lang.annotations.Language;
@@ -40,7 +44,9 @@ import java.util.logging.Logger;
 
 //@SuppressWarnings("JpaQueryApiInspection")
 @SuppressWarnings("unchecked")
-public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends DatabaseBackend<MARRIAGE_PLAYER, MARRIAGE, HOME> implements SQLBasedDatabase
+public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home>
+		extends DatabaseBackend<MARRIAGE_PLAYER, MARRIAGE, HOME>
+		implements SQLBasedDatabase, IStringFieldsWithPlaceholdersHolder, ILoadableStringFieldsHolder
 {
 	protected static final long RETRY_DELAY = 5; // 5Ticks = 250ms, should be more than enough to get the player id, especially since the id's should have already been loaded a long time ago.
 	private static final Random RANDOM = new Random();
@@ -50,25 +56,26 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	//region Query related variables
 	// Table Names
-	protected String tablePlayers = "marry_players", tableMarriages = "marry_partners", tablePriests = "marry_priests", tableHomes = "marry_home";
+	@Loadable protected String tableUser = "marry_players", tablePartner = "marry_partners", tablePriests = "marry_priests", tableHome = "marry_home";
 	//region Field Names
-	protected String fieldPlayerID = "player_id", fieldName = "name", fieldUUID = "uuid", fieldShareBackpack = "sharebackpack", fieldPriestID = "player_id", fieldSurname = "surname"; // Player
-	protected String fieldMarryID = "marry_id", fieldPlayer1 = "player1", fieldPlayer2 = "player2", fieldPriest = "priest", fieldPVPState = "pvp_state", fieldDate = "date", fieldColor = "color"; // Marriage
-	protected String fieldHomeX = "home_x", fieldHomeY = "home_y", fieldHomeZ = "home_z", fieldHomeWorld = "home_world", fieldHomeServer = "home_server", fieldHomeYaw = "home_yaw", fieldHomePitch = "home_pitch"; // Home
+	@Loadable protected String fieldPlayerID = "player_id", fieldPriestID = "player_id", fieldMarryID = "marry_id";
+	@Loadable (metadata = "Player") protected String fieldName = "name", fieldUUID = "uuid", fieldShareBackpack = "sharebackpack"; // Player
+	@Loadable (metadata = "Marry") protected String fieldPlayer1 = "player1", fieldPlayer2 = "player2", fieldPriest = "priest", fieldSurname = "surname", fieldPVPState = "pvp_state", fieldDate = "date", fieldColor = "color"; // Marriage
+	@Loadable protected String fieldHomeX = "home_x", fieldHomeY = "home_y", fieldHomeZ = "home_z", fieldHomeWorld = "home_world", fieldHomeServer = "home_server", fieldHomeYaw = "home_yaw", fieldHomePitch = "home_pitch"; // Home
 	//endregion
 	//region Queries
-	@Language("SQL") protected String queryDelHome = "DELETE FROM {THomes} WHERE {FMarryID}=?;", queryUpdateHome = "REPLACE INTO {THomes} ({FMarryID},{FHomeX},{FHomeY},{FHomeZ},{FHomeYaw},{FHomePitch},{FHomeWorld},{FHomeServer}) VALUES (?,?,?,?,?,?,?,?);";
-	@Language("SQL") protected String queryPvPState = "UPDATE {TMarriages} SET {FPvPState}=? WHERE {FMarryID}=?;", querySetSurname = "UPDATE {TMarriages} SET {FSurname}=? WHERE {FMarryID}=?;";
-	@Language("SQL") protected String queryDelMarriage = "DELETE FROM {TMarriages} WHERE {FMarryID}=?;", querySetBackpackShareState = "UPDATE {TPlayers} SET {FShareBackpack}=? WHERE {FPlayerID}=?;";
-	@Language("SQL") protected String queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate}) VALUES (?,?,?,?,?);", queryLoadHome = "SELECT * FROM {THomes} WHERE {FMarryID}=?";
-	@Language("SQL") protected String querySetPriest = "REPLACE INTO {TPriests} ({FPriestID}) VALUE (?);", queryRemovePriest = "DELETE FROM {TPriests} WHERE {FPriestID}=?;";
-	@Language("SQL") protected String queryLoadPlayer = "SELECT * FROM {TPlayers} WHERE {FUUID}=?;", queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) VALUES (?,?,?);";
-	@Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPriestID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
-	@Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPriestID} FROM {TPriests};";
-	@Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages};", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
-	@Language("SQL") protected String queryGetUnsetOrInvalidUUIDs = "SELECT {FPlayerID},{FName},{FUUID} FROM {TPlayers} WHERE {FUUID} IS NULL OR {FUUID} ", queryFixUUIDs = "UPDATE {TPlayers} SET {FUUID}=? WHERE {FPlayerID}=?;";
-	@Language("SQL") protected String queryPlayerID = "SELECT {FPlayerID} FROM {TPlayers} WHERE {FUUID}=?;", queryUpdatePlayer = "UPDATE {TPlayers} SET {FName}=? WHERE {FPlayerID}=?;";
-	@Language("SQL") protected String queryUpdateMarriageColor = "UPDATE {TMarriages} SET {FColor}=? WHERE {FMarryID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryDelHome = "DELETE FROM {THomes} WHERE {FMarryID}=?;", queryUpdateHome = "REPLACE INTO {THomes} ({FMarryID},{FHomeX},{FHomeY},{FHomeZ},{FHomeYaw},{FHomePitch},{FHomeWorld},{FHomeServer}) VALUES (?,?,?,?,?,?,?,?);";
+	@HasPlaceholders @Language("SQL") protected String queryPvPState = "UPDATE {TMarriages} SET {FPvPState}=? WHERE {FMarryID}=?;", querySetSurname = "UPDATE {TMarriages} SET {FSurname}=? WHERE {FMarryID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryDelMarriage = "DELETE FROM {TMarriages} WHERE {FMarryID}=?;", querySetBackpackShareState = "UPDATE {TPlayers} SET {FShareBackpack}=? WHERE {FPlayerID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate}) VALUES (?,?,?,?,?);", queryLoadHome = "SELECT * FROM {THomes} WHERE {FMarryID}=?";
+	@HasPlaceholders @Language("SQL") protected String querySetPriest = "REPLACE INTO {TPriests} ({FPriestID}) VALUE (?);", queryRemovePriest = "DELETE FROM {TPriests} WHERE {FPriestID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryLoadPlayer = "SELECT * FROM {TPlayers} WHERE {FUUID}=?;", queryAddPlayer = "INSERT IGNORE INTO {TPlayers} ({FName},{FUUID},{FShareBackpack}) VALUES (?,?,?);";
+	@HasPlaceholders @Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPriestID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPriestID} FROM {TPriests};";
+	@HasPlaceholders @Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages};", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
+	@HasPlaceholders @Language("SQL") protected String queryGetUnsetOrInvalidUUIDs = "SELECT {FPlayerID},{FName},{FUUID} FROM {TPlayers} WHERE {FUUID} IS NULL OR {FUUID} ", queryFixUUIDs = "UPDATE {TPlayers} SET {FUUID}=? WHERE {FPlayerID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryUpdatePlayer = "UPDATE {TPlayers} SET {FName}=? WHERE {FPlayerID}=?;";
+	@HasPlaceholders @Language("SQL") protected String queryUpdateMarriageColor = "UPDATE {TMarriages} SET {FColor}=? WHERE {FMarryID}=?;";
 	//endregion
 	//endregion
 
@@ -123,31 +130,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	protected void loadTableAndFieldNames()
 	{
-		// Load table names from config
-		tablePlayers   = dbConfig.getSQLTableUser();
-		tablePriests   = dbConfig.getSQLTablePriests();
-		tableMarriages = dbConfig.getSQLTableMarriages();
-		tableHomes     = dbConfig.getSQLTableHomes();
-		// Load field names from config
-		fieldPlayerID       = dbConfig.getSQLField("PlayerID",     fieldPlayerID);
-		fieldName           = dbConfig.getSQLField("PlayerName",   fieldName);
-		fieldUUID           = dbConfig.getSQLField("PlayerUUID",   fieldUUID);
-		fieldShareBackpack  = dbConfig.getSQLField("PlayerShareBackpack", fieldShareBackpack);
-		fieldPriestID       = dbConfig.getSQLField("PriestID",     fieldPriestID);
-		fieldMarryID        = dbConfig.getSQLField("MarryID",      fieldMarryID);
-		fieldPlayer1        = dbConfig.getSQLField("MarryPlayer1", fieldPlayer1);
-		fieldPlayer1        = dbConfig.getSQLField("MarryPlayer2", fieldPlayer1);
-		fieldPriest         = dbConfig.getSQLField("MarryPriest",  fieldPriest);
-		fieldDate           = dbConfig.getSQLField("MarryDate",    fieldDate);
-		fieldPVPState       = dbConfig.getSQLField("MarryPvPState",fieldPVPState);
-		fieldColor          = dbConfig.getSQLField("MarryColor",   fieldColor);
-		fieldHomeX          = dbConfig.getSQLField("HomeX",        fieldHomeX);
-		fieldHomeY          = dbConfig.getSQLField("HomeY",        fieldHomeY);
-		fieldHomeZ          = dbConfig.getSQLField("HomeZ",        fieldHomeZ);
-		fieldHomeYaw        = dbConfig.getSQLField("HomeYaw",      fieldHomeYaw);
-		fieldHomePitch      = dbConfig.getSQLField("HomePitch",    fieldHomePitch);
-		fieldHomeWorld      = dbConfig.getSQLField("HomeWorld",    fieldHomeWorld);
-		fieldHomeServer     = dbConfig.getSQLField("HomeServer",   fieldHomeServer);
+		loadFields();
 	}
 
 	protected void buildQueries()
@@ -161,47 +144,33 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
 		}
 		queryGetUnsetOrInvalidUUIDs += (useUUIDSeparators) ? "NOT LIKE '%-%-%-%-%';" : "LIKE '%-%';";
-		setTableAndFieldNames();
+		replacePlaceholders();
 	}
 
-	protected void setTableAndFieldNames()
-	{
-		queryDelHome       = replacePlaceholders(queryDelHome);
-		queryUpdateHome    = replacePlaceholders(queryUpdateHome);
-		queryLoadHome      = replacePlaceholders(queryLoadHome);
-		queryPvPState      = replacePlaceholders(queryPvPState);
-		querySetSurname    = replacePlaceholders(querySetSurname);
-		queryDelMarriage   = replacePlaceholders(queryDelMarriage);
-		queryMarry         = replacePlaceholders(queryMarry);
-		querySetPriest     = replacePlaceholders(querySetPriest);
-		queryRemovePriest  = replacePlaceholders(queryRemovePriest);
-		queryLoadPlayer    = replacePlaceholders(queryLoadPlayer);
-		queryAddPlayer     = replacePlaceholders(queryAddPlayer);
-		queryPlayerID      = replacePlaceholders(queryPlayerID);
-		queryLoadHomes     = replacePlaceholders(queryLoadHomes);
-		queryLoadPriests   = replacePlaceholders(queryLoadPriests);
-		queryFixUUIDs      = replacePlaceholders(queryFixUUIDs);
-		queryIsPriest      = replacePlaceholders(queryIsPriest);
-		queryUpdatePlayer  = replacePlaceholders(queryUpdatePlayer);
-		queryLoadMarriage  = replacePlaceholders(queryLoadMarriage);
-		queryLoadMarriages = replacePlaceholders(queryLoadMarriages);
-		queryLoadPlayerFromId       = replacePlaceholders(queryLoadPlayerFromId);
-		queryLoadPlayersFromID      = replacePlaceholders(queryLoadPlayersFromID);
-		querySetBackpackShareState  = replacePlaceholders(querySetBackpackShareState);
-		queryGetUnsetOrInvalidUUIDs = replacePlaceholders(queryGetUnsetOrInvalidUUIDs);
-		queryUpdateMarriageColor    = replacePlaceholders(queryUpdateMarriageColor);
-	}
-
-	protected @Language("SQL") @NotNull String replacePlaceholders(final @Language("SQL") @NotNull String query)
+	@Override
+	public @Language("SQL") @NotNull String replacePlaceholders(final @Language("SQL") @NotNull String query)
 	{
 		return query.replaceAll("(\\{\\w+})", "`$1`").replaceAll("`(\\{\\w+})`_(\\w+)", "`$1_$2`").replaceAll("fk_`(\\{\\w+})`_`(\\{\\w+})`_`(\\{\\w+})`", "`fk_$1_$2_$3`") // Fix name formatting
-				.replaceAll("\\{TPlayers}", tablePlayers).replaceAll("\\{TMarriages}", tableMarriages).replaceAll("\\{TPriests}", tablePriests).replaceAll("\\{THomes}", tableHomes) // Table names
+				.replaceAll("\\{TPlayers}", tableUser).replaceAll("\\{TMarriages}", tablePartner).replaceAll("\\{TPriests}", tablePriests).replaceAll("\\{THomes}", tableHome) // Table names
 				.replaceAll("\\{FPlayerID}", fieldPlayerID).replaceAll("\\{FName}", fieldName).replaceAll("\\{FUUID}", fieldUUID).replaceAll("\\{FShareBackpack}", fieldShareBackpack) // Player fields
 				.replaceAll("\\{FMarryID}", fieldMarryID).replaceAll("\\{FSurname}", fieldSurname).replaceAll("\\{FPlayer1}", fieldPlayer1).replaceAll("\\{FPlayer2}", fieldPlayer2) // Marriage fields
 				.replaceAll("\\{FPriest}", fieldPriest).replaceAll("\\{FPvPState}", fieldPVPState).replaceAll("\\{FDate}", fieldDate).replaceAll("\\{FColor}", fieldColor)
 				.replaceAll("\\{FHomeServer}", fieldHomeServer).replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ) // Home fields
 				.replaceAll("\\{FHomeYaw}", fieldHomeYaw).replaceAll("\\{FHomePitch}", fieldHomePitch).replaceAll("\\{FHomeWorld}", fieldHomeWorld)
 				.replaceAll("\\{FPriestID}", fieldPriestID);
+	}
+
+	@Override
+	public String loadField(final @NotNull String fieldName, final @NotNull String metadata, final @Nullable String currentValue)
+	{
+		if(fieldName.startsWith("field"))
+		{
+			return dbConfig.getSQLField(metadata + fieldName.substring(5), currentValue);
+		}
+		else
+		{
+			return dbConfig.getSQLTable(metadata + fieldName.substring(5), currentValue);
+		}
 	}
 
 	protected abstract void checkDatabase();

@@ -40,28 +40,14 @@ public interface DatabaseConfiguration extends DatabaseConnectionConfiguration, 
 
 	boolean useOnlineUUIDs();
 
-	default @NotNull String getSQLTableUser()
+	@Contract("_, !null -> !null")
+	default @NotNull String getSQLTable(final @NotNull String table, final @Nullable String defaultValue)
 	{
-		return getConfigE().getString("Database.SQL.Tables.User", "marry_players");
-	}
-
-	default @NotNull String getSQLTableHomes()
-	{
-		return getConfigE().getString("Database.SQL.Tables.Home", "marry_home");
-	}
-
-	default @NotNull String getSQLTablePriests()
-	{
-		return getConfigE().getString("Database.SQL.Tables.Priests", "marry_priests");
-	}
-
-	default @NotNull String getSQLTableMarriages()
-	{
-		return getConfigE().getString("Database.SQL.Tables.Partner", "marry_partners");
+		return getConfigE().getString("Database.SQL.Tables." + table, defaultValue);
 	}
 
 	@Contract("_, !null -> !null")
-	default @Nullable String getSQLField(@NotNull String field, @Nullable String defaultValue)
+	default @Nullable String getSQLField(final @NotNull String field, final @Nullable String defaultValue)
 	{
 		return getConfigE().getString("Database.SQL.Tables.Fields." + field, defaultValue);
 	}
