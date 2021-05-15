@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Database.*;
 import at.pcgamingfreaks.Version;
 
+import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,36 +58,45 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 		return connection;
 	}
 
+	private void doPHQuery(final @NotNull Statement statement, final @NotNull @Language("SQL") String query) throws SQLException
+	{
+		statement.execute(replacePlaceholders(query));
+	}
+
+	private void tryPHQuery(final @NotNull Statement statement, final @NotNull @Language("SQL") String query) throws SQLException
+	{
+		try
+		{
+			statement.execute(replacePlaceholders(query));
+		}
+		catch(SQLException ignored) {}
+	}
+
 	@Override
 	protected void checkDatabase()
 	{
 		try(Connection connection = getConnection(); Statement statement = connection.createStatement())
 		{
 			Version dbVersion = getDatabaseVersion(statement);
+			if(dbVersion.olderThan("2.3"))
+			{
+				tryPHQuery(statement, "ALTER TABLE {TMarriages} ADD COLUMN {FColor} VARCHAR(20) DEFAULT NULL;");
+				tryPHQuery(statement, "ALTER TABLE {THomes} ADD COLUMN {FHomeYaw} FLOAT NOT NULL DEFAULT 0;");
+				tryPHQuery(statement, "ALTER TABLE {THomes} ADD COLUMN {FHomePitch} FLOAT NOT NULL DEFAULT 0;");
+			}
 
-			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPlayers} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL, {FName} VARCHAR(16) NOT NULL, {FUUID} CHAR(36) UNIQUE DEFAULT NULL, " +
-					                                      "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0);"));
-			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TPriests} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL," +
-					                                      "CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE);"));
-			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {TMarriages} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FPlayer1} INT NOT NULL,{FPlayer2} INT NOT NULL," +
-					                                      "{FPriest} INT NULL,{FSurname} VARCHAR(45) NULL,{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,{FDate} DATE NOT NULL, {FColor} VARCHAR(20) DEFAULT NULL," +
-					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
-					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
-					                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE);"));
-			try
-			{
-				statement.execute(replacePlaceholders("ALTER TABLE {TMarriages} ADD COLUMN {FColor} VARCHAR(20) DEFAULT NULL;"));
-			}
-			catch(SQLException ignored) {}
-			statement.execute(replacePlaceholders("CREATE TABLE IF NOT EXISTS {THomes} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FHomeX} DOUBLE NOT NULL,{FHomeY} DOUBLE NOT NULL," +
-					                                      "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT NOT NULL DEFAULT 0, {FHomePitch} FLOAT NOT NULL DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
-					                                      "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE);"));
-			try
-			{
-				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomeYaw} FLOAT NOT NULL DEFAULT 0;"));
-				statement.execute(replacePlaceholders("ALTER TABLE {THomes} ADD COLUMN {FHomePitch} FLOAT NOT NULL DEFAULT 0;"));
-			}
-			catch(SQLException ignored) {}
+			doPHQuery(statement, "CREATE TABLE IF NOT EXISTS {TPlayers} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL, {FName} VARCHAR(16) NOT NULL, {FUUID} CHAR(36) UNIQUE DEFAULT NULL, " +
+                                      "{FShareBackpack} TINYINT(1) NOT NULL DEFAULT 0);");
+			doPHQuery(statement, "CREATE TABLE IF NOT EXISTS {TPriests} ({FPlayerID} INTEGER PRIMARY KEY NOT NULL," +
+                                      "CONSTRAINT fk_{TPriests}_{TPlayers}_{FPlayerID} FOREIGN KEY ({FPlayerID}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE);");
+			doPHQuery(statement, "CREATE TABLE IF NOT EXISTS {TMarriages} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FPlayer1} INT NOT NULL,{FPlayer2} INT NOT NULL," +
+                                      "{FPriest} INT NULL,{FSurname} VARCHAR(45) NULL,{FPvPState} TINYINT(1) NOT NULL DEFAULT 0,{FDate} DATE NOT NULL, {FColor} VARCHAR(20) DEFAULT NULL," +
+                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer1} FOREIGN KEY ({FPlayer1}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
+                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPlayer2} FOREIGN KEY ({FPlayer2}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE CASCADE ON UPDATE CASCADE," +
+                                      "CONSTRAINT fk_{TMarriages}_{TPlayers}_{FPriest} FOREIGN KEY ({FPriest}) REFERENCES {TPlayers} ({FPlayerID}) ON DELETE SET NULL ON UPDATE CASCADE);");
+			doPHQuery(statement, "CREATE TABLE IF NOT EXISTS {THomes} ({FMarryID} INTEGER PRIMARY KEY NOT NULL,{FHomeX} DOUBLE NOT NULL,{FHomeY} DOUBLE NOT NULL," +
+	                                  "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT NOT NULL DEFAULT 0, {FHomePitch} FLOAT NOT NULL DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
+	                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE);");
 
 			DBTools.runStatement(connection, "INSERT OR REPLACE INTO `mariagemaster_metadata` (`key`, `value`) VALUES ('db_version',?);", platform.getPluginVersion());
 		}
