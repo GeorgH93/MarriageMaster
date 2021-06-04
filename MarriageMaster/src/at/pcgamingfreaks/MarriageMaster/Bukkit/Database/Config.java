@@ -66,12 +66,6 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 	}
 
-	@Override
-	protected void doUpdate()
-	{
-		// We don't have to update our config by now :)
-	}
-
 	//region Getter
 	//region Global settings
 	public boolean areMultiplePartnersAllowed()
@@ -249,6 +243,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 			}
 			catch(Exception ignored) {}
 		}
+		if(modes.isEmpty()) modes.add(GameMode.SURVIVAL);
 		return EnumSet.copyOf(modes);
 	}
 
@@ -264,6 +259,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 			}
 			catch(Exception ignored) {}
 		}
+		if(modes.isEmpty()) modes.add(GameMode.SURVIVAL);
 		return EnumSet.copyOf(modes);
 	}
 
