@@ -1,24 +1,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>MarriageMaster-BackpackIntegration</artifactId>
+	<artifactId>MarriageMaster-API-Parent</artifactId>
 	<parent>
 		<artifactId>MarriageMaster-Parent</artifactId>
 		<groupId>at.pcgamingfreaks</groupId>
 		<version>${revision}</version>
-		<relativePath>../..</relativePath>
+		<relativePath>..</relativePath>
 	</parent>
 	<version>${revision}</version>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 
-	<name>MarriageMaster Backpack Integration API</name>
-	<description>The API for the Marriage Master backpack integration.</description>
-
+	<name>MarriageMaster API Parent</name>
+	<description>The API for the Marriage Master plugin.</description>
+	
 	<dependencies>
-		<!-- Bukkit -->
+		<!-- PCGF Plugin Lib -->
 		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>${bukkitVersion}</version>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>PluginLib</artifactId>
+			<version>1.0.15</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
@@ -52,12 +52,19 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-							<additionalparam>-Xdoclint:none</additionalparam>
 							<source>8</source>
+							<doclint>none</doclint>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
+	
+	<modules>
+		<module>MarriageMaster-API-Common</module>
+		<module>MarriageMaster-API-Bukkit</module>
+		<module>MarriageMaster-API-Bungee</module>
+		<module>MarriageMaster-API</module>
+	</modules>
 </project>

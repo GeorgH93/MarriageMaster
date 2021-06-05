@@ -1,0 +1,56 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>MarriageMaster-API</artifactId>
+	<parent>
+		<artifactId>MarriageMaster-API-Parent</artifactId>
+		<groupId>at.pcgamingfreaks</groupId>
+		<version>${revision}</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<version>${revision}</version>
+	<packaging>jar</packaging>
+
+	<name>MarriageMaster API</name>
+	<description>The API for the Marriage Master Bukkit/Spigot/Paper/BungeeCord plugin.</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-API-Bukkit</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-API-Bungee</artifactId>
+			<version>${revision}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<createSourcesJar>true</createSourcesJar>
+							<minimizeJar>false</minimizeJar>
+							<artifactSet>
+								<includes>
+									<include>at.pcgamingfreaks:MarriageMaster-API-*</include>
+								</includes>
+							</artifactSet>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

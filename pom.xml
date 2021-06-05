@@ -9,6 +9,8 @@
 		<revision>2.4-RC4</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
+		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
 	</properties>
 
 	<scm>
@@ -54,20 +56,6 @@
 			<artifactId>annotations</artifactId>
 			<version>17.0.0</version>
 		</dependency>
-		<!-- Bukkit -->
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>bukkit</artifactId>
-			<version>1.15.2-R0.1-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Bungee -->
-		<dependency>
-			<groupId>net.md-5</groupId>
-			<artifactId>bungeecord-api</artifactId>
-			<version>1.15-SNAPSHOT</version>
-			<scope>provided</scope>
-		</dependency>
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -79,6 +67,7 @@
 
 	<build>
 		<defaultGoal>clean package</defaultGoal>
+		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -144,7 +133,7 @@
 	</build>
 
 	<modules>
-		<module>MarriageMaster-API</module>
+		<module>API</module>
 		<module>Extensions/MarriageMaster-BackpackIntegration</module>
 		<module>Extensions/MarriageMaster-MinepacksV1</module>
 		<module>Extensions/MarriageMaster-MinepacksV2</module>

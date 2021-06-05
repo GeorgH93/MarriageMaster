@@ -89,6 +89,20 @@
 			<artifactId>BadRabbit-Bungee</artifactId>
 			<version>1.10</version>
 		</dependency>
+		<!-- Bukkit -->
+		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>${bukkitVersion}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Bungee -->
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>${bungeeVersion}</version>
+			<scope>provided</scope>
+		</dependency>
 		<!-- Vault -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
@@ -168,7 +182,6 @@
 
 	<build>
 		<defaultGoal>clean test package</defaultGoal>
-		<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
 				<directory>resources</directory>
