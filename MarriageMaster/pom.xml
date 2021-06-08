@@ -283,7 +283,6 @@
 									<excludes>
 										<exclude>at/pcgamingfreaks/MarriageMaster/Bukkit/MarriageMasterBadRabbit.class</exclude>
 										<exclude>at/pcgamingfreaks/MarriageMaster/Bungee/MarriageMasterBadRabbit.class</exclude>
-										<exclude>at/pcgamingfreaks/MarriageMaster/MethodTypeReplacer.class</exclude>
 									</excludes>
 								</configuration>
 							</execution>
@@ -347,8 +346,6 @@
 											<pattern>at.pcgamingfreaks</pattern>
 											<shadedPattern>at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks</shadedPattern>
 											<excludes>
-												<exclude>at.pcgamingfreaks.MarriageMaster.**</exclude> <!-- Marriage Master will be relocated in the next rule -->
-												<exclude>at.pcgamingfreaks.**.IMessage</exclude> <!-- Workaround to solve problems with release builds -->
 												<!-- Prevent the relocation of Minepacks -->
 												<exclude>at.pcgamingfreaks.Minepacks.**</exclude>
 												<exclude>at.pcgamingfreaks.MinePacks.**</exclude>
