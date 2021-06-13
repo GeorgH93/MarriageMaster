@@ -28,6 +28,7 @@
 		<updateChannel>Release</updateChannel>
 
 		<mockito.version>3.4.4</mockito.version>
+		<mavenShade.version>3.3.0-SNAPSHOT</mavenShade.version>
 	</properties>
 
 	<repositories>
@@ -49,6 +50,13 @@
 			<url>https://repo.codemc.org/repository/maven-public/</url>
 		</repository>
 	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>apache-snapshot</id>
+			<url>https://repository.apache.org/content/repositories/snapshots/</url>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<dependencies>
 		<!-- Marriage Master Modules -->
@@ -76,7 +84,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>PluginLib</artifactId>
-			<version>1.0.32-SNAPSHOT</version>
+			<version>1.0.33-SNAPSHOT</version>
 		</dependency>
 		<!-- BadRabbit -->
 		<dependency>
@@ -209,7 +217,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>${mavenShade.version}</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -309,7 +317,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-shade-plugin</artifactId>
-						<version>3.2.1</version>
+						<version>${mavenShade.version}</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -412,7 +420,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-shade-plugin</artifactId>
-						<version>3.2.1</version>
+						<version>${mavenShade.version}</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
