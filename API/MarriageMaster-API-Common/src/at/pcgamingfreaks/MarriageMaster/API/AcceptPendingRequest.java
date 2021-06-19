@@ -60,7 +60,7 @@ public abstract class AcceptPendingRequest<T extends MarriagePlayer>
 	/**
 	 * Gets the players that can cancel the request.
 	 *
-	 * @return All the {@link at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer} for the players that can cancel the request.
+	 * @return All the {@link MarriagePlayer} for the players that can cancel the request.
 	 */
 	public final @NotNull T[] getPlayersThatCanCancel()
 	{

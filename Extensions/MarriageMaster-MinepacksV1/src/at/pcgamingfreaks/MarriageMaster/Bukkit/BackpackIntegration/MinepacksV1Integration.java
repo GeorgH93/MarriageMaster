@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -30,7 +30,10 @@ import lombok.Getter;
 
 import java.util.MissingResourceException;
 
-class MinepacksV1Integration implements IBackpackIntegration
+/**
+ * Minepacks v1.x integration
+ */
+public class MinepacksV1Integration implements IBackpackIntegration
 {
 	private static final String PLUGIN_NAME = "MinePacks";
 	private static final Version MIN_VERSION = new Version("1.17.7");
