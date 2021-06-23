@@ -122,6 +122,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 			DBTools.updateDB(connection, queryTMarriages);
 			DBTools.updateDB(connection, queryTHomes);
 			checkPriestsTable(connection);
+			DBTools.runStatement(connection, replacePlaceholders("UPDATE {TMarriages} SET {FDate}=NOW() WHERE {FDate}=0;"));
 		}
 		catch(SQLException e)
 		{
