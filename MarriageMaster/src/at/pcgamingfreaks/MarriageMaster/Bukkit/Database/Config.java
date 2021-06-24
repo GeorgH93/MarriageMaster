@@ -34,9 +34,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Config extends Configuration implements DatabaseConfiguration
 {
@@ -64,6 +66,20 @@ public class Config extends Configuration implements DatabaseConfiguration
 			keysToKeep.add("Misc.ServerName");
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);
 		}
+	}
+
+	private Set<GameMode> getGameModes(final @NotNull String key, final @Nullable GameMode fallback)
+	{
+		List<GameMode> modes = getConfigE().getStringList(key, new ArrayList<>(0)).stream()
+				.map(mode -> Utils.getEnum(mode, (GameMode) null))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		if(modes.isEmpty())
+		{
+			if(fallback != null) modes.add(fallback);
+			else return EnumSet.noneOf(GameMode.class);
+		}
+		return EnumSet.copyOf(modes);
 	}
 
 	//region Getter
@@ -233,34 +249,12 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public Set<GameMode> getGiftAllowedGameModes()
 	{
-		List<String> allowedModes = getConfigE().getStringList("Gift.AllowedGameModesAllowed", new ArrayList<>(0));
-		List<GameMode> modes = new ArrayList<>(allowedModes.size());
-		for(String mode : allowedModes)
-		{
-			try
-			{
-				modes.add(GameMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
-			}
-			catch(Exception ignored) {}
-		}
-		if(modes.isEmpty()) modes.add(GameMode.SURVIVAL);
-		return EnumSet.copyOf(modes);
+		return getGameModes("Gift.AllowedGameModesAllowed", GameMode.SURVIVAL);
 	}
 
 	public Set<GameMode> getGiftAllowedReceiveGameModes()
 	{
-		List<String> allowedModes = getConfigE().getStringList("Gift.AllowedGameModesReceive", new ArrayList<>(0));
-		List<GameMode> modes = new ArrayList<>(allowedModes.size());
-		for(String mode : allowedModes)
-		{
-			try
-			{
-				modes.add(GameMode.valueOf(mode.toUpperCase(Locale.ENGLISH)));
-			}
-			catch(Exception ignored) {}
-		}
-		if(modes.isEmpty()) modes.add(GameMode.SURVIVAL);
-		return EnumSet.copyOf(modes);
+		return getGameModes("Gift.AllowedGameModesReceive", GameMode.SURVIVAL);
 	}
 
 	public boolean isGiftRequireConfirmationEnabled()
