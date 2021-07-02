@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -181,7 +181,7 @@ public class TpCommand extends MarryCommand
 			if(!blacklistedWorlds.contains(partner.getLocation().getWorld().getName().toLowerCase()) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
 			{
 				Location loc = partner.getLocation();
-				if(safetyCheck && (loc = getSaveLoc(loc)) == null)
+				if(!player.isFlying() && safetyCheck && (loc = getSaveLoc(loc)) == null)
 				{
 					messageUnsafe.send(player);
 					messageToUnsafe.send(partner);
