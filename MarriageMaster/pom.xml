@@ -357,6 +357,8 @@
 												<!-- Prevent the relocation of Minepacks -->
 												<exclude>at.pcgamingfreaks.Minepacks.**</exclude>
 												<exclude>at.pcgamingfreaks.MinePacks.**</exclude>
+												<!-- Already relocated in previous rule -->
+												<exclude>at.pcgamingfreaks.MarriageMaster.**</exclude>
 											</excludes>
 										</relocation>
 										<relocation>
