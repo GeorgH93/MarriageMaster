@@ -1,0 +1,446 @@
+# To simplify the customisation and the translation process please check out the editor: http://ptp.pcgamingfreaks.at
+Language:
+  NotFromConsole: "&c이 커맨드는 콘솔에서 사용할 수 없습니다!"
+  # Global Wildcards: <heart> and <smallheart>
+  Ingame:
+    NoPermission: "&c이것을 실행할 권한이 없습니다."
+    NaN: "&c숫자를 입력해 주세요."
+    NotMarried: "&c결혼하지 않았습니다."
+    PartnerOffline: "&c파트너가 오프라인 입니다."
+    PartnerNotInRange: "&c파트너가 너무 멀리 있습니다."
+    TargetPartnerNotFound: "&c파트너를 찾을 수 없습니다!"
+    PlayerNotMarried: "&c\"{PlayerName}\"은 결혼하지 않았습니다!"
+    PlayerNotFound: "&c\"{PlayerName}\"을 찾을 수 없습니다!"
+    PlayerNotOnline: "&c\"{PlayerName}\" 은 오프라인입니다!"
+    PlayersNotMarried: "&c플레이어들이 결혼하지 않았습니다."
+    MarriageNotExact: "&c두 개 이상의 결과가 검색되었습니다!"
+    JoinLeaveInfo:
+      # Only used for players with 1 partner
+      PartnerOnline: "&a파트너가 온라인 입니다."
+      # Only used for players with 1 partner
+      PartnerOffline: "&7파트너가 오프라인 입니다."
+      # Only used for players with more than 1 partner
+      AllPartnersOffline: "&7모든 파트너가 오프라인 입니다."
+      # Only used for players with more than 1 partner
+      PartnerOnlineMulti: "&a온라인 파트너: &r&f{OnlinePartners}"
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
+      MultiOnlineFormat: "{DisplayName}"
+      # No JSON!!!
+      MultiOnlineSeparator: "&r, "
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOnline: "&a당신의 파트너가 이제 온라인 입니다."
+      # Placeholders: {Name}, {DisplayName}
+      PartnerNowOffline: "&7당신의 파트너가 이제 오프라인 입니다."
+    Backpack:
+      OnlyInSurvival: "&c서바이벌 모드일 경우에만 파트너의 저장소를 액세스 할 수 있습니다."
+      ShareOn: "&a이제 저장소를 파트너와 공유합니다."
+      ShareOff: "&c이제 저장소를 파트너와 공유하지 않습니다."
+      Opened: "&a파트너가 당신의 저장소를 열었습니다."
+      ShareDenied: "&c파트너가 저장소 접근을 허용하지 않습니다."
+    Chat:
+      Joined: "&a채팅이 비밀 채팅으로 설정되었습니다."
+      Left: "&a채팅이 공개 채팅으로 설정되었습니다."
+      ListeningStarted: "&a이제 결혼 채팅에서 듣기를 시작합니다."
+      ListeningStopped: "&a결혼 채팅에서 듣기를 중지했습니다."
+      TargetSet: "&a비밀 채팅 타겟이 설정되었습니다.."
+      DisplayNameAll: "모든 파트너"
+      # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
+      Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
+    Gift:
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedSender: "&c현재 게임 모드에서는 선물을 보낼 수 없습니다."
+      # Placeholders: {AllowedGameModes}, {CurrentGameMode}
+      GameModeNotAllowedReceiver: "&c현재 파트너의 게임 모드에서는 선물을 받을 수 없습니다."
+      NoItemInHand: "&c아이템을 들고 있지 않습니다."
+      PartnerInvFull: "&c파트너의 인벤토리가 꽉 찼습니다."
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemSent: "[{\"text\":\"파트너에게 \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\"를 보냈습니다.\"}]"
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      ItemReceived: "[{\"text\":\"당신의 \",\"color\":\"green\"},{\"text\":\"파트너가 \",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{DisplayName}\"}},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\"를 보냈습니다.\"}]"
+      WorldNotAllowed: "&cYour partner is in a world where it is not allowed to receive gifts."
+      ItemNotAllowed: "&cYou are not allowed to gift {ItemName} &cto your partner!"
+      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r 이 당신에게 \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\"를 보내려고 합니다. \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\"로 수락하거나 \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하십시오.\"}]"
+        WaitForConfirmation: "파트너에게 선물이 전송되었습니다."
+        Denied: "파트너의 선물을 거절했습니다."
+        DeniedPartner: "당신의 파트너가 선물을 거절했습니다. 아이템이 돌려졌습니다."
+        Canceled: "선물을 취소했습니다."
+        CanceledPartner: "당신의 파트너가 선물을 취소했습니다."
+        CanceledDisconnectRequester: "당신의 파트너가 오프라인입니다. 선물이 취소되었습니다."
+        CanceledDisconnectTarget: "당신의 파트너가 오프라인입니다. 선물이 취소되었습니다."
+    Home:
+      Deleted: "&a집을 성공적으로 삭제했습니다."
+      PlayerNoHome: "&c플레이어가 집을 가지고 있지 않습니다."
+      NoHome: "&c집을 가지고 있지 않습니다."
+      TPed: "&a집으로 이동했습니다."
+      Set: "&a위치가 저장되었습니다.."
+      BlockedFrom: "&c여기서는 이동할 수 없습니다."
+      BlockedTo: "&c집으로 이동할 수 없습니다. 집을 이동하십시오."
+    Kiss:
+      Kissed: "&e파트너를 키스했습니다!"
+      Kissed_SendMethod: "action_bar"
+      GotKissed: "&e파트너가 당신을 키스했습니다!"
+      GotKissed_SendMethod: "action_bar"
+      TooFarAway: "&c파트너와의 거리가 너무 멉니다. (최대 {Distance} 블럭)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&c다시 키스하기까지 {Time}초 남았습니다."
+    Hug:
+      Hugged: "&e당신의 파트너를 안았습니다!"
+      Hugged_SendMethod: "action_bar"
+      GotHugged: "&e파트너가 당신을 안았습니다!"
+      GotHugged_SendMethod: "action_bar"
+      TooFarAway: "&c파트너와의 거리가 너무 멉니다. (최대 {Distance} 블럭)"
+    Seen:
+      # Placeholders: {Name}, {DisplayName}
+      CurrentlyOnline: "{DisplayName}&r이 &a온라인&r 입니다."
+      # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
+      LastSeen: "[\"\",{\"text\":\"{Name}은 마지막으로 \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} \"}},{\"text\":\"전에 접속했습니다.\"}]}]"
+      # No Json!!!
+      DateFormat: "yyyy-MM-dd HH:mm:ss"
+    List:
+      # Placeholders: {Player1Name}, {Player1DisplayName}, {Player2Name}, {Player2DisplayName}, {Surname}, {MagicHeart}
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
+      NoMarriedPlayers: "&c결혼한 플레이어가 없습니다."
+      Headline: "&e결혼한 플레이어 리스트&r&f - &r&6페이지 {CurrentPage}/{MaxPage}"
+      Footer: "[{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    ListPriests:
+      Format: "&2{PriestDisplayName}"
+      NoPriestsOnline: "&c접속 중인 성직자가 없습니다."
+      Headline: "&e접속 중인 성직자&r&f - &r&6페이지 {CurrentPage}/{MaxPage}"
+      Footer: "[{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    PvP:
+      IsDisabled: "&cPvP가 꺼져 있어 PvP를 할 수 없습니다."
+      On: "&a파트너와 PvP를 할 수 있습니다."
+      Off: "&a파트너와 PvP를 할 수 없습니다."
+    TP:
+      PartnerVanished: "&c파트너가 사라져 이동할 수 없습니다."
+      Teleport: "&a파트너에게 이동 중..."
+      TeleportTo: "&a파트너가 당신에게 이동 중입니다..."
+      Unsafe: "&c이동 장소가 너무 위험합니다!"
+      ToUnsafe: "&c파트너가 당신에게 이동하려 했지만, 너무 위험해 취소되었습니다!"
+      WorldNotAllowed: "&c파트너가 이동이 혀용되지 않은 월드에 있습니다."
+      Moved: "&c이동이 취소되었습니다."
+      DontMove: "&c{Time} 초 뒤 이동합니다! 움직이지 마십시오!"
+      BlockedFrom: "&c파트너에게 텔레포트 할 수 없습니다."
+      BlockedTo: "&c파트너에게 텔레포트 할 수 없습니다."
+      Request:
+        Notification: "[\"\",{\"text\":\"{DisplayName}&r이 당신에게 이동하려고 합니다. \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" 로 수락하거나 \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하십시오.\"}]"
+        WaitForConfirmation: "파트너가 이동을 수락할 때 까지 기다리십시오."
+        Denied: "파트너의 이동 요청을 거절했습니다."
+        DeniedPartner: "파트너가 이동 요청을 거절했습니다."
+        Canceled: "이동을 취소했습니다."
+        CanceledPartner: "파트너가 이동을 취소했습니다."
+        CanceledDisconnectRequester: "파트너가 오프라인입니다. 이동이 취소되었습니다."
+        CanceledDisconnectTarget: "파트너가 오프라인입니다. 이동이 취소되었습니다."
+    SetColor:
+      UnknownColor: "&c'{Input}'을 확인할 수 없습니다!"
+      NotAColor: "{Input}은 색이 아닙니다."
+      Set: "색 설정됨."
+      Selection: '["",{"text":"하트가 어떻게 표시되었으면 하는지 선택하십시오:"},{"text":"\n"},{"text":" ❤ ","color":"dark_red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_red"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 :&4dark red&r"}},{"text":" ❤ ","color":"red","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} red"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &cred&r"}},{"text":" ❤ ","color":"gold","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gold"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &6gold&r"}},{"text":" ❤ ","color":"yellow","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} yellow"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &eyellow&r."}},{"text":" ❤ ","color":"dark_green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_green"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &2dark green&r."}},{"text":" ❤ ","color":"green","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} green"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &agreen&r."}},{"text":" ❤ ","color":"aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} aqua"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &baqua&r."}},{"text":" ❤ ","color":"dark_aqua","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_aqua"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &3dark aqua&r."}},{"text":" ❤ ","color":"dark_blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_blue"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &1dark blue&r."}},{"text":" ❤ ","color":"blue","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} blue"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &9blue&r."}},{"text":" ❤ ","color":"light_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} light_purple"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &dlight purple&r."}},{"text":" ❤ ","color":"dark_purple","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_purple"},"hoverEvent":{"action":"show_text","value":"Sets the text of the heart to &5dark purple&r."}},{"text":" ❤ ","color":"white","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} white"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &fwhite&r."}},{"text":" ❤ ","color":"gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} gray"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &7gray&r."}},{"text":" ❤ ","color":"dark_gray","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} dark_gary"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : &8dark gray&r."}},{"text":" ❤ ","color":"black","clickEvent":{"action":"run_command","value":"/{MainCmdAlias} {SubCmdAlias} black"},"hoverEvent":{"action":"show_text","value":"하트 색 설정 : black."}}]'
+    SetPriest:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      MadeYouAPriest: "{DisplayName}&r&a가 당신을 성직자로 임명했습니다."
+      YouMadeAPriest: "{DisplayName}&r&a이 이제 성직자 입니다.."
+      FiredYou: "{DisplayName}&r&c 이 당신을 성직자에서 폐위했습니다."
+      YouFiredAPriest: "{DisplayName}&r&a이 이제 성직자가 아닙니다."
+      PerPermission: "{DisplayName}&r&c을 폐위할 수 없습니다!"
+    Surname:
+      SetSuccessful: "&a성을 설정했습니다."
+      SetFailed: "&c성 설정에 실패했습니다."
+      ToShort: "&c성이 너무 짧습니다. 최소 {MinLength} 글자여야 합니다."
+      ToLong: "&c성이 너무 깁니다. 최대 {MaxLength} 글자여야 합니다."
+      AlreadyUsed: "&c성이 이미 사용 중 입니다!"
+    Requests:
+      NothingToAccept: "&c수락할 요청이 없습니다."
+      NothingToDeny: "&c거절할 요청이 없습니다."
+      NothingToCancel: "&c취소할 요청이 없습니다."
+    Marry:
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
+      NotWithHimself: "&c{DisplayName}&r&c 을(를) 자신과 결혼시킬 수 없습니다."
+      AlreadyMarried: "&c이미 결혼한 플레이어를 결혼시킬 수 없습니다."
+      SurnameNeeded: "&c결혼하기 위해서는 성이 필요합니다."
+      Married: "&a&r&a{Player1DisplayName}&r&a 과 &r&a{Player2DisplayName}&r&a을(를) 결혼시켰습니다."
+      HasMarried: "{PriestDisplayName}&r&a이(가) 당신을 &r{PartnerDisplayName}&r&a과 결혼시켰습니다."
+      Broadcast: "{PriestDisplayName}&r&a가 {Player1DisplayName}&r&a 와 &r{Player2DisplayName}&r&a를 결혼시켰습니다."
+      NotInRange: "&c플레이어가 범위({Range} 블럭) 안에 없습니다!!"
+      AlreadyOpenRequest: "{DisplayName}&r&c에게 이미 요청이 있습니다."
+      YouCalledOff: "웨딩을 취소했습니다."
+      PlayerCalledOff: "{DisplayName}&r 이 웨딩을 취소했습니다."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" 이 당신을 \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\"과 결혼시키려고 합니다. \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\"로 수락하거나 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하세요.\",\"color\":\"white\"}]"
+      PriestOff: "성직자 {DisplayName}&r이 오프라인입니다. 웨딩이 취소되었습니다."
+      PlayerOff: "{DisplayName}&r이 오프라인입니다. 웨딩이 취소되었습니다."
+      Self:
+        NotYourself: "&c자기 자신과 결혼할 수 없습니다!"
+        NotInRange: "&c플레이어가 범위({Range} 블럭) 안에 없습니다!!"
+        AlreadyMarried: "&c이미 &r&c{DisplayName}&r&c와 결혼했습니다!"
+        OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c이 이미 결혼해 있습니다!"
+        AlreadyOpenRequest: "&c현재 기다리고 있는 요청이 있습니다."
+        Married: "&a&r&a{DisplayName}&r&a와 결혼했습니다."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a가 &r&a{Player2DisplayName}&r&a와 결혼했습니다."
+        YouCalledOff: "웨딩을 취소했습니다."
+        PlayerCalledOff: "{DisplayName}&r이 웨딩을 취소했습니다."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\"이 당신과 결혼하려고 합니다. \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\"로 수락하거나 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하십시오.\",\"color\":\"white\"}]"
+        RequestSent: "결혼 요청이 전송되었습니다."
+        PlayerOff: "{DisplayName}&r이 현재 오프라인입니다. 결혼식이 취소되었습니다."
+        NotOnYourOwn: "&c혼자서는 웨딩을 할 수 없습니다. 성직자에게 웨딩을 요청하십시오."
+    Divorce:
+      Broadcast: "&a&r&a{PriestDisplayName}&r&a이 &r&a{Player1DisplayName}&r&a과 &r&a{Player2DisplayName}&r&a를 이혼시켰습니다."
+      DivorcedPlayer: "&a&r&a{PriestDisplayName}&r&a이 당신을 &r&a{PartnerDisplayName}&r&a에게서 이혼시켰습니다."
+      Divorced: "&a&r&a{Player1DisplayName}&r&a와 &r&a{Player2DisplayName}&r&a를 이혼시켰습니다."
+      PlayerOff: "{DisplayName}&r 이 오프라인 입니다. 이혼이 취소되었습니다."
+      PriestOff: "성직자 {DisplayName}&r 이 오프라인입니다. 이혼이 취소되었습니다."
+      PlayerCancelled: "&c&r&c{PlayerDisplayName}&r&c이 &r&c{PartnerDisplayName}&r&c와의 이혼을 취소했습니다!"
+      PriestCancelled: "&c&r&c{PriestDisplayName}&r&c이 당신과 &r&c{PartnerDisplayName}&r&c의 이혼을 취소했습니다!"
+      YouCancelled: "&a&r&a{DisplayName}&r&a의 이혼을 취소했습니다!"
+      YouCancelledPriest: "&a&r&a{Player1DisplayName}&r&a과 &r&a{Player2DisplayName}&r&a의 이혼을 취소했습니다!"
+      Deny: "{DisplayName}&r&c이 이혼을 거절했습니다!"
+      YouDeny: "&a&r&a{DisplayName}&r&a이 요청한 이혼을 거절했습니다."
+      Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\"이 당신을 \",\"color\":\"white\"},{\"text\":\"{PartnerDisplayName}\"},{\"text\":\"과 이혼시키려고 합니다. \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\"로 수락하거나 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하세요.\",\"color\":\"white\"}]"
+      NotInRange: "&a플레이어들이 범위({Range} 블럭) 안에 없습니다!"
+      Self:
+        Divorced: "&a당신은 &r&a{DisplayName}&r&a과 이혼하셨습니다."
+        DivorcedPlayer: "{DisplayName}&r&a이 당신으로부터 이혼하셨습니다."
+        Broadcast: "&a&r&a{Player1DisplayName}&r&a이 &r&a{Player2DisplayName}&r&a로부터 이혼했습니다."
+        PlayerOff: "{DisplayName}&r이 오프라인입니다. 이혼이 취소되었습니다."
+        RequestSent: "이혼 요청이 {DisplayName}&r에게 전달되었습니다."
+        Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\"이 이혼을 요청했습니다. \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\"로 수락하거나 \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\"로 거절하세요.\",\"color\":\"white\"}]"
+        Deny: "{DisplayName}&r&c이 당신의 이혼 요청을 거절했습니다!"
+        YouDeny: "&a당신이 &r&a{DisplayName}&r&a의 이혼 요청을 거절했습니다."
+        Cancelled: "{DisplayName}&r&c 이 이혼 요청을 취소했습니다!"
+        YouCancelled: "&a이혼 요청을 취소했습니다!"
+        NotInRange: "&a파트너가 범위({Range} 블럭) 안에 있지 않습니다!"
+    Economy:
+      NotEnough: "&c돈이 부족합니다. {Cost} {CurrencyName}이 필요합니다."
+      PartnerNotEnough: "&c파트너에게 돈이 부족합니다!"
+      PriestMarryNotEnough: "&c결혼 상대가 돈이 부족합니다."
+      PriestDivorceNotEnough: "&c이혼 상대가 돈이 부족합니다."
+      MarriagePaid: "&a결혼에 {Cost} {CurrencyName} 을 사용했습니다."
+      DivorcePaid: "&a이혼에 {Cost} {CurrencyName} 을 사용했습니다."
+      HomeTPPaid: "&a집 이동에 {Cost} {CurrencyName} 을 사용했습니다."
+      SetHomePaid: "&a집 설정에 {Cost} {CurrencyName} 을 사용했습니다."
+      TpPaid: "&a이동에 {Cost} {CurrencyName} 을 사용했습니다."
+      GiftPaid: "&a파트너에게 아이템을 전송하는데 {Cost} {CurrencyName} 을 사용했습니다."
+    Admin:
+      Reloading: "&1로딩 중 ..."
+      Reloaded: "&1로딩 완료!"
+      ReloadingDatabase: '&bR데이터베이스 로딩 중 &6.&r&c.&r&a.&r'
+      CheckingForUpdates: "&1 업데이트 확인 중 ..."
+      Updated: "&e업데이트 완료. 다음 재시작 때 적용됩니다/"
+      NoUpdate: "&6사용 가능한 업데이트가 없었습니다."
+      UpdateFail: "&c업데이트 확인에 실패했습니다! 콘솔을 확인해 주세요!"
+      # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
+      UpdateAvailable: "[{\"text\":\"가능한 업데이트가 있습니다. \\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\"}},{\"text\":\"\\\"에서 다운받아 주세요.\"}]"
+    Help:
+      Header: "&6### Marriage Master 명령어 ###"
+      Footer: "&6#############################"
+      # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
+      CustomHelp:
+        # Will be used if the player is married
+        Married:
+          - " &3__&b&lMarry 명령어&r&3__"
+          - ""
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" 파트너에게 키스","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" 파트너에게 이동","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" 파트너와 비밀 대화","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" 파트너에게 아이템 전달","color":"aqua"}]'
+          - '[{"text":"","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 로 모든 커맨드를 보세요"}]'
+        # Will be used if the player is a priest
+        Priest:
+          - " &3__&b&lMarry&r&3__"
+          - "&b 사람들을 /marry marry <플레이어1> <플레이어2> 를 사용해 결혼시킬 수 있습니다."
+          - '[{"text":"","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 로 모든 커맨드를 보세요"}]'
+        # Will be used if the player is neither married nor a priest
+        Default:
+          - " &3__&b&lMarry&r&3__"
+          - "&c결혼한 상태여야 이 커맨드 들을 사용할 수 있습니다."
+
+  Commands:
+    HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
+    # No color codes please
+    PlayerNameVariable: "player_name"
+    PartnerNameVariable: "partner_name"
+    SurnameVariable: "surname"
+    MessageVariable: "message"
+    Description:
+      Backpack: "파트너에 가방에 액세스 합니다."
+      BackpackOn: "파트너가 가방에 액세스 하는 것을 허용합니다."
+      BackpackOff: "파트너가 가방에 액세스 하는 것을 허용하지 않습니다."
+      Chat: "파트너와 비밀 채팅."
+      ChatSetTarget: "비밀 채팅 수신자를 변경합니다. 설정되지 않은 경우 모든 파트너에게 메시지가 전송됩니다."
+      ChatToggle: "비밀 채팅 켜기/끄기."
+      ChatListen: "모든 비밀 채팅 보기."
+      Gift: "손에 든 아이템을 파트너에게 선물하기."
+      Home: "집으로 이동하기."
+      HomeOther: "결혼한 사람의 집으로 이동하기."
+      SetHome: "집 설정."
+      SetHomeOther: "결혼한 사람의 집 설정."
+      DelHome: "집 삭제."
+      DelHomeOther: "결혼한 사람의 집 삭제"
+      Help: "명령어 도움말"
+      List: "결혼한 모든 플레이어 리스트 보여주기"
+      ListPriests: "현재 온라인인 성직자 보여주기"
+      PvP: "파트너와 PvP 상태 바꾸기"
+      PvPOn: "파트너와의 PvP 허용"
+      PvPOff: "파트너와의 PvP 금지"
+      Tp: "파트너에게로 이동"
+      Kiss: "파트너에게 키스"
+      Hug: "파트너 안기"
+      Seen: "파트너가 마지막으로 온라인이었던 시점 보기"
+      Marry: "두 플레이어 결혼"
+      MarrySelf: "결혼 요청하기"
+      Divorce: "두 플레이어 이혼"
+      DivorceSelf: "파트너와 이혼"
+      Surname: "커플의 성 바꾸기"
+      SurnameSelf: "파트너와 자신의 성 바꾸기"
+      Update: "업데이트 확인 후 설치"
+      Accept: "현재 요청 수락"
+      Cancel: "현재 요청 취소"
+      Deny: "현재 요청 거절"
+      SetColor: "결혼 색 설정"
+      SetPriest: "플레이어의 성직자 임명/해제"
+      Reload: "config.yml 로드"
+      Version: "플러그인 버전과 필요 플러그인 표시"
+# The fist option in the list will be the one displayed in the commands help
+Command:
+  Switches:
+    On:
+      - on
+      - true
+      - yes
+    Off:
+      - off
+      - false
+      - no
+    Toggle:
+      - toggle
+      - switch
+    All:
+      - all
+    Remove:
+      - remove
+      - rm
+      - delete
+      - del
+      - clear
+      - clean
+  Main:
+    - marry
+  Backpack:
+    - backpack
+    - bp
+  Chat:
+    - chat
+  ChatSetTarget:
+    - settarget
+    - target
+  ChatToggle:
+    - chattoggle
+  ChatListen:
+    - listenchat
+    - chatlisten
+  Gift:
+    - gift
+    - send
+    - give
+  Help:
+    - help
+  Home:
+    - home
+  SetHome:
+    - sethome
+    - definehome
+    - savehome
+  DelHome:
+    - delhome
+    - deletehome
+    - unsethome
+  PvP:
+    - pvp
+  Kiss:
+    - kiss
+  Hug:
+    - hug
+  Seen:
+    - seen
+    - lastOnline
+  PvPOn:
+    - pvpon
+  PvPOff:
+    - pvpoff
+  List:
+    - list
+  ListPriests:
+    - listpriests
+  Tp:
+    - tp
+  SetColor:
+    - setcolor
+  Marry:
+    - marry
+  Divorce:
+    - divorce
+  SetPriest:
+    - setpriest
+  Update:
+    - update
+  Version:
+    - version
+  Accept:
+    - accept
+  Cancel:
+    - cancel
+  Deny:
+    - deny
+Dialog:
+  DoYouWant: "{Player1Name}님, {Player2Name}님을 검은 머리 파뿌리 될 때 까지 사랑할 겁니까?"
+  AndDoYouWant: "그리고 {Player2Name}님, {Player1Name}님을 언제까지나 사랑할 겁니까?"
+  Married: "그럼 이제 서로 결혼했음을 알려드립니다. 서로 키스하셔도 됩니다."
+  YesIWant: "네!"
+  NoIDontWant: "아니요!"
+# This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
+Placeholders:
+  # The default formatting data that should be used if nothing else is specified
+  Default:
+    Boolean:
+      True: true
+      False: false
+    NotMarried: "미혼"
+    NoHome: "집 없음"
+    Separator: "&r, "
+    NoPartnerForSlot: ""
+  Heart:
+    Married: "&c<heart>&f"
+    NotMarried: ""
+  MagicHeart:
+    Married: "<heart>&f"
+    NotMarried: ""
+  Prefix:
+    NotMarried: ""
+  Suffix:
+    NotMarried: ""
+  StatusHeart:
+    Married: "&c<heart>&f"
+    NotMarried: "&7<heart>&f"
+  Home:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  HomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+  NearestHome:
+    # Order: world, x, y, z
+    Married: "%1$s %2$.1f %3$.1f %4$.1f"
+  NearestHomeCoordinates:
+    # Order: x, y, z
+    Married: "%1$.1f %2$.1f %3$.1f"
+
+
+# The name of the language represented by the language file
+LanguageName: "Korean"
+# The author of the language file
+Author: "happykrcheese"
+
+# Language file version. Don't touch it!
+Version: 105
+Revision: 1
