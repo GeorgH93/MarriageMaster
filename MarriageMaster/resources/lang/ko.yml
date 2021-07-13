@@ -216,44 +216,44 @@ Language:
       PriestMarryNotEnough: "&c결혼 상대가 돈이 부족합니다."
       PriestDivorceNotEnough: "&c이혼 상대가 돈이 부족합니다."
       MarriagePaid: "&a결혼에 {Cost} {CurrencyName} 을 사용했습니다."
-      DivorcePaid: "&a이혼에 {Cost} {CurrencyName} 을 사용했습니다. {Remaining} {CurrencyName} left)."
-      HomeTPPaid: "&aYou paid {Cost} {CurrencyName} for your home teleport ({Remaining} {CurrencyName} left)."
-      SetHomePaid: "&aYou paid {Cost} {CurrencyName} to set your Home ({Remaining} {CurrencyName} left)."
-      TpPaid: "&aYou paid {Cost} {CurrencyName} for the Teleport ({Remaining} {CurrencyName} left)."
-      GiftPaid: "&aYou have paid {Cost} {CurrencyName} for gifting an item to your partner ({Remaining} {CurrencyName} left)."
+      DivorcePaid: "&a이혼에 {Cost} {CurrencyName} 을 사용했습니다."
+      HomeTPPaid: "&a집 이동에 {Cost} {CurrencyName} 을 사용했습니다."
+      SetHomePaid: "&a집 설정에 {Cost} {CurrencyName} 을 사용했습니다."
+      TpPaid: "&a이동에 {Cost} {CurrencyName} 을 사용했습니다."
+      GiftPaid: "&a파트너에게 아이템을 전송하는데 {Cost} {CurrencyName} 을 사용했습니다."
     Admin:
-      Reloading: "&1Reloading ..."
-      Reloaded: "&1Reloaded!"
-      ReloadingDatabase: '&bReloading database &6.&r&c.&r&a.&r'
-      CheckingForUpdates: "&1Checking for updates ..."
-      Updated: "&ePlugin updated, will be loaded on next restart/reload."
-      NoUpdate: "&6No plugin update available."
-      UpdateFail: "&cThere was a problem looking for updates! Please check the console!"
+      Reloading: "&1로딩 중 ..."
+      Reloaded: "&1로딩 완료!"
+      ReloadingDatabase: '&bR데이터베이스 로딩 중 &6.&r&c.&r&a.&r'
+      CheckingForUpdates: "&1 업데이트 확인 중 ..."
+      Updated: "&e업데이트 완료. 다음 재시작 때 적용됩니다/"
+      NoUpdate: "&6사용 가능한 업데이트가 없었습니다."
+      UpdateFail: "&c업데이트 확인에 실패했습니다! 콘솔을 확인해 주세요!"
       # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
       UpdateAvailable: "[{\"text\":\"가능한 업데이트가 있습니다. \\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/marriage-master-mc-1-7-1-9.19273/\"}},{\"text\":\"\\\"에서 다운받아 주세요.\"}]"
     Help:
-      Header: "&6### Marriage Master Commands ###"
+      Header: "&6### Marriage Master 명령어 ###"
       Footer: "&6#############################"
       # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
       CustomHelp:
         # Will be used if the player is married
         Married:
-          - " &3__&b&lMarry Commands&r&3__"
+          - " &3__&b&lMarry 명령어&r&3__"
           - ""
-          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" kiss your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" tp to your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" talk private whit your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" give your partners things","color":"aqua"}]'
-          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" 파트너에게 키스","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" 파트너에게 이동","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" 파트너와 비밀 대화","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" 파트너에게 아이템 전달","color":"aqua"}]'
+          - '[{"text":"","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 로 모든 커맨드를 보세요"}]'
         # Will be used if the player is a priest
         Priest:
           - " &3__&b&lMarry&r&3__"
-          - "&b You can marry players by using /marry marry <player1> <player2>"
-          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+          - "&b 사람들을 /marry marry <플레이어1> <플레이어2> 를 사용해 결혼시킬 수 있습니다."
+          - '[{"text":"","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 로 모든 커맨드를 보세요"}]'
         # Will be used if the player is neither married nor a priest
         Default:
           - " &3__&b&lMarry&r&3__"
-          - "&cYou must be married to use this command"
+          - "&c결혼한 상태여야 이 커맨드 들을 사용할 수 있습니다."
 
   Commands:
     HelpFormat: "[\"\",{\"text\":\"/{MainCommand} {SubCommand} {Parameters}\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"/{MainCommand} {SubCommand}\"}},{\"text\":\" - \",\"color\":\"white\"},{\"text\":\"{Description}\",\"color\":\"aqua\"}]"
@@ -263,44 +263,44 @@ Language:
     SurnameVariable: "surname"
     MessageVariable: "message"
     Description:
-      Backpack: "Opens the backpack of your partner."
-      BackpackOn: "Allows your partner to use your backpack."
-      BackpackOff: "Disallows your partner to use your backpack."
-      Chat: "Private chat with your partner."
-      ChatSetTarget: "Changes the private message target. If not changed all partners will get the message."
-      ChatToggle: "Toggles your chat to be private with your partner."
-      ChatListen: "Shows all chat-messages sent from a married player to his partner."
-      Gift: "Gifts the item in your hand to your partner."
-      Home: "Teleports you to your home."
-      HomeOther: "Teleports you to a married players home."
-      SetHome: "Sets your home."
-      SetHomeOther: "Sets the home of a married player."
-      DelHome: "Deletes your home."
-      DelHomeOther: "Deletes the home of a married player."
-      Help: "Shows all available commands and their description."
-      List: "Lists all married players."
-      ListPriests: "Lists all currently online priests."
-      PvP: "Changes PvP status with partner."
-      PvPOn: "Enables PvP with partner."
-      PvPOff: "Disables PvP with partner."
-      Tp: "Teleports you to your partner."
-      Kiss: "You kiss your partner."
-      Hug: "You hug your partner."
-      Seen: "Shows when your partner was online the last time."
-      Marry: "Marry two players."
-      MarrySelf: "Sends a marry request to another player."
-      Divorce: "Divorces two players."
-      DivorceSelf: "To leave your partner."
-      Surname: "Changes the surname of a couple."
-      SurnameSelf: "Changes the surname from your partner and you."
-      Update: "Checks if there is an update available and downloads it."
-      Accept: "Accepts an open request."
-      Cancel: "Cancels an open request."
-      Deny: "Denies an open request."
-      SetColor: "Sets the color of the marriage."
-      SetPriest: "Promotes/Demotes a player to a priest."
-      Reload: "Reloads the config of the plugin."
-      Version: "Prints the version details about the plugin and it's dependencies."
+      Backpack: "파트너에 가방에 액세스 합니다."
+      BackpackOn: "파트너가 가방에 액세스 하는 것을 허용합니다."
+      BackpackOff: "파트너가 가방에 액세스 하는 것을 허용하지 않습니다."
+      Chat: "파트너와 비밀 채팅."
+      ChatSetTarget: "비밀 채팅 수신자를 변경합니다. 설정되지 않은 경우 모든 파트너에게 메시지가 전송됩니다."
+      ChatToggle: "비밀 채팅 켜기/끄기."
+      ChatListen: "모든 비밀 채팅 보기."
+      Gift: "손에 든 아이템을 파트너에게 선물하기."
+      Home: "집으로 이동하기."
+      HomeOther: "결혼한 사람의 집으로 이동하기."
+      SetHome: "집 설정."
+      SetHomeOther: "결혼한 사람의 집 설정."
+      DelHome: "집 삭제."
+      DelHomeOther: "결혼한 사람의 집 삭제"
+      Help: "명령어 도움말"
+      List: "결혼한 모든 플레이어 리스트 보여주기"
+      ListPriests: "현재 온라인인 성직자 보여주기"
+      PvP: "파트너와 PvP 상태 바꾸기"
+      PvPOn: "파트너와의 PvP 허용"
+      PvPOff: "파트너와의 PvP 금지"
+      Tp: "파트너에게로 이동"
+      Kiss: "파트너에게 키스"
+      Hug: "파트너 안기"
+      Seen: "파트너가 마지막으로 온라인이었던 시점 보기"
+      Marry: "두 플레이어 결혼"
+      MarrySelf: "결혼 요청하기"
+      Divorce: "두 플레이어 이혼"
+      DivorceSelf: "파트너와 이혼"
+      Surname: "커플의 성 바꾸기"
+      SurnameSelf: "파트너와 자신의 성 바꾸기"
+      Update: "업데이트 확인 후 설치"
+      Accept: "현재 요청 수락"
+      Cancel: "현재 요청 취소"
+      Deny: "현재 요청 거절"
+      SetColor: "결혼 색 설정"
+      SetPriest: "플레이어의 성직자 임명/해제"
+      Reload: "config.yml 로드"
+      Version: "플러그인 버전과 필요 플러그인 표시"
 # The fist option in the list will be the one displayed in the commands help
 Command:
   Switches:
@@ -393,11 +393,11 @@ Command:
   Deny:
     - deny
 Dialog:
-  DoYouWant: "Do you {Player1Name}, want to marry {Player2Name} on this server?"
-  AndDoYouWant: "And do you {Player2Name}, want to marry {Player1Name} on this server?"
-  Married: "I now pronounce you husband and wife. You may now kiss."
-  YesIWant: "Yes, I will!"
-  NoIDontWant: "No, I will not!"
+  DoYouWant: "{Player1Name}님, {Player2Name}님을 검은 머리 파뿌리 될 때 까지 사랑할 겁니까?"
+  AndDoYouWant: "그리고 {Player2Name}님, {Player1Name}님을 언제까지나 사랑할 겁니까?"
+  Married: "그럼 이제 서로 결혼했음을 알려드립니다. 서로 키스하셔도 됩니다."
+  YesIWant: "네!"
+  NoIDontWant: "아니요!"
 # This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders
 Placeholders:
   # The default formatting data that should be used if nothing else is specified
@@ -405,8 +405,8 @@ Placeholders:
     Boolean:
       True: true
       False: false
-    NotMarried: "not married"
-    NoHome: "no home"
+    NotMarried: "미혼"
+    NoHome: "집 없음"
     Separator: "&r, "
     NoPartnerForSlot: ""
   Heart:
