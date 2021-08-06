@@ -21,15 +21,33 @@ import at.pcgamingfreaks.BadRabbit.Bungee.BadRabbit;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Version;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
 
+import sun.management.MethodInfo;
+
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
 @SuppressWarnings("unused")
 public class MarriageMasterBadRabbit extends BadRabbit
 {
+	private boolean standalone = true;
+	private URLClassLoader standaloneBonusClassLoader = null;
+	private File standaloneBonusJarFile = null;
+
 	@Override
-	protected @NotNull Plugin createInstance() throws Exception
+	public void onLoad()
 	{
 		Plugin newPluginInstance = null, pcgfPluginLib = getProxy().getPluginManager().getPlugin("PCGF_PluginLib");
 		if(pcgfPluginLib != null)
@@ -41,18 +59,68 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			else
 			{
 				getLogger().info("PCGF-PluginLib installed. Switching to normal mode!");
-				newPluginInstance = new MarriageMaster();
+				standalone = false;
 			}
 		}
 		else
 		{
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 		}
-		if(newPluginInstance == null)
+
+		if(standalone) loadIMessageClasses();
+
+		super.onLoad();
+	}
+
+	@Override
+	protected @NotNull Plugin createInstance() throws Exception
+	{
+		Plugin newPluginInstance;
+		if(standalone)
 		{
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bungee.MarriageMaster");
 			newPluginInstance = (Plugin) standaloneClass.newInstance();
 		}
+		else
+		{
+			newPluginInstance = new MarriageMaster();
+		}
 		return newPluginInstance;
+	}
+
+	void loadIMessageClasses()
+	{
+		try
+		{
+			standaloneBonusJarFile = File.createTempFile("IMessage", ".jar");
+			Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
+			Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
+			extractMethod.invoke(null, this.getClass(), getLogger(), "IMessage.jar", standaloneBonusJarFile);
+			standaloneBonusJarFile.deleteOnExit();
+
+			Class<?> pluginClassLoaderClass = Class.forName("net.md_5.bungee.api.plugin.PluginClassloader");
+			Constructor<?> pluginClassLoaderConstructor = pluginClassLoaderClass.getDeclaredConstructors()[0];
+			pluginClassLoaderConstructor.setAccessible(true);
+			switch(pluginClassLoaderConstructor.getParameterCount())
+			{
+				case 1:
+					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance((Object) (new URL[] { standaloneBonusJarFile.toURI().toURL() }));
+					break;
+				case 3:
+					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance(getProxy(), getDescription(), new URL[] { standaloneBonusJarFile.toURI().toURL() });
+					break;
+				case 4:
+					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance(getProxy(), getDescription(), standaloneBonusJarFile, null);
+					break;
+				default:
+					throw new IllegalStateException("The PluginClassloader uses an unexpected format for it's constructor!");
+			}
+			Object loaders = getField(getClass().getClassLoader().getClass(), "allLoaders").get(null);
+			getMethod(loaders.getClass(), "add", Object.class).invoke(loaders, standaloneBonusClassLoader);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
