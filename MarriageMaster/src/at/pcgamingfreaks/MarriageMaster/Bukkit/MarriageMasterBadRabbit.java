@@ -26,13 +26,22 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Map;
+import java.util.logging.Logger;
+
 @SuppressWarnings("unused")
 public class MarriageMasterBadRabbit extends BadRabbit
 {
+	private boolean standalone = true;
+
 	@Override
-	protected @NotNull JavaPlugin createInstance() throws Exception
+	public void onLoad()
 	{
-		JavaPlugin newPluginInstance = null;
 		Plugin pcgfPluginLib = Bukkit.getPluginManager().getPlugin("PCGF_PluginLib");
 		if(pcgfPluginLib != null)
 		{
@@ -43,18 +52,68 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			else
 			{
 				getLogger().info("PCGF-PluginLib installed. Switching to normal mode!");
-				newPluginInstance = new MarriageMaster();
+				standalone = false;
 			}
 		}
 		else
 		{
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 		}
-		if(newPluginInstance == null)
+
+		if(standalone) loadIMessageClasses();
+
+		super.onLoad();
+	}
+
+	@Override
+	protected @NotNull JavaPlugin createInstance() throws Exception
+	{
+		JavaPlugin newPluginInstance = null;
+		if(standalone)
 		{
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster");
 			newPluginInstance = (JavaPlugin) standaloneClass.newInstance();
 		}
+		else
+		{
+			newPluginInstance = new MarriageMaster();
+		}
 		return newPluginInstance;
+	}
+
+	void loadIMessageClasses()
+	{
+		try
+		{
+			File tempJarFile = File.createTempFile("IMessage", ".jar");
+			try
+			{
+				Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
+				Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
+				extractMethod.invoke(null, this.getClass(), getLogger(), "IMessage.jar", tempJarFile);
+
+				URLClassLoader loader = new URLClassLoader(new URL[] { tempJarFile.toURI().toURL() }, getClassLoader());
+				Class<?> iMessage = loader.loadClass("at.pcgamingfreaks.Message.IMessage");
+				Class<?> iMessageBukkit = loader.loadClass("at.pcgamingfreaks.Bukkit.Message.IMessage");
+
+				Map<String, Class<?>> classes = (Map<String, Class<?>>) getField(getClassLoader().getClass(), "classes").get(getClassLoader());
+				classes.put("at.pcgamingfreaks.Message.IMessage", iMessage);
+				classes.put("at.pcgamingfreaks.Bukkit.Message.IMessage", iMessageBukkit);
+
+				loader.close();
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			if(!tempJarFile.delete()) {
+				getLogger().warning("Failed to delete temp file '" + tempJarFile.getAbsolutePath() + "'.");
+				tempJarFile.deleteOnExit();
+			}
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
