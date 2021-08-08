@@ -68,7 +68,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 	@Override
 	protected @NotNull JavaPlugin createInstance() throws Exception
 	{
-		JavaPlugin newPluginInstance = null;
+		JavaPlugin newPluginInstance;
 		if(standalone)
 		{
 			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster");
@@ -96,7 +96,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 				Class<?> iMessage = loader.loadClass("at.pcgamingfreaks.Message.IMessage");
 				Class<?> iMessageBukkit = loader.loadClass("at.pcgamingfreaks.Bukkit.Message.IMessage");
 
-				Map<String, Class<?>> classes = (Map<String, Class<?>>) getField(getClassLoader().getClass(), "classes").get(getClassLoader());
+				@SuppressWarnings("unchecked") Map<String, Class<?>> classes = (Map<String, Class<?>>) getField(getClassLoader().getClass(), "classes").get(getClassLoader());
 				classes.put("at.pcgamingfreaks.Message.IMessage", iMessage);
 				classes.put("at.pcgamingfreaks.Bukkit.Message.IMessage", iMessageBukkit);
 

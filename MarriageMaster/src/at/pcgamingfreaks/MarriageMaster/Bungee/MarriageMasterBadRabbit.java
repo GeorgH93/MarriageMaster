@@ -21,30 +21,21 @@ import at.pcgamingfreaks.BadRabbit.Bungee.BadRabbit;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Version;
 
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
 
-import sun.management.MethodInfo;
-
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
 public class MarriageMasterBadRabbit extends BadRabbit
 {
 	private boolean standalone = true;
-	private URLClassLoader standaloneBonusClassLoader = null;
-	private File standaloneBonusJarFile = null;
 
 	@Override
 	public void onLoad()
@@ -92,7 +83,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 	{
 		try
 		{
-			standaloneBonusJarFile = File.createTempFile("IMessage", ".jar");
+			File standaloneBonusJarFile = File.createTempFile("IMessage", ".jar");
 			Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
 			Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
 			extractMethod.invoke(null, this.getClass(), getLogger(), "IMessage.jar", standaloneBonusJarFile);
@@ -101,6 +92,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			Class<?> pluginClassLoaderClass = Class.forName("net.md_5.bungee.api.plugin.PluginClassloader");
 			Constructor<?> pluginClassLoaderConstructor = pluginClassLoaderClass.getDeclaredConstructors()[0];
 			pluginClassLoaderConstructor.setAccessible(true);
+			URLClassLoader standaloneBonusClassLoader;
 			switch(pluginClassLoaderConstructor.getParameterCount())
 			{
 				case 1:
