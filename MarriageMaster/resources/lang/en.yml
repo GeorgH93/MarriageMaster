@@ -111,6 +111,7 @@ Language:
       Footer: "[{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "&cYou can't hurt your partner if you have PvP disabled."
+      IsDisabled_SendMethod: "action_bar"
       On: "&aYou have now enabled PvP with your partner."
       Off: "&aYou have now disabled PvP with your partner."
     TP:
@@ -393,9 +394,12 @@ Command:
   Deny:
     - deny
 Dialog:
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
   DoYouWant: "Do you {Player1Name}, want to marry {Player2Name} on this server?"
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
   AndDoYouWant: "And do you {Player2Name}, want to marry {Player1Name} on this server?"
-  Married: "I now pronounce you husband and wife. You may now kiss."
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
+  Married: "I now pronounce {Player1Name} and {Player2Name} married! You may now kiss."
   YesIWant: "Yes, I will!"
   NoIDontWant: "No, I will not!"
 # This selection allows to change the placeholder return values. You can change them if you like. https://github.com/GeorgH93/MarriageMaster/wiki/Placeholders

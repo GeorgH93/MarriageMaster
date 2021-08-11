@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		rangeDivorceSquared = (rangeDivorce > 0) ? rangeDivorce * rangeDivorce : rangeDivorce;
 
 		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
-		dialogMarried       = plugin.getLanguage().getDialog("Married");
+		dialogMarried       = plugin.getLanguage().getDialog("Married").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
@@ -376,7 +376,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				marriage = new MarriageData(player1, player2, plugin.getPlayerData((Player) priest), new Date(), surname);
 				if(confirm && autoDialog)
 				{
-					((Player) priest).chat(dialogMarried);
+					String msg = String.format(dialogMarried, player1.getName(), player1.getDisplayName(), player2.getName(), player2.getDisplayName());
+					((Player) priest).chat(msg);
 				}
 			}
 			else
