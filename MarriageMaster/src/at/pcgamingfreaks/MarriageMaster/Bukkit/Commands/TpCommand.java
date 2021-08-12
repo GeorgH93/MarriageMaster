@@ -42,6 +42,7 @@ import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class TpCommand extends MarryCommand
@@ -178,9 +179,9 @@ public class TpCommand extends MarryCommand
 	{
 		if(player.canSee(partner))
 		{
-			if(!blacklistedWorlds.contains(partner.getLocation().getWorld().getName().toLowerCase()) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
+			Location loc = partner.getLocation();
+			if(!blacklistedWorlds.contains(loc.getWorld().getName().toLowerCase(Locale.ENGLISH)) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
 			{
-				Location loc = partner.getLocation();
 				if(!player.isFlying() && safetyCheck && (loc = getSafeLoc(loc)) == null)
 				{
 					messageUnsafe.send(player);
