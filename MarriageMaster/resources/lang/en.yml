@@ -446,5 +446,5 @@ LanguageName: "English"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 105
+Version: ${languageFileVersion}
 Revision: 1

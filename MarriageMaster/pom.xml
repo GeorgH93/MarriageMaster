@@ -80,6 +80,11 @@
 			<artifactId>MarriageMaster-MinepacksV1</artifactId>
 			<version>${revision}</version>
 		</dependency>
+		<dependency>
+			<groupId>at.pcgamingfreaks</groupId>
+			<artifactId>MarriageMaster-MagicValues</artifactId>
+			<version>${revision}</version>
+		</dependency>
 		<!-- PCGF Plugin Lib -->
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
@@ -348,6 +353,8 @@
 												<exclude>at.pcgamingfreaks.MarriageMaster.Bukkit.API.**</exclude>
 												<exclude>at.pcgamingfreaks.MarriageMaster.Bungee.API.**</exclude>
 												<exclude>at.pcgamingfreaks.MarriageMaster.API.**</exclude>
+												<exclude>at.pcgamingfreaks.MarriageMaster.Permissions</exclude>
+												<exclude>at.pcgamingfreaks.MarriageMaster.MagicValues</exclude>
 											</excludes>
 										</relocation>
 										<relocation>

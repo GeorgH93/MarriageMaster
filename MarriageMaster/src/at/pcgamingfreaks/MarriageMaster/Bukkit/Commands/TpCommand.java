@@ -175,7 +175,7 @@ public class TpCommand extends MarryCommand
 		return loc;
 	}
 
-	public void doTheTP(Player player, Player partner)
+	public void doTheTP(final @NotNull Player player, final @NotNull Player partner)
 	{
 		if(player.canSee(partner))
 		{

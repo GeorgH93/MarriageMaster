@@ -88,4 +88,4 @@ Misc:
     Channel: ${updateChannel}
 
 # Config File Version. Don't touch it!
-Version: 102
+Version: ${configFileVersionBungee}

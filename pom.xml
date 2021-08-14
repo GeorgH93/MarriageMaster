@@ -12,6 +12,10 @@
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
 		<pcgfPluginLibVersion>1.0.33-SNAPSHOT</pcgfPluginLibVersion>
+
+		<configFileVersion>104</configFileVersion>
+		<configFileVersionBungee>102</configFileVersionBungee>
+		<languageFileVersion>105</languageFileVersion>
 	</properties>
 
 	<scm>
