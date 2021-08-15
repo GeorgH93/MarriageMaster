@@ -86,7 +86,7 @@ This version works without the PCGF-PluginLib, however some API features are not
 ```
 git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
-mvn package -P Standalone,ExcludeBadRabbit
+mvn package -P Standalone
 ```
 The final file will be in the `MarriageMaster/target` folder, named `MarriageMaster-<CurrentVersion>-Standalone.jar`.
 
@@ -95,7 +95,7 @@ This is the version of the plugin published on dev.bukkit.org and spigotmc.org.
 ```
 git clone https://github.com/GeorgH93/MarriageMaster.git
 cd MarriageMaster
-mvn clean install -P Standalone,ExcludeBadRabbit
+mvn clean install -P Standalone
 mvn clean package -P Release
 ```
 The final file will be in the `MarriageMaster/target` folder, named `MarriageMaster-<CurrentVersion>-Release.jar`.

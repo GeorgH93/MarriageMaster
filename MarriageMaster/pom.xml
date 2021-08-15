@@ -275,36 +275,6 @@
 
 	<profiles>
 		<profile>
-			<id>ExcludeBadRabbit</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-jar-plugin</artifactId>
-						<version>3.1.2</version>
-						<executions>
-							<execution>
-								<id>default-jar</id>
-								<phase>package</phase>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-								<configuration>
-									<excludes>
-										<exclude>at/pcgamingfreaks/MarriageMaster/Bukkit/MarriageMasterBadRabbit.class</exclude>
-										<exclude>at/pcgamingfreaks/MarriageMaster/Bungee/MarriageMasterBadRabbit.class</exclude>
-									</excludes>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>Standalone</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -426,6 +396,16 @@
 					<artifactId>MarriageMaster</artifactId>
 					<version>${project.version}</version>
 					<classifier>Standalone</classifier>
+				</dependency>
+				<dependency>
+					<groupId>at.pcgamingfreaks</groupId>
+					<artifactId>MarriageMaster-BadRabbit-Bukkit</artifactId>
+					<version>${project.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>at.pcgamingfreaks</groupId>
+					<artifactId>MarriageMaster-BadRabbit-Bungee</artifactId>
+					<version>${project.version}</version>
 				</dependency>
 			</dependencies>
 			<build>

@@ -142,8 +142,23 @@
 		<module>Extensions/MarriageMaster-BackpackIntegration</module>
 		<module>Extensions/MarriageMaster-MinepacksV1</module>
 		<module>Extensions/MarriageMaster-MinepacksV2</module>
+		<module>Components/MarriageMaster-MagicValues</module>
 		<module>MarriageMaster</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>Release</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			
+			<modules>
+				<module>Components/MarriageMaster-BadRabbit-Bukkit</module>
+				<module>Components/MarriageMaster-BadRabbit-Bungee</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<distributionManagement>
 		<repository>

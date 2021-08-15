@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -76,7 +76,8 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		}
 		else
 		{
-			newPluginInstance = new MarriageMaster();
+			Class<?> standaloneClass = Class.forName("at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster");
+			newPluginInstance = (JavaPlugin) standaloneClass.newInstance();
 		}
 		return newPluginInstance;
 	}
