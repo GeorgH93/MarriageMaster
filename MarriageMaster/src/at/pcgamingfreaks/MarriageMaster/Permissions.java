@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@ public class Permissions
 	public static final String BYPASS_DELAY = BYPASS + "delay";
 	public static final String BYPASS_RANGELIMIT = BYPASS + "rangelimit";
 	public static final String BYPASS_WORLD_BLACKLIST = BYPASS + "worldblacklist";
+	public static final String BYPASS_SERVER_BLACKLIST = BYPASS + "serverblacklist";
 	public static final String BYPASS_TP_CONFIRMATION = BYPASS + "tpconfirmation";
 	public static final String BYPASS_VANISH = BYPASS + "vanish";
 	public static final String BYPASS_GIFT_GAME_MODE = BYPASS + "gift.gamemode";

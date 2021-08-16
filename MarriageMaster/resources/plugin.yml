@@ -33,6 +33,7 @@ permissions:
       marry.bypass.rangelimit: true
       marry.bypass.backpackgamemode: true
       marry.bypass.worldblacklist: true
+      marry.bypass.serverblacklist: true
       marry.bypass.tpconfirmation: true
       marry.bypass.vanish: true
       marry.bypass.gift.gamemode: true
@@ -158,6 +159,9 @@ permissions:
     default: op
   marry.bypass.worldblacklist:
     description: Allows to bypass the world check for teleports
+    default: op
+  marry.bypass.serverblacklist:
+    description: Allows to bypass the server check for teleports
     default: op
   marry.bypass.tpconfirmation:
     description: Allows to bypass the teleport confirmation request

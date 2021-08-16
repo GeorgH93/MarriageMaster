@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -76,9 +77,10 @@ public class TpCommand extends MarryCommand
 		}
 		else if(partner.isOnline())
 		{
-			if(!blockedFrom.contains(player.getPlayer().getServer().getInfo().getName().toLowerCase()))
+			String serverName = player.getPlayer().getServer().getInfo().getName().toLowerCase(Locale.ENGLISH);
+			if(!blockedFrom.contains(serverName) || player.hasPermission(Permissions.BYPASS_SERVER_BLACKLIST))
 			{
-				if(!blockedTo.contains(partner.getPlayer().getServer().getInfo().getName().toLowerCase()))
+				if(!blockedTo.contains(serverName) || player.hasPermission(Permissions.BYPASS_SERVER_BLACKLIST))
 				{
 					if(delayed && !sender.hasPermission(Permissions.BYPASS_DELAY))
 					{
