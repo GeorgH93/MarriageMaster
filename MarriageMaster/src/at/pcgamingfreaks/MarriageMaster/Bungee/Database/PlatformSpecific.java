@@ -20,10 +20,10 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.DbErrorLoadingDataInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.IPlatformSpecific;
 import at.pcgamingfreaks.Message.MessageColor;
-
-import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,9 +36,9 @@ import java.util.logging.Logger;
 
 public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, MarriageData, Home>
 {
-	private final Plugin plugin;
+	private final MarriageMaster plugin;
 
-	public PlatformSpecific(Plugin plugin) {this.plugin = plugin;}
+	public PlatformSpecific(MarriageMaster plugin) {this.plugin = plugin;}
 
 	@Override
 	public @NotNull MarriagePlayerData producePlayer(final @Nullable UUID uuid, final @NotNull String name, final boolean priest, final boolean sharesBackpack, final @Nullable Object databaseKey)
@@ -93,5 +93,11 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 	public @NotNull String getPluginVersion()
 	{
 		return plugin.getDescription().getVersion();
+	}
+
+	@Override
+	public void spawnDatabaseLoadingErrorMessage(String failedToLoad)
+	{
+		new DbErrorLoadingDataInfo(plugin, failedToLoad);
 	}
 }

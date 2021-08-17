@@ -19,6 +19,8 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.DbErrorLoadingDataInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.IPlatformSpecific;
 import at.pcgamingfreaks.Message.MessageColor;
 
@@ -34,9 +36,9 @@ import java.util.logging.Logger;
 
 public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, MarriageData, MarriageHome>
 {
-	private final JavaPlugin plugin;
+	private final MarriageMaster plugin;
 
-	public PlatformSpecific(JavaPlugin plugin) {this.plugin = plugin;}
+	public PlatformSpecific(MarriageMaster plugin) {this.plugin = plugin;}
 
 	@Override
 	public MarriagePlayerData producePlayer(final @Nullable UUID uuid, final @NotNull String name, final boolean priest, final boolean sharesBackpack, final @Nullable Object databaseKey)
@@ -95,5 +97,11 @@ public class PlatformSpecific implements IPlatformSpecific<MarriagePlayerData, M
 	public @NotNull String getPluginVersion()
 	{
 		return plugin.getDescription().getVersion();
+	}
+
+	@Override
+	public void spawnDatabaseLoadingErrorMessage(String failedToLoad)
+	{
+		new DbErrorLoadingDataInfo(plugin, failedToLoad);
 	}
 }

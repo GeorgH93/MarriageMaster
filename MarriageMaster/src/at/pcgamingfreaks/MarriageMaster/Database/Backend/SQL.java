@@ -299,6 +299,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			catch(Exception e)
 			{
 				e.printStackTrace();
+				platform.spawnDatabaseLoadingErrorMessage("Failed to load marriages - " + e.getMessage());
 			}
 			logger.info("Marriages loaded");
 			// Load priests
@@ -314,6 +315,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			catch(Exception e)
 			{
 				e.printStackTrace();
+				platform.spawnDatabaseLoadingErrorMessage("Failed to load priests - " + e.getMessage());
 			}
 			logger.info("Priests loaded");
 			// Load players
@@ -339,6 +341,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				catch(Exception e)
 				{
 					e.printStackTrace();
+					platform.spawnDatabaseLoadingErrorMessage("Failed to load players - " + e.getMessage());
 				}
 			}
 			logger.info("Players loaded");
@@ -362,6 +365,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			platform.spawnDatabaseLoadingErrorMessage(e.getMessage());
 		}
 		loadHomes();
 	}
@@ -442,6 +446,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			platform.spawnDatabaseLoadingErrorMessage("Failed to load homes - " + e.getMessage());
 		}
 		homes.clear();
 		logger.info("Homes loaded");
