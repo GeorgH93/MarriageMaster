@@ -37,23 +37,21 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
+import lombok.Getter;
+
 import java.util.List;
-import java.util.Map;
 
 public class KissCommand extends MarryCommand implements Listener
 {
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
 	private final double interactRange, range, rangeSquared, hearthVisibleRange;
 	private final int waitTime, hearthCount;
-	private Map<MarriagePlayer, Long> wait;
 	private ParticleSpawner particleSpawner;
 
 	public KissCommand(MarriageMaster plugin)
 	{
 		super(plugin, "kiss", plugin.getLanguage().getTranslated("Commands.Description.Kiss"), Permissions.KISS, true, false, plugin.getLanguage().getCommandAliases("Kiss"));
 
-		wait = new HashMap<>();
 		particleSpawner = ParticleSpawner.getParticleSpawner();
 
 		range              = plugin.getConfiguration().getRange(Range.Kiss);
@@ -69,14 +67,14 @@ public class KissCommand extends MarryCommand implements Listener
 		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		INSTANCE = this;
 	}
 
 	@Override
 	public void close()
 	{
+		INSTANCE = null;
 		particleSpawner = null;
-		wait.clear();
-		wait = null;
 	}
 
 	@Override
@@ -112,17 +110,21 @@ public class KissCommand extends MarryCommand implements Listener
 		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 	}
 
+	private boolean canKissAgain(MarriagePlayer player)
+	{
+		return player.getLastKissTime() < System.currentTimeMillis() - waitTime || player.hasPermission(Permissions.BYPASS_DELAY);
+	}
+
 	public void kiss(MarriagePlayer player, MarriagePlayer partner)
 	{
-		Long time = wait.get(player);
-		if(time == null || time < System.currentTimeMillis() - waitTime)
+		if(canKissAgain(player))
 		{
 			//noinspection ConstantConditions
 			KissEvent event = new KissEvent(player, player.getMarriageData(partner));
 			Bukkit.getPluginManager().callEvent(event);
 			if(!event.isCancelled())
 			{
-				if(!player.hasPermission(Permissions.BYPASS_DELAY)) wait.put(player, System.currentTimeMillis());
+				player.setLastKissTime(System.currentTimeMillis());
 				player.send(messageKissed);
 				partner.send(messageGotKissed);
 				if(particleSpawner != null)
@@ -134,7 +136,7 @@ public class KissCommand extends MarryCommand implements Listener
 		}
 		else
 		{
-			player.send(messageWait, waitTime / 1000, (time - System.currentTimeMillis() + waitTime) / 1000.0);
+			player.send(messageWait, waitTime / 1000, (player.getLastKissTime() - System.currentTimeMillis() + waitTime) / 1000.0);
 		}
 	}
 
@@ -144,8 +146,7 @@ public class KissCommand extends MarryCommand implements Listener
 		if((!MCVersion.isDualWieldingMC() || event.getHand().equals(EquipmentSlot.HAND)) && event.getPlayer().isSneaking() && event.getPlayer().hasPermission(Permissions.KISS) && event.getRightClicked() instanceof Player)
 		{
 			MarriagePlayer player = getMarriagePlugin().getPlayerData(event.getPlayer());
-			Long time = wait.get(player);
-			if(time == null || time < System.currentTimeMillis() - waitTime)
+			if(canKissAgain(player))
 			{
 				MarriagePlayer player2 = getMarriagePlugin().getPlayerData((Player) event.getRightClicked());
 				if(player.isPartner(player2) && getMarriagePlugin().isInRangeSquared(event.getPlayer(), (Player) event.getRightClicked(), interactRange))

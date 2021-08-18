@@ -46,6 +46,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	private AcceptPendingRequest openRequest = null;
 	private final List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
 	@Getter	@Setter	private BukkitTask delayedTpTask = null;
+	@Getter @Setter private long lastKissTime = 0, lastHugTime = 0;
 
 	public MarriagePlayerData(final @NotNull OfflinePlayer player)
 	{

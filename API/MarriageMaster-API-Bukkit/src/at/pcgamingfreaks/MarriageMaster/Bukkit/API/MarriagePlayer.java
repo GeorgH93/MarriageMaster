@@ -69,8 +69,22 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	/**
 	 * Gets the display name of a player. But also checks if the given player can see the player. If not the offline display name will be used.
 	 *
-	 * @param player The player that should be check for visibility
+	 * @param player The player that should be checked for visibility
 	 * @return The display name of the player. If the player is offline or the given player can't see the player, the offline display name will be used.
 	 */
 	@NotNull String getDisplayNameCheckVanished(@NotNull Player player);
+
+	/**
+	 * Gets the time that the player has last kissed its partner.
+	 *
+	 * @return The time the player has last kissed its partner in milliseconds since midnight 1970-01-01 UTC.
+	 */
+	long getLastKissTime();
+
+	/**
+	 * Sets the time that the player has last kissed its partner.
+	 *
+	 * @param kissTime The time that the player has last kissed its partner in milliseconds since midnight 1970-01-01 UTC.
+	 */
+	void setLastKissTime(long kissTime);
 }
