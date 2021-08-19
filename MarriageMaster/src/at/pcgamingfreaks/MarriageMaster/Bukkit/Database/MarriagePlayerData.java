@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Home;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HugCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.KissCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.Message.MessageColor;
@@ -109,6 +111,24 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	{
 		Player bukkitPlayer = getPlayerOnline();
 		return (bukkitPlayer != null && player.canSee(bukkitPlayer)) ? bukkitPlayer.getDisplayName() : MessageColor.GRAY + getName();
+	}
+
+	@Override
+	public void kiss(MarriagePlayer partner)
+	{
+		if(isPartner(partner))
+		{
+			KissCommand.getInstance().kiss(this, partner);
+		}
+	}
+
+	@Override
+	public void hug(MarriagePlayer partner)
+	{
+		if(isPartner(partner))
+		{
+			HugCommand.getInstance().hug(this, partner);
+		}
 	}
 
 	@Override

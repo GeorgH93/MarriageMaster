@@ -30,10 +30,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.Getter;
+
 import java.util.List;
 
 public class HugCommand extends MarryCommand
 {
+	@Getter private static HugCommand instance;
+
 	private final Message messageHugged, messageGotHugged, messageTooFarAway;
 	private final double range, rangeSquared;
 
@@ -61,13 +65,7 @@ public class HugCommand extends MarryCommand
 		{
 			if(getMarriagePlugin().isInRangeSquared((Player) sender, partner.getPlayerOnline(), rangeSquared))
 			{
-				HugEvent event = new HugEvent(player, player.getMarriageData(partner));
-				Bukkit.getPluginManager().callEvent(event);
-				if(!event.isCancelled())
-				{
-					player.sendMessage(messageHugged);
-					partner.sendMessage(messageGotHugged);
-				}
+				hug(player, partner);
 			}
 			else
 			{
@@ -84,5 +82,16 @@ public class HugCommand extends MarryCommand
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
+	}
+
+	public void hug(MarriagePlayer player, MarriagePlayer partner)
+	{
+		HugEvent event = new HugEvent(player, player.getMarriageData(partner));
+		Bukkit.getPluginManager().callEvent(event);
+		if(!event.isCancelled())
+		{
+			player.sendMessage(messageHugged);
+			partner.sendMessage(messageGotHugged);
+		}
 	}
 }

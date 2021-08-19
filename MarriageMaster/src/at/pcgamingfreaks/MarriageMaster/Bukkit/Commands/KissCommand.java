@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@ import java.util.List;
 
 public class KissCommand extends MarryCommand implements Listener
 {
+	@Getter private static KissCommand instance;
+
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
 	private final double interactRange, range, rangeSquared, hearthVisibleRange;
 	private final int waitTime, hearthCount;
@@ -67,13 +69,13 @@ public class KissCommand extends MarryCommand implements Listener
 		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		INSTANCE = this;
+		instance = this;
 	}
 
 	@Override
 	public void close()
 	{
-		INSTANCE = null;
+		instance = null;
 		particleSpawner = null;
 	}
 

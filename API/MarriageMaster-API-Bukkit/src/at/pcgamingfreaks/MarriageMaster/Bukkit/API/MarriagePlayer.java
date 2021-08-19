@@ -87,4 +87,18 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @param kissTime The time that the player has last kissed its partner in milliseconds since midnight 1970-01-01 UTC.
 	 */
 	void setLastKissTime(long kissTime);
+
+	/**
+	 * Makes the player kiss its partner.
+	 *
+	 * @param partner The partner that should be kissed.
+	 */
+	void kiss(MarriagePlayer partner);
+
+	/**
+	 * Makes the player hug its partner.
+	 *
+	 * @param partner The partner that should be hugged.
+	 */
+	void hug(MarriagePlayer partner);
 }
