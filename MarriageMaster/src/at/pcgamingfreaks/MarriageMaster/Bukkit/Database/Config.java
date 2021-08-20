@@ -230,6 +230,11 @@ public class Config extends Configuration implements DatabaseConfiguration
 		return getConfigE().getBoolean("Kiss.Enable", true);
 	}
 
+	public boolean isKissInteractEnabled()
+	{
+		return getConfigE().getBoolean("Kiss.EnableInteract", true);
+	}
+
 	public int getKissWaitTime()
 	{
 		return (int) (getConfigE().getFloat("Kiss.WaitTime", 10.0f) * 1000);

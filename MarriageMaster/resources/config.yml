@@ -115,7 +115,10 @@ Gift:
     Lore: [ ]
 
 Kiss:
+  # Enables the kiss command
   Enable: true
+  # Enables kissing by sneak + right click
+  EnableInteract: true
   # Time between two kisses in seconds
   WaitTime: 10
   # How many hearths should be spawned

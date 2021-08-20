@@ -32,6 +32,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -68,13 +69,17 @@ public class KissCommand extends MarryCommand implements Listener
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Kiss.TooFarAway").replaceAll("\\{Distance}", "%.1f");
 		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
 
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		if(plugin.getConfiguration().isKissInteractEnabled())
+		{
+			plugin.getServer().getPluginManager().registerEvents(this, plugin);
+		}
 		instance = this;
 	}
 
 	@Override
 	public void close()
 	{
+		HandlerList.unregisterAll(this);
 		instance = null;
 		particleSpawner = null;
 	}
