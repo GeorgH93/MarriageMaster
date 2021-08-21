@@ -246,6 +246,23 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 	//endregion
 
+	//region Hug command settings
+	public boolean isHugEnabled()
+	{
+		return getConfigE().getBoolean("Hug.Enable", true);
+	}
+
+	public boolean isHugInteractEnabled()
+	{
+		return getConfigE().getBoolean("Hug.EnableInteract", true);
+	}
+
+	public int getHugWaitTime()
+	{
+		return (int) (getConfigE().getFloat("Hug.WaitTime", 10.0f) * 1000);
+	}
+	//endregion
+
 	//region Gift command settings
 	public boolean isGiftEnabled()
 	{

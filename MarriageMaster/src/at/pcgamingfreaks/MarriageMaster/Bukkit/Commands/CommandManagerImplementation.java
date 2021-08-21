@@ -121,7 +121,10 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		{
 			registerSubCommand(new KissCommand(plugin));
 		}
-		registerSubCommand(new HugCommand(plugin));
+		if(plugin.getConfiguration().isHugEnabled())
+		{
+			registerSubCommand(new HugCommand(plugin));
+		}
 		registerSubCommand(new SeenCommand(plugin));
 		if(plugin.getConfiguration().isAllowPlayersToChangeMarriageColor())
 		{

@@ -91,6 +91,8 @@ Language:
       GotHugged: "&eYour partner has hugged you!"
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "&cYou are too far away to hug your partner. (Max {Distance} blocks)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&cYou have to wait {Time} seconds to kiss your partner again."
     Seen:
       # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "{DisplayName}&r is currently &aonline&r."

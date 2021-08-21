@@ -96,6 +96,22 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	void kiss(MarriagePlayer partner);
 
 	/**
+	 * Gets the time that the player has last hugged its partner.
+	 * The time is reset on server restart.
+	 *
+	 * @return The time the player has last hugged its partner in milliseconds since midnight 1970-01-01 UTC.
+	 */
+	long getLastHugTime();
+
+	/**
+	 * Sets the time that the player has last hugged its partner.
+	 * The time is reset on server restart.
+	 *
+	 * @param hugTime The time that the player has last hugged its partner in milliseconds since midnight 1970-01-01 UTC.
+	 */
+	void setLastHugTime(long hugTime);
+
+	/**
 	 * Makes the player hug its partner.
 	 *
 	 * @param partner The partner that should be hugged.

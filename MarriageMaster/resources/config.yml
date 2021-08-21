@@ -119,10 +119,16 @@ Kiss:
   Enable: true
   # Enables kissing by sneak + right click
   EnableInteract: true
-  # Time between two kisses in seconds
+  # Time between two kisses in seconds, 0 to disable cooldown
   WaitTime: 10
   # How many hearths should be spawned
   HearthCount: 50
+
+Hug:
+  # Enables the hug command
+  Enable: true
+  # Time between two hugs in seconds, 0 to disable cooldown
+  WaitTime: 10
 
 List:
   UseFooter: true

@@ -38,8 +38,9 @@ public class HugCommand extends MarryCommand
 {
 	@Getter private static HugCommand instance;
 
-	private final Message messageHugged, messageGotHugged, messageTooFarAway;
+	private final Message messageHugged, messageGotHugged, messageTooFarAway, messageWait;
 	private final double range, rangeSquared;
+	private final int waitTime;
 
 	public HugCommand(MarriageMaster plugin)
 	{
@@ -50,6 +51,8 @@ public class HugCommand extends MarryCommand
 		messageHugged     = plugin.getLanguage().getMessage("Ingame.Hug.Hugged");
 		messageGotHugged  = plugin.getLanguage().getMessage("Ingame.Hug.GotHugged");
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance}", "%.1f");
+		messageWait       = plugin.getLanguage().getMessage("Ingame.Hug.Wait");
+		waitTime          = plugin.getConfiguration().getHugWaitTime();
 	}
 
 	@Override
@@ -84,14 +87,27 @@ public class HugCommand extends MarryCommand
 		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 	}
 
+	private boolean canHugAgain(MarriagePlayer player)
+	{
+		return player.getLastHugTime() < System.currentTimeMillis() - waitTime || player.hasPermission(Permissions.BYPASS_DELAY);
+	}
+
 	public void hug(MarriagePlayer player, MarriagePlayer partner)
 	{
-		HugEvent event = new HugEvent(player, player.getMarriageData(partner));
-		Bukkit.getPluginManager().callEvent(event);
-		if(!event.isCancelled())
+		if(canHugAgain(player))
 		{
-			player.sendMessage(messageHugged);
-			partner.sendMessage(messageGotHugged);
+			HugEvent event = new HugEvent(player, player.getMarriageData(partner));
+			Bukkit.getPluginManager().callEvent(event);
+			if(!event.isCancelled())
+			{
+				player.setLastHugTime(System.currentTimeMillis());
+				player.sendMessage(messageHugged);
+				partner.sendMessage(messageGotHugged);
+			}
+		}
+		else
+		{
+			player.send(messageWait, waitTime / 1000, (player.getLastKissTime() - System.currentTimeMillis() + waitTime) / 1000.0);
 		}
 	}
 }
