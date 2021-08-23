@@ -29,6 +29,7 @@ import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Version;
+import at.pcgamingfreaks.YamlFileUpdateMethod;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -44,9 +45,25 @@ public class Config extends Configuration implements DatabaseConfiguration
 {
 	public Config(final @NotNull JavaPlugin plugin)
 	{
-		super(plugin, MagicValues.CONFIG_VERSION, MagicValues.CONFIG_VERSION);
-		languageKey = "Language.Language";
-		languageUpdateKey = "Language.UpdateMode";
+		super(plugin, new Version(MagicValues.CONFIG_VERSION), new Version(MagicValues.CONFIG_VERSION));
+	}
+
+	@Override
+	public @NotNull String getLanguageKey()
+	{
+		return "Language.Language";
+	}
+
+	@Override
+	public @NotNull String getLanguageUpdateModeKey()
+	{
+		return "Language.UpdateMode";
+	}
+
+	@Override
+	protected @Nullable YamlFileUpdateMethod getYamlUpdateMode()
+	{
+		return YamlFileUpdateMethod.UPGRADE;
 	}
 
 	@Override
@@ -68,6 +85,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 	}
 
+	@SuppressWarnings("SameParameterValue")
 	private Set<GameMode> getGameModes(final @NotNull String key, final @Nullable GameMode fallback)
 	{
 		List<GameMode> modes = getConfigE().getStringList(key, new ArrayList<>(0)).stream()
@@ -600,13 +618,19 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		boolean useBungee = getConfigE().getBoolean("Misc.UseBungeeCord", false);
 		boolean spigotUsesBungee = Utils.detectBungeeCord();
+		boolean shareableDB = getDatabaseType().equals("mysql") || getDatabaseType().equals("global");
 		if(useBungee && !spigotUsesBungee)
 		{
-			logger.warning("You have BungeeCord enabled, but it looks like you have not enabled it in your spigot.yml! You probably should check your configuration.");
+			logger.warning("You have BungeeCord enabled for the plugin, but it looks like you have not enabled it in your spigot.yml! You probably should check your configuration.");
 		}
-		else if(!useBungee && spigotUsesBungee && getDatabaseType().equals("mysql"))
+		else if(!useBungee && spigotUsesBungee && shareableDB)
 		{
-			logger.warning("Your server is running behind a BungeeCord server. If you are using the plugin please make sure to also enable the 'UseBungeeCord' config option.");
+			logger.warning("Your server is running behind a BungeeCord server. If you are using the plugin on more than one server with a shared database, please make sure to also enable the 'UseBungeeCord' config option.");
+		}
+		else if(useBungee && !shareableDB)
+		{
+			logger.info("You have enabled BungeeCord mode for the plugin, but are not using a shared MySQL database.");
+			return false; // No need to enable BungeeCord mode if the database does not support it
 		}
 		return useBungee;
 	}

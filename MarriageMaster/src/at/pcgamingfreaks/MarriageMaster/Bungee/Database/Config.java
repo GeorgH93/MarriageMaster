@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
+import at.pcgamingfreaks.Version;
 import at.pcgamingfreaks.YamlFileManager;
 
 import net.md_5.bungee.api.plugin.Plugin;
@@ -38,7 +39,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	@Override
 	protected void doUpgrade(YamlFileManager oldConfig)
 	{
-		if(oldConfig.getVersion() < MagicValues.CONFIG_PRE_V2_VERSIONS)
+		if(oldConfig.version().olderThan(new Version(MagicValues.CONFIG_PRE_V2_VERSIONS)))
 		{
 			try
 			{
@@ -81,8 +82,8 @@ public class Config extends Configuration implements DatabaseConfiguration
 		else
 		{
 			Map<String, String> reMappings = new HashMap<>();
-			if(oldConfig.getVersion() < 101) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
-			if(oldConfig.getVersion() < 102) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
+			if(oldConfig.version().olderThan("101")) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
+			if(oldConfig.version().olderThan("102")) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			super.doUpgrade(oldConfig, reMappings, oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)"));
 		}
 	}
@@ -149,12 +150,12 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public Set<String> getTPBlackListedServersFrom()
 	{
-		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedFrom", new LinkedList<>())));
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedFrom", new ArrayList<>(0))));
 	}
 
 	public Set<String> getTPBlackListedServersTo()
 	{
-		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedTo", new LinkedList<>())));
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Teleport.BlockedTo", new ArrayList<>(0))));
 	}
 	//endregion
 
@@ -171,12 +172,12 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public Set<String> getHomeBlackListedServersFrom()
 	{
-		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedFrom", new LinkedList<>())));
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedFrom", new ArrayList<>(0))));
 	}
 
 	public Set<String> getHomeBlackListedServersTo()
 	{
-		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedTo", new LinkedList<>())));
+		return new HashSet<>(toLowerCase(getConfigE().getStringList("Home.BlockedTo", new ArrayList<>(0))));
 	}
 	//endregion
 
