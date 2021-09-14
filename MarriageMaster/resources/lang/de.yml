@@ -15,11 +15,15 @@ Language:
     PlayersNotMarried: "&cDie Spieler sind nicht verheiratet!"
     MarriageNotExact: "&cEs tut uns leid, aber es gibt keine Partnerschaft, welche auf deine Anfrage zutrifft!"
     JoinLeaveInfo:
+      # Only used for players with 1 partner
       PartnerOnline: "&aDein Partner ist online."
+      # Only used for players with 1 partner
       PartnerOffline: "&7Dein Partner ist offline."
+      # Only used for players with more than 1 partner
       AllPartnersOffline: "&7Alle deine Partner sind offline."
+      # Only used for players with more than 1 partner
       PartnerOnlineMulti: "&aFolgende deiner Partner sind online: &r&f{OnlinePartners}"
-      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!  No JSON!!!
+      # Placeholders: {Name}, {DisplayName}.    Keep in mind display names can contain colors!  No JSON!!!
       MultiOnlineFormat: "{DisplayName}"
       # No JSON!!!
       MultiOnlineSeparator: "&r, "
@@ -43,20 +47,20 @@ Language:
       # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
       Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
     Gift:
-      OnlyInSurvival: "&cDu kannst deinem Partner nur im Survival-Modus Items schenken."
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedSender: "&cDu kannst deinem Partner in deinem aktuellen Game-Mode keine Items schenken."
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedReceiver: "&cDein Partner kann in aktuellen Game-Mode keine Items empfangen."
       NoItemInHand: "&cDu hast kein Item in der Hand."
       PartnerInvFull: "&cDein Partner hat keinen freien Platz in seinem Rucksack."
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"Du hast deinem Partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
-      # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
+      # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemReceived: "[{\"text\":\"Dein Partner hat dir \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" gesendet.\"}]"
       WorldNotAllowed: "&cDein Partner ist in einer Welt in der es nicht erlaubt ist Geschenke zu empfangen."
       ItemNotAllowed: "&cEs ist dir nicht erlaubt {ItemName} &cdeinem Partner zu schenken."
       Request:
+        # Placeholders: {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
         Notification: "[\"\",{\"text\":\"{DisplayName}&r will dir \"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\" schenken. Nimm das Geschenk mit \"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" an oder lehne es mit \"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\" ab.\"}]"
         WaitForConfirmation: "Geschenks-Anfrage an deinen Partner gesendet."
         Denied: "Du hast das Geschenk von deinem Partner abgelehnt."
@@ -65,6 +69,7 @@ Language:
         CanceledPartner: "Dein Partner hat seine Geschenks-Anfrage abgebrochen."
         CanceledDisconnectRequester: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
         CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
+        RefundInvFull: "&cDein Inventar ist voll, übrige Items von deinem Geschenk fallen auf dem Boden!"
     Home:
       Deleted: "&aDein Zuhause wurde erfolgreich gelöscht."
       PlayerNoHome: "&cDer Spieler hat noch kein Zuhause."
@@ -87,6 +92,8 @@ Language:
       GotHugged: "&eDein Partner hat dich umarmt!"
       GotHugged_SendMethod: "action_bar"
       TooFarAway: "&cDu bist zu weit entfernt um deinen Partner zu umarmen. (Maximal {Distance} Blöcke)"
+      # Placeholders: {Time}, {TimeLeft} in seconds
+      Wait: "&cDu musst {Time} Sekunden warten bevor du deinen Partner erneut umarmen kannst."
     Seen:
       # Placeholders: {Name}, {DisplayName}
       CurrentlyOnline: "{DisplayName}&r ist zur Zeit &aonline&r."
@@ -95,17 +102,19 @@ Language:
       # No Json!!!
       DateFormat: "dd.MM.yyyy 'um' HH:mm:ss"
     List:
+      # Placeholders: {Player1Name}, {Player1DisplayName}, {Player2Name}, {Player2DisplayName}, {Surname}, {MagicHeart}
       Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
       NoMarriedPlayers: "&cEs gibt keine verheirateten Spieler."
       Headline: "&eListe der verheirateten Spieler&r&f - &r&6Seite {CurrentPage}/{MaxPage}&r&f - &r&7/{MainCommand} {SubCommand} <page>"
       Footer: "[{\"text\":\"<<< Vorherige Seite <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Seite {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Nächste Seite >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     ListPriests:
       Format: "&2{PriestDisplayName}"
-      NoMarriedPlayers: "&cEs sind gerade keine Priester online."
+      NoPriestsOnline: "&cEs sind gerade keine Priester online."
       Headline: "&eListe an Priestern&r&f - &r&6Seite {CurrentPage}/{MaxPage}&r&f - &r&7/{MainCommand} {SubCommand} <page>"
       Footer: "[{\"text\":\"<<< Vorherige Seite <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Seite {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Nächste Seite >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "&cDu kannst deinem Partner nicht weh tun wenn du wenn PvP nicht aktiviert ist."
+      IsDisabled_SendMethod: "action_bar"
       On: "&aDu hast PvP mit mit deinem Partner nun aktiviert."
       Off: "&aDu hast PvP mit mit deinem Partner nun deaktiviert."
     TP:
@@ -219,7 +228,7 @@ Language:
     Admin:
       Reloading: "&1Lade neu ..."
       Reloaded: "&1Neu geladen!"
-      ReloadingDatabase: "&1Datenbank wird neu geladen ..."
+      ReloadingDatabase: '&1Datenbank wird neu geladen ...'
       CheckingForUpdates: "&1Suche Updates ..."
       Updated: "&ePlugin aktualisiert. Es wird nach dem nächsten Neustart/Reload neu geladen."
       NoUpdate: "&6Kein Plugin-Update verfügbar."
@@ -295,6 +304,7 @@ Language:
       SetPriest: "Macht aus einem Spieler einen/keinen Priester."
       Reload: "Lädt die Konfigurationsdatei vom Plugin neu."
       Version: "Gibt die Versionsdetails über das Plugin und seine Abhängigkeiten aus."
+# The fist option in the list will be the one displayed in the commands help
 Command:
   Switches:
     On:
@@ -327,6 +337,7 @@ Command:
       - entfernen
   Main:
     - marry
+    - heiraten
   Backpack:
     - backpack
     - bp
@@ -390,10 +401,10 @@ Command:
   Divorce:
     - divorce
     - scheiden
-  Update:
-    - update
   SetPriest:
     - setpriest
+  Update:
+    - update
   Version:
     - version
   Accept:
@@ -407,8 +418,11 @@ Command:
     - deny
     - ablehnen
 Dialog:
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
   DoYouWant: "Willst du, {Player1Name}, {Player2Name} auf diesem Server heiraten?"
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
   AndDoYouWant: "Und willst du, {Player2Name}, {Player1Name} auf diesem Server heiraten?"
+  # Placeholders: {Planer1Name}, {Player1DisplayName}, {Planer2Name}, {Player2DisplayName}
   Married: "Ich erkläre euch hiermit zu Braut und Bräutigam. Ihr dürft euch nun küssen."
   YesIWant: "ja, ich will!"
   NoIDontWant: "Nein, ich will nicht!"
@@ -449,11 +463,12 @@ Placeholders:
     # Order: x, y, z
     Married: "%1$.1f %2$.1f %3$.1f"
 
+
 # The name of the language represented by the language file
 LanguageName: "German"
 # The author of the language file
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 104
+Version: 107
 Revision: 1
