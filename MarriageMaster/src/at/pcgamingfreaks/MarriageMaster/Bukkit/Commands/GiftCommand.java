@@ -41,12 +41,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 public class GiftCommand extends MarryCommand
 {
 	private final Message messageNoItemInHand, messagePartnerInvFull, messageItemSent, messageItemReceived, messageWorldNotAllowed, messageItemNotAllowed, messageGameModeNotAllowedSender, messageGameModeNotAllowedReceiver;
-	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner, messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
+	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner, messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget, messageRequestRefundInvFull;
 	private final double range;
 	private final boolean blacklistEnabled, requireConfirmation;
 	private final ItemNameResolver itemNameResolver;
@@ -75,6 +76,7 @@ public class GiftCommand extends MarryCommand
 		messageRequestCanceledPartner             = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledPartner").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 		messageRequestCanceledDisconnectRequester = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
 		messageRequestCanceledDisconnectTarget    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
+		messageRequestRefundInvFull               = plugin.getLanguage().getMessage("Ingame.Gift.Request.RefundInvFull");
 
 		range                   = plugin.getConfiguration().getRangeSquared(Range.Gift);
 		allowedSendGameModes    = plugin.getConfiguration().getGiftAllowedGameModes();
@@ -274,7 +276,12 @@ public class GiftCommand extends MarryCommand
 
 		private void refund()
 		{
-			sender.getPlayerOnline().getInventory().addItem(item);
+			Player player = sender.getPlayerOnline();
+			if(player == null) return;
+			Map<Integer, ItemStack> left = player.getInventory().addItem(item);
+			if(left.isEmpty()) return;
+			left.values().forEach(i -> player.getWorld().dropItemNaturally(player.getLocation(), i));
+			messageRequestRefundInvFull.send(player);
 		}
 	}
 }

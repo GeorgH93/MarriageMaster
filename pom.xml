@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>2.4.3-RC3</revision>
+		<revision>2.4.3-RC4</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
@@ -15,7 +15,7 @@
 
 		<configFileVersion>104</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
-		<languageFileVersion>106</languageFileVersion>
+		<languageFileVersion>107</languageFileVersion>
 	</properties>
 
 	<scm>
