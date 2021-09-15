@@ -70,6 +70,7 @@ Language:
         CanceledDisconnectRequester: "Your partner went offline. Gift request canceled. Your item has been refunded."
         CanceledDisconnectTarget: "Your partner went offline. Gift request canceled."
         RefundInvFull: "&cYour inventory is full, dropped leftover gift items on the ground!"
+        PartnerAlreadyHasAnOpenRequest: "&cYour partner already has an open request. Please wait from them to accept or deny it first."
     Home:
       Deleted: "&aHome successfully deleted."
       PlayerNoHome: "&cThe player doesn't have a home yet."

@@ -70,6 +70,7 @@ Language:
         CanceledDisconnectRequester: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
         CanceledDisconnectTarget: "Dein Partner ist offline gegangen. Die Geschenks-Anfrage wurde abgebrochen."
         RefundInvFull: "&cDein Inventar ist voll, übrige Items von deinem Geschenk fallen auf dem Boden!"
+        PartnerAlreadyHasAnOpenRequest: "&cDein Partner hat bereits eine offene anfrage. Bitte warte bis die Anfrage angenommen oder abgelehnt wurde."
     Home:
       Deleted: "&aDein Zuhause wurde erfolgreich gelöscht."
       PlayerNoHome: "&cDer Spieler hat noch kein Zuhause."
@@ -470,5 +471,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 107
+Version: 108
 Revision: 1
