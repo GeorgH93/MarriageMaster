@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer;
@@ -59,6 +60,10 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 		else
 		{
 			msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
+		}
+		if(msg == Language.NO_PLACEHOLDER)
+		{
+			plugin.getLogger().warning("No placeholder translation for key: " + p);
 		}
 		return msg.equals(NULL_MAGIC) ? null : msg;
 	}

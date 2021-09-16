@@ -30,6 +30,7 @@ import java.util.Map;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
+	public static final String NO_PLACEHOLDER = "&cPlaceholder not found";
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
 
 	public Language(@NotNull JavaPlugin plugin)
@@ -69,7 +70,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, "&cPlaceholder not found")).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
+		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
 	}
 
 	@Override
