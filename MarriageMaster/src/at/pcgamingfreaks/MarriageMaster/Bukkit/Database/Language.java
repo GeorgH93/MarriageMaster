@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
 {
-	public static final String NO_PLACEHOLDER = "&cPlaceholder not found";
+	public static final String NO_PLACEHOLDER = "&cMarriage Master placeholder not found! Check your language file!";
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
 
 	public Language(@NotNull JavaPlugin plugin)
