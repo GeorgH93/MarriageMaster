@@ -74,7 +74,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Getter private PrefixSuffixFormatter prefixSuffixFormatter = null;
 	private CommandManagerImplementation commandManager = null;
 	private MarriageManager marriageManager = null;
-	private PlaceholderManager placeholderManager = null;
+	@Getter private PlaceholderManager placeholderManager = null;
 
 	// Global Settings
 	@Getter private boolean selfMarriageAllowed = false, selfDivorceAllowed = false, surnamesEnabled = false, surnamesForced = false;

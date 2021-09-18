@@ -21,9 +21,16 @@ import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 
+import org.jetbrains.annotations.NotNull;
+
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
 import be.maximvdw.placeholderapi.PlaceholderReplacer;
+import me.clip.placeholderapi.PlaceholderHook;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.Map;
 
 public class MVdWPlaceholderReplacer implements PlaceholderReplacer, PlaceholderAPIHook
 {
@@ -64,4 +71,10 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 
 	@Override
 	public void close() {}
+
+	@Override
+	public void testPlaceholders(@NotNull BufferedWriter writer) throws IOException
+	{
+		//TODO
+	}
 }

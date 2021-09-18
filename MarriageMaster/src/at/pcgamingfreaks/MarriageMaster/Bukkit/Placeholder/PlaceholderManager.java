@@ -28,7 +28,10 @@ import at.pcgamingfreaks.Reflection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +39,7 @@ import java.util.TreeMap;
 
 public class PlaceholderManager
 {
-	private static MVdWPlaceholderReplacer mVdWPlaceholderReplacer = null; // The MVdWPlaceholder API dose not allow to unregister hooked placeholders
+	private static MVdWPlaceholderReplacer mVdWPlaceholderReplacer = null; // The MVdWPlaceholder API does not allow unregistering hooked placeholders
 	private final MarriageMaster plugin;
 	private final Map<String, at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer> placeholders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	private final List<PlaceholderAPIHook> hooks = new ArrayList<>(2);
@@ -173,5 +176,13 @@ public class PlaceholderManager
 			}
 		}
 		return placeholdersList;
+	}
+
+	public void testPlaceholders(final @NotNull BufferedWriter writer) throws IOException
+	{
+		for(PlaceholderAPIHook hook : hooks)
+		{
+			hook.testPlaceholders(writer);
+		}
 	}
 }

@@ -146,6 +146,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		registerSubCommand(new RequestAcceptCommand(plugin));
 		registerSubCommand(new RequestDenyCommand(plugin));
 		registerSubCommand(new RequestCancelCommand(plugin));
+		registerSubCommand(new DebugCommand(plugin));
 
 		switch(plugin.getConfiguration().getDefaultCommand())
 		{

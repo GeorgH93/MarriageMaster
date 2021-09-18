@@ -17,7 +17,14 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 public interface PlaceholderAPIHook
 {
 	void close();
+
+	void testPlaceholders(final @NotNull BufferedWriter writer) throws IOException;
 }

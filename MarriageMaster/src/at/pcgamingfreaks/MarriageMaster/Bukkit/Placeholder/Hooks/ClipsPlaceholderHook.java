@@ -22,11 +22,17 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class ClipsPlaceholderHook extends PlaceholderExpansion implements PlaceholderAPIHook
 {
@@ -98,7 +104,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	@Override
 	public String getIdentifier()
 	{
-		return plugin.getDescription().getName().toLowerCase();
+		return plugin.getDescription().getName().toLowerCase(Locale.ENGLISH);
 	}
 
 	@Override
@@ -123,5 +129,25 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	public boolean persist()
 	{
 		return true;
+	}
+
+	@Override
+	public void testPlaceholders(final @NotNull BufferedWriter writer) throws IOException
+	{
+		writer.append("\nPlaceholderAPI integration test:\n");
+		PlaceholderHook hook = PlaceholderAPI.getPlaceholders().get(getIdentifier());
+		//noinspection ObjectEquality
+		if(hook == this)
+		{
+			writer.append("Success!\n\n");
+		}
+		else if(hook instanceof ClipsPlaceholderHook)
+		{
+			writer.append("Failed! marriagemaster placeholders are hooked to the right class, but the wrong instance!");
+		}
+		else
+		{
+			writer.append("Failed! marriagemaster_ placeholders are linked to: " + hook.getClass().getName());
+		}
 	}
 }
