@@ -26,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import be.maximvdw.placeholderapi.PlaceholderReplaceEvent;
 import be.maximvdw.placeholderapi.PlaceholderReplacer;
-import me.clip.placeholderapi.PlaceholderHook;
+import be.maximvdw.placeholderapi.internal.PlaceholderPack;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Map;
+import java.lang.reflect.Field;
 
 public class MVdWPlaceholderReplacer implements PlaceholderReplacer, PlaceholderAPIHook
 {
@@ -57,7 +57,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 
 	public void set(MarriageMaster plugin, PlaceholderManager placeholderManager)
 	{
-		// Workaround cause we can't unregister from MVdWPlaceholders
+		// Workaround because we can't unregister from MVdWPlaceholders
 		this.plugin = plugin;
 		this.placeholderManager = placeholderManager;
 	}
@@ -70,11 +70,51 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 	}
 
 	@Override
-	public void close() {}
+	public void close()
+	{
+		placeholderManager = null;
+		plugin = null;
+	}
 
 	@Override
 	public void testPlaceholders(@NotNull BufferedWriter writer) throws IOException
 	{
-		//TODO
+		writer.append("\nMVdWPlaceholder integration test:\n");
+		int success = 0;
+		try
+		{
+			Field fieldCustomPlaceholders = PlaceholderAPI.class.getDeclaredField("customPlaceholders");
+			fieldCustomPlaceholders.setAccessible(true);
+			PlaceholderPack customPlaceholders = (PlaceholderPack) fieldCustomPlaceholders.get(null);
+			for(String placeholder : placeholderManager.getPlaceholdersList())
+			{
+				be.maximvdw.placeholderapi.internal.PlaceholderReplacer<?> replacer = customPlaceholders.getPlaceholderReplacer("{" + placeholder.toLowerCase() + "}");
+				if(replacer == null || replacer.getArguments() == null || replacer.getArguments().length == 0)
+				{
+					writer.append(placeholder).append(" not found in MVdWPlaceholder replacer map!\n");
+				}
+				else if(!(replacer.getArguments()[0] instanceof MVdWPlaceholderReplacer))
+				{
+					writer.append(placeholder).append(" not registered to Marriage Master! Class: ").append(replacer.getArguments()[0].getClass().getName()).append("\n");
+				}
+				else
+				{
+					success++;
+				}
+			}
+			if(success == placeholderManager.getPlaceholdersList().size())
+			{
+				writer.append("Success!\n\n");
+			}
+			else
+			{
+				writer.append("Failed! ").append(String.valueOf(success)).append(" of ").append(String.valueOf(placeholderManager.getPlaceholdersList().size())).append(" placeholders are linked correctly!\n\n");
+			}
+		}
+		catch(NoSuchFieldException | IllegalAccessException | NullPointerException e)
+		{
+			writer.append("Failed! ").append(e.getMessage()).append("\n\n");
+			e.printStackTrace();
+		}
 	}
 }

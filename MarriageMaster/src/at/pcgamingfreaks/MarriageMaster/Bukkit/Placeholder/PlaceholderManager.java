@@ -54,7 +54,7 @@ public class PlaceholderManager
 		if(isPluginEnabled("MVdWPlaceholderAPI"))
 		{
 			if(mVdWPlaceholderReplacer == null) mVdWPlaceholderReplacer = new MVdWPlaceholderReplacer(plugin, this);
-			mVdWPlaceholderReplacer.set(plugin, this); // Workaround cause we can't unregister from MVdWPlaceholders
+			else mVdWPlaceholderReplacer.set(plugin, this); // Workaround because we can't unregister from MVdWPlaceholders
 			hooks.add(mVdWPlaceholderReplacer);
 		}
 		//endregion
@@ -77,7 +77,6 @@ public class PlaceholderManager
 		{
 			hook.close();
 		}
-		if(mVdWPlaceholderReplacer != null) mVdWPlaceholderReplacer.set(null, null);
 		hooks.clear();
 		placeholdersList.clear();
 		placeholders.clear();

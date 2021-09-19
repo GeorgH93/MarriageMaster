@@ -146,7 +146,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 			if(config.useUpdater()) updater.update(); // Check for updates
 			unload();
 		}
-		if(placeholderManager != null) placeholderManager.close();
 		setInstance(null);
 		updater.waitForAsyncOperation();
 		getLogger().info(StringUtils.getPluginDisabledMessage("Marriage Master"));
