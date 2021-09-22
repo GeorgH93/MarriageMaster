@@ -22,6 +22,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.DivorceEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.DivorcedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.SurnameChangeEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.SurnameChangedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
@@ -221,11 +223,25 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			{
 				if(surname == null || isSurnameAvailable(surname))
 				{
-					((marriage.setSurname(surname)) ? messageSurnameSuccess : messageSurnameFailed).send(changer);
-				}
-				else
-				{
-					messageSurnameAlreadyUsed.send(changer);
+					SurnameChangeEvent event = new SurnameChangeEvent(marriage, surname, changer);
+					plugin.getServer().getPluginManager().callEvent(event);
+					if(!event.isCancelled())
+					{
+						surname = event.getNewSurname();
+						if(marriage.setSurname(surname))
+						{
+							messageSurnameSuccess.send(changer);
+							plugin.getServer().getPluginManager().callEvent(new SurnameChangedEvent(marriage, surname, changer));
+						}
+						else
+						{
+							messageSurnameFailed.send(changer);
+						}
+					}
+					else
+					{
+						messageSurnameAlreadyUsed.send(changer);
+					}
 				}
 			}
 			else
