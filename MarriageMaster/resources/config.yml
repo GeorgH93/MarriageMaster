@@ -188,7 +188,7 @@ Range:
   BonusXP: 10
   Heal: 3
 
-# This settings will be used for all teleports (home and to partner)
+# These settings will be used for all teleports (home and to partner)
 Teleport:
   Delay: false
   # Time in seconds
@@ -216,6 +216,7 @@ Economy:
   Gift: 10.0
   HomeTp: 25.0
   SetHome: 100.0
+  ChangeSurname: 0
 
 # Allows the execution of commands on certain events related to the marriage
 CommandExecutor:

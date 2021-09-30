@@ -226,6 +226,7 @@ Language:
       SetHomePaid: "&aDu hast {Cost} {CurrencyName} um dein Zuhause zu setzen gezahlt ({Remaining} {CurrencyName} verbleibend)."
       TpPaid: "&aDu hast {Cost} {CurrencyName} für die Teleportation gezahlt ({Remaining} {CurrencyName} verbleibend)."
       GiftPaid: "&aDu hast {Cost} {CurrencyName} gezahlt um ein Item an deinen Partner zu verschenken ({Remaining} {CurrencyName} verbleibend)."
+      SurnameChangePaid: "&aDu hast {Cost} {CurrencyName} gezahlt um einen Nachnamen zu ändern ({Remaining} {CurrencyName} verbleibend)."
     Admin:
       Reloading: "&1Lade neu ..."
       Reloaded: "&1Neu geladen!"
@@ -471,5 +472,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 108
+Version: 109
 Revision: 1

@@ -226,6 +226,7 @@ Language:
       SetHomePaid: "&aYou paid {Cost} {CurrencyName} to set your Home ({Remaining} {CurrencyName} left)."
       TpPaid: "&aYou paid {Cost} {CurrencyName} for the Teleport ({Remaining} {CurrencyName} left)."
       GiftPaid: "&aYou have paid {Cost} {CurrencyName} for gifting an item to your partner ({Remaining} {CurrencyName} left)."
+      SurnameChangePaid: "&aYou have paid {Cost} {CurrencyName} to change a surename ({Remaining} {CurrencyName} left)."
     Admin:
       Reloading: "&1Reloading ..."
       Reloaded: "&1Reloaded!"

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,12 +34,15 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 public class EconomyHandler implements Listener
 {
-	private double costMarry, costDivorce, costTp, costHome, costSetHome, costGift;
-	private Message messageNotEnough, messagePartnerNotEnough, messageMarriagePaid, messageDivorcePaid, messagePriestMarryNotEnough, messagePriestDivorceNotEnough, messageTpPaid, messageSetHomePaid, messageHomePaid, messageGiftPaid;
+	private final MarriageMaster plugin;
+	private double costMarry, costDivorce, costTp, costHome, costSetHome, costGift, costChangeSurname;
+	private Message messageNotEnough, messagePartnerNotEnough, messageMarriagePaid, messageDivorcePaid, messagePriestMarryNotEnough, messagePriestDivorceNotEnough, messageTpPaid, messageSetHomePaid, messageHomePaid;
+	private Message messageGiftPaid, messageSurnameChangePaid;
 	private Economy econ = null;
 
 	public EconomyHandler(MarriageMaster plugin)
 	{
+		this.plugin = plugin;
 		if(!setupEconomy(plugin))
 		{
 			plugin.getLogger().info(ConsoleColor.RED + "Failed to connect with Vault's economy provider. Disable economy." + ConsoleColor.RESET);
@@ -46,12 +50,13 @@ public class EconomyHandler implements Listener
 		}
 
 		// Load costs
-		costMarry   = plugin.getConfiguration().getEconomyValue("Marry") / 2.0;
-		costDivorce = plugin.getConfiguration().getEconomyValue("Divorce") / 2.0;
-		costTp      = plugin.getConfiguration().getEconomyValue("Tp");
-		costGift    = plugin.getConfiguration().getEconomyValue("Gift");
-		costHome    = plugin.getConfiguration().getEconomyValue("HomeTp");
-		costSetHome = plugin.getConfiguration().getEconomyValue("SetHome");
+		costMarry         = plugin.getConfiguration().getEconomyValue("Marry") / 2.0;
+		costDivorce       = plugin.getConfiguration().getEconomyValue("Divorce") / 2.0;
+		costTp            = plugin.getConfiguration().getEconomyValue("Tp");
+		costGift          = plugin.getConfiguration().getEconomyValue("Gift");
+		costHome          = plugin.getConfiguration().getEconomyValue("HomeTp");
+		costSetHome       = plugin.getConfiguration().getEconomyValue("SetHome");
+		costChangeSurname = plugin.getConfiguration().getEconomyValue("ChangeSurname");
 		// Load messages
 		messageNotEnough              = getMessage(plugin, "NotEnough").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{CurrencyName\\}", "%2\\$s");
 		messagePartnerNotEnough       = getMessage(plugin, "PartnerNotEnough");
@@ -63,6 +68,7 @@ public class EconomyHandler implements Listener
 		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
 		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
 		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageSurnameChangePaid      = getMessage(plugin, "SurnameChangePaid").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -185,5 +191,12 @@ public class EconomyHandler implements Listener
 	{
 		if(costSetHome <= 0) return;
 		if(!basicBillPlayer(event.getPlayer(), costSetHome, messageSetHomePaid)) event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onChangeSurname(SurnameChangeEvent event)
+	{
+		if(costChangeSurname <= 0 || !(event.getChangedBy() instanceof Player)) return;
+		if(!basicBillPlayer(plugin.getPlayerData((Player) event.getChangedBy()), costChangeSurname, messageSurnameChangePaid)) event.setCancelled(true);
 	}
 }
