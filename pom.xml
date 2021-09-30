@@ -13,7 +13,7 @@
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
 		<pcgfPluginLibVersion>1.0.33-SNAPSHOT</pcgfPluginLibVersion>
 
-		<configFileVersion>104</configFileVersion>
+		<configFileVersion>105</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
 		<languageFileVersion>109</languageFileVersion>
 	</properties>
