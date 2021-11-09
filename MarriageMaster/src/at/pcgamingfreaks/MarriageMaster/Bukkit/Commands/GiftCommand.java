@@ -118,6 +118,9 @@ public class GiftCommand extends MarryCommand
 		else[STANDALONE]*/
 		itemNameResolver = at.pcgamingfreaks.PluginLib.Bukkit.ItemNameResolver.getInstance();
 		/*end[STANDALONE]*/
+
+		// Make sure that the InventoryUtils are fully initialized. Otherwise, this will cause lag spike when the command is first used.
+		InventoryUtils.prepareTitleForOpenInventoryWithCustomTitle("ignore this");
 	}
 
 	@Override
@@ -148,7 +151,7 @@ public class GiftCommand extends MarryCommand
 				final Player bPartner = partner.getPlayerOnline();
 				if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
 				{
-					ItemStack its = MCVersion.isDualWieldingMC() ? bPlayer.getInventory().getItemInMainHand() : bPlayer.getInventory().getItemInHand();
+					ItemStack its = InventoryUtils.getItemInMainHand(bPlayer);
 					if(its == null || its.getType() == Material.AIR || its.getAmount() == 0)
 					{
 						messageNoItemInHand.send(sender);
