@@ -59,13 +59,13 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>17.0.0</version>
+			<version>22.0.0</version>
 		</dependency>
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.10</version>
+			<version>1.18.22</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
