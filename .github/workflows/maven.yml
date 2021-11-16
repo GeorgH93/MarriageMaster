@@ -8,8 +8,8 @@ on: [push, pull_request]
 jobs:
   buildAndTest:
     runs-on: ubuntu-latest
-    continue-on-error: true
     strategy:
+      fail-fast: false
       matrix:
         java-version:
           - 8
