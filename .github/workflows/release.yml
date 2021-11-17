@@ -35,7 +35,7 @@ jobs:
 
       - name: Build with Maven (Release)
         run: |
-          mvn -B -s .github/workflows/settings.xml clean package --file pom.xml -P Release
+          mvn -B -s .github/workflows/settings.xml clean install package --file pom.xml -P Release
           mv MarriageMaster/target/M*-Release.jar artifacts/
 
       - name: Upload the artifacts
