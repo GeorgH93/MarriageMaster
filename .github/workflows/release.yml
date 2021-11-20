@@ -25,17 +25,17 @@ jobs:
 
       - name: Build with Maven
         run: |
-          mvn -B -s .github/workflows/settings.xml install package --file pom.xml
+          mvn -B -s .github/workflows/settings.xml install --file pom.xml
           cp MarriageMaster/target/M*.jar artifacts/
 
       - name: Build with Maven (Standalone)
         run: |
-          mvn -B -s .github/workflows/settings.xml clean install package --file pom.xml -P Standalone,ExcludeBadRabbit
+          mvn -B -s .github/workflows/settings.xml clean install --file pom.xml -P Standalone,ExcludeBadRabbit
           mv MarriageMaster/target/M*-Standalone.jar artifacts/
 
       - name: Build with Maven (Release)
         run: |
-          mvn -B -s .github/workflows/settings.xml clean install package --file pom.xml -P Release
+          mvn -B -s .github/workflows/settings.xml clean package --file pom.xml -P Release
           mv MarriageMaster/target/M*-Release.jar artifacts/
 
       - name: Upload the artifacts
