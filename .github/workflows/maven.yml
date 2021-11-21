@@ -21,7 +21,7 @@ jobs:
       - name: Set up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v2
         with:
-          distribution: adopt
+          distribution: temurin
           java-version: ${{ matrix.java-version }}
       - name: Build and test with maven
         run: mvn -B -s .github/workflows/settings.xml clean package --file pom.xml
