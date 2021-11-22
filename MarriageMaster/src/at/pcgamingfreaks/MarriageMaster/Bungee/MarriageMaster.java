@@ -60,10 +60,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 
 	// Global Settings
 	private boolean multiMarriage = false;
-	private boolean selfMarriage = false;
-	private final boolean selfDivorce = false;
-	private boolean surnamesEnabled = false;
-	private boolean surnamesForced = false;
+	@Getter private boolean selfMarriageAllowed = false, surnamesEnabled = false, surnamesForced = false;
 
 
 	// Global Translations
@@ -109,7 +106,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	private boolean load()
 	{
 		// Loading base Data
-		if(!config.isLoaded() || !language.load(config.getLanguage(), config.getLanguageUpdateMode()))
+		if(!config.isLoaded() || !language.load(config))
 		{
 			// If we ever reach this code there must be a serious problem, someone probably has put an outdated version of one of our libs into his problem.
 			getLogger().warning(ConsoleColor.RED + "A critical error occurred! The plugin failed to load!" + ConsoleColor.RESET);
@@ -124,10 +121,10 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 			return false;
 		}
 		// Load data
-		surnamesEnabled = config.isSurnamesEnabled();
-		multiMarriage   = config.areMultiplePartnersAllowed();
-		selfMarriage    = config.isSelfMarriageAllowed();
-		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
+		surnamesEnabled     = config.isSurnamesEnabled();
+		multiMarriage       = config.areMultiplePartnersAllowed();
+		selfMarriageAllowed = config.isSelfMarriageAllowed();
+		surnamesForced      = config.isSurnamesForced() && surnamesEnabled;
 
 		// Load global translations
 		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
@@ -210,27 +207,9 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	}
 
 	@Override
-	public boolean isSelfMarriageAllowed()
-	{
-		return selfMarriage;
-	}
-
-	@Override
 	public boolean isSelfDivorceAllowed()
 	{
-		return selfDivorce;
-	}
-
-	@Override
-	public boolean isSurnamesEnabled()
-	{
-		return surnamesEnabled;
-	}
-
-	@Override
-	public boolean isSurnamesForced()
-	{
-		return surnamesForced;
+		return false;
 	}
 
 	@Override

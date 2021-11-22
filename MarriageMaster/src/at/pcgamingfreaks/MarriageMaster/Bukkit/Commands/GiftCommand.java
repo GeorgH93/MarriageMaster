@@ -143,7 +143,7 @@ public class GiftCommand extends MarryCommand
 			else
 			{
 				Marriage mPD = player.getNearestPartnerMarriageData();
-				if(mPD == null) { return; } // Should never happen, but it's always good to be save!
+				if(mPD == null) { return; } // Should never happen, but it's always good to be safe!
 				partner = player.getNearestPartnerMarriageData().getPartner(player);
 			}
 			if(partner != null && partner.isOnline())
