@@ -11,6 +11,10 @@
       <w>powermock</w>
       <w>sonatype</w>
       <w>yaml</w>
+      <w>xdoclint</w>
+      <w>herocraftonline</w>
+      <w>mvdw</w>
+      <w>munge</w>
     </words>
   </dictionary>
 </component>
