@@ -31,5 +31,5 @@ import java.lang.annotation.Target;
 public @interface PlaceholderFormatted
 {
 	Class<? extends PlaceholderReplacerBaseValue> formattedClass();
-	@RegExp String formatRuleDetectionRegex() default ".*%(?:\\d+\\$)?[+-]?(?:[ 0]|'.{1})?-?\\d*(?:\\.\\d+)?[bcdeEufFgGosxX].*";
+	@SuppressWarnings("SpellCheckingInspection") @RegExp String formatRuleDetectionRegex() default ".*%(?:\\d+\\$)?[+-]?(?:[ 0]|'.{1})?-?\\d*(?:\\.\\d+)?[bcdeEufFgGosxX].*";
 }

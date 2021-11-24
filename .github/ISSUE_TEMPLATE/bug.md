@@ -36,7 +36,7 @@ The log can contain user related information like ip, name or uuid, so please re
 ```
 
 **Plugin config (optional)**
-<!-- Some problems are depending on the used configuration. To enable us to help you faster you can provide us with some details about your config or the full config.yml file (please use https://gist.github.com/ to upload your config.yml, make sure to remove confidential informations like database passwords!) -->
+<!-- Some problems are depending on the used configuration. To enable us to help you faster you can provide us with some details about your config or the full config.yml file (please use https://gist.github.com/ to upload your config.yml, make sure to remove confidential information like database passwords!) -->
 ```
 
 <!-- Replace this with details about your config -->

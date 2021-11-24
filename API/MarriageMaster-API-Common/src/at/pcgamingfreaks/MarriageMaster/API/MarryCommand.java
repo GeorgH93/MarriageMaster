@@ -78,10 +78,10 @@ public interface MarryCommand <PLUGIN extends MarriageMasterPlugin, COMMAND_SEND
 	void close();
 
 	/**
-	 * Allows to register commands that have to do with the current command (to be registered at the same time as the command).
+	 * Allows registering commands that have to do with the current command (to be registered at the same time as the command).
 	 * Example: /marry chat and /marry chattoggle.
 	 *
-	 * Also allows to execute code after the command is registered.
+	 * Also allows executing code after the command is registered.
 	 */
 	void registerSubCommands();
 

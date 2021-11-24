@@ -98,7 +98,7 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 	                                  "{FHomeZ} DOUBLE NOT NULL, {FHomeYaw} FLOAT NOT NULL DEFAULT 0, {FHomePitch} FLOAT NOT NULL DEFAULT 0,{FHomeWorld} VARCHAR(45) NOT NULL DEFAULT 'world'," +
 	                                  "CONSTRAINT fk_{THomes}_{TMarriages}_{FMarryID} FOREIGN KEY ({FMarryID}) REFERENCES {TMarriages} ({FMarryID}) ON DELETE CASCADE ON UPDATE CASCADE);");
 
-			DBTools.runStatement(connection, "INSERT OR REPLACE INTO `mariagemaster_metadata` (`key`, `value`) VALUES ('db_version',?);", platform.getPluginVersion());
+			DBTools.runStatement(connection, "INSERT OR REPLACE INTO `marriagemaster_metadata` (`key`, `value`) VALUES ('db_version',?);", platform.getPluginVersion());
 		}
 		catch(SQLException e)
 		{
@@ -109,8 +109,26 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 
 	private @NotNull Version getDatabaseVersion(final @NotNull Statement stmt) throws SQLException
 	{
-		stmt.execute("CREATE TABLE IF NOT EXISTS `mariagemaster_metadata` (`key` CHAR(32) PRIMARY KEY NOT NULL, `value` TEXT);");
-		try(ResultSet rs = stmt.executeQuery("SELECT `value` FROM `mariagemaster_metadata` WHERE `key`='db_version';"))
+		//region handle old table with typo
+		boolean tableWithTypoExists = false;
+		//noinspection SpellCheckingInspection
+		try(ResultSet rs = stmt.executeQuery("SELECT `name` FROM sqlite_master WHERE type='table' AND name='mariagemaster_metadata';"))
+		{
+			tableWithTypoExists = rs.next();
+		}
+		try
+		{
+			//noinspection SqlResolve
+			stmt.execute("ALTER TABLE `mariagemaster_metadata` RENAME TO `marriagemaster_metadata`;");
+		}
+		catch(SQLException ignored)
+		{
+			stmt.execute("DROP TABLE IF EXISTS `mariagemaster_metadata`");
+		}
+		//endregion
+
+		stmt.execute("CREATE TABLE IF NOT EXISTS `marriagemaster_metadata` (`key` CHAR(32) PRIMARY KEY NOT NULL, `value` TEXT);");
+		try(ResultSet rs = stmt.executeQuery("SELECT `value` FROM `marriagemaster_metadata` WHERE `key`='db_version';"))
 		{
 			if(rs.next()) return new Version(rs.getString("value"));
 		}

@@ -50,9 +50,9 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 		}
 		else
 		{
-			Map<String, String> remappings = new HashMap<>();
-			remappings.put("Command.Main", "Command.Marry");
-			super.doUpgrade(oldLang, remappings);
+			Map<String, String> remapping = new HashMap<>();
+			remapping.put("Command.Main", "Command.Marry");
+			super.doUpgrade(oldLang, remapping);
 		}
 	}
 

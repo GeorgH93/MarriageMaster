@@ -50,7 +50,7 @@ public class Database extends BaseDatabase<MarriageMaster, MarriagePlayerData, M
 	public void close()
 	{
 		plugin.getProxy().getPluginManager().unregisterListener(this);
-		unCacheStrategy.close(); // Killing the uncache strategie
+		unCacheStrategy.close(); // Killing the uncache strategy
 		super.close();
 	}
 

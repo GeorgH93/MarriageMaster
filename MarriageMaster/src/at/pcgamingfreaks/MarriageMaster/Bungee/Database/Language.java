@@ -43,9 +43,9 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	@Override
 	protected void doUpgrade(final @NotNull YamlFileManager oldLang)
 	{
-		Map<String, String> remappings = new HashMap<>();
-		remappings.put("Command.Main", "Command.Marry");
-		super.doUpgrade(oldLang, remappings);
+		Map<String, String> remapping = new HashMap<>();
+		remapping.put("Command.Main", "Command.Marry");
+		super.doUpgrade(oldLang, remapping);
 	}
 
 	@Override

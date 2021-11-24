@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class Permissions
 {
 	private static final String BASE = "marry.";

@@ -6,15 +6,15 @@
       <w>codemc</w>
       <w>delombok</w>
       <w>gson</w>
+      <w>herocraftonline</w>
       <w>hikari</w>
       <w>hmmss</w>
+      <w>munge</w>
+      <w>mvdw</w>
       <w>powermock</w>
       <w>sonatype</w>
-      <w>yaml</w>
       <w>xdoclint</w>
-      <w>herocraftonline</w>
-      <w>mvdw</w>
-      <w>munge</w>
+      <w>yaml</w>
     </words>
   </dictionary>
 </component>
