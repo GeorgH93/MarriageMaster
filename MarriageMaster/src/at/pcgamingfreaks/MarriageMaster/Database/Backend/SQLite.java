@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -116,14 +116,17 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 		{
 			tableWithTypoExists = rs.next();
 		}
-		try
+		if(tableWithTypoExists)
 		{
-			//noinspection SqlResolve
-			stmt.execute("ALTER TABLE `mariagemaster_metadata` RENAME TO `marriagemaster_metadata`;");
-		}
-		catch(SQLException ignored)
-		{
-			stmt.execute("DROP TABLE IF EXISTS `mariagemaster_metadata`");
+			try
+			{
+				//noinspection SqlResolve
+				stmt.execute("ALTER TABLE `mariagemaster_metadata` RENAME TO `marriagemaster_metadata`;");
+			}
+			catch(SQLException ignored)
+			{
+				stmt.execute("DROP TABLE IF EXISTS `mariagemaster_metadata`");
+			}
 		}
 		//endregion
 
