@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -40,6 +40,7 @@ import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Version;
 
 import org.bukkit.Location;
@@ -290,10 +291,13 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public @NotNull MarriagePlayer getPlayerData(@NotNull String name)
 	{
-		return getPlayerData(getServer().getOfflinePlayer(name));
+		Player player = getServer().getPlayer(name);
+		if(player != null) return getPlayerData(player);
+		MarriagePlayerData data = (MarriagePlayerData) getPlayerData(UUIDConverter.getUUIDCacheOnly(name, true));
+		data.setName(name);
+		return data;
 	}
 
 	@Override
