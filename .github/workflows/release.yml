@@ -46,6 +46,6 @@ jobs:
           args: 'artifacts/M*'
 
       - name: Publish to GitHub Packages Apache Maven
-        run: 'mvn deploy -pl API/MarriageMaster,MarriageMaster-API -s .github/workflows/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
+        run: 'mvn deploy -pl MarriageMaster,API/MarriageMaster-API -s .github/workflows/settings.xml "-DaltDeploymentRepository=github::default::https://maven.pkg.github.com/GeorgH93/MarriageMaster"'
         env:
           GITHUB_TOKEN: ${{ github.token }}
