@@ -61,7 +61,8 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 		{
 			msg = this.plugin.getLanguage().getTranslatedPlaceholder(PLACEHOLDER_DEFAULT_KEY + placeholderKey);
 		}
-		if(msg == Language.NO_PLACEHOLDER)
+		//noinspection StringEquality
+		if(msg == Language.NO_PLACEHOLDER) // == is correct here! We want to check if it's the same instance, not value. No warning should be shown if the text is written in the language file
 		{
 			plugin.getLogger().warning("No placeholder translation for key: " + p);
 		}
