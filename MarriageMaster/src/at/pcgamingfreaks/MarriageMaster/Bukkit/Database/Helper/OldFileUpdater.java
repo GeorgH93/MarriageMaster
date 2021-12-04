@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ public final class OldFileUpdater
 								case "MadeAPriest": advancedConverter.put(helper + "SetPriest.YouMadeAPriest", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%s", "{Name}" + MessageColor.GREEN)); break;
 								case "UnMadeYouAPriest": advancedConverter.put(helper + "SetPriest.FiredYou", MessageColor.RED + oldYAML.getString(key).replaceAll("%s", "{Name}" + MessageColor.RED)); break;
 								case "UnMadeAPriest": advancedConverter.put(helper + "SetPriest.YouFiredAPriest", MessageColor.RED + oldYAML.getString(key).replaceAll("%s", "{Name}" + MessageColor.RED)); break;
-								case "PlayerNotMarried": advancedConverter.put(helper + "PlayerNotMarried", MessageColor.RED + oldYAML.getString(key));
+								case "PlayerNotMarried": advancedConverter.put(helper + "PlayerNotMarried", MessageColor.RED + oldYAML.getString(key)); break;
 								case "DivorcedPlayer": advancedConverter.put(helper + "Divorce.DivorcedPlayer", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{PriestDisplayName}" + MessageColor.GREEN).replaceAll("%2\\$s", "{PartnerDisplayName}" + MessageColor.GREEN)); break;
 								case "Divorced": advancedConverter.put(helper + "Divorce.Divorced", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Player1DisplayName}" + MessageColor.GREEN).replaceAll("%2\\$s", "{Player2DisplayName}" + MessageColor.GREEN)); break;
 								case "Confirm": advancedConverter.put(helper + "Marry.Confirm", oldYAML.getString(key)); break;
@@ -158,16 +158,16 @@ public final class OldFileUpdater
 						case "Economy": helper = "Language.Economy.";
 							switch(keys[2])
 							{
-								case "NotEnough": advancedConverter.put(helper + "NotEnough", MessageColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}"));
-								case "PartnerNotEnough": advancedConverter.put(helper + "PartnerNotEnough", MessageColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}"));
-								case "NotEnoughPriestInfo": advancedConverter.put(helper + "PriestMarryNotEnough", MessageColor.RED + oldYAML.getString(key));
-								case "DivNotEnoPriestI": advancedConverter.put(helper + "PriestDivorceNotEnough", MessageColor.RED + oldYAML.getString(key));
-								case "TPPaid": advancedConverter.put(helper + "TpPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
-								case "HomeTPPaid": advancedConverter.put(helper + "HomeTPPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
-								case "SetHomePaid": advancedConverter.put(helper + "SetHomePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
-								case "GiftPaid": advancedConverter.put(helper + "GiftPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
-								case "MarriagePaid": advancedConverter.put(helper + "MarriagePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
-								case "DivorcePaid": advancedConverter.put(helper + "DivorcePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}"));
+								case "NotEnough": advancedConverter.put(helper + "NotEnough", MessageColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}")); break;
+								case "PartnerNotEnough": advancedConverter.put(helper + "PartnerNotEnough", MessageColor.RED + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}")); break;
+								case "NotEnoughPriestInfo": advancedConverter.put(helper + "PriestMarryNotEnough", MessageColor.RED + oldYAML.getString(key)); break;
+								case "DivNotEnoPriestI": advancedConverter.put(helper + "PriestDivorceNotEnough", MessageColor.RED + oldYAML.getString(key)); break;
+								case "TPPaid": advancedConverter.put(helper + "TpPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
+								case "HomeTPPaid": advancedConverter.put(helper + "HomeTPPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
+								case "SetHomePaid": advancedConverter.put(helper + "SetHomePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
+								case "GiftPaid": advancedConverter.put(helper + "GiftPaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
+								case "MarriagePaid": advancedConverter.put(helper + "MarriagePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
+								case "DivorcePaid": advancedConverter.put(helper + "DivorcePaid", MessageColor.GREEN + oldYAML.getString(key).replaceAll("%1\\$s", "{Cost} {CurrencyName}").replaceAll("%2\\$s", "{Remaining} {CurrencyName}")); break;
 							}
 							break;
 					}
