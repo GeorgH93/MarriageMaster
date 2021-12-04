@@ -171,7 +171,8 @@ public class PvPCommand extends MarryCommand implements Listener
 			else
 			{
 				//noinspection ConstantConditions
-				help.add(new HelpData(getTranslatedName() + (player.getMarriageData().isPVPEnabled() ? helpOff : helpOn) , "", getDescription()));
+				boolean isPVPEnabled = player.getMarriageData().isPVPEnabled();
+				help.add(new HelpData(getTranslatedName() + (isPVPEnabled ? helpOff : helpOn) , "", (isPVPEnabled ? offCommand : onCommand).getDescription()));
 			}
 			return help;
 		}
