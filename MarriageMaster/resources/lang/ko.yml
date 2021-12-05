@@ -103,12 +103,12 @@ Language:
       Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
       NoMarriedPlayers: "&c결혼한 플레이어가 없습니다."
       Headline: "&e결혼한 플레이어 리스트&r&f - &r&6페이지 {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     ListPriests:
       Format: "&2{PriestDisplayName}"
       NoPriestsOnline: "&c접속 중인 성직자가 없습니다."
       Headline: "&e접속 중인 성직자&r&f - &r&6페이지 {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< 이전 <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" 페이지 {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> 다음 >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "&cPvP가 꺼져 있어 PvP를 할 수 없습니다."
       On: "&a파트너와 PvP를 할 수 있습니다."

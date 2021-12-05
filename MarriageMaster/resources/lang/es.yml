@@ -110,12 +110,12 @@ Language:
       Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
       NoMarriedPlayers: "&cNo hay jugadores casados."
       Headline: "&eLista de jugadores casados&r&f - &r&6mostrando la página {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< Previo <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Mostrando Página {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Siguiente >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< Previo <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Mostrando Página {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Siguiente >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     ListPriests:
       Format: "&2{PriestDisplayName}"
       NoPriestsOnline: "&cNo hay sacerdotes en línea."
       Headline: "&eSacerdotes en línea&r&f - &r&6mostrando la página {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< Previo <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Mostrando Página {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Siguiente >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< Previo <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Mostrando Página {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Siguiente >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "&cNo puedes dañar a tu pareja si tienes desactivado el PvP."
       IsDisabled_SendMethod: "action_bar"

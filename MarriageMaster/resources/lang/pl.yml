@@ -99,12 +99,12 @@ Language:
       Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
       NoMarriedPlayers: "&cNie ma graczy w związkach małżeńskich."
       Headline: "&eLista związków małżeńskich&r&f - &r&6strona {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     ListPriests:
       Format: "&2{PriestDisplayName}"
       NoPriestsOnline: "&cNie ma żadnego kapłana Online"
       Headline: "&eKapłani Online:&r&f - &r&6strona {CurrentPage}/{MaxPage}"
-      Footer: "[{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+      Footer: "[\"\",{\"text\":\"<<< Poprzednia <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Strona {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Następna >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
     PvP:
       IsDisabled: "&cNie możesz zranić partnera gdy masz wyłączone PvP."
       On: "&aWłączyłeś PvP ze swoim partnerem."
