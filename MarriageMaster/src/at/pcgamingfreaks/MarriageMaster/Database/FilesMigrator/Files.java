@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,12 +25,12 @@ import java.util.logging.Logger;
 
 public class Files
 {
-	private Set<String> priests = new HashSet<>();
-	private Set<MigrationMarriage> marriages = new HashSet<>();
-	private Map<String, YAML> marryMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	private Map<String, MigrationPlayer> player = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	private boolean useUUIDs = false;
-	private Logger logger = null;
+	private final Set<String> priests = new HashSet<>();
+	private final Set<MigrationMarriage> marriages = new HashSet<>();
+	private final Map<String, YAML> marryMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private final Map<String, MigrationPlayer> player = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private final boolean useUUIDs;
+	private final Logger logger;
 	private final File pluginDir;
 
 	public Files(boolean useUUIDs, Logger logger, File pluginDir)
@@ -134,9 +134,8 @@ public class Files
 		priests.clear();
 		if(file.exists())
 		{
-			try
+			try(Scanner scanner = new Scanner(file, "UTF-8"))
 			{
-				Scanner scanner = new Scanner(file, "UTF-8");
 				while(scanner.hasNextLine())
 				{
 					String line = scanner.nextLine();

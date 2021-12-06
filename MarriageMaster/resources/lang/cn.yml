@@ -103,12 +103,12 @@ Language:
       Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
       NoMarriedPlayers: "&c没有结婚的玩家。"
       Headline: "列表 {CurrentPage} / {MaxPage}"
-      Footer: "[{\"text\":\"［上一页］ \",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {PrevPage}”\"}},{\"text\":\" ----- {CurrentPage}/{MaxPage} ------ \"},{\"text\":\"［下一页］\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {NextPage}”\"}}]"
+      Footer: "[\"\",{\"text\":\"［上一页］ \",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {PrevPage}”\"}},{\"text\":\" ----- {CurrentPage}/{MaxPage} ------ \"},{\"text\":\"［下一页］\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {NextPage}”\"}}]"
     ListPriests:
       Format: "&2牧师 {PriestDisplayName}"
       NoPriestsOnline: "&c没有在线的牧师。"
       Headline: "列表 {CurrentPage} / {MaxPage}"
-      Footer: "[{\"text\":\"［上一页］ \",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {PrevPage}”\"}},{\"text\":\" ----- {CurrentPage}/{MaxPage} ------ \"},{\"text\":\"［下一页］\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {NextPage}”\"}}]"
+      Footer: "[\"\",{\"text\":\"［上一页］ \",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {PrevPage}”\"}},{\"text\":\" ----- {CurrentPage}/{MaxPage} ------ \"},{\"text\":\"［下一页］\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"命令“/{MainCommand} {SubCommand} {NextPage}”\"}}]"
     PvP:
       IsDisabled: "&c关闭 玩家对抗玩家 则不会误伤伴侣。"
       IsDisabled_SendMethod: "action_bar"
