@@ -51,7 +51,7 @@ public class HugCommand extends MarryCommand
 		messageHugged     = plugin.getLanguage().getMessage("Ingame.Hug.Hugged");
 		messageGotHugged  = plugin.getLanguage().getMessage("Ingame.Hug.GotHugged");
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").replaceAll("\\{Distance}", "%.1f");
-		messageWait       = plugin.getLanguage().getMessage("Ingame.Hug.Wait");
+		messageWait       = plugin.getLanguage().getMessage("Ingame.Hug.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
 		waitTime          = plugin.getConfiguration().getHugWaitTime();
 	}
 
@@ -107,7 +107,7 @@ public class HugCommand extends MarryCommand
 		}
 		else
 		{
-			player.send(messageWait, waitTime / 1000, (player.getLastKissTime() - System.currentTimeMillis() + waitTime) / 1000.0);
+			player.send(messageWait, waitTime / 1000, (player.getLastHugTime() - System.currentTimeMillis() + waitTime) / 1000.0);
 		}
 	}
 }
