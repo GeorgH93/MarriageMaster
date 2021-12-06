@@ -163,7 +163,7 @@ public class GiftCommand extends MarryCommand
 						messagePartnerInvFull.send(sender);
 						return;
 					}
-					if(!allowedReceiveGameModes.contains(bPartner.getGameMode()))
+					if(!allowedReceiveGameModes.contains(bPartner.getGameMode()) && !bPartner.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
 					{
 						messageGameModeNotAllowedReceiver.send(sender, allowedReceiveGameModes.toString().toLowerCase(Locale.ENGLISH), bPlayer.getGameMode().name().toLowerCase(Locale.ENGLISH));
 						return;
