@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Version;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 
 	public Language(@NotNull JavaPlugin plugin)
 	{
-		super(plugin, MagicValues.LANG_VERSION, MagicValues.LANG_VERSION);
+		super(plugin, new Version(MagicValues.LANG_VERSION), new Version(MagicValues.LANG_VERSION));
 	}
 
 	@Override
@@ -44,7 +45,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	protected void doUpgrade(@NotNull at.pcgamingfreaks.YamlFileManager oldLang)
 	{
-		if(oldLang.getVersion() < MagicValues.LANG_PRE_V2_VERSIONS)
+		if(oldLang.version().olderThan(new Version(MagicValues.LANG_PRE_V2_VERSIONS)))
 		{
 			OldFileUpdater.updateLanguage(oldLang.getYamlE(), getLang());
 		}
@@ -53,6 +54,20 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 			Map<String, String> remapping = new HashMap<>();
 			remapping.put("Command.Main", "Command.Marry");
 			super.doUpgrade(oldLang, remapping);
+			if(oldLang.version().olderThan(new Version(110)))
+			{
+				fixListFooter("Language.Ingame.List.Footer");
+				fixListFooter("Language.Ingame.ListPriests.Footer");
+			}
+		}
+	}
+
+	private void fixListFooter(String listFooterKey)
+	{
+		String listFooter = getLangE().getString(listFooterKey, null);
+		if(listFooter != null && listFooter.startsWith("[{"))
+		{
+			getLangE().set(listFooterKey, "[\"\"," + listFooter.substring(1));
 		}
 	}
 
