@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2019 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public class MagicHeart extends PlaceholderReplacerBaseValue
 	@Override
 	protected @Nullable String replaceMarried(MarriagePlayer player)
 	{
-		//noinspection ConstantConditions
-		return player.getMarriageData().getColor() + valueMarried;
+		//noinspection ConstantConditions,RedundantCast
+		return ((MarriageData) player.getMarriageData()).getColor() + valueMarried;
 	}
 }
