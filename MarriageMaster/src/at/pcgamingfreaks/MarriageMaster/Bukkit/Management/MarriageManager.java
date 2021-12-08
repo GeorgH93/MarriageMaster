@@ -54,6 +54,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	private final Message messageSurnameSuccess, messageSurnameFailed, messageSurnameToShort, messageSurnameToLong, messageSurnameAlreadyUsed;
 	private final Message messageAlreadyMarried, messageNotWithHimself, messageSurnameNeeded, messageMarried, messageHasMarried, messageBroadcastMarriage, messageNotInRange, messageAlreadyOpenRequest;
 	private final Message messageNotYourself, messageSelfNotInRange, messageSelfAlreadyMarried, messageSelfOtherAlreadyMarried, messageSelfAlreadyOpenRequest, messageSelfConfirm, messageSelfMarryRequestSent;
+	private final Message messageAlreadySamePair, messageSelfAlreadySamePair;
 	private final Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorceNotInRange, messageSelfNotOnYourOwn;
 	private final Message messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceNotInRange;
 	private final boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
@@ -95,6 +96,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength}", surnameMinLength + "").replaceAll("\\{MaxLength}", surnameMaxLength + "");
 		messageSurnameAlreadyUsed      = getMSG("Ingame.Surname.AlreadyUsed");
 
+		messageAlreadySamePair         = getMSG("Ingame.Marry.AlreadySamePair").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
 		messageAlreadyMarried          = getMSG("Ingame.Marry.AlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageNotWithHimself          = getMSG("Ingame.Marry.NotWithHimself").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageSurnameNeeded           = getMSG("Ingame.Marry.SurnameNeeded");
@@ -107,6 +109,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageSelfConfirm             = getMSG("Ingame.Marry.Self.Confirm").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageNotYourself             = getMSG("Ingame.Marry.Self.NotYourself");
 		messageSelfNotInRange          = getMSG("Ingame.Marry.Self.NotInRange").replaceAll("\\{Range}", "%.1f");
+		messageSelfAlreadySamePair     = getMSG("Ingame.Marry.Self.AlreadySamePair").replaceAll("\\{(Partner)?Name}", "%1\\$s").replaceAll("\\{(Partner)?DisplayName}", "%2\\$s");
 		messageSelfAlreadyMarried      = getMSG("Ingame.Marry.Self.AlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
 		messageSelfMarryRequestSent    = getMSG("Ingame.Marry.Self.RequestSent");
 		messageSelfOtherAlreadyMarried = getMSG("Ingame.Marry.Self.OtherAlreadyMarried").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
@@ -364,6 +367,10 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		{
 			messageNotWithHimself.send(priest, player1.getName(), player1.getDisplayName());
 		}
+		else if (player1.getPartners().contains(player2))
+		{
+			messageAlreadySamePair.send(priest, player1.getName(), player1.getDisplayName(), player2.getName(), player2.getDisplayName());
+		}
 		else if(!plugin.areMultiplePartnersAllowed() && (player1.isMarried() || player2.isMarried()))
 		{
 			if(player1.isMarried()) messageAlreadyMarried.send(priest, player1.getName(), player1.getDisplayName());
@@ -447,13 +454,17 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 					{
 						priest.send(messageSelfNotInRange, rangeMarry);
 					}
+					else if (priest.getPartners().contains(otherPlayer))
+					{
+						priest.send(messageSelfAlreadySamePair, otherPlayer.getName(), otherPlayer.getDisplayName());
+					}
 					else if(!plugin.areMultiplePartnersAllowed() && (player1.isMarried() || player2.isMarried()))
 					{
 						if(priest.isMarried())
 						{
 							priest.send(messageSelfAlreadyMarried, priest.getPartner().getName(), priest.getPartner().getDisplayName());
 						}
-						if(otherPlayer.isMarried())
+						else if(otherPlayer.isMarried())
 						{
 							priest.send(messageSelfOtherAlreadyMarried, otherPlayer.getName(), otherPlayer.getDisplayName());
 						}

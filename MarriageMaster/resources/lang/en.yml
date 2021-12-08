@@ -163,6 +163,7 @@ Language:
     Marry:
       # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "&cYou can't marry &r&c{DisplayName}&r&c with himself."
+      AlreadySamePair: "&cYou can't marry players that are already married to each other. &r&c{Player1DisplayName}&r&c is already married with &r&c{Player2DisplayName}&r&c."
       AlreadyMarried: "&cYou can't marry players that are already married. &r&c{DisplayName}&r&c is already married."
       SurnameNeeded: "&cYou need a surname for the couple to marry."
       Married: "&aYou have married &r&a{Player1DisplayName}&r&a with &r&a{Player2DisplayName}&r&a."
@@ -178,6 +179,7 @@ Language:
       Self:
         NotYourself: "&cYou can't marry yourself."
         NotInRange: "&cThe player is not in range! He needs to be within {Range} blocks!"
+        AlreadySamePair: "&cWe are already married with &r&c{DisplayName}&r&c!"
         AlreadyMarried: "&cYou are already married with &r&c{DisplayName}&r&c!"
         OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c is already married!"
         AlreadyOpenRequest: "&cYou have already one not answered marry request."
