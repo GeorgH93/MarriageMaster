@@ -49,9 +49,9 @@ public class ChatCommand extends MarryCommand implements Listener
 {
 	private final MarriageMaster plugin;
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, messageTargetSet;
-	private final String displayNameAll, helpParameterMessage, privateMessageFormat;
+	private final String displayNameAll, helpParameterMessage, privateMessageFormat, setTargetDescription;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
-	private final String[] setTargetParameters, switchesToggle;
+	private final String[] setTargetParameters, switchesToggle, switchesAll;
 	private final boolean allowChatSurveillance;
 	private MarryCommand chatToggleCommand, chatListenCommand;
 
@@ -68,9 +68,11 @@ public class ChatCommand extends MarryCommand implements Listener
 		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").getFallback().replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
+		setTargetDescription = plugin.getLanguage().getTranslated("Commands.Description.ChatSetTarget");
 		//noinspection SpellCheckingInspection
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget", new String[] { "target", "settarget" });
 		switchesToggle  = plugin.getLanguage().getSwitch("Toggle", "toggle");
+		switchesAll  = plugin.getLanguage().getSwitch("All", "all");
 		allowChatSurveillance = plugin.getConfiguration().isChatSurveillanceEnabled();
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -138,6 +140,11 @@ public class ChatCommand extends MarryCommand implements Listener
 						player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
 						messageTargetSet.send(sender);
 					}
+					else if(getMarriagePlugin().getCommandManager().isAllSwitch(args[1]))
+					{
+						player.setPrivateChatTarget((Marriage) null);
+						messageTargetSet.send(sender);
+					}
 					else
 					{
 						plugin.messageTargetPartnerNotFound.send(sender);
@@ -177,7 +184,12 @@ public class ChatCommand extends MarryCommand implements Listener
 			if(args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
 			{
 				MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-				data = player.getMatchingPartnerNames(args[1]);
+				data.addAll(player.getMatchingPartnerNames(args[1]));
+				String arg = args[1].toLowerCase(Locale.ENGLISH);
+				for(String s : switchesAll)
+				{
+					if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
+				}
 			}
 			else
 			{
@@ -185,6 +197,10 @@ public class ChatCommand extends MarryCommand implements Listener
 				{
 					String arg = args[0].toLowerCase(Locale.ENGLISH);
 					for(String s : switchesToggle)
+					{
+						if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
+					}
+					for(String s : setTargetParameters)
 					{
 						if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
 					}
@@ -211,7 +227,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
 			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + plugin.helpPartnerNameVariable + " / " +
-							getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", getDescription()));
+							getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", setTargetDescription));
 		}
 		return help;
 	}
