@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Database;
@@ -101,11 +101,12 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 				if(bungeeSupportRequired)
 				{
 					logger.severe("Database type not supported on BungeeCord!");
+					db.close();
 					return null;
 				}
 				if(bungee)
 				{
-					logger.warning("The used database dose not support multi server setups! Please consider switching to MySQL!");
+					logger.warning("The used database does not support multi-server setups! Please consider switching to MySQL!");
 				}
 			}
 			db.startup();

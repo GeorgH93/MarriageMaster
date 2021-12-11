@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
@@ -59,7 +59,7 @@ public class DebugCommand extends MarryCommand
 
 		builder = new MessageBuilder("All data has been collected!", MessageColor.GREEN, MessageFormat.BOLD).appendNewLine();
 		builder.append("You can now interact with your game again.").appendNewLine();
-		builder.append("The collected data can be found in your plugins directory inside the 'debug.txt' file.").appendNewLine();
+		builder.append("The collected data can be found in your plugins' directory inside the 'debug.txt' file.").appendNewLine();
 		builder.append("Please upload this fiel to ");
 		builder.append("https://pastebin.com/", MessageColor.YELLOW, MessageFormat.UNDERLINE).onClick(MessageClickEvent.ClickEventAction.OPEN_URL, "https://pastebin.com/");
 		builder.append(" and send the link to the developer.");
@@ -75,8 +75,10 @@ public class DebugCommand extends MarryCommand
 		messageStart.send(sender);
 
 		File debugFile = new File(plugin.getDataFolder(), "debug.txt");
-		if(debugFile.exists()) //noinspection ResultOfMethodCallIgnored
-			debugFile.delete();
+		if(debugFile.exists() && !debugFile.delete())
+		{
+			plugin.getLogger().warning("Failed to delete debug.txt file!");
+		}
 		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(debugFile), StandardCharsets.UTF_8));
 
 		writer.append(plugin.getDescription().getName()).append(" Version: ").append(plugin.getDescription().getVersion());
