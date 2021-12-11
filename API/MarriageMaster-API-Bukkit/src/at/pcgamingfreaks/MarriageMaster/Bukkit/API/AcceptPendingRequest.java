@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
@@ -28,7 +28,7 @@ public abstract class AcceptPendingRequest extends at.pcgamingfreaks.MarriageMas
 	 * @param hasToAccept The player that has to accept the request.
 	 * @param canCancel   The players that can cancel the request.
 	 */
-	public AcceptPendingRequest(@NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer... canCancel)
+	protected AcceptPendingRequest(@NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer... canCancel)
 	{
 		super(hasToAccept, canCancel);
 	}

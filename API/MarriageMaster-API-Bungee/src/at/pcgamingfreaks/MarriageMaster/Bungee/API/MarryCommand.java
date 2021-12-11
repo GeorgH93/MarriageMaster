@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
@@ -55,7 +55,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @param description The description of the command.
 	 * @param aliases     List of aliases for that command.
 	 */
-	public MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String... aliases)
+	protected MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String... aliases)
 	{
 		this(plugin, name, description, null, aliases);
 	}
@@ -69,7 +69,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @param permission  The permission to be checked for this command. Players without the permission neither can use the command nor will they see it in help.
 	 * @param aliases     List of aliases for that command.
 	 */
-	public MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, @Nullable String... aliases)
+	protected MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, @Nullable String... aliases)
 	{
 		super(name, description, permission, aliases);
 		this.plugin = plugin;
@@ -85,7 +85,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @param playerOnly  Limits the command to players, console can't use and can't see the command.
 	 * @param aliases     List of aliases for that command.
 	 */
-	public MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, boolean playerOnly, @Nullable String... aliases)
+	protected MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, boolean playerOnly, @Nullable String... aliases)
 	{
 		this(plugin, name, description, permission, aliases);
 		this.playerOnly = playerOnly;
@@ -102,7 +102,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @param partnerSelectorInHelpForMoreThanOnePartner If the help should contain a partner name parameter (for polygamy).
 	 * @param aliases       List of aliases for that command.
 	 */
-	public MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, boolean mustBeMarried, boolean partnerSelectorInHelpForMoreThanOnePartner, @Nullable String... aliases)
+	protected MarryCommand(@NotNull Plugin plugin, @NotNull String name, @NotNull String description, @Nullable String permission, boolean mustBeMarried, boolean partnerSelectorInHelpForMoreThanOnePartner, @Nullable String... aliases)
 	{
 		this(plugin, name, description, permission, true, aliases);
 		this.mustBeMarried = mustBeMarried;

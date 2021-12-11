@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
@@ -31,28 +31,21 @@ public abstract class Home extends at.pcgamingfreaks.MarriageMaster.API.Home
 {
 	private final Location location;
 
-	public Home(Location location)
+	protected Home(Location location)
 	{
 		this(location, null);
 	}
 
-	public Home(@NotNull Location location, @Nullable String homeServer)
+	protected Home(@NotNull Location location, @Nullable String homeServer)
 	{
 		super(location.getWorld().getName(), homeServer, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		this.location = location;
 	}
 
-	public Home(final @NotNull String world, final @Nullable String server, final double x, final double y, final double z, final float yaw, final float pitch)
+	protected Home(final @NotNull String world, final @Nullable String server, final double x, final double y, final double z, final float yaw, final float pitch)
 	{
 		super(world, server, x, y, z, yaw, pitch);
 		this.location = new Location(Bukkit.getServer().getWorld(world), x, y, z, yaw, pitch);
-	}
-
-	@Deprecated
-	public Home(final @NotNull String world, final @Nullable String server, final double x, final double y, final double z)
-	{
-		super(world, server, x, y, z);
-		this.location = new Location(Bukkit.getServer().getWorld(world), x, y, z, 0, 0);
 	}
 
 	/**
