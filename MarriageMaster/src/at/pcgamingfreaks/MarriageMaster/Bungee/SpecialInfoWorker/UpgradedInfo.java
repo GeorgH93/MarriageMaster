@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker;
@@ -42,8 +42,8 @@ public class UpgradedInfo implements Listener
 		// I don't load this message from the config. He just upgraded, the messages in the config would probably be exactly the same.
 		messagePluginUpgraded = new MessageBuilder("Marriage Master", MessageColor.GOLD).append(" has been upgraded to ", MessageColor.AQUA)
 				.append(plugin.getDescription().getVersion(), MessageColor.BLUE, MessageFormat.BOLD).append(".", MessageColor.AQUA).appendNewLine()
-				.append("All of your settings and changes to the language file have been copied into the new files.", MessageColor.AQUA).appendNewLine()
-				.append("However it's recommended to manually check them to make sure that all of your settings are how you like them (there are many new options).", MessageColor.AQUA).getMessage();
+				.append("Your config and language files have been backuped, since they are not compatible with this version of the plugin", MessageColor.AQUA).appendNewLine()
+				.append("You can try to use v2.5 to convert them to the new format or apply your changes manually.", MessageColor.AQUA).getMessage();
 	}
 
 	@SuppressWarnings("unused")

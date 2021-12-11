@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
@@ -20,7 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 import at.pcgamingfreaks.Bukkit.Configuration;
 import at.pcgamingfreaks.Bukkit.MinecraftMaterial;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
@@ -71,7 +71,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		if(oldConfig.version().olderThan(new Version(MagicValues.CONFIG_PRE_V2_VERSIONS)))
 		{
-			OldFileUpdater.updateConfig(oldConfig.getYaml(), this.getConfigE());
+			getLogger().warning(ConsoleColor.RED + "Your config file is from v1.x and is not compatible with versions newer than 2.5!" + ConsoleColor.RESET);
 			new UpgradedInfo(MarriageMaster.getInstance());
 		}
 		else

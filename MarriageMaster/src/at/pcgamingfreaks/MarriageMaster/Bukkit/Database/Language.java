@@ -12,12 +12,12 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Helper.OldFileUpdater;
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
@@ -47,7 +47,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	{
 		if(oldLang.version().olderThan(new Version(MagicValues.LANG_PRE_V2_VERSIONS)))
 		{
-			OldFileUpdater.updateLanguage(oldLang.getYamlE(), getLang());
+			getLogger().warning(ConsoleColor.RED + "Your language file is from v1.x and is not compatible with versions newer than 2.5!" + ConsoleColor.RESET);
 		}
 		else
 		{

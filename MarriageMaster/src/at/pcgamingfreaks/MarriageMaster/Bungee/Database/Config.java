@@ -12,12 +12,13 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.Bungee.Configuration;
+import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
@@ -33,7 +34,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 {
 	public Config(Plugin plugin)
 	{
-		super(plugin, MagicValues.BUNGEE_CONFIG_VERSION, MagicValues.BUNGEE_CONFIG_VERSION);
+		super(plugin, new Version(MagicValues.BUNGEE_CONFIG_VERSION));
 	}
 
 	@Override
@@ -41,42 +42,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	{
 		if(oldConfig.version().olderThan(new Version(MagicValues.CONFIG_PRE_V2_VERSIONS)))
 		{
-			try
-			{
-				getConfigE().set("Language.Language", oldConfig.getYamlE().getString("Language", "en"));
-				getConfigE().set("InfoOnPartnerJoinLeave.Enable", oldConfig.getYamlE().getBoolean("InformOnPartnerJoin", true));
-				getConfigE().set("InfoOnPartnerJoinLeave.JoinDelay", oldConfig.getYamlE().getInt("DelayMessageForJoiningPlayer", 0));
-				getConfigE().set("Database.UseUUIDs", oldConfig.getYamlE().getBoolean("UseUUIDs", true));
-				getConfigE().set("Database.UUID_Type", oldConfig.getYamlE().getString("UUID_Type", "auto"));
-				getConfigE().set("Database.Type", oldConfig.getYamlE().getString("Database.Type", "SQLite"));
-				getConfigE().set("Database.SQL.Host", oldConfig.getYamlE().getString("Database.MySQL.Host", "localhost"));
-				getConfigE().set("Database.SQL.Database", oldConfig.getYamlE().getString("Database.MySQL.Database", "minecraft"));
-				getConfigE().set("Database.SQL.User", oldConfig.getYamlE().getString("Database.MySQL.User", "minecraft"));
-				getConfigE().set("Database.SQL.Password", oldConfig.getYamlE().getString("Database.MySQL.Password", "minecraft"));
-				getConfigE().set("Database.SQL.MaxConnections", oldConfig.getYamlE().getInt("Database.MySQL.MaxConnections", 4));
-				getConfigE().set("Database.SQL.Tables.User", oldConfig.getYamlE().getString("Database.Tables.User", "marry_players"));
-				getConfigE().set("Database.SQL.Tables.Priests", oldConfig.getYamlE().getString("Database.Tables.Priests", "marry_priests"));
-				getConfigE().set("Database.SQL.Tables.Partner", oldConfig.getYamlE().getString("Database.Tables.Partner", "marry_partners"));
-				getConfigE().set("Database.SQL.Tables.Home", oldConfig.getYamlE().getString("Database.Tables.Home", "marry_home"));
-				getConfigE().set("Marriage.Surnames.Enable", oldConfig.getYamlE().getBoolean("Surname", false));
-				getConfigE().set("Marriage.Surnames.AllowColors", oldConfig.getYamlE().getBoolean("AllowSurnameColors", false));
-				getConfigE().set("Marriage.Surnames.AllowedCharacters", oldConfig.getYamlE().getString("AllowedSurnameCharacters", "A-Za-z"));
-				getConfigE().set("Misc.AutoUpdate", oldConfig.getYamlE().getBoolean("Misc.AutoUpdate", true));
-				getConfigE().set("Chat.Global", oldConfig.getYamlE().getBoolean("Chat.Global", true));
-				getConfigE().set("Teleport.Delayed", oldConfig.getYamlE().getBoolean("TP.Delayed", false));
-				getConfigE().set("Teleport.Global", oldConfig.getYamlE().getBoolean("TP.Global", true));
-				getConfigE().set("Teleport.BlockedFrom", oldConfig.getYamlE().getStringList("TP.BlockedFrom", new ArrayList<>(0)));
-				getConfigE().set("Teleport.BlockedTo", oldConfig.getYamlE().getStringList("TP.BlockedTo", new ArrayList<>(0)));
-				getConfigE().set("Home.Delayed", oldConfig.getYamlE().getBoolean("Home.Delayed", false));
-				getConfigE().set("Home.Global", oldConfig.getYamlE().getBoolean("Home.Global", true));
-				getConfigE().set("Home.BlockedFrom", oldConfig.getYamlE().getStringList("Home.BlockedFrom", new ArrayList<>(0)));
-				getConfigE().set("Database.SQL.Tables.Fields.PriestID", "priest_id");
-			}
-			catch(Exception e)
-			{
-				plugin.getLogger().warning("There was a problem upgrading the old config file into the new config file.");
-				e.printStackTrace();
-			}
+			getLogger().warning(ConsoleColor.RED + "Your config file is from v1.x and is not compatible with versions newer than 2.5!" + ConsoleColor.RESET);
 			new UpgradedInfo(MarriageMaster.getInstance());
 		}
 		else
