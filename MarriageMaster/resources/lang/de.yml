@@ -163,7 +163,8 @@ Language:
     Marry:
       # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
       NotWithHimself: "&cDu kannst &r&c{DisplayName}&r&c nicht mit sich selbst verheiraten."
-      AlreadyMarried: "&cDu kannst keine Spieler verheiraten die bereits verheiratet sind. &r&c{DisplayName}&r&c ist bereits verheiratet."
+      AlreadySamePair: "&cDu kannst Spieler, die bereits miteinander verheiratet sind nicht erneut verheiraten. {Player1DisplayName}&r&c ist bereits mit {Player2DisplayName}&r&c verheiratet."
+      AlreadyMarried: "&cDu kannst keine Spieler verheiraten, die bereits verheiratet sind. &r&c{DisplayName}&r&c ist bereits verheiratet."
       SurnameNeeded: "&cDu benötigst einen Nachnamen für das zu verheiratende Paar."
       Married: "&aDu hast &r&a{Player1DisplayName}&r&a mit &r&a{Player2DisplayName}&r&a verheiratet."
       HasMarried: "{PriestDisplayName}&r&a hat dich mit &r{PartnerDisplayName}&r&a verheiratet."
@@ -178,6 +179,7 @@ Language:
       Self:
         NotYourself: "&cDu darfst dich nicht selbst heiraten."
         NotInRange: "&cDer Spieler ist nicht in Reichweite! Er muss innerhalb von {Range} Blöcken sein!"
+        AlreadySamePair: "&cDu bist bereits mit {DisplayName}&r&c verheiratet!"
         AlreadyMarried: "&cDu bist bereits mit &r&c{DisplayName}&r&c verheiratet!"
         OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c ist bereits verheiratet!"
         AlreadyOpenRequest: "&cDu hast bereits eine nicht beantwortete Heiratsanfrage."
@@ -472,5 +474,5 @@ LanguageName: "German"
 Author: "GeorgH93"
 
 # Language file version. Don't touch it!
-Version: 110
+Version: 111
 Revision: 1
