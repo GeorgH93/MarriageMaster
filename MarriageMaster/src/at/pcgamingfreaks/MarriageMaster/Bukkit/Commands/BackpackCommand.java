@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
@@ -30,7 +30,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BackpackCommand extends MarryCommand
@@ -41,7 +41,7 @@ public class BackpackCommand extends MarryCommand
 
 	public BackpackCommand(MarriageMaster plugin)
 	{
-		super(plugin, "backpack", plugin.getLanguage().getTranslated("Commands.Description.Backpack"), Permissions.BACKPACK, true, plugin.getLanguage().getCommandAliases("Backpack"));
+		super(plugin, "backpack", plugin.getLanguage().getTranslated("Commands.Description.Backpack"), Permissions.BACKPACK, true, true, plugin.getLanguage().getCommandAliases("Backpack"));
 
 		messageOnlyInSurvival = plugin.getLanguage().getMessage("Ingame.Backpack.OnlyInSurvival");
 		messageShareOn        = plugin.getLanguage().getMessage("Ingame.Backpack.ShareOn");
@@ -57,64 +57,59 @@ public class BackpackCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(((MarriageMaster) getMarriagePlugin()).getBackpacksIntegration() != null)
+		if(((MarriageMaster) getMarriagePlugin()).getBackpacksIntegration() != null) return;
+		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
+		if(args.length == 1)
 		{
-			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-			if(player.isMarried())
+			// Set backpack parameter
+			if(getMarriagePlugin().getCommandManager().isOnSwitch(args[0]))
 			{
-				if(args.length == 1)
+				player.setShareBackpack(true);
+				messageShareOn.send(sender);
+			}
+			else if(getMarriagePlugin().getCommandManager().isOffSwitch(args[0]))
+			{
+				player.setShareBackpack(false);
+				messageShareOff.send(sender);
+			}
+			else if(getMarriagePlugin().getCommandManager().isToggleSwitch(args[0]))
+			{
+				if(player.isSharingBackpack())
 				{
-					// Set backpack parameter
-					if(getMarriagePlugin().getCommandManager().isOnSwitch(args[0]))
+					player.setShareBackpack(false);
+					messageShareOff.send(sender);
+				}
+				else
+				{
+					player.setShareBackpack(true);
+					messageShareOn.send(sender);
+				}
+			}
+			else
+			{
+				if(getMarriagePlugin().areMultiplePartnersAllowed())
+				{
+					MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
+					if(player.isPartner(partner))
 					{
-						player.setShareBackpack(true);
-						messageShareOn.send(sender);
-					}
-					else if(getMarriagePlugin().getCommandManager().isOffSwitch(args[0]))
-					{
-						player.setShareBackpack(false);
-						messageShareOff.send(sender);
-					}
-					else if(getMarriagePlugin().getCommandManager().isToggleSwitch(args[0]))
-					{
-						if(player.isSharingBackpack())
-						{
-							player.setShareBackpack(false);
-							messageShareOff.send(sender);
-						}
-						else
-						{
-							player.setShareBackpack(true);
-							messageShareOn.send(sender);
-						}
+						openBackpack(player, partner);
 					}
 					else
 					{
-						if(getMarriagePlugin().areMultiplePartnersAllowed())
-						{
-							MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
-							if(player.isPartner(partner))
-							{
-								openBackpack(player, partner);
-							}
-							else
-							{
-								((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
-							}
-						}
-						else
-						{
-							showHelp(sender, mainCommandAlias);
-						}
+						((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 					}
 				}
 				else
 				{
-					if(player.getNearestPartnerMarriageData() != null)
-					{
-						openBackpack(player, player.getNearestPartnerMarriageData().getPartner(player));
-					}
+					showHelp(sender, mainCommandAlias);
 				}
+			}
+		}
+		else
+		{
+			if(player.getNearestPartnerMarriageData() != null)
+			{
+				openBackpack(player, player.getNearestPartnerMarriageData().getPartner(player));
 			}
 		}
 	}
@@ -161,27 +156,20 @@ public class BackpackCommand extends MarryCommand
 	@Override
 	public List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		List<HelpData> help = new LinkedList<>();
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) requester);
 		if(player.isMarried())
 		{
-			if(player.getPartners().size() > 1)
-			{
-				help.add(new HelpData(getTranslatedName(), "<" + ((MarriageMaster) getMarriagePlugin()).helpPartnerNameVariable + ">", getDescription()));
-			}
-			else
-			{
-				help.add(new HelpData(getTranslatedName(), null, getDescription()));
-			}
+			List<HelpData> helpList = super.getHelp(requester);
 			if(player.isSharingBackpack())
 			{
-				help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOffSwitchTranslation(), null, descriptionOff));
+				helpList.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOffSwitchTranslation(), null, descriptionOff));
 			}
 			else
 			{
-				help.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOnSwitchTranslation(), null, descriptionOn));
+				helpList.add(new HelpData(getTranslatedName() + " " + getMarriagePlugin().getCommandManager().getOnSwitchTranslation(), null, descriptionOn));
 			}
+			return helpList;
 		}
-		return help;
+		return new ArrayList<>(0);
 	}
 }
