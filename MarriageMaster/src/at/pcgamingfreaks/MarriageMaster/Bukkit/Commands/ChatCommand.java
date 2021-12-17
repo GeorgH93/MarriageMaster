@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageFormat;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.Bukkit;
@@ -386,23 +387,19 @@ public class ChatCommand extends MarryCommand implements Listener
 		// Checks if person has permission to use color codes
 		if(sender.hasPermission(Permissions.CHAT_COLOR))
 		{
-			msg = MessageColor.translateAlternateColorCodes('&', msg);
+			msg = MessageColor.translateAlternateColorCodes(msg);
 		}
 		if(sender.hasPermission(Permissions.CHAT_FORMAT))
 		{
-			msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
-		}
-		else
-		{
-			msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
+            msg = MessageFormat.translateAlternateFormatCodes(msg);
 		}
 		if(sender.hasPermission(Permissions.CHAT_MAGIC))
 		{
-			msg = msg.replaceAll("&k", "§k");
+			msg = msg.replace("&k", MessageFormat.MAGIC.toString());
 		}
 		else
 		{
-			msg = msg.replaceAll("§k", "&k");
+			msg = msg.replace(MessageFormat.MAGIC.toString(), "&k");
 		}
 		return msg;
 	}

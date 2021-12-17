@@ -26,6 +26,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageFormat;
 import at.pcgamingfreaks.StringUtils;
 
 import net.md_5.bungee.api.CommandSender;
@@ -307,23 +308,19 @@ public class ChatCommand extends MarryCommand implements Listener
 			// Checks if person has permission to use color codes
 			if(player.hasPermission(Permissions.CHAT_COLOR))
 			{
-				msg = MessageColor.translateAlternateColorCodes('&', msg);
+				msg = MessageColor.translateAlternateColorCodes(msg);
 			}
 			if(player.hasPermission(Permissions.CHAT_FORMAT))
 			{
-				msg = msg.replaceAll("&l", "§l").replaceAll("&m", "§m").replaceAll("&n", "§n").replaceAll("&o", "§o").replaceAll("&r", "§r");
-			}
-			else
-			{
-				msg = msg.replaceAll("§l", "&l").replaceAll("§m", "&m").replaceAll("§n", "&n").replaceAll("§o", "&o").replaceAll("§r", "&r");
+				msg = MessageFormat.translateAlternateFormatCodes(msg);
 			}
 			if(player.hasPermission(Permissions.CHAT_MAGIC))
 			{
-				msg = msg.replaceAll("&k", "§k");
+				msg = msg.replace("&k", MessageFormat.MAGIC.toString());
 			}
 			else
 			{
-				msg = msg.replaceAll("§k", "&k");
+				msg = msg.replace(MessageFormat.MAGIC.toString(), "&k");
 			}
 			// Send the message
 			List<ProxiedPlayer> playerRecipients = new ArrayList<>(listeners.size() + recipients.size() + 1); // Copy the listeners since we need to send the message to them anyway
