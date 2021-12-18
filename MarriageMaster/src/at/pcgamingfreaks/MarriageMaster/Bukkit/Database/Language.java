@@ -33,14 +33,12 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 {
 	public static final String NO_PLACEHOLDER = "&cMarriage Master placeholder not found! Check your language file!";
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
+	private static final String PLACEHOLDER_HEART = "<heart>", PLACEHOLDER_SMALLHEART = "<smallheart>";
 
 	public Language(@NotNull JavaPlugin plugin)
 	{
 		super(plugin, new Version(MagicValues.LANG_VERSION), new Version(MagicValues.LANG_VERSION));
 	}
-
-	@Override
-	protected void doUpdate() {}
 
 	@Override
 	protected void doUpgrade(@NotNull at.pcgamingfreaks.YamlFileManager oldLang)
@@ -74,7 +72,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String translateColorCodes(@NotNull String string)
 	{
-		return super.translateColorCodes(string).replaceAll("<heart>", MessageColor.RED + HEART).replaceAll("<smallheart>", MessageColor.RED + SMALLHEART);
+		return super.translateColorCodes(string).replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
 	}
 
 	public boolean isPlaceholderSet(final @NotNull String key)
@@ -85,12 +83,12 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replaceAll("<heart>", HEART).replaceAll("<smallheart>", SMALLHEART);
+		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
 	}
 
 	@Override
 	public @NotNull String getDialog(final @NotNull String key)
 	{
-		return getLangE().getString("Dialog." + key, "").replaceAll("<heart>", MessageColor.RED + HEART).replaceAll("<smallheart>", MessageColor.RED + SMALLHEART);
+		return getLangE().getString("Dialog." + key, "").replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
 	}
 }

@@ -38,10 +38,6 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	}
 
 	@Override
-	protected void doUpdate()
-	{}
-
-	@Override
 	protected void doUpgrade(final @NotNull YamlFileManager oldLang)
 	{
 		Map<String, String> remapping = new HashMap<>();
@@ -52,7 +48,7 @@ public class Language extends at.pcgamingfreaks.Bungee.Language implements ILang
 	@Override
 	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		return super.getTranslated(key).replaceAll("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART).replaceAll("<smallheart>", MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART);
+		return super.getTranslated(key).replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART).replace("<smallheart>", MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART);
 	}
 
 	@Override
