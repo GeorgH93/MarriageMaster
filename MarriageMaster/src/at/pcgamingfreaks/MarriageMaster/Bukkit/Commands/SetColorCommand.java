@@ -81,10 +81,6 @@ public class SetColorCommand extends MarryCommand
 		{
 			messageUnknownColor.send(sender, colorArg);
 		}
-		else if(!color.isColor())
-		{
-			messageNotAColor.send(sender, colorArg);
-		}
 		else
 		{
 			//noinspection ConstantConditions
