@@ -37,7 +37,7 @@ import java.util.Locale;
 public class SetColorCommand extends MarryCommand
 {
 	private final MarriageMaster plugin;
-	private final Message messageUnknownColor, messageNotAColor, messageColorSet, messageColorSelection;
+	private final Message messageUnknownColor, messageColorSet, messageColorSelection;
 
 	public SetColorCommand(final @NotNull MarriageMaster plugin)
 	{
@@ -45,7 +45,6 @@ public class SetColorCommand extends MarryCommand
 		this.plugin = plugin;
 
 		messageUnknownColor = plugin.getLanguage().getMessage("Ingame.SetColor.UnknownColor").replaceAll("\\{Input}", "%s");
-		messageNotAColor = plugin.getLanguage().getMessage("Ingame.SetColor.NotAColor").replaceAll("\\{Input}", "%s");
 		messageColorSet = plugin.getLanguage().getMessage("Ingame.SetColor.Set");
 		messageColorSelection = plugin.getLanguage().getMessage("Ingame.SetColor.Selection").replaceAll("\\{MainCmdAlias}", "%1\\$s").replaceAll("\\{SubCmdAlias}", "%2\\$s");
 	}
