@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
@@ -43,7 +43,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatCommand extends MarryCommand implements Listener
@@ -66,7 +69,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").getFallback().replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").getFallback().replace("{SenderDisplayName}", "%1$s").replace("{ReceiverDisplayName}", "%2$s").replace("{Message}", "%3$s").replace("{SenderName}", "%4$s").replace("{ReceiverName}", "%5$s").replace("{MagicHeart}", "%6$s");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpParameterMessage    = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		setTargetDescription = plugin.getLanguage().getTranslated("Commands.Description.ChatSetTarget");
