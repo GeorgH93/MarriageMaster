@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -137,7 +137,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	{
 		if(!useBungee)
 		{
-			queryUpdateHome = queryUpdateHome.replaceAll(",\\{FHomeServer}", "").replace("(?,?,?,?,?,?,?,?)", "(?,?,?,?,?,?,?)");
+			queryUpdateHome = queryUpdateHome.replace(",{FHomeServer}", "").replace("(?,?,?,?,?,?,?,?)", "(?,?,?,?,?,?,?)");
 		}
 		if(surnameEnabled)
 		{
@@ -151,13 +151,13 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	public @Language("SQL") @NotNull String replacePlaceholders(final @Language("SQL") @NotNull String query)
 	{
 		return query.replaceAll("(\\{\\w+})", "`$1`").replaceAll("`(\\{\\w+})`_(\\w+)", "`$1_$2`").replaceAll("fk_`(\\{\\w+})`_`(\\{\\w+})`_`(\\{\\w+})`", "`fk_$1_$2_$3`") // Fix name formatting
-				.replaceAll("\\{TPlayers}", tableUser).replaceAll("\\{TMarriages}", tablePartner).replaceAll("\\{TPriests}", tablePriests).replaceAll("\\{THomes}", tableHome) // Table names
-				.replaceAll("\\{FPlayerID}", fieldPlayerID).replaceAll("\\{FName}", fieldName).replaceAll("\\{FUUID}", fieldUUID).replaceAll("\\{FShareBackpack}", fieldShareBackpack) // Player fields
-				.replaceAll("\\{FMarryID}", fieldMarryID).replaceAll("\\{FSurname}", fieldSurname).replaceAll("\\{FPlayer1}", fieldPlayer1).replaceAll("\\{FPlayer2}", fieldPlayer2) // Marriage fields
-				.replaceAll("\\{FPriest}", fieldPriest).replaceAll("\\{FPvPState}", fieldPVPState).replaceAll("\\{FDate}", fieldDate).replaceAll("\\{FColor}", fieldColor)
-				.replaceAll("\\{FHomeServer}", fieldHomeServer).replaceAll("\\{FHomeX}", fieldHomeX).replaceAll("\\{FHomeY}", fieldHomeY).replaceAll("\\{FHomeZ}", fieldHomeZ) // Home fields
-				.replaceAll("\\{FHomeYaw}", fieldHomeYaw).replaceAll("\\{FHomePitch}", fieldHomePitch).replaceAll("\\{FHomeWorld}", fieldHomeWorld)
-				.replaceAll("\\{FPriestID}", fieldPriestID);
+				.replace("{TPlayers}", tableUser).replace("{TMarriages}", tablePartner).replace("{TPriests}", tablePriests).replace("{THomes}", tableHome) // Table names
+				.replace("{FPlayerID}", fieldPlayerID).replace("{FName}", fieldName).replace("{FUUID}", fieldUUID).replace("\\{FShareBackpack}", fieldShareBackpack) // Player fields
+				.replace("{FMarryID}", fieldMarryID).replace("{FSurname}", fieldSurname).replace("{FPlayer1}", fieldPlayer1).replace("{FPlayer2}", fieldPlayer2) // Marriage fields
+				.replace("{FPriest}", fieldPriest).replace("{FPvPState}", fieldPVPState).replace("{FDate}", fieldDate).replace("{FColor}", fieldColor)
+				.replace("{FHomeServer}", fieldHomeServer).replace("{FHomeX}", fieldHomeX).replace("{FHomeY}", fieldHomeY).replace("{FHomeZ}", fieldHomeZ) // Home fields
+				.replace("{FHomeYaw}", fieldHomeYaw).replace("{FHomePitch}", fieldHomePitch).replace("{FHomeWorld}", fieldHomeWorld)
+				.replace("{FPriestID}", fieldPriestID);
 	}
 
 	@Override
@@ -214,7 +214,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					}
 					else
 					{
-						uuid = (useUUIDSeparators) ? uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : uuid.replaceAll("-", "");
+						uuid = (useUUIDSeparators) ? uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : uuid.replace("-", "");
 						toUpdate.add(new UpdateUUIDsHelper(res.getString(fieldName), uuid, res.getInt(fieldPlayerID)));
 					}
 				}
