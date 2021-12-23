@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Listener;
@@ -42,10 +42,10 @@ public class CommandExecutor implements Listener
 		this.commandsOnDivorce = new LinkedList<>();
 		this.commandsOnDivorceWithPriest = new LinkedList<>();
 		final Config config = plugin.getConfiguration();
-		config.getCommandExecutorOnMarry().forEach(command -> commandsOnMarry.add(command.replaceAll("\\{Player1}", "%1\\$s").replaceAll("\\{Player2}", "%2\\$s")));
-		config.getCommandExecutorOnMarryWithPriest().forEach(command -> commandsOnMarryWithPriest.add(command.replaceAll("\\{Player1}", "%1\\$s").replaceAll("\\{Player2}", "%2\\$s").replaceAll("\\{Priest}", "%3\\$s")));
-		config.getCommandExecutorOnDivorce().forEach(command -> commandsOnDivorce.add(command.replaceAll("\\{Player1}", "%1\\$s").replaceAll("\\{Player2}", "%2\\$s")));
-		config.getCommandExecutorOnDivorceWithPriest().forEach(command -> commandsOnDivorceWithPriest.add(command.replaceAll("\\{Player1}", "%1\\$s").replaceAll("\\{Player2}", "%2\\$s").replaceAll("\\{Priest}", "%3\\$s")));
+		config.getCommandExecutorOnMarry().forEach(command -> commandsOnMarry.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s")));
+		config.getCommandExecutorOnMarryWithPriest().forEach(command -> commandsOnMarryWithPriest.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s").replace("{Priest}", "%3$s")));
+		config.getCommandExecutorOnDivorce().forEach(command -> commandsOnDivorce.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s")));
+		config.getCommandExecutorOnDivorceWithPriest().forEach(command -> commandsOnDivorceWithPriest.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s").replace("{Priest}", "%3$s")));
 	}
 
 	@EventHandler
