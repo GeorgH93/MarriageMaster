@@ -152,7 +152,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	{
 		return query.replaceAll("(\\{\\w+})", "`$1`").replaceAll("`(\\{\\w+})`_(\\w+)", "`$1_$2`").replaceAll("fk_`(\\{\\w+})`_`(\\{\\w+})`_`(\\{\\w+})`", "`fk_$1_$2_$3`") // Fix name formatting
 				.replace("{TPlayers}", tableUser).replace("{TMarriages}", tablePartner).replace("{TPriests}", tablePriests).replace("{THomes}", tableHome) // Table names
-				.replace("{FPlayerID}", fieldPlayerID).replace("{FName}", fieldName).replace("{FUUID}", fieldUUID).replace("\\{FShareBackpack}", fieldShareBackpack) // Player fields
+				.replace("{FPlayerID}", fieldPlayerID).replace("{FName}", fieldName).replace("{FUUID}", fieldUUID).replace("{FShareBackpack}", fieldShareBackpack) // Player fields
 				.replace("{FMarryID}", fieldMarryID).replace("{FSurname}", fieldSurname).replace("{FPlayer1}", fieldPlayer1).replace("{FPlayer2}", fieldPlayer2) // Marriage fields
 				.replace("{FPriest}", fieldPriest).replace("{FPvPState}", fieldPVPState).replace("{FDate}", fieldDate).replace("{FColor}", fieldColor)
 				.replace("{FHomeServer}", fieldHomeServer).replace("{FHomeX}", fieldHomeX).replace("{FHomeY}", fieldHomeY).replace("{FHomeZ}", fieldHomeZ) // Home fields
