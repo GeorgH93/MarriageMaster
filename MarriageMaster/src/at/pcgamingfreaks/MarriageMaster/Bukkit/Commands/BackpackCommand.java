@@ -57,7 +57,7 @@ public class BackpackCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(((MarriageMaster) getMarriagePlugin()).getBackpacksIntegration() != null) return;
+		if(((MarriageMaster) getMarriagePlugin()).getBackpacksIntegration() == null) return;
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		if(args.length == 1)
 		{
