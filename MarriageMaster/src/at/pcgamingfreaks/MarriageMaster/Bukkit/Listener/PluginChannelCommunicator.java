@@ -76,7 +76,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	@Override
-	protected void receiveUnknownChannel(@NotNull String channel, @NotNull byte[] bytes)
+	protected void receiveUnknownChannel(@NotNull String channel, byte[] bytes)
 	{
 		if (channel.equals(CHANNEL_BUNGEE_CORD))
 		{
@@ -175,7 +175,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	@Override
-	public void onPluginMessageReceived(@NotNull final String channel, @NotNull Player player, @NotNull byte[] bytes)
+	public void onPluginMessageReceived(@NotNull final String channel, @NotNull Player player, byte[] bytes)
 	{
 		receive(channel, bytes);
 	}
@@ -196,14 +196,14 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 
 	//region send methods
 	@Override
-	public void sendMessage(final @NotNull byte[] data)
+	public void sendMessage(final byte[] data)
 	{
 		sendMessage(CHANNEL_MARRIAGE_MASTER, data);
 	}
 
 	private void sendMessage(String channel, byte[] data)
 	{
-		if(plugin.getServer().getOnlinePlayers().size() > 0)
+		if(!plugin.getServer().getOnlinePlayers().isEmpty())
 		{
 			plugin.getServer().getOnlinePlayers().iterator().next().sendPluginMessage(plugin, channel, data);
 		}
