@@ -41,7 +41,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	@Getter @NotNull private String chatPrefix;
 	@Getter private HOME home;
 	private boolean pvpEnabled;
-	@Nullable private MessageColor color;
+	@Getter @NotNull private MessageColor color;
 	@Getter @Setter	private Object databaseKey;
 
 	//region Constructors
@@ -56,14 +56,14 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		this.weddingDate = (Date) weddingDate.clone();
 		this.databaseKey = databaseKey;
 		this.home = home;
-		this.color = color;
 		this.chatPrefix = ""; // TODO implement in db
 		if(player1 instanceof MarriagePlayerDataBase && player2 instanceof MarriagePlayerDataBase)
 		{
 			((MarriagePlayerDataBase) player1).addMarriage(this);
 			((MarriagePlayerDataBase) player2).addMarriage(this);
 		}
-		hash = player1.hashCode() * 53 + player2.hashCode();
+		this.hash = player1.hashCode() * 53 + player2.hashCode();
+		this.color = (color == null) ? MessageColor.values()[hash & 0x0F] : color;
 	}
 
 	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname)
@@ -174,9 +174,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	@Override
 	public void setColor(@Nullable MessageColor color)
 	{
-		//noinspection ObjectEquality
-		if(color == null || color == MessageColor.RESET) this.color = null; // == is fine here! There is only one instance that equals reset
-		else this.color = color.isRGB() ? color.getFallbackColor() : color;
+		updateColor(color);
 		BaseDatabase.getInstance().updateMarriageColor(this);
 	}
 
@@ -186,16 +184,11 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		return getColor() + MagicValues.HEART_AND_RESET;
 	}
 
-	public void updateColor(final @Nullable MessageColor color)
+	public void updateColor(@Nullable MessageColor color)
 	{
+		if(color == null || MessageColor.RESET.equals(color)) color = MessageColor.values()[hash & 0x0F];
+		else if(color.isRGB()) color = color.getFallbackColor();
 		this.color = color;
-	}
-
-	@Override
-	public @NotNull MessageColor getColor()
-	{ //TODO the default should be calculated only once
-		if(color != null) return color;
-		return MessageColor.values()[hash & 0x0F];
 	}
 
 	@Override
