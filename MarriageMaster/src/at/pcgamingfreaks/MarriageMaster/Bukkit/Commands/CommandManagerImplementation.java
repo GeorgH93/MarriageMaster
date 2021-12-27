@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2020 GeorgH93
+ *   Copyright (C) 2021 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -12,14 +12,14 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Command.CommandExecutorWithSubCommandsGeneric;
-import at.pcgamingfreaks.Bukkit.Command.SubCommand;
 import at.pcgamingfreaks.Bukkit.Command.RegisterablePluginCommand;
+import at.pcgamingfreaks.Bukkit.Command.SubCommand;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;

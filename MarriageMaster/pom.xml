@@ -27,14 +27,14 @@
 		<releaseType>Normal</releaseType>
 		<updateChannel>Release</updateChannel>
 
-		<mockito.version>4.0.0</mockito.version>
+		<mockito.version>4.2.0</mockito.version>
 		<mavenShade.version>3.3.0-SNAPSHOT</mavenShade.version>
 	</properties>
 
 	<repositories>
 		<repository> <!-- for vault -->
 			<id>herocraftonline-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+			<url>https://nexus.hc.to/content/repositories/pub_releases/</url>
 		</repository>
 		<repository>
 			<id>placeholderapi</id>
@@ -164,7 +164,7 @@
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
 			<artifactId>mcMMO</artifactId>
-			<version>2.1.100</version>
+			<version>2.1.200</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- region unit test dependencies -->
@@ -172,7 +172,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.8.1</version>
+			<version>5.8.2</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- endregion -->

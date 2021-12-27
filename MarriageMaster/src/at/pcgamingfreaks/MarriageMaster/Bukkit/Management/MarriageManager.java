@@ -12,18 +12,13 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Management;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.DivorceEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.DivorcedEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.SurnameChangeEvent;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.SurnameChangedEvent;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;

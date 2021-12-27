@@ -5,7 +5,7 @@
 [spigotDownloadsImg]: https://img.shields.io/spiget/downloads/19273.svg?label=downloads%20%28spigot%29
 <!--[spigotRatingImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=rating&query=%24.rating.average&suffix=%20%2F%205&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273
 [spigotDownloadsImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=downloads%20%28spigotmc.org%29&query=%24.downloads&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273-->
-[bukkit]: http://dev.bukkit.org/bukkit-plugins/marriage-master/
+[bukkit]: https://dev.bukkit.org/bukkit-plugins/marriage-master/
 [issues]: https://github.com/GeorgH93/MarriageMaster/issues
 [wiki]: https://github.com/GeorgH93/MarriageMaster/wiki
 [wiki_faq]: https://github.com/GeorgH93/MarriageMaster/wiki/FAQ

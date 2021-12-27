@@ -12,13 +12,15 @@
  *   GNU General Public License for more details.
  *
  *   You should have received a copy of the GNU General Public License
- *   along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
 package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.DataHandler.HasPlaceholders;
 import at.pcgamingfreaks.DataHandler.ILoadableStringFieldsHolder;
+import at.pcgamingfreaks.DataHandler.IStringFieldsWithPlaceholdersHolder;
 import at.pcgamingfreaks.DataHandler.Loadable;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
@@ -30,8 +32,6 @@ import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKe
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKeyRunnable;
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.StructMarriageSQL;
 import at.pcgamingfreaks.Message.MessageColor;
-import at.pcgamingfreaks.DataHandler.HasPlaceholders;
-import at.pcgamingfreaks.DataHandler.IStringFieldsWithPlaceholdersHolder;
 import at.pcgamingfreaks.UUIDConverter;
 
 import org.intellij.lang.annotations.Language;
