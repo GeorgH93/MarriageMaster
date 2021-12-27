@@ -146,7 +146,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 		}
 		else
 		{
-			writer.append("Failed! marriagemaster_ placeholders are linked to: " + hook.getClass().getName());
+			writer.append("Failed! marriagemaster_ placeholders are linked to: ").append(hook.getClass().getName());
 		}
 	}
 }
