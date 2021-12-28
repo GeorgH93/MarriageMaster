@@ -62,7 +62,7 @@ public class SurnameCommand extends MarryCommand
 		}
 		final String newSurname = args[args.length - 1];
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY) && player.isMarried())
+		if(player == null || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY) && player.isMarried())
 		{
 			if(args.length == 1 && getMarriagePlugin().isSelfMarriageAllowed() && player != null && sender.hasPermission(Permissions.SELF_MARRY))
 			{
@@ -78,7 +78,7 @@ public class SurnameCommand extends MarryCommand
 			else if(args.length == 2)
 			{
 				MarriagePlayer player2 = getMarriagePlugin().getPlayerData(args[0]);
-				if(!(sender instanceof Player) || player.isPriest())
+				if(player == null || player.isPriest())
 				{
 					if(!player2.isOnline())
 					{
@@ -127,7 +127,7 @@ public class SurnameCommand extends MarryCommand
 					showHelp(sender, mainCommandAlias);
 				}
 			}
-			else if(args.length == 3 && getMarriagePlugin().areMultiplePartnersAllowed() && (!(sender instanceof Player) || player.isPriest()))
+			else if(args.length == 3 && getMarriagePlugin().areMultiplePartnersAllowed() && (player == null || player.isPriest()))
 			{
 				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]), player2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(!player1.isMarried())
@@ -179,7 +179,7 @@ public class SurnameCommand extends MarryCommand
 	@Override
 	public List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		List<HelpData> help = new LinkedList<>();
+		List<HelpData> help = new ArrayList<>(2);
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
 		if(player != null && player.isMarried() && getMarriagePlugin().isSelfMarriageAllowed() && requester.hasPermission(Permissions.SELF_MARRY))
 		{
@@ -192,7 +192,7 @@ public class SurnameCommand extends MarryCommand
 				help.add(new HelpData(getTranslatedName(), helpSurnameParam, descSelf));
 			}
 		}
-		if(!(requester instanceof Player) || player.isPriest())
+		if(player == null || player.isPriest())
 		{
 			help.add(new HelpData(getTranslatedName(), helpPriestParam, getDescription()));
 		}
