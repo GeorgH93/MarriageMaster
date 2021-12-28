@@ -29,6 +29,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -54,9 +55,9 @@ public class MarryDivorceCommand extends MarryCommand
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE)))
+		if(player == null || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE)))
 		{
-			if((!(sender instanceof Player) || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
+			if((player == null || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
 			{
 				MarriagePlayer p1 = getMarriagePlugin().getPlayerData(args[0]);
 				if(args.length == 1)
@@ -68,7 +69,7 @@ public class MarryDivorceCommand extends MarryCommand
 					}
 					else
 					{
-						if(sender instanceof Player)
+						if(player != null)
 						{
 							getMarriagePlugin().getMarriageManager().divorce(marriage, player, p1);
 						}
@@ -91,7 +92,7 @@ public class MarryDivorceCommand extends MarryCommand
 					}
 					else if(p1.isPartner(p2))
 					{
-						if(sender instanceof Player)
+						if(player != null)
 						{
 							getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), player, p1);
 						}
@@ -147,7 +148,7 @@ public class MarryDivorceCommand extends MarryCommand
 		if(args.length == 0 || !canUse(sender)) return null;
 		List<String> names = null;
 		MarriagePlayer marriagePlayerData = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(!(sender instanceof Player) || marriagePlayerData.isPriest())
+		if(marriagePlayerData == null || marriagePlayerData.isPriest())
 		{
 			names = new LinkedList<>();
 			String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
@@ -169,9 +170,9 @@ public class MarryDivorceCommand extends MarryCommand
 	@Override
 	public List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		List<HelpData> help = new LinkedList<>();
+		List<HelpData> help = new ArrayList<>(2);
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
-		if(requester instanceof Player && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (requester.hasPermission(Permissions.SELF_MARRY) || requester.hasPermission(Permissions.SELF_DIVORCE)))
+		if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && (requester.hasPermission(Permissions.SELF_MARRY) || requester.hasPermission(Permissions.SELF_DIVORCE)))
 		{
 			if(player.getPartners().size() > 1)
 			{
@@ -182,7 +183,7 @@ public class MarryDivorceCommand extends MarryCommand
 				help.add(new HelpData(getTranslatedName(), "", descriptionSelf));
 			}
 		}
-		if(!(requester instanceof Player) || player.isPriest())
+		if(player == null || player.isPriest())
 		{
 			help.add(new HelpData(getTranslatedName(), helpPriest, getDescription()));
 		}
