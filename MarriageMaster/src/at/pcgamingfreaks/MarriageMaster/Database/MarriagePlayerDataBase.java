@@ -185,7 +185,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	public @NotNull List<String> getMatchingPartnerNames(String namePart)
 	{
 		namePart = namePart.toLowerCase();
-		List<String> names = new LinkedList<>();
+		List<String> names = new ArrayList<>(getPartners().size());
 		for(MARRIAGE_PLAYER partner : getPartners())
 		{
 			if(partner.getName().toLowerCase().startsWith(namePart))

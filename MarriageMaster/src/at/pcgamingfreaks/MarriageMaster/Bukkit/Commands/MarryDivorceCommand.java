@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
@@ -24,19 +25,17 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 public class MarryDivorceCommand extends MarryCommand
 {
-	private String descriptionSelf, helpPriest, helpParam;
+	private final String descriptionSelf, helpParam;
+	private String helpPriest;
 
 	public MarryDivorceCommand(MarriageMaster plugin)
 	{
@@ -150,15 +149,7 @@ public class MarryDivorceCommand extends MarryCommand
 		MarriagePlayer marriagePlayerData = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(marriagePlayerData == null || marriagePlayerData.isPriest())
 		{
-			names = new LinkedList<>();
-			String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
-			for(Player player : Bukkit.getOnlinePlayers())
-			{
-				if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
-				{
-					names.add(player.getName());
-				}
-			}
+			names = Utils.getPlayerNamesStartingWithVisibleOnly(args[args.length - 1], sender, Permissions.BYPASS_VANISH);
 		}
 		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE))
 		{

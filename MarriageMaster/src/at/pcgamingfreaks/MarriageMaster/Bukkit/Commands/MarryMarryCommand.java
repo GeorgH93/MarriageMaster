@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
+import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
@@ -28,13 +29,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class MarryMarryCommand extends MarryCommand
 {
-	private String helpSelf, helpPriest, descriptionSelf;
+	private String helpSelf, helpPriest;
+	private final String descriptionSelf;
 
 	public MarryMarryCommand(MarriageMaster plugin)
 	{
@@ -152,18 +153,7 @@ public class MarryMarryCommand extends MarryCommand
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		if(args.length == 0 || !canUse(sender)) return null;
-		List<String> names = new LinkedList<>();
-		String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
-		final boolean excludeVanished = !sender.hasPermission(Permissions.BYPASS_VANISH);
-		for(Player player : Bukkit.getOnlinePlayers())
-		{
-			if(excludeVanished && sender instanceof Player && !((Player) sender).canSee(player)) continue; // Hide vanished players
-			if(!player.getName().equals(sender.getName()) && player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg))
-			{
-				names.add(player.getName());
-			}
-		}
-		return names;
+		return Utils.getPlayerNamesStartingWithVisibleOnly(args[args.length - 1], sender, Permissions.BYPASS_VANISH);
 	}
 
 	@Override
