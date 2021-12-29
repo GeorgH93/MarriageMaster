@@ -98,6 +98,8 @@ public class SetColorCommand extends MarryCommand
 			String arg = args[args.length - 1].toUpperCase(Locale.ENGLISH);
 			for(MessageColor color : MessageColor.values())
 			{
+				//noinspection ObjectEquality
+				if(color == MessageColor.RESET) continue; // == is okay here since we want to check if it is the specific instance
 				if(color.name().startsWith(arg)) complete.add(color.name());
 			}
 		}
