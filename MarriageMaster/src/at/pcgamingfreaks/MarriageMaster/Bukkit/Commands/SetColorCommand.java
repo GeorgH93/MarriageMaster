@@ -30,9 +30,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class SetColorCommand extends MarryCommand
 {
@@ -91,18 +89,11 @@ public class SetColorCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length!=1 && args.length!=2) return null;
+		if(args.length != 1 && args.length != 2) return null;
 		List<String> complete = getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
-		if(complete == null) complete = new ArrayList<>(16);
-		{
-			String arg = args[args.length - 1].toUpperCase(Locale.ENGLISH);
-			for(MessageColor color : MessageColor.values())
-			{
-				//noinspection ObjectEquality
-				if(color == MessageColor.RESET) continue; // == is okay here since we want to check if it is the specific instance
-				if(color.name().startsWith(arg)) complete.add(color.name());
-			}
-		}
+		List<String> colors = MessageColor.getNamesStartingWith(args[args.length - 1]);
+		if(complete == null) return colors;
+		complete.addAll(colors);
 		return complete;
 	}
 }
