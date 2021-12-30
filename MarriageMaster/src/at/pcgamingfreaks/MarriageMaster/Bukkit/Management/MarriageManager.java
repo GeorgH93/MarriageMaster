@@ -82,8 +82,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		rangeMarrySquared   = (rangeMarry > 0) ? rangeMarry * rangeMarry : rangeMarry;
 		rangeDivorceSquared = (rangeDivorce > 0) ? rangeDivorce * rangeDivorce : rangeDivorce;
 
-		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
-		dialogMarried       = plugin.getLanguage().getDialog("Married").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
+		dialogMarried       = plugin.getLanguage().getDialog("Married").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
@@ -168,7 +168,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		if(surname == null || surname.isEmpty()) return null;
 		if(plugin.getCommandManager().isRemoveSwitch(surname) || "null".equalsIgnoreCase(surname) || "none".equalsIgnoreCase(surname)) return null;
 
-		surname = surname.replace('§', '&').replaceAll("&k", "");
+		surname = surname.replace('§', '&').replace("&k", "");
 		if(surnameNotAllowedCharactersRex != null)
 		{
 			String s = surname.replaceAll(COLOR_CODE_REGEX, "");

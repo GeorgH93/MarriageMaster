@@ -32,7 +32,7 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 
 	public static void loadMessages(MarriageMaster plugin)
 	{
-		dialogAndDoYouWant     = plugin.getLanguage().getDialog("AndDoYouWant").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player1DisplayName}", "%2\\$s").replaceAll("\\{Player2Name}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s");
+		dialogAndDoYouWant     = plugin.getLanguage().getDialog("AndDoYouWant").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 		dialogYesIWant         = plugin.getLanguage().getDialog("YesIWant");
 		dialogNoIDontWant      = plugin.getLanguage().getDialog("NoIDontWant");
 		messageConfirm         = plugin.getLanguage().getMessage("Ingame.Marry.Confirm").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PlayerName\\}", "%3\\$s").replaceAll("\\{PlayerDisplayName\\}", "%4\\$s");

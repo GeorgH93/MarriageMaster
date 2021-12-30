@@ -37,10 +37,10 @@ public class PrefixSuffixFormatterImpl implements at.pcgamingfreaks.MarriageMast
 
 	public static IMarriageAndPartnerFormatter produceFormatter(@NotNull String format)
 	{
-		format = format.replaceAll("\\{StatusHeart}", MagicValues.RED_HEART);
+		format = format.replace("{StatusHeart}", MagicValues.RED_HEART);
 		if(StringUtils.indexOfAny(format, new String[]{ "{Surname}", "{PartnerName}", "{PartnerDisplayName}", "{MagicHeart}" }) != -1)
 		{
-			return new PlaceholderFormatter(format.replaceAll("\\{Surname}", "%1\\$s").replaceAll("\\{PartnerName}", "%2\\$s").replaceAll("\\{PartnerDisplayName}", "%3\\$s").replaceAll("\\{MagicHeart}", "%4\\$s"));
+			return new PlaceholderFormatter(format.replace("{Surname}", "%1$s").replace("{PartnerName}", "%2$s").replace("{PartnerDisplayName}", "%3$s").replace("{MagicHeart}", "%4$s"));
 		}
 		else return new StaticStringFormatter(format);
 	}

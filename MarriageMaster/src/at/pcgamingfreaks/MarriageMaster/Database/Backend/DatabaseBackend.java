@@ -62,7 +62,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 
 	protected String getUsedPlayerIdentifier(MARRIAGE_PLAYER player)
 	{
-		return useUUIDSeparators ? player.getUUID().toString() : player.getUUID().toString().replaceAll("-", "");
+		return useUUIDSeparators ? player.getUUID().toString() : player.getUUID().toString().replace("-", "");
 	}
 
 	protected @NotNull UUID getUUIDFromIdentifier(final @NotNull String identifier)
