@@ -615,7 +615,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@Override
 	public void updateMarriageColor(final @NotNull MARRIAGE marriage)
 	{
-		runStatementAsyncIncludeKey(queryUpdateMarriageColor, marriage, marriage.getColor() == null ? null : marriage.getColor().name());
+		runStatementAsyncIncludeKey(queryUpdateMarriageColor, marriage, marriage.getColor().name());
 	}
 
 	@Override

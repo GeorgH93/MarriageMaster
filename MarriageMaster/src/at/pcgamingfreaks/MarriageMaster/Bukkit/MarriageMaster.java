@@ -327,8 +327,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
 	@Override
 	public void doDelayableTeleportAction(@NotNull final DelayableTeleportAction action)
 	{
-		//noinspection ConstantConditions
-		if(action == null) return;
 		if(action.getDelay() == 0 || action.getPlayer().hasPermission(Permissions.BYPASS_DELAY))
 		{
 			action.run();
