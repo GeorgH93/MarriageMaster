@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import lombok.Setter;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> implements AutoCloseable
+public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home>
 {
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected final IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform;
@@ -50,7 +50,6 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 		useOnlineUUIDs = dbConfig.useOnlineUUIDs();
 	}
 
-	@Override
 	public void close()	{}
 
 	public void startup() throws Exception
