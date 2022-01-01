@@ -43,7 +43,7 @@ public abstract class PluginChannelCommunicatorBase
 
 	protected static byte[] buildStringMessage(final @NotNull String... msg)
 	{
-		byte[] data = null;
+		byte[] data;
 		try(ByteArrayOutputStream stream = new ByteArrayOutputStream(); DataOutputStream out = new DataOutputStream(stream))
 		{
 			for(String param : msg)
@@ -53,7 +53,9 @@ public abstract class PluginChannelCommunicatorBase
 			out.flush();
 			data = stream.toByteArray();
 		}
-		catch(IOException ignored) {}
+		catch(IOException ignored) {
+			data = new byte[0];
+		}
 		return data;
 	}
 
