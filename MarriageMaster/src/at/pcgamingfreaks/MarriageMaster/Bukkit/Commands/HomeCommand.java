@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -168,7 +169,7 @@ public class HomeCommand extends MarryCommand
 		return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((Player) sender).isMarried());
 	}
 
-	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
+	private @Nullable Marriage getTargetedMarriage(@NotNull CommandSender sender, @Nullable MarriagePlayer player, @NotNull String[] args)
 	{
 		Marriage marriage;
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
@@ -194,6 +195,7 @@ public class HomeCommand extends MarryCommand
 					return null;
 				}
 			}
+			else if (player == null) return null;
 			else if(args.length == 1)
 			{
 				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
@@ -224,9 +226,13 @@ public class HomeCommand extends MarryCommand
 					return null;
 				}
 			}
-			else
+			else if (player != null)
 			{
 				marriage = player.getMarriageData();
+			}
+			else
+			{
+				return null;
 			}
 		}
 		return marriage;
@@ -283,10 +289,10 @@ public class HomeCommand extends MarryCommand
 
 	public class SetHomeCommand extends MarryCommand
 	{
-		private final HomeCommand homeCommand;
-		private final Message messageSet;
+		private final @NotNull HomeCommand homeCommand;
+		private final @NotNull Message messageSet;
 
-		public SetHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
+		public SetHomeCommand(final @NotNull MarriageMaster plugin, final @NotNull HomeCommand homeCommand)
 		{
 			super(plugin, "sethome", plugin.getLanguage().getTranslated("Commands.Description.SetHome"), Permissions.HOME_SET, false, true, plugin.getLanguage().getCommandAliases("SetHome"));
 			this.homeCommand = homeCommand;
@@ -333,10 +339,10 @@ public class HomeCommand extends MarryCommand
 
 	public class DelHomeCommand extends MarryCommand
 	{
-		private final HomeCommand homeCommand;
-		private final Message messageHomeDeleted;
+		private final @NotNull HomeCommand homeCommand;
+		private final @NotNull Message messageHomeDeleted;
 
-		public DelHomeCommand(MarriageMaster plugin, HomeCommand homeCommand)
+		public DelHomeCommand(final @NotNull MarriageMaster plugin, final @NotNull HomeCommand homeCommand)
 		{
 			super(plugin, "delhome", plugin.getLanguage().getTranslated("Commands.Description.DelHome"), Permissions.HOME_DEL, false, true, plugin.getLanguage().getCommandAliases("DelHome"));
 			this.homeCommand = homeCommand;
