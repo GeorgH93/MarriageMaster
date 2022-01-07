@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return MessageColor.translateAlternateColorCodes('&', getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
+		return MessageColor.translateAlternateColorAndFormatCodes(getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
 	}
 
 	@Override

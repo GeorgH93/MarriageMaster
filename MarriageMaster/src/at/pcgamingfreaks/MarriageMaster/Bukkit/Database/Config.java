@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@ import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Version;
 import at.pcgamingfreaks.YamlFileUpdateMethod;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -332,14 +331,14 @@ public class Config extends Configuration implements DatabaseConfiguration
 	public Set<String> getGiftItemFilterNames()
 	{
 		Set<String> names = new HashSet<>();
-		getConfigE().getStringList("Gift.ItemFilter.Names", new ArrayList<>(0)).forEach(name -> names.add(ChatColor.translateAlternateColorCodes('&', name)));
+		getConfigE().getStringList("Gift.ItemFilter.Names", new ArrayList<>(0)).forEach(name -> names.add(MessageColor.translateAlternateColorAndFormatCodes(name)));
 		return names;
 	}
 
 	public Set<String> getGiftItemFilterLore()
 	{
 		Set<String> loreSet = new HashSet<>();
-		getConfigE().getStringList("Gift.ItemFilter.Lore", new ArrayList<>(0)).forEach(lore -> loreSet.add(ChatColor.translateAlternateColorCodes('&', lore)));
+		getConfigE().getStringList("Gift.ItemFilter.Lore", new ArrayList<>(0)).forEach(lore -> loreSet.add(MessageColor.translateAlternateColorAndFormatCodes(lore)));
 		return loreSet;
 	}
 
@@ -527,7 +526,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getPrefix()
 	{
-		return MessageColor.translateAlternateColorCodes('&', getConfigE().getString("Prefix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
+		return MessageColor.translateAlternateColorAndFormatCodes(getConfigE().getString("Prefix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
 	}
 
 	public boolean isPrefixOnLineBeginning()
@@ -537,7 +536,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	public @NotNull String getSuffix()
 	{
-		return MessageColor.translateAlternateColorCodes('&', getConfigE().getString("Suffix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
+		return MessageColor.translateAlternateColorAndFormatCodes(getConfigE().getString("Suffix.String", "").replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.WHITE));
 	}
 	//endregion
 
