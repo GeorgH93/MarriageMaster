@@ -20,26 +20,23 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Event is fired right before a player gets the heal bonus. All the checks are done. We just await for your approval.
+ * Event is fired right before a player gets a healing bonus. All the checks are done. We just await for your approval.
  */
 @SuppressWarnings("unused")
-public class BonusHealEvent extends Event implements Cancellable
+public class BonusHealEvent extends MarriageMasterCancellableEvent
 {
-	private boolean cancelled = false;
 	private final MarriagePlayer player;
 	private final Marriage marriageData;
 	private double amount;
 	private final EntityRegainHealthEvent.RegainReason regainReason;
 
 	/**
-	 * @param player The player that gets a heal bonus.
+	 * @param player The player that gets a healing bonus.
 	 * @param marriageData The marriage data of the player.
 	 * @param amount The amount of health the entity will regain.
 	 * @param regainReason The RegainReason detailing the reason for the entity regaining health.
@@ -53,9 +50,9 @@ public class BonusHealEvent extends Event implements Cancellable
 	}
 
 	/**
-	 * Gets the player that gets a heal bonus.
+	 * Gets the player that gets a healing bonus.
 	 *
-	 * @return The player that gets a heal bonus.
+	 * @return The player that gets a healing bonus.
 	 */
 	public @NotNull MarriagePlayer getPlayer()
 	{
@@ -101,30 +98,6 @@ public class BonusHealEvent extends Event implements Cancellable
 		return regainReason;
 	}
 
-
-	/**
-	 * Gets the cancellation state of this event. A cancelled event will not
-	 * be executed in the server, but will still pass to other plugins.
-	 *
-	 * @return True if this event is cancelled.
-	 */
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	/**
-	 * Sets the cancellation state of this event. A cancelled event will not
-	 * be executed in the server, but will still pass to other plugins.
-	 *
-	 * @param cancel True if you wish to cancel this event.
-	 */
-	@Override
-	public void setCancelled(boolean cancel)
-	{
-		cancelled = cancel;
-	}
 
 	// Bukkit handler stuff
 	private static final HandlerList handlers = new HandlerList();

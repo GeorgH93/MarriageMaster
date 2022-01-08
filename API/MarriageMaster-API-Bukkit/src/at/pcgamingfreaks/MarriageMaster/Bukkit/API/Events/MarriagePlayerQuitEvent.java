@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
  * Event is fired when a married player disconnects form the server.
  */
 @SuppressWarnings("unused")
-public class MarriagePlayerQuitEvent extends Event
+public class MarriagePlayerQuitEvent extends MarriageMasterEvent
 {
 	private final MarriagePlayer player;
 

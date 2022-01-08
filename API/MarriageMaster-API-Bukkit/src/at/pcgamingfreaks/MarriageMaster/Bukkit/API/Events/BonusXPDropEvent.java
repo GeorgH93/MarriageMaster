@@ -20,8 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,9 +27,8 @@ import org.jetbrains.annotations.NotNull;
  * Event is fired right before a XP orb with bonus XP is spawned. All the checks are done. We just await your approval.
  */
 @SuppressWarnings("unused")
-public class BonusXPDropEvent extends Event implements Cancellable
+public class BonusXPDropEvent extends MarriageMasterCancellableEvent
 {
-	private boolean cancelled = false;
 	private final MarriagePlayer player;
 	private final Marriage marriageData;
 	private int amount;
@@ -89,30 +86,6 @@ public class BonusXPDropEvent extends Event implements Cancellable
 		this.amount = amount;
 	}
 
-
-	/**
-	 * Gets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @return True if this event has been cancelled.
-	 */
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	/**
-	 * Sets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @param cancel True if you wish to cancel this event.
-	 */
-	@Override
-	public void setCancelled(boolean cancel)
-	{
-		cancelled = cancel;
-	}
 
 	// Bukkit handler stuff
 	private static final HandlerList handlers = new HandlerList();

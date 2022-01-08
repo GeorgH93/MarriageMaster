@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,7 +33,7 @@ import lombok.Setter;
  */
 @AllArgsConstructor
 @Getter
-public class SurnameChangedEvent extends Event
+public class SurnameChangedEvent extends MarriageMasterEvent
 {
 	 @NotNull private final Marriage marriageData;
 	@Setter @Nullable private String newSurname;

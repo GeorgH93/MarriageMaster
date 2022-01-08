@@ -20,8 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -30,9 +28,8 @@ import org.jetbrains.annotations.NotNull;
  * Event is fired right before the player gifts an item stack to his partner. All the checks are done. We just await your approval.
  */
 @SuppressWarnings("unused")
-public class GiftEvent extends Event implements Cancellable
+public class GiftEvent extends MarriageMasterCancellableEvent
 {
-	private boolean cancelled = false;
 	private final MarriagePlayer player;
 	private final Marriage marriageData;
 	private ItemStack itemStack;
@@ -89,29 +86,6 @@ public class GiftEvent extends Event implements Cancellable
 		this.itemStack = itemStack;
 	}
 
-	/**
-	 * Gets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @return true if this event is cancelled.
-	 */
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	/**
-	 * Sets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @param cancel True if you wish to cancel this event.
-	 */
-	@Override
-	public void setCancelled(boolean cancel)
-	{
-		cancelled = cancel;
-	}
 
 	// Bukkit handler stuff
 	private static final HandlerList handlers = new HandlerList();

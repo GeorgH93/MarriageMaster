@@ -20,8 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,12 +31,11 @@ import lombok.Setter;
  * Event is fired before the surname of a couple is changed.
  */
 @Getter
-public class SurnameChangeEvent extends Event implements Cancellable
+public class SurnameChangeEvent extends MarriageMasterCancellableEvent
 {
 	private final Marriage marriageData;
 	@Setter @Nullable private String newSurname;
 	@NotNull private final CommandSender changedBy;
-	@Setter private boolean cancelled = false;
 
 	// Bukkit handler stuff
 	private static final HandlerList handlers = new HandlerList();

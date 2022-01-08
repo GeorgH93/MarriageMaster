@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
  * Event is fired after two players got married.
  */
 @SuppressWarnings("unused")
-public class MarriedEvent extends Event
+public class MarriedEvent extends MarriageMasterEvent
 {
 	private final Marriage marriageData;
 

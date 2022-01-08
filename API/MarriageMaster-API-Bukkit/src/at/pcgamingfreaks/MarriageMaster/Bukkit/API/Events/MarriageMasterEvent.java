@@ -17,26 +17,20 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
-import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.event.Event;
 
 /**
- * Event is fired when the plugin was reloaded.
+ * Base class of all events fired by the Marriage Master plugin
  */
-@SuppressWarnings("unused")
-public class MarriageMasterReloadEvent extends MarriageMasterEvent
+public abstract class MarriageMasterEvent extends Event
 {
-	// Bukkit handler stuff
-	private static final HandlerList handlers = new HandlerList();
-
-	@Override
-	public @NotNull HandlerList getHandlers()
+	protected MarriageMasterEvent()
 	{
-		return getHandlerList();
+		super();
 	}
 
-	public static HandlerList getHandlerList()
+	protected MarriageMasterEvent(boolean async)
 	{
-		return handlers;
+		super(async);
 	}
 }

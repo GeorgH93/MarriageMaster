@@ -19,14 +19,13 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 /**
  * Event is fired when a married player joins the server.
  */
-public class MarriedPlayerJoinEvent extends Event
+public class MarriedPlayerJoinEvent extends MarriageMasterEvent
 {
 	private final MarriagePlayer player;
 

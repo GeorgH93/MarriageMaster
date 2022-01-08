@@ -21,8 +21,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +29,8 @@ import org.jetbrains.annotations.Nullable;
  * Event is fired right before two players get married. All the checks are done. We just await your approval. Both have already accepted the marriage!
  */
 @SuppressWarnings("unused")
-public class MarryEvent extends Event implements Cancellable
+public class MarryEvent extends MarriageMasterCancellableEvent
 {
-	private boolean cancelled = false;
 	private final MarriagePlayer player1, player2;
 	private final CommandSender priest;
 	private final String surname;
@@ -112,29 +109,6 @@ public class MarryEvent extends Event implements Cancellable
 		return surname;
 	}
 
-	/**
-	 * Gets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @return True if this event is cancelled.
-	 */
-	@Override
-	public boolean isCancelled()
-	{
-		return cancelled;
-	}
-
-	/**
-	 * Sets the cancellation state of this event. A cancelled event will not
-	 * be executed on the server, but will still pass to other plugins.
-	 *
-	 * @param cancel True if you wish to cancel this event.
-	 */
-	@Override
-	public void setCancelled(boolean cancel)
-	{
-		cancelled = cancel;
-	}
 
 	// Bukkit handler stuff
 	private static final HandlerList handlers = new HandlerList();

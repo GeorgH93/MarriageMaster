@@ -21,7 +21,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Event is fired after two players got divorced.
  */
-public class DivorcedEvent extends Event
+public class DivorcedEvent extends MarriageMasterEvent
 {
 	private final MarriagePlayer player1, player2;
 	private final CommandSender priest;
