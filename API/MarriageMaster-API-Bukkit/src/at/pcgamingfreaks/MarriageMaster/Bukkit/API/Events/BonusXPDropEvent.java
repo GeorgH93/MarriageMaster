@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,8 +32,8 @@ import org.jetbrains.annotations.NotNull;
 public class BonusXPDropEvent extends Event implements Cancellable
 {
 	private boolean cancelled = false;
-	private MarriagePlayer player;
-	private Marriage marriageData;
+	private final MarriagePlayer player;
+	private final Marriage marriageData;
 	private int amount;
 
 	/**
@@ -120,7 +120,7 @@ public class BonusXPDropEvent extends Event implements Cancellable
 	@Override
 	public @NotNull HandlerList getHandlers()
 	{
-		return handlers;
+		return getHandlerList();
 	}
 
 	public static HandlerList getHandlerList()

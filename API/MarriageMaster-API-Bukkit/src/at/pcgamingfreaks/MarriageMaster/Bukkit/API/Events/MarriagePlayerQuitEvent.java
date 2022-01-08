@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings("unused")
 public class MarriagePlayerQuitEvent extends Event
 {
-	private MarriagePlayer player;
+	private final MarriagePlayer player;
 
 	public MarriagePlayerQuitEvent(MarriagePlayer player)
 	{
@@ -50,7 +50,7 @@ public class MarriagePlayerQuitEvent extends Event
 	@Override
 	public @NotNull HandlerList getHandlers()
 	{
-		return handlers;
+		return getHandlerList();
 	}
 
 	public static HandlerList getHandlerList()

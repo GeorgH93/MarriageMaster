@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,8 +34,8 @@ import org.jetbrains.annotations.Nullable;
 public class DivorceEvent extends Event implements Cancellable
 {
 	private boolean cancelled = false;
-	private Marriage marriageData;
-	private CommandSender priest;
+	private final Marriage marriageData;
+	private final CommandSender priest;
 
 	/**
 	 * @param marriageData The marriage data of the couple that should get divorced.
@@ -117,7 +117,7 @@ public class DivorceEvent extends Event implements Cancellable
 	@Override
 	public @NotNull HandlerList getHandlers()
 	{
-		return handlers;
+		return getHandlerList();
 	}
 
 	public static HandlerList getHandlerList()
