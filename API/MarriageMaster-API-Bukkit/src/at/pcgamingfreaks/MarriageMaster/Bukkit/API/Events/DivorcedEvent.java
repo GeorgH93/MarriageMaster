@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,11 +29,10 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Event is fired after two players got divorced.
  */
-@SuppressWarnings("unused")
 public class DivorcedEvent extends Event
 {
-	private MarriagePlayer player1, player2;
-	private CommandSender priest;
+	private final MarriagePlayer player1, player2;
+	private final CommandSender priest;
 
 	/**
 	 * @param player1 The first player that just got divorced.
@@ -61,9 +60,10 @@ public class DivorcedEvent extends Event
 	 *
 	 * @return True if the priest is a player. False if the priest is the console or there is no priest at all. Self marriage will return true.
 	 */
+	@SuppressWarnings("unused")
 	public boolean isPriestAPlayer()
 	{
-		return (priest != null && priest instanceof Player);
+		return priest instanceof Player;
 	}
 
 	/**

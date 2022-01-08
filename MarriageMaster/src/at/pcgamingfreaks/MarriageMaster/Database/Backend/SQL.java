@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -437,7 +437,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			for(Object marriage : cache.getLoadedMarriages())
 			{
 				MARRIAGE m = (MARRIAGE) marriage;
-				if(m.getDatabaseKey() != null && m.getDatabaseKey() instanceof Integer)
+				if(m.getDatabaseKey() instanceof Integer)
 				{
 					m.setHomeData(homes.get(m.getDatabaseKey()));
 				}
