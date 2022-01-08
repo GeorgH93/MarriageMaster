@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,30 +20,16 @@ package at.pcgamingfreaks.MarriageMaster.API;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 public class Home
 {
-	private final String homeServer, world;
+	@Getter private final @NotNull String worldName;
+	private final @Nullable String homeServer;
 	@Getter private final double x, y, z;
 	@Getter private final float yaw, pitch;
-
-	@Deprecated
-	public Home(final @NotNull String world, final @Nullable String homeServer, final double x, final double y, final double z)
-	{
-		this(world, homeServer, x, y, z, 0, 0);
-	}
-
-	public Home(final @NotNull String world, final @Nullable String homeServer, final double x, final double y, final double z, final float yaw, final float pitch)
-	{
-		this.world = world;
-		this.homeServer = homeServer;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.yaw = yaw;
-		this.pitch = pitch;
-	}
 
 	/**
 	 * Gets the server of the represented home.
@@ -54,15 +40,5 @@ public class Home
 	public @Nullable String getHomeServer()
 	{
 		return homeServer;
-	}
-
-	/**
-	 * Gets the world name of the represented home.
-	 *
-	 * @return The world name position.
-	 */
-	public @NotNull String getWorldName()
-	{
-		return world;
 	}
 }

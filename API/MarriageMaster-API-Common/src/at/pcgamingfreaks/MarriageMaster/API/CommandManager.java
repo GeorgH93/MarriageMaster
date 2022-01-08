@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -112,30 +112,6 @@ public interface CommandManager<MARRY_COMMAND extends MarryCommand, COMMAND_SEND
 	 * @return The list of names for the tab complete event. Null if there is no matching partner.
 	 */
 	@Nullable List<String> getSimpleTabComplete(@NotNull COMMAND_SENDER sender, @Nullable String... args);
-
-	/**
-	 * Registers a new sub-command for /marry. Use registerSubCommand!
-	 * The method is not available in standalone mode!
-	 *
-	 * @param command The command that should be registered.
-	 */
-	@Deprecated
-	default void registerMarryCommand(@NotNull MARRY_COMMAND command)
-	{
-		registerSubCommand(command);
-	}
-
-	/**
-	 * Unregisters a sub-command for /marry. Use unRegisterSubCommand!
-	 * The method is not available in standalone mode!
-	 *
-	 * @param command The command that should be unregistered.
-	 */
-	@Deprecated
-	default void unRegisterMarryCommand(@NotNull MARRY_COMMAND command)
-	{
-		unRegisterSubCommand(command);
-	}
 
 	/**
 	 * Registers a new sub-command for /marry.

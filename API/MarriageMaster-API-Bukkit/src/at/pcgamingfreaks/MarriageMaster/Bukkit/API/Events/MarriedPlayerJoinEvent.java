@@ -22,17 +22,15 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AllArgsConstructor;
+
 /**
  * Event is fired when a married player joins the server.
  */
+@AllArgsConstructor
 public class MarriedPlayerJoinEvent extends MarriageMasterEvent
 {
-	private final MarriagePlayer player;
-
-	public MarriedPlayerJoinEvent(final @NotNull MarriagePlayer player)
-	{
-		this.player = player;
-	}
+	private final @NotNull MarriagePlayer player;
 
 	/**
 	 * @return The married player that has joined the server
