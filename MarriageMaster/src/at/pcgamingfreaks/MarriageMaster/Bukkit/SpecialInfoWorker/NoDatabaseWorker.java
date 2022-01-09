@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.logging.Level;
 
 /**
  * This worker will inform the admin that the plugin failed to connect to the database, he hopefully is able to solve the problem.
@@ -81,7 +83,7 @@ public class NoDatabaseWorker extends SpecialInfoBase implements  CommandExecuto
 				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+					plugin.getLogger().log(Level.SEVERE, "Failed to reload plugin!", e);
 				}
 			}
 			else

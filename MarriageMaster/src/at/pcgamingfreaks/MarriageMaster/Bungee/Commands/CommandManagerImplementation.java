@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -41,11 +41,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
 
 public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements Listener, CommandManager
 {
-	private MarriageMaster plugin;
-	private HashSet<String> commandAliases = new HashSet<>();
+	private final MarriageMaster plugin;
+	private final HashSet<String> commandAliases = new HashSet<>();
 	private String[] switchesOn, switchesOff, switchesToggle, switchesAll, switchesRemove;
 	private Message helpFormat;
 
@@ -87,8 +88,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		catch(Exception e)
 		{
-			plugin.getLogger().warning(ConsoleColor.RED + "Unable to set the help format. Default format will be used.\nMore details:" + ConsoleColor.RESET);
-			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, ConsoleColor.RED + "Unable to set the help format. Default format will be used." + ConsoleColor.RESET, e);
 		}
 
 		// Init MarriageMaster commands

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 
 public class ClipsPlaceholderHook extends PlaceholderExpansion implements PlaceholderAPIHook
 {
@@ -54,7 +55,7 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	}
 
 	@Override
-	public String onRequest(OfflinePlayer player, String identifier)
+	public String onRequest(final @NotNull OfflinePlayer player, final @NotNull String identifier)
 	{
 		return placeholderManager.replacePlaceholder(player, identifier);
 	}
@@ -77,12 +78,12 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				plugin.getLogger().log(Level.SEVERE, "Failed to unregister placeholder hook from PAPI!", e);
 			}
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			plugin.getLogger().log(Level.SEVERE, "Failed to unregister placeholder hook from PAPI!", e);
 		}
 		if(result)
 		{
@@ -95,31 +96,31 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	}
 
 	@Override
-	public String getName()
+	public @NotNull String getName()
 	{
 		return plugin.getDescription().getName();
 	}
 
 	@Override
-	public String getIdentifier()
+	public @NotNull String getIdentifier()
 	{
 		return plugin.getDescription().getName().toLowerCase(Locale.ENGLISH);
 	}
 
 	@Override
-	public String getAuthor()
+	public @NotNull String getAuthor()
 	{
 		return plugin.getDescription().getAuthors().toString();
 	}
 
 	@Override
-	public String getVersion()
+	public @NotNull String getVersion()
 	{
 		return plugin.getDescription().getVersion();
 	}
 
 	@Override
-	public List<String> getPlaceholders()
+	public @NotNull List<String> getPlaceholders()
 	{
 		return placeholderManager.getPlaceholdersList();
 	}

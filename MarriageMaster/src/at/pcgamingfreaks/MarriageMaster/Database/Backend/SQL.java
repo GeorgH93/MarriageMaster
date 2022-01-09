@@ -40,6 +40,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //@SuppressWarnings("JpaQueryApiInspection")
@@ -106,7 +107,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Failed to close sql connection provider!", e);
 		}
 		super.close();
 	}
@@ -272,7 +273,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to update player UUIDs in database!", e);
 		}
 	}
 
@@ -298,7 +299,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed to load marriages!", e);
 				platform.spawnDatabaseLoadingErrorMessage("Failed to load marriages - " + e.getMessage());
 			}
 			logger.info("Marriages loaded");
@@ -314,7 +315,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed to load priests!", e);
 				platform.spawnDatabaseLoadingErrorMessage("Failed to load priests - " + e.getMessage());
 			}
 			logger.info("Priests loaded");
@@ -340,7 +341,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				catch(Exception e)
 				{
-					e.printStackTrace();
+					logger.log(Level.SEVERE, "Failed to load players!", e);
 					platform.spawnDatabaseLoadingErrorMessage("Failed to load players - " + e.getMessage());
 				}
 			}
@@ -364,7 +365,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed loading plugin data from database with unknown error!", e);
 			platform.spawnDatabaseLoadingErrorMessage(e.getMessage());
 		}
 		loadHomes();
@@ -384,7 +385,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						MARRIAGE_PLAYER priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
 						if(player1 == null || player2 == null)
 						{
-							logger.warning("Failed to load marriage (id: " + marriageId + ") cause one of it's players could not be loaded successful!");
+							logger.warning("Failed to load marriage (id: " + marriageId + ") because one of its players could not be loaded successful!");
 							return;
 						}
 						String surname = surnameEnabled ? rs.getString(fieldSurname) : null;
@@ -397,7 +398,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(SQLException e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed to load marriage!", e);
 			}
 		});
 	}
@@ -445,7 +446,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to load homes!", e);
 			platform.spawnDatabaseLoadingErrorMessage("Failed to load homes - " + e.getMessage());
 		}
 		homes.clear();
@@ -475,7 +476,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				catch(SQLException e)
 				{
-					e.printStackTrace();
+					logger.log(Level.SEVERE, "Failed to load home for marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
 				}
 			}
 		}, marriage);
@@ -500,10 +501,13 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				update(player, connection);
 			}
 		}
+		catch(SQLTransactionRollbackException e)
+		{
+			runAsync(() -> doLoad(player), RANDOM.nextInt(4)); // Retry on deadlock
+		}
 		catch(SQLException e)
 		{
-			if(e instanceof SQLTransactionRollbackException) runAsync(() -> doLoad(player), RANDOM.nextInt(4)); // Retry on deadlock
-			else e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to load player data for " + player.getName() + " (" + player.getUUID() + ")!", e);
 		}
 	}
 
@@ -647,7 +651,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(SQLException e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed to save marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
 			}
 		});
 	}
@@ -706,8 +710,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
-			logger.warning(ConsoleColor.RED + "Failed adding player \"" + player.name + "\"!" + ConsoleColor.RESET);
+			logger.log(Level.WARNING, ConsoleColor.RED + "Failed migrating player \"" + player.name + "\"!" + ConsoleColor.RESET, e);
 		}
 	}
 
@@ -733,8 +736,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						}
 						catch(SQLException e)
 						{
-							e.printStackTrace();
-							logger.warning(ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
+							logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
 						}
 					}
 				}
@@ -746,8 +748,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
-			logger.warning(ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
+			logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
 		}
 	}
 }

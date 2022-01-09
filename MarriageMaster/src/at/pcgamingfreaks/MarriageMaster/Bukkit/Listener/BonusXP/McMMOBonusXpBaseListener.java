@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,10 +31,12 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpListener<McMMOPlayerXpGainEvent, XP_TYPE>
 {
+	protected final MarriageMaster plugin;
 	private final IBonusXpCalculator<McMMOPlayerXpGainEvent, XP_TYPE> calculator;
 
 	protected McMMOBonusXpBaseListener(final @NotNull MarriageMaster plugin)
 	{
+		this.plugin = plugin;
 		if(plugin.getConfiguration().isMcMMOBonusXPSplitWithAllEnabled())
 			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, plugin.getConfiguration().getMcMMOBonusXpMultiplier(), this);
 		else

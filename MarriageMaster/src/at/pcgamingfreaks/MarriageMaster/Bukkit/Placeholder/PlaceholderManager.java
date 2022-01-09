@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 public class PlaceholderManager
 {
@@ -156,7 +157,7 @@ public class PlaceholderManager
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				plugin.getLogger().log(Level.SEVERE, "Failed to register placeholder '" + placeholder.getName() + "'!", e);
 				return;
 			}
 		}

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
+import java.util.logging.Level;
 
 public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object> implements Listener
 {
@@ -61,7 +62,7 @@ public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object
 		}
 		catch(IllegalAccessException | InvocationTargetException e)
 		{
-			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Failed to handle McMMOPlayerXpGainEvent", e);
 		}
 	}
 
@@ -74,7 +75,7 @@ public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object
 		}
 		catch(IllegalAccessException | InvocationTargetException e)
 		{
-			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Failed to add mcmmo xp to player " + player.getPlayerName(), e);
 		}
 	}
 }

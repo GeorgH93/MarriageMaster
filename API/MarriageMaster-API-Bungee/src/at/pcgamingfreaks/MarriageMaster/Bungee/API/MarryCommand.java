@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal", "FieldMayBeFinal"})
 public abstract class MarryCommand extends SubCommand implements at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
@@ -210,7 +211,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			plugin.getLogger().log(Level.SEVERE, "Failed to display help for user '" + sendTo.getName() + "'", e);
 		}
 	}
 

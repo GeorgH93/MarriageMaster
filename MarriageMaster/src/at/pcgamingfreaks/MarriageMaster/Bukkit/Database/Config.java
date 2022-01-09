@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Config extends Configuration implements DatabaseConfiguration
@@ -648,7 +649,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			getLogger().log(Level.WARNING, "Failed to set server name in config!", e);
 		}
 	}
 	//endregion
@@ -662,7 +663,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		}
 		catch(FileNotFoundException e)
 		{
-			e.printStackTrace();
+			getLogger().log(Level.SEVERE, "Failed to save config!", e);
 		}
 	}
 }

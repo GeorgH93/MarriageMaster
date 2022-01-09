@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends SQL<MARRIAGE_PLAYER, MARRIAGE, HOME>
@@ -102,8 +103,7 @@ public class SQLite<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE ext
 		}
 		catch(SQLException e)
 		{
-			logger.warning(ConsoleColor.RED + "Failed to create SQLite tables!" + ConsoleColor.RESET);
-			e.printStackTrace();
+			logger.log(Level.SEVERE, ConsoleColor.RED + "Failed to create SQLite tables!" + ConsoleColor.RESET, e);
 		}
 	}
 

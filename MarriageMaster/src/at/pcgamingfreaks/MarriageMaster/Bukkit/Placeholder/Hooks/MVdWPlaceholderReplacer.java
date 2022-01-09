@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,6 +31,8 @@ import be.maximvdw.placeholderapi.internal.PlaceholderPack;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Locale;
+import java.util.logging.Level;
 
 public class MVdWPlaceholderReplacer implements PlaceholderReplacer, PlaceholderAPIHook
 {
@@ -88,7 +90,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 			PlaceholderPack customPlaceholders = (PlaceholderPack) fieldCustomPlaceholders.get(null);
 			for(String placeholder : placeholderManager.getPlaceholdersList())
 			{
-				be.maximvdw.placeholderapi.internal.PlaceholderReplacer<?> replacer = customPlaceholders.getPlaceholderReplacer("{" + placeholder.toLowerCase() + "}");
+				be.maximvdw.placeholderapi.internal.PlaceholderReplacer<?> replacer = customPlaceholders.getPlaceholderReplacer("{" + placeholder.toLowerCase(Locale.ENGLISH) + "}");
 				if(replacer == null || replacer.getArguments() == null || replacer.getArguments().length == 0)
 				{
 					writer.append(placeholder).append(" not found in MVdWPlaceholder replacer map!\n");
@@ -114,7 +116,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 		catch(NoSuchFieldException | IllegalAccessException | NullPointerException e)
 		{
 			writer.append("Failed! ").append(e.getMessage()).append("\n\n");
-			e.printStackTrace();
+			plugin.getLogger().log(Level.WARNING, "Failed to test MVdWPlaceholder integration!", e);
 		}
 	}
 }

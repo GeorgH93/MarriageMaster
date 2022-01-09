@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class PluginChannelCommunicator extends PluginChannelCommunicatorBase implements PluginMessageListener, Listener
 {
@@ -95,8 +96,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 			}
 			catch (IOException e)
 			{
-				logger.warning("Failed reading message from the bungee!");
-				e.printStackTrace();
+				logger.log(Level.WARNING, "Failed reading message from the bungee!", e);
 			}
 		}
 	}

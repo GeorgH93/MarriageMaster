@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public class NoDatabaseWorker extends Command implements Listener
 {
@@ -81,7 +82,7 @@ public class NoDatabaseWorker extends Command implements Listener
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				plugin.getLogger().log(Level.SEVERE, "Failed to reload plugin!", e);
 			}
 		}
 	}

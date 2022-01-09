@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
@@ -105,7 +106,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				getLogger().log(Level.SEVERE, "Failed to load IMessage interfaces", e);
 			}
 			if(!tempJarFile.delete()) {
 				getLogger().warning("Failed to delete temp file '" + tempJarFile.getAbsolutePath() + "'.");
@@ -114,7 +115,7 @@ public class MarriageMasterBadRabbit extends BadRabbit
 		}
 		catch(IOException e)
 		{
-			e.printStackTrace();
+			getLogger().log(Level.SEVERE, "Failed to load IMessage interfaces", e);
 		}
 	}
 }

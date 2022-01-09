@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ import at.pcgamingfreaks.yaml.YAML;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Files
@@ -147,7 +148,7 @@ public class Files
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed loading priests!", e);
 			}
 		}
 		logger.info("Priests loaded.");
@@ -200,7 +201,7 @@ public class Files
 			}
 			catch(Exception e)
 			{
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Failed to load player data for " + player, e);
 			}
 		}
 	}

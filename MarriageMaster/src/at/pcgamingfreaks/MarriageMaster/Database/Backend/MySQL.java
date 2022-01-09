@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE extends MarriageDataBase, HOME extends Home> extends SQL<MARRIAGE_PLAYER, MARRIAGE, HOME>
@@ -75,13 +76,13 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 			if(rs.next())
 			{
 				String version = rs.getString(1);
-				logger.info("MySQL Server version: " + version);
+				logger.info("MySQL server version: " + version);
 				serverVersion = new Version(version);
 			}
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to obtain MySQL server version!", e);
 		}
 		if(serverVersion == null)
 		{
@@ -126,7 +127,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Failed to setup database tables!", e);
 		}
 	}
 
@@ -165,7 +166,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 							}
 							catch(FileNotFoundException e)
 							{
-								e.printStackTrace();
+								logger.log(Level.WARNING, "Failed to save priest column name in config!", e);
 							}
 							fieldPriestID = primKey;
 						}

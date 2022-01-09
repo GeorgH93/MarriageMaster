@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -34,15 +34,19 @@ import org.bukkit.event.Listener;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SkillApiBonusXpListener implements Listener, IBonusXpListener<PlayerExperienceGainEvent, Object>
 {
+	private final Logger logger;
 	private final Method setExpMethod;
 	private final IBonusXpCalculator<PlayerExperienceGainEvent, Object> calculator;
 	private final HashSet<ExpSource> blockedSources = new HashSet<>();
 
 	public SkillApiBonusXpListener(MarriageMaster plugin)
 	{
+		this.logger = plugin.getLogger();
 		if(plugin.getConfiguration().isSkillApiBonusXPSplitWithAllEnabled())
 			calculator = new AllPartnersInRangeBonusXpCalculator<>(plugin, plugin.getConfiguration().getSkillApiBonusXpMultiplier(), this);
 		else
@@ -90,7 +94,10 @@ public class SkillApiBonusXpListener implements Listener, IBonusXpListener<Playe
 			{
 				setExpMethod.invoke(event, xp);
 			}
-			catch(Exception e) { e.printStackTrace(); }
+			catch(Exception e)
+			{
+				logger.log(Level.WARNING, "Failed to set SkillAPI bonus xp", e);
+			}
 		}
 		else event.setExp((int) Math.round(xp));
 	}
