@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ public class ListPriestsCommand extends MarryCommand
 	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		ArrayList<? extends MarriagePlayer> priests = collectOnlinePriests(sender);
-		if(priests.size() > 0) // There are priests online
+		if(!priests.isEmpty()) // There are priests online
 		{
 			int page = 0;
 			if(args.length == 1)

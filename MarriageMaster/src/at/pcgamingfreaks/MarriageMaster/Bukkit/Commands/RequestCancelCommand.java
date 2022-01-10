@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public class RequestCancelCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-		if(player.getRequestsToCancel().size() > 0)
+		if(!player.getRequestsToCancel().isEmpty())
 		{
 			if(getMarriagePlugin().getCommandManager().isAllSwitch(args[0]))
 			{

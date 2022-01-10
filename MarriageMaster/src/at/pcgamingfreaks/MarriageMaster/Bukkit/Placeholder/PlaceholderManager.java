@@ -168,7 +168,7 @@ public class PlaceholderManager
 
 	public List<String> getPlaceholdersList()
 	{
-		if(placeholdersList.size() == 0)
+		if(placeholdersList.isEmpty())
 		{
 			for(String key : placeholders.keySet())
 			{

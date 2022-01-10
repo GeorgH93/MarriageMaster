@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -464,11 +464,11 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 							priest.send(messageSelfOtherAlreadyMarried, otherPlayer.getName(), otherPlayer.getDisplayName());
 						}
 					}
-					else if(priest.getOpenRequest() != null || priest.getRequestsToCancel().size() > 0)
+					else if(priest.getOpenRequest() != null || !priest.getRequestsToCancel().isEmpty())
 					{
 						priest.send(messageSelfAlreadyOpenRequest);
 					}
-					else if(otherPlayer.getOpenRequest() != null || otherPlayer.getRequestsToCancel().size() > 0)
+					else if(otherPlayer.getOpenRequest() != null || !otherPlayer.getRequestsToCancel().isEmpty())
 					{
 						priest.send(messageAlreadyOpenRequest, otherPlayer.getName(), otherPlayer.getDisplayName());
 					}
@@ -500,11 +500,11 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 							}
 							else
 							{
-								if(player1.getOpenRequest() != null || player1.getRequestsToCancel().size() > 0)
+								if(player1.getOpenRequest() != null || !player1.getRequestsToCancel().isEmpty())
 								{
 									priest.send(messageAlreadyOpenRequest, player1.getName(), player1.getDisplayName());
 								}
-								else if(player2.getOpenRequest() != null || player2.getRequestsToCancel().size() > 0)
+								else if(player2.getOpenRequest() != null || !player2.getRequestsToCancel().isEmpty())
 								{
 									priest.send(messageAlreadyOpenRequest, player2.getName(), player2.getDisplayName());
 								}

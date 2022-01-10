@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -85,7 +85,7 @@ public class GiftCommand extends MarryCommand
 		allowedReceiveGameModes = plugin.getConfiguration().getGiftAllowedReceiveGameModes();
 		requireConfirmation     = plugin.getConfiguration().isGiftRequireConfirmationEnabled();
 		worldBlacklist          = plugin.getConfiguration().getGiftBlackListedWorlds();
-		blacklistEnabled        = worldBlacklist.size() > 0;
+		blacklistEnabled        = !worldBlacklist.isEmpty();
 
 		if(plugin.getConfiguration().isGiftItemFilterEnabled())
 		{

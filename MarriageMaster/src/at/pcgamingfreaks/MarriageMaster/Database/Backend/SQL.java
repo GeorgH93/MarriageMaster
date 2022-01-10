@@ -220,9 +220,9 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					}
 				}
 			}
-			if(toConvert.size() > 0 || toUpdate.size() > 0)
+			if(!toConvert.isEmpty() || !toUpdate.isEmpty())
 			{
-				if(toConvert.size() > 0)
+				if(toConvert.isEmpty())
 				{
 					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), useOnlineUUIDs, useUUIDSeparators);
 					for(Map.Entry<String, String> entry : newUUIDs.entrySet())

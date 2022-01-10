@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public class ListCommand extends MarryCommand
 	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		Collection<? extends Marriage> couples = getMarriagePlugin().getMarriages();
-		if(couples.size() > 0) // There are married couples
+		if(!couples.isEmpty()) // There are married couples
 		{
 			int page = 0;
 			if(args.length == 1)

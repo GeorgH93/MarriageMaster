@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -99,7 +99,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	public void removeMarriage(MARRIAGE marriage)
 	{
 		partnersMarriages.remove(marriage.getPartner(this));
-		married = partnersMarriages.size() > 0;
+		married = !partnersMarriages.isEmpty();
 		if(marriage.equals(privateChatTarget)) privateChatTarget = null;
 	}
 	//endregion

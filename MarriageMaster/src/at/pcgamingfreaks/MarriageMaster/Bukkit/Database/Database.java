@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public final class Database extends BaseDatabase<MarriageMaster, MarriagePlayerD
 		{
 			unCacheStrategy = UnCacheStrategyMaker.make(plugin, cache, plugin.getConfiguration());
 			Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-			if(!plugin.getConfiguration().isBungeeEnabled() || plugin.getServer().getOnlinePlayers().size() > 0)
+			if(!plugin.getConfiguration().isBungeeEnabled() || !plugin.getServer().getOnlinePlayers().isEmpty())
 			{
 				new Thread(loadRunnable).start(); // Load async
 			}

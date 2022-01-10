@@ -289,7 +289,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args)
 	{
 		List<String> results = super.onTabComplete(sender, command, alias, args);
-		if(results != null && ((args.length == 1 && marryActionCommand.canUse(sender)) || (results.size() == 0 && args.length == 2 && (!(sender instanceof Player) || plugin.getPlayerData((Player) sender).isPriest()))))
+		if(results != null && ((args.length == 1 && marryActionCommand.canUse(sender)) || (results.isEmpty() && args.length == 2 && (!(sender instanceof Player) || plugin.getPlayerData((Player) sender).isPriest()))))
 		{
 			results.addAll(marryActionCommand.tabComplete(sender, alias, "marry", args));
 		}

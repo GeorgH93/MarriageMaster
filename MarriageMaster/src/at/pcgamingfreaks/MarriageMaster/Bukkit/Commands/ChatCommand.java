@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -220,7 +220,7 @@ public class ChatCommand extends MarryCommand implements Listener
 				}
 			}
 		}
-		return (data.size() == 0) ? null : data;
+		return (data.isEmpty()) ? null : data;
 	}
 
 	@Override

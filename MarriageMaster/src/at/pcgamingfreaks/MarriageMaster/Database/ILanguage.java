@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ public interface ILanguage
 	default @NotNull String[] getCommandAliases(final @NotNull String command, final @NotNull String[] defaults)
 	{
 		List<String> aliases = getLangE().getStringList("Command." + command, new LinkedList<>());
-		return (aliases.size() > 0) ? aliases.toArray(new String[0]) : defaults;
+		return (!aliases.isEmpty()) ? aliases.toArray(new String[0]) : defaults;
 	}
 
 	default @NotNull String[] getSwitch(final @NotNull String key, final @NotNull String defaultSwitch)
