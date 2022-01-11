@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ public abstract class PlaceholderReplacerBaseValueHome extends PlaceholderReplac
 	private static final String PLACEHOLDER_NO_HOME_KEY = "NoHome";
 	protected final String valueNoHome;
 
-	public PlaceholderReplacerBaseValueHome(@NotNull MarriageMaster plugin)
+	protected PlaceholderReplacerBaseValueHome(@NotNull MarriageMaster plugin)
 	{
 		super(plugin);
 		valueNoHome = getPlaceholderValue(PLACEHOLDER_NO_HOME_KEY);

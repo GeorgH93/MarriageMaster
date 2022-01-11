@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ public abstract class PlaceholderReplacerBaseBoolean extends PlaceholderReplacer
 	private static final String PLACEHOLDER_BOOLEAN_KEY = "Boolean.", KEY_TRUE = "True", KEY_FALSE = "False";
 	protected final String valueTrue, valueFalse;
 
-	public PlaceholderReplacerBaseBoolean(final @NotNull MarriageMaster plugin)
+	protected PlaceholderReplacerBaseBoolean(final @NotNull MarriageMaster plugin)
 	{
 		super(plugin);
 		valueTrue = getBooleanPlaceholderValue(this.getClass().getSimpleName(), KEY_TRUE);

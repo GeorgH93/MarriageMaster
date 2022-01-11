@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	@Getter @Setter	private Object databaseKey;
 
 	//region Constructors
-	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname,
+	protected MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname,
 	                        final boolean pvpEnabled, final @Nullable MessageColor color, final @Nullable HOME home, final @Nullable Object databaseKey)
 	{
 		this.player1 = player1;
@@ -66,12 +66,12 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 		this.color = (color == null) ? MessageColor.values()[hash & 0x0F] : color;
 	}
 
-	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname)
+	protected MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @NotNull Date weddingDate, final @Nullable String surname)
 	{
 		this(player1, player2, priest, weddingDate, surname, false, null, null, null);
 	}
 
-	public MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @Nullable String surname)
+	protected MarriageDataBase(final @NotNull MARRIAGE_PLAYER player1, final @NotNull MARRIAGE_PLAYER player2, final @Nullable MARRIAGE_PLAYER priest, final @Nullable String surname)
 	{
 		this(player1, player2, priest, new Date(), surname);
 	}

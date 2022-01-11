@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 	protected final MarriageMaster plugin;
 	protected final String valueNotMarried;
 
-	public PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
+	protected PlaceholderReplacerBase(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 		valueNotMarried = getPlaceholderValue(PLACEHOLDER_NOT_MARRIED_KEY);
