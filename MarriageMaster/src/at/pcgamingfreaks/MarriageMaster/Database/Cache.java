@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -39,11 +39,6 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 	private final Map<UUID, MARRIAGE_PLAYER_DATA> players = new ConcurrentHashMap<>(); // To resolve players from their UUID
 	private final Map<String, MARRIAGE_DATA> surnames = new ConcurrentHashMap<>(); // To resolve marriages from their surname
 	private final Set<MARRIAGE_DATA> marriages = ConcurrentHashMap.newKeySet(); // Set containing all the marriages
-
-	/**
-	 * Creates a new cache instance
-	 */
-	public Cache() {}
 
 	public void close()
 	{

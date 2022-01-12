@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	@Override
-	protected void receiveUnknownChannel(@NotNull String channel, @NotNull byte[] bytes) {} //Nothing to process here
+	protected void receiveUnknownChannel(@NotNull String channel, byte[] bytes) { /* Nothing to process here */ }
 
 	@Override
 	protected boolean receiveMarriageMaster(@NotNull String cmd, @NotNull DataInputStream inputStream) throws IOException
