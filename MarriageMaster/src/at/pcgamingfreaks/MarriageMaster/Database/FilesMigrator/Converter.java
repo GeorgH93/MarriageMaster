@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -53,4 +53,6 @@ public class Converter
 		config.setDatabaseType(newDB.getDatabaseTypeName());
 		logger.info("Finished migrating files to " + newDB.getDatabaseTypeName() + " database.");
 	}
+
+	private Converter() { /* You should not create an instance of this utility class! */ }
 }
