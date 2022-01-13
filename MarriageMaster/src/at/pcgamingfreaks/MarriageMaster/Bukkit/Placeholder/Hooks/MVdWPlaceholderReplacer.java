@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
+import at.pcgamingfreaks.Reflection;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -85,8 +86,8 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 		int success = 0;
 		try
 		{
-			Field fieldCustomPlaceholders = PlaceholderAPI.class.getDeclaredField("customPlaceholders");
-			fieldCustomPlaceholders.setAccessible(true);
+			Field fieldCustomPlaceholders = Reflection.getField(PlaceholderAPI.class, "customPlaceholders");
+			if(fieldCustomPlaceholders == null) throw new NullPointerException("Failed to find customPlaceholders field");
 			PlaceholderPack customPlaceholders = (PlaceholderPack) fieldCustomPlaceholders.get(null);
 			for(String placeholder : placeholderManager.getPlaceholdersList())
 			{
@@ -113,7 +114,7 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 				writer.append("Failed! ").append(String.valueOf(success)).append(" of ").append(String.valueOf(placeholderManager.getPlaceholdersList().size())).append(" placeholders are linked correctly!\n\n");
 			}
 		}
-		catch(NoSuchFieldException | IllegalAccessException | NullPointerException e)
+		catch(IllegalAccessException | NullPointerException e)
 		{
 			writer.append("Failed! ").append(e.getMessage()).append("\n\n");
 			plugin.getLogger().log(Level.WARNING, "Failed to test MVdWPlaceholder integration!", e);
