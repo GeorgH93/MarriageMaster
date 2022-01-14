@@ -19,7 +19,6 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.ItemFilter;
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
-import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Util.InventoryUtils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
@@ -202,8 +201,7 @@ public class GiftCommand extends MarryCommand
 							messageItemSent.send(sender, bPartner.getName(), bPartner.getDisplayName(), its.getAmount(), itemName, itemJson);
 							messageItemReceived.send(bPartner, bPlayer.getName(), bPlayer.getDisplayName(), its.getAmount(), itemName, itemJson);
 						}
-						if(MCVersion.isDualWieldingMC()) bPlayer.getInventory().setItemInMainHand(null);
-						else bPlayer.getInventory().setItemInHand(null);
+						InventoryUtils.setItemInMainHand(bPlayer, null);
 					}
 				}
 				else
