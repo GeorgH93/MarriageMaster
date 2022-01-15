@@ -1,4 +1,4 @@
-Version: ${languageFileVersion}
+Version: 111
 # To simplify the customisation and the translation process please check out the editor: https://ptp.pcgamingfreaks.at
 Language:
   NotFromConsole: "&c¡Este comando no se puede utilizar desde la consola!"
