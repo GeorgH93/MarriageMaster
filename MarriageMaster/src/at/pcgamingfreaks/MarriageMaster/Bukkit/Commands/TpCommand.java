@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -145,13 +145,13 @@ public class TpCommand extends MarryCommand
 		Material mat, matB1, matB2;
 		World w = loc.getWorld();
 		if(w == null) return null;
-		int y = loc.getBlockY(), i;
+		int y = loc.getBlockY();
 		if(loc.getY() - y < 0.001) y--;
 		int x = loc.getBlockX(), z = loc.getBlockZ(), miny = MCVersion.isOlderThan(MCVersion.MC_1_17) ? Math.max(y - 10, 1) : y - 10;
 		Block b, b1 = w.getBlockAt(x, y + 1, z), b2 = w.getBlockAt(x, y + 2, z);
 		matB1 = b1 == null ? Material.AIR : b1.getType();
 		matB2 = b2 == null ? Material.AIR : b1.getType();
-		for(loc = null, i = 0; y > miny && loc == null; y--, i++)
+		for(loc = null; y > miny && loc == null; y--)
 		{
 			b = w.getBlockAt(x, y, z);
 			mat = b == null ? Material.AIR : b.getType();
