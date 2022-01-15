@@ -34,7 +34,7 @@ public abstract class DatabaseBackend<MARRIAGE_PLAYER extends MarriagePlayerData
 	protected static final String MESSAGE_UPDATE_UUIDS = "Start updating database to UUIDs ...", MESSAGE_UPDATED_UUIDS = "Updated %d accounts to UUIDs.";
 	protected final IPlatformSpecific<MARRIAGE_PLAYER, MARRIAGE, HOME> platform;
 	protected final boolean useBungee, useUUIDSeparators, useOnlineUUIDs, surnameEnabled;
-	protected final Cache cache;
+	protected final Cache<MARRIAGE_PLAYER, MARRIAGE> cache;
 	protected final Logger logger;
 	@Setter protected MarriageSavedCallback marriageSavedCallback = null;
 
