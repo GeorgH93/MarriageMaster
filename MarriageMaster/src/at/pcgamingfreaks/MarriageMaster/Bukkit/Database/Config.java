@@ -89,7 +89,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	private Set<GameMode> getGameModes(final @NotNull String key, final @Nullable GameMode fallback)
 	{
 		List<GameMode> modes = getConfigE().getStringList(key, new ArrayList<>(0)).stream()
-				.map(mode -> Utils.getEnum(mode, (GameMode) null))
+				.map(mode -> Utils.getEnum(mode, (GameMode) null, GameMode.class))
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 		if(modes.isEmpty())
