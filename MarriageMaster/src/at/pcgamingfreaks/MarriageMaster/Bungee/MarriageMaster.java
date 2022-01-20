@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,6 +32,8 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.JoinLeaveInfo;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
+import at.pcgamingfreaks.Plugin.IPlugin;
+import at.pcgamingfreaks.Version;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -47,7 +49,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class MarriageMaster extends Plugin implements MarriageMasterPlugin
+public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlugin
 {
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance = null;
 
@@ -240,6 +242,18 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin
 	public @NotNull Collection<? extends MarriagePlayer> getPriests()
 	{
 		return database.getCache().getLoadedPlayers().stream().filter(MarriagePlayerDataBase::isPriest).collect(Collectors.toList());
+	}
+
+	@Override
+	public @NotNull Version getVersion()
+	{
+		return new Version(getDescription().getVersion());
+	}
+
+	@Override
+	public @NotNull String getName()
+	{
+		return getDescription().getName();
 	}
 
 	//endregion

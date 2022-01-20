@@ -39,6 +39,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorke
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Plugin.IPlugin;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Version;
@@ -60,7 +61,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin
+public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IPlugin
 {
 	@Setter(AccessLevel.PRIVATE) private static Version version = null;
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
