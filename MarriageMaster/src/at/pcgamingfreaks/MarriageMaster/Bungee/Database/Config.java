@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,22 +17,23 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
-import at.pcgamingfreaks.Bungee.Configuration;
+import at.pcgamingfreaks.Config.Configuration;
+import at.pcgamingfreaks.Config.ILanguageConfiguration;
+import at.pcgamingfreaks.Config.YamlFileManager;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bungee.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Version;
-import at.pcgamingfreaks.YamlFileManager;
 
-import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.ProxyServer;
 
 import java.util.*;
 
-public class Config extends Configuration implements DatabaseConfiguration
+public class Config extends Configuration implements DatabaseConfiguration, ILanguageConfiguration
 {
-	public Config(Plugin plugin)
+	public Config(MarriageMaster plugin)
 	{
 		super(plugin, new Version(MagicValues.BUNGEE_CONFIG_VERSION));
 	}
@@ -52,12 +53,6 @@ public class Config extends Configuration implements DatabaseConfiguration
 			if(oldConfig.version().olderThan("102")) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			super.doUpgrade(oldConfig, reMappings, oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)"));
 		}
-	}
-
-	@Override
-	protected void doUpdate()
-	{
-		// We don't have to update our config by now :)
 	}
 
 	//region Getters
@@ -90,7 +85,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		String type = getConfigE().getString("Database.UUID_Type", "auto").toLowerCase(Locale.ENGLISH);
 		if(type.equals("auto"))
 		{
-			return plugin.getProxy().getConfig().isOnlineMode();
+			return ProxyServer.getInstance().getConfig().isOnlineMode();
 		}
 		return type.equals("online");
 	}
@@ -180,7 +175,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 
 	private static List<String> toLowerCase(List<String> strings)
 	{
-		List<String> outList = new LinkedList<>();
+		List<String> outList = new ArrayList<>(strings.size());
 		for(String str : strings)
 		{
 			outList.add(str.toLowerCase(Locale.ENGLISH));

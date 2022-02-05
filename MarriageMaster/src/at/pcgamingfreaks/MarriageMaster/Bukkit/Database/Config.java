@@ -17,9 +17,11 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
-import at.pcgamingfreaks.Bukkit.Configuration;
 import at.pcgamingfreaks.Bukkit.MinecraftMaterial;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
+import at.pcgamingfreaks.Config.Configuration;
+import at.pcgamingfreaks.Config.ILanguageConfiguration;
+import at.pcgamingfreaks.Config.YamlFileUpdateMethod;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
@@ -29,10 +31,9 @@ import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.StringUtils;
 import at.pcgamingfreaks.Version;
-import at.pcgamingfreaks.YamlFileUpdateMethod;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,23 +42,11 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
-public class Config extends Configuration implements DatabaseConfiguration
+public class Config extends Configuration implements DatabaseConfiguration, ILanguageConfiguration
 {
-	public Config(final @NotNull JavaPlugin plugin)
+	public Config(final @NotNull MarriageMaster plugin)
 	{
-		super(plugin, new Version(MagicValues.CONFIG_VERSION), new Version(MagicValues.CONFIG_VERSION));
-	}
-
-	@Override
-	public @NotNull String getLanguageKey()
-	{
-		return "Language.Language";
-	}
-
-	@Override
-	public @NotNull String getLanguageUpdateModeKey()
-	{
-		return "Language.UpdateMode";
+		super(plugin, new Version(MagicValues.CONFIG_VERSION));
 	}
 
 	@Override
@@ -67,7 +56,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 	}
 
 	@Override
-	protected void doUpgrade(final @NotNull at.pcgamingfreaks.YamlFileManager oldConfig)
+	protected void doUpgrade(final @NotNull at.pcgamingfreaks.Config.YamlFileManager oldConfig)
 	{
 		if(oldConfig.version().olderThan(new Version(MagicValues.CONFIG_PRE_V2_VERSIONS)))
 		{
@@ -470,9 +459,9 @@ public class Config extends Configuration implements DatabaseConfiguration
 		{
 			if(isBungeeEnabled())
 			{
-				logger.warning("When using BungeeCord please make sure to set the UUID_Type config option explicitly!");
+				getLogger().warning("When using BungeeCord please make sure to set the UUID_Type config option explicitly!");
 			}
-			return plugin.getServer().getOnlineMode();
+			return Bukkit.getServer().getOnlineMode();
 		}
 		return type.equals("online");
 	}
@@ -610,7 +599,7 @@ public class Config extends Configuration implements DatabaseConfiguration
 		{
 			return channel;
 		}
-		else logger.info("Unknown update Channel: " + channel);
+		else getLogger().info("Unknown update Channel: " + channel);
 		return null;
 	}
 
@@ -621,15 +610,15 @@ public class Config extends Configuration implements DatabaseConfiguration
 		boolean shareableDB = getDatabaseType().equals("mysql") || getDatabaseType().equals("global");
 		if(useBungee && !spigotUsesBungee)
 		{
-			logger.warning("You have BungeeCord enabled for the plugin, but it looks like you have not enabled it in your spigot.yml! You probably should check your configuration.");
+			getLogger().warning("You have BungeeCord enabled for the plugin, but it looks like you have not enabled it in your spigot.yml! You probably should check your configuration.");
 		}
 		else if(!useBungee && spigotUsesBungee && shareableDB)
 		{
-			logger.warning("Your server is running behind a BungeeCord server. If you are using the plugin on more than one server with a shared database, please make sure to also enable the 'UseBungeeCord' config option.");
+			getLogger().warning("Your server is running behind a BungeeCord server. If you are using the plugin on more than one server with a shared database, please make sure to also enable the 'UseBungeeCord' config option.");
 		}
 		else if(useBungee && !shareableDB)
 		{
-			logger.info("You have enabled BungeeCord mode for the plugin, but are not using a shared MySQL database.");
+			getLogger().info("You have enabled BungeeCord mode for the plugin, but are not using a shared MySQL database.");
 			return false; // No need to enable BungeeCord mode if the database does not support it
 		}
 		return useBungee;
