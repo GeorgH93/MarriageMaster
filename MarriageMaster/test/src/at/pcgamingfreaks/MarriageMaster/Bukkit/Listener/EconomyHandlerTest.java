@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ class EconomyHandlerTest
 	private static RegisteredServiceProvider<Economy> serviceProvider;
 	private static MarriagePlayer marriagePlayer1, marriagePlayer2;
 	private static Player player1, player2, player3;
-	private static HashMap<OfflinePlayer, Double> money = new HashMap<>();
+	private static final HashMap<OfflinePlayer, Double> money = new HashMap<>();
 	private static Economy economy;
 	private static Marriage marriage;
 
@@ -170,7 +170,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnDivorce() throws Exception
+	void testOnDivorce()
 	{
 		Reflection.setValue(economyHandler, "costDivorce", 10.0);
 		DivorceEvent event = new DivorceEvent(marriage, player3);
@@ -197,7 +197,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnTeleport() throws Exception
+	void testOnTeleport()
 	{
 		TPEvent event = new TPEvent(marriagePlayer1, marriage);
 		economyHandler.onTeleport(event);
@@ -212,7 +212,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnGift() throws Exception
+	void testOnGift()
 	{
 		GiftEvent event = new GiftEvent(marriagePlayer1, marriage, mock(ItemStack.class));
 		economyHandler.onGift(event);
@@ -227,7 +227,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnHome() throws Exception
+	void testOnHome()
 	{
 		HomeTPEvent event = new HomeTPEvent(marriagePlayer1, marriage);
 		economyHandler.onHome(event);
@@ -242,7 +242,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnSetHome() throws Exception
+	void testOnSetHome()
 	{
 		HomeSetEvent event = new HomeSetEvent(marriagePlayer1, marriage, mock(Location.class));
 		economyHandler.onSetHome(event);
