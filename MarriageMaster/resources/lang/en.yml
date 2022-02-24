@@ -36,7 +36,7 @@ Language:
       ShareOn: "&aYou now share your backpack with your partner."
       ShareOff: "&cYou are no longer sharing your backpack with your partner."
       Opened: "&aYour partner has opened your backpack."
-      ShareDenied: "&cYour partner doesn't give you access to his backpack."
+      ShareDenied: "&cYour partner doesn't give you access to their backpack."
     Chat:
       Joined: "&aYou have set your chat to the private marry chat."
       Left: "&aYou have set your chat to public chat."
@@ -52,7 +52,7 @@ Language:
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedReceiver: "&cYour partner can not receive gifts in it's current current game mode."
       NoItemInHand: "&cYou are not holding an item."
-      PartnerInvFull: "&cYour partner has no empty space in his inventory."
+      PartnerInvFull: "&cYour partner has no empty space in their inventory."
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"You have sent your partner \",\"color\":\"green\"},{\"text\":\"{ItemAmount} {ItemName}\",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}},{\"text\":\".\"}]"
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
@@ -213,7 +213,7 @@ Language:
         Confirm: "[\"\",{\"text\":\"{DisplayName}&r\"},{\"text\":\" wants to divorce from you. Accept the divorce with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
         Deny: "{DisplayName}&r&c denied your divorce request!"
         YouDeny: "&aYou denied &r&a{DisplayName}&r&a's divorce request."
-        Cancelled: "{DisplayName}&r&c cancelled his divorce request!"
+        Cancelled: "{DisplayName}&r&c cancelled their divorce request!"
         YouCancelled: "&aYou cancelled your divorce request from &r&a{DisplayName}&r&a!"
         NotInRange: "&aYour partner is not in range! You need to be within {Range} blocks!"
     Economy:
