@@ -254,8 +254,8 @@ public class GiftCommand extends MarryCommand
 				return;
 			}
 			recipient.getPlayerOnline().getInventory().setItem(slot, item);
-			sender.send(messageItemSent, recipient.getName(), recipient.getDisplayName(), item.getAmount(), itemName, itemJson);
-			recipient.send(messageItemReceived, sender.getName(), sender.getDisplayName(), item.getAmount(), itemName, itemJson);
+			sender.send(messageItemSent, recipient.getName(), recipient, item.getAmount(), itemName, itemJson);
+			recipient.send(messageItemReceived, sender.getName(), sender, item.getAmount(), itemName, itemJson);
 		}
 
 		@Override
