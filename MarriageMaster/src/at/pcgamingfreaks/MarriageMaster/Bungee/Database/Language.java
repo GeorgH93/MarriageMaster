@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,24 +17,23 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
+import at.pcgamingfreaks.Config.YamlFileManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Version;
-import at.pcgamingfreaks.YamlFileManager;
-
-import net.md_5.bungee.api.plugin.Plugin;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Language extends at.pcgamingfreaks.Bungee.Language implements ILanguage
+public class Language extends at.pcgamingfreaks.Bungee.Config.Language implements ILanguage
 {
-	public Language(final @NotNull Plugin plugin)
+	public Language(final @NotNull MarriageMaster plugin)
 	{
-		super(plugin, new Version(MagicValues.LANG_VERSION), new Version(MagicValues.LANG_VERSION));
+		super(plugin, new Version(MagicValues.LANG_VERSION));
 	}
 
 	@Override

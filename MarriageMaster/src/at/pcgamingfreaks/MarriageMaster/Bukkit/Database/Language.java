@@ -17,31 +17,32 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
+import at.pcgamingfreaks.Config.YamlFileManager;
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Version;
 
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILanguage
+public class Language extends at.pcgamingfreaks.Bukkit.Config.Language implements ILanguage
 {
 	public static final String NO_PLACEHOLDER = "&cMarriage Master placeholder not found! Check your language file!";
 	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
 	private static final String PLACEHOLDER_HEART = "<heart>", PLACEHOLDER_SMALLHEART = "<smallheart>";
 
-	public Language(@NotNull JavaPlugin plugin)
+	public Language(@NotNull MarriageMaster plugin)
 	{
-		super(plugin, new Version(MagicValues.LANG_VERSION), new Version(MagicValues.LANG_VERSION));
+		super(plugin, new Version(MagicValues.LANG_VERSION));
 	}
 
 	@Override
-	protected void doUpgrade(@NotNull at.pcgamingfreaks.YamlFileManager oldLang)
+	protected void doUpgrade(@NotNull YamlFileManager oldLang)
 	{
 		if(oldLang.version().olderThan(new Version(MagicValues.LANG_PRE_V2_VERSIONS)))
 		{
@@ -70,9 +71,9 @@ public class Language extends at.pcgamingfreaks.Bukkit.Language implements ILang
 	}
 
 	@Override
-	public @NotNull String translateColorCodes(@NotNull String string)
+	public @NotNull String getTranslated(@NotNull String path)
 	{
-		return super.translateColorCodes(string).replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
+		return super.getTranslated(path).replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
 	}
 
 	public boolean isPlaceholderSet(final @NotNull String key)
