@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,11 +42,11 @@ public class SetPriestCommand extends MarryCommand
 	{
 		super(plugin, "setpriest", plugin.getLanguage().getTranslated("Commands.Description.SetPriest"), Permissions.SET_PRIEST, plugin.getLanguage().getCommandAliases("SetPriest"));
 
-		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
-		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
-		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
-		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
-		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .placeholder("Name").placeholder("DisplayName");
+		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .placeholder("Name").placeholder("DisplayName");
+		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .placeholder("Name").placeholder("DisplayName");
+		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholder("Name").placeholder("DisplayName");
+		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholder("Name").placeholder("DisplayName");
 
 		helpParam = "<" + plugin.helpPlayerNameVariable + ">";
 	}
@@ -65,7 +65,7 @@ public class SetPriestCommand extends MarryCommand
 				{
 					if(bTarget.hasPermission(Permissions.PRIEST))
 					{
-						messagePerPermission.send(sender, bTarget.getName(), bTarget.getDisplayName());
+						messagePerPermission.send(sender, bTarget.getName(), bTarget.getDisplayName()); //TODO make format provider
 					}
 					else
 					{

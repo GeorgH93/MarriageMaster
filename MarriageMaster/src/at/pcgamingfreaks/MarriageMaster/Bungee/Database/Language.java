@@ -18,7 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee.Database;
 
 import at.pcgamingfreaks.Config.YamlFileManager;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;

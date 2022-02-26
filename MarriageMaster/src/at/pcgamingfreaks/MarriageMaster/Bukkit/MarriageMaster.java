@@ -200,12 +200,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		messageNotMarried            = language.getMessage("Ingame.NotMarried");
 		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
 		messagePartnerNotInRange     = language.getMessage("Ingame.PartnerNotInRange");
-		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").replaceAll("\\{PlayerName}", "%s");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
-		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").placeholder("PlayerName");
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder("PlayerName");
+		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").placeholder("PlayerName");
 		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
 		messageMoved                 = language.getMessage("Ingame.TP.Moved");
-		messageDontMove              = language.getMessage("Ingame.TP.DontMove").replaceAll("\\{Time}", "%d");
+		messageDontMove              = language.getMessage("Ingame.TP.DontMove").placeholder("Time");
 		messageMarriageNotExact      = language.getMessage("Ingame.MarriageNotExact");
 		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
 

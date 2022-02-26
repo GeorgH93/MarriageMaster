@@ -46,9 +46,9 @@ public class ListCommand extends MarryCommand
 		useFooter        = plugin.getConfiguration().useListFooter();
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
-		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").replaceAll("\\{Player1Name}", "%1\\$s").replaceAll("\\{Player2Name}", "%2\\$s").replaceAll("\\{Player1DisplayName}", "%3\\$s").replaceAll("\\{Player2DisplayName}", "%4\\$s").replaceAll("\\{Surname}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
-		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
-		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
+		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").placeholder("Player1Name").placeholder("Player2Name").placeholder("Player1DisplayName").placeholder("Player2DisplayName").placeholder("Surname").placeholder("MagicHeart");
+		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
+		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
 		messageNoMarriedPlayers   = plugin.getLanguage().getMessage("Ingame.List.NoMarriedPlayers");
 	}
 

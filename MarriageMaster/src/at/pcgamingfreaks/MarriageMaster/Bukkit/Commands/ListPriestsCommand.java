@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.StringUtils;
 
@@ -44,9 +45,9 @@ public class ListPriestsCommand extends MarryCommand
 		useFooter        = plugin.getConfiguration().useListFooter();
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
-		messageListFormat         = plugin.getLanguage().getMessage("Ingame.ListPriests.Format").replaceAll("\\{PriestName}", "%1\\$s").replaceAll("\\{PriestDisplayName}", "%2\\$s");
-		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.ListPriests.Headline").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
-		messageFooter             = plugin.getLanguage().getMessage("Ingame.ListPriests.Footer").replaceAll("\\{CurrentPage}", "%1\\$d").replaceAll("\\{MaxPage}", "%2\\$d").replaceAll("\\{MainCommand}", "%3\\$s").replaceAll("\\{SubCommand}", "%4\\$s").replaceAll("\\{PrevPage}", "%5\\$d").replaceAll("\\{NextPage}", "%6\\$d");
+		messageListFormat         = plugin.getLanguage().getMessage("Ingame.ListPriests.Format").placeholder("PriestName").placeholder("PriestDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.ListPriests.Headline").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
+		messageFooter             = plugin.getLanguage().getMessage("Ingame.ListPriests.Footer").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
 		messageNoPriestsOnline    = plugin.getLanguage().getMessage("Ingame.ListPriests.NoPriestsOnline");
 	}
 
@@ -88,7 +89,7 @@ public class ListPriestsCommand extends MarryCommand
 			for(int i = page * entriesPerPage, end = Math.min(i + entriesPerPage, priests.size()); i < end; i++)
 			{
 				MarriagePlayer priest = priests.get(i);
-				messageListFormat.send(sender, priest.getName(), priest.getDisplayName());
+				messageListFormat.send(sender, priest.getName(), priest);
 			}
 
 			if(useFooter) messageFooter.send(sender, page + 1, availablePages, mainCommandAlias, alias, page, page + 2);

@@ -73,7 +73,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 
-		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").replaceAll("\\{MainCommand\\}", "%1\\$s").replaceAll("\\{SubCommand\\}", "%2\\$s").replaceAll("\\{Parameters\\}", "%3\\$s").replaceAll("\\{Description\\}", "%4\\$s");
+		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").placeholder("MainCommand").placeholder("SubCommand").placeholder("Parameters").placeholder("Description");
 
 		// Setting the help format for the marry commands as well as the no permissions and not from console message
 		try

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
 
 import net.milkbowl.vault.economy.Economy;
 
@@ -58,17 +59,18 @@ public class EconomyHandler implements Listener
 		costSetHome       = plugin.getConfiguration().getEconomyValue("SetHome");
 		costChangeSurname = plugin.getConfiguration().getEconomyValue("ChangeSurname");
 		// Load messages
-		messageNotEnough              = getMessage(plugin, "NotEnough").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{CurrencyName\\}", "%2\\$s");
+		FloatPlaceholderProcessor floatPlaceholderProcessor = new FloatPlaceholderProcessor(2);
+		messageNotEnough              = getMessage(plugin, "NotEnough").placeholder("Cost", floatPlaceholderProcessor).placeholder("CurrencyName");
 		messagePartnerNotEnough       = getMessage(plugin, "PartnerNotEnough");
 		messagePriestMarryNotEnough   = getMessage(plugin, "PriestMarryNotEnough");
 		messagePriestDivorceNotEnough = getMessage(plugin, "PriestDivorceNotEnough");
-		messageMarriagePaid           = getMessage(plugin, "MarriagePaid").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageDivorcePaid            = getMessage(plugin, "DivorcePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageTpPaid                 = getMessage(plugin, "TpPaid")      .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
-		messageSurnameChangePaid      = getMessage(plugin, "SurnameChangePaid").replaceAll("\\{Cost}", "%1\\$.2f").replaceAll("\\{Remaining}", "%2\\$.2f").replaceAll("\\{CurrencyName}", "%3\\$s");
+		messageMarriagePaid           = getMessage(plugin, "MarriagePaid").placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageDivorcePaid            = getMessage(plugin, "DivorcePaid") .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageTpPaid                 = getMessage(plugin, "TpPaid")      .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageSurnameChangePaid      = getMessage(plugin, "SurnameChangePaid").placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}

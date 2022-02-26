@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -35,11 +36,11 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 		dialogAndDoYouWant     = plugin.getLanguage().getDialog("AndDoYouWant").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 		dialogYesIWant         = plugin.getLanguage().getDialog("YesIWant");
 		dialogNoIDontWant      = plugin.getLanguage().getDialog("NoIDontWant");
-		messageConfirm         = plugin.getLanguage().getMessage("Ingame.Marry.Confirm").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PlayerName\\}", "%3\\$s").replaceAll("\\{PlayerDisplayName\\}", "%4\\$s");
+		messageConfirm         = plugin.getLanguage().getMessage("Ingame.Marry.Confirm").placeholder("PriestName").placeholder("PriestDisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("PlayerName").placeholder("PlayerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 		messageYouCalledOff    = plugin.getLanguage().getMessage("Ingame.Marry.YouCalledOff");
-		messagePlayerCalledOff = plugin.getLanguage().getMessage("Ingame.Marry.PlayerCalledOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messagePriestMarryOff  = plugin.getLanguage().getMessage("Ingame.Marry.PriestOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messagePlayerMarryOff  = plugin.getLanguage().getMessage("Ingame.Marry.PlayerOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messagePlayerCalledOff = plugin.getLanguage().getMessage("Ingame.Marry.PlayerCalledOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messagePriestMarryOff  = plugin.getLanguage().getMessage("Ingame.Marry.PriestOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messagePlayerMarryOff  = plugin.getLanguage().getMessage("Ingame.Marry.PlayerOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 	}
 
 	public static void unLoadMessages()
@@ -58,13 +59,12 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 		this.surname = surname;
 		this.firstPlayer = firstPlayer;
 		this.manager = manager;
-		player1.send(messageConfirm, priest.getName(), priest.getDisplayName(), player2.getName(), player2.getDisplayName());
+		player1.send(messageConfirm, priest.getName(), priest, player2.getName(), player2);
 	}
 
 	@Override
 	public void onAccept()
 	{
-		//noinspection ConstantConditions
 		if(getPlayersThatCanCancel() == null || !getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		if(manager.isAutoDialogEnabled())
 		{
@@ -95,18 +95,17 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 			getPlayerThatHasToAccept().getPlayerOnline().chat(dialogNoIDontWant);
 		}
 		player.send(messageYouCalledOff);
-		getPlayersThatCanCancel()[1].send(messagePlayerCalledOff, player.getName(), player.getDisplayName());
-		getPlayersThatCanCancel()[0].send(messagePlayerCalledOff, player.getName(), player.getDisplayName());
+		getPlayersThatCanCancel()[1].send(messagePlayerCalledOff, player.getName(), player);
+		getPlayersThatCanCancel()[0].send(messagePlayerCalledOff, player.getName(), player);
 	}
 
 	@Override
 	public void onCancel(@NotNull MarriagePlayer player)
 	{
-		//noinspection ConstantConditions
 		if(getPlayersThatCanCancel() == null || !getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		player.send(messageYouCalledOff);
-		getPlayerThatHasToAccept().send(messagePlayerCalledOff, player.getName(), player.getDisplayName());
-		((player.equals(getPlayersThatCanCancel()[0])) ? getPlayersThatCanCancel()[1] : getPlayersThatCanCancel()[0]).send(messagePlayerCalledOff, player.getName(), player.getDisplayName());
+		getPlayerThatHasToAccept().send(messagePlayerCalledOff, player.getName(), player);
+		((player.equals(getPlayersThatCanCancel()[0])) ? getPlayersThatCanCancel()[1] : getPlayersThatCanCancel()[0]).send(messagePlayerCalledOff, player.getName(), player);
 	}
 
 	@Override
@@ -114,18 +113,18 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 	{
 		if(player.equals(getPlayersThatCanCancel()[1]))
 		{
-			getPlayerThatHasToAccept().send(messagePriestMarryOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[0].send(messagePriestMarryOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messagePriestMarryOff, player.getName(), player);
+			getPlayersThatCanCancel()[0].send(messagePriestMarryOff, player.getName(), player);
 		}
 		else if(player.equals(getPlayersThatCanCancel()[0]))
 		{
-			getPlayerThatHasToAccept().send(messagePlayerMarryOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[1].send(messagePlayerMarryOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messagePlayerMarryOff, player.getName(), player);
+			getPlayersThatCanCancel()[1].send(messagePlayerMarryOff, player.getName(), player);
 		}
 		else
 		{
-			getPlayersThatCanCancel()[0].send(messagePlayerMarryOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[1].send(messagePlayerMarryOff, player.getName(), player.getDisplayName());
+			getPlayersThatCanCancel()[0].send(messagePlayerMarryOff, player.getName(), player);
+			getPlayersThatCanCancel()[1].send(messagePlayerMarryOff, player.getName(), player);
 		}
 	}
 }

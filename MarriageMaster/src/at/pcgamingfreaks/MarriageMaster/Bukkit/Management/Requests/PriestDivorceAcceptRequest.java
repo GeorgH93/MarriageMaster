@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,15 +34,15 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 
 	public static void loadMessages(MarriageMaster plugin)
 	{
-		messageDivorceDeny               = plugin.getLanguage().getMessage("Ingame.Divorce.Deny").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorceYouDeny            = plugin.getLanguage().getMessage("Ingame.Divorce.YouDeny").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorceConfirm            = plugin.getLanguage().getMessage("Ingame.Divorce.Confirm").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
-		messageDivorcePlayerOff          = plugin.getLanguage().getMessage("Ingame.Divorce.PlayerOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorcePriestOff          = plugin.getLanguage().getMessage("Ingame.Divorce.PriestOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorcePriestCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.PriestCancelled").replaceAll("\\{PriestName\\}", "%1\\$s").replaceAll("\\{PriestDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
-		messageDivorcePlayerCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.PlayerCancelled").replaceAll("\\{PlayerName\\}", "%1\\$s").replaceAll("\\{PlayerDisplayName\\}", "%2\\$s").replaceAll("\\{PartnerName\\}", "%3\\$s").replaceAll("\\{PartnerDisplayName\\}", "%4\\$s");
-		messageDivorceYouCancelled       = plugin.getLanguage().getMessage("Ingame.Divorce.YouCancelled").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageDivorceYouCancelledPriest = plugin.getLanguage().getMessage("Ingame.Divorce.YouCancelledPriest").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
+		messageDivorceDeny               = plugin.getLanguage().getMessage("Ingame.Divorce.Deny").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorceYouDeny            = plugin.getLanguage().getMessage("Ingame.Divorce.YouDeny").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorceConfirm            = plugin.getLanguage().getMessage("Ingame.Divorce.Confirm").placeholder("PriestName").placeholder("PriestDisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorcePlayerOff          = plugin.getLanguage().getMessage("Ingame.Divorce.PlayerOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorcePriestOff          = plugin.getLanguage().getMessage("Ingame.Divorce.PriestOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorcePriestCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.PriestCancelled").placeholder("PriestName").placeholder("PriestDisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorcePlayerCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.PlayerCancelled").placeholder("PlayerName").placeholder("PlayerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorceYouCancelled       = plugin.getLanguage().getMessage("Ingame.Divorce.YouCancelled").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorceYouCancelledPriest = plugin.getLanguage().getMessage("Ingame.Divorce.YouCancelledPriest").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 	}
 
 	public static void unLoadMessages()
@@ -63,7 +64,7 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 		this.priest = priest;
 		this.manager = manager;
 		partner = marriage.getPartner(hasToAccept);
-		hasToAccept.send(messageDivorceConfirm, priest.getName(), priest.getDisplayName(), partner.getName(), partner.getDisplayName());
+		hasToAccept.send(messageDivorceConfirm, priest.getName(), priest, partner.getName(), partner);
 	}
 
 	@Override
@@ -83,9 +84,9 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 	protected void onDeny()
 	{
 		MarriagePlayer player = getPlayerThatHasToAccept();
-		if(partner.isOnline()) partner.send(messageDivorceDeny, player.getName(), player.getDisplayName());
-		priest.send(messageDivorceDeny, player.getName(), player.getDisplayName());
-		player.send(messageDivorceYouDeny, partner.getName(), partner.getDisplayName());
+		if(partner.isOnline()) partner.send(messageDivorceDeny, player.getName(), player);
+		priest.send(messageDivorceDeny, player.getName(), player);
+		player.send(messageDivorceYouDeny, partner.getName(), partner);
 	}
 
 	@Override
@@ -93,13 +94,13 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 	{
 		if(player.equals(priest)) // The priest cancelled the divorce
 		{
-			getPlayerThatHasToAccept().send(messageDivorcePriestCancelled, player.getName(), player.getDisplayName(), partner.getName(), partner.getDisplayName());
-			player.send(messageDivorceYouCancelledPriest, marriage.getPartner1().getName(), marriage.getPartner1().getDisplayName(), marriage.getPartner2().getName(), marriage.getPartner2().getDisplayName());
+			getPlayerThatHasToAccept().send(messageDivorcePriestCancelled, player.getName(), player, partner.getName(), partner);
+			player.send(messageDivorceYouCancelledPriest, marriage.getPartner1().getName(), marriage.getPartner1(), marriage.getPartner2().getName(), marriage.getPartner2());
 		}
 		else
 		{
-			priest.send(messageDivorcePlayerCancelled, player.getName(), player.getDisplayName(), getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
-			player.send(messageDivorceYouCancelled, partner.getName(), partner.getDisplayName());
+			priest.send(messageDivorcePlayerCancelled, player.getName(), player, getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept());
+			player.send(messageDivorceYouCancelled, partner.getName(), partner);
 		}
 	}
 
@@ -108,18 +109,18 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 	{
 		if(player.equals(getPlayerThatHasToAccept()))
 		{
-			getPlayersThatCanCancel()[0].send(messageDivorcePlayerOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[1].send(messageDivorcePlayerOff, player.getName(), player.getDisplayName());
+			getPlayersThatCanCancel()[0].send(messageDivorcePlayerOff, player.getName(), player);
+			getPlayersThatCanCancel()[1].send(messageDivorcePlayerOff, player.getName(), player);
 		}
 		else if(player.equals(getPlayersThatCanCancel()[0]))
 		{
-			getPlayerThatHasToAccept().send(messageDivorcePlayerOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[1].send(messageDivorcePlayerOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messageDivorcePlayerOff, player.getName(), player);
+			getPlayersThatCanCancel()[1].send(messageDivorcePlayerOff, player.getName(), player);
 		}
 		else
 		{
-			getPlayerThatHasToAccept().send(messageDivorcePriestOff, player.getName(), player.getDisplayName());
-			getPlayersThatCanCancel()[0].send(messageDivorcePriestOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messageDivorcePriestOff, player.getName(), player);
+			getPlayersThatCanCancel()[0].send(messageDivorcePriestOff, player.getName(), player);
 		}
 	}
 }

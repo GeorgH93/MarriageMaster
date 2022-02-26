@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -59,23 +60,23 @@ public class GiftCommand extends MarryCommand
 	{
 		super(plugin, "gift", plugin.getLanguage().getTranslated("Commands.Description.Gift"), Permissions.GIFT, true, true, plugin.getLanguage().getCommandAliases("Gift"));
 
-		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").replaceAll("\\{AllowedGameModes}", "%1\\$s").replaceAll("\\{CurrentGameMode}", "%2\\$s");
-		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").replaceAll("\\{AllowedGameModes}", "%1\\$s").replaceAll("\\{CurrentGameMode}", "%2\\$s");
+		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").placeholder("AllowedGameModes").placeholder("CurrentGameMode");
+		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").placeholder("AllowedGameModes").placeholder("CurrentGameMode");
 		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
 		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
-		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
-		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
+		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
-		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").replaceAll("\\{ItemName}", "%1\\$s");
+		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").placeholder("ItemName");
 
-		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s").replaceAll("\\{ItemAmount}", "%3\\$d").replaceAll("\\{ItemName}", "%4\\$s").replaceAll("\\{ItemMetaJSON}", "%5\\$s");
-		messageWaitForConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestDenied                         = plugin.getLanguage().getMessage("Ingame.Gift.Request.Denied").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestDeniedPartner                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.DeniedPartner").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestCanceled                       = plugin.getLanguage().getMessage("Ingame.Gift.Request.Canceled").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestCanceledPartner                = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledPartner").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestCanceledDisconnectRequester    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
-		messageRequestCanceledDisconnectTarget       = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").replaceAll("\\{ItemAmount}", "%1\\$d").replaceAll("\\{ItemName}", "%2\\$s").replaceAll("\\{ItemMetaJSON}", "%3\\$s");
+		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageWaitForConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestDenied                         = plugin.getLanguage().getMessage("Ingame.Gift.Request.Denied").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestDeniedPartner                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.DeniedPartner").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestCanceled                       = plugin.getLanguage().getMessage("Ingame.Gift.Request.Canceled").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestCanceledPartner                = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledPartner").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestCanceledDisconnectRequester    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequestCanceledDisconnectTarget       = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageRequestRefundInvFull                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.RefundInvFull");
 		messageRequestPartnerAlreadyHasAnOpenRequest = plugin.getLanguage().getMessage("Ingame.Gift.Request.PartnerAlreadyHasAnOpenRequest");
 
@@ -193,13 +194,13 @@ public class GiftCommand extends MarryCommand
 								return;
 							}
 							messageWaitForConfirmation.send(sender, its.getAmount(), itemName, itemJson);
-							partner.send(messageRequireConfirmation, player.getName(), player.getDisplayName(), its.getAmount(), itemName, itemJson);
+							partner.send(messageRequireConfirmation, player.getName(), player, its.getAmount(), itemName, itemJson);
 						}
 						else
 						{
 							bPartner.getInventory().setItem(slot, its);
-							messageItemSent.send(sender, bPartner.getName(), bPartner.getDisplayName(), its.getAmount(), itemName, itemJson);
-							messageItemReceived.send(bPartner, bPlayer.getName(), bPlayer.getDisplayName(), its.getAmount(), itemName, itemJson);
+							messageItemSent.send(sender, bPartner.getName(), partner, its.getAmount(), itemName, itemJson);
+							messageItemReceived.send(bPartner, bPlayer.getName(), partner, its.getAmount(), itemName, itemJson);
 						}
 						InventoryUtils.setItemInMainHand(bPlayer, null);
 					}

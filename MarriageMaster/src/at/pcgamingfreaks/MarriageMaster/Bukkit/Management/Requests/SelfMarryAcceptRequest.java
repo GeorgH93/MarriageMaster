@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -36,11 +37,11 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 
 	public static void loadMessages(MarriageMaster plugin)
 	{
-		messageSelfMarried           = plugin.getLanguage().getMessage("Ingame.Marry.Self.Married").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageSelfMarried           = plugin.getLanguage().getMessage("Ingame.Marry.Self.Married").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 		messageSelfYouCalledOff      = plugin.getLanguage().getMessage("Ingame.Marry.Self.YouCalledOff");
-		messageSelfPlayerMarryOff    = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfPlayerCalledOff   = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerCalledOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfBroadcastMarriage = plugin.getLanguage().getMessage("Ingame.Marry.Self.Broadcast").replaceAll("\\{Player1Name\\}", "%1\\$s").replaceAll("\\{Player1DisplayName\\}", "%2\\$s").replaceAll("\\{Player2Name\\}", "%3\\$s").replaceAll("\\{Player2DisplayName\\}", "%4\\$s");
+		messageSelfPlayerMarryOff    = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageSelfPlayerCalledOff   = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerCalledOff").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageSelfBroadcastMarriage = plugin.getLanguage().getMessage("Ingame.Marry.Self.Broadcast").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 	}
 
 	public static void unLoadMessages()
@@ -69,11 +70,11 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 		{
 			MarriageData marriage = new MarriageData(getPlayersThatCanCancel()[0], getPlayerThatHasToAccept(), getPlayersThatCanCancel()[0], surname);
 			MarriageMaster.getInstance().getDatabase().cachedMarry(marriage);
-			player2.send(messageSelfMarried, player1.getName(), player1.getDisplayName());
-			player1.send(messageSelfMarried, player2.getName(), player2.getDisplayName());
+			player2.send(messageSelfMarried, player1.getName(), player1);
+			player1.send(messageSelfMarried, player2.getName(), player2);
 			if(manager.isAnnounceMarriageEnabled())
 			{
-				messageSelfBroadcastMarriage.broadcast(player1.getName(), player1.getDisplayName(), player2.getName(), player2.getDisplayName());
+				messageSelfBroadcastMarriage.broadcast(player1.getName(), player1, player2.getName(), player2);
 			}
 			MarriageMaster.getInstance().getServer().getPluginManager().callEvent(new MarriedEvent(marriage));
 		}
@@ -85,7 +86,7 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 		if(getPlayersThatCanCancel().length == 0 || !getPlayersThatCanCancel()[0].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		MarriagePlayer p1 = getPlayersThatCanCancel()[0], p2 = getPlayerThatHasToAccept();
 		p2.send(messageSelfYouCalledOff);
-		p1.send(messageSelfPlayerCalledOff, p2.getName(), p2.getDisplayName());
+		p1.send(messageSelfPlayerCalledOff, p2.getName(), p2);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 		if(getPlayersThatCanCancel().length == 0 || !getPlayersThatCanCancel()[0].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		MarriagePlayer p1 = getPlayersThatCanCancel()[0], p2 = getPlayerThatHasToAccept();
 		p1.send(messageSelfYouCalledOff);
-		p2.send(messageSelfPlayerCalledOff, p1.getName(), p1.getDisplayName());
+		p2.send(messageSelfPlayerCalledOff, p1.getName(), p1);
 	}
 
 	@Override
@@ -102,11 +103,11 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 	{
 		if(player.equals(getPlayersThatCanCancel()[0]))
 		{
-			getPlayerThatHasToAccept().send(messageSelfPlayerMarryOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messageSelfPlayerMarryOff, player.getName(), player);
 		}
 		else
 		{
-			getPlayersThatCanCancel()[0].send(messageSelfPlayerMarryOff, player.getName(), player.getDisplayName());
+			getPlayersThatCanCancel()[0].send(messageSelfPlayerMarryOff, player.getName(), player);
 		}
 	}
 }

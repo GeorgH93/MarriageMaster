@@ -23,6 +23,8 @@ import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.IMessage;
+import at.pcgamingfreaks.Message.MessageBuilder;
+import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.UUIDConverter;
 
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +46,9 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	@Getter @Setter	private Object databaseKey = null;
 	private MARRIAGE privateChatTarget = null;
 	private final Map<MARRIAGE_PLAYER, MARRIAGE> partnersMarriages = new ConcurrentHashMap<>();
+
+	private MessageComponent displayNameMessageComponent;
+	private int lastKnownDisplayNameHash;
 
 	//region Constructor
 	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name)
@@ -117,6 +122,20 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	public @NotNull String getDisplayName()
 	{
 		return name;
+	}
+
+	public @NotNull MessageComponent getDisplayNameMessageComponent()
+	{
+		boolean computeComponent = displayNameMessageComponent == null;
+		String displayName = getDisplayName();
+		if(!computeComponent) computeComponent = lastKnownDisplayNameHash != displayName.hashCode(); // This is good enough to detect changed display names
+		if(computeComponent)
+		{
+			MessageBuilder builder = new MessageBuilder((MessageComponent) null);
+			builder.appendLegacy(displayName);
+			displayNameMessageComponent = builder.getAsComponent();
+		}
+		return displayNameMessageComponent;
 	}
 
 	@Override
