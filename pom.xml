@@ -11,7 +11,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
-		<pcgfPluginLibVersion>1.0.35-SNAPSHOT</pcgfPluginLibVersion>
+		<pcgfPluginLibVersion>1.0.36-SNAPSHOT</pcgfPluginLibVersion>
 
 		<configFileVersion>105</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
