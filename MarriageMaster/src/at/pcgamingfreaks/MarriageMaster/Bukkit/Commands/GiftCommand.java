@@ -101,20 +101,7 @@ public class GiftCommand extends MarryCommand
 
 		/*if[STANDALONE]
 		itemNameResolver = new ItemNameResolver();
-		if (at.pcgamingfreaks.Bukkit.MCVersion.isOlderThan(at.pcgamingfreaks.Bukkit.MCVersion.MC_1_13))
-		{
-			at.pcgamingfreaks.Bukkit.Language itemNameLanguage = new at.pcgamingfreaks.Bukkit.Language(plugin, 1, 1, java.io.File.separator + "lang", "items_", "legacy_items_");
-			itemNameLanguage.setFileDescription("item name language");
-			itemNameLanguage.load(plugin.getConfiguration().getLanguage(), at.pcgamingfreaks.YamlFileUpdateMethod.OVERWRITE);
-			itemNameResolver.loadLegacy(itemNameLanguage, plugin.getLogger());
-		}
-		else
-		{
-			at.pcgamingfreaks.Bukkit.Language itemNameLanguage = new at.pcgamingfreaks.Bukkit.Language(plugin, 2, java.io.File.separator + "lang", "items_");
-			itemNameLanguage.setFileDescription("item name language");
-			itemNameLanguage.load(plugin.getConfiguration().getLanguage(), at.pcgamingfreaks.YamlFileUpdateMethod.OVERWRITE);
-			itemNameResolver.load(itemNameLanguage, plugin.getLogger());
-		}
+		itemNameResolver.load(plugin, plugin.getConfiguration());
 		else[STANDALONE]*/
 		itemNameResolver = at.pcgamingfreaks.PluginLib.Bukkit.ItemNameResolver.getInstance();
 		/*end[STANDALONE]*/
