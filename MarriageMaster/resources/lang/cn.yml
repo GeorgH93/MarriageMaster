@@ -38,10 +38,10 @@ Language:
       Opened: "&a您的伴侣打开了您的背包。"
       ShareDenied: "&c您的伴侣拒绝让您打开背包。"
     Chat:
-      Joined: "&a您开启婚姻聊天。"
-      Left: "&a您关闭婚姻聊天。"
-      ListeningStarted: "&a您现在开始监视聊天。"
-      ListeningStopped: "&a您现在开始不再监视聊天。"
+      Joined: "&a开启婚姻聊天。"
+      Left: "&a关闭婚姻聊天。"
+      ListeningStarted: "&a现在开始监视聊天。"
+      ListeningStopped: "&a现在开始不再监视聊天。"
       TargetSet: "&a伴侣设置完成。"
       DisplayNameAll: "所有伴侣"
       # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
@@ -52,7 +52,7 @@ Language:
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedReceiver: "模式 {CurrentGameMode} 无法接收礼物。"
       NoItemInHand: "&c您的手上没有物品。"
-      PartnerInvFull: "&c您的伴侣背包没有余剩空间了。"
+      PartnerInvFull: "&c您的伴侣背包没有剩余空间了。"
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
       ItemSent: "[{\"text\":\"您送给您伴侣\"},{\"text\":\" {ItemAmount} 个 {ItemName} \",\"hoverEvent\":{\"action\":\"show_item\",\"value\":\"{ItemMetaJSON}\"}}]"
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
@@ -73,7 +73,7 @@ Language:
       Deleted: "&a家已删除。"
       PlayerNoHome: "&c玩家没有设置家。"
       NoHome: "&c您还没设置家。"
-      TPed: "&a您传送到家。"
+      TPed: "&a传送回家。"
       Set: "&a家已设置。"
       BlockedFrom: "&c您不能传送到家。"
       BlockedTo: "&c您无法传送到家，请删除它。"
@@ -130,7 +130,7 @@ Language:
         WaitForConfirmation: "请等待您的伴侣接受传送。"
         Denied: "您拒绝了您伴侣的传送请求。"
         DeniedPartner: "您的伴侣拒绝了传送请求。"
-        Canceled: "您取消了您的传送请求。"
+        Canceled: "您取消了传送请求。"
         CanceledPartner: "您的伴侣取消了传送请求。"
         CanceledDisconnectRequester: "您的伴侣离线了。传送请求已取消。"
         CanceledDisconnectTarget: "您的伴侣离线了。传送请求已取消。"
@@ -208,7 +208,7 @@ Language:
         Deny: "&c玩家 {DisplayName}&r&c 拒绝了您的离婚请求。"
         YouDeny: "&a您拒绝了玩家 {DisplayName}&r&a 的离婚请求。"
         Cancelled: "&c玩家 {DisplayName}&r&c 取消了他的离婚请求。"
-        YouCancelled: "&a您取消离婚请求。"
+        YouCancelled: "&a取消离婚请求。"
         NotInRange: "&a您的伴侣不在范围内！您必须在 {Range} 格内！"
     Economy:
       NotEnough: "&c您没有足够的钱,您需要 {Cost} {CurrencyName} 才能结婚."
@@ -223,7 +223,7 @@ Language:
       GiftPaid: "&a您支付了 {Cost} {CurrencyName} 来把礼物送到您的伴侣背包，您的余额还剩 ({Remaining} {CurrencyName} left)."
     Admin:
       Reloading: "&1重新加载中。"
-      Reloaded: "&1配置文件与语言文本重新加载完成。已加载 中文语言包 by Fur_Xia & Freak(Ye_Yang_Dada) & 尹"
+      Reloaded: "&1配置文件与语言文本重新加载完成。已加载 中文语言包 by Fur_Xia & Freak(Ye_Yang_Dada) & 尹 & YuanYuanOwO"
       ReloadingDatabase: "重新加载数据库。"
       CheckingForUpdates: "&1正在检查更新"
       Updated: "&e插件已更新，将在下次启动时加载。"
@@ -232,7 +232,7 @@ Language:
       # You can change this message if you like to, but don't cry if the link isn't linking to the plugin anymore!
       UpdateAvailable: "[{\"text\":\"插件有新的更新,请到\\\"\",\"color\":\"green\"},{\"text\":\"https://www.spigotmc.org/resources/19273/\",\"color\":\"yellow\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://www.spigotmc.org/resources/19273/\"}},{\"text\":\"\\\" 进行更新!\"}]"
     Help:
-      Header: "&c&m&l  &6&m&l  &e&m&l  &a&m&l  &b&m&l  &f&l婚姻系统-指令&b&m&l  &a&m&l  &e&m&l  &6&m&l  &c&m&l   "
+      Header: "&c&m&l  &6&m&l  &e&m&l  &a&m&l  &b&m&l  &f&l婚姻系统-命令&b&m&l  &a&m&l  &e&m&l  &6&m&l  &c&m&l   "
       Footer: "&c&m&l  &6&m&l  &e&m&l  &a&m&l  &b&m&l  &b&m&l  &a&m&l  &e&m&l  &6&m&l  &c&m&l    &b&m&l  &a&m&l  &e&m&l  &6&m&l  &c&m&l  "
       # Allows you to define messages that should be sent if the player uses the "/marry" command without any parameters (HelpMode must be set to CustomHelp in the config)
       CustomHelp:
@@ -248,7 +248,7 @@ Language:
         # Will be used if the player is a priest
         Priest:
           - " __Marry__"
-          - " 您可以使用指令 /marry marry <player1> <player2> 让两位新人喜结连理"
+          - " 您可以使用命令 /marry marry <player1> <player2> 让两位新人喜结连理"
           - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
         # Will be used if the player is neither married nor a priest
         Default:
@@ -408,7 +408,7 @@ Placeholders:
       True: true
       False: false
     NotMarried: "未婚"
-    NoHome: "未设置婚房"
+    NoHome: "未设置爱巢"
     Separator: "&r, "
     NoPartnerForSlot: ""
   Heart:
@@ -440,7 +440,7 @@ Placeholders:
 # The name of the language represented by the language file
 LanguageName: "中文 (Chinese)"
 # The author of the language file
-Author: "Fur_Xia & Freak(Ye_Yang_Dada) & 尹"
+Author: "Fur_Xia & Freak(Ye_Yang_Dada) & 尹 & YuanYuanOwO"
 
 # Language file version. Don't touch it!
 Version: 105
