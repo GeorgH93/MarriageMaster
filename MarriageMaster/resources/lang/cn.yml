@@ -128,7 +128,7 @@ Language:
       Request:
         Notification: "[\"\",{\"text\":\"伴侣 {DisplayName}&r 请求传送到您这边\"},{\"text\":\"&f［&a接受&f］ \",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"&f［&a接受&f］\"}},{\"text\":\"&f［&c拒绝&f］\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"&f［&c拒绝&f］\"}}]"
         WaitForConfirmation: "请等待您的伴侣接受传送。"
-        Denied: "您拒绝了您伴侣的传送请求。"
+        Denied: "您拒绝了伴侣的传送请求。"
         DeniedPartner: "您的伴侣拒绝了传送请求。"
         Canceled: "您取消了传送请求。"
         CanceledPartner: "您的伴侣取消了传送请求。"
@@ -271,7 +271,7 @@ Language:
       ChatToggle: "将您的聊天切换为与您的伴侣的私人聊天"
       ChatListen: "显示已婚玩家发送给其伴侣的所有聊天信息"
       Gift: "把您手里的东西给予您的伴侣"
-      Home: "传送到家"
+      Home: "传送回家"
       HomeOther: "把您传送到已婚玩家的家"
       SetHome: "设置家"
       SetHomeOther: "设置已婚玩家的家"
