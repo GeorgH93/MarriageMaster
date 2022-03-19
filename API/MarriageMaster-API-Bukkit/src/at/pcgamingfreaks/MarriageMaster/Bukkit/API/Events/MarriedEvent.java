@@ -18,9 +18,11 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events;
 
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Event is fired after two players got married.
@@ -46,6 +48,36 @@ public class MarriedEvent extends MarriageMasterEvent
 	public @NotNull Marriage getMarriageData()
 	{
 		return marriageData;
+	}
+
+	/**
+	 * Gets the first player of the marriage.
+	 *
+	 * @return The first player of the marriage.
+	 */
+	public @NotNull MarriagePlayer getPlayer1()
+	{
+		return marriageData.getPartner1();
+	}
+
+	/**
+	 * Gets the second player of the marriage.
+	 *
+	 * @return The second player of the marriage.
+	 */
+	public @NotNull MarriagePlayer getPlayer2()
+	{
+		return marriageData.getPartner2();
+	}
+
+	/**
+	 * Gets the priest involved in marrying the couple.
+	 *
+	 * @return The priest involved in marrying the couple.
+	 */
+	public @Nullable MarriagePlayer getPriest()
+	{
+		return marriageData.getPriest();
 	}
 
 	// Bukkit handler stuff
