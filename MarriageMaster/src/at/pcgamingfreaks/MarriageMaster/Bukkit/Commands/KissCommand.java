@@ -39,13 +39,15 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class KissCommand extends MarryCommand implements Listener
 {
-	@Getter private static KissCommand instance;
+	@Getter @Setter(AccessLevel.PRIVATE) private static KissCommand instance;
 
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
 	private final double interactRange, range, rangeSquared, hearthVisibleRange;
@@ -75,14 +77,14 @@ public class KissCommand extends MarryCommand implements Listener
 		{
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
-		instance = this;
+		setInstance(this);
 	}
 
 	@Override
 	public void close()
 	{
 		HandlerList.unregisterAll(this);
-		instance = null;
+		setInstance(null);
 		particleSpawner = null;
 	}
 
