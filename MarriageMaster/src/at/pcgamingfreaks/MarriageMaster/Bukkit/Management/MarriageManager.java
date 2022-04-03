@@ -18,20 +18,26 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Management;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.MessageBuilder;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestDivorceAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
+import at.pcgamingfreaks.Message.Placeholder.Processors.ParameterTypeAwarePlaceholderProcessor;
+import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -44,7 +50,8 @@ import java.util.Date;
 
 public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
-	private static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = MessageColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
+	public static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = MessageColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
+	public static final MessageComponent CONSOLE_DISPLAY_NAME_COMPONENT = new MessageBuilder().appendLegacy(CONSOLE_DISPLAY_NAME).getAsComponent();
 
 	private final MarriageMaster plugin;
 	private final String  surnameNotAllowedCharactersRex, dialogDoYouWant, dialogMarried;
@@ -88,6 +95,11 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		dialogMarried       = plugin.getLanguage().getDialog("Married").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 
 		FloatPlaceholderProcessor rangeProcessor = new FloatPlaceholderProcessor(1);
+		ParameterTypeAwarePlaceholderProcessor priestProcessor = new ParameterTypeAwarePlaceholderProcessor();
+		priestProcessor.add(MarriagePlayer.class, DisplayNamePlaceholderProcessor.INSTANCE);
+		priestProcessor.add(MarriagePlayerData.class, DisplayNamePlaceholderProcessor.INSTANCE);
+		priestProcessor.add(MarriagePlayerDataBase.class, DisplayNamePlaceholderProcessor.INSTANCE);
+		priestProcessor.add(MessageComponent.class, PassthroughMessageComponentPlaceholderProcessor.INSTANCE);
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
@@ -100,8 +112,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageNotWithHimself          = getMSG("Ingame.Marry.NotWithHimself").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 		messageSurnameNeeded           = getMSG("Ingame.Marry.SurnameNeeded");
 		messageMarried                 = getMSG("Ingame.Marry.Married").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messageHasMarried              = getMSG("Ingame.Marry.HasMarried").placeholder("PriestName").placeholder("PriestDisplayName").placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messageBroadcastMarriage       = getMSG("Ingame.Marry.Broadcast").placeholder("PriestName").placeholder("PriestDisplayName").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageHasMarried              = getMSG("Ingame.Marry.HasMarried").placeholder("PriestName").placeholder("PriestDisplayName", priestProcessor).placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageBroadcastMarriage       = getMSG("Ingame.Marry.Broadcast").placeholder("PriestName").placeholder("PriestDisplayName", priestProcessor).placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 		messageNotInRange              = getMSG("Ingame.Marry.NotInRange").placeholder("Range", rangeProcessor);
 		messageAlreadyOpenRequest      = getMSG("Ingame.Marry.AlreadyOpenRequest").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 
@@ -116,8 +128,8 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageSelfNotOnYourOwn        = getMSG("Ingame.Marry.Self.NotOnYourOwn");
 
 		messageDivorced                = getMSG("Ingame.Divorce.Divorced").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").placeholder("PriestName").placeholder("PriestDisplayName").placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messageBroadcastDivorce        = getMSG("Ingame.Divorce.Broadcast").placeholder("PriestName").placeholder("PriestDisplayName").placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").placeholder("PriestName").placeholder("PriestDisplayName", priestProcessor).placeholder("PartnerName").placeholder("PartnerDisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageBroadcastDivorce        = getMSG("Ingame.Divorce.Broadcast").placeholder("PriestName").placeholder("PriestDisplayName", priestProcessor).placeholder("Player1Name").placeholder("Player1DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("Player2Name").placeholder("Player2DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 		messageDivorceNotInRange       = getMSG("Ingame.Divorce.NotInRange").placeholder("Range", rangeProcessor);
 
 		messageSelfDivorced            = getMSG("Ingame.Divorce.Self.Divorced").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
@@ -389,33 +401,34 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		plugin.getServer().getPluginManager().callEvent(event);
 		if(!event.isCancelled())
 		{
-			String priestName, priestDPName;
+			String priestName;
+			Object priestNameProvider;
 			MarriageData marriage;
 			if(priest instanceof Player)
 			{
 				priestName = priest.getName();
-				priestDPName = ((Player) priest).getDisplayName();
 				marriage = new MarriageData(player1, player2, plugin.getPlayerData((Player) priest), new Date(), surname);
 				if(confirm && autoDialog)
 				{
 					String msg = String.format(dialogMarried, player1.getName(), player1.getDisplayName(), player2.getName(), player2.getDisplayName());
 					((Player) priest).chat(msg);
 				}
+				priestNameProvider = plugin.getPlayerData((Player) priest);
 			}
 			else
 			{
 				priestName = CONSOLE_NAME;
-				priestDPName = CONSOLE_DISPLAY_NAME;
 				marriage = new MarriageData(player1, player2, null, surname);
+				priestNameProvider = CONSOLE_DISPLAY_NAME_COMPONENT;
 			}
 
 			plugin.getDatabase().cachedMarry(marriage);
 			messageMarried.send(priest, player1.getName(), player1, player2.getName(), player2);
-			player1.sendMessage(messageHasMarried, priestName, priestDPName, player2.getName(), player2);
-			player2.sendMessage(messageHasMarried, priestName, priestDPName, player1.getName(), player1);
+			player1.sendMessage(messageHasMarried, priestName, priestNameProvider, player2.getName(), player2);
+			player2.sendMessage(messageHasMarried, priestName, priestNameProvider, player1.getName(), player1);
 			if(announceMarriage)
 			{
-				messageBroadcastMarriage.broadcast(priestName, priestDPName, player1.getName(), player1, player2.getName(), player2);
+				messageBroadcastMarriage.broadcast(priestName, priestNameProvider, player1.getName(), player1, player2.getName(), player2);
 			}
 			plugin.getServer().getPluginManager().callEvent(new MarriedEvent(marriage));
 		}
@@ -546,24 +559,25 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		{
 			marriage.divorce();
 			MarriagePlayer player1 = marriage.getPartner1(), player2 = marriage.getPartner2();
-			String priestName, priestDPName;
+			String priestName;
+			Object priestNameProvider;
 			if(divorceBy instanceof Player)
 			{
 				priestName = divorceBy.getName();
-				priestDPName = ((Player) divorceBy).getDisplayName();
+				priestNameProvider = plugin.getPlayerData((Player) divorceBy);
 			}
 			else
 			{
 				priestName = CONSOLE_NAME;
-				priestDPName = CONSOLE_DISPLAY_NAME;
+				priestNameProvider = CONSOLE_DISPLAY_NAME_COMPONENT;
 			}
 			if(announceMarriage)
 			{
-				messageBroadcastDivorce.broadcast(priestName, priestDPName, player1.getName(), player1, player2.getName(), player2);
+				messageBroadcastDivorce.broadcast(priestName, priestNameProvider, player1.getName(), player1, player2.getName(), player2);
 			}
 			messageDivorced.send(divorceBy, player1.getName(), player1, player2.getName(), player2);
-			if(player1.isOnline()) player1.send(messageDivorcedPlayer, priestName, priestDPName, player2.getName(), player2);
-			if(player2.isOnline()) player2.send(messageDivorcedPlayer, priestName, priestDPName, player1.getName(), player1);
+			if(player1.isOnline()) player1.send(messageDivorcedPlayer, priestName, priestNameProvider, player2.getName(), player2);
+			if(player2.isOnline()) player2.send(messageDivorcedPlayer, priestName, priestNameProvider, player1.getName(), player1);
 			plugin.getServer().getPluginManager().callEvent(new DivorcedEvent(marriage.getPartner1(), marriage.getPartner2(), divorceBy));
 		}
 	}
