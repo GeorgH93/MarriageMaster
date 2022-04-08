@@ -148,7 +148,7 @@ Language:
       YouMadeAPriest: "{DisplayName}&r&a now is a priest."
       FiredYou: "{DisplayName}&r&c has fired you as a priest."
       YouFiredAPriest: "{DisplayName}&r&a is no longer a priest."
-      PerPermission: "{DisplayName}&r&c is set as a priest per permission. You can't fire him per command!"
+      PerPermission: "{DisplayName}&r&c is set as a priest per permission and can't be fired by command."
     Surname:
       SetSuccessful: "&aSurname changed."
       SetFailed: "&cFailed changing surname."
