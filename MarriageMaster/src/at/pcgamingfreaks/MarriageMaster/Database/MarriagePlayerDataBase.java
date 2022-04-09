@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.IMessage;
 import at.pcgamingfreaks.Message.MessageBuilder;
+import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.UUIDConverter;
 
@@ -38,7 +39,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDER, HOME extends Home, MARRIAGE extends Marriage<MARRIAGE_PLAYER, COMMAND_SENDER, HOME>, PLAYER, PLAYER_ONLINE, MESSAGE extends IMessage> implements DatabaseElement, MarriagePlayer<MARRIAGE, MARRIAGE_PLAYER, PLAYER, PLAYER_ONLINE, MESSAGE>, ICacheablePlayer
 {
-	@Getter @Setter	private String name;
+	@Getter private String name, offlineDisplayName;
 	private final UUID uuid;
 	private final int hash;
 	private boolean priest = false, privateChat = false, sharesBackpack = false;
@@ -47,13 +48,13 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	private MARRIAGE privateChatTarget = null;
 	private final Map<MARRIAGE_PLAYER, MARRIAGE> partnersMarriages = new ConcurrentHashMap<>();
 
-	private MessageComponent displayNameMessageComponent;
+	protected MessageComponent displayNameMessageComponent, offlineDisplayNameMessageComponent;
 	private int lastKnownDisplayNameHash;
 
 	//region Constructor
 	protected MarriagePlayerDataBase(final @Nullable UUID uuid, final @NotNull String name)
 	{
-		this.name = name;
+		setName(name);
 		this.uuid = (uuid != null) ? uuid : UUIDConverter.getUUIDFromNameAsUUID(name, false);
 		this.hash = this.uuid.hashCode();
 	}
@@ -85,6 +86,13 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 	}
 
 	//region set data (to update data changed externally)
+	public void setName(final @NotNull String name)
+	{
+		this.name = name;
+		this.offlineDisplayName = MessageColor.GRAY + name;
+		this.offlineDisplayNameMessageComponent = new MessageBuilder().appendLegacy(offlineDisplayName).getAsComponent();
+	}
+
 	public void setPriestData(boolean is)
 	{
 		priest = is;
@@ -126,6 +134,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 
 	public @NotNull MessageComponent getDisplayNameMessageComponent()
 	{
+		if(!isOnline()) return offlineDisplayNameMessageComponent;
 		boolean computeComponent = displayNameMessageComponent == null;
 		String displayName = getDisplayName();
 		if(!computeComponent) computeComponent = lastKnownDisplayNameHash != displayName.hashCode(); // This is good enough to detect changed display names
@@ -134,6 +143,7 @@ public abstract class MarriagePlayerDataBase<MARRIAGE_PLAYER extends MarriagePla
 			MessageBuilder builder = new MessageBuilder((MessageComponent) null);
 			builder.appendLegacy(displayName);
 			displayNameMessageComponent = builder.getAsComponent();
+			lastKnownDisplayNameHash = displayName.hashCode();
 		}
 		return displayNameMessageComponent;
 	}
