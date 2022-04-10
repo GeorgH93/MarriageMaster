@@ -27,6 +27,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.KissCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Message.MessageComponent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -103,14 +104,21 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	public @NotNull String getDisplayName()
 	{
 		Player bukkitPlayer = getPlayerOnline();
-		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : MessageColor.GRAY + getName();
+		return (bukkitPlayer != null) ? bukkitPlayer.getDisplayName() : getOfflineDisplayName();
 	}
 
 	@Override
 	public @NotNull String getDisplayNameCheckVanished(@NotNull Player player)
 	{
 		Player bukkitPlayer = getPlayerOnline();
-		return (bukkitPlayer != null && player.canSee(bukkitPlayer)) ? bukkitPlayer.getDisplayName() : MessageColor.GRAY + getName();
+		return (bukkitPlayer != null && player.canSee(bukkitPlayer)) ? bukkitPlayer.getDisplayName() : getOfflineDisplayName();
+	}
+
+	public @NotNull MessageComponent getDisplayNameMessageComponentCheckVanished(final @NotNull CommandSender checkFor)
+	{
+		if(!(checkFor instanceof Player)) return getDisplayNameMessageComponent();
+		Player player = getPlayerOnline();
+		return player != null && ((Player) checkFor).canSee(player) ? getDisplayNameMessageComponent() : offlineDisplayNameMessageComponent;
 	}
 
 	@Override
