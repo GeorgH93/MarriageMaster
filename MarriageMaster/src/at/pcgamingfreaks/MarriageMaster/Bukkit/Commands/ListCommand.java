@@ -21,8 +21,11 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.MessageComponent;
+import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.CommandSender;
@@ -46,7 +49,7 @@ public class ListCommand extends MarryCommand
 		useFooter        = plugin.getConfiguration().useListFooter();
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
-		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").placeholder("Player1Name").placeholder("Player2Name").placeholder("Player1DisplayName").placeholder("Player2DisplayName").placeholder("Surname").placeholder("MagicHeart");
+		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").placeholder("Player1Name").placeholder("Player2Name").placeholder("Player1DisplayName", PassthroughMessageComponentPlaceholderProcessor.INSTANCE).placeholder("Player2DisplayName", PassthroughMessageComponentPlaceholderProcessor.INSTANCE).placeholder("Surname").placeholder("MagicHeart");
 		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
 		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
 		messageNoMarriedPlayers   = plugin.getLanguage().getMessage("Ingame.List.NoMarriedPlayers");
@@ -84,8 +87,8 @@ public class ListCommand extends MarryCommand
 			{
 				Marriage couple = couplesIterator.next();
 				MarriagePlayer p1 = couple.getPartner1(), p2 = couple.getPartner2();
-				String p1DName = isPlayer ? p1.getDisplayNameCheckVanished((Player) sender) : p1.getDisplayName();
-				String p2DName = isPlayer ? p2.getDisplayNameCheckVanished((Player) sender) : p2.getDisplayName();
+				MessageComponent p1DName = ((MarriagePlayerData) p1).getDisplayNameMessageComponentCheckVanished(sender);
+				MessageComponent p2DName = ((MarriagePlayerData) p2).getDisplayNameMessageComponentCheckVanished(sender);
 				messageListFormat.send(sender, p1.getName(), p2.getName(), p1DName, p2DName, couple.getSurnameString(), couple.getMagicHeart());
 			}
 			if(useFooter)
