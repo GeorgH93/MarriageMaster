@@ -21,8 +21,11 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.Placeholder.Processors.FormattedStringPlaceholderProcessor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -42,11 +45,11 @@ public class SetPriestCommand extends MarryCommand
 	{
 		super(plugin, "setpriest", plugin.getLanguage().getTranslated("Commands.Description.SetPriest"), Permissions.SET_PRIEST, plugin.getLanguage().getCommandAliases("SetPriest"));
 
-		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .placeholder("Name").placeholder("DisplayName");
-		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .placeholder("Name").placeholder("DisplayName");
-		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .placeholder("Name").placeholder("DisplayName");
-		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholder("Name").placeholder("DisplayName");
-		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholder("Name").placeholder("DisplayName");
+		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .placeholder("Name").placeholder("DisplayName", FormattedStringPlaceholderProcessor.INSTANCE);
+		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .placeholder("Name").placeholder("DisplayName", FormattedStringPlaceholderProcessor.INSTANCE);
+		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
 
 		helpParam = "<" + plugin.helpPlayerNameVariable + ">";
 	}
@@ -56,30 +59,29 @@ public class SetPriestCommand extends MarryCommand
 	{
 		if(args.length > 0)
 		{
-			Player bTarget;
-			MarriagePlayer target;
 			for(String arg : args)
 			{
-				bTarget = Bukkit.getPlayer(arg);
+				Player bTarget = Bukkit.getPlayer(arg);
 				if(bTarget != null)
 				{
+					MarriagePlayer target = getMarriagePlugin().getPlayerData(bTarget);
 					if(bTarget.hasPermission(Permissions.PRIEST))
 					{
-						messagePerPermission.send(sender, bTarget.getName(), bTarget.getDisplayName()); //TODO make format provider
+						messagePerPermission.send(sender, bTarget.getName(), target);
 					}
 					else
 					{
-						target = getMarriagePlugin().getPlayerData(bTarget);
+						String senderDisplayName = sender instanceof Player ? ((Player) sender).getDisplayName() : MarriageManager.CONSOLE_DISPLAY_NAME;
 						if(target.isPriest())
 						{
-							messageYouFiredAPriest.send(sender, bTarget.getName(), bTarget.getDisplayName());
-							messageFiredYou.send(bTarget, bTarget.getName(), bTarget.getDisplayName());
+							messageYouFiredAPriest.send(sender, bTarget.getName(), target);
+							messageFiredYou.send(bTarget, sender.getName(), senderDisplayName);
 							target.setPriest(false);
 						}
 						else
 						{
-							messageYouMadeAPriest.send(sender, bTarget.getName(), bTarget.getDisplayName());
-							messageMadeYouAPriest.send(bTarget, bTarget.getName(), bTarget.getDisplayName());
+							messageYouMadeAPriest.send(sender, bTarget.getName(), target);
+							messageMadeYouAPriest.send(bTarget, sender.getName(), senderDisplayName);
 							target.setPriest(true);
 						}
 					}
