@@ -33,7 +33,7 @@ import java.util.Map;
 public class Language extends at.pcgamingfreaks.Bukkit.Config.Language implements ILanguage
 {
 	public static final String NO_PLACEHOLDER = "&cMarriage Master placeholder not found! Check your language file!";
-	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MagicValues.SYMBOL_HEART, SMALLHEART = MagicValues.SYMBOL_SMALL_HEART;
+	private static final String PLACEHOLDERS_KEY = "Placeholders.", HEART = MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.RESET, SMALLHEART = MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART + MessageColor.RESET;
 	private static final String PLACEHOLDER_HEART = "<heart>", PLACEHOLDER_SMALLHEART = "<smallheart>";
 
 	public Language(@NotNull MarriageMaster plugin)
@@ -73,7 +73,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Config.Language implement
 	@Override
 	public @NotNull String getTranslated(@NotNull String path)
 	{
-		return super.getTranslated(path).replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
+		return super.getTranslated(path).replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
 	}
 
 	public boolean isPlaceholderSet(final @NotNull String key)
@@ -90,6 +90,6 @@ public class Language extends at.pcgamingfreaks.Bukkit.Config.Language implement
 	@Override
 	public @NotNull String getDialog(final @NotNull String key)
 	{
-		return getLangE().getString("Dialog." + key, "").replace(PLACEHOLDER_HEART, MessageColor.RED + HEART).replace(PLACEHOLDER_SMALLHEART, MessageColor.RED + SMALLHEART);
+		return getLangE().getString("Dialog." + key, "").replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
 	}
 }

@@ -47,7 +47,7 @@ public class Language extends at.pcgamingfreaks.Bungee.Config.Language implement
 	@Override
 	public @NotNull String getTranslated(final @NotNull String key)
 	{
-		return super.getTranslated(key).replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART).replace("<smallheart>", MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART);
+		return super.getTranslated(key).replace("<heart>", MessageColor.RED + MagicValues.SYMBOL_HEART + MessageColor.RESET).replace("<smallheart>", MessageColor.RED + MagicValues.SYMBOL_SMALL_HEART + MessageColor.RESET);
 	}
 
 	@Override
