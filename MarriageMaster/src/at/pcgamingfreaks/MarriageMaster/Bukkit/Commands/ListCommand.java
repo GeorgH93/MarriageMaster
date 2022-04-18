@@ -29,7 +29,6 @@ import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageCompon
 import at.pcgamingfreaks.StringUtils;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -82,7 +81,6 @@ public class ListCommand extends MarryCommand
 			{
 				couplesIterator.next();
 			}
-			final boolean isPlayer = sender instanceof Player;
 			while(couplesIterator.hasNext() && --c >= 0)
 			{
 				Marriage couple = couplesIterator.next();
