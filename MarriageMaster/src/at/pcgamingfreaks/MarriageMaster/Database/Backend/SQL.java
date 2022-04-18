@@ -751,4 +751,10 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
 		}
 	}
+
+	@Override
+	public Logger getLogger()
+	{
+		return logger;
+	}
 }

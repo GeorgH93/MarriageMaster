@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,8 +19,11 @@ package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public interface SQLBasedDatabase
 {
+	Logger getLogger();
+
 	Connection getConnection() throws SQLException;
 }
