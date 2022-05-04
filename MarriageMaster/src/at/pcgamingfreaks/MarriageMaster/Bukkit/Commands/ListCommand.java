@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
 import at.pcgamingfreaks.StringUtils;
@@ -48,8 +49,8 @@ public class ListCommand extends MarryCommand
 		entriesPerPage   = plugin.getConfiguration().getListEntriesPerPage();
 
 		messageListFormat         = plugin.getLanguage().getMessage("Ingame.List.Format").placeholder("Player1Name").placeholder("Player2Name").placeholder("Player1DisplayName", PassthroughMessageComponentPlaceholderProcessor.INSTANCE).placeholder("Player2DisplayName", PassthroughMessageComponentPlaceholderProcessor.INSTANCE).placeholder("Surname").placeholder("MagicHeart");
-		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
-		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").placeholder("CurrentPage").placeholder("MaxPage").placeholder("MainCommand").placeholder("SubCommand").placeholder("PrevPage").placeholder("NextPage");
+		messageHeadlineMain       = plugin.getLanguage().getMessage("Ingame.List.Headline").placeholders(Placeholders.PAGE_OPTIONS);
+		messageFooter             = plugin.getLanguage().getMessage("Ingame.List.Footer").placeholders(Placeholders.PAGE_OPTIONS);
 		messageNoMarriedPlayers   = plugin.getLanguage().getMessage("Ingame.List.NoMarriedPlayers");
 
 		if (!plugin.getConfiguration().useListFooter())

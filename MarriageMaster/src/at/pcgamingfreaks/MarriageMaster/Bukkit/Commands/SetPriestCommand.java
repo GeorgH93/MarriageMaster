@@ -23,7 +23,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FormattedStringPlaceholderProcessor;
 
@@ -47,9 +48,9 @@ public class SetPriestCommand extends MarryCommand
 
 		messageMadeYouAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.MadeYouAPriest") .placeholder("Name").placeholder("DisplayName", FormattedStringPlaceholderProcessor.INSTANCE);
 		messageFiredYou        = plugin.getLanguage().getMessage("Ingame.SetPriest.FiredYou")       .placeholder("Name").placeholder("DisplayName", FormattedStringPlaceholderProcessor.INSTANCE);
-		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
-		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageYouMadeAPriest  = plugin.getLanguage().getMessage("Ingame.SetPriest.YouMadeAPriest") .placeholders(Placeholders.PLAYER_NAME);
+		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholders(Placeholders.PLAYER_NAME);
+		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholders(Placeholders.PLAYER_NAME);
 
 		helpParam = "<" + plugin.helpPlayerNameVariable + ">";
 	}
@@ -67,20 +68,20 @@ public class SetPriestCommand extends MarryCommand
 					MarriagePlayer target = getMarriagePlugin().getPlayerData(bTarget);
 					if(bTarget.hasPermission(Permissions.PRIEST))
 					{
-						messagePerPermission.send(sender, bTarget.getName(), target);
+						messagePerPermission.send(sender, target);
 					}
 					else
 					{
 						String senderDisplayName = sender instanceof Player ? ((Player) sender).getDisplayName() : MarriageManager.CONSOLE_DISPLAY_NAME;
 						if(target.isPriest())
 						{
-							messageYouFiredAPriest.send(sender, bTarget.getName(), target);
+							messageYouFiredAPriest.send(sender, target);
 							messageFiredYou.send(bTarget, sender.getName(), senderDisplayName);
 							target.setPriest(false);
 						}
 						else
 						{
-							messageYouMadeAPriest.send(sender, bTarget.getName(), target);
+							messageYouMadeAPriest.send(sender, target);
 							messageMadeYouAPriest.send(bTarget, sender.getName(), senderDisplayName);
 							target.setPriest(true);
 						}

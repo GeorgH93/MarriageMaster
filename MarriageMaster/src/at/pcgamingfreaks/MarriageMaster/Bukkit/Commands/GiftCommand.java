@@ -28,7 +28,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
-import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -64,12 +65,12 @@ public class GiftCommand extends MarryCommand
 		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").placeholder("AllowedGameModes").placeholder("CurrentGameMode");
 		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
 		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
-		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
 		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").placeholder("ItemName");
 
-		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
+		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageWaitForConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageRequestDenied                         = plugin.getLanguage().getMessage("Ingame.Gift.Request.Denied").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
 		messageRequestDeniedPartner                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.DeniedPartner").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
@@ -181,13 +182,13 @@ public class GiftCommand extends MarryCommand
 								return;
 							}
 							messageWaitForConfirmation.send(sender, its.getAmount(), itemName, itemJson);
-							partner.send(messageRequireConfirmation, player.getName(), player, its.getAmount(), itemName, itemJson);
+							partner.send(messageRequireConfirmation, player, its.getAmount(), itemName, itemJson);
 						}
 						else
 						{
 							bPartner.getInventory().setItem(slot, its);
-							messageItemSent.send(sender, bPartner.getName(), partner, its.getAmount(), itemName, itemJson);
-							messageItemReceived.send(bPartner, bPlayer.getName(), partner, its.getAmount(), itemName, itemJson);
+							messageItemSent.send(sender, partner, its.getAmount(), itemName, itemJson);
+							messageItemReceived.send(bPartner, partner, its.getAmount(), itemName, itemJson);
 						}
 						InventoryUtils.setItemInMainHand(bPlayer, null);
 					}
@@ -241,8 +242,8 @@ public class GiftCommand extends MarryCommand
 				return;
 			}
 			recipient.getPlayerOnline().getInventory().setItem(slot, item);
-			sender.send(messageItemSent, recipient.getName(), recipient, item.getAmount(), itemName, itemJson);
-			recipient.send(messageItemReceived, sender.getName(), sender, item.getAmount(), itemName, itemJson);
+			sender.send(messageItemSent, recipient, item.getAmount(), itemName, itemJson);
+			recipient.send(messageItemReceived, sender, item.getAmount(), itemName, itemJson);
 		}
 
 		@Override

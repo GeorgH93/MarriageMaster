@@ -15,25 +15,32 @@
  *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster;
+package at.pcgamingfreaks.MarriageMaster.Placeholder.Processors;
 
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.Message.Placeholder.Processors.IFormattedPlaceholderProcessor;
 
-public class DisplayNamePlaceholderProcessor implements IFormattedPlaceholderProcessor
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public final class DisplayNamePlaceholderProcessor implements IFormattedPlaceholderProcessor
 {
+	private static final MessageComponent NULL_COMPONENT = new MessageComponent("null");
+
 	public static final DisplayNamePlaceholderProcessor INSTANCE = new DisplayNamePlaceholderProcessor();
 
 	@Override
-	public MessageComponent processFormatted(Object parameter)
+	public @NotNull MessageComponent processFormatted(@Nullable Object parameter)
 	{
+		if (parameter == null) return NULL_COMPONENT;
 		return ((MarriagePlayerDataBase) parameter).getDisplayNameMessageComponent();
 	}
 
 	@Override
-	public String process(Object parameter)
+	public @NotNull String process(@Nullable Object parameter)
 	{
+		if (parameter == null) return "null";
 		return ((MarriagePlayerDataBase) parameter).getDisplayName();
 	}
 }

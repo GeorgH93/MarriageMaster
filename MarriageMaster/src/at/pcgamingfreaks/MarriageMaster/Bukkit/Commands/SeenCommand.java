@@ -22,7 +22,8 @@ import at.pcgamingfreaks.Calendar.TimeSpan;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.DisplayNamePlaceholderProcessor;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
@@ -44,7 +45,7 @@ public class SeenCommand extends MarryCommand
 
 		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLangE().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss")); //TODO make format provider
 		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").placeholder("Name").placeholder("Date").placeholder("CountTotalDays").placeholder("Count");
-		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").placeholder("Name").placeholder("DisplayName", DisplayNamePlaceholderProcessor.INSTANCE);
+		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").placeholders(Placeholders.PLAYER_NAME);
 	}
 
 	@Override
@@ -58,7 +59,7 @@ public class SeenCommand extends MarryCommand
 		}
 		else if(partner.isOnline())
 		{
-			player.sendMessage(messageCurrentlyOnline, partner.getName(), partner);
+			player.sendMessage(messageCurrentlyOnline, partner);
 		}
 		else
 		{
