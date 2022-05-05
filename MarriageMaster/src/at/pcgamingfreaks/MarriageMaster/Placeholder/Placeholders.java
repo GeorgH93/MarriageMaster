@@ -25,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class Placeholders
 {
+	private Placeholders(){}
+
 	public static final @NotNull String[] PAGE_OPTIONS = { "CurrentPage", "MaxPage", "MainCommand", "SubCommand", "PrevPage", "NextPage" };
 	public static final @NotNull Placeholder[] PLAYER_NAME = mkPlayerName("");
 	public static final @NotNull Placeholder[] PLAYER1_NAME = mkPlayerName("Player1");
