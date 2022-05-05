@@ -20,8 +20,8 @@ package at.pcgamingfreaks.MarriageMaster.Listener;
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
-import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.Message.Message;
+import at.pcgamingfreaks.Message.Placeholder.Processors.FormattedStringPlaceholderProcessor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -38,10 +38,10 @@ public abstract class JoinLeaveInfoBase
 		messageOnline        = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnline");
 		messageOffline       = language.getMessage("Ingame.JoinLeaveInfo.PartnerOffline");
 		messageAllOffline    = language.getMessage("Ingame.JoinLeaveInfo.AllPartnersOffline");
-		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti").placeholder("OnlinePartners");
 		messageNowOnline     = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline").placeholders(Placeholders.PLAYER_NAME);
 		messageNowOffline    = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").placeholders(Placeholders.PLAYER_NAME);
-		multiOnlineFormat    = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replace("{Name}", "%1$s").replace("{DisplayName}", "%2$s"); //TODO should be handled with message builder
+		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti").placeholder("OnlinePartners", FormattedStringPlaceholderProcessor.INSTANCE);
+		multiOnlineFormat    = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replace("{Name}", "%1$s").replace("{DisplayName}", "%2$s");
 		multiOnlineSeparator = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineSeparator");
 	}
 
