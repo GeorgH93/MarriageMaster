@@ -22,6 +22,7 @@ import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.Message.Placeholder.Placeholder;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
 
 import net.milkbowl.vault.economy.Economy;
@@ -59,18 +60,22 @@ public class EconomyHandler implements Listener
 		costSetHome       = plugin.getConfiguration().getEconomyValue("SetHome");
 		costChangeSurname = plugin.getConfiguration().getEconomyValue("ChangeSurname");
 		// Load messages
-		FloatPlaceholderProcessor floatPlaceholderProcessor = new FloatPlaceholderProcessor(2);
-		messageNotEnough              = getMessage(plugin, "NotEnough").placeholder("Cost", floatPlaceholderProcessor).placeholder("CurrencyName");
+		int digits = econ.fractionalDigits();
+		FloatPlaceholderProcessor floatPlaceholderProcessor = new FloatPlaceholderProcessor(digits < 0 ? 2 : digits);
+		Placeholder[] ecoPlaceholders = { new Placeholder("Cost", floatPlaceholderProcessor, Placeholder.AUTO_INCREMENT_INDIVIDUALLY),
+										  new Placeholder("Remaining", floatPlaceholderProcessor, Placeholder.AUTO_INCREMENT_INDIVIDUALLY),
+										  new Placeholder("CurrencyName", Placeholder.AUTO_INCREMENT_INDIVIDUALLY) };
+		messageNotEnough              = getMessage(plugin, "NotEnough").placeholders(ecoPlaceholders);
 		messagePartnerNotEnough       = getMessage(plugin, "PartnerNotEnough");
 		messagePriestMarryNotEnough   = getMessage(plugin, "PriestMarryNotEnough");
 		messagePriestDivorceNotEnough = getMessage(plugin, "PriestDivorceNotEnough");
-		messageMarriagePaid           = getMessage(plugin, "MarriagePaid").placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageDivorcePaid            = getMessage(plugin, "DivorcePaid") .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageTpPaid                 = getMessage(plugin, "TpPaid")      .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
-		messageSurnameChangePaid      = getMessage(plugin, "SurnameChangePaid").placeholder("Cost", floatPlaceholderProcessor).placeholder("Remaining", floatPlaceholderProcessor).placeholder("CurrencyName");
+		messageMarriagePaid           = getMessage(plugin, "MarriagePaid").placeholders(ecoPlaceholders);
+		messageDivorcePaid            = getMessage(plugin, "DivorcePaid") .placeholders(ecoPlaceholders);
+		messageTpPaid                 = getMessage(plugin, "TpPaid")      .placeholders(ecoPlaceholders);
+		messageHomePaid               = getMessage(plugin, "HomeTPPaid")  .placeholders(ecoPlaceholders);
+		messageSetHomePaid            = getMessage(plugin, "SetHomePaid") .placeholders(ecoPlaceholders);
+		messageGiftPaid               = getMessage(plugin, "GiftPaid")    .placeholders(ecoPlaceholders);
+		messageSurnameChangePaid      = getMessage(plugin, "SurnameChangePaid").placeholders(ecoPlaceholders);
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -107,7 +112,7 @@ public class EconomyHandler implements Listener
 		}
 		else
 		{
-			if(player.isOnline()) player.send(messageNotEnough, cost, econ.currencyNamePlural());
+			if(player.isOnline()) player.send(messageNotEnough, cost, econ.getBalance(player.getPlayer()), econ.currencyNamePlural());
 			return false;
 		}
 	}
