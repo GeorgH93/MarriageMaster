@@ -31,9 +31,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcce
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
+import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
-import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Message.MessageComponent;
 import at.pcgamingfreaks.Message.Placeholder.Placeholder;
@@ -96,7 +96,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 		dialogMarried       = plugin.getLanguage().getDialog("Married").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 
-		FloatPlaceholderProcessor rangeProcessor = new FloatPlaceholderProcessor(1);
+		Placeholder rangePlaceholder = new Placeholder("Range", new FloatPlaceholderProcessor(1));
 		ParameterTypeAwarePlaceholderProcessor priestProcessor = new ParameterTypeAwarePlaceholderProcessor();
 		priestProcessor.add(MarriagePlayer.class, DisplayNamePlaceholderProcessor.INSTANCE);
 		priestProcessor.add(MarriagePlayerData.class, DisplayNamePlaceholderProcessor.INSTANCE);
@@ -117,12 +117,12 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageMarried                 = getMSG("Ingame.Marry.Married").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageHasMarried              = getMSG("Ingame.Marry.HasMarried").placeholders(priestPlaceholders).placeholders(Placeholders.PARTNER_NAME);
 		messageBroadcastMarriage       = getMSG("Ingame.Marry.Broadcast").placeholders(priestPlaceholders).placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
-		messageNotInRange              = getMSG("Ingame.Marry.NotInRange").placeholder("Range", rangeProcessor);
+		messageNotInRange              = getMSG("Ingame.Marry.NotInRange").placeholders(rangePlaceholder);
 		messageAlreadyOpenRequest      = getMSG("Ingame.Marry.AlreadyOpenRequest").placeholders(Placeholders.PLAYER_NAME);
 
 		messageSelfConfirm             = getMSG("Ingame.Marry.Self.Confirm").placeholders(Placeholders.PLAYER_NAME);
 		messageNotYourself             = getMSG("Ingame.Marry.Self.NotYourself");
-		messageSelfNotInRange          = getMSG("Ingame.Marry.Self.NotInRange").placeholder("Range", rangeProcessor);
+		messageSelfNotInRange          = getMSG("Ingame.Marry.Self.NotInRange").placeholders(rangePlaceholder);
 		messageSelfAlreadySamePair     = getMSG("Ingame.Marry.Self.AlreadySamePair").placeholders(Placeholders.mkPlayerNameRegex("(Partner)?"));
 		messageSelfAlreadyMarried      = getMSG("Ingame.Marry.Self.AlreadyMarried").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfMarryRequestSent    = getMSG("Ingame.Marry.Self.RequestSent");
@@ -133,14 +133,14 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		messageDivorced                = getMSG("Ingame.Divorce.Divorced").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").placeholders(priestPlaceholders).placeholders(Placeholders.PARTNER_NAME);
 		messageBroadcastDivorce        = getMSG("Ingame.Divorce.Broadcast").placeholders(priestPlaceholders).placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
-		messageDivorceNotInRange       = getMSG("Ingame.Divorce.NotInRange").placeholder("Range", rangeProcessor);
+		messageDivorceNotInRange       = getMSG("Ingame.Divorce.NotInRange").placeholders(rangePlaceholder);
 
 		messageSelfDivorced            = getMSG("Ingame.Divorce.Self.Divorced").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfDivorceConfirm      = getMSG("Ingame.Divorce.Self.Confirm").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfDivorcedPlayer      = getMSG("Ingame.Divorce.Self.DivorcedPlayer").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfBroadcastDivorce    = getMSG("Ingame.Divorce.Self.Broadcast").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageSelfDivorceRequestSent  = getMSG("Ingame.Divorce.Self.RequestSent").placeholders(Placeholders.PLAYER_NAME);
-		messageSelfDivorceNotInRange   = getMSG("Ingame.Divorce.Self.NotInRange").placeholder("Range", rangeProcessor);
+		messageSelfDivorceNotInRange   = getMSG("Ingame.Divorce.Self.NotInRange").placeholders(rangePlaceholder);
 
 		//region init messages of request classes
 		SelfMarryAcceptRequest.loadMessages(plugin);
