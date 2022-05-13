@@ -20,6 +20,11 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.ItemFilter;
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.GameModePlaceholderProcessor;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemAmountPlaceholderProcessor;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemMetadataPlaceholderProcessor;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemNamePlaceholderProcessor;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.Wrappers.ItemStackWrapper;
 import at.pcgamingfreaks.Bukkit.Util.InventoryUtils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.GiftEvent;
@@ -61,25 +66,12 @@ public class GiftCommand extends MarryCommand
 	{
 		super(plugin, "gift", plugin.getLanguage().getTranslated("Commands.Description.Gift"), Permissions.GIFT, true, true, plugin.getLanguage().getCommandAliases("Gift"));
 
-		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").placeholder("AllowedGameModes").placeholder("CurrentGameMode");
-		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").placeholder("AllowedGameModes").placeholder("CurrentGameMode");
-		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
-		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
-		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
-		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").placeholder("ItemName");
-
-		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").placeholders(Placeholders.PLAYER_NAME).placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageWaitForConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestDenied                         = plugin.getLanguage().getMessage("Ingame.Gift.Request.Denied").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestDeniedPartner                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.DeniedPartner").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestCanceled                       = plugin.getLanguage().getMessage("Ingame.Gift.Request.Canceled").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestCanceledPartner                = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledPartner").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestCanceledDisconnectRequester    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestCanceledDisconnectTarget       = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").placeholder("ItemAmount").placeholder("ItemName").placeholder("ItemMetaJSON");
-		messageRequestRefundInvFull                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.RefundInvFull");
-		messageRequestPartnerAlreadyHasAnOpenRequest = plugin.getLanguage().getMessage("Ingame.Gift.Request.PartnerAlreadyHasAnOpenRequest");
+		/*if[STANDALONE]
+		itemNameResolver = new ItemNameResolver();
+		itemNameResolver.load(plugin, plugin.getConfiguration());
+		else[STANDALONE]*/
+		itemNameResolver = at.pcgamingfreaks.PluginLib.Bukkit.ItemNameResolver.getInstance();
+		/*end[STANDALONE]*/
 
 		range                   = plugin.getConfiguration().getRangeSquared(Range.Gift);
 		allowedSendGameModes    = plugin.getConfiguration().getGiftAllowedGameModes();
@@ -87,6 +79,32 @@ public class GiftCommand extends MarryCommand
 		requireConfirmation     = plugin.getConfiguration().isGiftRequireConfirmationEnabled();
 		worldBlacklist          = plugin.getConfiguration().getGiftBlackListedWorlds();
 		blacklistEnabled        = !worldBlacklist.isEmpty();
+
+		final Placeholder itemNamePlaceholder = new Placeholder("ItemName", new ItemNamePlaceholderProcessor(itemNameResolver));
+		final Placeholder currentGameModePlaceholder = new Placeholder("CurrentGameMode", new GameModePlaceholderProcessor()); // TODO translate
+		final Placeholder[] itemPlaceholders = { new Placeholder("ItemAmount", ItemAmountPlaceholderProcessor.INSTANCE),
+		                                         itemNamePlaceholder,
+		                                         new Placeholder("ItemMetaJSON", new ItemMetadataPlaceholderProcessor(plugin.getLogger())) };
+
+		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").replaceAll("\\{AllowedGameModes}", currentGameModePlaceholder.getProcessor().process(allowedSendGameModes)).placeholders(currentGameModePlaceholder);
+		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").replaceAll("\\{AllowedGameModes}", currentGameModePlaceholder.getProcessor().process(allowedReceiveGameModes)).placeholders(currentGameModePlaceholder);
+		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
+		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
+		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);
+		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);
+		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
+		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").placeholders(itemNamePlaceholder);
+
+		messageRequireConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.Notification").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);
+		messageWaitForConfirmation                   = plugin.getLanguage().getMessage("Ingame.Gift.Request.WaitForConfirmation").placeholders(itemPlaceholders);
+		messageRequestDenied                         = plugin.getLanguage().getMessage("Ingame.Gift.Request.Denied").placeholders(itemPlaceholders);
+		messageRequestDeniedPartner                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.DeniedPartner").placeholders(itemPlaceholders);
+		messageRequestCanceled                       = plugin.getLanguage().getMessage("Ingame.Gift.Request.Canceled").placeholders(itemPlaceholders);
+		messageRequestCanceledPartner                = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledPartner").placeholders(itemPlaceholders);
+		messageRequestCanceledDisconnectRequester    = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectRequester").placeholders(itemPlaceholders);
+		messageRequestCanceledDisconnectTarget       = plugin.getLanguage().getMessage("Ingame.Gift.Request.CanceledDisconnectTarget").placeholders(itemPlaceholders);
+		messageRequestRefundInvFull                  = plugin.getLanguage().getMessage("Ingame.Gift.Request.RefundInvFull");
+		messageRequestPartnerAlreadyHasAnOpenRequest = plugin.getLanguage().getMessage("Ingame.Gift.Request.PartnerAlreadyHasAnOpenRequest");
 
 		if(plugin.getConfiguration().isGiftItemFilterEnabled())
 		{
@@ -99,13 +117,6 @@ public class GiftCommand extends MarryCommand
 		{
 			itemFilter = null;
 		}
-
-		/*if[STANDALONE]
-		itemNameResolver = new ItemNameResolver();
-		itemNameResolver.load(plugin, plugin.getConfiguration());
-		else[STANDALONE]*/
-		itemNameResolver = at.pcgamingfreaks.PluginLib.Bukkit.ItemNameResolver.getInstance();
-		/*end[STANDALONE]*/
 
 		// Make sure that the InventoryUtils are fully initialized. Otherwise, this will cause lag spike when the command is first used.
 		InventoryUtils.prepareTitleForOpenInventoryWithCustomTitle("ignore this");
@@ -153,7 +164,7 @@ public class GiftCommand extends MarryCommand
 					}
 					if(!allowedReceiveGameModes.contains(bPartner.getGameMode()) && !bPartner.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
 					{
-						messageGameModeNotAllowedReceiver.send(sender, allowedReceiveGameModes.toString().toLowerCase(Locale.ENGLISH), bPlayer.getGameMode().name().toLowerCase(Locale.ENGLISH));
+						messageGameModeNotAllowedReceiver.send(sender, bPlayer.getGameMode());
 						return;
 					}
 					if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase(Locale.ENGLISH)))
@@ -164,7 +175,7 @@ public class GiftCommand extends MarryCommand
 					if((itemFilter != null && !sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER) && itemFilter.isItemBlocked(its)) ||
 							(((MarriageMaster) plugin).getBackpacksIntegration() != null && ((MarriageMaster) plugin).getBackpacksIntegration().isBackpackItem(its)))
 					{
-						player.send(messageItemNotAllowed, itemNameResolver.getName(its));
+						player.send(messageItemNotAllowed, its);
 						return;
 					}
 					GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);
@@ -172,23 +183,22 @@ public class GiftCommand extends MarryCommand
 					if(!event.isCancelled())
 					{
 						its = event.getItemStack();
-						final String itemJson = InventoryUtils.convertItemStackToJson(its, plugin.getLogger());
-						final String itemName = itemNameResolver.getName(its);
+						ItemStackWrapper wrappedItemStack = new ItemStackWrapper(its, plugin.getLogger(), itemNameResolver);
 						if(requireConfirmation)
 						{
-							if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(its, itemJson, itemName, partner, player)))
+							if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(wrappedItemStack, partner, player)))
 							{
 								messageRequestPartnerAlreadyHasAnOpenRequest.send(sender);
 								return;
 							}
-							messageWaitForConfirmation.send(sender, its.getAmount(), itemName, itemJson);
-							partner.send(messageRequireConfirmation, player, its.getAmount(), itemName, itemJson);
+							messageWaitForConfirmation.send(sender, wrappedItemStack);
+							partner.send(messageRequireConfirmation, player, wrappedItemStack);
 						}
 						else
 						{
 							bPartner.getInventory().setItem(slot, its);
-							messageItemSent.send(sender, partner, its.getAmount(), itemName, itemJson);
-							messageItemReceived.send(bPartner, partner, its.getAmount(), itemName, itemJson);
+							messageItemSent.send(sender, partner, wrappedItemStack);
+							messageItemReceived.send(bPartner, partner, wrappedItemStack);
 						}
 						InventoryUtils.setItemInMainHand(bPlayer, null);
 					}
@@ -205,7 +215,7 @@ public class GiftCommand extends MarryCommand
 		}
 		else
 		{
-			messageGameModeNotAllowedSender.send(sender, allowedSendGameModes.toString().toLowerCase(Locale.ENGLISH), bPlayer.getGameMode().name().toLowerCase(Locale.ENGLISH));
+			messageGameModeNotAllowedSender.send(sender, bPlayer.getGameMode());
 		}
 	}
 
@@ -217,18 +227,15 @@ public class GiftCommand extends MarryCommand
 
 	private class GiftRequest extends AcceptPendingRequest
 	{
-		private final ItemStack item;
-		private final String itemJson, itemName;
+		private final ItemStackWrapper item;
 		private final MarriagePlayer recipient, sender;
 
-		public GiftRequest(final @NotNull ItemStack item, final @NotNull String itemJson, final @NotNull String itemName, final @NotNull MarriagePlayer recipient, final @NotNull MarriagePlayer sender)
+		public GiftRequest(final @NotNull ItemStackWrapper item, final @NotNull MarriagePlayer recipient, final @NotNull MarriagePlayer sender)
 		{
 			super(recipient, sender);
 			this.item = item;
 			this.recipient = recipient;
 			this.sender = sender;
-			this.itemName = itemName;
-			this.itemJson = itemJson;
 		}
 
 		@Override
@@ -241,32 +248,32 @@ public class GiftCommand extends MarryCommand
 				refund();
 				return;
 			}
-			recipient.getPlayerOnline().getInventory().setItem(slot, item);
-			sender.send(messageItemSent, recipient, item.getAmount(), itemName, itemJson);
-			recipient.send(messageItemReceived, sender, item.getAmount(), itemName, itemJson);
+			recipient.getPlayerOnline().getInventory().setItem(slot, item.getItemStack());
+			sender.send(messageItemSent, recipient, item);
+			recipient.send(messageItemReceived, sender, item);
 		}
 
 		@Override
 		protected void onDeny()
 		{
-			getPlayerThatHasToAccept().send(messageRequestDenied, item.getAmount(), itemName, itemJson);
-			sender.send(messageRequestDeniedPartner, item.getAmount(), itemName, itemJson);
+			getPlayerThatHasToAccept().send(messageRequestDenied, item);
+			sender.send(messageRequestDeniedPartner, item);
 			refund();
 		}
 
 		@Override
 		protected void onCancel(@NotNull MarriagePlayer player)
 		{
-			player.send(messageRequestCanceled, item.getAmount(), itemName, itemJson);
-			getPlayerThatHasToAccept().send(messageRequestCanceledPartner, item.getAmount(), itemName, itemJson);
+			player.send(messageRequestCanceled, item);
+			getPlayerThatHasToAccept().send(messageRequestCanceledPartner, item);
 			refund();
 		}
 
 		@Override
 		protected void onDisconnect(@NotNull MarriagePlayer player)
 		{
-			if(sender.equals(player)) getPlayerThatHasToAccept().send(messageRequestCanceledDisconnectRequester, item.getAmount(), itemName, itemJson);
-			else player.send(messageRequestCanceledDisconnectTarget, item.getAmount(), itemName, itemJson);
+			if(sender.equals(player)) getPlayerThatHasToAccept().send(messageRequestCanceledDisconnectRequester, item);
+			else player.send(messageRequestCanceledDisconnectTarget, item);
 			refund();
 		}
 
@@ -274,7 +281,7 @@ public class GiftCommand extends MarryCommand
 		{
 			Player player = sender.getPlayerOnline();
 			if(player == null) return;
-			Map<Integer, ItemStack> left = player.getInventory().addItem(item);
+			Map<Integer, ItemStack> left = player.getInventory().addItem(item.getItemStack());
 			if(left.isEmpty()) return;
 			left.values().forEach(i -> player.getWorld().dropItemNaturally(player.getLocation(), i));
 			messageRequestRefundInvFull.send(player);
