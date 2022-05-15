@@ -24,26 +24,26 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.Message.Placeholder.Placeholder;
+import at.pcgamingfreaks.Message.Placeholder.Processors.SimpleDatePlaceholderProcessor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class SeenCommand extends MarryCommand
 {
 	private final Message messageLastSeen, messageCurrentlyOnline;
-	private final SimpleDateFormat dateFormat;
 
 	public SeenCommand(MarriageMaster plugin)
 	{
 		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), Permissions.SEEN, true, true, plugin.getLanguage().getCommandAliases("seen"));
 
-		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLangE().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss")); //TODO make format provider
-		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").placeholder("Name").placeholder("Date").placeholder("CountTotalDays").placeholder("Count");
+		Placeholder datePlaceholder = new Placeholder("Date", new SimpleDatePlaceholderProcessor(plugin.getLanguage().getLangE().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss")));
+		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").placeholders(Placeholders.PLAYER_NAME).placeholders(datePlaceholder).placeholder("CountTotalDays").placeholder("Count");
 		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").placeholders(Placeholders.PLAYER_NAME);
 	}
 
@@ -64,7 +64,7 @@ public class SeenCommand extends MarryCommand
 		{
 			Date lastOnline = new Date(partner.getPlayer().getLastPlayed());
 			TimeSpan timeSpan = new TimeSpan(lastOnline);
-			player.send(messageLastSeen, partner.getName(), dateFormat.format(lastOnline), timeSpan.getTotalDays(), timeSpan.toString());
+			player.send(messageLastSeen, partner, lastOnline, timeSpan.getTotalDays(), timeSpan.toString());
 		}
 	}
 
