@@ -163,7 +163,8 @@ Language:
       NothingToCancel: "&cNo hay ninguna solicitud de cancelación abierta."
     Marry:
       # Placeholders: {Name}, {DisplayName}.    Keep in mind display names contain colors!
-      NotWithHimself: "&cNo puedes casarse &r&c{DisplayName}&r&c consigo mismo."
+      NotWithHimself: "&cNo puedes casarte &r&c{DisplayName}&r&c consigo mismo."
+      AlreadySamePair: "&cNo puedes casarte con jugadores que ya están casados entre sí. &r&c{Player1DisplayName}&r&c ya está casado con &r&c{Player2DisplayName}&r&c."
       AlreadyMarried: "&cNo se puede casar a los jugadores que ya están casados. &r&c{DisplayName}&r&c ya está casado."
       SurnameNeeded: "&cSe necesita un apellido para que la pareja se case."
       Married: "&aHas casado a &r&a{Player1DisplayName}&r&a con &r&a{Player2DisplayName}&r&a."
@@ -179,6 +180,7 @@ Language:
       Self:
         NotYourself: "&cNo te puedes casar contigo mismo."
         NotInRange: "&cEl jugador no está al alcance. ¡Necesita estar dentro de {Range} bloques!"
+        AlreadySamePair: "&cYa estamos casados con &r&c{DisplayName}&r&c!"
         AlreadyMarried: "&cYa estás casado con &r&c{DisplayName}&r&c!"
         OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c ya está casado!"
         AlreadyOpenRequest: "&cUsted ya tiene una solicitud de matrimonio no contestada."
