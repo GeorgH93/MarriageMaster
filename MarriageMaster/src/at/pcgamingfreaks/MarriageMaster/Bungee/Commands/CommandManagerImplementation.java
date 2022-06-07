@@ -66,7 +66,6 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 
 		// Registering the marriage command with our translated aliases
 		commandAliases.add("marry");
-		plugin.getLanguage().getCommandAliases("marry");
 		for(String alias : plugin.getLanguage().getCommandAliases("marry"))
 		{
 			commandAliases.add(alias.toLowerCase());
