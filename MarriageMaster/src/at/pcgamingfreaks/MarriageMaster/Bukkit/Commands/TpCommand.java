@@ -25,6 +25,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.TPEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -80,7 +82,7 @@ public class TpCommand extends MarryCommand
 		messagePartnerVanished = plugin.getLanguage().getMessage("Ingame.TP.PartnerVanished");
 		messageWorldNotAllowed = plugin.getLanguage().getMessage("Ingame.TP.WorldNotAllowed");
 
-		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.TP.Request.Notification").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageRequireConfirmation                = plugin.getLanguage().getMessage("Ingame.TP.Request.Notification").placeholders(Placeholders.PLAYER_NAME);
 		messageWaitForConfirmation                = plugin.getLanguage().getMessage("Ingame.TP.Request.WaitForConfirmation");
 		messageRequestDenied                      = plugin.getLanguage().getMessage("Ingame.TP.Request.Denied");
 		messageRequestDeniedPartner               = plugin.getLanguage().getMessage("Ingame.TP.Request.DeniedPartner");
@@ -111,7 +113,7 @@ public class TpCommand extends MarryCommand
 			{
 				messageWaitForConfirmation.send(sender);
 				getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new TpRequest(player, partner));
-				partner.send(messageRequireConfirmation, player.getName(), player.getDisplayName());
+				partner.send(messageRequireConfirmation, player);
 			}
 			else
 			{

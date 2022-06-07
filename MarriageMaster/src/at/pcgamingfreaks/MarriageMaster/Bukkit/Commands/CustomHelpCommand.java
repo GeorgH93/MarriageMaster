@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.Message.MessageColor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -49,7 +50,7 @@ public class CustomHelpCommand extends MarryCommand
 		List<Message> messages = new ArrayList<>(stringMessages.size());
 		for(String message : stringMessages)
 		{
-			messages.add(new Message(plugin.getLanguage().translateColorCodes(message)));
+			messages.add(new Message(MessageColor.translateAlternateColorAndFormatCodes(message)));
 		}
 		return messages;
 	}

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -38,13 +39,15 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class KissCommand extends MarryCommand implements Listener
 {
-	@Getter private static KissCommand instance;
+	@Getter @Setter(AccessLevel.PRIVATE) private static KissCommand instance;
 
 	private final Message messageKissed, messageGotKissed, messageTooFarAway, messageWait;
 	private final double interactRange, range, rangeSquared, hearthVisibleRange;
@@ -66,21 +69,22 @@ public class KissCommand extends MarryCommand implements Listener
 
 		messageKissed     = plugin.getLanguage().getMessage("Ingame.Kiss.Kissed");
 		messageGotKissed  = plugin.getLanguage().getMessage("Ingame.Kiss.GotKissed");
-		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Kiss.TooFarAway").replaceAll("\\{Distance}", "%.1f");
-		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").replaceAll("\\{Time}", "%1\\$d").replaceAll("\\{TimeLeft}", "%2\\$.1f");
+		FloatPlaceholderProcessor singleDecimalPointProcessor = new FloatPlaceholderProcessor(1);
+		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Kiss.TooFarAway").placeholder("Distance", singleDecimalPointProcessor);
+		messageWait       = plugin.getLanguage().getMessage("Ingame.Kiss.Wait").placeholder("Time").placeholder("TimeLeft", singleDecimalPointProcessor);
 
 		if(plugin.getConfiguration().isKissInteractEnabled())
 		{
 			plugin.getServer().getPluginManager().registerEvents(this, plugin);
 		}
-		instance = this;
+		setInstance(this);
 	}
 
 	@Override
 	public void close()
 	{
 		HandlerList.unregisterAll(this);
-		instance = null;
+		setInstance(null);
 		particleSpawner = null;
 	}
 

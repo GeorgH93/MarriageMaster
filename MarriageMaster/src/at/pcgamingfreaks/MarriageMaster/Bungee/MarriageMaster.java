@@ -135,7 +135,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 		messageNoPermission          = language.getMessage("Ingame.NoPermission");
 		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
 		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").replaceAll("\\{PlayerName}", "%s");
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder("PlayerName");
 		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
 
 		// Register Events

@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ public class SetColorCommand extends MarryCommand
 		super(plugin, "setcolor", plugin.getLanguage().getTranslated("Commands.Description.SetColor"), Permissions.SET_COLOR, true, true, plugin.getLanguage().getCommandAliases("SetColor"));
 		this.plugin = plugin;
 
-		messageUnknownColor = plugin.getLanguage().getMessage("Ingame.SetColor.UnknownColor").replaceAll("\\{Input}", "%s");
+		messageUnknownColor = plugin.getLanguage().getMessage("Ingame.SetColor.UnknownColor").placeholder("Input");
 		messageColorSet = plugin.getLanguage().getMessage("Ingame.SetColor.Set");
-		messageColorSelection = plugin.getLanguage().getMessage("Ingame.SetColor.Selection").replaceAll("\\{MainCmdAlias}", "%1\\$s").replaceAll("\\{SubCmdAlias}", "%2\\$s");
+		messageColorSelection = plugin.getLanguage().getMessage("Ingame.SetColor.Selection").placeholder("MainCmdAlias").placeholder("SubCmdAlias");
 	}
 
 	@Override

@@ -84,7 +84,7 @@ class EconomyHandlerTest
 		Config configuration = mock(Config.class);
 		when(language.getMessage(anyString())).thenAnswer((Answer<Message>) invocationOnMock -> {
 			Message mockedMessage = mock(Message.class);
-			when(mockedMessage.replaceAll(anyString(), anyString())).thenReturn(mockedMessage);
+			when(mockedMessage.placeholder(anyString(), any())).thenReturn(mockedMessage);
 			return mockedMessage;
 		});
 		when(configuration.getEconomyValue(anyString())).thenReturn(10.0);

@@ -61,7 +61,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		messageListeningStarted = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStarted");
 		messageListeningStopped = plugin.getLanguage().getMessage("Ingame.Chat.ListeningStopped");
 		messageTargetSet        = plugin.getLanguage().getMessage("Ingame.Chat.TargetSet");
-		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").replaceAll("\\{SenderDisplayName}", "%1\\$s").replaceAll("\\{ReceiverDisplayName}", "%2\\$s").replaceAll("\\{Message}", "%3\\$s").replaceAll("\\{SenderName}", "%4\\$s").replaceAll("\\{ReceiverName}", "%5\\$s").replaceAll("\\{MagicHeart}", "%6\\$s");
+		privateMessageFormat    = plugin.getLanguage().getMessage("Ingame.Chat.Format").placeholder("SenderDisplayName").placeholder("ReceiverDisplayName").placeholder("Message").placeholder("SenderName").placeholder("ReceiverName").placeholder("MagicHeart");
 		displayNameAll          = plugin.getLanguage().getTranslated("Ingame.Chat.DisplayNameAll");
 		helpText                = "<" + plugin.getLanguage().getTranslated("Commands.MessageVariable") + ">";
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget");

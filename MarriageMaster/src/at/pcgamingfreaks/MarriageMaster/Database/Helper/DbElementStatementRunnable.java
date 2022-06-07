@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -28,6 +28,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DbElementStatementRunnable implements Runnable
 {
@@ -54,7 +57,8 @@ public class DbElementStatementRunnable implements Runnable
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			Logger logger = database.getLogger();
+			logger.log(Level.SEVERE, e, () -> String.format("Failed to execute sql command: %s, with: %s, error: %s", query, Arrays.toString(args), e.getMessage()));
 		}
 	}
 

@@ -66,14 +66,13 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 
 		// Registering the marriage command with our translated aliases
 		commandAliases.add("marry");
-		plugin.getLanguage().getCommandAliases("marry");
 		for(String alias : plugin.getLanguage().getCommandAliases("marry"))
 		{
 			commandAliases.add(alias.toLowerCase());
 		}
 		plugin.getProxy().getPluginManager().registerListener(plugin, this);
 
-		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").replaceAll("\\{MainCommand\\}", "%1\\$s").replaceAll("\\{SubCommand\\}", "%2\\$s").replaceAll("\\{Parameters\\}", "%3\\$s").replaceAll("\\{Description\\}", "%4\\$s");
+		helpFormat = plugin.getLanguage().getMessage("Commands.HelpFormat").placeholder("MainCommand").placeholder("SubCommand").placeholder("Parameters").placeholder("Description");
 
 		// Setting the help format for the marry commands as well as the no permissions and not from console message
 		try

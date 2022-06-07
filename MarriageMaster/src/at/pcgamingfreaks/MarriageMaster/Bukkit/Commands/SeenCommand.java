@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,27 +23,28 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.Message.Placeholder.Placeholder;
+import at.pcgamingfreaks.Message.Placeholder.Processors.SimpleDatePlaceholderProcessor;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 public class SeenCommand extends MarryCommand
 {
 	private final Message messageLastSeen, messageCurrentlyOnline;
-	private final SimpleDateFormat dateFormat;
 
 	public SeenCommand(MarriageMaster plugin)
 	{
 		super(plugin, "seen", plugin.getLanguage().getTranslated("Commands.Description.Seen"), Permissions.SEEN, true, true, plugin.getLanguage().getCommandAliases("seen"));
 
-		dateFormat = new SimpleDateFormat(plugin.getLanguage().getLang().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss"));
-		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{Date}", "%2\\$s").replaceAll("\\{CountTotalDays}", "%3\\$d").replaceAll("\\{Count}", "%4\\$s");
-		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		Placeholder datePlaceholder = new Placeholder("Date", new SimpleDatePlaceholderProcessor(plugin.getLanguage().getLangE().getString("Language.Ingame.Seen.DateFormat", "yyyy.MM.dd 'at' HH:mm:ss")));
+		messageLastSeen = plugin.getLanguage().getMessage("Ingame.Seen.LastSeen").placeholders(Placeholders.PLAYER_NAME).placeholders(datePlaceholder).placeholder("CountTotalDays").placeholder("Count");
+		messageCurrentlyOnline = plugin.getLanguage().getMessage("Ingame.Seen.CurrentlyOnline").placeholders(Placeholders.PLAYER_NAME);
 	}
 
 	@Override
@@ -57,13 +58,13 @@ public class SeenCommand extends MarryCommand
 		}
 		else if(partner.isOnline())
 		{
-			player.sendMessage(messageCurrentlyOnline, partner.getName(), partner.getDisplayName());
+			player.sendMessage(messageCurrentlyOnline, partner);
 		}
 		else
 		{
 			Date lastOnline = new Date(partner.getPlayer().getLastPlayed());
 			TimeSpan timeSpan = new TimeSpan(lastOnline);
-			player.send(messageLastSeen, partner.getName(), dateFormat.format(lastOnline), timeSpan.getTotalDays(), timeSpan.toString());
+			player.send(messageLastSeen, partner, lastOnline, timeSpan.getTotalDays(), timeSpan.toString());
 		}
 	}
 

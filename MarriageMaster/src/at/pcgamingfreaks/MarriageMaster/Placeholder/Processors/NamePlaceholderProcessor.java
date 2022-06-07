@@ -15,15 +15,22 @@
  *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Database.Backend;
+package at.pcgamingfreaks.MarriageMaster.Placeholder.Processors;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Logger;
+import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
+import at.pcgamingfreaks.Message.Placeholder.Processors.IPlaceholderProcessor;
 
-public interface SQLBasedDatabase
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class NamePlaceholderProcessor implements IPlaceholderProcessor
 {
-	Logger getLogger();
+	public static final NamePlaceholderProcessor INSTANCE = new NamePlaceholderProcessor();
 
-	Connection getConnection() throws SQLException;
+	@Override
+	public @NotNull String process(@Nullable Object parameter)
+	{
+		if (parameter == null) return "null";
+		return ((MarriagePlayerDataBase) parameter).getName();
+	}
 }

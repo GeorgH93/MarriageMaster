@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +33,11 @@ public class SelfDivorceAcceptRequest extends AcceptPendingRequest
 
 	public static void loadMessages(MarriageMaster plugin)
 	{
-		messageSelfDivorceDeny         = plugin.getLanguage().getMessage("Ingame.Divorce.Self.Deny").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorceYouDeny      = plugin.getLanguage().getMessage("Ingame.Divorce.Self.YouDeny").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorceCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.Self.Cancelled").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorceYouCancelled = plugin.getLanguage().getMessage("Ingame.Divorce.Self.YouCancelled").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
-		messageSelfDivorcePlayerOff    = plugin.getLanguage().getMessage("Ingame.Divorce.Self.PlayerOff").replaceAll("\\{Name\\}", "%1\\$s").replaceAll("\\{DisplayName\\}", "%2\\$s");
+		messageSelfDivorceDeny         = plugin.getLanguage().getMessage("Ingame.Divorce.Self.Deny").placeholders(Placeholders.PLAYER_NAME);
+		messageSelfDivorceYouDeny      = plugin.getLanguage().getMessage("Ingame.Divorce.Self.YouDeny").placeholders(Placeholders.PLAYER_NAME);
+		messageSelfDivorceCancelled    = plugin.getLanguage().getMessage("Ingame.Divorce.Self.Cancelled").placeholders(Placeholders.PLAYER_NAME);
+		messageSelfDivorceYouCancelled = plugin.getLanguage().getMessage("Ingame.Divorce.Self.YouCancelled").placeholders(Placeholders.PLAYER_NAME);
+		messageSelfDivorcePlayerOff    = plugin.getLanguage().getMessage("Ingame.Divorce.Self.PlayerOff").placeholders(Placeholders.PLAYER_NAME);
 	}
 
 	public static void unLoadMessages()
@@ -63,15 +64,15 @@ public class SelfDivorceAcceptRequest extends AcceptPendingRequest
 	@Override
 	protected void onDeny()
 	{
-		getPlayersThatCanCancel()[0].send(messageSelfDivorceDeny, getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
-		getPlayerThatHasToAccept().send(messageSelfDivorceYouDeny, getPlayersThatCanCancel()[0].getName(), getPlayersThatCanCancel()[0].getDisplayName());
+		getPlayersThatCanCancel()[0].send(messageSelfDivorceDeny, getPlayerThatHasToAccept());
+		getPlayerThatHasToAccept().send(messageSelfDivorceYouDeny, getPlayersThatCanCancel()[0]);
 	}
 
 	@Override
 	protected void onCancel(@NotNull MarriagePlayer player)
 	{
-		getPlayerThatHasToAccept().send(messageSelfDivorceCancelled, player.getName(), player.getDisplayName());
-		player.send(messageSelfDivorceYouCancelled, getPlayerThatHasToAccept().getName(), getPlayerThatHasToAccept().getDisplayName());
+		getPlayerThatHasToAccept().send(messageSelfDivorceCancelled, player);
+		player.send(messageSelfDivorceYouCancelled, getPlayerThatHasToAccept());
 	}
 
 	@Override
@@ -79,11 +80,11 @@ public class SelfDivorceAcceptRequest extends AcceptPendingRequest
 	{
 		if(player.equals(getPlayersThatCanCancel()[0]))
 		{
-			getPlayerThatHasToAccept().send(messageSelfDivorcePlayerOff, player.getName(), player.getDisplayName());
+			getPlayerThatHasToAccept().send(messageSelfDivorcePlayerOff, player);
 		}
 		else
 		{
-			getPlayersThatCanCancel()[0].send(messageSelfDivorcePlayerOff, player.getName(), player.getDisplayName());
+			getPlayersThatCanCancel()[0].send(messageSelfDivorcePlayerOff, player);
 		}
 	}
 }

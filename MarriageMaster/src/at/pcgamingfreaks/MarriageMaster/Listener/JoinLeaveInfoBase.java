@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@ package at.pcgamingfreaks.MarriageMaster.Listener;
 
 import at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Database.ILanguage;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 import at.pcgamingfreaks.Message.Message;
+import at.pcgamingfreaks.Message.Placeholder.Processors.FormattedStringPlaceholderProcessor;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +38,9 @@ public abstract class JoinLeaveInfoBase
 		messageOnline        = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnline");
 		messageOffline       = language.getMessage("Ingame.JoinLeaveInfo.PartnerOffline");
 		messageAllOffline    = language.getMessage("Ingame.JoinLeaveInfo.AllPartnersOffline");
-		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti").replaceAll("\\{OnlinePartners}", "%1\\$s");
-		messageNowOnline     = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
-		messageNowOffline    = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").replaceAll("\\{Name}", "%1\\$s").replaceAll("\\{DisplayName}", "%2\\$s");
+		messageNowOnline     = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOnline").placeholders(Placeholders.PLAYER_NAME);
+		messageNowOffline    = language.getMessage("Ingame.JoinLeaveInfo.PartnerNowOffline").placeholders(Placeholders.PLAYER_NAME);
+		messageOnlineMulti   = language.getMessage("Ingame.JoinLeaveInfo.PartnerOnlineMulti").placeholder("OnlinePartners", FormattedStringPlaceholderProcessor.INSTANCE);
 		multiOnlineFormat    = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineFormat").replace("{Name}", "%1$s").replace("{DisplayName}", "%2$s");
 		multiOnlineSeparator = language.getTranslated("Ingame.JoinLeaveInfo.MultiOnlineSeparator");
 	}
@@ -51,7 +53,7 @@ public abstract class JoinLeaveInfoBase
 		for(Object partner : player.getOnlinePartners())
 		{
 			MarriagePlayer mpPartner = (MarriagePlayer) partner;
-			if(mpPartner.canSee(player)) mpPartner.send(messageNowOnline, player.getName(), player.getDisplayName());
+			if(mpPartner.canSee(player)) mpPartner.send(messageNowOnline, player);
 		}
 		// Online partners info
 		runTaskLater((player.getPartners().size() == 1) ? new OnePartnerRunnable(player) : new MultiPartnerRunnable(player));
@@ -62,7 +64,7 @@ public abstract class JoinLeaveInfoBase
 		for(Object partner : player.getOnlinePartners())
 		{
 			MarriagePlayer mpPartner = (MarriagePlayer) partner;
-			if(mpPartner.canSee(player)) mpPartner.send(messageNowOffline, player.getName(), player.getDisplayName());
+			if(mpPartner.canSee(player)) mpPartner.send(messageNowOffline, player);
 		}
 	}
 

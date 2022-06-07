@@ -28,7 +28,7 @@
 		<updateChannel>Release</updateChannel>
 
 		<mockito.version>4.2.0</mockito.version>
-		<mavenShade.version>3.3.0-SNAPSHOT</mavenShade.version>
+		<mavenShade.version>3.3.0</mavenShade.version>
 	</properties>
 
 	<repositories>
