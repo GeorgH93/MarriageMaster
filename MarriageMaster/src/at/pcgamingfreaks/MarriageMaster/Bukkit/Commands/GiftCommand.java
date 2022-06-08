@@ -20,10 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.ItemFilter;
 import at.pcgamingfreaks.Bukkit.ItemNameResolver;
 import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.GameModePlaceholderProcessor;
-import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemAmountPlaceholderProcessor;
-import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemMetadataPlaceholderProcessor;
-import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.ItemNamePlaceholderProcessor;
+import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.*;
 import at.pcgamingfreaks.Bukkit.Message.Placeholder.Processors.Wrappers.ItemStackWrapper;
 import at.pcgamingfreaks.Bukkit.Util.InventoryUtils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
@@ -35,6 +32,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.NamePlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Placeholder;
 
 import org.bukkit.Bukkit;
@@ -80,10 +78,11 @@ public class GiftCommand extends MarryCommand
 		worldBlacklist          = plugin.getConfiguration().getGiftBlackListedWorlds();
 		blacklistEnabled        = !worldBlacklist.isEmpty();
 
-		final Placeholder itemNamePlaceholder = new Placeholder("ItemName", new ItemNamePlaceholderProcessor(itemNameResolver));
+		final Placeholder[] itemNamePlaceholder = { new Placeholder("ItemName", new ItemNamePlaceholderProcessor(itemNameResolver)),
+													new Placeholder("ItemDisplayName", new ItemDisplayNamePlaceholderProcessor(itemNameResolver)) };
 		final Placeholder currentGameModePlaceholder = new Placeholder("CurrentGameMode", new GameModePlaceholderProcessor()); // TODO translate
 		final Placeholder[] itemPlaceholders = { new Placeholder("ItemAmount", ItemAmountPlaceholderProcessor.INSTANCE),
-		                                         itemNamePlaceholder,
+		                                         itemNamePlaceholder[0], itemNamePlaceholder[1],
 		                                         new Placeholder("ItemMetaJSON", new ItemMetadataPlaceholderProcessor(plugin.getLogger())) };
 
 		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").replaceAll("\\{AllowedGameModes}", currentGameModePlaceholder.getProcessor().process(allowedSendGameModes)).placeholders(currentGameModePlaceholder);
@@ -91,7 +90,7 @@ public class GiftCommand extends MarryCommand
 		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
 		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
 		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);
-		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);
+		messageItemReceived               = plugin.getLanguage().getMessage("Ingame.Gift.ItemReceived").placeholders(new Placeholder("Name", NamePlaceholderProcessor.INSTANCE), new Placeholder("DisplayName", NamePlaceholderProcessor.INSTANCE)).placeholders(itemPlaceholders);
 		messageWorldNotAllowed            = plugin.getLanguage().getMessage("Ingame.Gift.WorldNotAllowed");
 		messageItemNotAllowed             = plugin.getLanguage().getMessage("Ingame.Gift.ItemNotAllowed").placeholders(itemNamePlaceholder);
 
@@ -196,9 +195,9 @@ public class GiftCommand extends MarryCommand
 						}
 						else
 						{
-							bPartner.getInventory().setItem(slot, its);
 							messageItemSent.send(sender, partner, wrappedItemStack);
 							messageItemReceived.send(bPartner, partner, wrappedItemStack);
+							bPartner.getInventory().setItem(slot, its);
 						}
 						InventoryUtils.setItemInMainHand(bPlayer, null);
 					}
