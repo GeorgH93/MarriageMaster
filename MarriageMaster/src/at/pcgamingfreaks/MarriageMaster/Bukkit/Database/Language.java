@@ -84,7 +84,7 @@ public class Language extends at.pcgamingfreaks.Bukkit.Config.Language implement
 	@Override
 	public @NotNull String getTranslatedPlaceholder(final @NotNull String key)
 	{
-		return MessageColor.translateAlternateColorAndFormatCodes(getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replace(PLACEHOLDER_HEART, HEART).replace(PLACEHOLDER_SMALLHEART, SMALLHEART);
+		return MessageColor.translateAlternateColorAndFormatCodes(getLangE().getString(PLACEHOLDERS_KEY + key, NO_PLACEHOLDER)).replace(PLACEHOLDER_HEART, MagicValues.SYMBOL_HEART).replace(PLACEHOLDER_SMALLHEART, MagicValues.SYMBOL_SMALL_HEART);
 	}
 
 	@Override
