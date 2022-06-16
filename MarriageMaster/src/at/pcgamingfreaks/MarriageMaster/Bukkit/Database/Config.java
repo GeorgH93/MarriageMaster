@@ -44,6 +44,8 @@ import java.util.stream.Collectors;
 
 public class Config extends Configuration implements DatabaseConfiguration, ILanguageConfiguration
 {
+	private static final String KEY_SERVER_NAME = "Misc.ServerName";
+
 	public Config(final @NotNull MarriageMaster plugin)
 	{
 		super(plugin, new Version(MagicValues.CONFIG_VERSION));
@@ -69,7 +71,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 			if(oldConfig.version().olderThan(new Version(98))) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
 			if(oldConfig.version().olderThan(new Version(101))) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			Collection<String> keysToKeep = oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)");
-			keysToKeep.add("Misc.ServerName");
+			keysToKeep.add(KEY_SERVER_NAME);
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);
 		}
 	}
@@ -626,14 +628,14 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public String getServerName()
 	{
-		return getConfigE().getString("Misc.ServerName", null);
+		return getConfigE().getString(KEY_SERVER_NAME, null);
 	}
 
 	public void setServerName(String serverName)
 	{
 		try
 		{
-			getConfigE().set("Misc.ServerName", serverName);
+			getConfigE().set(KEY_SERVER_NAME, serverName);
 			save();
 		}
 		catch(Exception e)
