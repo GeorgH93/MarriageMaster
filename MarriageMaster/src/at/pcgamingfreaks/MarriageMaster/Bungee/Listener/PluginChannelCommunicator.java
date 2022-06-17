@@ -92,6 +92,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		{
 			case "home": home.sendHome(UUID.fromString(inputStream.readUTF()), UUID.fromString(inputStream.readUTF())); break;
 			case "tp": tp.sendTP(UUID.fromString(inputStream.readUTF()), UUID.fromString(inputStream.readUTF())); break;
+			default: return false;
 		}
 		return true;
 	}
