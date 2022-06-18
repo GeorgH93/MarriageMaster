@@ -92,6 +92,21 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	}
 
 	//region Getter
+	private boolean getAutoableBoolean(final @NotNull String key, final @NotNull String defaultValue, boolean autoValue)
+	{
+		String val = getConfigE().getString(key, defaultValue).trim().toLowerCase(Locale.ENGLISH);
+		switch(val)
+		{
+			case "on":
+			case "yes":
+			case "true": return false;
+			case "off":
+			case "no":
+			case "false": return true;
+			default: return autoValue;
+		}
+	}
+
 	//region Global settings
 	public boolean areMultiplePartnersAllowed()
 	{
@@ -105,17 +120,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public boolean isSelfDivorceAllowed()
 	{
-		String val = getConfigE().getString("Marriage.DivorceRequiresPriest", "auto").trim().toLowerCase(Locale.ENGLISH);
-		switch(val)
-		{
-			case "on":
-			case "yes":
-			case "true": return false;
-			case "off":
-			case "no":
-			case "false": return true;
-			default: return isSelfMarriageAllowed();
-		}
+		return getAutoableBoolean("Marriage.DivorceRequiresPriest", "auto", isSelfMarriageAllowed());
 	}
 
 	public boolean isSurnamesEnabled()
@@ -142,6 +147,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	public boolean isMarryAnnouncementEnabled()
 	{
 		return getConfigE().getBoolean("Marriage.AnnounceOnMarriage", true);
+	}
+
+	public boolean isDivorceAnnouncementEnabled()
+	{
+		return getAutoableBoolean("Marriage.AnnounceOnDivorce", "auto", isMarryAnnouncementEnabled());
 	}
 
 	public boolean isSetPriestCommandEnabled()

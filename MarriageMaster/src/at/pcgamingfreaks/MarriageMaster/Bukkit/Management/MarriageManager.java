@@ -63,7 +63,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	private final Message messageAlreadySamePair, messageSelfAlreadySamePair;
 	private final Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorceNotInRange, messageSelfNotOnYourOwn;
 	private final Message messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceNotInRange;
-	private final boolean surnameAllowColors, announceMarriage, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
+	private final boolean surnameAllowColors, announceMarriage, announceDivorce, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
 	private final int surnameMinLength, surnameMaxLength;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 
@@ -86,6 +86,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 		rangeMarry       = plugin.getConfiguration().getRange(Range.Marry);
 		rangeDivorce     = plugin.getConfiguration().getRange(Range.Divorce);
 		announceMarriage = plugin.getConfiguration().isMarryAnnouncementEnabled();
+		announceDivorce  = plugin.getConfiguration().isDivorceAnnouncementEnabled();
 		confirm          = plugin.getConfiguration().isMarryConfirmationEnabled();
 		bothOnDivorce    = plugin.getConfiguration().isConfirmationBothPlayersOnDivorceEnabled();
 		autoDialog       = plugin.getConfiguration().isMarryConfirmationAutoDialogEnabled();
@@ -574,7 +575,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				priestName = CONSOLE_NAME;
 				priestNameProvider = CONSOLE_DISPLAY_NAME_COMPONENT;
 			}
-			if(announceMarriage)
+			if(announceDivorce)
 			{
 				messageBroadcastDivorce.broadcast(priestName, priestNameProvider, player1, player2);
 			}
@@ -598,7 +599,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			{
 				otherPlayer.send(messageSelfDivorcedPlayer, divorceBy);
 			}
-			if(announceMarriage)
+			if(announceDivorce)
 			{
 				messageSelfBroadcastDivorce.broadcast(divorceBy, otherPlayer);
 			}

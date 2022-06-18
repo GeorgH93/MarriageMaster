@@ -69,7 +69,10 @@ Marriage:
     MinLength: 3
     # Values below the in length will be set to the min length
     MaxLength: 16
+  # Defines if marriages should be announced to all players.
   AnnounceOnMarriage: true
+  # Defines if divorces should be announced to all players. auto mirrors the AnnounceOnMarriage setting
+  AnnounceOnDivorce: auto
   Confirmation:
     Enable: true
     AutoDialog: true
@@ -223,7 +226,7 @@ CommandExecutor:
   Enable: false
   # General information about the command executor:
   # The commands can contain placeholders in the format {PlaceholderName} (The {} is part of the name. The available placeholders are listed right about the event).
-  # Every event can executed multiple commands in the list. Commands do not have to start with / !
+  # Every event can execute multiple commands in the list. Commands do not have to start with / !
   # Commands to be executed:
   # Will be executed when two players marry, without a priest
   # Allowed placeholders: {Player1}, {Player2}
@@ -242,7 +245,7 @@ CommandExecutor:
 # The command that should be used if no sub-command was used.
 # Options: help (/marry help), custom_help (will display the messages defined in the language file in Language.Ingame.Help.CustomHelp)
 DefaultCommand: "help"
-# The marriage color is used for the magic/colored heart and is set to an random value by default.
+# The marriage color is used for the magic/colored heart and is set to a random value by default.
 AllowPlayersToChangeMarriageColor: true
 
 Misc:
