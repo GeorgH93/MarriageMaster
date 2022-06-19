@@ -99,10 +99,10 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		{
 			case "on":
 			case "yes":
-			case "true": return false;
+			case "true": return true;
 			case "off":
 			case "no":
-			case "false": return true;
+			case "false": return false;
 			default: return autoValue;
 		}
 	}
@@ -120,7 +120,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public boolean isSelfDivorceAllowed()
 	{
-		return getAutoableBoolean("Marriage.DivorceRequiresPriest", "auto", isSelfMarriageAllowed());
+		return !getAutoableBoolean("Marriage.DivorceRequiresPriest", "auto", isSelfMarriageAllowed());
 	}
 
 	public boolean isSurnamesEnabled()
