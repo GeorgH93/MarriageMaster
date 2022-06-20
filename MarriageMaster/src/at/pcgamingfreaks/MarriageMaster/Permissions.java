@@ -35,6 +35,8 @@ public class Permissions
 	public static final String HUG = BASE + "hug";
 	public static final String KISS = BASE + "kiss";
 	public static final String LIST = BASE + "list";
+	public static final String PARTNERS = BASE + "partners";
+	public static final String PARTNERS_OTHERS = PARTNERS + ".others";
 	public static final String LIST_PRIESTS = BASE + "listpriests";
 	public static final String SELF_DIVORCE = BASE + "selfdivorce";
 	public static final String SELF_MARRY = BASE + "selfmarry";

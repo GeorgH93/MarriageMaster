@@ -26,6 +26,7 @@ permissions:
       marry.offlinedivorce: true
       marry.bypass: true
       marry.home.others: true
+      marry.partners.others: true
   marry.bypass:
     description: Gives all bypassing permissions
     children:
@@ -58,6 +59,7 @@ permissions:
       marry.changesurname: true
       marry.accept: true
       marry.setcolor: true
+      marry.partners: true
   marry.chat.user:
     description: Gives acces to all private message formats
     children:
@@ -78,6 +80,9 @@ permissions:
     default: true
   marry.listpriests:
     description: Allows you to use the list priests command
+    default: true
+  marry.partners:
+    description: Allows to list their own partners with the partners command
     default: true
   marry.pvp:
     description: Allows you to enable/disable pvp with the partner
@@ -195,6 +200,9 @@ permissions:
     default: op
   marry.home.others:
     description: Allows to teleport to homes of other players
+    default: op
+  marry.partners.others:
+    description: Allows to list the partners of a player with the partners command
     default: op
   marry.autoaccept.tprequest:
     description: If the permission is granted the player will automaticaly accept tp requests

@@ -108,6 +108,12 @@ Language:
       NoMarriedPlayers: "&cThere are no married players."
       Headline: "&eMarried players list&r&f - &r&6showing page {CurrentPage}/{MaxPage}"
       Footer: "[\"\",{\"text\":\"<<< Previous <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Showing page {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Next >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    Partners:
+      Headline: "&ePartner list of {DisplayName}:"
+      Footer: "&e##############################"
+      NotMarried: "{DisplayName}&e is not married."
+      # Player1 is the player that was queried. Player2 is the partner
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
     ListPriests:
       Format: "&2{PriestDisplayName}"
       NoPriestsOnline: "&cThere are no priests online."
@@ -287,6 +293,7 @@ Language:
       Help: "Shows all available commands and their description."
       List: "Lists all married players."
       ListPriests: "Lists all currently online priests."
+      Partners: "List all partners of a player"
       PvP: "Changes PvP status with partner."
       PvPOn: "Enables PvP with partner."
       PvPOff: "Disables PvP with partner."
@@ -379,6 +386,10 @@ Command:
     - list
   ListPriests:
     - listpriests
+  Partners:
+    - partners
+    - listpartners
+    - partnerlist
   Tp:
     - tp
   SetColor:
