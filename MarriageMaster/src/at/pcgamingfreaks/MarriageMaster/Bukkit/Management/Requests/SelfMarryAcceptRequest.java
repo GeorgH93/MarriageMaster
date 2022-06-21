@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Message.Sender.SendMethod;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryEvent;
@@ -42,6 +43,7 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 		messageSelfPlayerMarryOff    = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerOff").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfPlayerCalledOff   = plugin.getLanguage().getMessage("Ingame.Marry.Self.PlayerCalledOff").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfBroadcastMarriage = plugin.getLanguage().getMessage("Ingame.Marry.Self.Broadcast").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
+		if (!plugin.getConfiguration().isMarryAnnouncementEnabled()) messageSelfBroadcastMarriage.setSendMethod(SendMethod.DISABLED);
 	}
 
 	public static void unLoadMessages()
@@ -72,10 +74,7 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 			MarriageMaster.getInstance().getDatabase().cachedMarry(marriage);
 			player2.send(messageSelfMarried, player1);
 			player1.send(messageSelfMarried, player2);
-			if(manager.isAnnounceMarriageEnabled())
-			{
-				messageSelfBroadcastMarriage.broadcast(player1, player2);
-			}
+			messageSelfBroadcastMarriage.broadcast(player1, player2);
 			MarriageMaster.getInstance().getServer().getPluginManager().callEvent(new MarriedEvent(marriage));
 		}
 	}
