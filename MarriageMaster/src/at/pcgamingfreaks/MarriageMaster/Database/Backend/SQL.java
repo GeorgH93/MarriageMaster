@@ -32,7 +32,6 @@ import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKe
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.DbElementStatementWithKeyRunnable;
 import at.pcgamingfreaks.MarriageMaster.Database.Helper.StructMarriageSQL;
 import at.pcgamingfreaks.Message.MessageColor;
-import at.pcgamingfreaks.UUIDConverter;
 
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +73,6 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	@HasPlaceholders @Language("SQL") protected String queryLoadHomes = "SELECT * FROM {THomes};", queryIsPriest = "SELECT * FROM {TPriests} WHERE {FPriestID}=?;", queryLoadPlayerFromId = "SELECT * FROM {TPlayers} WHERE {FPlayerID}=?;";
 	@HasPlaceholders @Language("SQL") protected String queryLoadPlayersFromID = "SELECT * FROM {TPlayers} WHERE {FPlayerID} IN ({IDs});", queryLoadPriests = "SELECT {FPriestID} FROM {TPriests};";
 	@HasPlaceholders @Language("SQL") protected String queryLoadMarriages = "SELECT * FROM {TMarriages};", queryLoadMarriage = "SELECT * FROM {TMarriages} WHERE {FMarryID}=?";
-	@HasPlaceholders @Language("SQL") protected String queryGetUnsetOrInvalidUUIDs = "SELECT {FPlayerID},{FName},{FUUID} FROM {TPlayers} WHERE {FUUID} IS NULL OR {FUUID} ", queryFixUUIDs = "UPDATE {TPlayers} SET {FUUID}=? WHERE {FPlayerID}=?;";
 	@HasPlaceholders @Language("SQL") protected String queryUpdatePlayer = "UPDATE {TPlayers} SET {FName}=? WHERE {FPlayerID}=?;";
 	@HasPlaceholders @Language("SQL") protected String queryUpdateMarriageColor = "UPDATE {TMarriages} SET {FColor}=? WHERE {FMarryID}=?;";
 	//endregion
@@ -144,7 +142,6 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			queryMarry = "INSERT INTO {TMarriages} ({FPlayer1},{FPlayer2},{FPriest},{FPvPState},{FDate},{FSurname}) VALUES (?,?,?,?,?,?);";
 		}
-		queryGetUnsetOrInvalidUUIDs += (useUUIDSeparators) ? "NOT LIKE '%-%-%-%-%';" : "LIKE '%-%';";
 		replacePlaceholders();
 	}
 
@@ -198,78 +195,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	{
 		try(Connection connection = getConnection())
 		{
-			Map<String, UpdateUUIDsHelper> toConvert = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-			List<UpdateUUIDsHelper> toUpdate = new LinkedList<>();
-			try(Statement stmt = connection.createStatement(); ResultSet res = stmt.executeQuery(queryGetUnsetOrInvalidUUIDs))
-			{
-				while(res.next())
-				{
-					if(res.isFirst())
-					{
-						logger.info(MESSAGE_UPDATE_UUIDS);
-					}
-					String uuid = res.getString(fieldUUID);
-					if(uuid == null)
-					{
-						toConvert.put(res.getString(fieldName), new UpdateUUIDsHelper(res.getString(fieldName), null, res.getInt(fieldPlayerID)));
-					}
-					else
-					{
-						uuid = (useUUIDSeparators) ? uuid.replaceAll("(\\w{8})(\\w{4})(\\w{4})(\\w{4})(\\w{12})", "$1-$2-$3-$4-$5") : uuid.replace("-", "");
-						toUpdate.add(new UpdateUUIDsHelper(res.getString(fieldName), uuid, res.getInt(fieldPlayerID)));
-					}
-				}
-			}
-			if(!toConvert.isEmpty() || !toUpdate.isEmpty())
-			{
-				if(toConvert.isEmpty())
-				{
-					Map<String, String> newUUIDs = UUIDConverter.getUUIDsFromNames(toConvert.keySet(), useOnlineUUIDs, useUUIDSeparators);
-					for(Map.Entry<String, String> entry : newUUIDs.entrySet())
-					{
-						UpdateUUIDsHelper updateData = toConvert.get(entry.getKey());
-						updateData.setUUID(entry.getValue());
-						toUpdate.add(updateData);
-					}
-				}
-				boolean ok = false;
-				do
-				{
-					try(PreparedStatement ps = connection.prepareStatement(queryFixUUIDs))
-					{
-						for(UpdateUUIDsHelper updateData : toUpdate)
-						{
-							DBTools.setParameters(ps, updateData.getUUID(), updateData.getId());
-							ps.addBatch();
-						}
-						ps.executeBatch();
-						ok = true;
-					}
-					catch(SQLException ignored)
-					{
-						Iterator<UpdateUUIDsHelper> updateUUIDsHelperIterator = toUpdate.iterator();
-						while(updateUUIDsHelperIterator.hasNext())
-						{
-							UpdateUUIDsHelper updateData = updateUUIDsHelperIterator.next();
-							try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayer))
-							{
-								ps.setString(1, updateData.getUUID());
-								try(ResultSet rs = ps.executeQuery())
-								{
-									if(rs.next())
-									{
-										logger.warning("User " + updateData.getName() + " (db id: " + updateData.getId() + ") has the same UUID as " + rs.getString(fieldName) +
-												                           " (db id: " + rs.getInt(fieldPlayerID) + "), UUID: " + updateData.getUUID());
-										updateUUIDsHelperIterator.remove();
-									}
-								}
-							}
-						}
-					}
-				} while(!ok);
-
-				logger.info(String.format(MESSAGE_UPDATED_UUIDS, toUpdate.size()));
-			}
+			DBTools.validateUUIDs(logger, connection, tableUser, fieldName, fieldUUID, fieldPlayerID, useUUIDSeparators, useOnlineUUIDs);
 		}
 		catch(SQLException e)
 		{
