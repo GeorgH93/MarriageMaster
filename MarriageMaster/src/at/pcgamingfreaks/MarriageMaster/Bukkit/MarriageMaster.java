@@ -137,7 +137,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	{
 		getLogger().info(ConsoleColor.RED + "Failed to enable the plugin!" + ConsoleColor.YELLOW + " :( " + ConsoleColor.RESET);
 		this.setEnabled(false);
-		instance = null;
+		setInstance(null);
 	}
 
 	@Override
@@ -172,12 +172,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		updater.setChannel(config.getUpdateChannel());
 
-		// Loading data
-		surnamesEnabled = config.isSurnamesEnabled();
-		multiplePartnersAllowed = config.areMultiplePartnersAllowed();
-		selfMarriageAllowed = config.isSelfMarriageAllowed();
-		selfDivorceAllowed = config.isSelfDivorceAllowed();
-		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
+		loadGlobalSettings();
 
 		database = new Database(this);
 		if(!database.available())
@@ -191,7 +186,31 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			pluginChannelCommunicator = new PluginChannelCommunicator(this);
 		}
 
-		// Loading global translations
+		loadGlobalTranslations();
+
+		commandManager = new CommandManagerImplementation(this);
+		commandManager.init();
+		marriageManager = new MarriageManager(this);
+		prefixSuffixFormatter = new PrefixSuffixFormatterImpl(this);
+
+		registerEvents();
+
+		placeholderManager = new PlaceholderManager(this);
+
+		return true;
+	}
+
+	void loadGlobalSettings()
+	{
+		surnamesEnabled = config.isSurnamesEnabled();
+		multiplePartnersAllowed = config.areMultiplePartnersAllowed();
+		selfMarriageAllowed = config.isSelfMarriageAllowed();
+		selfDivorceAllowed = config.isSelfDivorceAllowed();
+		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
+	}
+
+	void loadGlobalTranslations()
+	{
 		helpPlayerNameVariable       = language.get("Commands.PlayerNameVariable");
 		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
 		messageNotFromConsole        = language.getMessage("NotFromConsole");
@@ -208,13 +227,10 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		messageDontMove              = language.getMessage("Ingame.TP.DontMove").placeholder("Time");
 		messageMarriageNotExact      = language.getMessage("Ingame.MarriageNotExact");
 		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
+	}
 
-		commandManager = new CommandManagerImplementation(this);
-		commandManager.init();
-		marriageManager = new MarriageManager(this);
-		prefixSuffixFormatter = new PrefixSuffixFormatterImpl(this);
-
-		// Register Events
+	void registerEvents()
+	{
 		getServer().getPluginManager().registerEvents(new JoinLeaveWorker(this), this);
 		getServer().getPluginManager().registerEvents(new OpenRequestCloser(), this);
 		if(config.isBonusXPEnabled())
@@ -238,10 +254,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 		if(getConfiguration().isPrefixEnabled() || getConfiguration().isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
-
-		placeholderManager = new PlaceholderManager(this);
-
-		return true;
 	}
 
 	private void unload()

@@ -311,7 +311,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						MARRIAGE_PLAYER priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
 						if(player1 == null || player2 == null)
 						{
-							logger.warning("Failed to load marriage (id: " + marriageId + ") because one of its players could not be loaded successful!");
+							logger.log(Level.WARNING, "Failed to load marriage (id: {}) because one of its players could not be loaded successful!", marriageId);
 							return;
 						}
 						String surname = surnameEnabled ? rs.getString(fieldSurname) : null;
