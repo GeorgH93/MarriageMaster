@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	@Nullable MARRIAGE getPrivateChatTarget();
 
 	/**
-	 * Allows to change the target of private messages (when multi partner marriage is enabled).
+	 * Allows to change the target of private messages (when multipartner marriage is enabled).
 	 * This method is thread safe!
 	 *
 	 * @param target The target which should receive the private messages in the future.
@@ -141,7 +141,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	void setPrivateChatTarget(@Nullable MARRIAGE_PLAYER target);
 
 	/**
-	 * Allows to change the target of private messages (when multi partner marriage is enabled).
+	 * Allows to change the target of private messages (when multipartner marriage is enabled).
 	 * This method is thread safe!
 	 *
 	 * @param target The target which should receive the private messages in the future.
@@ -156,7 +156,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	boolean isMarried();
 
 	/**
-	 * Checks if the player is married with a given player.
+	 * Checks if the player is married to a given player.
 	 *
 	 * @param player The player to be checked.
 	 * @return True if they are married. False if not.
@@ -164,7 +164,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	boolean isPartner(@NotNull PLAYER_OFFLINE player);
 
 	/**
-	 * Checks if the player is married with a given player.
+	 * Checks if the player is married to a given player.
 	 *
 	 * @param player The player to be checked.
 	 * @return True if they are married. False if not.
@@ -211,7 +211,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	@NotNull Collection<? extends MARRIAGE_PLAYER> getPartners();
 
 	/**
-	 * Gets the marriage data for all of the players partners.
+	 * Gets the marriage data for all the players partners.
 	 * If multi marriage is not enabled this will also return the marriage data for the player.
 	 *
 	 * @return A {@link Collection} containing the marriage data of the player for all his partners. Empty list if not married.
@@ -219,10 +219,10 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	@NotNull Collection<? extends MARRIAGE> getMultiMarriageData();
 
 	/**
-	 * Checks if the player is married with the other player and returns the corresponding marriage data if they are.
+	 * Checks if the player is married to the other player and returns the corresponding marriage data if they are.
 	 *
 	 * @param player The player the marriage should get for.
-	 * @return The marriage data for this partner. null if not married with this player.
+	 * @return The marriage data for this partner. null if not married to this player.
 	 */
 	@Nullable MARRIAGE getMarriageData(@NotNull MARRIAGE_PLAYER player);
 
