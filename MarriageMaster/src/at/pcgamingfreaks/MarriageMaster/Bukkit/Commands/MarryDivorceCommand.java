@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -113,8 +113,8 @@ public class MarryDivorceCommand extends MarryCommand
 				Marriage marriage;
 				if(args.length == 1)
 				{
-					MarriagePlayer player2 = getMarriagePlugin().getPlayerData(args[0]);
-					if(!player.isPartner(player2))
+					MarriagePlayer player2 = player.getPartner(args[0]);
+					if(player2 == null)
 					{
 						((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 						return;
@@ -149,7 +149,15 @@ public class MarryDivorceCommand extends MarryCommand
 		MarriagePlayer marriagePlayerData = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(marriagePlayerData == null || marriagePlayerData.isPriest())
 		{
-			names = Utils.getPlayerNamesStartingWithVisibleOnly(args[args.length - 1], sender, Permissions.BYPASS_VANISH);
+			if (args.length == 1)
+			{
+				names = Utils.getPlayerNamesStartingWithVisibleOnly(args[0], sender, Permissions.BYPASS_VANISH);
+			}
+			else if (args.length == 2)
+			{
+				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]);
+				names = player1.getMatchingPartnerNames(args[1]);
+			}
 		}
 		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE))
 		{
