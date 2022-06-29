@@ -295,9 +295,8 @@ public class ChatCommand extends MarryCommand implements Listener
 		toggleListenChat(player, !listeners.contains(player));
 	}
 
-	private void doChat(final MarriagePlayer sender, String msg)
+	private Player getRecipient(final MarriagePlayer sender, List<Marriage> recipients)
 	{
-		List<Marriage> recipients = new ArrayList<>(sender.getMultiMarriageData().size());
 		Player recipient = null;
 		if(sender.getPrivateChatTarget() == null)
 		{
@@ -323,6 +322,37 @@ public class ChatCommand extends MarryCommand implements Listener
 				recipients.add(sender.getPrivateChatTarget());
 			}
 		}
+		return recipient;
+	}
+
+	private @NotNull List<Player> collectRecipientPlayers(final MarriagePlayer sender, final Player recipient, final List<Marriage> recipients)
+	{
+		List<Player> playerRecipients;
+		if(recipient == null) // Add the recipients to the list
+		{
+			playerRecipients = new ArrayList<>(listeners.size() + recipients.size() + 1);
+			for(Marriage target : recipients)
+			{
+				//noinspection ConstantConditions
+				Player p = target.getPartner(sender).getPlayerOnline();
+				if(!listeners.contains(p)) playerRecipients.add(p);
+			}
+		}
+		else
+		{
+			playerRecipients = new ArrayList<>(listeners.size() + 2);
+			if(!listeners.contains(recipient)) playerRecipients.add(recipient); // Add the recipient to the list if not one of the listeners
+		}
+		if(!listeners.contains(sender.getPlayerOnline())) playerRecipients.add(sender.getPlayerOnline()); // Add the sender to the list
+		playerRecipients.addAll(listeners); // Copy the listeners since we need to send the message too
+		return  playerRecipients;
+	}
+
+	private void doChat(final MarriagePlayer sender, String msg)
+	{
+		List<Marriage> recipients = new ArrayList<>(sender.getMultiMarriageData().size());
+		Player recipient = getRecipient(sender, recipients);
+
 
 		if(recipients.isEmpty())
 		{
@@ -359,24 +389,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		msg = cleanupMessage(msg, sender);
 
 		// Send the message
-		List<Player> playerRecipients;
-		if(recipient == null) // Add the recipients to the list
-		{
-			playerRecipients = new ArrayList<>(listeners.size() + recipients.size() + 1);
-			for(Marriage target : recipients)
-			{
-				//noinspection ConstantConditions
-				Player p = target.getPartner(sender).getPlayerOnline();
-				if(!listeners.contains(p)) playerRecipients.add(p);
-			}
-		}
-		else
-		{
-			playerRecipients = new ArrayList<>(listeners.size() + 2);
-			if(!listeners.contains(recipient)) playerRecipients.add(recipient); // Add the recipient to the list if not one of the listeners
-		}
-		if(!listeners.contains(sender.getPlayerOnline())) playerRecipients.add(sender.getPlayerOnline()); // Add the sender to the list
-		playerRecipients.addAll(listeners); // Copy the listeners since we need to send the message too
+		List<Player> playerRecipients = collectRecipientPlayers(sender, recipient, recipients);
 		String recipientDisplayName = (recipient != null) ? recipient.getDisplayName() : displayNameAll, recipientName = (recipient != null) ? recipient.getName() : displayNameAll;
 		String formattedMessage = String.format(privateMessageFormat, sender.getDisplayName(), recipientDisplayName, msg, sender.getName(), recipientName, magicHeart);
 		Message message = new Message(formattedMessage);
