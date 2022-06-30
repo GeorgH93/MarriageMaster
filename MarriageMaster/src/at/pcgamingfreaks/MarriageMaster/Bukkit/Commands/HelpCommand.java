@@ -26,16 +26,16 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 public class HelpCommand extends MarryCommand
 {
 	private Collection<MarryCommand> commands;
-	private Message messageHeader, messageFooter;
+	private final Message messageHeader, messageFooter;
 
-	public HelpCommand(MarriageMaster plugin, Collection<MarryCommand> commands)
+	public HelpCommand(final @NotNull MarriageMaster plugin, final @NotNull Collection<MarryCommand> commands)
 	{
 		super(plugin, "help", plugin.getLanguage().getTranslated("Commands.Description.Help"), plugin.getLanguage().getCommandAliases("Help"));
 		this.commands = commands;
@@ -45,10 +45,10 @@ public class HelpCommand extends MarryCommand
 	}
 
 	@Override
-	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public void execute(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		messageHeader.send(sender);
-		Collection<HelpData> help = new LinkedList<>(), temp;
+		Collection<HelpData> help = new ArrayList<>(), temp;
 		for(SubCommand cmd : commands)
 		{
 			temp = cmd.doGetHelp(sender);
@@ -60,7 +60,7 @@ public class HelpCommand extends MarryCommand
 	}
 
 	@Override
-	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
 		return null;
 	}
