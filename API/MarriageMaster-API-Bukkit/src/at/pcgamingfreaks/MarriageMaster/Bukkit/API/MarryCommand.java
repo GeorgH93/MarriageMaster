@@ -29,6 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +39,10 @@ import java.util.logging.Level;
 public abstract class MarryCommand extends SubCommand implements at.pcgamingfreaks.MarriageMaster.API.MarryCommand<MarriageMasterPlugin, CommandSender>
 {
 	private static MarriageMasterPlugin marriagePlugin = null;
+
+	protected static final List<String> EMPTY_TAB_COMPLETE_LIST = Collections.unmodifiableList(new ArrayList<>(0));
+	protected static final List<HelpData> EMPTY_HELP_LIST = Collections.unmodifiableList(new ArrayList<>(0));
+
 	protected final JavaPlugin plugin;
 
 	private static String helpPartnerSelector    = "<partner name>";

@@ -170,6 +170,6 @@ public class BackpackCommand extends MarryCommand
 			}
 			return helpList;
 		}
-		return new ArrayList<>(0);
+		return EMPTY_HELP_LIST;
 	}
 }
