@@ -38,6 +38,7 @@ import lombok.SneakyThrows;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 
 public class DebugCommand extends MarryCommand
@@ -79,7 +80,7 @@ public class DebugCommand extends MarryCommand
 		{
 			plugin.getLogger().warning("Failed to delete debug.txt file!");
 		}
-		writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(debugFile), StandardCharsets.UTF_8));
+		writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(debugFile.toPath()), StandardCharsets.UTF_8));
 
 		writer.append(plugin.getDescription().getName()).append(" Version: ").append(plugin.getDescription().getVersion());
 		writer.append("\nServer: ").append(Bukkit.getServer().getBukkitVersion()).append(" (").append(Bukkit.getServer().getVersion()).append(")");
@@ -90,7 +91,7 @@ public class DebugCommand extends MarryCommand
 			writer.append(p.getName()).append(' ').append(p.getDescription().getVersion()).append('\n');
 		}
 		writer.append("\nPlugin Config:\n");
-		try(BufferedReader configReader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(plugin.getDataFolder(), "config.yml")), StandardCharsets.UTF_8)))
+		try(BufferedReader configReader = new BufferedReader(new InputStreamReader(Files.newInputStream(new File(plugin.getDataFolder(), "config.yml").toPath()), StandardCharsets.UTF_8)))
 		{
 			String line;
 			while((line = configReader.readLine()) != null)
@@ -112,13 +113,13 @@ public class DebugCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 
 	@Override
 	public @Nullable List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 
 }
