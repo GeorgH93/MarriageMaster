@@ -79,6 +79,6 @@ public class VersionCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 }

@@ -176,7 +176,7 @@ public class PvPCommand extends MarryCommand implements Listener
 			}
 			return help;
 		}
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 
 	@EventHandler

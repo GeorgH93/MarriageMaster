@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class RequestCancelCommand extends MarryCommand
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		if(player.getRequestsToCancel().size() > 1)
 		{
-			List<String> tab = new LinkedList<>();
+			List<String> tab = new ArrayList<>(player.getRequestsToCancel().size());
 			String arg = args[0].toLowerCase();
 			for(AcceptPendingRequest request : player.getRequestsToCancel())
 			{
@@ -99,7 +100,7 @@ public class RequestCancelCommand extends MarryCommand
 			}
 			return tab;
 		}
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 
 	@Override
@@ -112,10 +113,10 @@ public class RequestCancelCommand extends MarryCommand
 		}
 		else if(player.getRequestsToCancel().size() > 1)
 		{
-			List<HelpData> help = new LinkedList<>();
+			List<HelpData> help = new ArrayList<>(1);
 			help.add(new HelpData(getTranslatedName(), param, getDescription()));
 			return help;
 		}
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 }

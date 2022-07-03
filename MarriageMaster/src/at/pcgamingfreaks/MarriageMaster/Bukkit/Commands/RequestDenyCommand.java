@@ -57,7 +57,7 @@ public class RequestDenyCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 
 	@Override
@@ -68,6 +68,6 @@ public class RequestDenyCommand extends MarryCommand
 		{
 			super.getHelp(requester);
 		}
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 }

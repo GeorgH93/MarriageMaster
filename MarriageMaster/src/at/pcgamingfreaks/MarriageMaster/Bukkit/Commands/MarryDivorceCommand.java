@@ -144,7 +144,7 @@ public class MarryDivorceCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length == 0 || !canUse(sender)) return null;
+		if(args.length == 0 || !canUse(sender)) return EMPTY_TAB_COMPLETE_LIST;
 		List<String> names = null;
 		MarriagePlayer marriagePlayerData = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(marriagePlayerData == null || marriagePlayerData.isPriest())

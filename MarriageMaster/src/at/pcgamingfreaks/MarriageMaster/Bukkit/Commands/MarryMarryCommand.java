@@ -151,7 +151,7 @@ public class MarryMarryCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length == 0 || !canUse(sender)) return null;
+		if(args.length == 0 || !canUse(sender)) return EMPTY_TAB_COMPLETE_LIST;
 		return Utils.getPlayerNamesStartingWithVisibleOnly(args[args.length - 1], sender, Permissions.BYPASS_VANISH);
 	}
 
@@ -174,7 +174,7 @@ public class MarryMarryCommand extends MarryCommand
 		}
 		else
 		{
-			return null;
+			return EMPTY_HELP_LIST;
 		}
 	}
 

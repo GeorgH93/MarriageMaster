@@ -108,6 +108,6 @@ public class PartnersCommand extends MarryCommand
 		{
 			return Utils.getPlayerNamesStartingWithVisibleOnly(args[0], sender, Permissions.BYPASS_VANISH);
 		}
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 }

@@ -58,7 +58,7 @@ public class RequestAcceptCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 
 	@Override
@@ -69,6 +69,6 @@ public class RequestAcceptCommand extends MarryCommand
 		{
 			return super.getHelp(requester);
 		}
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 }

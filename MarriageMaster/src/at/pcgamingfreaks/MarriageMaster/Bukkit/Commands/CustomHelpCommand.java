@@ -70,12 +70,12 @@ public class CustomHelpCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 
 	@Override
 	public @Nullable List<HelpData> getHelp(@NotNull CommandSender requester)
 	{
-		return null;
+		return EMPTY_HELP_LIST;
 	}
 }

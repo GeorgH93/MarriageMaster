@@ -68,6 +68,6 @@ public class ReloadCommand extends MarryCommand
 			tab.add("database");
 			return tab;
 		}
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 }

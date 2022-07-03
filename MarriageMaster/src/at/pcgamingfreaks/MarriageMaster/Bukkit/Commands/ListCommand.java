@@ -105,6 +105,6 @@ public class ListCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String alias, final @NotNull String[] args)
 	{
-		return null;
+		return EMPTY_TAB_COMPLETE_LIST;
 	}
 }
