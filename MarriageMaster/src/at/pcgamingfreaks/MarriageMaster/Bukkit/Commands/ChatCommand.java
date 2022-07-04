@@ -310,7 +310,7 @@ public class ChatCommand extends MarryCommand implements Listener
 					recipients.add(m);
 				}
 			}
-			if(recipients.size() == 1) recipient = last.getPlayerOnline();
+			if(recipients.size() == 1 && last != null) recipient = last.getPlayerOnline();
 		}
 		else
 		{
