@@ -40,7 +40,6 @@ import java.util.List;
 
 public class PvPCommand extends MarryCommand implements Listener
 {
-	private final MarriageMaster plugin;
 	private final Message messagePvPOn, messagePvPOff, messagePvPIsOff;
 	private final String helpMulti, helpOn, helpOff;
 	private MarryCommand onCommand, offCommand;
@@ -48,7 +47,6 @@ public class PvPCommand extends MarryCommand implements Listener
 	public PvPCommand(MarriageMaster plugin)
 	{
 		super(plugin, "pvp", plugin.getLanguage().getTranslated("Commands.Description.PvP"), Permissions.PVP, true, true, plugin.getLanguage().getCommandAliases("PvP"));
-		this.plugin = plugin;
 
 		messagePvPOn    = plugin.getLanguage().getMessage("Ingame.PvP.On");
 		messagePvPOff   = plugin.getLanguage().getMessage("Ingame.PvP.Off");
@@ -65,7 +63,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	@Override
 	public void afterRegister()
 	{
-		super.afterRegister();
+		MarriageMaster plugin = (MarriageMaster) getMarriagePlugin();
 		onCommand = new PvPOnCommand(plugin);
 		plugin.getCommandManager().registerSubCommand(onCommand);
 		offCommand = new PvPOffCommand(plugin);
@@ -75,6 +73,7 @@ public class PvPCommand extends MarryCommand implements Listener
 	@Override
 	public void beforeUnregister()
 	{
+		MarriageMaster plugin = (MarriageMaster) getMarriagePlugin();
 		plugin.getCommandManager().unRegisterSubCommand(onCommand);
 		onCommand.close();
 		plugin.getCommandManager().unRegisterSubCommand(offCommand);
@@ -112,7 +111,7 @@ public class PvPCommand extends MarryCommand implements Listener
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
 			{
-				plugin.messageTargetPartnerNotFound.send(sender);
+				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 				return;
 			}
 		}
@@ -214,7 +213,7 @@ public class PvPCommand extends MarryCommand implements Listener
 		@Override
 		public List<HelpData> getHelp(@NotNull CommandSender requester)
 		{
-			return null;
+			return EMPTY_HELP_LIST;
 		}
 
 		protected Marriage getMarriage(Player sender, String[] args)

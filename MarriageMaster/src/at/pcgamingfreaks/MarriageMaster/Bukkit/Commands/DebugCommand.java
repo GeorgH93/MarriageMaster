@@ -43,14 +43,12 @@ import java.util.List;
 
 public class DebugCommand extends MarryCommand
 {
-	private final MarriageMaster plugin;
 	private final Message messageDone, messageStart;
 	private BufferedWriter writer = null;
 
 	public DebugCommand(final @NotNull MarriageMaster plugin)
 	{
 		super(plugin, "debug", "Just for debug reasons", Permissions.RELOAD, true);
-		this.plugin = plugin;
 
 		MessageBuilder builder = new MessageBuilder("Please do not interact with your game for the next minute!", MessageColor.GOLD);
 		builder.appendNewLine().append("The plugin will now collect data about your server and plugins.").appendNewLine();
@@ -102,7 +100,7 @@ public class DebugCommand extends MarryCommand
 			}
 		}
 		writer.append("\n\n\nSelf-test results:\n");
-		plugin.getPlaceholderManager().testPlaceholders(writer);
+		((MarriageMaster) getMarriagePlugin()).getPlaceholderManager().testPlaceholders(writer);
 
 		writer.flush();
 		writer.close();

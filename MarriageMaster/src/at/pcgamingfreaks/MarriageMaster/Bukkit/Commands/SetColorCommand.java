@@ -34,13 +34,11 @@ import java.util.List;
 
 public class SetColorCommand extends MarryCommand
 {
-	private final MarriageMaster plugin;
 	private final Message messageUnknownColor, messageColorSet, messageColorSelection;
 
 	public SetColorCommand(final @NotNull MarriageMaster plugin)
 	{
 		super(plugin, "setcolor", plugin.getLanguage().getTranslated("Commands.Description.SetColor"), Permissions.SET_COLOR, true, true, plugin.getLanguage().getCommandAliases("SetColor"));
-		this.plugin = plugin;
 
 		messageUnknownColor = plugin.getLanguage().getMessage("Ingame.SetColor.UnknownColor").placeholder("Input");
 		messageColorSet = plugin.getLanguage().getMessage("Ingame.SetColor.Set");
@@ -63,7 +61,7 @@ public class SetColorCommand extends MarryCommand
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
 			{
-				plugin.messageTargetPartnerNotFound.send(sender);
+				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 				return;
 			}
 		}

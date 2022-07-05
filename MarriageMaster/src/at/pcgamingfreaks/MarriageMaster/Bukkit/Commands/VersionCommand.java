@@ -30,17 +30,15 @@ import java.util.List;
 
 public class VersionCommand extends MarryCommand
 {
-	private final MarriageMaster plugin;
-
 	public VersionCommand(MarriageMaster plugin)
 	{
 		super(plugin, "version", plugin.getLanguage().getTranslated("Commands.Description.Version"), Permissions.VERSION, plugin.getLanguage().getCommandAliases("Version"));
-		this.plugin = plugin;
 	}
 
 	@Override
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
+		final MarriageMaster plugin = (MarriageMaster) getMarriagePlugin();
 		sender.sendMessage("##### Start Marriage Master version info #####");
 		sender.sendMessage("Marriage Master: " +  plugin.getDescription().getVersion());
 		/*if_not[STANDALONE]*/

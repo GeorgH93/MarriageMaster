@@ -51,7 +51,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatCommand extends MarryCommand implements Listener
 {
-	private final MarriageMaster plugin;
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage, privateMessageFormat, setTargetDescription;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
@@ -62,7 +61,6 @@ public class ChatCommand extends MarryCommand implements Listener
 	public ChatCommand(MarriageMaster plugin)
 	{
 		super(plugin, "chat", plugin.getLanguage().getTranslated("Commands.Description.Chat"), Permissions.CHAT, true, true, plugin.getLanguage().getCommandAliases("Chat"));
-		this.plugin = plugin;
 
 		messageJoined           = plugin.getLanguage().getMessage("Ingame.Chat.Joined");
 		messageLeft             = plugin.getLanguage().getMessage("Ingame.Chat.Left");
@@ -84,6 +82,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public void afterRegister()
 	{
+		MarriageMaster plugin = ((MarriageMaster) getMarriagePlugin());
 		chatToggleCommand = new ChatToggleCommand(plugin, this);
 		plugin.getCommandManager().registerSubCommand(chatToggleCommand);
 		if(allowChatSurveillance)
@@ -96,6 +95,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public void beforeUnregister()
 	{
+		MarriageMaster plugin = ((MarriageMaster) getMarriagePlugin());
 		plugin.getCommandManager().unRegisterSubCommand(chatToggleCommand);
 		chatToggleCommand.close();
 		if(allowChatSurveillance)
@@ -151,7 +151,7 @@ public class ChatCommand extends MarryCommand implements Listener
 					}
 					else
 					{
-						plugin.messageTargetPartnerNotFound.send(sender);
+						((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
 					}
 				}
 				else
@@ -172,7 +172,7 @@ public class ChatCommand extends MarryCommand implements Listener
 					}
 					else
 					{
-						plugin.messagePartnerOffline.send(sender);
+						((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
 					}
 				}
 			}
@@ -230,7 +230,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		help.add(new HelpData(getTranslatedName(), helpParameterMessage, getDescription()));
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
-			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + plugin.helpPartnerNameVariable + " / " +
+			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + ((MarriageMaster) getMarriagePlugin()).helpPartnerNameVariable + " / " +
 							getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", setTargetDescription));
 		}
 		return help;
@@ -356,7 +356,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		if(recipients.isEmpty())
 		{
-			sender.send(plugin.messagePartnerOffline);
+			sender.send(((MarriageMaster) getMarriagePlugin()).messagePartnerOffline);
 			return;
 		}
 
