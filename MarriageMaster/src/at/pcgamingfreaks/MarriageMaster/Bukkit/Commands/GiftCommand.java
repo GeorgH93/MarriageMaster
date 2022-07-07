@@ -42,6 +42,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Locale;
@@ -121,100 +122,117 @@ public class GiftCommand extends MarryCommand
 		InventoryUtils.prepareTitleForOpenInventoryWithCustomTitle("ignore this");
 	}
 
+	boolean canSend(final @NotNull Player sender)
+	{
+		if(sender.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE) && allowedSendGameModes.contains(sender.getGameMode()))
+		{
+			return true;
+		}
+		messageGameModeNotAllowedSender.send(sender, sender.getGameMode());
+		return false;
+	}
+
+	boolean canReceive(final @NotNull Player sender, final @NotNull Player receiver)
+	{
+		if(!allowedReceiveGameModes.contains(receiver.getGameMode()) && !receiver.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
+		{
+			messageGameModeNotAllowedReceiver.send(sender, receiver.getGameMode());
+			return false;
+		}
+		if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(receiver.getWorld().getName().toLowerCase(Locale.ENGLISH)))
+		{
+			messageWorldNotAllowed.send(sender);
+			return false;
+		}
+		return true;
+	}
+
+	@Nullable ItemStack checkAndGetItemInHand(final @NotNull Player sender)
+	{
+		ItemStack its = InventoryUtils.getItemInMainHand(sender);
+		if(its == null || its.getType() == Material.AIR || its.getAmount() == 0)
+		{
+			messageNoItemInHand.send(sender);
+			return null;
+		}
+		if((itemFilter != null && !sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER) && itemFilter.isItemBlocked(its)) ||
+				(((MarriageMaster) plugin).getBackpacksIntegration() != null && ((MarriageMaster) plugin).getBackpacksIntegration().isBackpackItem(its)))
+		{
+			messageItemNotAllowed.send(sender, its);
+			return null;
+		}
+		return its;
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		Player bPlayer = (Player) sender;
-		if(allowedSendGameModes.contains(bPlayer.getGameMode()) || bPlayer.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
+		if(!canSend(bPlayer)) return;
+		MarriagePlayer partner;
+		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
 		{
-			MarriagePlayer partner;
-			if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1)
+			partner = getMarriagePlugin().getPlayerData(args[0]);
+			if(!player.isPartner(partner))
 			{
-				partner = getMarriagePlugin().getPlayerData(args[0]);
-				if(!player.isPartner(partner))
-				{
-					((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
-					return;
-				}
-			}
-			else
-			{
-				Marriage mPD = player.getNearestPartnerMarriageData();
-				if(mPD == null) { return; } // Should never happen, but it's always good to be safe!
-				partner = player.getNearestPartnerMarriageData().getPartner(player);
-			}
-			if(partner != null && partner.isOnline())
-			{
-				final Player bPartner = partner.getPlayerOnline();
-				if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
-				{
-					ItemStack its = InventoryUtils.getItemInMainHand(bPlayer);
-					if(its == null || its.getType() == Material.AIR || its.getAmount() == 0)
-					{
-						messageNoItemInHand.send(sender);
-						return;
-					}
-					int slot = bPartner.getInventory().firstEmpty();
-					if(slot == -1)
-					{
-						messagePartnerInvFull.send(sender);
-						return;
-					}
-					if(!allowedReceiveGameModes.contains(bPartner.getGameMode()) && !bPartner.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE))
-					{
-						messageGameModeNotAllowedReceiver.send(sender, bPlayer.getGameMode());
-						return;
-					}
-					if(blacklistEnabled && !sender.hasPermission(Permissions.BYPASS_GIFT_WORLD) && worldBlacklist.contains(bPartner.getWorld().getName().toLowerCase(Locale.ENGLISH)))
-					{
-						player.send(messageWorldNotAllowed);
-						return;
-					}
-					if((itemFilter != null && !sender.hasPermission(Permissions.BYPASS_GIFT_ITEM_FILTER) && itemFilter.isItemBlocked(its)) ||
-							(((MarriageMaster) plugin).getBackpacksIntegration() != null && ((MarriageMaster) plugin).getBackpacksIntegration().isBackpackItem(its)))
-					{
-						player.send(messageItemNotAllowed, its);
-						return;
-					}
-					GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);
-					Bukkit.getPluginManager().callEvent(event);
-					if(!event.isCancelled())
-					{
-						its = event.getItemStack();
-						ItemStackWrapper wrappedItemStack = new ItemStackWrapper(its, plugin.getLogger(), itemNameResolver);
-						if(requireConfirmation)
-						{
-							if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(wrappedItemStack, partner, player)))
-							{
-								messageRequestPartnerAlreadyHasAnOpenRequest.send(sender);
-								return;
-							}
-							messageWaitForConfirmation.send(sender, wrappedItemStack);
-							partner.send(messageRequireConfirmation, player, wrappedItemStack);
-						}
-						else
-						{
-							messageItemSent.send(sender, partner, wrappedItemStack);
-							messageItemReceived.send(bPartner, partner, wrappedItemStack);
-							bPartner.getInventory().setItem(slot, its);
-						}
-						InventoryUtils.setItemInMainHand(bPlayer, null);
-					}
-				}
-				else
-				{
-					((MarriageMaster) getMarriagePlugin()).messagePartnerNotInRange.send(sender);
-				}
-			}
-			else
-			{
-				((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+				return;
 			}
 		}
 		else
 		{
-			messageGameModeNotAllowedSender.send(sender, bPlayer.getGameMode());
+			Marriage mPD = player.getNearestPartnerMarriageData();
+			if(mPD == null) { return; } // Should never happen, but it's always good to be safe!
+			partner = player.getNearestPartnerMarriageData().getPartner(player);
+		}
+		if(partner != null && partner.isOnline())
+		{
+			final Player bPartner = partner.getPlayerOnline();
+			if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
+			{
+				ItemStack its = checkAndGetItemInHand(bPlayer);
+				if (its == null) return;
+				int slot = bPartner.getInventory().firstEmpty();
+				if(slot == -1)
+				{
+					messagePartnerInvFull.send(sender);
+					return;
+				}
+				if(!canReceive(bPlayer, bPartner)) return;
+				GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);
+				Bukkit.getPluginManager().callEvent(event);
+				if(!event.isCancelled())
+				{
+					its = event.getItemStack();
+					ItemStackWrapper wrappedItemStack = new ItemStackWrapper(its, plugin.getLogger(), itemNameResolver);
+					if(requireConfirmation)
+					{
+						if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(wrappedItemStack, partner, player)))
+						{
+							messageRequestPartnerAlreadyHasAnOpenRequest.send(sender);
+							return;
+						}
+						messageWaitForConfirmation.send(sender, wrappedItemStack);
+						partner.send(messageRequireConfirmation, player, wrappedItemStack);
+					}
+					else
+					{
+						messageItemSent.send(sender, partner, wrappedItemStack);
+						messageItemReceived.send(bPartner, partner, wrappedItemStack);
+						bPartner.getInventory().setItem(slot, its);
+					}
+					InventoryUtils.setItemInMainHand(bPlayer, null);
+				}
+			}
+			else
+			{
+				((MarriageMaster) getMarriagePlugin()).messagePartnerNotInRange.send(sender);
+			}
+		}
+		else
+		{
+			((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
 		}
 	}
 
