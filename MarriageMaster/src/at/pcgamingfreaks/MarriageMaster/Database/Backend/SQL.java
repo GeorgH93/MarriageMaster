@@ -276,11 +276,11 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			logger.info("Writing marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
 			{
-				MARRIAGE_PLAYER player1 = (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), player2 = (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID);
+				MARRIAGE_PLAYER player1 = cache.getPlayerFromDbKey(sm.p1ID), player2 = cache.getPlayerFromDbKey(sm.p2ID);
 				if(player1 != null && player2 != null)
 				{
-					cache.cache(platform.produceMarriage((MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p1ID), (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.p2ID),
-					                                     (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(sm.priest), sm.date, sm.surname, sm.pvp, sm.color, null, sm.marryID));
+					cache.cache(platform.produceMarriage(cache.getPlayerFromDbKey(sm.p1ID), cache.getPlayerFromDbKey(sm.p2ID),
+					                                     cache.getPlayerFromDbKey(sm.priest), sm.date, sm.surname, sm.pvp, sm.color, null, sm.marryID));
 				}
 				else
 				{
@@ -331,7 +331,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 
 	protected @Nullable MARRIAGE_PLAYER playerFromId(final @NotNull Connection connection, final int id) throws SQLException
 	{
-		if(cache.isPlayerFromDbKeyLoaded(id)) return (MARRIAGE_PLAYER) cache.getPlayerFromDbKey(id);
+		if(cache.isPlayerFromDbKeyLoaded(id)) return cache.getPlayerFromDbKey(id);
 		// No cache for the player, load him
 		try(PreparedStatement ps = connection.prepareStatement(queryLoadPlayerFromId))
 		{
@@ -361,12 +361,11 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
 				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 			}
-			for(Object marriage : cache.getLoadedMarriages())
+			for(MARRIAGE marriage : cache.getLoadedMarriages())
 			{
-				MARRIAGE m = (MARRIAGE) marriage;
-				if(m.getDatabaseKey() instanceof Integer)
+				if(marriage.getDatabaseKey() instanceof Integer)
 				{
-					m.setHomeData(homes.get(m.getDatabaseKey()));
+					marriage.setHomeData(homes.get((Integer) marriage.getDatabaseKey()));
 				}
 			}
 		}
