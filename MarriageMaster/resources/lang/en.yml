@@ -50,7 +50,7 @@ Language:
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedSender: "&cYou are not allowed to send gifts in your current game mode."
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
-      GameModeNotAllowedReceiver: "&cYour partner can not receive gifts in it's current current game mode."
+      GameModeNotAllowedReceiver: "&cYour partner can not receive gifts in their current game mode."
       NoItemInHand: "&cYou are not holding an item."
       PartnerInvFull: "&cYour partner has no empty space in their inventory."
       # Placeholders: {Name}, {DisplayName}, {ItemAmount}, {ItemName}, {ItemMetaJSON} = Item as JSON for hover event
