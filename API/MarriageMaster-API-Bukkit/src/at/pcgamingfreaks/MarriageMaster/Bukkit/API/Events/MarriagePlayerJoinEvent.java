@@ -25,10 +25,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Event is fired when a married player joins the server.
  */
-@SuppressWarnings("unused")
 public class MarriagePlayerJoinEvent extends MarriageMasterEvent
 {
-	final private MarriagePlayer player;
+	private final MarriagePlayer player;
 
 	public MarriagePlayerJoinEvent(final @NotNull MarriagePlayer player)
 	{

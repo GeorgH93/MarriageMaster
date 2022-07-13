@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -197,7 +197,7 @@ public class PvPCommand extends MarryCommand implements Listener
 		}
 	}
 
-	private static abstract class PvPSubCommand extends MarryCommand
+	private abstract static class PvPSubCommand extends MarryCommand
 	{
 		public PvPSubCommand(JavaPlugin plugin, String name, String description, String permission, boolean mustBeMarried, boolean partnerSelectorInHelpForMoreThanOnePartner, String... aliases)
 		{
