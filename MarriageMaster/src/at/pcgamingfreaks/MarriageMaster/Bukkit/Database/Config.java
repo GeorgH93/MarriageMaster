@@ -97,9 +97,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		String val = getConfigE().getString(key, defaultValue).trim().toLowerCase(Locale.ENGLISH);
 		switch(val)
 		{
+			case "1":
 			case "on":
 			case "yes":
 			case "true": return true;
+			case "0":
 			case "off":
 			case "no":
 			case "false": return false;
@@ -120,7 +122,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public boolean isSelfDivorceAllowed()
 	{
-		return !getAutoableBoolean("Marriage.DivorceRequiresPriest", "auto", isSelfMarriageAllowed());
+		return !getAutoableBoolean("Marriage.DivorceRequiresPriest", "auto", !isSelfMarriageAllowed());
 	}
 
 	public boolean isSurnamesEnabled()
