@@ -34,8 +34,7 @@ import java.util.List;
 
 public class MarryDivorceCommand extends MarryCommand
 {
-	private final String descriptionSelf, helpParam;
-	private String helpPriest;
+	private final String descriptionSelf, helpParam, helpPriest;
 
 	public MarryDivorceCommand(MarriageMaster plugin)
 	{
@@ -43,10 +42,13 @@ public class MarryDivorceCommand extends MarryCommand
 
 		descriptionSelf = plugin.getLanguage().getTranslated("Commands.Description.DivorceSelf");
 		helpParam = "<" + plugin.helpPartnerNameVariable + ">";
-		helpPriest = helpParam;
 		if(plugin.areMultiplePartnersAllowed())
 		{
-			helpPriest += " " + helpParam;
+			helpPriest = helpParam + " " + helpParam;
+		}
+		else
+		{
+			helpPriest = helpParam;
 		}
 	}
 
