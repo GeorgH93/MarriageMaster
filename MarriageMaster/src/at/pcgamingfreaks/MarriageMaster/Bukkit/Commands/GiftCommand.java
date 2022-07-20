@@ -124,7 +124,7 @@ public class GiftCommand extends MarryCommand
 
 	boolean canSend(final @NotNull Player sender)
 	{
-		if(sender.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE) && allowedSendGameModes.contains(sender.getGameMode()))
+		if(sender.hasPermission(Permissions.BYPASS_GIFT_GAME_MODE) || allowedSendGameModes.contains(sender.getGameMode()))
 		{
 			return true;
 		}
