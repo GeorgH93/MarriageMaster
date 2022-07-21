@@ -23,6 +23,7 @@ import at.pcgamingfreaks.Bukkit.Message.Sender.SendMethod;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestDivorceAcceptRequest;
@@ -365,11 +366,11 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	{
 		if(!player1.isOnline())
 		{
-			plugin.messagePlayerNotOnline.send(priest, player1.getName());
+			CommonMessages.getMessagePlayerNotOnline().send(priest, player1.getName());
 		}
 		else if(!player2.isOnline())
 		{
-			plugin.messagePlayerNotOnline.send(priest, player2.getName());
+			CommonMessages.getMessagePlayerNotOnline().send(priest, player2.getName());
 		}
 		else return true;
 		return false;
@@ -543,7 +544,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 				}
 				else
 				{
-					priest.send(plugin.messageNoPermission);
+					priest.send(CommonMessages.getMessageNoPermission());
 				}
 			}
 		}
@@ -635,7 +636,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 					}
 					else
 					{
-						divorceBy.send(plugin.messagePartnerOffline);
+						divorceBy.send(CommonMessages.getMessagePartnerOffline());
 					}
 				}
 				else
@@ -675,7 +676,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			}
 			else
 			{
-				divorceBy.send(plugin.messageNoPermission);
+				divorceBy.send(CommonMessages.getMessageNoPermission());
 			}
 		}
 		else // Divorce by player priest
@@ -773,7 +774,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 						else
 						{
 							//noinspection ConstantConditions
-							divorceBy.send(plugin.messagePlayerNotOnline, marriage.getPartner(first).getName());
+							divorceBy.send(CommonMessages.getMessagePlayerNotOnline(), marriage.getPartner(first).getName());
 						}
 					}
 				}
@@ -785,7 +786,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 			}
 			else
 			{
-				divorceBy.send(plugin.messageNoPermission);
+				divorceBy.send(CommonMessages.getMessageNoPermission());
 			}
 		}
 	}

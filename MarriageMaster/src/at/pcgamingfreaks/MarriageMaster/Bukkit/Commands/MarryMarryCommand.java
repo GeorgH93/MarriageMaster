@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
@@ -41,7 +42,7 @@ public class MarryMarryCommand extends MarryCommand
 		super(plugin, "marry", plugin.getLanguage().getTranslated("Commands.Description.Marry"), plugin.getLanguage().getCommandAliases("Marry"));
 
 		// Generating help parameters
-		String help = "<" + plugin.helpPlayerNameVariable + ">";
+		String help = "<" + CommonMessages.getHelpPlayerNameVariable() + ">";
 		helpPriest = help + " " + help;
 		helpSelf   = help;
 		if(plugin.isSurnamesEnabled())
@@ -144,7 +145,7 @@ public class MarryMarryCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messageNoPermission.send(sender);
+			CommonMessages.getMessageNoPermission().send(sender);
 		}
 	}
 

@@ -23,6 +23,7 @@ import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -92,7 +93,7 @@ public class PartnersCommand extends MarryCommand
 		{
 			if (self)
 			{
-				((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+				CommonMessages.getMessageNotMarried().send(sender);
 			}
 			else
 			{

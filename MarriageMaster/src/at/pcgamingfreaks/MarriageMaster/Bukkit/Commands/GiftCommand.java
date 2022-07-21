@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.GiftEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -176,7 +177,7 @@ public class GiftCommand extends MarryCommand
 			partner = getMarriagePlugin().getPlayerData(args[0]);
 			if(!player.isPartner(partner))
 			{
-				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+				CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 				return;
 			}
 		}
@@ -227,12 +228,12 @@ public class GiftCommand extends MarryCommand
 			}
 			else
 			{
-				((MarriageMaster) getMarriagePlugin()).messagePartnerNotInRange.send(sender);
+				CommonMessages.getMessagePartnerNotInRange().send(sender);
 			}
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+			CommonMessages.getMessagePartnerOffline().send(sender);
 		}
 	}
 

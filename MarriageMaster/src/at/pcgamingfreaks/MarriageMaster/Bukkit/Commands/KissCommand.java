@@ -24,6 +24,7 @@ import at.pcgamingfreaks.Bukkit.Particles.ParticleSpawner;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.KissEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -96,7 +97,7 @@ public class KissCommand extends MarryCommand implements Listener
 		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
 		if(partner == null)
 		{
-			((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+			CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 		}
 		else if(partner.isOnline() && partner.getPlayerOnline() != null)
 		{
@@ -111,7 +112,7 @@ public class KissCommand extends MarryCommand implements Listener
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+			CommonMessages.getMessagePartnerOffline().send(sender);
 		}
 	}
 

@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
@@ -41,14 +42,14 @@ public class SurnameCommand extends MarryCommand
 
 		descSelf         = plugin.getLanguage().getTranslated("Commands.Description.SurnameSelf");
 		helpSurnameParam = "<" + plugin.getLanguage().getTranslated("Commands.SurnameVariable") + ">";
-		helpMMParam      = "<" + plugin.helpPartnerNameVariable + "> " + helpSurnameParam;
+		helpMMParam      = "<" + CommonMessages.getHelpPartnerNameVariable() + "> " + helpSurnameParam;
 		if(plugin.areMultiplePartnersAllowed())
 		{
-			helpPriestParam = "<" + plugin.helpPlayerNameVariable + "> <" + plugin.helpPlayerNameVariable + "> " + helpSurnameParam;
+			helpPriestParam = "<" + CommonMessages.getHelpPlayerNameVariable() + "> <" + CommonMessages.getHelpPlayerNameVariable() + "> " + helpSurnameParam;
 		}
 		else
 		{
-			helpPriestParam = "<" + plugin.helpPlayerNameVariable + "> " + helpSurnameParam;
+			helpPriestParam = "<" + CommonMessages.getHelpPlayerNameVariable() + "> " + helpSurnameParam;
 		}
 	}
 
@@ -72,7 +73,7 @@ public class SurnameCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+					CommonMessages.getMessageNotMarried().send(sender);
 				}
 			}
 			else if(args.length == 2)
@@ -82,11 +83,11 @@ public class SurnameCommand extends MarryCommand
 				{
 					if(!player2.isOnline())
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePlayerNotOnline.send(sender, args[0]);
+						CommonMessages.getMessagePlayerNotOnline().send(sender, args[0]);
 					}
 					else if(!player2.isMarried())
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, args[0]);
+						CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
 					}
 					else if(player2.getMultiMarriageData().size() > 1)
 					{
@@ -96,7 +97,7 @@ public class SurnameCommand extends MarryCommand
 						}
 						else
 						{
-							((MarriageMaster) getMarriagePlugin()).messageMarriageNotExact.send(sender);
+							CommonMessages.getMessageMarriageNotExact().send(sender);
 						}
 					}
 					else
@@ -114,12 +115,12 @@ public class SurnameCommand extends MarryCommand
 						}
 						else
 						{
-							((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+							CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 						}
 					}
 					else
 					{
-						((MarriageMaster) player).messageNotMarried.send(sender);
+						CommonMessages.getMessageNotMarried().send(sender);
 					}
 				}
 				else
@@ -132,15 +133,15 @@ public class SurnameCommand extends MarryCommand
 				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]), player2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(!player1.isMarried())
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player1.getName());
+					CommonMessages.getMessagePlayerNotMarried().send(sender, player1.getName());
 				}
 				else if(!player2.isMarried())
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, player2.getName());
+					CommonMessages.getMessagePlayerNotMarried().send(sender, player2.getName());
 				}
 				else if(!player1.isPartner(player2))
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayersNotMarried.send(sender);
+					CommonMessages.getMessagePlayersNotMarried().send(sender);
 				}
 				else
 				{
@@ -154,7 +155,7 @@ public class SurnameCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messageNoPermission.send(sender);
+			CommonMessages.getMessageNoPermission().send(sender);
 		}
 	}
 

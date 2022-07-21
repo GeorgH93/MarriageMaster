@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
@@ -77,7 +78,7 @@ public class ListPriestsCommand extends MarryCommand
 				}
 				catch(NumberFormatException ignored)
 				{
-					((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
+					CommonMessages.getMessageNotANumber().send(sender);
 					return;
 				}
 			}

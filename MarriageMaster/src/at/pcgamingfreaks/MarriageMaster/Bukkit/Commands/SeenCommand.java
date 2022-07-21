@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Calendar.TimeSpan;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
@@ -54,7 +55,7 @@ public class SeenCommand extends MarryCommand
 		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
 		if(partner == null)
 		{
-			player.sendMessage(((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound);
+			player.sendMessage(CommonMessages.getMessageTargetPartnerNotFound());
 		}
 		else if(partner.isOnline())
 		{

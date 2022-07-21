@@ -24,9 +24,9 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.TPEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
-import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.DisplayNamePlaceholderProcessor;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.Bukkit;
@@ -105,7 +105,7 @@ public class TpCommand extends MarryCommand
 		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getNearestPartnerMarriageData().getPartner(player);
 		if(partner == null)
 		{
-			((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+			CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 		}
 		else if(partner.isOnline())
 		{
@@ -122,7 +122,7 @@ public class TpCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+			CommonMessages.getMessagePartnerOffline().send(sender);
 		}
 	}
 

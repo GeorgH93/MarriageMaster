@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Bukkit.Message.Sender.SendMethod;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -74,7 +75,7 @@ public class ListCommand extends MarryCommand
 				}
 				catch(NumberFormatException ignored)
 				{
-					((MarriageMaster) getMarriagePlugin()).messageNotANumber.send(sender);
+					CommonMessages.getMessageNotANumber().send(sender);
 					return;
 				}
 			}

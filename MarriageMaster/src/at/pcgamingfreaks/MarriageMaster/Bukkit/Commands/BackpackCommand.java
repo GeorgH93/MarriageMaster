@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -95,7 +96,7 @@ public class BackpackCommand extends MarryCommand
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 					}
 				}
 				else
@@ -121,7 +122,7 @@ public class BackpackCommand extends MarryCommand
 			Player partnerPlayer = partner.getPlayerOnline();
 			if(partnerPlayer == null || !partnerPlayer.isOnline())
 			{
-				((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+				CommonMessages.getMessagePartnerOffline().send(sender);
 			}
 			else if(partner.isSharingBackpack())
 			{
@@ -132,7 +133,7 @@ public class BackpackCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePartnerNotInRange.send(sender);
+					CommonMessages.getMessagePartnerNotInRange().send(sender);
 				}
 			}
 			else

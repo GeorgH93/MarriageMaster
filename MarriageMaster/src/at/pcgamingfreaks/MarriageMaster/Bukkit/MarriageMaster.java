@@ -18,7 +18,6 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
 import at.pcgamingfreaks.Bukkit.ManagedUpdater;
-import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.*;
@@ -81,11 +80,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	// Global Settings
 	@Getter private boolean selfMarriageAllowed = false, selfDivorceAllowed = false, surnamesEnabled = false, surnamesForced = false;
 	private boolean multiplePartnersAllowed = false;
-
-	// Global Translations
-	public String helpPartnerNameVariable, helpPlayerNameVariable;
-	public Message messageNotANumber, messageNoPermission, messageNotFromConsole, messageNotMarried, messagePartnerOffline, messagePartnerNotInRange, messageTargetPartnerNotFound,
-					messagePlayerNotFound, messagePlayerNotMarried, messagePlayerNotOnline, messagePlayersNotMarried, messageMoved, messageDontMove, messageMarriageNotExact;
 
 	//region Loading and Unloading the plugin
 	@Override
@@ -186,7 +180,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			pluginChannelCommunicator = new PluginChannelCommunicator(this);
 		}
 
-		loadGlobalTranslations();
+		CommonMessages.loadCommonMessages(language);
 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
@@ -207,26 +201,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		selfMarriageAllowed = config.isSelfMarriageAllowed();
 		selfDivorceAllowed = config.isSelfDivorceAllowed();
 		surnamesForced  = config.isSurnamesForced() && surnamesEnabled;
-	}
-
-	void loadGlobalTranslations()
-	{
-		helpPlayerNameVariable       = language.get("Commands.PlayerNameVariable");
-		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
-		messageNotFromConsole        = language.getMessage("NotFromConsole");
-		messageNotANumber            = language.getMessage("Ingame.NaN");
-		messageNoPermission          = language.getMessage("Ingame.NoPermission");
-		messageNotMarried            = language.getMessage("Ingame.NotMarried");
-		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
-		messagePartnerNotInRange     = language.getMessage("Ingame.PartnerNotInRange");
-		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").placeholder("PlayerName");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder("PlayerName");
-		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").placeholder("PlayerName");
-		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
-		messageMoved                 = language.getMessage("Ingame.TP.Moved");
-		messageDontMove              = language.getMessage("Ingame.TP.DontMove").placeholder("Time");
-		messageMarriageNotExact      = language.getMessage("Ingame.MarriageNotExact");
-		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
 	}
 
 	void registerEvents()
@@ -287,7 +261,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		return version;
 	}
 
-	public Version getVersion()
+	@Override
+	public @NotNull Version getVersion()
 	{
 		return version;
 	}
@@ -353,7 +328,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			{
 				final Location oldLocation = player.getLocation();
 				final double oldHealth = player.getHealth();
-				messageDontMove.send(player, action.getDelay()/20L);
+				CommonMessages.getMessageDontMove().send(player, action.getDelay()/20L);
 				if(playerData.getDelayedTpTask() != null) playerData.getDelayedTpTask().cancel();
 				playerData.setDelayedTpTask(getServer().getScheduler().runTaskLater(this, () -> {
 					playerData.setDelayedTpTask(null);
@@ -367,7 +342,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 						}
 						else
 						{
-							messageMoved.send(player);
+							CommonMessages.getMessageMoved().send(player);
 						}
 					}
 				}, action.getDelay()));

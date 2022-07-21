@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class RequestCancelCommand extends MarryCommand
@@ -41,7 +41,7 @@ public class RequestCancelCommand extends MarryCommand
 	{
 		super(plugin, "cancel", plugin.getLanguage().getTranslated("Commands.Description.Cancel"), null, true, plugin.getLanguage().getCommandAliases("Cancel"));
 
-		param = "<" + plugin.helpPlayerNameVariable + " / " + plugin.getCommandManager().getAllSwitchTranslation() + ">";
+		param = "<" + CommonMessages.getHelpPlayerNameVariable() + " / " + plugin.getCommandManager().getAllSwitchTranslation() + ">";
 		messageNothingToCancel = plugin.getLanguage().getMessage("Ingame.Requests.NothingToCancel");
 	}
 

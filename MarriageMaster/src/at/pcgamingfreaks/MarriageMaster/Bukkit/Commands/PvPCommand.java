@@ -22,6 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
@@ -52,7 +53,7 @@ public class PvPCommand extends MarryCommand implements Listener
 		messagePvPOff   = plugin.getLanguage().getMessage("Ingame.PvP.Off");
 		messagePvPIsOff = plugin.getLanguage().getMessage("Ingame.PvP.IsDisabled");
 
-		helpMulti = "<" + plugin.helpPartnerNameVariable + "> <" + plugin.getCommandManager().getOnSwitchTranslation() + " / " +
+		helpMulti = "<" + CommonMessages.getHelpPartnerNameVariable() + "> <" + plugin.getCommandManager().getOnSwitchTranslation() + " / " +
 				plugin.getCommandManager().getOffSwitchTranslation() + " / " + plugin.getCommandManager().getToggleSwitchTranslation() + ">";
 		helpOn    = plugin.getCommandManager().getOnSwitchTranslation();
 		helpOff   = plugin.getCommandManager().getOffSwitchTranslation();
@@ -111,7 +112,7 @@ public class PvPCommand extends MarryCommand implements Listener
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
 			{
-				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+				CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 				return;
 			}
 		}
@@ -225,7 +226,7 @@ public class PvPCommand extends MarryCommand implements Listener
 				marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 				if(marriage == null)
 				{
-					((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+					CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 					return null;
 				}
 			}

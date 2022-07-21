@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryChatMultiTargetEv
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -151,7 +152,7 @@ public class ChatCommand extends MarryCommand implements Listener
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 					}
 				}
 				else
@@ -172,7 +173,7 @@ public class ChatCommand extends MarryCommand implements Listener
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePartnerOffline.send(sender);
+						CommonMessages.getMessagePartnerOffline().send(sender);
 					}
 				}
 			}
@@ -230,7 +231,7 @@ public class ChatCommand extends MarryCommand implements Listener
 		help.add(new HelpData(getTranslatedName(), helpParameterMessage, getDescription()));
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
-			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + ((MarriageMaster) getMarriagePlugin()).helpPartnerNameVariable + " / " +
+			help.add(new HelpData(getTranslatedName() + " " + setTargetParameters[0], "<" + CommonMessages.getHelpPartnerNameVariable() + " / " +
 							getMarriagePlugin().getCommandManager().getAllSwitchTranslation() + ">", setTargetDescription));
 		}
 		return help;
@@ -356,7 +357,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		if(recipients.isEmpty())
 		{
-			sender.send(((MarriageMaster) getMarriagePlugin()).messagePartnerOffline);
+			sender.send(CommonMessages.getMessagePartnerOffline());
 			return;
 		}
 

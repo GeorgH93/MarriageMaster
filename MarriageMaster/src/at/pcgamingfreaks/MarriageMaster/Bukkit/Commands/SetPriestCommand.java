@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -51,7 +52,7 @@ public class SetPriestCommand extends MarryCommand
 		messageYouFiredAPriest = plugin.getLanguage().getMessage("Ingame.SetPriest.YouFiredAPriest").placeholders(Placeholders.PLAYER_NAME);
 		messagePerPermission   = plugin.getLanguage().getMessage("Ingame.SetPriest.PerPermission")  .placeholders(Placeholders.PLAYER_NAME);
 
-		helpParam = "<" + plugin.helpPlayerNameVariable + ">";
+		helpParam = "<" + CommonMessages.getHelpPlayerNameVariable() + ">";
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class SetPriestCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotOnline.send(sender, arg);
+					CommonMessages.getMessagePlayerNotOnline().send(sender, arg);
 				}
 			}
 		}

@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -61,7 +62,7 @@ public class SetColorCommand extends MarryCommand
 			marriage = player.getMarriageData(getMarriagePlugin().getPlayerData(args[0]));
 			if(marriage == null)
 			{
-				((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+				CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 				return;
 			}
 		}

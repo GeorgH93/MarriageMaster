@@ -27,6 +27,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -81,10 +82,10 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			// Show help function
 			Reflection.setStaticField(MarryCommand.class, "marriagePlugin", plugin); // Plugin instance
 			Reflection.setStaticField(MarryCommand.class, "showHelp", this.getClass().getDeclaredMethod("sendHelp", CommandSender.class, String.class, Collection.class));
-			Reflection.setStaticField(MarryCommand.class, "messageNoPermission", plugin.messageNoPermission); // No permission message
-			Reflection.setStaticField(MarryCommand.class, "messageNotFromConsole", plugin.messageNotFromConsole); // Not from console message
-			Reflection.setStaticField(MarryCommand.class, "messageNotMarried", plugin.messageNotMarried); // Not married message
-			Reflection.setStaticField(MarryCommand.class, "helpPartnerSelector", "<" + plugin.helpPartnerNameVariable + ">"); // Help partner selector
+			Reflection.setStaticField(MarryCommand.class, "messageNoPermission", CommonMessages.getMessageNoPermission()); // No permission message
+			Reflection.setStaticField(MarryCommand.class, "messageNotFromConsole", CommonMessages.getMessageNotFromConsole()); // Not from console message
+			Reflection.setStaticField(MarryCommand.class, "messageNotMarried", CommonMessages.getMessageNotMarried()); // Not married message
+			Reflection.setStaticField(MarryCommand.class, "helpPartnerSelector", "<" + CommonMessages.getHelpPartnerNameVariable() + ">"); // Help partner selector
 			// Sets the work function for AcceptPendingRequest.close()
 			Reflection.setStaticField(at.pcgamingfreaks.MarriageMaster.API.AcceptPendingRequest.class, "closeMethod", MarriagePlayerData.class.getMethod("closeRequest", AcceptPendingRequest.class));
 		}

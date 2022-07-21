@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HomeTPEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageHome;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -133,7 +134,7 @@ public class HomeCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+			CommonMessages.getMessageNotMarried().send(sender);
 		}
 	}
 
@@ -186,11 +187,11 @@ public class HomeCommand extends MarryCommand
 					if(!target1.isMarried() || !target2.isMarried())
 					{
 						MarriagePlayer t = (!target1.isMarried()) ? target1 : target2;
-						((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, t.getName());
+						CommonMessages.getMessagePlayerNotMarried().send(sender, t.getName());
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePlayersNotMarried.send(sender);
+						CommonMessages.getMessagePlayersNotMarried().send(sender);
 					}
 					return null;
 				}
@@ -201,7 +202,7 @@ public class HomeCommand extends MarryCommand
 				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
 				if(!player.isPartner(partner))
 				{
-					((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+					CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 					return null;
 				}
 				marriage = player.getMarriageData(partner);
@@ -222,7 +223,7 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, target.getName());
+					CommonMessages.getMessagePlayerNotMarried().send(sender, target.getName());
 					return null;
 				}
 			}
@@ -320,7 +321,7 @@ public class HomeCommand extends MarryCommand
 			}
 			else
 			{
-				((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+				CommonMessages.getMessageNotMarried().send(sender);
 			}
 		}
 
@@ -387,7 +388,7 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+					CommonMessages.getMessageNotMarried().send(sender);
 				}
 			}
 		}
