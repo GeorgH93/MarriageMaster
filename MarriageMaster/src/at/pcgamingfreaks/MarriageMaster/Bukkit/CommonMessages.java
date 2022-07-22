@@ -24,12 +24,16 @@ import lombok.Getter;
 
 public class CommonMessages
 {
+	private CommonMessages() { /* Prevent class instantiation */ }
+
 	@Getter private static String helpPartnerNameVariable, helpPlayerNameVariable;
 	@Getter private static Message messageNotANumber, messageNoPermission, messageNotFromConsole, messageNotMarried, messagePartnerOffline, messagePartnerNotInRange, messageTargetPartnerNotFound;
 	@Getter private static Message messagePlayerNotFound, messagePlayerNotMarried, messagePlayerNotOnline, messagePlayersNotMarried, messageMoved, messageDontMove, messageMarriageNotExact;
 
 	public static void loadCommonMessages(Language language)
 	{
+		final String playerNamePlaceholder = "PlayerName";
+
 		helpPlayerNameVariable       = language.get("Commands.PlayerNameVariable");
 		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
 		messageNotFromConsole        = language.getMessage("NotFromConsole");
@@ -38,9 +42,9 @@ public class CommonMessages
 		messageNotMarried            = language.getMessage("Ingame.NotMarried");
 		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
 		messagePartnerNotInRange     = language.getMessage("Ingame.PartnerNotInRange");
-		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").placeholder("PlayerName");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder("PlayerName");
-		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").placeholder("PlayerName");
+		messagePlayerNotFound        = language.getMessage("Ingame.PlayerNotFound").placeholder(playerNamePlaceholder);
+		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder(playerNamePlaceholder);
+		messagePlayerNotOnline       = language.getMessage("Ingame.PlayerNotOnline").placeholder(playerNamePlaceholder);
 		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
 		messageMoved                 = language.getMessage("Ingame.TP.Moved");
 		messageDontMove              = language.getMessage("Ingame.TP.DontMove").placeholder("Time");
