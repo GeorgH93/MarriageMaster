@@ -112,7 +112,7 @@ public class HomeCommand extends MarryCommand
 			{
 				if(!marriage.isHomeSet()) // no home set
 				{
-					if(sender.hasPermission(Permissions.HOME_OTHERS) && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
+					if(sender.hasPermission(Permissions.HOME_OTHERS) && !marriage.contains(player))
 					{
 						messagePlayerNoHome.send(sender);
 					}
