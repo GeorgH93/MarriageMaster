@@ -428,7 +428,7 @@ public class ChatCommand extends MarryCommand implements Listener
 
 		public ChatToggleCommand(MarriageMaster plugin, ChatCommand chatCommand)
 		{
-			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), Permissions.CHAT, true, plugin.getLanguage().getCommandAliases("ChatToggle"));
+			super(plugin, "chattoggle", plugin.getLanguage().getTranslated("Commands.Description.ChatToggle"), Permissions.CHAT, true, false, plugin.getLanguage().getCommandAliases("ChatToggle"));
 
 			this.chatCommand = chatCommand;
 		}
