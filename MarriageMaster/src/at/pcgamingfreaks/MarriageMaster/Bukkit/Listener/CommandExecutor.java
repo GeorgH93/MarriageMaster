@@ -25,31 +25,41 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.*;
 
 public class CommandExecutor implements Listener
 {
 	private final MarriageMaster plugin;
 	private final Collection<String> commandsOnMarry, commandsOnMarryWithPriest, commandsOnDivorce, commandsOnDivorceWithPriest;
 
-	public CommandExecutor(final MarriageMaster plugin)
+	private static @NotNull String handlePlaceholders(@NotNull String command, boolean withPriest)
+	{
+		command = command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s");
+		if (withPriest) command = command.replace("{Priest}", "%3$s");
+		return command;
+	}
+
+	private static @NotNull Collection<String> prepareCommandList(@NotNull Collection<String> commands, final boolean withPriest)
+	{
+		List<String> commandList = new ArrayList<>(commands.size());
+		commands.forEach(command -> commandList.add(handlePlaceholders(command, withPriest)));
+		return commandList;
+	}
+
+	public CommandExecutor(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
-		this.commandsOnMarry = new LinkedList<>();
-		this.commandsOnMarryWithPriest = new LinkedList<>();
-		this.commandsOnDivorce = new LinkedList<>();
-		this.commandsOnDivorceWithPriest = new LinkedList<>();
 		final Config config = plugin.getConfiguration();
-		config.getCommandExecutorOnMarry().forEach(command -> commandsOnMarry.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s")));
-		config.getCommandExecutorOnMarryWithPriest().forEach(command -> commandsOnMarryWithPriest.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s").replace("{Priest}", "%3$s")));
-		config.getCommandExecutorOnDivorce().forEach(command -> commandsOnDivorce.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s")));
-		config.getCommandExecutorOnDivorceWithPriest().forEach(command -> commandsOnDivorceWithPriest.add(command.replace("{Player1}", "%1$s").replace("{Player2}", "%2$s").replace("{Priest}", "%3$s")));
+		this.commandsOnMarry = prepareCommandList(config.getCommandExecutorOnMarry(), false);
+		this.commandsOnMarryWithPriest = prepareCommandList(config.getCommandExecutorOnMarryWithPriest(), true);
+		this.commandsOnDivorce = prepareCommandList(config.getCommandExecutorOnDivorce(), false);
+		this.commandsOnDivorceWithPriest = prepareCommandList(config.getCommandExecutorOnDivorceWithPriest(), true);
 	}
 
 	@EventHandler
-	public void onMarry(final MarriedEvent event)
+	public void onMarry(final @NotNull MarriedEvent event)
 	{
 		final Marriage marriage = event.getMarriageData();
 		if(marriage.getPriest() == null || marriage.getPriest().equals(marriage.getPartner1()) || marriage.getPriest().equals(marriage.getPartner2()))
@@ -69,7 +79,7 @@ public class CommandExecutor implements Listener
 	}
 
 	@EventHandler
-	public void onDivorce(final DivorcedEvent event)
+	public void onDivorce(final @NotNull DivorcedEvent event)
 	{
 		if(event.getPriest() == null)
 		{
