@@ -65,7 +65,7 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 	@Override
 	public void onAccept()
 	{
-		if(getPlayersThatCanCancel() == null || !getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
+		if(!getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		if(manager.isAutoDialogEnabled())
 		{
 			getPlayerThatHasToAccept().getPlayerOnline().chat(dialogYesIWant);
@@ -102,7 +102,7 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 	@Override
 	public void onCancel(@NotNull MarriagePlayer player)
 	{
-		if(getPlayersThatCanCancel() == null || !getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
+		if(!getPlayersThatCanCancel()[0].isOnline() || !getPlayersThatCanCancel()[1].isOnline() || !getPlayerThatHasToAccept().isOnline()) return;
 		player.send(messageYouCalledOff);
 		getPlayerThatHasToAccept().send(messagePlayerCalledOff, player);
 		((player.equals(getPlayersThatCanCancel()[0])) ? getPlayersThatCanCancel()[1] : getPlayersThatCanCancel()[0]).send(messagePlayerCalledOff, player);

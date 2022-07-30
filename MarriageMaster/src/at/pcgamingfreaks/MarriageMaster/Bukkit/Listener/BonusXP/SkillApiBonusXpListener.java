@@ -65,14 +65,14 @@ public class SkillApiBonusXpListener implements Listener, IBonusXpListener<Playe
 		}
 
 		//region try to figure out if the used SkillAPI plugin is the premium or the free version
-		Method setExpMethod = null;
+		Method tmpSetExpMethod = null;
 		try
 		{
 			//noinspection JavaReflectionMemberAccess
-			setExpMethod = PlayerExperienceGainEvent.class.getDeclaredMethod("setExp", double.class);
+			tmpSetExpMethod = PlayerExperienceGainEvent.class.getDeclaredMethod("setExp", double.class);
 		}
 		catch(NoSuchMethodException ignored) {}
-		this.setExpMethod = setExpMethod;
+		this.setExpMethod = tmpSetExpMethod;
 		//endregion
 
 		plugin.getLogger().info(ConsoleColor.GREEN + "SkillAPI hooked" + ConsoleColor.RESET);
