@@ -33,6 +33,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class EconomyHandler implements Listener
 {
@@ -42,7 +43,7 @@ public class EconomyHandler implements Listener
 	private Message messageGiftPaid, messageSurnameChangePaid;
 	private Economy econ = null;
 
-	public EconomyHandler(MarriageMaster plugin)
+	public EconomyHandler(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 		if(!setupEconomy(plugin))
@@ -80,24 +81,24 @@ public class EconomyHandler implements Listener
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
-	private Message getMessage(MarriageMaster plugin, String key)
+	private @NotNull Message getMessage(@NotNull MarriageMaster plugin, String key)
 	{
 		return plugin.getLanguage().getMessage("Ingame.Economy." + key);
 	}
 
-	private boolean setupEconomy(MarriageMaster plugin)
+	private boolean setupEconomy(final @NotNull MarriageMaster plugin)
 	{
 		if(plugin.getServer().getPluginManager().getPlugin("Vault") == null) return false;
 		RegisteredServiceProvider<Economy> economyProvider = plugin.getServer().getServicesManager().getRegistration(Economy.class);
 		return (econ = (economyProvider != null) ? economyProvider.getProvider() : null) != null;
 	}
 
-	private boolean hasPlayerEnoughMoney(MarriagePlayer player, double cost)
+	private boolean hasPlayerEnoughMoney(final @NotNull MarriagePlayer player, double cost)
 	{
 		return econ.has(player.getPlayer(), cost);
 	}
 
-	private boolean billPlayer(MarriagePlayer player, double cost)
+	private boolean billPlayer(@NotNull MarriagePlayer player, double cost)
 	{
 		return econ.withdrawPlayer(player.getPlayer(), cost).transactionSuccess();
 	}
@@ -118,7 +119,7 @@ public class EconomyHandler implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onMarry(MarryEvent event)
+	public void onMarry(final @NotNull MarryEvent event)
 	{
 		if(costMarry <= 0) return;
 		if(!billMarryOrDivorce(event.getPlayer1(), event.getPlayer2(), event.getPriestIfNotOneOfTheCouple(), costMarry, messageMarriagePaid, messagePriestMarryNotEnough))
@@ -128,7 +129,7 @@ public class EconomyHandler implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onDivorce(DivorceEvent event)
+	public void onDivorce(final @NotNull DivorceEvent event)
 	{
 		if(costDivorce <= 0) return;
 		if(!billMarryOrDivorce(event.getMarriageData().getPartner1(), event.getMarriageData().getPartner2(), event.getPriestIfNotOneOfTheCouple(), costDivorce, messageDivorcePaid, messagePriestDivorceNotEnough))
@@ -138,24 +139,21 @@ public class EconomyHandler implements Listener
 	}
 
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
-	private boolean billMarryOrDivorce(MarriagePlayer player1, MarriagePlayer player2, CommandSender priest, double cost, Message success, Message failPriest)
+	private boolean billMarryOrDivorce(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, CommandSender priest, double cost, final @NotNull Message success, final @NotNull Message failPriest)
 	{
 		boolean failedPlayer2 = false;
-		if(hasPlayerEnoughMoney(player1, cost) && hasPlayerEnoughMoney(player2, cost))
+		if(hasPlayerEnoughMoney(player1, cost) && hasPlayerEnoughMoney(player2, cost) && billPlayer(player1, cost))
 		{
-			if(billPlayer(player1, cost))
+			if(billPlayer(player2, cost))
 			{
-				if(billPlayer(player2, cost))
-				{
-					player1.send(success, cost, econ.getBalance(player1.getPlayer()), econ.currencyNamePlural());
-					player2.send(success, cost, econ.getBalance(player2.getPlayer()), econ.currencyNamePlural());
-					return true;
-				}
-				else
-				{ // It should not happen, it's just there to be on the save site
-					econ.depositPlayer(player1.getPlayer(), cost); // Failed to bill player 2. Return the billed money to player 1.
-					failedPlayer2 = true;
-				}
+				player1.send(success, cost, econ.getBalance(player1.getPlayer()), econ.currencyNamePlural());
+				player2.send(success, cost, econ.getBalance(player2.getPlayer()), econ.currencyNamePlural());
+				return true;
+			}
+			else
+			{ // It should not happen, it's just there to be on the save site
+				econ.depositPlayer(player1.getPlayer(), cost); // Failed to bill player 2. Return the billed money to player 1.
+				failedPlayer2 = true;
 			}
 		}
 		if(!hasPlayerEnoughMoney(player2, cost) || failedPlayer2)
@@ -173,35 +171,35 @@ public class EconomyHandler implements Listener
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onTeleport(TPEvent event)
+	public void onTeleport(final @NotNull TPEvent event)
 	{
 		if(costTp <= 0) return;
 		if(!basicBillPlayer(event.getPlayer(), costTp, messageTpPaid)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onGift(GiftEvent event)
+	public void onGift(final @NotNull GiftEvent event)
 	{
 		if(costGift <= 0) return;
 		if(!basicBillPlayer(event.getPlayer(), costGift, messageGiftPaid)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onHome(HomeTPEvent event)
+	public void onHome(final @NotNull HomeTPEvent event)
 	{
 		if(costHome <= 0) return;
 		if(!basicBillPlayer(event.getPlayer(), costHome, messageHomePaid)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onSetHome(HomeSetEvent event)
+	public void onSetHome(final @NotNull HomeSetEvent event)
 	{
 		if(costSetHome <= 0) return;
 		if(!basicBillPlayer(event.getPlayer(), costSetHome, messageSetHomePaid)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onChangeSurname(SurnameChangeEvent event)
+	public void onChangeSurname(final @NotNull SurnameChangeEvent event)
 	{
 		if(costChangeSurname <= 0 || !(event.getChangedBy() instanceof Player)) return;
 		if(!basicBillPlayer(plugin.getPlayerData((Player) event.getChangedBy()), costChangeSurname, messageSurnameChangePaid)) event.setCancelled(true);

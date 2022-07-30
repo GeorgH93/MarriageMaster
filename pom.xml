@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>2.6.7</revision>
+		<revision>2.6.8-RC1</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
