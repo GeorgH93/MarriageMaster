@@ -43,12 +43,12 @@ public class MVdWPlaceholderReplacer implements PlaceholderReplacer, Placeholder
 	public MVdWPlaceholderReplacer(MarriageMaster plugin, PlaceholderManager placeholderManager)
 	{
 		set(plugin, placeholderManager);
-		boolean MVdW = true;
+		boolean successful = true;
 		for(String placeholder : placeholderManager.getPlaceholders().keySet())
 		{
-			MVdW &= PlaceholderAPI.registerPlaceholder(plugin, "marriagemaster_" + placeholder, this);
+			successful &= PlaceholderAPI.registerPlaceholder(plugin, "marriagemaster_" + placeholder, this);
 		}
-		if(MVdW)
+		if(successful)
 		{
 			this.plugin.getLogger().info(ConsoleColor.GREEN + "MVdW placeholder hook was successfully registered!" + ConsoleColor.RESET);
 		}
