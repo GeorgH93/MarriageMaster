@@ -20,6 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bungee.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -73,7 +74,7 @@ public class TpCommand extends MarryCommand
 		MarriagePlayer partner = (getMarriagePlugin().areMultiplePartnersAllowed() && args.length >= 1) ? player.getPartner(args[0]) : player.getMarriageData().getPartner(player);
 		if(partner == null)
 		{
-			player.send(((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound);
+			player.send(CommonMessages.getMessageTargetPartnerNotFound());
 		}
 		else if(partner.isOnline())
 		{
@@ -103,7 +104,7 @@ public class TpCommand extends MarryCommand
 		}
 		else
 		{
-			player.send(((MarriageMaster) getMarriagePlugin()).messagePartnerOffline);
+			player.send(CommonMessages.getMessagePartnerOffline());
 		}
 	}
 

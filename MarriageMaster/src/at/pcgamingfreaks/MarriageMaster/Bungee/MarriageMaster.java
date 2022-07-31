@@ -18,7 +18,6 @@
 package at.pcgamingfreaks.MarriageMaster.Bungee;
 
 import at.pcgamingfreaks.Bungee.ManagedUpdater;
-import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
@@ -63,11 +62,6 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 	// Global Settings
 	private boolean multiMarriage = false;
 	@Getter private boolean selfMarriageAllowed = false, surnamesEnabled = false, surnamesForced = false;
-
-
-	// Global Translations
-	public Message messageNoPermission, messageNotMarried, messagePartnerOffline, messageNotFromConsole, messageTargetPartnerNotFound, messagePlayerNotMarried, messagePlayersNotMarried;
-	public String helpPartnerNameVariable;
 
 	@Override
 	public void onEnable()
@@ -128,15 +122,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 		selfMarriageAllowed = config.isSelfMarriageAllowed();
 		surnamesForced      = config.isSurnamesForced() && surnamesEnabled;
 
-		// Load global translations
-		helpPartnerNameVariable      = language.get("Commands.PartnerNameVariable");
-		messageNotFromConsole        = language.getMessage("NotFromConsole");
-		messageNotMarried            = language.getMessage("Ingame.NotMarried");
-		messageNoPermission          = language.getMessage("Ingame.NoPermission");
-		messagePartnerOffline        = language.getMessage("Ingame.PartnerOffline");
-		messageTargetPartnerNotFound = language.getMessage("Ingame.TargetPartnerNotFound");
-		messagePlayerNotMarried      = language.getMessage("Ingame.PlayerNotMarried").placeholder("PlayerName");
-		messagePlayersNotMarried     = language.getMessage("Ingame.PlayersNotMarried");
+		CommonMessages.loadCommonMessages(language);
 
 		// Register Events
 		pluginChannelCommunicator = new PluginChannelCommunicator(this);

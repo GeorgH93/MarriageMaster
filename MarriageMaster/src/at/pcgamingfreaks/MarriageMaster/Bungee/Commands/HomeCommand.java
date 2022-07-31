@@ -21,6 +21,7 @@ import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bungee.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bungee.Listener.PluginChannelCommunicator;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
@@ -115,7 +116,7 @@ public class HomeCommand extends MarryCommand
 		}
 		else
 		{
-			((MarriageMaster) getMarriagePlugin()).messageNotMarried.send(sender);
+			CommonMessages.getMessageNotMarried().send(sender);
 		}
 	}
 
@@ -165,11 +166,11 @@ public class HomeCommand extends MarryCommand
 					if(!target1.isMarried() || !target2.isMarried())
 					{
 						MarriagePlayer t = (!target1.isMarried()) ? target1 : target2;
-						((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, t.getName());
+						CommonMessages.getMessagePlayerNotMarried().send(sender, t.getName());
 					}
 					else
 					{
-						((MarriageMaster) getMarriagePlugin()).messagePlayersNotMarried.send(sender);
+						CommonMessages.getMessagePlayersNotMarried().send(sender);
 					}
 					return null;
 				}
@@ -179,7 +180,7 @@ public class HomeCommand extends MarryCommand
 				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
 				if(!player.isPartner(partner))
 				{
-					((MarriageMaster) getMarriagePlugin()).messageTargetPartnerNotFound.send(sender);
+					CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 					return null;
 				}
 				marriage = player.getMarriageData(partner);
@@ -200,7 +201,7 @@ public class HomeCommand extends MarryCommand
 				}
 				else
 				{
-					((MarriageMaster) getMarriagePlugin()).messagePlayerNotMarried.send(sender, target.getName());
+					CommonMessages.getMessagePlayerNotMarried().send(sender, target.getName());
 					return null;
 				}
 			}

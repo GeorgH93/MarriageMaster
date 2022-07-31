@@ -23,6 +23,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bungee.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.Reflection;
 import at.pcgamingfreaks.StringUtils;
@@ -80,10 +81,10 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			// Show help function
 			Reflection.setStaticField(MarryCommand.class, "showHelp", this.getClass().getDeclaredMethod("sendHelp", CommandSender.class, String.class, Collection.class));
 			Reflection.setStaticField(MarryCommand.class, "marriagePlugin", plugin); // Plugin instance
-			Reflection.setStaticField(MarryCommand.class, "messageNoPermission", plugin.messageNoPermission); // No permission message
-			Reflection.setStaticField(MarryCommand.class, "messageNotMarried", plugin.messageNotMarried); // Not married message
-			Reflection.setStaticField(MarryCommand.class, "messageNotFromConsole", plugin.messageNotFromConsole); // Not from console message
-			Reflection.setStaticField(MarryCommand.class, "helpPartnerSelector", "<" + plugin.helpPartnerNameVariable + ">"); // Help partner selector
+			Reflection.setStaticField(MarryCommand.class, "messageNoPermission", CommonMessages.getMessageNoPermission()); // No permission message
+			Reflection.setStaticField(MarryCommand.class, "messageNotMarried", CommonMessages.getMessageNotMarried()); // Not married message
+			Reflection.setStaticField(MarryCommand.class, "messageNotFromConsole", CommonMessages.getMessageNotFromConsole()); // Not from console message
+			Reflection.setStaticField(MarryCommand.class, "helpPartnerSelector", "<" + CommonMessages.getHelpPartnerNameVariable() + ">"); // Help partner selector
 		}
 		catch(Exception e)
 		{
