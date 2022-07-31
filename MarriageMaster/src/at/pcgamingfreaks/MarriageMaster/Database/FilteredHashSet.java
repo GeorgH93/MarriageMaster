@@ -18,6 +18,7 @@
 package at.pcgamingfreaks.MarriageMaster.Database;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 public class FilteredHashSet<T> extends HashSet<T>
 {
@@ -37,5 +38,20 @@ public class FilteredHashSet<T> extends HashSet<T>
 	public boolean add(T element)
 	{
 		return filter.isAllowed(element) && super.add(element);
+	}
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if(this == o) return true;
+		if(o == null || !Objects.equals(getClass(), o.getClass()) || !super.equals(o)) return false;
+		FilteredHashSet<?> filteredSet = (FilteredHashSet<?>) o;
+		return Objects.equals(filter, filteredSet.filter);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(super.hashCode(), filter);
 	}
 }
