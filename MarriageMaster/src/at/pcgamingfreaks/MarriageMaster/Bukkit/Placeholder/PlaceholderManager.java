@@ -46,6 +46,12 @@ public class PlaceholderManager
 	private final List<PlaceholderAPIHook> hooks = new ArrayList<>(2);
 	private final List<String> placeholdersList = new ArrayList<>();
 
+	private static void hockWithMVdWPlaceholderAPI(final @NotNull MarriageMaster plugin, final @NotNull PlaceholderManager manager)
+	{
+		if(mVdWPlaceholderReplacer == null) mVdWPlaceholderReplacer = new MVdWPlaceholderReplacer(plugin, manager);
+		else mVdWPlaceholderReplacer.set(plugin, manager); // Workaround because we can't unregister from MVdWPlaceholders
+	}
+
 	public PlaceholderManager(MarriageMaster plugin)
 	{
 		this.plugin = plugin;
@@ -54,8 +60,7 @@ public class PlaceholderManager
 		//region MVdW Placeholders
 		if(isPluginEnabled("MVdWPlaceholderAPI"))
 		{
-			if(mVdWPlaceholderReplacer == null) mVdWPlaceholderReplacer = new MVdWPlaceholderReplacer(plugin, this);
-			else mVdWPlaceholderReplacer.set(plugin, this); // Workaround because we can't unregister from MVdWPlaceholders
+			hockWithMVdWPlaceholderAPI(plugin, this);
 			hooks.add(mVdWPlaceholderReplacer);
 		}
 		//endregion
