@@ -30,13 +30,16 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+@EqualsAndHashCode(callSuper = true)
 public class NoDatabaseWorker extends Command implements Listener
 {
-	private MarriageMaster plugin;
-	private Message messageDBProblem;
+	private final MarriageMaster plugin;
+	private final Message messageDBProblem;
 
 	public NoDatabaseWorker(MarriageMaster plugin)
 	{
