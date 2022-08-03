@@ -17,7 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Database.Backend;
 
-import at.pcgamingfreaks.Configuration;
+import at.pcgamingfreaks.Config.Configuration;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.Database.ConnectionProvider.MySQLConnectionProvider;
 import at.pcgamingfreaks.Database.DBTools;
