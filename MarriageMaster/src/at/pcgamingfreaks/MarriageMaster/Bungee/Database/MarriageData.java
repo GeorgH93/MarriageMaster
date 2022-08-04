@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -58,15 +58,27 @@ public class MarriageData extends MarriageDataBase<MarriagePlayer, CommandSender
 	}
 
 	@Override
-	public void setSurname(String surname, @NotNull CommandSender changer) {}
+	public void setSurname(String surname, @NotNull CommandSender changer)
+	{
+		throw new UnsupportedOperationException("setSurname is currently not available on bungeecord");
+	}
 
 	@Override
-	public void setSurname(String surname, @NotNull MarriagePlayer changer) {}
+	public void setSurname(String surname, @NotNull MarriagePlayer changer)
+	{
+		throw new UnsupportedOperationException("setSurname is currently not available on bungeecord");
+	}
 
 	@Override
-	public void divorce(@NotNull CommandSender divorcedBy) {}
+	public void divorce(@NotNull CommandSender divorcedBy)
+	{
+		throw new UnsupportedOperationException("divorce is currently not available on bungeecord");
+	}
 
 	@Override
-	public void divorce(@NotNull MarriagePlayer divorcedBy) {}
+	public void divorce(@NotNull MarriagePlayer divorcedBy)
+	{
+		throw new UnsupportedOperationException("divorce is currently not available on bungeecord");
+	}
 	//endregion
 }
