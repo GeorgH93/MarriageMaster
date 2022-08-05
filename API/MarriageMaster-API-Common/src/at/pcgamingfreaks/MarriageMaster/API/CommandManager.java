@@ -17,6 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
+import at.pcgamingfreaks.ConsoleColor;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +31,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CommandManager<MARRY_COMMAND extends MarryCommand, COMMAND_SENDER>
 {
+	String MESSAGE_FAILED_TO_SET_HELP_FORMAT = ConsoleColor.RED + "Unable to set the help format. Default format will be used." + ConsoleColor.RESET;
+
 	/**
 	 * Checks if a string is an on switch in the used language file.
 	 *

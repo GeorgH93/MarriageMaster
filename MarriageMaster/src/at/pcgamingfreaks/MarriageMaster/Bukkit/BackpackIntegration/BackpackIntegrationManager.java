@@ -27,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class BackpackIntegrationManager
 {
@@ -75,7 +76,7 @@ public class BackpackIntegrationManager
 				if(bukkitPlugin != null && plugin.versionRange.inRange(bukkitPlugin.getDescription().getVersion()) && bukkitPlugin.isEnabled())
 				{
 					integration = (IBackpackIntegration) Reflection.getConstructor(plugin.integrationClass).newInstance();
-					MarriageMaster.getInstance().getLogger().info(ConsoleColor.GREEN + "Successful linked with " + ConsoleColor.YELLOW + plugin.identifier + " v" + bukkitPlugin.getDescription().getVersion() + ConsoleColor.GREEN + "!" + ConsoleColor.RESET);
+					MarriageMaster.getInstance().getLogger().log(Level.INFO, ConsoleColor.GREEN + "Successful linked with " + ConsoleColor.YELLOW + "{0} v{1}" + ConsoleColor.GREEN + "!" + ConsoleColor.RESET, new Object[] { plugin.identifier, bukkitPlugin.getDescription().getVersion() });
 					return;
 				}
 			}

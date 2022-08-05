@@ -208,7 +208,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @param usedMarryAlias The used marry alias to replace the /marry with the used alias.
 	 */
 	@Override
-	public void showHelp(@NotNull CommandSender sendTo, @NotNull String usedMarryAlias)
+	public void showHelp(final @NotNull CommandSender sendTo, final @NotNull String usedMarryAlias)
 	{
 		try
 		{
@@ -216,7 +216,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 		}
 		catch(Exception e)
 		{
-			plugin.getLogger().log(Level.SEVERE, "Failed to display help for user '" + sendTo.getName() + "'", e);
+			plugin.getLogger().log(Level.SEVERE, e, () -> "Failed to display help for user '" + sendTo.getName() + "'");
 		}
 	}
 

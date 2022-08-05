@@ -57,7 +57,7 @@ public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object
 		try
 		{
 			Object skill = GET_SKILL.invoke(event);
-			if(blockedSources.contains(((Enum) GET_XP_GAIN_REASON.invoke(event)).name()) || blockedSkills.contains(((Enum) skill).name())) return;
+			if(blockedSources.contains(((Enum<?>) GET_XP_GAIN_REASON.invoke(event)).name()) || blockedSkills.contains(((Enum<?>) skill).name())) return;
 			onGainXp(event, skill);
 		}
 		catch(IllegalAccessException | InvocationTargetException e)
@@ -75,7 +75,7 @@ public class McMMOClassicBonusXpListener extends McMMOBonusXpBaseListener<Object
 		}
 		catch(IllegalAccessException | InvocationTargetException e)
 		{
-			plugin.getLogger().log(Level.WARNING, "Failed to add mcmmo xp to player " + player.getPlayerName(), e);
+			plugin.getLogger().log(Level.WARNING, e, () -> "Failed to add mcmmo xp to player " + player.getPlayerName());
 		}
 	}
 }

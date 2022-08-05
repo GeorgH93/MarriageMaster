@@ -91,7 +91,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		}
 		catch(Exception e)
 		{
-			plugin.getLogger().log(Level.WARNING, ConsoleColor.RED + "Unable to set the help format. Default format will be used." + ConsoleColor.RESET, e);
+			plugin.getLogger().log(Level.WARNING, MESSAGE_FAILED_TO_SET_HELP_FORMAT, e);
 		}
 
 		// Init MarriageMaster commands
