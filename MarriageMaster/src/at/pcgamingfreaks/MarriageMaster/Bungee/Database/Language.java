@@ -53,13 +53,13 @@ public class Language extends at.pcgamingfreaks.Bungee.Config.Language implement
 	@Override
 	public @NotNull String getTranslatedPlaceholder(@NotNull String key)
 	{
-		throw new RuntimeException("Placeholders are not available on BungeeCord!");
+		throw new UnsupportedOperationException("Placeholders are not available on BungeeCord!");
 	}
 
 	@Override
 	public @NotNull String getDialog(@NotNull String key)
 	{
-		throw new RuntimeException("Dialog is not available on BungeeCord!");
+		throw new UnsupportedOperationException("Dialog is not available on BungeeCord!");
 	}
 
 }
