@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 {
@@ -64,7 +65,7 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 		//noinspection StringEquality
 		if(msg == Language.NO_PLACEHOLDER) // == is correct here! We want to check if it's the same instance, not value. No warning should be shown if the text is written in the language file
 		{
-			plugin.getLogger().warning("No placeholder translation for key: " + p);
+			plugin.getLogger().log(Level.WARNING, "No placeholder translation for key: {0}", p);
 		}
 		return msg.equals(NULL_MAGIC) ? null : msg;
 	}

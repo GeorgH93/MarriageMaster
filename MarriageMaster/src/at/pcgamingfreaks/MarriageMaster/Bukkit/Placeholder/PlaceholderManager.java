@@ -162,7 +162,8 @@ public class PlaceholderManager
 			}
 			catch(Exception e)
 			{
-				plugin.getLogger().log(Level.SEVERE, "Failed to register placeholder '" + placeholder.getName() + "'!", e);
+				final PlaceholderReplacer placeholderReplacer = placeholder;
+				plugin.getLogger().log(Level.SEVERE, e, () -> "Failed to register placeholder '" + placeholderReplacer.getName() + "'!");
 				return;
 			}
 		}

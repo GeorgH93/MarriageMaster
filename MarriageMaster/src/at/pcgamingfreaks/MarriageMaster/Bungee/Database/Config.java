@@ -30,6 +30,7 @@ import at.pcgamingfreaks.Version;
 import net.md_5.bungee.api.ProxyServer;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class Config extends Configuration implements DatabaseConfiguration, ILanguageConfiguration
 {
@@ -167,7 +168,10 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		{
 			return channel;
 		}
-		else logger.info("Unknown update Channel: " + channel);
+		else
+		{
+			logger.log(Level.INFO, "Unknown update Channel: {0}", channel);
+		}
 		return null;
 	}
 	//endregion

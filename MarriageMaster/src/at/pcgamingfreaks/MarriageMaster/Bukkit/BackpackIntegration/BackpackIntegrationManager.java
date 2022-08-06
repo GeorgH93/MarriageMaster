@@ -31,6 +31,8 @@ import java.util.logging.Level;
 
 public class BackpackIntegrationManager
 {
+	private static final String MESSAGE_LINKED_SUCCESSFUL = ConsoleColor.GREEN + "Successful linked with " + ConsoleColor.YELLOW + "{0} v{1}" + ConsoleColor.GREEN + "!" + ConsoleColor.RESET;
+
 	private static final class BackpackPluginMetadata
 	{
 		private final String identifier;
@@ -76,7 +78,7 @@ public class BackpackIntegrationManager
 				if(bukkitPlugin != null && plugin.versionRange.inRange(bukkitPlugin.getDescription().getVersion()) && bukkitPlugin.isEnabled())
 				{
 					integration = (IBackpackIntegration) Reflection.getConstructor(plugin.integrationClass).newInstance();
-					MarriageMaster.getInstance().getLogger().log(Level.INFO, ConsoleColor.GREEN + "Successful linked with " + ConsoleColor.YELLOW + "{0} v{1}" + ConsoleColor.GREEN + "!" + ConsoleColor.RESET, new Object[] { plugin.identifier, bukkitPlugin.getDescription().getVersion() });
+					MarriageMaster.getInstance().getLogger().log(Level.INFO, MESSAGE_LINKED_SUCCESSFUL, new Object[] { plugin.identifier, bukkitPlugin.getDescription().getVersion() });
 					return;
 				}
 			}

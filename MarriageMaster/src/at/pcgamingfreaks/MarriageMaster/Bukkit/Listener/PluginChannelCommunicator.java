@@ -153,7 +153,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 					{
 						logger.warning("UseUUIDSeparators setting does not match value on BungeeCord! Changing config ...");
 						plugin.getConfiguration().setUseUUIDSeparators(useUUIDSeparators);
-						logger.info("UseUUIDSeparators setting has been set to " + useUUIDSeparators + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+						logger.log(Level.INFO, "UseUUIDSeparators setting has been set to {0} to match BungeeCord setting. Please restart the server or reload the plugin.", useUUIDSeparators);
 					}
 				}
 				break;
@@ -164,7 +164,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 					{
 						logger.warning("UUID_Type setting does not match value on BungeeCord! Changing config ...");
 						plugin.getConfiguration().setUUIDType(type);
-						logger.info("UUID_Type setting has been set to " + type + " to match BungeeCord setting. Please restart the server or reload the plugin.");
+						logger.log(Level.INFO, "UUID_Type setting has been set to {0} to match BungeeCord setting. Please restart the server or reload the plugin.", type);
 					}
 				}
 				break;
