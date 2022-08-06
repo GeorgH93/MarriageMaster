@@ -24,7 +24,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarriedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.MarryEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
@@ -51,14 +50,12 @@ public class SelfMarryAcceptRequest extends AcceptPendingRequest
 		messageSelfBroadcastMarriage = messageSelfMarried = messageSelfPlayerCalledOff = messageSelfYouCalledOff = messageSelfPlayerMarryOff = null;
 	}
 
-	private final MarriageManager manager;
 	private final String surname;
 
-	public SelfMarryAcceptRequest(@NotNull MarriageManager manager, @NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer sender, @Nullable String surname)
+	public SelfMarryAcceptRequest(@NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer sender, @Nullable String surname)
 	{
 		super(hasToAccept, sender);
 		this.surname = surname;
-		this.manager = manager;
 	}
 
 	@Override

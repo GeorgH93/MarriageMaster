@@ -494,7 +494,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 					{
 						otherPlayer.send(messageSelfConfirm, priest);
 						priest.send(messageSelfMarryRequestSent);
-						plugin.getCommandManager().registerAcceptPendingRequest(new SelfMarryAcceptRequest(this, otherPlayer, priest, surname));
+						plugin.getCommandManager().registerAcceptPendingRequest(new SelfMarryAcceptRequest(otherPlayer, priest, surname));
 					}
 				}
 				else
