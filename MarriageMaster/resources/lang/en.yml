@@ -183,7 +183,7 @@ Language:
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
       Self:
         NotYourself: "&cYou can't marry yourself."
-        NotInRange: "&cThe player is not in range! They needs to be within {Range} blocks!"
+        NotInRange: "&cThe player is not in range! They need to be within {Range} blocks!"
         AlreadySamePair: "&cWe are already married with &r&c{DisplayName}&r&c!"
         AlreadyMarried: "&cYou are already married with &r&c{DisplayName}&r&c!"
         OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c is already married!"
