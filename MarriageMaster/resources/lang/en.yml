@@ -183,7 +183,7 @@ Language:
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
       Self:
         NotYourself: "&cYou can't marry yourself."
-        NotInRange: "&cThe player is not in range! He needs to be within {Range} blocks!"
+        NotInRange: "&cThe player is not in range! They need to be within {Range} blocks!"
         AlreadySamePair: "&cWe are already married with &r&c{DisplayName}&r&c!"
         AlreadyMarried: "&cYou are already married with &r&c{DisplayName}&r&c!"
         OtherAlreadyMarried: "&c&r&c{DisplayName}&r&c is already married!"
@@ -282,7 +282,7 @@ Language:
       Chat: "Private chat with your partner."
       ChatSetTarget: "Changes the private message target. If not changed all partners will get the message."
       ChatToggle: "Toggles your chat to be private with your partner."
-      ChatListen: "Shows all chat-messages sent from a married player to his partner."
+      ChatListen: "Shows all chat-messages sent from a married player to their partner."
       Gift: "Gifts the item in your hand to your partner."
       Home: "Teleports you to your home."
       HomeOther: "Teleports you to a married players home."
