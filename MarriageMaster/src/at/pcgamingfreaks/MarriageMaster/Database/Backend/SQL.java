@@ -359,7 +359,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			while(rs.next())
 			{
 				String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
+				homes.put(rs.getInt(fieldMarryID), platform.produceHome(rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 			}
 			for(MARRIAGE marriage : cache.getLoadedMarriages())
 			{
@@ -391,7 +391,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						if(rs.next())
 						{
 							String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
+							marriage.setHomeData(platform.produceHome(rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 						}
 						else
 						{
