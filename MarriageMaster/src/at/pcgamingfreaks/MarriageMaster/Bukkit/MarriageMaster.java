@@ -32,7 +32,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Formatter.PrefixSuffixFormatterImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.BonusXP.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Listener.*;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.NoDatabaseWorker;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
@@ -74,7 +74,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
 	@Getter private PrefixSuffixFormatter prefixSuffixFormatter = null;
 	private CommandManagerImplementation commandManager = null;
-	private MarriageManager marriageManager = null;
+	private MarriageManagerImpl marriageManager = null;
 	@Getter private PlaceholderManager placeholderManager = null;
 
 	// Global Settings
@@ -184,7 +184,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 		commandManager = new CommandManagerImplementation(this);
 		commandManager.init();
-		marriageManager = new MarriageManager(this);
+		marriageManager = new MarriageManagerImpl(this);
 		prefixSuffixFormatter = new PrefixSuffixFormatterImpl(this);
 
 		registerEvents();

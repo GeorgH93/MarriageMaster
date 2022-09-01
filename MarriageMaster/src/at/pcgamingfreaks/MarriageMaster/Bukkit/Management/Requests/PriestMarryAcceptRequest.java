@@ -20,7 +20,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
@@ -49,11 +49,11 @@ public class PriestMarryAcceptRequest extends AcceptPendingRequest
 		messageYouCalledOff = messagePlayerCalledOff = messageConfirm = messagePriestMarryOff = messagePlayerMarryOff = null;
 	}
 
-	private final MarriageManager manager;
+	private final MarriageManagerImpl manager;
 	private final String surname;
 	private final boolean firstPlayer;
 
-	public PriestMarryAcceptRequest(@NotNull MarriageManager manager, @NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, MarriagePlayer priest, String surname, boolean firstPlayer)
+	public PriestMarryAcceptRequest(@NotNull MarriageManagerImpl manager, @NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, MarriagePlayer priest, String surname, boolean firstPlayer)
 	{
 		super(player1, player2, priest);
 		this.surname = surname;

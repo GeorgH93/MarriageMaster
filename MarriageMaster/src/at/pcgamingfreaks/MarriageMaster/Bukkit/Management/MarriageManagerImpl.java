@@ -52,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
+public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
 	public static final String CONSOLE_NAME = "Console", CONSOLE_DISPLAY_NAME = MessageColor.GRAY + CONSOLE_NAME, COLOR_CODE_REGEX = "&[a-fA-F0-9l-orL-OR]";
 	public static final MessageComponent CONSOLE_DISPLAY_NAME_COMPONENT = new MessageBuilder().appendLegacy(CONSOLE_DISPLAY_NAME).getAsComponent();
@@ -69,7 +69,7 @@ public class MarriageManager implements at.pcgamingfreaks.MarriageMaster.Bukkit.
 	private final int surnameMinLength, surnameMaxLength;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 
-	public MarriageManager(MarriageMaster plugin)
+	public MarriageManagerImpl(final @NotNull MarriageMaster plugin)
 	{
 		this.plugin = plugin;
 

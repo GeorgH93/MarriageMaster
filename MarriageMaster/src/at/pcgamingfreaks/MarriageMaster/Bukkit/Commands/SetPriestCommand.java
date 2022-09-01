@@ -22,7 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
@@ -72,7 +72,7 @@ public class SetPriestCommand extends MarryCommand
 					}
 					else
 					{
-						String senderDisplayName = sender instanceof Player ? ((Player) sender).getDisplayName() : MarriageManager.CONSOLE_DISPLAY_NAME;
+						String senderDisplayName = sender instanceof Player ? ((Player) sender).getDisplayName() : MarriageManagerImpl.CONSOLE_DISPLAY_NAME;
 						if(target.isPriest())
 						{
 							messageYouFiredAPriest.send(sender, target);
