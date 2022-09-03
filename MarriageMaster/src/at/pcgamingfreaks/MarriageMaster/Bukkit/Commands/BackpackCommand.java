@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2022 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -54,6 +54,30 @@ public class BackpackCommand extends MarryCommand
 		range = plugin.getConfiguration().getRangeSquared(Range.Backpack);
 	}
 
+	private boolean handleConfigSetting(final @NotNull MarriagePlayer player, final @NotNull String cmd)
+	{
+		boolean enabled = false;
+		if(getMarriagePlugin().getCommandManager().isOnSwitch(cmd))
+		{
+			player.setShareBackpack(true);
+		}
+		else if(getMarriagePlugin().getCommandManager().isOffSwitch(cmd))
+		{
+			player.setShareBackpack(false);
+		}
+		else if(getMarriagePlugin().getCommandManager().isToggleSwitch(cmd))
+		{
+			player.setShareBackpack(!player.isSharingBackpack());
+		}
+		else
+		{
+			return false;
+		}
+
+		player.send(player.isSharingBackpack() ? messageShareOn : messageShareOff);
+		return true;
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -62,30 +86,7 @@ public class BackpackCommand extends MarryCommand
 		if(args.length == 1)
 		{
 			// Set backpack parameter
-			if(getMarriagePlugin().getCommandManager().isOnSwitch(args[0]))
-			{
-				player.setShareBackpack(true);
-				messageShareOn.send(sender);
-			}
-			else if(getMarriagePlugin().getCommandManager().isOffSwitch(args[0]))
-			{
-				player.setShareBackpack(false);
-				messageShareOff.send(sender);
-			}
-			else if(getMarriagePlugin().getCommandManager().isToggleSwitch(args[0]))
-			{
-				if(player.isSharingBackpack())
-				{
-					player.setShareBackpack(false);
-					messageShareOff.send(sender);
-				}
-				else
-				{
-					player.setShareBackpack(true);
-					messageShareOn.send(sender);
-				}
-			}
-			else
+			if(!handleConfigSetting(player, args[0]))
 			{
 				if(getMarriagePlugin().areMultiplePartnersAllowed())
 				{
