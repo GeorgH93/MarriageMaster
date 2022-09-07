@@ -53,14 +53,14 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * @param player The player for which the partner should be retrieved.
 	 * @return The other player of the married couple. Null if the given player is not in this marriage.
 	 */
-	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer player);
+	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer<?,?,?,?,?> player);
 
 	/**
 	 * Checks if a player is contained in the marriage (is one of the 2 players involved).
 	 * @param player The player to be checked.
 	 * @return Treu if the player is one of the two partners, false if the player is not one of the two partners or the player is null.
 	 */
-	default boolean contains(@Nullable MarriagePlayer player)
+	default boolean contains(@Nullable MarriagePlayer<?,?,?,?,?> player)
 	{
 		return getPartner1().equals(player) || getPartner2().equals(player);
 	}
@@ -117,14 +117,14 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	/**
 	 * Check if PVP is enabled between the married players.
 	 *
-	 * @return Whether or not PVP is enabled between the married players.
+	 * @return Whether PVP is enabled between the married players.
 	 */
 	boolean isPVPEnabled();
 
 	/**
 	 * Sets the PVP state between the two married players.
 	 *
-	 * @param pvpEnabled Whether or not PVP should get enabled between the married players.
+	 * @param pvpEnabled Whether PVP should get enabled between the married players.
 	 */
 	void setPVPEnabled(boolean pvpEnabled);
 
@@ -171,7 +171,7 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 
 	/**
 	 * Gets the prefix that will be added to every private (marriage) chat message.
-	 * This string can contain color codes which will be send even if the player sending the message doesn't have the permission to use colors in the private chat.
+	 * This string can contain color codes which will be sent even if the player sending the message doesn't have the permission to use colors in the private chat.
 	 *
 	 * @return The prefix that will be added to every private (marriage) chat message.
 	 */
@@ -179,7 +179,7 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 
 	/**
 	 * Sets the prefix that will be added to every private (marriage) chat message.
-	 * This string can contain color codes which will be send even if the player sending the message doesn't have the permission to use colors in the private chat.
+	 * This string can contain color codes which will be sent even if the player sending the message doesn't have the permission to use colors in the private chat.
 	 * Prefix is limited to 20 chars, everything beyond will be ignored.
 	 */
 	void setMarriageChatMessagePrefix(@NotNull String prefix);
