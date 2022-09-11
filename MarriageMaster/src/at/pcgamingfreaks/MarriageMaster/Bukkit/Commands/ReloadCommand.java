@@ -30,6 +30,7 @@ import java.util.List;
 
 public class ReloadCommand extends MarryCommand
 {
+	private final String DATABASE = "database";
 	private final Message messageReloading, messageReloaded, messageReloadingDatabase;
 
 	public ReloadCommand(MarriageMaster plugin)
@@ -51,7 +52,7 @@ public class ReloadCommand extends MarryCommand
 			((MarriageMaster) getMarriagePlugin()).reload();
 			messageReloaded.send(sender);
 		}
-		if (args.length == 1 && args[0].equalsIgnoreCase("database"))
+		if (args.length == 1 && args[0].equalsIgnoreCase(DATABASE))
 		{
 			messageReloadingDatabase.send(sender);
 			((MarriageMaster) getMarriagePlugin()).getDatabase().resync();
@@ -62,10 +63,10 @@ public class ReloadCommand extends MarryCommand
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length == 1 && "database".startsWith(args[0]))
+		if(args.length == 1 && DATABASE.startsWith(args[0]))
 		{
 			List<String> tab = new ArrayList<>(1);
-			tab.add("database");
+			tab.add(DATABASE);
 			return tab;
 		}
 		return EMPTY_TAB_COMPLETE_LIST;
