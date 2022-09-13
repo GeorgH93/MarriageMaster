@@ -89,20 +89,17 @@ public class SetPriestCommand extends MarryCommand
 			{
 				messagePerPermission.send(sender, target);
 			}
+			else if(target.isPriest())
+			{
+				messageYouFiredAPriest.send(sender, target);
+				messageFiredYou.send(bTarget, senderName, senderDisplayName);
+				target.setPriest(false);
+			}
 			else
 			{
-				if(target.isPriest())
-				{
-					messageYouFiredAPriest.send(sender, target);
-					messageFiredYou.send(bTarget, senderName, senderDisplayName);
-					target.setPriest(false);
-				}
-				else
-				{
-					messageYouMadeAPriest.send(sender, target);
-					messageMadeYouAPriest.send(bTarget, senderName, senderDisplayName);
-					target.setPriest(true);
-				}
+				messageYouMadeAPriest.send(sender, target);
+				messageMadeYouAPriest.send(bTarget, senderName, senderDisplayName);
+				target.setPriest(true);
 			}
 		}
 	}
