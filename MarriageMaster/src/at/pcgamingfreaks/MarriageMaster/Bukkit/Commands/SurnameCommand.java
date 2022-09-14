@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Command.HelpData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
@@ -28,6 +29,7 @@ import at.pcgamingfreaks.MarriageMaster.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,68 @@ public class SurnameCommand extends MarryCommand
 		}
 	}
 
+	private void executeOwnSurname(final @NotNull MarriagePlayer player, String newSurname)
+	{
+		if(player.getPartners().size() == 1)
+		{
+			Marriage marriage = player.getMarriageData();
+			if (marriage != null) marriage.setSurname(newSurname, player);
+		}
+		else
+		{
+			player.send(CommonMessages.getMessageNotMarried());
+		}
+	}
+
+	private void executeOwnSurnamePoly(final @NotNull MarriagePlayer player, final @NotNull MarriagePlayer player2, String newSurname)
+	{
+		if(player.isMarried())
+		{
+			if(player.isPartner(player2))
+			{
+				Marriage marriage = player.getMarriageData(player2);
+				if (marriage != null) marriage.setSurname(newSurname, player);
+			}
+			else
+			{
+				player.send(CommonMessages.getMessageTargetPartnerNotFound());
+			}
+		}
+		else
+		{
+			player.send(CommonMessages.getMessageNotMarried());
+		}
+	}
+
+	private void executePriest(final @NotNull CommandSender sender, final @Nullable MarriagePlayer player, final @NotNull MarriagePlayer player2, String newSurname, String[] args)
+	{
+		if(!player2.isOnline())
+		{
+			CommonMessages.getMessagePlayerNotOnline().send(sender, args[0]);
+		}
+		else if(!player2.isMarried())
+		{
+			CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
+		}
+		else if(player2.getMultiMarriageData().size() > 1)
+		{
+			if(player != null && player.isPartner(player2))
+			{
+				Marriage marriage = player.getMarriageData(player2);
+				if (marriage != null) marriage.setSurname(newSurname, player);
+			}
+			else
+			{
+				CommonMessages.getMessageMarriageNotExact().send(sender);
+			}
+		}
+		else
+		{
+			Marriage marriage = player2.getMarriageData();
+			if (marriage != null) marriage.setSurname(newSurname, sender);
+		}
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -67,61 +131,18 @@ public class SurnameCommand extends MarryCommand
 		{
 			if(args.length == 1 && getMarriagePlugin().isSelfMarriageAllowed() && player != null && sender.hasPermission(Permissions.SELF_MARRY))
 			{
-				if(player.getPartners().size() == 1)
-				{
-					player.getMarriageData().setSurname(newSurname, player);
-				}
-				else
-				{
-					CommonMessages.getMessageNotMarried().send(sender);
-				}
+				executeOwnSurname(player, newSurname);
 			}
 			else if(args.length == 2)
 			{
 				MarriagePlayer player2 = getMarriagePlugin().getPlayerData(args[0]);
 				if(player == null || player.isPriest())
 				{
-					if(!player2.isOnline())
-					{
-						CommonMessages.getMessagePlayerNotOnline().send(sender, args[0]);
-					}
-					else if(!player2.isMarried())
-					{
-						CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
-					}
-					else if(player2.getMultiMarriageData().size() > 1)
-					{
-						if(player != null && player.isPartner(player2))
-						{
-							player.getMarriageData(player2).setSurname(newSurname, player);
-						}
-						else
-						{
-							CommonMessages.getMessageMarriageNotExact().send(sender);
-						}
-					}
-					else
-					{
-						player2.getMarriageData().setSurname(newSurname, sender);
-					}
+					executePriest(sender, player, player2, newSurname, args);
 				}
 				else if(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY))
 				{
-					if(player.isMarried())
-					{
-						if(player.isPartner(player2))
-						{
-							player.getMarriageData(player2).setSurname(newSurname, player);
-						}
-						else
-						{
-							CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-						}
-					}
-					else
-					{
-						CommonMessages.getMessageNotMarried().send(sender);
-					}
+					executeOwnSurnamePoly(player, player2, newSurname);
 				}
 				else
 				{
@@ -145,7 +166,8 @@ public class SurnameCommand extends MarryCommand
 				}
 				else
 				{
-					player1.getMarriageData(player2).setSurname(newSurname, sender);
+					Marriage marriage = player1.getMarriageData(player2);
+					if (marriage != null) marriage.setSurname(newSurname, sender);
 				}
 			}
 			else
