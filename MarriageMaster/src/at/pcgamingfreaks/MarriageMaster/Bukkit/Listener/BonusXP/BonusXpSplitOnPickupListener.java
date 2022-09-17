@@ -48,7 +48,10 @@ public class BonusXpSplitOnPickupListener implements Listener, IBonusXpListener<
 	}
 
 	@Override
-	public void setEventExp(PlayerExpChangeEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
+	public void setEventExp(PlayerExpChangeEvent event, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	{
+		// Is implemented in BonusXpListener
+	}
 
 	@Override
 	public void splitWithPartner(PlayerExpChangeEvent event, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
