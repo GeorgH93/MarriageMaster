@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 import at.pcgamingfreaks.Bungee.Command.CommandExecutorWithSubCommandsGeneric;
 import at.pcgamingfreaks.Bungee.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
-import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.CommonMessages;
