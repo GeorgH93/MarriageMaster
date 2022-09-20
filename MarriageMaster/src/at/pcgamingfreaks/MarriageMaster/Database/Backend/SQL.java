@@ -365,7 +365,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			{
 				if(marriage.getDatabaseKey() instanceof Integer)
 				{
-					marriage.setHomeData(homes.get((Integer) marriage.getDatabaseKey()));
+					marriage.setHomeData(homes.get(marriage.getDatabaseKey()));
 				}
 			}
 		}
