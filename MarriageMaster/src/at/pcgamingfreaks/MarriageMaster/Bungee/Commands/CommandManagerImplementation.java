@@ -107,7 +107,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 		{
 			registerSubCommand(new UpdateCommand(plugin));
 		}
-		//registerSubCommand(new ReloadCommand(plugin));
+		registerSubCommand(new ReloadCommand(plugin));
 	}
 
 	@Override
