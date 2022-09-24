@@ -65,6 +65,20 @@ public class HomeCommand extends MarryCommand
 		communicator.setHomeCommand(null);
 	}
 
+	private boolean checkForHome(Marriage marriage, MarriagePlayer player)
+	{
+		if (marriage.isHomeSet()) return true;
+		if (player.hasPermission(Permissions.HOME_OTHERS) && !marriage.contains(player))
+		{
+			player.send(messagePlayerNoHome);
+		}
+		else
+		{
+			player.send(messageNoHome);
+		}
+		return false;
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -72,45 +86,31 @@ public class HomeCommand extends MarryCommand
 		if(player.isMarried() || (sender.hasPermission(Permissions.HOME_OTHERS) && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
 		{
 			Marriage marriage = getTargetedMarriage(sender, player, args);
-			if(marriage != null)
+			if(marriage != null && checkForHome(marriage, player))
 			{
-				if(!marriage.isHomeSet()) // no home set
+				if(!blockedFrom.contains(((ProxiedPlayer) sender).getServer().getInfo().getName().toLowerCase(Locale.ENGLISH)))
 				{
-					if(sender.hasPermission(Permissions.HOME_OTHERS) && !marriage.getPartner1().equals(player) && !marriage.getPartner2().equals(player))
+					//noinspection ConstantConditions
+					if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase(Locale.ENGLISH)))
 					{
-						messagePlayerNoHome.send(sender);
+						if(delayed && !player.hasPermission(Permissions.BYPASS_DELAY))
+						{
+							//noinspection ConstantConditions
+							communicator.sendMessage(((ProxiedPlayer) sender).getServer().getInfo(), "delayHome", player.getUUID().toString(), marriage.getPartner(player).getUUID().toString());
+						}
+						else
+						{
+							sendHome(player.getPlayer(), marriage);
+						}
 					}
 					else
 					{
-						messageNoHome.send(sender);
+						messageHomeBlockedTo.send(sender);
 					}
 				}
 				else
 				{
-					if(!blockedFrom.contains(((ProxiedPlayer) sender).getServer().getInfo().getName().toLowerCase(Locale.ENGLISH)))
-					{
-						//noinspection ConstantConditions
-						if(!blockedTo.contains(marriage.getHome().getHomeServer().toLowerCase(Locale.ENGLISH)))
-						{
-							if(delayed && !player.hasPermission(Permissions.BYPASS_DELAY))
-							{
-								//noinspection ConstantConditions
-								communicator.sendMessage(((ProxiedPlayer) sender).getServer().getInfo(), "delayHome", player.getUUID().toString(), marriage.getPartner(player).getUUID().toString());
-							}
-							else
-							{
-								sendHome(player.getPlayer(), marriage);
-							}
-						}
-						else
-						{
-							messageHomeBlockedTo.send(sender);
-						}
-					}
-					else
-					{
-						messageHomeBlockedFrom.send(sender);
-					}
+					messageHomeBlockedFrom.send(sender);
 				}
 			}
 		}
