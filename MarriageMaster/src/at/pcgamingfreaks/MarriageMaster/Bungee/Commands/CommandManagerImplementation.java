@@ -137,15 +137,12 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 			if(commandAliases.contains(cmd) && args.length > 1)
 			{
 				args = Arrays.copyOfRange(args, 1, args.length);
-				if(args.length > 0)
+				MarryCommand mC = subCommandMap.get(args[0].toLowerCase());
+				if(mC != null)
 				{
-					MarryCommand mC = subCommandMap.get(args[0].toLowerCase());
-					if(mC != null)
-					{
-						//TODO: Command for the console
-						mC.doExecute((CommandSender) event.getSender(), cmd, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
-						event.setCancelled(true);
-					}
+					//TODO: Command for the console
+					mC.doExecute((CommandSender) event.getSender(), cmd, args[0], (args.length > 1) ? Arrays.copyOfRange(args, 1, args.length) : new String[0]);
+					event.setCancelled(true);
 				}
 			}
 		}
