@@ -31,6 +31,7 @@ import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -149,46 +150,54 @@ public class HomeCommand extends MarryCommand
 		return super.canUse(sender) && (sender.hasPermission(Permissions.HOME_OTHERS) || getMarriagePlugin().getPlayerData((ProxiedPlayer) sender).isMarried());
 	}
 
-	private Marriage getTargetedMarriage(CommandSender sender, MarriagePlayer player, String[] args)
+	private @Nullable Marriage getTargetedMarriageMultiPartner(@NotNull CommandSender sender, @Nullable MarriagePlayer player, @NotNull String[] args)
+	{
+		Marriage marriage = null;
+		if(args.length == 2 && sender.hasPermission(Permissions.HOME_OTHERS))
+		{
+			MarriagePlayer target1 = getMarriagePlugin().getPlayerData(args[0]), target2 = getMarriagePlugin().getPlayerData(args[1]);
+			if(target1.isMarried() && target2.isMarried() && target1.isPartner(target2))
+			{
+				marriage = target1.getMarriageData(target2);
+			}
+			else
+			{
+				if(!target1.isMarried() || !target2.isMarried())
+				{
+					MarriagePlayer t = (!target1.isMarried()) ? target1 : target2;
+					CommonMessages.getMessagePlayerNotMarried().send(sender, t.getName());
+				}
+				else
+				{
+					CommonMessages.getMessagePlayersNotMarried().send(sender);
+				}
+				return null;
+			}
+		}
+		else if (player == null) return null;
+		else if(args.length == 1)
+		{
+			MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
+			if(!player.isPartner(partner))
+			{
+				CommonMessages.getMessageTargetPartnerNotFound().send(sender);
+				return null;
+			}
+			marriage = player.getMarriageData(partner);
+		}
+		else
+		{
+			marriage = player.getMarriageData();
+		}
+		return marriage;
+	}
+
+	private @Nullable Marriage getTargetedMarriage(@NotNull CommandSender sender, @Nullable MarriagePlayer player, @NotNull String[] args)
 	{
 		Marriage marriage;
 		if(getMarriagePlugin().areMultiplePartnersAllowed())
 		{
-			if(args.length == 2 && sender.hasPermission(Permissions.HOME_OTHERS))
-			{
-				MarriagePlayer target1 = getMarriagePlugin().getPlayerData(args[0]), target2 = getMarriagePlugin().getPlayerData(args[1]);
-				if(target1.isMarried() && target2.isMarried() && target1.isPartner(target2))
-				{
-					marriage = target1.getMarriageData(target2);
-				}
-				else
-				{
-					if(!target1.isMarried() || !target2.isMarried())
-					{
-						MarriagePlayer t = (!target1.isMarried()) ? target1 : target2;
-						CommonMessages.getMessagePlayerNotMarried().send(sender, t.getName());
-					}
-					else
-					{
-						CommonMessages.getMessagePlayersNotMarried().send(sender);
-					}
-					return null;
-				}
-			}
-			else if(args.length == 1)
-			{
-				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
-				if(!player.isPartner(partner))
-				{
-					CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-					return null;
-				}
-				marriage = player.getMarriageData(partner);
-			}
-			else
-			{
-				marriage = player.getMarriageData();
-			}
+			marriage = getTargetedMarriageMultiPartner(sender, player, args);
 		}
 		else
 		{
@@ -205,13 +214,18 @@ public class HomeCommand extends MarryCommand
 					return null;
 				}
 			}
-			else
+			else if (player != null)
 			{
 				marriage = player.getMarriageData();
+			}
+			else
+			{
+				return null;
 			}
 		}
 		return marriage;
 	}
+
 
 	public void sendHome(final @NotNull UUID playerUUID, final @NotNull UUID partnerUUID)
 	{
