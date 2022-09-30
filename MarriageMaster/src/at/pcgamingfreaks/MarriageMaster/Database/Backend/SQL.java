@@ -299,7 +299,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.warning("Player " + (player1 == null ? "1" : "2") + " for marriage " + sm.marryID + " has not been loaded. Skipping");
+					logger.log(Level.WARNING, "Player {} for marriage {} has not been loaded. Skipping", new Object[]{ (player1 == null ? 1 : 2), sm.marryID });
 				}
 			}
 			logger.info("Marriages loaded into cache");
@@ -416,7 +416,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				catch(SQLException e)
 				{
-					logger.log(Level.SEVERE, "Failed to load home for marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
+					logger.log(Level.SEVERE, e, () -> "Failed to load home for marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName());
 				}
 			}
 		}, marriage);
@@ -447,7 +447,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.SEVERE, "Failed to load player data for " + player.getName() + " (" + player.getUUID() + ")!", e);
+			logger.log(Level.SEVERE, e, () -> "Failed to load player data for " + player.getName() + " (" + player.getUUID() + ")!");
 		}
 	}
 
@@ -591,7 +591,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(SQLException e)
 			{
-				logger.log(Level.SEVERE, "Failed to save marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
+				logger.log(Level.SEVERE, e, () -> "Failed to save marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName());
 			}
 		});
 	}
@@ -620,7 +620,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.info("No auto ID for player \"" + player.name + "\", try to load id from database ...");
+					logger.log(Level.INFO, "No auto ID for player \"{}\", try to load id from database ...", player.name);
 					try(PreparedStatement ps2 = connection.prepareStatement(queryLoadPlayer))
 					{
 						ps2.setString(1, player.uuid);
@@ -632,7 +632,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 							}
 							else
 							{
-								logger.warning(ConsoleColor.RED + "No ID for player \"" + player.name + "\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET);
+								logger.log(Level.WARNING, ConsoleColor.RED + "No ID for player \"{}\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET, player.name);
 								return;
 							}
 						}
@@ -650,7 +650,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.WARNING, ConsoleColor.RED + "Failed migrating player \"" + player.name + "\"!" + ConsoleColor.RESET, e);
+			logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed migrating player \"" + player.name + "\"!" + ConsoleColor.RESET);
 		}
 	}
 
@@ -676,19 +676,19 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						}
 						catch(SQLException e)
 						{
-							logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
+							logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
 						}
 					}
 				}
 				else
 				{
-					logger.warning("No ID for marriage \"" + marriage.player1.name + "<->" + marriage.player2.name + "\"!");
+					logger.log(Level.WARNING, "No ID for marriage \"{} <-> {}\"!", new Object[]{marriage.player1.name, marriage.player2.name});
 				}
 			}
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
+			logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
 		}
 	}
 
