@@ -56,7 +56,6 @@ public class BackpackCommand extends MarryCommand
 
 	private boolean handleConfigSetting(final @NotNull MarriagePlayer player, final @NotNull String cmd)
 	{
-		boolean enabled = false;
 		if(getMarriagePlugin().getCommandManager().isOnSwitch(cmd))
 		{
 			player.setShareBackpack(true);
