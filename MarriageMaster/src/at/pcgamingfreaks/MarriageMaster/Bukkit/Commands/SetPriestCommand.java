@@ -33,8 +33,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import scala.concurrent.impl.FutureConvertersImpl;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
