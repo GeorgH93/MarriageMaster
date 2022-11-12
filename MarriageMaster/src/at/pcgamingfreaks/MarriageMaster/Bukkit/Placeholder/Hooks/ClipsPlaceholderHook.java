@@ -142,7 +142,8 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 		PlaceholderHook hook;
 		if (pluginVersion.olderThan("2.11.1"))
 		{
-			hook = PlaceholderAPI.getPlaceholders().get(getIdentifier());
+			//noinspection UnstableApiUsage
+			hook = PlaceholderAPI.getPlaceholders().get(getIdentifier()); // Will only be used for old versions
 		}
 		else
 		{
@@ -170,10 +171,10 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 
 	public Version getPlaceholderAPIVersion()
 	{
-		Plugin plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
-		if (plugin != null)
+		Plugin papiPlugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+		if (papiPlugin != null)
 		{
-			return new Version(plugin.getDescription().getVersion());
+			return new Version(papiPlugin.getDescription().getVersion());
 		}
 		return new Version(0);
 	}
