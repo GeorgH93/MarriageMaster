@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bungee;
 
 import at.pcgamingfreaks.Bungee.ManagedUpdater;
 import at.pcgamingfreaks.ConsoleColor;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.Events.MarriageMasterReloadedEvent;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.DelayableTeleportAction;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarriageMasterPlugin;
@@ -148,7 +149,7 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 		unload();
 		config.reload();
 		load();
-		//getProxy().getPluginManager().callEvent(new MarriageMasterReloadEvent());
+		getProxy().getPluginManager().callEvent(new MarriageMasterReloadedEvent());
 	}
 
 	//region API Stuff
