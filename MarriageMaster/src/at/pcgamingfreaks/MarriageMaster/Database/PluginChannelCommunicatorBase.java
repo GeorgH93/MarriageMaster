@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 
 public abstract class PluginChannelCommunicatorBase
 {
+	private static final String MESSAGE_UNKNOWN_COMMAND = ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: {} " + ConsoleColor.RESET;
 	protected static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
 
 	protected final Logger logger;
@@ -144,7 +145,7 @@ public abstract class PluginChannelCommunicatorBase
 					default:
 						if(!receiveMarriageMaster(cmd, in))
 						{
-							logger.info(ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: " + cmd + "   " + ConsoleColor.RESET);
+							logger.log(Level.INFO, MESSAGE_UNKNOWN_COMMAND);
 							logger.info("There are two likely reasons for that. 1. You are running an outdated version of the plugin. 2. Someone has connected to your server directly, check you setup!");
 						}
 						break;
