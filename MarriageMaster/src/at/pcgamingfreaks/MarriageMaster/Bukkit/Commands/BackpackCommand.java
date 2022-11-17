@@ -19,6 +19,7 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
@@ -85,31 +86,31 @@ public class BackpackCommand extends MarryCommand
 		if(args.length == 1)
 		{
 			// Set backpack parameter
-			if(!handleConfigSetting(player, args[0]))
+			if(handleConfigSetting(player, args[0])) return;
+
+			if(getMarriagePlugin().areMultiplePartnersAllowed())
 			{
-				if(getMarriagePlugin().areMultiplePartnersAllowed())
+				MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
+				if(player.isPartner(partner))
 				{
-					MarriagePlayer partner = getMarriagePlugin().getPlayerData(args[0]);
-					if(player.isPartner(partner))
-					{
-						openBackpack(player, partner);
-					}
-					else
-					{
-						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-					}
+					openBackpack(player, partner);
 				}
 				else
 				{
-					showHelp(sender, mainCommandAlias);
+					CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 				}
+			}
+			else
+			{
+				showHelp(sender, mainCommandAlias);
 			}
 		}
 		else
 		{
-			if(player.getNearestPartnerMarriageData() != null)
+			Marriage marriage = player.getNearestPartnerMarriageData();
+			if(marriage != null)
 			{
-				openBackpack(player, player.getNearestPartnerMarriageData().getPartner(player));
+				openBackpack(player, marriage.getPartner(player));
 			}
 		}
 	}
