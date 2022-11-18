@@ -122,6 +122,30 @@ public class ChatCommand extends MarryCommand implements Listener
 		}
 	}
 
+	private boolean handleTargetSelection(final @NotNull MarriagePlayer player, final @NotNull String[] args)
+	{
+		if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+		{
+			Player target = Bukkit.getPlayer(args[1]);
+			if(target != null && player.isPartner(target))
+			{
+				player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
+				player.send(messageTargetSet);
+			}
+			else if(getMarriagePlugin().getCommandManager().isAllSwitch(args[1]))
+			{
+				player.setPrivateChatTarget((Marriage) null);
+				player.send(messageTargetSet);
+			}
+			else
+			{
+				player.send(CommonMessages.getMessageTargetPartnerNotFound());
+			}
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -137,39 +161,12 @@ public class ChatCommand extends MarryCommand implements Listener
 				{
 					toggleChatSetting(player);
 				}
-				else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
-				{
-					Player target = Bukkit.getPlayer(args[1]);
-					if(target != null && player.isPartner(target))
-					{
-						player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
-						messageTargetSet.send(sender);
-					}
-					else if(getMarriagePlugin().getCommandManager().isAllSwitch(args[1]))
-					{
-						player.setPrivateChatTarget((Marriage) null);
-						messageTargetSet.send(sender);
-					}
-					else
-					{
-						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-					}
-				}
-				else
+				else if (!handleTargetSelection(player, args))
 				{
 					//noinspection ConstantConditions
 					if(player.getPrivateChatTarget() == null || player.getPrivateChatTarget().getPartner(player).isOnline())
 					{
-						StringBuilder stringBuilder = new StringBuilder();
-						for(int i = 0; i < args.length; i++)
-						{
-							if(i != 0)
-							{
-								stringBuilder.append(" ");
-							}
-							stringBuilder.append(args[i]);
-						}
-						doChat(player, stringBuilder.toString()); // Doing the actual chat message logic
+						doChat(player, String.join(" ", args)); // Doing the actual chat message logic
 					}
 					else
 					{
