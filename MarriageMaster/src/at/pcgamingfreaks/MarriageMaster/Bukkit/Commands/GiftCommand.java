@@ -189,51 +189,56 @@ public class GiftCommand extends MarryCommand
 		}
 		if(partner != null && partner.isOnline())
 		{
-			final Player bPartner = partner.getPlayerOnline();
-			if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
-			{
-				ItemStack its = checkAndGetItemInHand(bPlayer);
-				if (its == null) return;
-				int slot = bPartner.getInventory().firstEmpty();
-				if(slot == -1)
-				{
-					messagePartnerInvFull.send(sender);
-					return;
-				}
-				if(!canReceive(bPlayer, bPartner)) return;
-				GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);
-				Bukkit.getPluginManager().callEvent(event);
-				if(!event.isCancelled())
-				{
-					its = event.getItemStack();
-					ItemStackWrapper wrappedItemStack = new ItemStackWrapper(its, plugin.getLogger(), itemNameResolver);
-					if(requireConfirmation)
-					{
-						if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(wrappedItemStack, partner, player)))
-						{
-							messageRequestPartnerAlreadyHasAnOpenRequest.send(sender);
-							return;
-						}
-						messageWaitForConfirmation.send(sender, wrappedItemStack);
-						partner.send(messageRequireConfirmation, player, wrappedItemStack);
-					}
-					else
-					{
-						messageItemSent.send(sender, partner, wrappedItemStack);
-						messageItemReceived.send(bPartner, partner, wrappedItemStack);
-						bPartner.getInventory().setItem(slot, its);
-					}
-					InventoryUtils.setItemInMainHand(bPlayer, null);
-				}
-			}
-			else
-			{
-				CommonMessages.getMessagePartnerNotInRange().send(sender);
-			}
+			executeGift(player, partner, bPlayer);
 		}
 		else
 		{
 			CommonMessages.getMessagePartnerOffline().send(sender);
+		}
+	}
+
+	private void executeGift(final @NotNull MarriagePlayer player, final @NotNull MarriagePlayer partner, final @NotNull Player bPlayer)
+	{
+		final Player bPartner = partner.getPlayerOnline();
+		if(bPartner != null && getMarriagePlugin().isInRangeSquared(bPlayer, bPartner, range))
+		{
+			ItemStack its = checkAndGetItemInHand(bPlayer);
+			if (its == null) return;
+			int slot = bPartner.getInventory().firstEmpty();
+			if(slot == -1)
+			{
+				messagePartnerInvFull.send(bPlayer);
+				return;
+			}
+			if(!canReceive(bPlayer, bPartner)) return;
+			GiftEvent event = new GiftEvent(player, player.getMarriageData(partner), its);
+			Bukkit.getPluginManager().callEvent(event);
+			if(!event.isCancelled())
+			{
+				its = event.getItemStack();
+				ItemStackWrapper wrappedItemStack = new ItemStackWrapper(its, plugin.getLogger(), itemNameResolver);
+				if(requireConfirmation)
+				{
+					if(!getMarriagePlugin().getCommandManager().registerAcceptPendingRequest(new GiftRequest(wrappedItemStack, partner, player)))
+					{
+						messageRequestPartnerAlreadyHasAnOpenRequest.send(bPlayer);
+						return;
+					}
+					messageWaitForConfirmation.send(bPlayer, wrappedItemStack);
+					partner.send(messageRequireConfirmation, player, wrappedItemStack);
+				}
+				else
+				{
+					messageItemSent.send(bPlayer, partner, wrappedItemStack);
+					messageItemReceived.send(bPartner, partner, wrappedItemStack);
+					bPartner.getInventory().setItem(slot, its);
+				}
+				InventoryUtils.setItemInMainHand(bPlayer, null);
+			}
+		}
+		else
+		{
+			CommonMessages.getMessagePartnerNotInRange().send(bPlayer);
 		}
 	}
 
