@@ -173,13 +173,12 @@ public class HomeCommand extends MarryCommand
 
 	private @Nullable Marriage getTargetedMarriageMultiPartner(@NotNull CommandSender sender, @Nullable MarriagePlayer player, @NotNull String[] args)
 	{
-		Marriage marriage = null;
 		if(args.length == 2 && sender.hasPermission(Permissions.HOME_OTHERS))
 		{
 			MarriagePlayer target1 = getMarriagePlugin().getPlayerData(args[0]), target2 = getMarriagePlugin().getPlayerData(args[1]);
 			if(target1.isMarried() && target2.isMarried() && target1.isPartner(target2))
 			{
-				marriage = target1.getMarriageData(target2);
+				return target1.getMarriageData(target2);
 			}
 			else
 			{
@@ -192,8 +191,8 @@ public class HomeCommand extends MarryCommand
 				{
 					CommonMessages.getMessagePlayersNotMarried().send(sender);
 				}
-				return null;
 			}
+			return null;
 		}
 		else if (player == null) return null;
 		else if(args.length == 1)
@@ -204,13 +203,9 @@ public class HomeCommand extends MarryCommand
 				CommonMessages.getMessageTargetPartnerNotFound().send(sender);
 				return null;
 			}
-			marriage = player.getMarriageData(partner);
+			return player.getMarriageData(partner);
 		}
-		else
-		{
-			marriage = player.getMarriageData();
-		}
-		return marriage;
+		return player.getMarriageData();
 	}
 
 	private @Nullable Marriage getTargetedMarriage(@NotNull CommandSender sender, @Nullable MarriagePlayer player, @NotNull String[] args)
@@ -363,41 +358,50 @@ public class HomeCommand extends MarryCommand
 		{
 			if(!(sender instanceof Player))
 			{
-				if((getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2) || (!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1))
+				executeConsole(sender, mainCommandAlias, args);
+			}
+			else
+			{
+				executePlayer(sender, getMarriagePlugin().getPlayerData((Player) sender), args);
+			}
+		}
+
+		private void executeConsole(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String[] args)
+		{
+			if((getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2) || (!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1))
+			{
+				Marriage marriageData = homeCommand.getTargetedMarriage(sender, null, args);
+				if(marriageData != null)
 				{
-					Marriage marriageData = homeCommand.getTargetedMarriage(sender, null, args);
-					if(marriageData != null)
-					{
-						marriageData.setHome(null);
-						messageHomeDeleted.send(sender);
-					}
-				}
-				else
-				{
-					showHelp(sender, mainCommandAlias);
+					marriageData.setHome(null);
+					messageHomeDeleted.send(sender);
 				}
 			}
 			else
 			{
-				MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-				if(player.isMarried() || (sender.hasPermission(Permissions.HOME_OTHERS) && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
+				showHelp(sender, mainCommandAlias);
+			}
+		}
+
+		private void executePlayer(final CommandSender sender, final @NotNull MarriagePlayer player, final String[] args)
+		{
+			if(player.isMarried() || (player.hasPermission(Permissions.HOME_OTHERS) && ((!getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 1) || (getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2))))
+			{
+				Marriage marriage = getTargetedMarriage(sender, player, args);
+				if(marriage != null)
 				{
-					Marriage marriage = getTargetedMarriage(sender, player, args);
-					if(marriage != null)
+					HomeDelEvent event = new HomeDelEvent(player, marriage);
+					Bukkit.getPluginManager().callEvent(event);
+					if(!event.isCancelled())
 					{
-						HomeDelEvent event = new HomeDelEvent(player, marriage);
-						Bukkit.getPluginManager().callEvent(event);
-						if(!event.isCancelled())
-						{
-							marriage.setHome(null);
-							messageHomeDeleted.send(sender);
-						}
+						marriage.setHome(null);
+						player.send(messageHomeDeleted);
 					}
 				}
-				else
-				{
-					CommonMessages.getMessageNotMarried().send(sender);
-				}
+			}
+			else
+			{
+				player.send(CommonMessages.getMessageNotMarried());
 			}
 		}
 
