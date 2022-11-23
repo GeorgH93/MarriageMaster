@@ -54,21 +54,26 @@ public class MarryDivorceCommand extends MarryCommand
 		}
 	}
 
+	private boolean canSelfDivorce(final @NotNull MarriagePlayer player)
+	{
+		return getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && player.hasPermission(Permissions.SELF_DIVORCE);
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		final MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(player == null || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE)))
+		final boolean priest = player == null || player.isPriest();
+		if(priest || canSelfDivorce(player))
 		{
-			if((player == null || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
+			if(priest && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
 			{
-				executePriestMarriage(sender, player, args);
+				executePriestDivorce(sender, player, args);
 			}
-			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE) &&
-					(getMarriagePlugin().areMultiplePartnersAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
+			else if(player != null && canSelfDivorce(player) && (getMarriagePlugin().areMultiplePartnersAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
-				executeSelfMarriage(player, args);
+				executeSelfDivorce(player, args);
 			}
 			else
 			{
@@ -81,7 +86,7 @@ public class MarryDivorceCommand extends MarryCommand
 		}
 	}
 
-	private void executePriestMarriage(final @NotNull CommandSender sender, final @Nullable MarriagePlayer player, final @NotNull String[] args)
+	private void executePriestDivorce(final @NotNull CommandSender sender, final @Nullable MarriagePlayer player, final @NotNull String[] args)
 	{
 		MarriagePlayer p1 = getMarriagePlugin().getPlayerData(args[0]);
 		if(args.length == 1)
@@ -102,37 +107,36 @@ public class MarryDivorceCommand extends MarryCommand
 					getMarriagePlugin().getMarriageManager().divorce(marriage, sender);
 				}
 			}
+			return;
 		}
-		else
+
+		MarriagePlayer p2 = getMarriagePlugin().getPlayerData(args[1]);
+		if(!p1.isMarried())
 		{
-			MarriagePlayer p2 = getMarriagePlugin().getPlayerData(args[1]);
-			if(!p1.isMarried())
+			CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
+		}
+		else if(!p2.isMarried())
+		{
+			CommonMessages.getMessagePlayerNotMarried().send(sender, args[1]);
+		}
+		else if(p1.isPartner(p2))
+		{
+			if(player != null)
 			{
-				CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
-			}
-			else if(!p2.isMarried())
-			{
-				CommonMessages.getMessagePlayerNotMarried().send(sender, args[1]);
-			}
-			else if(p1.isPartner(p2))
-			{
-				if(player != null)
-				{
-					getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), player, p1);
-				}
-				else
-				{
-					getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), sender);
-				}
+				getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), player, p1);
 			}
 			else
 			{
-				CommonMessages.getMessagePlayersNotMarried().send(sender);
+				getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), sender);
 			}
+		}
+		else
+		{
+			CommonMessages.getMessagePlayersNotMarried().send(sender);
 		}
 	}
 
-	private void executeSelfMarriage(final @NotNull MarriagePlayer player, final @NotNull String[] args)
+	private void executeSelfDivorce(final @NotNull MarriagePlayer player, final @NotNull String[] args)
 	{
 		Marriage marriage;
 		if(args.length == 1)
@@ -173,7 +177,7 @@ public class MarryDivorceCommand extends MarryCommand
 				names = player1.getMatchingPartnerNames(args[1]);
 			}
 		}
-		else if(getMarriagePlugin().isSelfDivorceAllowed() && marriagePlayerData.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE))
+		else if(canSelfDivorce(marriagePlayerData))
 		{
 			names = marriagePlayerData.getMatchingPartnerNames(args[args.length - 1]);
 		}
