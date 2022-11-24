@@ -76,7 +76,7 @@ public class MarryMarryCommand extends MarryCommand
 				else
 				{
 					// Console can not marry a play even if self marriage is enabled. So we have to do other checks
-					executeConsole(sender, mainCommandAlias, args);
+					executePriest(sender, mainCommandAlias, args);
 				}
 			}
 			else
@@ -126,33 +126,19 @@ public class MarryMarryCommand extends MarryCommand
 		}
 		else // Priest only
 		{
-			if(args.length == 3 && getMarriagePlugin().isSurnamesEnabled())
-			{
-				getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender, args[2]);
-			}
-			else if(args.length == 2 && !getMarriagePlugin().isSurnamesForced())
-			{
-				getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender);
-			}
-			else
-			{
-				showHelp(sender, mainCommandAlias);
-			}
+			executePriest(sender, mainCommandAlias, args);
 		}
 	}
 
-	private void executeConsole(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String[] args)
+	private void executePriest(final @NotNull CommandSender sender, final @NotNull String mainCommandAlias, final @NotNull String[] args)
 	{
-		if((args.length == 2 && !getMarriagePlugin().isSurnamesForced()) || (args.length == 3 && getMarriagePlugin().isSurnamesEnabled()))
+		if(args.length == 3 && getMarriagePlugin().isSurnamesEnabled())
 		{
-			if(args.length == 3)
-			{
-				getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender, args[2]);
-			}
-			else
-			{
-				getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender);
-			}
+			getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender, args[2]);
+		}
+		else if(args.length == 2 && !getMarriagePlugin().isSurnamesForced())
+		{
+			getMarriagePlugin().getMarriageManager().marry(getMarriagePlugin().getPlayerData(args[0]), getMarriagePlugin().getPlayerData(args[1]), sender);
 		}
 		else
 		{
