@@ -50,36 +50,34 @@ public class RequestCancelCommand extends MarryCommand
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 		if(!player.getRequestsToCancel().isEmpty())
+		{ // No open requests
+			messageNothingToCancel.send(sender);
+			return;
+		}
+
+		if (args.length == 0)
+		{ // No args, cancel first request
+			player.getRequestsToCancel().get(0).cancel(player);
+			return;
+		}
+
+		if(getMarriagePlugin().getCommandManager().isAllSwitch(args[0]))
 		{
-			if(getMarriagePlugin().getCommandManager().isAllSwitch(args[0]))
+			for(AcceptPendingRequest request : player.getRequestsToCancel())
 			{
-				for(AcceptPendingRequest request : player.getRequestsToCancel())
-				{
-					request.cancel(player);
-				}
-			}
-			else
-			{
-				if(player.getRequestsToCancel().size() > 1)
-				{
-					MarriagePlayer otherPlayer = getMarriagePlugin().getPlayerData(args[0]);
-					for(AcceptPendingRequest request : player.getRequestsToCancel())
-					{
-						if(request.getPlayerThatHasToAccept().equals(otherPlayer))
-						{
-							request.cancel(player);
-						}
-					}
-				}
-				else
-				{
-					player.getRequestsToCancel().get(0).cancel(player);
-				}
+				request.cancel(player);
 			}
 		}
 		else
 		{
-			messageNothingToCancel.send(sender);
+			MarriagePlayer otherPlayer = getMarriagePlugin().getPlayerData(args[0]);
+			for(AcceptPendingRequest request : player.getRequestsToCancel())
+			{
+				if(request.getPlayerThatHasToAccept().equals(otherPlayer))
+				{
+					request.cancel(player);
+				}
+			}
 		}
 	}
 
