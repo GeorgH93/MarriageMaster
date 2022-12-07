@@ -6,12 +6,12 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>2.6.8-RC1</revision>
+		<revision>2.6.8</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
-		<pcgfPluginLibVersion>1.0.37-SNAPSHOT</pcgfPluginLibVersion>
+		<pcgfPluginLibVersion>1.0.38-SNAPSHOT</pcgfPluginLibVersion>
 
 		<configFileVersion>106</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
