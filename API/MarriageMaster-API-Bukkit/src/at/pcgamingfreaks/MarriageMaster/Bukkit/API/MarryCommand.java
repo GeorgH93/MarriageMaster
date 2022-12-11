@@ -167,7 +167,7 @@ public abstract class MarryCommand extends SubCommand implements at.pcgamingfrea
 	 * @return A List of possible completions for the final argument, or null to default to the command executor.
 	 */
 	@Override
-	public List<String> doTabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String... args)
+	public @Nullable List<String> doTabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String... args)
 	{
 		if(playerOnly && !(sender instanceof Player))
 		{

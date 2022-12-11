@@ -15,18 +15,20 @@
  *   along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
+package at.pcgamingfreaks.MarriageMaster.Bungee.Commands;
 
-import at.pcgamingfreaks.Bukkit.Message.Message;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+import at.pcgamingfreaks.Bungee.Message.Message;
+import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
+import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 
-import org.bukkit.command.CommandSender;
+import net.md_5.bungee.api.CommandSender;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ReloadCommand extends MarryCommand
 {
@@ -35,7 +37,7 @@ public class ReloadCommand extends MarryCommand
 
 	public ReloadCommand(MarriageMaster plugin)
 	{
-		super(plugin, "reload", plugin.getLanguage().getTranslated("Commands.Description.Reload"), Permissions.RELOAD, plugin.getLanguage().getCommandAliases("Reload"));
+		super(plugin, "breload", plugin.getLanguage().getTranslated("Commands.Description.Reload"), Permissions.RELOAD, plugin.getLanguage().getCommandAliases("BReload"));
 
 		// Load messages
 		messageReloading = plugin.getLanguage().getMessage("Ingame.Admin.Reloading");
@@ -44,7 +46,7 @@ public class ReloadCommand extends MarryCommand
 	}
 
 	@Override
-	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public void execute(@NotNull final CommandSender sender, @NotNull String s, @NotNull String s1, @NotNull String[] args)
 	{
 		if(args.length == 0)
 		{
@@ -56,12 +58,12 @@ public class ReloadCommand extends MarryCommand
 		{
 			messageReloadingDatabase.send(sender);
 			((MarriageMaster) getMarriagePlugin()).getDatabase().resync();
-			plugin.getServer().getScheduler().runTaskLater(plugin, () -> messageReloaded.send(sender), 20);
+			plugin.getProxy().getScheduler().schedule(plugin, () -> messageReloaded.send(sender), 1, TimeUnit.SECONDS);
 		}
 	}
 
 	@Override
-	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
+	public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String s, @NotNull String s1, @NotNull String[] args)
 	{
 		if(args.length == 1 && DATABASE.startsWith(args[0]))
 		{
@@ -69,6 +71,6 @@ public class ReloadCommand extends MarryCommand
 			tab.add(DATABASE);
 			return tab;
 		}
-		return EMPTY_TAB_COMPLETE_LIST;
+		return null;
 	}
 }

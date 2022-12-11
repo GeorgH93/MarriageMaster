@@ -26,6 +26,8 @@ import java.util.logging.Logger;
 
 public class Files
 {
+	private static final String KEY_LOCATION = "MarriedHome.location.";
+
 	private final Set<String> priests = new HashSet<>();
 	private final Set<MigrationMarriage> marriages = new HashSet<>();
 	private final Map<String, YAML> marryMap = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -122,7 +124,7 @@ public class Files
 	{
 		try
 		{
-			return new Home(yaml.getDouble("MarriedHome.location.X"), yaml.getDouble("MarriedHome.location.Y"), yaml.getDouble("MarriedHome.location.Z"), yaml.getString("MarriedHome.location.World"));
+			return new Home(yaml.getDouble(KEY_LOCATION + "X"), yaml.getDouble(KEY_LOCATION + "Y"), yaml.getDouble(KEY_LOCATION + "Z"), yaml.getString(KEY_LOCATION + "World"));
 		}
 		catch(Exception ignored) { }
 		return null;
@@ -162,7 +164,7 @@ public class Files
 		if(file.exists())
 		{
 			File[] allFiles = file.listFiles();
-			if(allFiles != null && allFiles.length > 0)
+			if(allFiles != null)
 			{
 				for(File item : allFiles)
 				{
@@ -187,8 +189,7 @@ public class Files
 				marryMap.put(player, new YAML(file));
 				if(marryMap.get(player).getString("MarriedTo", "").equalsIgnoreCase(player))
 				{
-					marryMap.get(player).dispose();
-					marryMap.remove(player);
+					marryMap.remove(player).dispose();
 					if(!file.delete())
 					{
 						logger.warning("Failed to delete file (" + file.getAbsolutePath() + ").");
@@ -201,7 +202,7 @@ public class Files
 			}
 			catch(Exception e)
 			{
-				logger.log(Level.SEVERE, "Failed to load player data for " + player, e);
+				logger.log(Level.SEVERE, e, () -> "Failed to load player data for " + player);
 			}
 		}
 	}

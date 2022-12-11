@@ -71,9 +71,10 @@ public abstract class PluginChannelCommunicatorBase
 	{
 		if(channel.equals(CHANNEL_MARRIAGE_MASTER))
 		{
+			String cmd = "unknown";
 			try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 			{
-				String cmd = in.readUTF();
+				cmd = in.readUTF();
 				switch(cmd)
 				{
 					case "updateHome":
@@ -152,7 +153,11 @@ public abstract class PluginChannelCommunicatorBase
 			}
 			catch (IOException e)
 			{
-				logger.log(Level.WARNING, "Failed reading message from the bungee!", e);
+				logger.log(Level.WARNING, "Failed reading message from the bungee (" + cmd + ")!", e);
+			}
+			catch (NumberFormatException ne)
+			{
+				logger.log(Level.WARNING, "Failed parsing id for command '" + cmd + "'.", ne);
 			}
 		}
 		else

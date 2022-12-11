@@ -20,8 +20,11 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Hooks;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderManager;
+import at.pcgamingfreaks.Version;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -134,8 +137,18 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 	@Override
 	public void testPlaceholders(final @NotNull BufferedWriter writer) throws IOException
 	{
-		writer.append("\nPlaceholderAPI integration test:\n");
-		PlaceholderHook hook = PlaceholderAPI.getPlaceholders().get(getIdentifier());
+		Version pluginVersion = getPlaceholderAPIVersion();
+		writer.append("\nPlaceholderAPI (").append(String.valueOf(pluginVersion)).append(") integration test:\n");
+		PlaceholderHook hook;
+		if (pluginVersion.olderThan("2.11.1"))
+		{
+			hook = PlaceholderAPI.getPlaceholders().get(getIdentifier());
+		}
+		else
+		{
+			hook = getPlaceholderAPI().getLocalExpansionManager().getExpansion(getIdentifier());
+		}
+
 		//noinspection ObjectEquality
 		if(hook == this)
 		{
@@ -145,9 +158,23 @@ public class ClipsPlaceholderHook extends PlaceholderExpansion implements Placeh
 		{
 			writer.append("Failed! marriagemaster placeholders are hooked to the right class, but the wrong instance!");
 		}
-		else
+		else if (hook != null)
 		{
 			writer.append("Failed! marriagemaster_ placeholders are linked to: ").append(hook.getClass().getName());
 		}
+		else
+		{
+			writer.append("Failed! marriagemaster_ placeholders are not linked.");
+		}
+	}
+
+	public Version getPlaceholderAPIVersion()
+	{
+		Plugin plugin = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
+		if (plugin != null)
+		{
+			return new Version(plugin.getDescription().getVersion());
+		}
+		return new Version(0);
 	}
 }

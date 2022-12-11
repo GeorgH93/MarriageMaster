@@ -34,7 +34,7 @@ public class UpdateCommand extends MarryCommand
 
 	public UpdateCommand(MarriageMaster plugin)
 	{
-		super(plugin, "update", plugin.getLanguage().getTranslated("Commands.Description.Update"), Permissions.UPDATE, plugin.getLanguage().getCommandAliases("Update"));
+		super(plugin, "bupdate", plugin.getLanguage().getTranslated("Commands.Description.Update"), Permissions.UPDATE, plugin.getLanguage().getCommandAliases("BUpdate"));
 
 		messageCheckingForUpdates   = plugin.getLanguage().getMessage("Ingame.Admin.CheckingForUpdates");
 		messageUpdated              = plugin.getLanguage().getMessage("Ingame.Admin.Updated");

@@ -203,75 +203,90 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 	}
 
+	private Set<StructMarriageSQL> loadMarriages(final @NotNull Connection connection, final @NotNull Set<Integer> playerToLoad)
+	{
+		Set<StructMarriageSQL> marriagesSet = new HashSet<>();
+		logger.info("Loading marriages ...");
+		try(PreparedStatement ps = connection.prepareStatement(queryLoadMarriages); ResultSet rs = ps.executeQuery())
+		{
+			while(rs.next())
+			{
+				marriagesSet.add(new StructMarriageSQL(rs.getInt(fieldMarryID), rs.getInt(fieldPlayer1), rs.getInt(fieldPlayer2), rs.getInt(fieldPriest), rs.getBoolean(fieldPVPState), rs.getString(fieldColor),
+				                                       surnameEnabled ? rs.getString(fieldSurname) : null, rs.getTimestamp(fieldDate)));
+				playerToLoad.add(rs.getInt(fieldPlayer1));
+				playerToLoad.add(rs.getInt(fieldPlayer2));
+				if(rs.getObject(fieldPriest) != null) playerToLoad.add(rs.getInt(fieldPriest));
+			}
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Failed to load marriages!", e);
+			platform.spawnDatabaseLoadingErrorMessage("Failed to load marriages - " + e.getMessage());
+		}
+		logger.info("Marriages loaded");
+		return marriagesSet;
+	}
+
+	private Set<Integer> loadPriests(final @NotNull Connection connection)
+	{
+		logger.info("Loading priests ...");
+		Set<Integer> priests = new HashSet<>();
+		try(PreparedStatement ps = connection.prepareStatement(queryLoadPriests); ResultSet rs = ps.executeQuery())
+		{
+			while(rs.next())
+			{
+				priests.add(rs.getInt(fieldPriestID));
+			}
+		}
+		catch(Exception e)
+		{
+			logger.log(Level.SEVERE, "Failed to load priests!", e);
+			platform.spawnDatabaseLoadingErrorMessage("Failed to load priests - " + e.getMessage());
+		}
+		logger.info("Priests loaded");
+		return priests;
+	}
+
+	private void loadPlayers(final @NotNull Connection connection, final @NotNull Set<Integer> playerToLoad, final @NotNull Set<Integer> priests)
+	{
+		logger.info("Loading players ...");
+		//TODO validate the performance loss for individual queries to load the data
+		if(!playerToLoad.isEmpty())
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			for(int pid : playerToLoad)
+			{
+				if(stringBuilder.length() > 0) stringBuilder.append(',');
+				stringBuilder.append(pid);
+			}
+			try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
+			{
+				while(rs.next())
+				{
+					MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
+					                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
+					cache.cache(player);
+				}
+			}
+			catch(Exception e)
+			{
+				logger.log(Level.SEVERE, "Failed to load players!", e);
+				platform.spawnDatabaseLoadingErrorMessage("Failed to load players - " + e.getMessage());
+			}
+		}
+		logger.info("Players loaded");
+	}
+
 	@Override
 	public void loadAll()
 	{
-		Set<StructMarriageSQL> marriagesSet = new HashSet<>();
-		Set<Integer> playerToLoad = new FilteredHashSet<>(element -> element >= 0);
 		try(Connection connection = getConnection())
 		{
-			// Load marriages
-			logger.info("Loading marriages ...");
-			try(PreparedStatement ps = connection.prepareStatement(queryLoadMarriages); ResultSet rs = ps.executeQuery())
-			{
-				while(rs.next())
-				{
-					marriagesSet.add(new StructMarriageSQL(rs.getInt(fieldMarryID), rs.getInt(fieldPlayer1), rs.getInt(fieldPlayer2), rs.getInt(fieldPriest), rs.getBoolean(fieldPVPState), rs.getString(fieldColor),
-					                                       surnameEnabled ? rs.getString(fieldSurname) : null, rs.getTimestamp(fieldDate)));
-					playerToLoad.add(rs.getInt(fieldPlayer1));
-					playerToLoad.add(rs.getInt(fieldPlayer2));
-					if(rs.getObject(fieldPriest) != null) playerToLoad.add(rs.getInt(fieldPriest));
-				}
-			}
-			catch(Exception e)
-			{
-				logger.log(Level.SEVERE, "Failed to load marriages!", e);
-				platform.spawnDatabaseLoadingErrorMessage("Failed to load marriages - " + e.getMessage());
-			}
-			logger.info("Marriages loaded");
-			// Load priests
-			logger.info("Loading priests ...");
-			Set<Integer> priests = new HashSet<>();
-			try(PreparedStatement ps = connection.prepareStatement(queryLoadPriests); ResultSet rs = ps.executeQuery())
-			{
-				while(rs.next())
-				{
-					priests.add(rs.getInt(fieldPriestID));
-				}
-			}
-			catch(Exception e)
-			{
-				logger.log(Level.SEVERE, "Failed to load priests!", e);
-				platform.spawnDatabaseLoadingErrorMessage("Failed to load priests - " + e.getMessage());
-			}
-			logger.info("Priests loaded");
-			// Load players
-			logger.info("Loading players ...");
-			//TODO validate the performance loss for individual queries to load the data
-			if(!playerToLoad.isEmpty())
-			{
-				StringBuilder stringBuilder = new StringBuilder();
-				for(int pid : playerToLoad)
-				{
-					if(stringBuilder.length() > 0) stringBuilder.append(',');
-					stringBuilder.append(pid);
-				}
-				try(Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(queryLoadPlayersFromID.replace("`{IDs}`", stringBuilder.toString())))
-				{
-					while(rs.next())
-					{
-						MARRIAGE_PLAYER player = platform.producePlayer(getUUIDFromIdentifier(rs.getString(fieldUUID)), rs.getString(fieldName), rs.getBoolean(fieldShareBackpack),
-						                                                priests.contains(rs.getInt(fieldPlayerID)), rs.getInt(fieldPlayerID));
-						cache.cache(player);
-					}
-				}
-				catch(Exception e)
-				{
-					logger.log(Level.SEVERE, "Failed to load players!", e);
-					platform.spawnDatabaseLoadingErrorMessage("Failed to load players - " + e.getMessage());
-				}
-			}
-			logger.info("Players loaded");
+			Set<Integer> playerToLoad = new FilteredHashSet<>(element -> element >= 0);
+			Set<StructMarriageSQL> marriagesSet = loadMarriages(connection, playerToLoad); // Load marriages
+			Set<Integer> priests = loadPriests(connection); // Load priests
+			loadPlayers(connection, playerToLoad, priests); // Load players
+
 			// Load the marriages into the cache
 			logger.info("Writing marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
@@ -284,7 +299,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.warning("Player " + (player1 == null ? "1" : "2") + " for marriage " + sm.marryID + " has not been loaded. Skipping");
+					logger.log(Level.WARNING, "Player {} for marriage {} has not been loaded. Skipping", new Object[]{ (player1 == null ? 1 : 2), sm.marryID });
 				}
 			}
 			logger.info("Marriages loaded into cache");
@@ -359,13 +374,13 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			while(rs.next())
 			{
 				String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-				homes.put(rs.getInt(fieldMarryID), platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
+				homes.put(rs.getInt(fieldMarryID), platform.produceHome(rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 			}
 			for(MARRIAGE marriage : cache.getLoadedMarriages())
 			{
 				if(marriage.getDatabaseKey() instanceof Integer)
 				{
-					marriage.setHomeData(homes.get((Integer) marriage.getDatabaseKey()));
+					marriage.setHomeData(homes.get(marriage.getDatabaseKey()));
 				}
 			}
 		}
@@ -391,7 +406,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						if(rs.next())
 						{
 							String homeServer = (useBungee) ? rs.getString(fieldHomeServer) : null;
-							marriage.setHomeData(platform.produceHome("", rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
+							marriage.setHomeData(platform.produceHome(rs.getString(fieldHomeWorld), homeServer, rs.getDouble(fieldHomeX), rs.getDouble(fieldHomeY), rs.getDouble(fieldHomeZ), rs.getFloat(fieldHomeYaw), rs.getFloat(fieldHomePitch)));
 						}
 						else
 						{
@@ -401,7 +416,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				catch(SQLException e)
 				{
-					logger.log(Level.SEVERE, "Failed to load home for marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
+					logger.log(Level.SEVERE, e, () -> "Failed to load home for marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName());
 				}
 			}
 		}, marriage);
@@ -432,7 +447,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.SEVERE, "Failed to load player data for " + player.getName() + " (" + player.getUUID() + ")!", e);
+			logger.log(Level.SEVERE, e, () -> "Failed to load player data for " + player.getName() + " (" + player.getUUID() + ")!");
 		}
 	}
 
@@ -576,7 +591,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			}
 			catch(SQLException e)
 			{
-				logger.log(Level.SEVERE, "Failed to save marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName(), e);
+				logger.log(Level.SEVERE, e, () -> "Failed to save marriage " + marriage.getPartner1().getName() + " - " + marriage.getPartner2().getName());
 			}
 		});
 	}
@@ -605,7 +620,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.info("No auto ID for player \"" + player.name + "\", try to load id from database ...");
+					logger.log(Level.INFO, "No auto ID for player \"{}\", try to load id from database ...", player.name);
 					try(PreparedStatement ps2 = connection.prepareStatement(queryLoadPlayer))
 					{
 						ps2.setString(1, player.uuid);
@@ -617,7 +632,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 							}
 							else
 							{
-								logger.warning(ConsoleColor.RED + "No ID for player \"" + player.name + "\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET);
+								logger.log(Level.WARNING, ConsoleColor.RED + "No ID for player \"{}\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET, player.name);
 								return;
 							}
 						}
@@ -635,7 +650,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.WARNING, ConsoleColor.RED + "Failed migrating player \"" + player.name + "\"!" + ConsoleColor.RESET, e);
+			logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed migrating player \"" + player.name + "\"!" + ConsoleColor.RESET);
 		}
 	}
 
@@ -661,19 +676,19 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						}
 						catch(SQLException e)
 						{
-							logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
+							logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed adding home for marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
 						}
 					}
 				}
 				else
 				{
-					logger.warning("No ID for marriage \"" + marriage.player1.name + "<->" + marriage.player2.name + "\"!");
+					logger.log(Level.WARNING, "No ID for marriage \"{} <-> {}\"!", new Object[]{marriage.player1.name, marriage.player2.name});
 				}
 			}
 		}
 		catch(SQLException e)
 		{
-			logger.log(Level.WARNING, ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET, e);
+			logger.log(Level.WARNING, e, () -> ConsoleColor.RED + "Failed adding marriage \"" + marriage.player1.name + " <-> " + marriage.player2.name + "\"!" + ConsoleColor.RESET);
 		}
 	}
 

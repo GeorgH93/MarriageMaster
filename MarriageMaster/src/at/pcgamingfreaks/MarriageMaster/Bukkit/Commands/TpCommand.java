@@ -142,32 +142,36 @@ public class TpCommand extends MarryCommand
 		return getMarriagePlugin().getCommandManager().getSimpleTabComplete(sender, args);
 	}
 
+	private Material getMaterial(final @Nullable Block block)
+	{
+		if (block == null) return Material.AIR;
+		return block.getType();
+	}
+
+	private boolean checkBlock(Block block, Material mat)
+	{
+		return (block == null || (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? (block.isPassable() && !BAD_MATS.contains(mat)) : block.isEmpty()));
+	}
+
 	private @Nullable Location getSafeLoc(@NotNull Location loc)
 	{
-		Material mat, matB1, matB2;
 		World w = loc.getWorld();
 		if(w == null) return null;
 		int y = loc.getBlockY();
 		if(loc.getY() - y < 0.001) y--;
 		int x = loc.getBlockX(), z = loc.getBlockZ(), miny = MCVersion.isOlderThan(MCVersion.MC_1_17) ? Math.max(y - 10, 1) : y - 10;
 		Block b, b1 = w.getBlockAt(x, y + 1, z), b2 = w.getBlockAt(x, y + 2, z);
-		matB1 = b1 == null ? Material.AIR : b1.getType();
-		matB2 = b2 == null ? Material.AIR : b1.getType();
+		Material mat, matB1 = getMaterial(b1), matB2 = getMaterial(b2);
 		for(loc = null; y > miny && loc == null; y--)
 		{
 			b = w.getBlockAt(x, y, z);
-			mat = b == null ? Material.AIR : b.getType();
-			if(b != null && !b.isEmpty())
+			mat = getMaterial(b);
+			if(b != null && !b.isEmpty() && ((!BAD_MATS.contains(mat) && mat != Material.AIR) && checkBlock(b1, matB1) && checkBlock(b2, matB2)))
 			{
-				if((!BAD_MATS.contains(mat) && mat != Material.AIR) &&
-						(b1 == null || (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? (b1.isPassable() && !BAD_MATS.contains(matB1)) : b1.isEmpty())) &&
-						(b2 == null || (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_13) ? (b2.isPassable() && !BAD_MATS.contains(matB2)) : b2.isEmpty())))
-				{
-					loc = b.getLocation();
-					loc.setX(loc.getX() + 0.5);
-					loc.setY(loc.getY() + 1);
-					loc.setZ(loc.getZ() + 0.5);
-				}
+				loc = b.getLocation();
+				loc.setX(loc.getX() + 0.5);
+				loc.setY(loc.getY() + 1);
+				loc.setZ(loc.getZ() + 0.5);
 			}
 			b2 = b1;
 			matB2 = matB1;

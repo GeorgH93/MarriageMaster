@@ -21,7 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
@@ -54,9 +54,9 @@ public class PriestDivorceAcceptRequest extends AcceptPendingRequest
 	private final boolean first;
 	private final Marriage marriage;
 	private final MarriagePlayer partner, priest;
-	private final MarriageManager manager;
+	private final MarriageManagerImpl manager;
 
-	public PriestDivorceAcceptRequest(@NotNull MarriageManager manager, @NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer priest, @NotNull Marriage marriage, boolean first)
+	public PriestDivorceAcceptRequest(@NotNull MarriageManagerImpl manager, @NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer priest, @NotNull Marriage marriage, boolean first)
 	{
 		super(hasToAccept, ((marriage.getPartner(hasToAccept).isOnline()) ? new MarriagePlayer[] { marriage.getPartner(hasToAccept), priest } : new MarriagePlayer[] { priest }));
 		this.first = first;

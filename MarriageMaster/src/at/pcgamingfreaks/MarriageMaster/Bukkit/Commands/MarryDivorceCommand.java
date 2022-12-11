@@ -29,6 +29,7 @@ import at.pcgamingfreaks.MarriageMaster.Permissions;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,82 +57,18 @@ public class MarryDivorceCommand extends MarryCommand
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
+		final MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
 		if(player == null || player.isPriest() || (getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE)))
 		{
 			if((player == null || player.isPriest()) && (getMarriagePlugin().areMultiplePartnersAllowed() ? args.length == 2 : args.length == 1))
 			{
-				MarriagePlayer p1 = getMarriagePlugin().getPlayerData(args[0]);
-				if(args.length == 1)
-				{
-					Marriage marriage = p1.getMarriageData();
-					if(marriage == null)
-					{
-						CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
-					}
-					else
-					{
-						if(player != null)
-						{
-							getMarriagePlugin().getMarriageManager().divorce(marriage, player, p1);
-						}
-						else
-						{
-							getMarriagePlugin().getMarriageManager().divorce(marriage, sender);
-						}
-					}
-				}
-				else
-				{
-					MarriagePlayer p2 = getMarriagePlugin().getPlayerData(args[1]);
-					if(!p1.isMarried())
-					{
-						CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
-					}
-					else if(!p2.isMarried())
-					{
-						CommonMessages.getMessagePlayerNotMarried().send(sender, args[1]);
-					}
-					else if(p1.isPartner(p2))
-					{
-						if(player != null)
-						{
-							getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), player, p1);
-						}
-						else
-						{
-							getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), sender);
-						}
-					}
-					else
-					{
-						CommonMessages.getMessagePlayersNotMarried().send(sender);
-					}
-				}
+				executePriestMarriage(sender, player, args);
 			}
 			else if(player != null && getMarriagePlugin().isSelfDivorceAllowed() && player.isMarried() && sender.hasPermission(Permissions.SELF_DIVORCE) &&
 					(getMarriagePlugin().areMultiplePartnersAllowed() ? (args.length == 1 || player.getPartners().size() == 1 && args.length == 0) : args.length == 0))
 			{
 				// Self marriage
-				Marriage marriage;
-				if(args.length == 1)
-				{
-					MarriagePlayer player2 = player.getPartner(args[0]);
-					if(player2 == null)
-					{
-						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-						return;
-					}
-					else
-					{
-						marriage = player.getMarriageData(player2);
-					}
-				}
-				else
-				{
-					marriage = player.getMarriageData();
-				}
-				marriage.divorce(player);
+				executeSelfMarriage(player, args);
 			}
 			else
 			{
@@ -142,6 +79,80 @@ public class MarryDivorceCommand extends MarryCommand
 		{
 			CommonMessages.getMessageNoPermission().send(sender);
 		}
+	}
+
+	private void executePriestMarriage(final @NotNull CommandSender sender, final @Nullable MarriagePlayer player, final @NotNull String[] args)
+	{
+		MarriagePlayer p1 = getMarriagePlugin().getPlayerData(args[0]);
+		if(args.length == 1)
+		{
+			Marriage marriage = p1.getMarriageData();
+			if(marriage == null)
+			{
+				CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
+			}
+			else
+			{
+				if(player != null)
+				{
+					getMarriagePlugin().getMarriageManager().divorce(marriage, player, p1);
+				}
+				else
+				{
+					getMarriagePlugin().getMarriageManager().divorce(marriage, sender);
+				}
+			}
+		}
+		else
+		{
+			MarriagePlayer p2 = getMarriagePlugin().getPlayerData(args[1]);
+			if(!p1.isMarried())
+			{
+				CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
+			}
+			else if(!p2.isMarried())
+			{
+				CommonMessages.getMessagePlayerNotMarried().send(sender, args[1]);
+			}
+			else if(p1.isPartner(p2))
+			{
+				if(player != null)
+				{
+					getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), player, p1);
+				}
+				else
+				{
+					getMarriagePlugin().getMarriageManager().divorce(p1.getMarriageData(p2), sender);
+				}
+			}
+			else
+			{
+				CommonMessages.getMessagePlayersNotMarried().send(sender);
+			}
+		}
+	}
+
+	private void executeSelfMarriage(final @NotNull MarriagePlayer player, final @NotNull String[] args)
+	{
+		Marriage marriage;
+		if(args.length == 1)
+		{
+			MarriagePlayer player2 = player.getPartner(args[0]);
+			if(player2 == null)
+			{
+				player.send(CommonMessages.getMessageTargetPartnerNotFound());
+				return;
+			}
+			else
+			{
+				marriage = player.getMarriageData(player2);
+			}
+		}
+		else
+		{
+			marriage = player.getMarriageData();
+		}
+		marriage.divorce(player);
 	}
 
 	@Override

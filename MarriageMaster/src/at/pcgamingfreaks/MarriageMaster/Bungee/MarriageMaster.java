@@ -53,9 +53,9 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance = null;
 
 	@Getter private ManagedUpdater updater;
-	private Config config = null;
+	@Getter private Config config = null;
 	@Getter private Language language = null;
-	private Database database = null;
+	@Getter private Database database = null;
 	@Getter private PluginChannelCommunicator pluginChannelCommunicator = null;
 	private final CommandManagerImplementation commandManager = new CommandManagerImplementation(this);
 
@@ -149,16 +149,6 @@ public class MarriageMaster extends Plugin implements MarriageMasterPlugin, IPlu
 		config.reload();
 		load();
 		//getProxy().getPluginManager().callEvent(new MarriageMasterReloadEvent());
-	}
-
-	public Config getConfig()
-	{
-		return config;
-	}
-
-	public Database getDatabase()
-	{
-		return database;
 	}
 
 	//region API Stuff

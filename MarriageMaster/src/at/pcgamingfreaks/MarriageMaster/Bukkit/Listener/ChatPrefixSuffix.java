@@ -29,7 +29,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.jetbrains.annotations.Async;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ChatPrefixSuffix implements Listener
 {
@@ -64,54 +66,68 @@ public class ChatPrefixSuffix implements Listener
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChat(final AsyncPlayerChatEvent event)
 	{
-		String format = event.getFormat();
-		boolean changed = false;
 		final MarriagePlayer player = plugin.getPlayerData(event.getPlayer());
 		if(player.isMarried())
 		{
-			final Marriage marriage = player.getMarriageData();
-			//noinspection ConstantConditions
-			final MarriagePlayer partner = marriage.getPartner(player);
-			//noinspection ConstantConditions
-			String p = prefixFormatter.format(marriage, partner), s = suffixFormatter.format(marriage, partner);
-			if(p.length() == 1) p = "";
-			if(s.length() == 1) s = "";
-			changed = !p.isEmpty() || !s.isEmpty();
-			if(prefixOnLineBeginning)
-			{
-				format = p + format.replace("%1$s", "%1$s" + s);
-			}
-			else
-			{
-				format = format.replace("%1$s", p + "%1$s" + s);
-			}
+			handleMarriedPlayer(event, player);
 		}
 		else
 		{
-			if(useStatusHeartPrefix)
+			handleSinglePlayer(event);
+		}
+	}
+
+	private void handleMarriedPlayer(final @NotNull AsyncPlayerChatEvent event, final @NotNull MarriagePlayer player)
+	{
+		String format = event.getFormat();
+
+		final Marriage marriage = player.getMarriageData();
+		//noinspection ConstantConditions
+		final MarriagePlayer partner = marriage.getPartner(player);
+		//noinspection ConstantConditions
+		String p = prefixFormatter.format(marriage, partner), s = suffixFormatter.format(marriage, partner);
+		if(p.length() == 1) p = "";
+		if(s.length() == 1) s = "";
+		boolean changed = !p.isEmpty() || !s.isEmpty();
+		if(prefixOnLineBeginning)
+		{
+			format = p + format.replace("%1$s", "%1$s" + s);
+		}
+		else
+		{
+			format = format.replace("%1$s", p + "%1$s" + s);
+		}
+
+		if(changed) event.setFormat(format);
+	}
+
+	private void handleSinglePlayer(final @NotNull AsyncPlayerChatEvent event)
+	{
+		String format = event.getFormat();
+		boolean changed = false;
+		if(useStatusHeartPrefix)
+		{
+			if(prefixOnLineBeginning)
 			{
-				if(prefixOnLineBeginning)
-				{
-					format = HEART_GRAY + format;
-				}
-				else
-				{
-					format = format.replace("%1$s", STATUS_HEART_NM);
-				}
-				changed = true;
+				format = HEART_GRAY + format;
 			}
-			if(useStatusHeartSuffix)
+			else
 			{
-				if(prefixOnLineBeginning)
-				{
-					format = HEART_GRAY + format;
-				}
-				else
-				{
-					format = format.replace("%1$s", "%1$s " + HEART_GRAY);
-				}
-				changed = true;
+				format = format.replace("%1$s", STATUS_HEART_NM);
 			}
+			changed = true;
+		}
+		if(useStatusHeartSuffix)
+		{
+			if(prefixOnLineBeginning)
+			{
+				format = HEART_GRAY + format;
+			}
+			else
+			{
+				format = format.replace("%1$s", "%1$s " + HEART_GRAY);
+			}
+			changed = true;
 		}
 		if(changed) event.setFormat(format);
 	}

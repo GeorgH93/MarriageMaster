@@ -60,7 +60,15 @@ public class CustomHelpCommand extends MarryCommand
 	{
 		MarriagePlayer marriagePlayer = getMarriagePlugin().getPlayerData((Player) sender);
 		Player player = (Player) sender;
-		List<Message> messages = marriagePlayer.isMarried() ? messagesMarried : (marriagePlayer.isPriest() ? messagesPriest : messagesDefault);
+		List<Message> messages = messagesDefault;
+		if (marriagePlayer.isMarried())
+		{
+			messages = messagesMarried;
+		}
+		else if (marriagePlayer.isPriest())
+		{
+			messages = messagesPriest;
+		}
 		for(Message msg : messages)
 		{
 			msg.send(player);

@@ -21,7 +21,7 @@ import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
@@ -46,9 +46,9 @@ public class SelfDivorceAcceptRequest extends AcceptPendingRequest
 	}
 	
 	private final Marriage marriageData;
-	private final MarriageManager manager;
+	private final MarriageManagerImpl manager;
 
-	public SelfDivorceAcceptRequest(@NotNull MarriageManager manager, @NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer canCancel, @NotNull Marriage marriageData)
+	public SelfDivorceAcceptRequest(@NotNull MarriageManagerImpl manager, @NotNull MarriagePlayer hasToAccept, @NotNull MarriagePlayer canCancel, @NotNull Marriage marriageData)
 	{
 		super(hasToAccept, canCancel);
 		this.marriageData = marriageData;

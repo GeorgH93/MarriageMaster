@@ -111,15 +111,6 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 		}
 	}
 
-	public void unCache(MARRIAGE_PLAYER_DATA player)
-	{
-		players.remove(player.getUUID());
-		if(player.getDatabaseKey() != null)
-		{
-			databasePlayers.remove(player.getDatabaseKey());
-		}
-	}
-
 	public void unCache(MARRIAGE_DATA marriage)
 	{
 		marriages.remove(marriage);
@@ -183,7 +174,11 @@ public final class Cache<MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MA
 	@Override
 	public void unCache(@NotNull ICacheablePlayer player)
 	{
-		unCache((MARRIAGE_PLAYER_DATA) player);
+		MARRIAGE_PLAYER_DATA playerData = players.remove(player.getUUID());
+		if(playerData != null && playerData.getDatabaseKey() != null)
+		{
+			databasePlayers.remove(playerData.getDatabaseKey());
+		}
 	}
 
 	@Override

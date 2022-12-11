@@ -64,5 +64,8 @@ public class BonusXpListener implements Listener, IBonusXpListener<EntityDeathEv
 	}
 
 	@Override
-	public void splitWithPartner(EntityDeathEvent entityDeathEvent, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage) {}
+	public void splitWithPartner(EntityDeathEvent entityDeathEvent, Player partner, double xp, Object o, MarriagePlayer player, Marriage marriage)
+	{
+		// Split version is implemented in BonusXpSplitOnPickupListener
+	}
 }

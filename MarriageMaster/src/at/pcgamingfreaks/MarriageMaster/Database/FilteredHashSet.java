@@ -54,4 +54,10 @@ public class FilteredHashSet<T> extends HashSet<T>
 	{
 		return Objects.hash(super.hashCode(), filter);
 	}
+
+	@Override
+	public Object clone()
+	{
+		return super.clone();
+	}
 }

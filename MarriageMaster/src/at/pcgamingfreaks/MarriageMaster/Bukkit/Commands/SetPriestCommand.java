@@ -22,7 +22,7 @@ import at.pcgamingfreaks.Command.HelpData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManager;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.MarriageManagerImpl;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
@@ -32,6 +32,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import scala.concurrent.impl.FutureConvertersImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,57 +57,60 @@ public class SetPriestCommand extends MarryCommand
 		helpParam = "<" + CommonMessages.getHelpPlayerNameVariable() + ">";
 	}
 
+	private String getSenderDisplayName(final @NotNull CommandSender sender)
+	{
+		if (sender instanceof Player)
+		{
+			return ((Player) sender).getDisplayName();
+		}
+		return MarriageManagerImpl.CONSOLE_DISPLAY_NAME;
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		if(args.length > 0)
-		{
-			for(String arg : args)
-			{
-				Player bTarget = Bukkit.getPlayer(arg);
-				if(bTarget != null)
-				{
-					MarriagePlayer target = getMarriagePlugin().getPlayerData(bTarget);
-					if(bTarget.hasPermission(Permissions.PRIEST))
-					{
-						messagePerPermission.send(sender, target);
-					}
-					else
-					{
-						String senderDisplayName = sender instanceof Player ? ((Player) sender).getDisplayName() : MarriageManager.CONSOLE_DISPLAY_NAME;
-						if(target.isPriest())
-						{
-							messageYouFiredAPriest.send(sender, target);
-							messageFiredYou.send(bTarget, sender.getName(), senderDisplayName);
-							target.setPriest(false);
-						}
-						else
-						{
-							messageYouMadeAPriest.send(sender, target);
-							messageMadeYouAPriest.send(bTarget, sender.getName(), senderDisplayName);
-							target.setPriest(true);
-						}
-					}
-				}
-				else
-				{
-					CommonMessages.getMessagePlayerNotOnline().send(sender, arg);
-				}
-			}
-		}
-		else
+		if(args.length == 0)
 		{
 			showHelp(sender, mainCommandAlias);
+			return;
+		}
+		String senderName = sender.getName(), senderDisplayName = getSenderDisplayName(sender);
+		for(String arg : args)
+		{
+			Player bTarget = Bukkit.getPlayer(arg);
+			if(bTarget == null)
+			{
+				CommonMessages.getMessagePlayerNotOnline().send(sender, arg);
+				continue;
+			}
+
+			MarriagePlayer target = getMarriagePlugin().getPlayerData(bTarget);
+			if(bTarget.hasPermission(Permissions.PRIEST))
+			{
+				messagePerPermission.send(sender, target);
+			}
+			else if(target.isPriest())
+			{
+				messageYouFiredAPriest.send(sender, target);
+				messageFiredYou.send(bTarget, senderName, senderDisplayName);
+				target.setPriest(false);
+			}
+			else
+			{
+				messageYouMadeAPriest.send(sender, target);
+				messageMadeYouAPriest.send(bTarget, senderName, senderDisplayName);
+				target.setPriest(true);
+			}
 		}
 	}
 
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
+		List<String> names = new LinkedList<>();
 		if(args.length > 0)
 		{
 			String name, arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
-			List<String> names = new LinkedList<>();
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
 				name = player.getName().toLowerCase(Locale.ENGLISH);
@@ -114,9 +119,8 @@ public class SetPriestCommand extends MarryCommand
 					names.add(name);
 				}
 			}
-			return names;
 		}
-		return null;
+		return names;
 	}
 
 	@Override

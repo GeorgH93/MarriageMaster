@@ -17,12 +17,14 @@
 
 package at.pcgamingfreaks.MarriageMaster;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.InputStream;
 import java.util.Properties;
 
 public class MagicValues
 {
-	private static final char COLOR_CHAR = '\u00A7';
+	private static final char COLOR_CHAR = '\u00A7'; // §
 	public static final int LANG_VERSION, LANG_PRE_V2_VERSIONS = 90;
 	public static final int CONFIG_VERSION, BUNGEE_CONFIG_VERSION, CONFIG_PRE_V2_VERSIONS = 90;
 	public static final String SYMBOL_HEART = "\u2764", SYMBOL_SMALL_HEART = "\u2665", HEART_AND_RESET = SYMBOL_HEART + COLOR_CHAR + 'f', RED_HEART = COLOR_CHAR + 'c' + HEART_AND_RESET;
@@ -47,9 +49,23 @@ public class MagicValues
 			e.printStackTrace();
 		}
 		MIN_PCGF_PLUGIN_LIB_VERSION = pcgfPluginLibVersion;
-		LANG_VERSION = Integer.parseInt(langVersion);
-		CONFIG_VERSION = Integer.parseInt(configVersion);
-		BUNGEE_CONFIG_VERSION = Integer.parseInt(configVersionBungee);
+		// Try to parse the version strings, fall back to a known min version
+		LANG_VERSION = tryParse(langVersion, 112);
+		CONFIG_VERSION = tryParse(configVersion, 106);
+		BUNGEE_CONFIG_VERSION = tryParse(configVersionBungee, 102);
+	}
+
+	private static int tryParse(@NotNull String string, int fallbackValue)
+	{
+		try
+		{
+			return Integer.parseInt(string);
+		}
+		catch (NumberFormatException ignored)
+		{
+			System.out.println("Failed to parse integer '" + string + "'! Falling back to: " + fallbackValue);
+		}
+		return fallbackValue;
 	}
 
 	private MagicValues() { /* You should not create an instance of this utility class! */ }
