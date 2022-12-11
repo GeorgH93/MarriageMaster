@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ReloadCommand extends MarryCommand
 {
-	private final String DATABASE = "database";
+	private static final String DATABASE = "database";
 	private final Message messageReloading, messageReloaded, messageReloadingDatabase;
 
 	public ReloadCommand(MarriageMaster plugin)

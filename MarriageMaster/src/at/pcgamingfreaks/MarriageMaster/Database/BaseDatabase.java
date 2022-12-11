@@ -36,6 +36,7 @@ import lombok.Setter;
 import java.io.File;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin, MARRIAGE_PLAYER_DATA extends MarriagePlayerDataBase, MARRIAGE_DATA extends MarriageDataBase, HOME extends Home>
@@ -44,7 +45,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 
 	//region Messages
 	protected static final String MESSAGE_FILES_NO_LONGER_SUPPORTED = ConsoleColor.RED + "File based storage is no longer supported." + ConsoleColor.YELLOW + " Migrating to SQLite." + ConsoleColor.RESET;
-	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"%s\"!" + ConsoleColor.RESET;
+	protected static final String MESSAGE_UNKNOWN_DB_TYPE = ConsoleColor.RED + "Unknown database type \"{}\"!" + ConsoleColor.RESET;
 	protected static final String MESSAGE_CLEANING_DB_CACHE = "Cleaning database cache.", MESSAGE_DB_CACHE_CLEANED = "Database cache cleaned.";
 	//endregion
 
@@ -94,7 +95,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 					db.startup();
 					Converter.runConverter(logger, dbConfig, db, dataFolder);
 					return db;
-				default: logger.warning(String.format(MESSAGE_UNKNOWN_DB_TYPE, dbType)); return null;
+				default: logger.log(Level.WARNING, MESSAGE_UNKNOWN_DB_TYPE, dbType); return null;
 			}
 			if(!db.supportsBungeeCord())
 			{

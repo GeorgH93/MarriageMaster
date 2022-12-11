@@ -136,7 +136,15 @@ public abstract class MarriageDataBase<MARRIAGE_PLAYER extends MarriagePlayer, C
 	@Override
 	public @Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer player)
 	{
-		return (player1.equals(player)) ? player2 : (player2.equals(player)) ? player1 : null;
+		if (player1.equals(player))
+		{
+			return player2;
+		}
+		else if (player2.equals(player))
+		{
+			return player1;
+		}
+		return null;
 	}
 
 	@Override

@@ -47,6 +47,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -183,6 +184,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 
 	//region surname functions
 	@Override
+	@Contract(value = "null->null")
 	public String cleanupSurname(String surname)
 	{
 		if(surname == null || surname.isEmpty()) return null;
@@ -211,8 +213,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	public boolean isSurnameValid(@NotNull String surname)
 	{
 		surname = cleanupSurname(surname);
-		//noinspection ConstantConditions
-		return isSurnameLengthValid(surname) && isSurnameAvailable(surname);
+		return surname != null && isSurnameLengthValid(surname) && isSurnameAvailable(surname);
 	}
 
 	@Override
