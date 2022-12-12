@@ -28,6 +28,7 @@ import at.pcgamingfreaks.MarriageMaster.Permissions;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -117,6 +118,12 @@ public class SurnameCommand extends MarryCommand
 		}
 	}
 
+	@Contract(value = "null->false")
+	private boolean canSelfMarry(final @Nullable MarriagePlayer player)
+	{
+		return player != null && getMarriagePlugin().isSelfMarriageAllowed() && player.hasPermission(Permissions.SELF_MARRY) && player.isMarried();
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -127,20 +134,21 @@ public class SurnameCommand extends MarryCommand
 		}
 		final String newSurname = args[args.length - 1];
 		MarriagePlayer player = (sender instanceof Player) ? getMarriagePlugin().getPlayerData((Player) sender) : null;
-		if(player == null || player.isPriest() || getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY) && player.isMarried())
+		boolean priest = player == null || player.isPriest();
+		if(priest || canSelfMarry(player))
 		{
-			if(args.length == 1 && getMarriagePlugin().isSelfMarriageAllowed() && player != null && sender.hasPermission(Permissions.SELF_MARRY))
+			if(args.length == 1 && canSelfMarry(player))
 			{
 				executeOwnSurname(player, newSurname);
 			}
 			else if(args.length == 2)
 			{
 				MarriagePlayer player2 = getMarriagePlugin().getPlayerData(args[0]);
-				if(player == null || player.isPriest())
+				if(priest)
 				{
 					executePriest(sender, player, player2, newSurname, args);
 				}
-				else if(getMarriagePlugin().isSelfMarriageAllowed() && sender.hasPermission(Permissions.SELF_MARRY))
+				else if(canSelfMarry(player))
 				{
 					executeOwnSurnamePoly(player, player2, newSurname);
 				}
@@ -149,7 +157,7 @@ public class SurnameCommand extends MarryCommand
 					showHelp(sender, mainCommandAlias);
 				}
 			}
-			else if(args.length == 3 && getMarriagePlugin().areMultiplePartnersAllowed() && (player == null || player.isPriest()))
+			else if(args.length == 3 && getMarriagePlugin().areMultiplePartnersAllowed() && priest)
 			{
 				MarriagePlayer player1 = getMarriagePlugin().getPlayerData(args[0]), player2 = getMarriagePlugin().getPlayerData(args[1]);
 				if(!player1.isMarried())
@@ -204,7 +212,7 @@ public class SurnameCommand extends MarryCommand
 	{
 		List<HelpData> help = new ArrayList<>(2);
 		MarriagePlayer player = (requester instanceof Player) ? getMarriagePlugin().getPlayerData((Player) requester) : null;
-		if(player != null && player.isMarried() && getMarriagePlugin().isSelfMarriageAllowed() && requester.hasPermission(Permissions.SELF_MARRY))
+		if(canSelfMarry(player))
 		{
 			if(player.getPartners().size() > 1)
 			{

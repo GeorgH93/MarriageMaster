@@ -122,6 +122,30 @@ public class ChatCommand extends MarryCommand implements Listener
 		}
 	}
 
+	private boolean isTargetSelection(final @NotNull String[] args)
+	{
+		return getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]);
+	}
+
+	private void handleTargetSelection(final @NotNull MarriagePlayer player, final @NotNull String[] args)
+	{
+		Player target = Bukkit.getPlayer(args[1]);
+		if(target != null && player.isPartner(target))
+		{
+			player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
+			player.send(messageTargetSet);
+		}
+		else if(getMarriagePlugin().getCommandManager().isAllSwitch(args[1]))
+		{
+			player.setPrivateChatTarget((Marriage) null);
+			player.send(messageTargetSet);
+		}
+		else
+		{
+			player.send(CommonMessages.getMessageTargetPartnerNotFound());
+		}
+	}
+
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
@@ -137,39 +161,16 @@ public class ChatCommand extends MarryCommand implements Listener
 				{
 					toggleChatSetting(player);
 				}
-				else if(getMarriagePlugin().areMultiplePartnersAllowed() && args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+				else if (isTargetSelection(args))
 				{
-					Player target = Bukkit.getPlayer(args[1]);
-					if(target != null && player.isPartner(target))
-					{
-						player.setPrivateChatTarget(getMarriagePlugin().getPlayerData(target));
-						messageTargetSet.send(sender);
-					}
-					else if(getMarriagePlugin().getCommandManager().isAllSwitch(args[1]))
-					{
-						player.setPrivateChatTarget((Marriage) null);
-						messageTargetSet.send(sender);
-					}
-					else
-					{
-						CommonMessages.getMessageTargetPartnerNotFound().send(sender);
-					}
+					handleTargetSelection(player, args);
 				}
 				else
 				{
 					//noinspection ConstantConditions
 					if(player.getPrivateChatTarget() == null || player.getPrivateChatTarget().getPartner(player).isOnline())
 					{
-						StringBuilder stringBuilder = new StringBuilder();
-						for(int i = 0; i < args.length; i++)
-						{
-							if(i != 0)
-							{
-								stringBuilder.append(" ");
-							}
-							stringBuilder.append(args[i]);
-						}
-						doChat(player, stringBuilder.toString()); // Doing the actual chat message logic
+						doChat(player, String.join(" ", args)); // Doing the actual chat message logic
 					}
 					else
 					{
@@ -183,45 +184,37 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
+		if(args.length == 0) return null;
+
+		if(isTargetSelection(args))
+		{ // Handle target selection
+			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
+			return player.getMatchingPartnerNames(args[1]);
+		}
+
 		List<String> data = new ArrayList<>();
-		if(args.length > 0)
+		if(args.length == 1)
 		{
-			if(args.length == 2 && StringUtils.arrayContainsIgnoreCase(setTargetParameters, args[0]))
+			String arg = args[0].toLowerCase(Locale.ENGLISH);
+			for(String s : switchesToggle)
 			{
-				MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-				data.addAll(player.getMatchingPartnerNames(args[1]));
-				String arg = args[1].toLowerCase(Locale.ENGLISH);
-				for(String s : switchesAll)
-				{
-					if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
-				}
+				if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
 			}
-			else
+			for(String s : setTargetParameters)
 			{
-				if(args.length == 1)
-				{
-					String arg = args[0].toLowerCase(Locale.ENGLISH);
-					for(String s : switchesToggle)
-					{
-						if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
-					}
-					for(String s : setTargetParameters)
-					{
-						if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
-					}
-				}
-				Player playerSender = (Player) sender;
-				String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
-				for(Player player : Bukkit.getOnlinePlayers())
-				{
-					if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg) && playerSender.canSee(player))
-					{
-						data.add(player.getName());
-					}
-				}
+				if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
 			}
 		}
-		return (data.isEmpty()) ? null : data;
+		Player playerSender = (Player) sender;
+		String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(player.getName().toLowerCase(Locale.ENGLISH).startsWith(arg) && playerSender.canSee(player))
+			{
+				data.add(player.getName());
+			}
+		}
+		return data;
 	}
 
 	@Override
