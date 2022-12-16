@@ -55,7 +55,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	private final Message messageJoined, messageLeft, messageListeningStarted, messageListeningStopped, messageTargetSet;
 	private final String displayNameAll, helpParameterMessage, privateMessageFormat, setTargetDescription;
 	private final Set<Player> listeners = ConcurrentHashMap.newKeySet();
-	private final String[] setTargetParameters, switchesToggle, switchesAll;
+	private final String[] setTargetParameters, switchesToggle;
 	private final boolean allowChatSurveillance;
 	private MarryCommand chatToggleCommand, chatListenCommand;
 
@@ -75,7 +75,6 @@ public class ChatCommand extends MarryCommand implements Listener
 		//noinspection SpellCheckingInspection
 		setTargetParameters     = plugin.getLanguage().getCommandAliases("ChatSetTarget", new String[] { "target", "settarget" });
 		switchesToggle  = plugin.getLanguage().getSwitch("Toggle", "toggle");
-		switchesAll  = plugin.getLanguage().getSwitch("All", "all");
 		allowChatSurveillance = plugin.getConfiguration().isChatSurveillanceEnabled();
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
