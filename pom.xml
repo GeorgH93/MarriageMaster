@@ -11,7 +11,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
-		<pcgfPluginLibVersion>1.0.38-SNAPSHOT</pcgfPluginLibVersion>
+		<pcgfPluginLibVersion>1.0.39-SNAPSHOT</pcgfPluginLibVersion>
 
 		<configFileVersion>106</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>22.0.0</version>
+			<version>23.1.0</version>
 		</dependency>
 		<!-- Lombok -->
 		<dependency>

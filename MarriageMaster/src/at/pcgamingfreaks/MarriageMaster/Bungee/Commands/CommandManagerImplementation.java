@@ -25,7 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bungee.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bungee.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bungee.MarriageMaster;
 import at.pcgamingfreaks.Reflection;
-import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.Util.StringUtils;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
