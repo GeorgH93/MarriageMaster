@@ -39,7 +39,7 @@ import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Plugin.IPlugin;
-import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Version;
 
@@ -335,8 +335,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 					if(action.getPlayer().isOnline())
 					{
 						//noinspection ConstantConditions
-						if(oldHealth <= player.getHealth() && oldLocation.getX() == player.getLocation().getX() && oldLocation.getY() == player.getLocation().getY() &&
-								oldLocation.getZ() == player.getLocation().getZ() && oldLocation.getWorld().getName().equalsIgnoreCase(player.getLocation().getWorld().getName()))
+						if(oldHealth <= player.getHealth() && Utils.equalsIgnoreOrientation(oldLocation, player.getLocation()))
 						{
 							action.run();
 						}
