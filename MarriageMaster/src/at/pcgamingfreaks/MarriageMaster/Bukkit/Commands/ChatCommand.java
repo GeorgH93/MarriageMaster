@@ -30,7 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Message.MessageFormat;
-import at.pcgamingfreaks.StringUtils;
+import at.pcgamingfreaks.Util.StringUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -194,15 +194,8 @@ public class ChatCommand extends MarryCommand implements Listener
 		List<String> data = new ArrayList<>();
 		if(args.length == 1)
 		{
-			String arg = args[0].toLowerCase(Locale.ENGLISH);
-			for(String s : switchesToggle)
-			{
-				if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
-			}
-			for(String s : setTargetParameters)
-			{
-				if(s.toLowerCase(Locale.ENGLISH).startsWith(arg)) data.add(s);
-			}
+			StringUtils.startsWithIgnoreCase(switchesToggle, args[0], data);
+			StringUtils.startsWithIgnoreCase(setTargetParameters, args[0], data);
 		}
 		Player playerSender = (Player) sender;
 		String arg = args[args.length - 1].toLowerCase(Locale.ENGLISH);
