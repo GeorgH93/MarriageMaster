@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ReloadCommand extends MarryCommand
 {
-	private final String DATABASE = "database";
+	private static final String DATABASE = "database";
 	private final Message messageReloading, messageReloaded, messageReloadingDatabase;
 
 	public ReloadCommand(MarriageMaster plugin)
