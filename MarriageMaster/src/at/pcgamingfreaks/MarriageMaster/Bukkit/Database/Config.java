@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -237,6 +237,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	public boolean getSafetyCheck()
 	{
 		return getConfigE().getBoolean("Teleport.CheckSafety", true);
+	}
+
+	public boolean getFindSafeLocation()
+	{
+		return getConfigE().getBoolean("Teleport.FindSafeLocation", false);
 	}
 
 	public boolean getRequireConfirmation()

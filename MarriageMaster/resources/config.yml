@@ -200,6 +200,8 @@ Teleport:
   BlacklistedWorlds: []
   # This option controls whether a safety check is performed before the player is teleported.
   CheckSafety: true
+  # This option controls whether the plugin attempts to find a safe location if the safety check failed. Enabling this might allow the play to glitch through walls.
+  FindSafeLocation: false
   # If this option is enabled the partner has to accept the teleport request before the player will be teleported. Only applicable for teleporting to another player.
   RequireConfirmation: false
 

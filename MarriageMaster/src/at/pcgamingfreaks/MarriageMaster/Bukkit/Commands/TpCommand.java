@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
+import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -62,7 +62,7 @@ public class TpCommand extends MarryCommand
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner;
 	private final Message messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
 	private final Set<String> blacklistedWorlds;
-	private final boolean safetyCheck, requireConfirmation;
+	private final boolean safetyCheck, requireConfirmation, findSafeLocation;
 	private final long delayTime;
 
 	public TpCommand(MarriageMaster plugin)
@@ -72,6 +72,7 @@ public class TpCommand extends MarryCommand
 		blacklistedWorlds   = plugin.getConfiguration().getTPBlackListedWorlds();
 		safetyCheck         = plugin.getConfiguration().getSafetyCheck();
 		requireConfirmation = plugin.getConfiguration().getRequireConfirmation();
+		findSafeLocation    = plugin.getConfiguration().getFindSafeLocation();
 		delayTime           = plugin.getConfiguration().getTPDelayTime() * 20L;
 
 		//region loading messages
@@ -177,6 +178,7 @@ public class TpCommand extends MarryCommand
 			matB2 = matB1;
 			b1 = b;
 			matB1 = mat;
+			if (!findSafeLocation) break;
 		}
 		return loc;
 	}
