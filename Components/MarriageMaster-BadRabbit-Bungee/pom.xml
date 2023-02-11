@@ -23,7 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>at.pcgamingfreaks.pcgf_pluginlib</groupId>
-			<artifactId>pcgf_pluginlib-common</artifactId>
+			<artifactId>pcgf_pluginlib-version</artifactId>
 			<version>${pcgfPluginLibVersion}</version>
 			<scope>provided</scope>
 		</dependency>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>BadRabbit-Bungee</artifactId>
-			<version>1.10</version>
+			<version>1.11</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Bungee -->
