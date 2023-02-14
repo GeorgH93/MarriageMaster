@@ -360,6 +360,16 @@
 											</includes>
 										</relocation>
 									</relocations>
+									<filters>
+										<filter>
+											<artifact>at.pcgamingfreaks:PluginLib</artifact>
+											<excludes>
+												<exclude>at/pcgamingfreaks/PluginLib/**</exclude>
+												<exclude>PCGF_PluginLib.properties</exclude>
+												<exclude>update.yml</exclude>
+											</excludes>
+										</filter>
+									</filters>
 								</configuration>
 							</execution>
 						</executions>
