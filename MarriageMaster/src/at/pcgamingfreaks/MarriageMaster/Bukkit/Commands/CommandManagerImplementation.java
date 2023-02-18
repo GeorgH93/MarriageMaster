@@ -22,7 +22,6 @@ import at.pcgamingfreaks.Bukkit.Command.RegisterablePluginCommand;
 import at.pcgamingfreaks.Bukkit.Command.SubCommand;
 import at.pcgamingfreaks.Bukkit.Message.Message;
 import at.pcgamingfreaks.Command.HelpData;
-import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.AcceptPendingRequest;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.CommandManager;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
@@ -40,10 +39,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.logging.Level;
 
 public class CommandManagerImplementation extends CommandExecutorWithSubCommandsGeneric<MarryCommand> implements CommandManager
@@ -294,7 +290,7 @@ public class CommandManagerImplementation extends CommandExecutorWithSubCommands
 	public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args)
 	{
 		List<String> results = super.onTabComplete(sender, command, alias, args);
-		if(results != null && ((args.length == 1 && marryActionCommand.canUse(sender)) || (results.isEmpty() && args.length == 2 && (!(sender instanceof Player) || plugin.getPlayerData((Player) sender).isPriest()))))
+		if(results instanceof ArrayList && (marryActionCommand.canUse(sender) && (args.length == 1 || (results.isEmpty() && args.length == 2))))
 		{
 			results.addAll(marryActionCommand.tabComplete(sender, alias, "marry", args));
 		}
