@@ -25,9 +25,6 @@
 		<bungeeMainClass>${project.groupId}.${project.artifactId}.Bungee.${project.artifactId}</bungeeMainClass>
 		<releaseType>Normal</releaseType>
 		<updateChannel>Release</updateChannel>
-
-		<mockito.version>4.2.0</mockito.version>
-		<mavenShade.version>3.3.0</mavenShade.version>
 	</properties>
 
 	<repositories>
@@ -99,7 +96,7 @@
 		<dependency>
 			<groupId>at.pcgamingfreaks</groupId>
 			<artifactId>BadRabbit-Bungee</artifactId>
-			<version>1.10</version>
+			<version>1.11</version>
 		</dependency>
 		<!-- Bukkit -->
 		<dependency>
@@ -426,6 +423,11 @@
 					<artifactId>MarriageMaster-BadRabbit-Bungee</artifactId>
 					<version>${project.version}</version>
 				</dependency>
+				<dependency>
+					<groupId>at.pcgamingfreaks</groupId>
+					<artifactId>MarriageMaster-Bootstrap-Paper</artifactId>
+					<version>${project.version}</version>
+				</dependency>
 			</dependencies>
 			<build>
 				<plugins>
@@ -472,6 +474,7 @@
 											<include>at.pcgamingfreaks:MarriageMaster-*</include>
 											<include>at.pcgamingfreaks:BadRabbit-Bukkit</include>
 											<include>at.pcgamingfreaks:BadRabbit-Bungee</include>
+											<include>at.pcgamingfreaks:Bootstrap-Paper</include>
 											<include>at.pcgamingfreaks:MarriageMaster</include>
 										</includes>
 									</artifactSet>

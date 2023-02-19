@@ -1,0 +1,31 @@
+name: "MarriageMaster"
+author: "GeorgH93"
+version: "${version}"
+api-version: "1.19"
+
+main: "at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster"
+bootstrapper: "at.pcgamingfreaks.MarriageMaster.Paper.MarriageMasterBootstrap"
+loader: "at.pcgamingfreaks.MarriageMaster.Paper.MarriageMasterBootstrap"
+
+dependencies:
+  - name: PCGF_PluginLib
+    required: false
+  - name: Vault
+    required: false
+  - name: Minepacks
+    required: false
+  - name: MinePacks
+    required: false
+  - name: MVdWPlaceholderAPI
+    required: false
+  - name: PlaceholderAPI
+    required: false
+  - name: SkillAPI
+    required: false
+  - name: mcMMO
+    required: false
+  - name: Multiverse-Core
+
+load-after:
+  - name: PCGF_PluginLib
+    bootstrap: true
