@@ -34,7 +34,6 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings({ "UnstableApiUsage", "unused" })
@@ -82,7 +81,15 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 		}
 		catch(Exception e)
 		{
-			context.getLogger().log(Level.SEVERE, "Failed to patch main class in PluginMeta! Falling back to Standalone mode!", e);
+			try
+			{
+				context.getLogger().error("Failed to patch main class in PluginMeta! Falling back to Standalone mode!", e);
+			}
+			catch(Throwable ignored)
+			{
+				System.out.println("[MarriageMaster] Failed to patch main class in PluginMeta! Falling back to Standalone mode!");
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
@@ -94,19 +101,32 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 		{
 			if (new Version(version).olderThan(new Version(MagicValues.MIN_PCGF_PLUGIN_LIB_VERSION)))
 			{
-				context.getLogger().info("PCGF-PluginLib to old! Switching to standalone mode!");
+				logInfo("PCGF-PluginLib to old! Switching to standalone mode!", context);
 			}
 			else
 			{
-				context.getLogger().info("PCGF-PluginLib installed. Switching to normal mode!");
+				logInfo("PCGF-PluginLib installed. Switching to normal mode!", context);
 				return true;
 			}
 		}
 		else
 		{
-			context.getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
+			logInfo("PCGF-PluginLib not installed. Switching to standalone mode!", context);
 		}
 		return false;
+	}
+
+	//TODO remove this stupid code once the paper API stabilizes to a point where once can expect at least the logger class ot not randomly change
+	private void logInfo(final @NotNull String message, final @NotNull PluginProviderContext context)
+	{
+		try
+		{
+			context.getLogger().info(message);
+		}
+		catch(Throwable t)
+		{
+			System.out.println("[Minepacks] Failed to log message: " + message);
+		}
 	}
 
 	@Override
@@ -118,7 +138,7 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 		File tempJarFile = File.createTempFile("IMessage", ".jar");
 		Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
 		Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
-		extractMethod.invoke(null, this.getClass(), pluginClasspathBuilder.getContext().getLogger(), "IMessage.jar", tempJarFile);
+		extractMethod.invoke(null, this.getClass(), Logger.getLogger(getClass().getSimpleName()), "IMessage.jar", tempJarFile);
 		pluginClasspathBuilder.addLibrary(new JarLibrary(tempJarFile.toPath()));
 		tempJarFile.deleteOnExit();
 	}
