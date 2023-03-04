@@ -14,8 +14,6 @@ dependencies:
     required: false
   - name: Minepacks
     required: false
-  - name: MinePacks
-    required: false
   - name: MVdWPlaceholderAPI
     required: false
   - name: PlaceholderAPI
@@ -27,5 +25,12 @@ dependencies:
   - name: Multiverse-Core
 
 load-after:
+  - name: Minepacks
+  - name: Vault
+  - name: MVdWPlaceholderAPI
+  - name: PlaceholderAPI
+  - name: SkillAPI
+  - name: mcMMO
+  - name: Multiverse-Core
   - name: PCGF_PluginLib
     bootstrap: true
