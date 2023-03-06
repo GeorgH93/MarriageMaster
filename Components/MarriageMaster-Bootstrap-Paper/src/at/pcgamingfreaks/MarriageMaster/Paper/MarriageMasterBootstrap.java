@@ -34,6 +34,8 @@ import lombok.SneakyThrows;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 @SuppressWarnings({ "UnstableApiUsage", "unused" })
@@ -125,7 +127,7 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 		}
 		catch(Throwable t)
 		{
-			System.out.println("[Minepacks] Failed to log message: " + message);
+			System.out.println("[MarriageMaster] Failed to log message: " + message);
 		}
 	}
 
@@ -133,6 +135,12 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 	@SneakyThrows
 	public void classloader(@NotNull PluginClasspathBuilder pluginClasspathBuilder)
 	{
+		try
+		{
+			String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+			if(Arrays.stream(new File(path).getParentFile().listFiles()).filter(f -> f.getName().toLowerCase(Locale.ROOT).contains("pcgf_pluginlib")).count() > 0) return;
+		}
+		catch(Exception ignored) {}
 		if (PCGF_PluginLibVersionDetection.getVersionBukkit() != null) return; // Plugin lib is available, no need to load additional dependencies
 
 		File tempJarFile = File.createTempFile("IMessage", ".jar");

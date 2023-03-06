@@ -7,9 +7,12 @@ main: "at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster"
 bootstrapper: "at.pcgamingfreaks.MarriageMaster.Paper.MarriageMasterBootstrap"
 loader: "at.pcgamingfreaks.MarriageMaster.Paper.MarriageMasterBootstrap"
 
+has-open-classloader: true
+
 dependencies:
   - name: PCGF_PluginLib
     required: false
+    bootstrap: true
   - name: Vault
     required: false
   - name: Minepacks
@@ -23,8 +26,11 @@ dependencies:
   - name: mcMMO
     required: false
   - name: Multiverse-Core
+    required: false
 
 load-after:
+  - name: PCGF_PluginLib
+    bootstrap: true
   - name: Minepacks
   - name: Vault
   - name: MVdWPlaceholderAPI
@@ -32,5 +38,3 @@ load-after:
   - name: SkillAPI
   - name: mcMMO
   - name: Multiverse-Core
-  - name: PCGF_PluginLib
-    bootstrap: true
