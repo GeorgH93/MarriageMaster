@@ -53,14 +53,14 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 * @param player The player for which the partner should be retrieved.
 	 * @return The other player of the married couple. Null if the given player is not in this marriage.
 	 */
-	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer<?,?,?,?,?> player);
+	@Nullable MARRIAGE_PLAYER getPartner(@NotNull MarriagePlayer<?,?> player);
 
 	/**
 	 * Checks if a player is contained in the marriage (is one of the 2 players involved).
 	 * @param player The player to be checked.
 	 * @return Treu if the player is one of the two partners, false if the player is not one of the two partners or the player is null.
 	 */
-	default boolean contains(@Nullable MarriagePlayer<?,?,?,?,?> player)
+	default boolean contains(@Nullable MarriagePlayer<?,?> player)
 	{
 		return getPartner1().equals(player) || getPartner2().equals(player);
 	}

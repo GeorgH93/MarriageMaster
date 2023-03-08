@@ -26,15 +26,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 @SuppressWarnings("unused")
 public class MarriageMasterBadRabbit extends BadRabbit
 {
@@ -61,8 +52,6 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 		}
 
-		if(standalone) loadIMessageClasses();
-
 		super.onLoad();
 	}
 
@@ -81,41 +70,5 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			newPluginInstance = (JavaPlugin) standaloneClass.newInstance();
 		}
 		return newPluginInstance;
-	}
-
-	void loadIMessageClasses()
-	{
-		try
-		{
-			File tempJarFile = File.createTempFile("IMessage", ".jar");
-			try
-			{
-				Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
-				Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
-				extractMethod.invoke(null, this.getClass(), getLogger(), "IMessage.jar", tempJarFile);
-
-				URLClassLoader loader = new URLClassLoader(new URL[] { tempJarFile.toURI().toURL() }, getClassLoader());
-				Class<?> iMessage = loader.loadClass("at.pcgamingfreaks.Message.IMessage");
-				Class<?> iMessageBukkit = loader.loadClass("at.pcgamingfreaks.Bukkit.Message.IMessage");
-
-				@SuppressWarnings("unchecked") Map<String, Class<?>> classes = (Map<String, Class<?>>) getField(getClassLoader().getClass(), "classes").get(getClassLoader());
-				classes.put("at.pcgamingfreaks.Message.IMessage", iMessage);
-				classes.put("at.pcgamingfreaks.Bukkit.Message.IMessage", iMessageBukkit);
-
-				loader.close();
-			}
-			catch(Exception e)
-			{
-				getLogger().log(Level.SEVERE, "Failed to load IMessage interfaces", e);
-			}
-			if(!tempJarFile.delete()) {
-				getLogger().warning("Failed to delete temp file '" + tempJarFile.getAbsolutePath() + "'.");
-				tempJarFile.deleteOnExit();
-			}
-		}
-		catch(IOException e)
-		{
-			getLogger().log(Level.SEVERE, "Failed to load IMessage interfaces", e);
-		}
 	}
 }

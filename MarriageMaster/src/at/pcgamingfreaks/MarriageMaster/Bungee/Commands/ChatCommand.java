@@ -258,13 +258,13 @@ public class ChatCommand extends MarryCommand implements Listener
 			for(Marriage m : sender.getMultiMarriageData())
 			{
 				MarriagePlayer p = m.getPartner(sender);
-				if(p != null && p.isOnline() && p.getPlayerOnline() != null)
+				if(p != null && p.isOnline() && p.getPlayer() != null)
 				{
 					last = p;
 					recipients.add(m);
 				}
 			}
-			if(recipients.size() == 1) recipient = last.getPlayerOnline();
+			if(recipients.size() == 1) recipient = last.getPlayer();
 		}
 		else
 		{

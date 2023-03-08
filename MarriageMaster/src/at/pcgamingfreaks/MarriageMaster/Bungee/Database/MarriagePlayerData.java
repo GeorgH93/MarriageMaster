@@ -70,13 +70,6 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
-	public @Nullable ProxiedPlayer getPlayerOnline()
-	{
-		//TODO: Bungee has no offline player, so player can become null!
-		return ProxyServer.getInstance().getPlayer(getUUID());
-	}
-
-	@Override
 	public boolean hasPermission(@NotNull String permission)
 	{
 		return isOnline() && getPlayer().hasPermission(permission);
@@ -97,22 +90,35 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
+	public boolean canSee(final @NotNull MarriagePlayer player)
+	{
+		return true;
+	}
+
+	@Override
 	public boolean isPartner(@NotNull ProxiedPlayer player)
 	{
 		return isPartner(MarriageMaster.getInstance().getPlayerData(player));
 	}
 
 	@Override
-	public void send(@NotNull IMessage message, @Nullable Object... args)
+	public void send(@NotNull Object message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
 	}
 
 	@Override
-	public void sendMessage(@NotNull IMessage message, @Nullable Object... args)
+	public void sendMessage(@NotNull Object message, @Nullable Object... args)
 	{
 		if(!isOnline()) return;
-		message.send(getPlayer(), args);
+		if (message instanceof IMessage)
+		{
+			((IMessage) message).send(getPlayer(), args);
+		}
+		else if (message instanceof String)
+		{
+			getPlayer().sendMessage((String) message);
+		}
 	}
 	//endregion
 }

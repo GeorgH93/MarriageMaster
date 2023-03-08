@@ -17,8 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.API;
 
-import at.pcgamingfreaks.Message.IMessage;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,22 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer, PLAYER_OFFLINE, PLAYER_ONLINE, MESSAGE extends IMessage>
+public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER extends MarriagePlayer>
 {
-	/**
-	* Gets the Bukkit offline player that is represented by this marriage player data.
-	*
-	* @return The Bukkit player represented by this marriage player.
-	*/
-	@NotNull PLAYER_OFFLINE getPlayer();
-
-	/**
-	 * Gets the bukkit player represented by the marriage player.
-	 *
-	 * @return The represented player. Null if the player is offline.
-	 */
-	@Nullable PLAYER_ONLINE getPlayerOnline();
-
 	/**
 	 * Gets the name of the player represented by this marriage player data.
 	 *
@@ -63,8 +47,6 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @return True if the player is online, false if not.
 	 */
 	boolean isOnline();
-
-	boolean canSee(PLAYER_ONLINE player);
 
 	boolean canSee(MARRIAGE_PLAYER player);
 
@@ -161,14 +143,6 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @param player The player to be checked.
 	 * @return True if they are married. False if not.
 	 */
-	boolean isPartner(@NotNull PLAYER_OFFLINE player);
-
-	/**
-	 * Checks if the player is married to a given player.
-	 *
-	 * @param player The player to be checked.
-	 * @return True if they are married. False if not.
-	 */
 	boolean isPartner(@NotNull MARRIAGE_PLAYER player);
 
 	/**
@@ -252,7 +226,7 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @param message The message to be sent to the player.
 	 * @param args The arguments for the placeholders of the message.
 	 */
-	void send(@NotNull MESSAGE message, @Nullable Object... args);
+	void send(@NotNull Object message, @Nullable Object... args);
 
 	/**
 	 * Sends a message to the player.
@@ -260,5 +234,5 @@ public interface MarriagePlayer<MARRIAGE extends Marriage, MARRIAGE_PLAYER exten
 	 * @param message The message to be sent to the player.
 	 * @param args The arguments for the placeholders of the message.
 	 */
-	void sendMessage(@NotNull MESSAGE message, @Nullable Object... args);
+	void sendMessage(@NotNull Object message, @Nullable Object... args);
 }

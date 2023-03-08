@@ -17,9 +17,27 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bungee.API;
 
-import at.pcgamingfreaks.Bungee.Message.IMessage;
-
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, ProxiedPlayer, ProxiedPlayer, IMessage>
-{}
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer>
+{
+	/**
+	 * Gets the ProxiedPlayer that is represented by this marriage player data.
+	 *
+	 * @return The ProxiedPlayer represented by this marriage player. null if offline.
+	 */
+	@Nullable ProxiedPlayer getPlayer();
+
+	boolean canSee(ProxiedPlayer player);
+
+	/**
+	 * Checks if the player is married to a given player.
+	 *
+	 * @param player The player to be checked.
+	 * @return True if they are married. False if not.
+	 */
+	boolean isPartner(@NotNull ProxiedPlayer player);
+}

@@ -17,8 +17,6 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.API;
 
-import at.pcgamingfreaks.Bukkit.Message.IMessage;
-
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer, OfflinePlayer, Player, IMessage>
+public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.MarriagePlayer<Marriage, MarriagePlayer>
 {
 	/**
 	 * Gets the marriage with the partner that is the nearest to the player.
@@ -117,4 +115,31 @@ public interface MarriagePlayer extends at.pcgamingfreaks.MarriageMaster.API.Mar
 	 * @param partner The partner that should be hugged.
 	 */
 	void hug(MarriagePlayer partner);
+
+
+
+	/**
+	 * Gets the Bukkit offline player that is represented by this marriage player data.
+	 *
+	 * @return The Bukkit player represented by this marriage player.
+	 */
+	@NotNull OfflinePlayer getPlayer();
+
+	/**
+	 * Gets the bukkit player represented by the marriage player.
+	 *
+	 * @return The represented player. Null if the player is offline.
+	 */
+	@Nullable Player getPlayerOnline();
+
+	boolean canSee(Player player);
+
+	/**
+	 * Checks if the player is married to a given player.
+	 *
+	 * @param player The player to be checked.
+	 * @return True if they are married. False if not.
+	 */
+	boolean isPartner(@NotNull OfflinePlayer player);
+
 }

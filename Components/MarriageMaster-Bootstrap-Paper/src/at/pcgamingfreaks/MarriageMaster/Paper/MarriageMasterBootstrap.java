@@ -26,20 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
-import io.papermc.paper.plugin.loader.PluginClasspathBuilder;
-import io.papermc.paper.plugin.loader.PluginLoader;
-import io.papermc.paper.plugin.loader.library.impl.JarLibrary;
-import lombok.SneakyThrows;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.logging.Logger;
 
 @SuppressWarnings({ "UnstableApiUsage", "unused" })
-public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
+public class MarriageMasterBootstrap implements PluginBootstrap
 {
 	private static final String MAIN_CLASS_NORMAL = "at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster";
 	private static final String MAIN_CLASS_STANDALONE = "at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster";
@@ -129,25 +120,5 @@ public class MarriageMasterBootstrap implements PluginBootstrap, PluginLoader
 		{
 			System.out.println("[MarriageMaster] Failed to log message: " + message);
 		}
-	}
-
-	@Override
-	@SneakyThrows
-	public void classloader(@NotNull PluginClasspathBuilder pluginClasspathBuilder)
-	{
-		try
-		{
-			String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-			if(Arrays.stream(new File(path).getParentFile().listFiles()).filter(f -> f.getName().toLowerCase(Locale.ROOT).contains("pcgf_pluginlib")).count() > 0) return;
-		}
-		catch(Exception ignored) {}
-		if (PCGF_PluginLibVersionDetection.getVersionBukkit() != null) return; // Plugin lib is available, no need to load additional dependencies
-
-		File tempJarFile = File.createTempFile("IMessage", ".jar");
-		Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
-		Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
-		extractMethod.invoke(null, this.getClass(), Logger.getLogger(getClass().getSimpleName()), "IMessage.jar", tempJarFile);
-		pluginClasspathBuilder.addLibrary(new JarLibrary(tempJarFile.toPath()));
-		tempJarFile.deleteOnExit();
 	}
 }

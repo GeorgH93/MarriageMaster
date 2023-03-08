@@ -59,8 +59,6 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			getLogger().info("PCGF-PluginLib not installed. Switching to standalone mode!");
 		}
 
-		if(standalone) loadIMessageClasses();
-
 		super.onLoad();
 	}
 
@@ -79,42 +77,5 @@ public class MarriageMasterBadRabbit extends BadRabbit
 			newPluginInstance = (Plugin) standaloneClass.newInstance();
 		}
 		return newPluginInstance;
-	}
-
-	void loadIMessageClasses()
-	{
-		try
-		{
-			File standaloneBonusJarFile = File.createTempFile("IMessage", ".jar");
-			Class<?> utilsClass = Class.forName("at.pcgamingfreaks.MarriageMasterStandalone.libs.at.pcgamingfreaks.Utils");
-			Method extractMethod = utilsClass.getDeclaredMethod("extractFile", Class.class, Logger.class, String.class, File.class);
-			extractMethod.invoke(null, this.getClass(), getLogger(), "IMessage.jar", standaloneBonusJarFile);
-			standaloneBonusJarFile.deleteOnExit();
-
-			Class<?> pluginClassLoaderClass = Class.forName("net.md_5.bungee.api.plugin.PluginClassloader");
-			Constructor<?> pluginClassLoaderConstructor = pluginClassLoaderClass.getDeclaredConstructors()[0];
-			pluginClassLoaderConstructor.setAccessible(true);
-			URLClassLoader standaloneBonusClassLoader;
-			switch(pluginClassLoaderConstructor.getParameterCount())
-			{
-				case 1:
-					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance((Object) (new URL[] { standaloneBonusJarFile.toURI().toURL() }));
-					break;
-				case 3:
-					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance(getProxy(), getDescription(), new URL[] { standaloneBonusJarFile.toURI().toURL() });
-					break;
-				case 4:
-					standaloneBonusClassLoader = (URLClassLoader) pluginClassLoaderConstructor.newInstance(getProxy(), getDescription(), standaloneBonusJarFile, null);
-					break;
-				default:
-					throw new IllegalStateException("The PluginClassloader uses an unexpected format for it's constructor!");
-			}
-			Object loaders = getField(getClass().getClassLoader().getClass(), "allLoaders").get(null);
-			getMethod(loaders.getClass(), "add", Object.class).invoke(loaders, standaloneBonusClassLoader);
-		}
-		catch(Exception e)
-		{
-			getLogger().log(Level.SEVERE, "Failed to load IMessage interfaces", e);
-		}
 	}
 }

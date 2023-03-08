@@ -26,7 +26,6 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HugCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.KissCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
-import at.pcgamingfreaks.Message.MessageColor;
 import at.pcgamingfreaks.Message.MessageComponent;
 
 import org.bukkit.Bukkit;
@@ -153,10 +152,16 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
-	public boolean canSee(final @NotNull Player player)
+	public boolean canSee(final @NotNull MarriagePlayer player)
+	{
+		return canSee(player.getPlayerOnline());
+	}
+
+	@Override
+	public boolean canSee(final Player player)
 	{
 		Player onlinePlayer = getPlayerOnline();
-		if(onlinePlayer == null) return true;
+		if(onlinePlayer == null || player == null) return true;
 		return onlinePlayer.canSee(player);
 	}
 
@@ -217,16 +222,23 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 	}
 
 	@Override
-	public void send(@NotNull IMessage message, @Nullable Object... args)
+	public void send(@NotNull Object message, @Nullable Object... args)
 	{
 		sendMessage(message, args);
 	}
 
 	@Override
-	public void sendMessage(@NotNull IMessage message, @Nullable Object... args)
+	public void sendMessage(@NotNull Object message, @Nullable Object... args)
 	{
 		if(!isOnline()) return;
-		//noinspection ConstantConditions
-		message.send(getPlayerOnline(), args); // Is only null if the player is not online
+		if (message instanceof IMessage)
+		{
+			//noinspection ConstantConditions
+			((IMessage) message).send(getPlayerOnline(), args); // Is only null if the player is not online
+		}
+		else if (message instanceof String)
+		{
+			getPlayerOnline().sendMessage(String.format((String) message, args));
+		}
 	}
 }

@@ -342,10 +342,6 @@
 												<exclude>at.pcgamingfreaks.MinePacks.**</exclude>
 												<!-- Already relocated in previous rule -->
 												<exclude>at.pcgamingfreaks.MarriageMaster.**</exclude>
-												<!-- Exclude IMessage interfaces -->
-												<exclude>at.pcgamingfreaks.Message.IMessage</exclude>
-												<exclude>at.pcgamingfreaks.Bukkit.Message.IMessage</exclude>
-												<exclude>at.pcgamingfreaks.Bungee.Message.IMessage</exclude>
 											</excludes>
 										</relocation>
 										<relocation>
@@ -433,29 +429,6 @@
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-dependency-plugin</artifactId>
-						<version>3.2.0</version>
-						<executions>
-							<execution>
-								<phase>generate-resources</phase>
-								<goals><goal>copy</goal></goals>
-								<configuration>
-									<artifactItems>
-										<artifactItem>
-											<groupId>at.pcgamingfreaks</groupId>
-											<artifactId>IMessage</artifactId>
-											<version>${pcgfPluginLibVersion}</version>
-											<type>jar</type>
-											<destFileName>IMessage.jar</destFileName>
-											<outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
-										</artifactItem>
-									</artifactItems>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-shade-plugin</artifactId>
 						<version>${mavenShade.version}</version>
 						<executions>
@@ -484,16 +457,6 @@
 											<shadedPattern>at.pcgamingfreaks.MarriageMaster</shadedPattern>
 										</relocation>
 									</relocations>
-									<filters>
-										<filter>
-											<artifact>at.pcgamingfreaks:MarriageMaster</artifact>
-											<excludes>
-												<exclude>at/pcgamingfreaks/Message/IMessage.class</exclude>
-												<exclude>at/pcgamingfreaks/Bukkit/Message/IMessage.class</exclude>
-												<exclude>at/pcgamingfreaks/Bungee/Message/IMessage.class</exclude>
-											</excludes>
-										</filter>
-									</filters>
 								</configuration>
 							</execution>
 						</executions>
