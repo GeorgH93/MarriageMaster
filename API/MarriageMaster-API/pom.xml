@@ -23,11 +23,6 @@
 			<artifactId>MarriageMaster-API-Bungee</artifactId>
 			<version>${revision}</version>
 		</dependency>
-		<dependency>
-			<groupId>at.pcgamingfreaks</groupId>
-			<artifactId>IMessage</artifactId>
-			<version>${pcgfPluginLibVersion}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
