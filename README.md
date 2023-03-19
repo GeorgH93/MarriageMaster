@@ -6,6 +6,8 @@
 <!--[spigotRatingImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=rating&query=%24.rating.average&suffix=%20%2F%205&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273
 [spigotDownloadsImg]: https://img.shields.io/badge/dynamic/json.svg?color=brightgreen&label=downloads%20%28spigotmc.org%29&query=%24.downloads&url=https%3A%2F%2Fapi.spiget.org%2Fv2%2Fresources%2F19273-->
 [bukkit]: https://dev.bukkit.org/bukkit-plugins/marriage-master/
+[bukkitDownloadsImg]: https://cf.way2muchnoise.eu/full_marriage-master_downloads.svg
+[versionsImg]: https://cf.way2muchnoise.eu/versions/marriage-master.svg
 [issues]: https://github.com/GeorgH93/MarriageMaster/issues
 [wiki]: https://github.com/GeorgH93/MarriageMaster/wiki
 [wiki_faq]: https://github.com/GeorgH93/MarriageMaster/wiki/FAQ
@@ -36,10 +38,10 @@
 Marriage Master is a Bukkit/Spigot plugin that allows you to marry another player in Minecraft to gain some extras.
 
 [![ciImg]][ci] [![releaseImg]][release]
-[![apiVersionImg]][api] [![licenseImg]][license]
+[![apiVersionImg]][api] [![licenseImg]][license] [![spigotRatingImg]][spigot]
 
 [![featureRequestsImg]][featureRequests] [![bugReportsImg]][bugReports]
-[![spigotRatingImg]][spigot] [![spigotDownloadsImg]][spigot]
+[![spigotDownloadsImg]][spigot] [![bukkitDownloadsImg]][bukkit]
 
 ## Features:
 - Players can marry one (or more if configured) players to gain access to a set of special commands and benefits.
@@ -59,7 +61,7 @@ Marriage Master is a Bukkit/Spigot plugin that allows you to marry another playe
 ## Requirements:
 ### Runtime requirements:
 * Java 8
-* Bukkit, Spigot or Paper for Minecraft 1.7.10 or newer; or Uranium for Minecraft 1.7.10
+* Bukkit, Spigot or Paper for Minecraft 1.7.10 or newer; or Uranium for Minecraft 1.7.10 ![versionsImg]
 * (Optional) BungeeCord or Waterfall for Minecraft 1.7.10 or newer
 * (Optional) [Vault](https://www.spigotmc.org/resources/vault.34315/) (for economy features)
 * (Optional) [PCGF PluginLib](https://github.com/GeorgH93/PCGF_PluginLib) ([Advantages of using the PCGF PluginLib](https://github.com/GeorgH93/MarriageMaster/wiki/Build-and-Mode-comparison#Advantages-of-using-the-PCGF-PluginLib))
@@ -117,7 +119,7 @@ For more details about the API please check the following links.
 * [FAQ][wiki_faq]
 
 ## Links:
-* [Spigot][spigot]
-* [Dev Bukkit][bukkit]
+* [Spigot][spigot] - [![spigotDownloadsImg]][spigot]
+* [CurseForge][bukkit] - [![bukkitDownloadsImg]][bukkit]
 * [Build Server - Master Builds ![ciImg]][ci]
 * [Build Server - Dev Builds ![ciDevImg]][ciDev]
