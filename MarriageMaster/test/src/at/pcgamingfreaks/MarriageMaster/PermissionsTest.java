@@ -64,7 +64,7 @@ public class PermissionsTest
 		// Check if all permissions are defined in the plugin.yml
 		for(String permission : permissions)
 		{
-			assertTrue(permissionsYaml.isSet(permission + ".description"), "The plugin.yml should contain the permission " + permission);
+			assertTrue(permissionsYaml.isSet(permission + ".description"), "The permissions.yml should contain the permission " + permission);
 		}
 		// Check if all the permissions defined in the plugin.yml are also defined in the Permissions class
 		Collection<String> keys = permissionsYaml.getKeys(true);

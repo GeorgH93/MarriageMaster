@@ -43,6 +43,7 @@ import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
 import at.pcgamingfreaks.yaml.YAML;
+import at.pcgamingfreaks.yaml.YamlKeyNotFoundException;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -138,17 +139,20 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 			for(String perm : permsYaml.getNodeKeys())
 			{
+				if (!perm.contains(".description")) continue;
+				perm = perm.substring(0, perm.length() - ".description".length());
 				String description = permsYaml.getString(perm + ".description", "");
 				Map<String, Boolean> children = null;
-				if (permsYaml.isSet(perm + ".children"))
+				try
 				{
-					children = new HashMap<>();
 					YAML childPerms = permsYaml.getSection(perm + ".children");
+					children = new HashMap<>();
 					for(String child : childPerms.getKeys())
 					{
 						children.put(child, childPerms.getBoolean(child, true));
 					}
 				}
+				catch(YamlKeyNotFoundException ignored){}
 				PermissionDefault permDefault = PermissionDefault.getByName(permsYaml.getString(perm + ".default", "op"));
 				if (permDefault == null) permDefault = PermissionDefault.OP;
 				this.getServer().getPluginManager().addPermission(new Permission(
