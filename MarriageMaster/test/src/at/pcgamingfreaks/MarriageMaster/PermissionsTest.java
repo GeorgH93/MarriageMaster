@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -60,8 +60,7 @@ public class PermissionsTest
 	@Test
 	public void testPermissionsInPluginYaml() throws IOException, YamlInvalidContentException, YamlKeyNotFoundException
 	{
-		YAML pluginYaml = new YAML(new File("resources/plugin.yml"));
-		YAML permissionsYaml = pluginYaml.getSection("permissions");
+		YAML permissionsYaml = new YAML(new File("resources/permissions.yml"));
 		// Check if all permissions are defined in the plugin.yml
 		for(String permission : permissions)
 		{

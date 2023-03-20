@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -39,14 +39,17 @@ import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Plugin.IPlugin;
-import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.UUIDConverter;
+import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
+import at.pcgamingfreaks.yaml.YAML;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -55,9 +58,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IPlugin
@@ -107,6 +108,8 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		/*end[STANDALONE]*/
 
+		loadPermissions();
+
 		config = new Config(this);
 		if(!config.isLoaded())
 		{
@@ -125,6 +128,38 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			return;
 		}
 		getLogger().info(StringUtils.getPluginEnabledMessage("Marriage Master"));
+	}
+
+	private void loadPermissions()
+	{
+		try
+		{
+			YAML permsYaml = new YAML(this.getClassLoader().getResourceAsStream("permissions.yml"));
+
+			for(String perm : permsYaml.getNodeKeys())
+			{
+				String description = permsYaml.getString(perm + ".description", "");
+				Map<String, Boolean> children = null;
+				if (permsYaml.isSet(perm + ".children"))
+				{
+					children = new HashMap<>();
+					YAML childPerms = permsYaml.getSection(perm + ".children");
+					for(String child : childPerms.getKeys())
+					{
+						children.put(child, childPerms.getBoolean(child, true));
+					}
+				}
+				PermissionDefault permDefault = PermissionDefault.getByName(permsYaml.getString(perm + ".default", "op"));
+				if (permDefault == null) permDefault = PermissionDefault.OP;
+				this.getServer().getPluginManager().addPermission(new Permission(
+						perm, description, permDefault, children
+				));
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	private void failedToEnablePlugin()

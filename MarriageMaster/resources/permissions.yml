@@ -1,0 +1,198 @@
+marry.everything:
+  description: Gives access to all MarriageMaster commands
+  children:
+    marry.user: true
+    marry.admin: true
+marry.admin:
+  description: Gives access to all marriage admin commands
+  children:
+    marry.reload: true
+    marry.setpriest: true
+    marry.priest: true
+    marry.listenchat: true
+    marry.update: true
+    marry.version: true
+    marry.offlinedivorce: true
+    marry.bypass: true
+    marry.home.others: true
+    marry.partners.others: true
+marry.bypass:
+  description: Gives all bypassing permissions
+  children:
+    marry.bypass.delay: true
+    marry.bypass.rangelimit: true
+    marry.bypass.backpackgamemode: true
+    marry.bypass.worldblacklist: true
+    marry.bypass.serverblacklist: true
+    marry.bypass.tpconfirmation: true
+    marry.bypass.vanish: true
+    marry.bypass.gift.gamemode: true
+    marry.bypass.gift.world: true
+    marry.bypass.gift.itemfilter: true
+marry.user:
+  description: Gives acces to all user functions
+  children:
+    marry.list: true
+    marry.listpriests: true
+    marry.pvp: true
+    marry.tp: true
+    marry.home.user: true
+    marry.chat.user: true
+    marry.gift: true
+    marry.backpack: true
+    marry.kiss: true
+    marry.hug: true
+    marry.seen: true
+    marry.selfmarry: true
+    marry.selfdivorce: true
+    marry.changesurname: true
+    marry.accept: true
+    marry.setcolor: true
+    marry.partners: true
+marry.chat.user:
+  description: Gives acces to all private message formats
+  children:
+    marry.chat: true
+    marry.chat.color: true
+    marry.chat.format: true
+    marry.chat.magic: true
+marry.home.user:
+  children:
+    marry.home: true
+    marry.home.set: true
+    marry.home.del: true
+marry.accept:
+  description: Allows the player to accept confirmation requests
+  default: true
+marry.list:
+  description: Allows you to use the List command
+  default: true
+marry.listpriests:
+  description: Allows you to use the list priests command
+  default: true
+marry.partners:
+  description: Allows to list their own partners with the partners command
+  default: true
+marry.pvp:
+  description: Allows you to enable/disable pvp with the partner
+  default: true
+marry.tp:
+  description: Allows you to tp to your partner
+  default: true
+marry.home:
+  description: Allows the player to teleport to his home
+  default: true
+marry.sethome:
+  children:
+    marry.home.set: true
+marry.home.set:
+  description: Allows the player to set the home point
+  default: true
+marry.delhome:
+  children:
+    marry.home.del: true
+marry.home.del:
+  description: Allows the player to delete his home point
+  default: true
+marry.chat:
+  description: Allows you to chat with your partner
+  default: true
+marry.chat.color:
+  description: Allows colors in private messages
+  default: true
+marry.chat.format:
+  description: Allows formating private messages (except magic)
+  default: true
+marry.chat.magic:
+  description: Allows magic format in private messages
+  default: false
+marry.gift:
+  description: Allows you to gift items to your partner
+  default: true
+marry.backpack:
+  description: Allows to share the backpacks (requires Minepacks)
+  default: true
+marry.kiss:
+  description: Allows to kiss your partner
+  default: true
+marry.hug:
+  description: Allows to hug your partner
+  default: true
+marry.seen:
+  description: Allows to check when your partner was online the last time
+  default: true
+marry.setcolor:
+  description: Allows to change the color of the marriage
+  default: true
+marry.selfmarry:
+  description: Allows to marry an other player without a priest
+  default: true
+marry.selfdivorce:
+  description: Allows to divorce from an other player without a priest
+  default: true
+marry.changesurname:
+  description: Allows to change the surname when self marry is on.
+  default: true
+marry.bypass.delay:
+  description: Allows to skip the delay on tps
+  default: op
+marry.bypass.rangelimit:
+  description: Allows to bypass the range limits
+  default: op
+marry.bypass.gift.gamemode:
+  description: Allows to bypass gamemode check for item gifting
+  default: op
+marry.bypass.gift.world:
+  description: Allows to bypass the world check for item gifting
+  default: op
+marry.bypass.gift.itemfilter:
+  description: Allows to bypass the item filter for item gifting
+  default: op
+marry.bypass.backpackgamemode:
+  description: Allows to bypass gamemode check for opening the backpack of the partner
+  default: op
+marry.bypass.worldblacklist:
+  description: Allows to bypass the world check for teleports
+  default: op
+marry.bypass.serverblacklist:
+  description: Allows to bypass the server check for teleports
+  default: op
+marry.bypass.tpconfirmation:
+  description: Allows to bypass the teleport confirmation request
+  default: op
+marry.bypass.vanish:
+  description: Allows to use tab complete on vanished players.
+  default: op
+marry.offlinedivorce:
+  description: Allows a priest to divorce players when only one of them is online.
+  default: op
+marry.priest:
+  description: Allows you to marry two players
+  default: op
+marry.setpriest:
+  description: Allows you to set a priest
+  default: op
+marry.listenchat:
+  description: Allows to see the private chat
+  default: op
+marry.listenchat.autojoin:
+  description: Automatically stats listening on private chats when a player with the permission joins the server.
+  default: false
+marry.update:
+  description: Allows to update the plugin
+  default: op
+marry.version:
+  description: "Allows to print the version of the plugin and it's dependencies"
+  default: op
+marry.reload:
+  description: Allows you to reload the config
+  default: op
+marry.home.others:
+  description: Allows to teleport to homes of other players
+  default: op
+marry.partners.others:
+  description: Allows to list the partners of a player with the partners command
+  default: op
+marry.autoaccept.tprequest:
+  description: If the permission is granted the player will automaticaly accept tp requests
+  default: false
