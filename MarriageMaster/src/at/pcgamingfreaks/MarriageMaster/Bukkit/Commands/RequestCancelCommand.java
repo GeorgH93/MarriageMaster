@@ -49,7 +49,7 @@ public class RequestCancelCommand extends MarryCommand
 	public void execute(@NotNull final CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
 		MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
-		if(!player.getRequestsToCancel().isEmpty())
+		if(player.getRequestsToCancel().isEmpty())
 		{ // No open requests
 			messageNothingToCancel.send(sender);
 			return;
