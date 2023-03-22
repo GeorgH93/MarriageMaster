@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
+import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.ManagedUpdater;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.ConsoleColor;
@@ -39,6 +40,7 @@ import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.Plugin.IPlugin;
+import at.pcgamingfreaks.ServerType;
 import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
@@ -133,9 +135,11 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 	private void loadPermissions()
 	{
+		if (!ServerType.isPaperCompatible() || MCVersion.isOlderThan(MCVersion.MC_1_19_3)) return;
 		try
 		{
-			YAML permsYaml = new YAML(this.getClassLoader().getResourceAsStream("permissions.yml"));
+			YAML pluginYaml = new YAML(this.getClassLoader().getResourceAsStream("plugin.yml"));
+			YAML permsYaml = pluginYaml.getSection("permissions");
 
 			for(String perm : permsYaml.getNodeKeys())
 			{

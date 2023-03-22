@@ -60,7 +60,8 @@ public class PermissionsTest
 	@Test
 	public void testPermissionsInPluginYaml() throws IOException, YamlInvalidContentException, YamlKeyNotFoundException
 	{
-		YAML permissionsYaml = new YAML(new File("resources/permissions.yml"));
+		YAML pluginYaml = new YAML(new File("resources/plugin.yml"));
+		YAML permissionsYaml = pluginYaml.getSection("permissions");
 		// Check if all permissions are defined in the plugin.yml
 		for(String permission : permissions)
 		{
