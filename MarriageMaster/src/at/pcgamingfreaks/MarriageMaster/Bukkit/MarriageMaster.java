@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit;
 
+import at.pcgamingfreaks.Bukkit.Config.PermissionLoader;
 import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.ManagedUpdater;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
@@ -111,7 +112,10 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		}
 		/*end[STANDALONE]*/
 
-		loadPermissions();
+		if (ServerType.isPaperCompatible() && MCVersion.isNewerOrEqualThan(MCVersion.MC_1_19_3))
+		{
+			PermissionLoader.loadPermissionsFromPlugin(this);
+		}
 
 		config = new Config(this);
 		if(!config.isLoaded())
@@ -131,43 +135,6 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			return;
 		}
 		getLogger().info(StringUtils.getPluginEnabledMessage("Marriage Master"));
-	}
-
-	private void loadPermissions()
-	{
-		if (!ServerType.isPaperCompatible() || MCVersion.isOlderThan(MCVersion.MC_1_19_3)) return;
-		try
-		{
-			YAML pluginYaml = new YAML(this.getClassLoader().getResourceAsStream("plugin.yml"));
-			YAML permsYaml = pluginYaml.getSection("permissions");
-
-			for(String perm : permsYaml.getNodeKeys())
-			{
-				if (!perm.contains(".description")) continue;
-				perm = perm.substring(0, perm.length() - ".description".length());
-				String description = permsYaml.getString(perm + ".description", "");
-				Map<String, Boolean> children = null;
-				try
-				{
-					YAML childPerms = permsYaml.getSection(perm + ".children");
-					children = new HashMap<>();
-					for(String child : childPerms.getKeys())
-					{
-						children.put(child, childPerms.getBoolean(child, true));
-					}
-				}
-				catch(YamlKeyNotFoundException ignored){}
-				PermissionDefault permDefault = PermissionDefault.getByName(permsYaml.getString(perm + ".default", "op"));
-				if (permDefault == null) permDefault = PermissionDefault.OP;
-				this.getServer().getPluginManager().addPermission(new Permission(
-						perm, description, permDefault, children
-				));
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	private void failedToEnablePlugin()
