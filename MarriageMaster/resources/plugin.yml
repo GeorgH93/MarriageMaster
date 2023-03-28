@@ -41,7 +41,7 @@ permissions:
       marry.bypass.gift.world: true
       marry.bypass.gift.itemfilter: true
   marry.user:
-    description: Gives acces to all user functions
+    description: Gives access to all user functions
     children:
       marry.list: true
       marry.listpriests: true
@@ -61,7 +61,7 @@ permissions:
       marry.setcolor: true
       marry.partners: true
   marry.chat.user:
-    description: Gives acces to all private message formats
+    description: Gives access to all private message formats
     children:
       marry.chat: true
       marry.chat.color: true
@@ -112,7 +112,7 @@ permissions:
     description: Allows colors in private messages
     default: true
   marry.chat.format:
-    description: Allows formating private messages (except magic)
+    description: Allows formatting private messages (except magic)
     default: true
   marry.chat.magic:
     description: Allows magic format in private messages
@@ -136,10 +136,10 @@ permissions:
     description: Allows to change the color of the marriage
     default: true
   marry.selfmarry:
-    description: Allows to marry an other player without a priest
+    description: Allows to marry another player without a priest
     default: true
   marry.selfdivorce:
-    description: Allows to divorce from an other player without a priest
+    description: Allows to divorce from another player without a priest
     default: true
   marry.changesurname:
     description: Allows to change the surname when self marry is on.
@@ -205,5 +205,5 @@ permissions:
     description: Allows to list the partners of a player with the partners command
     default: op
   marry.autoaccept.tprequest:
-    description: If the permission is granted the player will automaticaly accept tp requests
+    description: If the permission is granted the player will automatically accept tp requests
     default: false
