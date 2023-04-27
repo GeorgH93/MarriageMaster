@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>2.6.15</revision>
+		<revision>2.6.16-RC1</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
@@ -155,7 +155,7 @@
 		<profile>
 			<id>Release</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			
 			<modules>

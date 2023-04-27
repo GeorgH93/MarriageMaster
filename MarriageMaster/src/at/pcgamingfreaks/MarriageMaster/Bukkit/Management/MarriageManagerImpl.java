@@ -363,7 +363,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		return true;
 	}
 
-	private boolean marryOnlineTest(final @NotNull CommandSender priest, final @NotNull OfflinePlayer player1, final @NotNull OfflinePlayer player2)
+	private boolean marryOnlineTest(final @NotNull CommandSender priest, final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2)
 	{
 		if(!player1.isOnline())
 		{
@@ -444,7 +444,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		{
 			marry(player1, player2, plugin.getPlayerData((Player) priest), surname);
 		}
-		else if(marryOnlineTest(priest, player1.getPlayer(), player2.getPlayer()) && marryPriestTestCanMarry(player1, player2, priest) && marrySurnameTest(priest, surname))
+		else if(marryOnlineTest(priest, player1, player2) && marryPriestTestCanMarry(player1, player2, priest) && marrySurnameTest(priest, surname))
 		{
 			marryPriestFinish(player1, player2, priest, surname);
 		}
@@ -453,7 +453,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	@Override
 	public void marry(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, @NotNull MarriagePlayer priest, String surname)
 	{
-		if(priest.isOnline() && marryOnlineTest(priest.getPlayerOnline(), player1.getPlayer(), player2.getPlayer()) && marrySurnameTest(priest.getPlayerOnline(), surname))
+		if(priest.isOnline() && marryOnlineTest(priest.getPlayerOnline(), player1, player2) && marrySurnameTest(priest.getPlayerOnline(), surname))
 		{
 			if(player1.equals(priest) || player2.equals(priest)) // Self marry
 			{
@@ -737,7 +737,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 						if(confirm) // We can't confirm if both are offline!
 						{
 							// We don't have to test but I don't want to copy the message sending over
-							marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayer(), marriage.getPartner2().getPlayer());
+							marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1(), marriage.getPartner2());
 						}
 						else
 						{
@@ -782,7 +782,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 				else
 				{
 					// We don't have to test but I don't want to copy the message sending over
-					marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1().getPlayer(), marriage.getPartner2().getPlayer());
+					marryOnlineTest(divorceBy.getPlayerOnline(), marriage.getPartner1(), marriage.getPartner2());
 				}
 			}
 			else
