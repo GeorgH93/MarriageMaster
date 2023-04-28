@@ -250,6 +250,12 @@ DefaultCommand: "help"
 # The marriage color is used for the magic/colored heart and is set to a random value by default.
 AllowPlayersToChangeMarriageColor: true
 
+Sound:
+  # Global setting if sounds should be used. Each sound effect can be disabled individually by setting it to 'DISABLED'.
+  Enable: true
+  Married: ORB_PICKUP
+  Divorced: ORB_PICKUP
+
 Misc:
   AutoUpdate:
     # When auto update is disabled you still can use the build in update function manually with /marry update

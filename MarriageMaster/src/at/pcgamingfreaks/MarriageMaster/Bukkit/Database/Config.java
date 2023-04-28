@@ -34,6 +34,7 @@ import at.pcgamingfreaks.Version;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -605,6 +606,18 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		return getConfigE().getBoolean("AllowPlayersToChangeMarriageColor", true);
 	}
 
+	public Sound getMarriedNotificationSound()
+	{
+		if (!isMarryAnnouncementEnabled()) return null;
+		return getSound("Married", "ORB_PICKUP");
+	}
+
+	public Sound getDivorcedNotificationSound()
+	{
+		if (!isDivorceAnnouncementEnabled()) return null;
+		return getSound("Divorced", "ORB_PICKUP");
+	}
+
 	//region Misc getter
 	public boolean useUpdater()
 	{
@@ -662,6 +675,23 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	}
 	//endregion
 	//endregion
+
+	private Sound getSound(String option, String autoValue)
+	{
+		if(!getConfigE().getBoolean("Sound.Enable", true)) return null;
+		String soundName = getConfigE().getString("Sound." + option, "auto").toUpperCase(Locale.ENGLISH);
+		if(soundName.equals("AUTO")) soundName = autoValue;
+		if(soundName.equals("DISABLED") || soundName.equals("FALSE")) return null;
+		try
+		{
+			return Sound.valueOf(soundName);
+		}
+		catch(Exception ignored)
+		{
+			logger.warning("Unknown sound: " + soundName);
+		}
+		return null;
+	}
 
 	private void trySave()
 	{

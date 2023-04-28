@@ -45,15 +45,11 @@ import at.pcgamingfreaks.ServerType;
 import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
-import at.pcgamingfreaks.yaml.YAML;
-import at.pcgamingfreaks.yaml.YamlKeyNotFoundException;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -238,6 +234,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		if(config.isEconomyEnabled()) new EconomyHandler(this);
 		if(config.isCommandExecutorEnabled()) getServer().getPluginManager().registerEvents(new CommandExecutor(this), this);
 		if(getConfiguration().isPrefixEnabled() || getConfiguration().isSuffixEnabled()) getServer().getPluginManager().registerEvents(new ChatPrefixSuffix(this), this);
+		if(NotificationSoundHandler.enableSound(this)) getServer().getPluginManager().registerEvents(new NotificationSoundHandler(this), this);
 	}
 
 	private void unload()
