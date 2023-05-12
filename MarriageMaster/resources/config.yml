@@ -37,7 +37,7 @@ Database:
       Partner: marry_partners
       Home: marry_home
       Priests: marry_priests
-  # Settings controlling the cache behavior of the plugin. You may can optimize it a little bit depending on your player count, ram or cpu bottlenecks.
+  # Settings controlling the cache behavior of the plugin. You might be able to optimize it a little bit depending on your player count, ram or cpu bottlenecks.
   Cache:
     UnCache:
       # The strategy used to uncache offline players. Options
