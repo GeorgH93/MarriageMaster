@@ -6,7 +6,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<revision>2.6.16-RC2</revision>
+		<revision>2.7-RC1</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
@@ -15,9 +15,9 @@
 		<mockito.version>4.2.0</mockito.version>
 		<mavenShade.version>3.4.1</mavenShade.version>
 
-		<configFileVersion>106</configFileVersion>
+		<configFileVersion>107</configFileVersion>
 		<configFileVersionBungee>102</configFileVersionBungee>
-		<languageFileVersion>112</languageFileVersion>
+		<languageFileVersion>113</languageFileVersion>
 
 		<sonar.organization>georgh93</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>

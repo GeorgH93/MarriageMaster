@@ -181,6 +181,7 @@ Language:
       Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" wants to marry you with \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Accept the marriage with \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" or deny it with \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       PriestOff: "Priest {DisplayName}&r is now offline, wedding called off."
       PlayerOff: "{DisplayName}&r is now offline, wedding called off."
+      MaxPartnersReached: "{DisplayName}&r has already reached the maximum allowed amount of partners ({MaxPartnerCount})."
       Self:
         NotYourself: "&cYou can't marry yourself."
         NotInRange: "&cThe player is not in range! They need to be within {Range} blocks!"
@@ -196,6 +197,8 @@ Language:
         RequestSent: "Marriage request sent."
         PlayerOff: "{DisplayName}&r is now offline, wedding called off."
         NotOnYourOwn: "&cYou can't perform your own wedding. Please ask a priest to perform the wedding for you."
+        MaxPartnersReached: "You have already reached the maximum allowed amount of partners ({MaxPartnerCount})."
+        MaxPartnersReachedOther: "{DisplayName}&r has already reached the maximum allowed amount of partners ({MaxPartnerCount})."
     Divorce:
       Broadcast: "&a&r&a{PriestDisplayName}&r&a has divorced &r&a{Player1DisplayName}&r&a from &r&a{Player2DisplayName}&r&a."
       DivorcedPlayer: "&a&r&a{PriestDisplayName}&r&a has divorced your marriage with &r&a{PartnerDisplayName}&r&a."

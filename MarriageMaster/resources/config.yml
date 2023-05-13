@@ -56,7 +56,8 @@ Marriage:
   # This option defines if a priest is needed to divorce 2 players or if they can divorce on their own.
   # Options: true, false, auto (auto will copy the RequirePriest value)
   DivorceRequiresPriest: auto
-  AllowMultiplePartners: false
+  # Max numbers of partners that a player can have. Values < 1 disable the limit.
+  MaxPartners: 1
   # This setting disables the "/marry setpriest" command players can still be promoted to a priest with the "marry.priest" permission.
   DisableSetPriestCommand: false
   Surnames:

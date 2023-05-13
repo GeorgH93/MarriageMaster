@@ -66,8 +66,9 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	private final Message messageAlreadySamePair, messageSelfAlreadySamePair;
 	private final Message messageBroadcastDivorce, messageDivorced, messageDivorcedPlayer, messageDivorceNotInRange, messageSelfNotOnYourOwn;
 	private final Message messageSelfDivorced, messageSelfBroadcastDivorce, messageSelfDivorcedPlayer, messageSelfDivorceRequestSent, messageSelfDivorceConfirm, messageSelfDivorceNotInRange;
+	private final Message messageMaxPartnersReached, messageSelfMaxPartnersReached, messageSelfMaxPartnersReachedOther;
 	private final boolean surnameAllowColors, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
-	private final int surnameMinLength, surnameMaxLength;
+	private final int surnameMinLength, surnameMaxLength, maxPartners;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 
 	public MarriageManagerImpl(final @NotNull MarriageMaster plugin)
@@ -96,6 +97,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		otherPlayerOnSelfDivorce = plugin.getConfiguration().isConfirmationOtherPlayerOnSelfDivorceEnabled();
 		rangeMarrySquared   = (rangeMarry > 0) ? rangeMarry * rangeMarry : rangeMarry;
 		rangeDivorceSquared = (rangeDivorce > 0) ? rangeDivorce * rangeDivorce : rangeDivorce;
+		maxPartners         = plugin.getConfiguration().getMaxPartners();
 
 		dialogDoYouWant     = plugin.getLanguage().getDialog("DoYouWant").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
 		dialogMarried       = plugin.getLanguage().getDialog("Married").replace("{Player1Name}", "%1$s").replace("{Player1DisplayName}", "%2$s").replace("{Player2Name}", "%3$s").replace("{Player2DisplayName}", "%4$s");
@@ -134,6 +136,10 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		messageSelfOtherAlreadyMarried = getMSG("Ingame.Marry.Self.OtherAlreadyMarried").placeholders(Placeholders.PLAYER_NAME);
 		messageSelfAlreadyOpenRequest  = getMSG("Ingame.Marry.Self.AlreadyOpenRequest");
 		messageSelfNotOnYourOwn        = getMSG("Ingame.Marry.Self.NotOnYourOwn");
+
+		messageMaxPartnersReached          = getMSG("Ingame.Marry.MaxPartnersReached").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
+		messageSelfMaxPartnersReached      = getMSG("Ingame.Marry.Self.MaxPartnersReached").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners));
+		messageSelfMaxPartnersReachedOther = getMSG("Ingame.Marry.Self.MaxPartnersReachedOther").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
 
 		messageDivorced                = getMSG("Ingame.Divorce.Divorced").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").placeholders(priestPlaceholders).placeholders(Placeholders.PARTNER_NAME);
@@ -392,6 +398,14 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 			if(player1.isMarried()) messageAlreadyMarried.send(priest, player1);
 			if(player2.isMarried()) messageAlreadyMarried.send(priest, player2);
 		}
+		else if(player1.getPartners().size() >= maxPartners)
+		{
+			messageMaxPartnersReached.send(priest, player1);
+		}
+		else if(player2.getPartners().size() >= maxPartners)
+		{
+			messageMaxPartnersReached.send(priest, player2);
+		}
 		else
 		{
 			return true;
@@ -482,6 +496,14 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 						{
 							priest.send(messageSelfOtherAlreadyMarried, otherPlayer);
 						}
+					}
+					else if(priest.getPartners().size() >= maxPartners)
+					{
+						priest.send(messageSelfMaxPartnersReached);
+					}
+					else if(otherPlayer.getPartners().size() >= maxPartners)
+					{
+						priest.send(messageSelfMaxPartnersReachedOther, otherPlayer);
 					}
 					else if(priest.getOpenRequest() != null || !priest.getRequestsToCancel().isEmpty())
 					{

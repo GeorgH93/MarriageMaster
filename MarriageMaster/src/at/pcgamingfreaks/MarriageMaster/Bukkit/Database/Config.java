@@ -71,6 +71,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 			Map<String, String> reMappings = new HashMap<>();
 			if(oldConfig.version().olderThan(new Version(98))) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
 			if(oldConfig.version().olderThan(new Version(101))) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
+			if(oldConfig.version().olderThan(new Version(107))) oldConfig.getYamlE().set("Marriage.MaxPartners", oldConfig.getYamlE().getBoolean("Marriage.AllowMultiplePartners", false) ? -1 : 1);
 			Collection<String> keysToKeep = oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)");
 			keysToKeep.add(KEY_SERVER_NAME);
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);
@@ -111,9 +112,16 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	}
 
 	//region Global settings
+	public int getMaxPartners()
+	{
+		int maxPartners = getConfigE().getInt("Marriage.MaxPartners", 1);
+		if (maxPartners < 1) maxPartners = Integer.MAX_VALUE;
+		return maxPartners;
+	}
+
 	public boolean areMultiplePartnersAllowed()
 	{
-		return getConfigE().getBoolean("Marriage.AllowMultiplePartners", false);
+		return getMaxPartners() != 1;
 	}
 
 	public boolean isSelfMarriageAllowed()
