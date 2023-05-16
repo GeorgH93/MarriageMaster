@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -59,14 +59,13 @@ public class KissCommand extends MarryCommand implements Listener
 	{
 		super(plugin, "kiss", plugin.getLanguage().getTranslated("Commands.Description.Kiss"), Permissions.KISS, true, false, plugin.getLanguage().getCommandAliases("Kiss"));
 
-		particleSpawner = ParticleSpawner.getParticleSpawner();
-
 		range              = plugin.getConfiguration().getRange(Range.Kiss);
 		rangeSquared       = plugin.getConfiguration().getRangeSquared(Range.Kiss);
 		interactRange      = plugin.getConfiguration().getRangeSquared(Range.KissInteract);
 		hearthVisibleRange = plugin.getConfiguration().getRange(Range.HearthVisible);
 		waitTime           = plugin.getConfiguration().getKissWaitTime();
 		hearthCount        = plugin.getConfiguration().getKissHearthCount();
+		particleSpawner    = hearthCount > 0 ? ParticleSpawner.getParticleSpawner() : null;
 
 		messageKissed     = plugin.getLanguage().getMessage("Ingame.Kiss.Kissed");
 		messageGotKissed  = plugin.getLanguage().getMessage("Ingame.Kiss.GotKissed");
