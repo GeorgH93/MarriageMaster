@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Commands;
 
 import at.pcgamingfreaks.Bukkit.Message.Message;
+import at.pcgamingfreaks.Bukkit.Particles.Particle;
+import at.pcgamingfreaks.Bukkit.Particles.ParticleSpawner;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.Events.HugEvent;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarryCommand;
@@ -41,8 +43,9 @@ public class HugCommand extends MarryCommand
 	@Getter private static HugCommand instance;
 
 	private final Message messageHugged, messageGotHugged, messageTooFarAway, messageWait;
-	private final double range, rangeSquared;
-	private final int waitTime;
+	private final double range, rangeSquared, visibleRange;
+	private final int waitTime, particleCount;
+	private final ParticleSpawner particleSpawner;
 
 	public HugCommand(MarriageMaster plugin)
 	{
@@ -56,6 +59,10 @@ public class HugCommand extends MarryCommand
 		messageTooFarAway = plugin.getLanguage().getMessage("Ingame.Hug.TooFarAway").placeholder("Distance", singleDecimalPointProcessor);
 		messageWait       = plugin.getLanguage().getMessage("Ingame.Hug.Wait").placeholder("Time").placeholder("TimeLeft", singleDecimalPointProcessor);
 		waitTime          = plugin.getConfiguration().getHugWaitTime();
+		particleCount     = plugin.getConfiguration().getHugParticleCount();
+		visibleRange      = plugin.getConfiguration().getRange(Range.HugParticleVisible);
+
+		particleSpawner = (particleCount > 0) ? ParticleSpawner.getParticleSpawner() : null;
 	}
 
 	@Override
@@ -106,6 +113,12 @@ public class HugCommand extends MarryCommand
 				player.setLastHugTime(System.currentTimeMillis());
 				player.sendMessage(messageHugged);
 				partner.sendMessage(messageGotHugged);
+
+				if(particleSpawner != null)
+				{
+					particleSpawner.spawnParticle(player.getPlayerOnline().getLocation(), Particle.VILLAGER_HAPPY, visibleRange, particleCount, 1.0F, 1.0F, 1.0F, 1.0F);
+					particleSpawner.spawnParticle(partner.getPlayerOnline().getLocation(), Particle.VILLAGER_HAPPY, visibleRange, particleCount, 1.0F, 1.0F, 1.0F, 1.0F);
+				}
 			}
 		}
 		else

@@ -133,6 +133,8 @@ Hug:
   Enable: true
   # Time between two hugs in seconds, 0 to disable cooldown
   WaitTime: 10
+  # How many particles should be spawned, 0 to disable
+  ParticleCount: 25
 
 List:
   UseFooter: true
@@ -189,6 +191,7 @@ Range:
   KissInteract: 5
   Hug: 2
   HearthVisible: 128
+  HugParticleVisible: 128
   BonusXP: 10
   Heal: 3
 

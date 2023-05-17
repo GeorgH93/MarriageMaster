@@ -296,6 +296,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	{
 		return (int) (getConfigE().getFloat("Hug.WaitTime", 10.0f) * 1000);
 	}
+
+	public int getHugParticleCount()
+	{
+		return Math.min(getConfigE().getInt("Hug.ParticleCount", 25), 0);
+	}
 	//endregion
 
 	//region Gift command settings
