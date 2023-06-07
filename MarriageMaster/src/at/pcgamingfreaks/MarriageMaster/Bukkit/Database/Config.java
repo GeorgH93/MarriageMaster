@@ -690,7 +690,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	//endregion
 	//endregion
 
-	private Sound getSound(String option, String autoValue)
+	private Sound getSound(final @NotNull String option, final @NotNull String autoValue)
 	{
 		if(!getConfigE().getBoolean("Sound.Enable", true)) return null;
 		String soundName = getConfigE().getString("Sound." + option, "auto").toUpperCase(Locale.ENGLISH);
