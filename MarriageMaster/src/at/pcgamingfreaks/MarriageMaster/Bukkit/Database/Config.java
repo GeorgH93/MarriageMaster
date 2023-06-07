@@ -17,6 +17,7 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Database;
 
+import at.pcgamingfreaks.Bukkit.MCVersion;
 import at.pcgamingfreaks.Bukkit.MinecraftMaterial;
 import at.pcgamingfreaks.Bukkit.Util.Utils;
 import at.pcgamingfreaks.Config.Configuration;
@@ -697,6 +698,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		if(soundName.equals("DISABLED") || soundName.equals("FALSE")) return null;
 		try
 		{
+			if (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9) && soundName.equals("ORB_PICKUP")) soundName = "ENTITY_EXPERIENCE_ORB_PICKUP";
 			return Sound.valueOf(soundName);
 		}
 		catch(Exception ignored)
