@@ -24,6 +24,7 @@ import at.pcgamingfreaks.Version;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
 
@@ -35,11 +36,14 @@ public class MarriageMasterBootstrap implements PluginBootstrap
 	private static final String MAIN_CLASS_NORMAL = "at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster";
 	private static final String MAIN_CLASS_STANDALONE = "at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster";
 
-	@Override
+
 	public void bootstrap(@NotNull PluginProviderContext context)
+	{ /* Don't delete, otherwiese this class will not work on Paper builds older than 549 */ }
+
+	@Override
+	public void bootstrap(@NotNull BootstrapContext bootstrapContext)
 	{
 	}
-
 	@Override
 	public @NotNull JavaPlugin createPlugin(@NotNull PluginProviderContext context)
 	{
