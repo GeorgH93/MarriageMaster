@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@ import at.pcgamingfreaks.Message.Placeholder.Processors.ParameterTypeAwarePlaceh
 import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Contract;
@@ -112,8 +111,8 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
-		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength}", surnameMinLength + "").replaceAll("\\{MaxLength}", surnameMaxLength + "");
-		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength}", surnameMinLength + "").replaceAll("\\{MaxLength}", surnameMaxLength + "");
+		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength}", String.valueOf(surnameMinLength)).replaceAll("\\{MaxLength}", String.valueOf(surnameMaxLength));
+		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength}", String.valueOf(surnameMinLength)).replaceAll("\\{MaxLength}", String.valueOf(surnameMaxLength));
 		messageSurnameAlreadyUsed      = getMSG("Ingame.Surname.AlreadyUsed");
 
 		messageAlreadySamePair         = getMSG("Ingame.Marry.AlreadySamePair").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
