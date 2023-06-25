@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Processors.NamePlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Placeholder;
-
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -87,8 +86,8 @@ public class GiftCommand extends MarryCommand
 		                                         itemNamePlaceholder[0], itemNamePlaceholder[1],
 		                                         new Placeholder("ItemMetaJSON", new ItemMetadataPlaceholderProcessor(plugin.getLogger())) };
 
-		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").replaceAll("\\{AllowedGameModes}", currentGameModePlaceholder.getProcessor().process(allowedSendGameModes)).placeholders(currentGameModePlaceholder);
-		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").replaceAll("\\{AllowedGameModes}", currentGameModePlaceholder.getProcessor().process(allowedReceiveGameModes)).placeholders(currentGameModePlaceholder);
+		messageGameModeNotAllowedSender   = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedSender").staticPlaceholder("AllowedGameModes", currentGameModePlaceholder.getProcessor(), allowedSendGameModes).placeholders(currentGameModePlaceholder);
+		messageGameModeNotAllowedReceiver = plugin.getLanguage().getMessage("Ingame.Gift.GameModeNotAllowedReceiver").staticPlaceholder("AllowedGameModes", currentGameModePlaceholder.getProcessor(), allowedReceiveGameModes).placeholders(currentGameModePlaceholder);
 		messageNoItemInHand               = plugin.getLanguage().getMessage("Ingame.Gift.NoItemInHand");
 		messagePartnerInvFull             = plugin.getLanguage().getMessage("Ingame.Gift.PartnerInvFull");
 		messageItemSent                   = plugin.getLanguage().getMessage("Ingame.Gift.ItemSent").placeholders(Placeholders.PLAYER_NAME).placeholders(itemPlaceholders);

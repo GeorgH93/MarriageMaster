@@ -42,7 +42,6 @@ import at.pcgamingfreaks.Message.Placeholder.Placeholder;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Processors.ParameterTypeAwarePlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -111,8 +110,8 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 
 		messageSurnameSuccess          = getMSG("Ingame.Surname.SetSuccessful");
 		messageSurnameFailed           = getMSG("Ingame.Surname.SetFailed");
-		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").replaceAll("\\{MinLength}", String.valueOf(surnameMinLength)).replaceAll("\\{MaxLength}", String.valueOf(surnameMaxLength));
-		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").replaceAll("\\{MinLength}", String.valueOf(surnameMinLength)).replaceAll("\\{MaxLength}", String.valueOf(surnameMaxLength));
+		messageSurnameToShort          = getMSG("Ingame.Surname.ToShort").staticPlaceholder("MinLength", null, String.valueOf(surnameMinLength)).staticPlaceholder("MaxLength", null, String.valueOf(surnameMaxLength));
+		messageSurnameToLong           = getMSG("Ingame.Surname.ToLong").staticPlaceholder("MinLength", null, String.valueOf(surnameMinLength)).staticPlaceholder("MaxLength", null, String.valueOf(surnameMaxLength));
 		messageSurnameAlreadyUsed      = getMSG("Ingame.Surname.AlreadyUsed");
 
 		messageAlreadySamePair         = getMSG("Ingame.Marry.AlreadySamePair").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
@@ -136,9 +135,9 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		messageSelfAlreadyOpenRequest  = getMSG("Ingame.Marry.Self.AlreadyOpenRequest");
 		messageSelfNotOnYourOwn        = getMSG("Ingame.Marry.Self.NotOnYourOwn");
 
-		messageMaxPartnersReached          = getMSG("Ingame.Marry.MaxPartnersReached").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
-		messageSelfMaxPartnersReached      = getMSG("Ingame.Marry.Self.MaxPartnersReached").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners));
-		messageSelfMaxPartnersReachedOther = getMSG("Ingame.Marry.Self.MaxPartnersReachedOther").replaceAll("\\{MaxPartnerCount}", Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
+		messageMaxPartnersReached          = getMSG("Ingame.Marry.MaxPartnersReached").staticPlaceholder("MaxPartnerCount", null, Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
+		messageSelfMaxPartnersReached      = getMSG("Ingame.Marry.Self.MaxPartnersReached").staticPlaceholder("MaxPartnerCount", null, Integer.toString(maxPartners));
+		messageSelfMaxPartnersReachedOther = getMSG("Ingame.Marry.Self.MaxPartnersReachedOther").staticPlaceholder("MaxPartnerCount", null, Integer.toString(maxPartners)).placeholders(Placeholders.PLAYER_NAME);
 
 		messageDivorced                = getMSG("Ingame.Divorce.Divorced").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageDivorcedPlayer          = getMSG("Ingame.Divorce.DivorcedPlayer").placeholders(priestPlaceholders).placeholders(Placeholders.PARTNER_NAME);
