@@ -11,7 +11,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.15-SNAPSHOT</bungeeVersion>
-		<pcgfPluginLibVersion>1.0.39-SNAPSHOT</pcgfPluginLibVersion>
+		<pcgfPluginLibVersion>1.0.39.1-SNAPSHOT</pcgfPluginLibVersion>
 		<mockito.version>4.2.0</mockito.version>
 		<mavenShade.version>3.4.1</mavenShade.version>
 

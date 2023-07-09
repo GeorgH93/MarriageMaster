@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,10 +17,10 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 
+import at.pcgamingfreaks.Bukkit.Placeholder.PlaceholderName;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
 
 import org.jetbrains.annotations.Nullable;
 

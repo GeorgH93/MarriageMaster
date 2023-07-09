@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,20 +20,15 @@ package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.Replacer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.Language;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderName;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.PlaceholderReplacer;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder.MarriagePlaceholderReplacer;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 
-public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
+public abstract class PlaceholderReplacerBase extends at.pcgamingfreaks.Bukkit.Placeholder.PlaceholderReplacerBase implements MarriagePlaceholderReplacer
 {
 	private static final String PLACEHOLDER_NOT_MARRIED_KEY = "NotMarried", PLACEHOLDER_DEFAULT_KEY = "Default.", NULL_MAGIC = "NULL";
 
@@ -78,37 +73,14 @@ public abstract class PlaceholderReplacerBase implements PlaceholderReplacer
 		return valueNotMarried;
 	}
 
-	protected @Nullable String replaceMarried(MarriagePlayer player) { throw new NotImplementedException("The replaceMarried method for the placeholder has not been implemented!"); }
-
-	@Override
-	public @NotNull String getName()
-	{
-		if(getClass().isAnnotationPresent(PlaceholderName.class))
-		{
-			String name = getClass().getAnnotation(PlaceholderName.class).name();
-			if(!name.isEmpty()) return name;
-		}
-		return this.getClass().getSimpleName();
-	}
-
-	@Override
-	public @NotNull Collection<String> getAliases()
-	{
-		List<String> aliasesList = new LinkedList<>();
-		if(getClass().isAnnotationPresent(PlaceholderName.class))
-		{
-			String[] aliases = getClass().getAnnotation(PlaceholderName.class).aliases();
-			for(String alias : aliases)
-			{
-				if(!alias.isEmpty()) aliasesList.add(alias);
-			}
-		}
-		return aliasesList;
-	}
-
 	@Override
 	public @Nullable String getFormat()
 	{
 		return null;
+	}
+
+	protected @Nullable String replaceMarried(MarriagePlayer player)
+	{
+		throw new UnsupportedOperationException("The replaceMarried method for the placeholder has not been implemented!");
 	}
 }

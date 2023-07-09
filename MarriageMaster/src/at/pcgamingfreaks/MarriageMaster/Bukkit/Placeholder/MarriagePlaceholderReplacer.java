@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -17,17 +17,11 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.Placeholder;
 
-import org.bukkit.OfflinePlayer;
-import org.jetbrains.annotations.NotNull;
+import at.pcgamingfreaks.Bukkit.Placeholder.PlaceholderReplacer;
+
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-
-public interface PlaceholderReplacer
+public interface MarriagePlaceholderReplacer extends PlaceholderReplacer
 {
-	@Nullable String replace(OfflinePlayer player);
-
-	@NotNull String getName();
-	@NotNull Collection<String> getAliases();
 	@Nullable String getFormat();
 }
