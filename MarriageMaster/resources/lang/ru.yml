@@ -45,7 +45,7 @@ Language:
       TargetSet: "&aПереключен семейный чат."
       DisplayNameAll: "Все партнеры"
       # Placeholders: {SenderDisplayName}, {SenderName}, {ReceiverDisplayName}, {ReceiverName}, {Message}, {MagicHeart}
-      Format: "<heart>&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
+      Format: "{MagicHeart}&r {SenderDisplayName}&r&6 => &r{ReceiverDisplayName}&r&f: &r{Message}"
     Gift:
       # Placeholders: {AllowedGameModes}, {CurrentGameMode}
       GameModeNotAllowedSender: "&cВы не можете отправлять подарки в текущем режиме игры."
@@ -97,17 +97,23 @@ Language:
       Wait: "&cВам нужно подождать {Time} секунд, чтобы снова обнять своего партнера."
     Seen:
       # Placeholders: {Name}, {DisplayName}
-      CurrentlyOnline: "{DisplayName} сейчас &aв сети&r.&r"
+      CurrentlyOnline: "{DisplayName}&r сейчас &aв сети&r.&r"
       # Placeholders: {Name}, {Date}, {Count}, {CountTotalDays}
       LastSeen: "[\"\",{\"text\":\"{Name} последняя активность \",\"extra\":[{\"text\":\"{Date}\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"{Count} ago\"}},{\"text\":\".\"}]}]"
       # No Json!!!
-      DateFormat: "yyyy.MM.dd 'at' HH:mm:ss"
+      DateFormat: "dd-MM-yyyy 'at' HH:mm:ss"
     List:
       # Placeholders: {Player1Name}, {Player1DisplayName}, {Player2Name}, {Player2DisplayName}, {Surname}, {MagicHeart}
-      Format: "&2{Player1DisplayName} <heart> &2{Player2DisplayName}"
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
       NoMarriedPlayers: "&cНет женатых игроков."
-      Headline: "&eСписок замужних игроков&r&f - &r&6страница {CurrentPage}/{MaxPage}&r&f - &r&7/{MainCommand} {SubCommand} <page>"
-      Footer: "&6### Страница {CurrentPage} из {MaxPage}&r&6&f - &r&6&7/{MainCommand} {SubCommand} <page>&r&6 ###"
+      Headline: "&eСписок замужних игроков&r&f - &r&6страница {CurrentPage}/{MaxPage}"
+      Footer: "[\"\",{\"text\":\"<<< Предыдущая <<<\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {PrevPage}\"}},{\"text\":\" Страница {CurrentPage}/{MaxPage} \",\"color\":\"gold\"},{\"text\":\">>> Следующая >>>\",\"color\":\"gray\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"},\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"/{MainCommand} {SubCommand} {NextPage}\"}}]"
+    Partners:
+      Headline: "&eСписок партнеров {DisplayName}:"
+      Footer: "&e##############################"
+      NotMarried: "{DisplayName}&e не женат."
+      # Player1 is the player that was queried. Player2 is the partner
+      Format: "&2{Player1DisplayName} {MagicHeart} &2{Player2DisplayName}"
     ListPriests:
       Format: "&2{PriestDisplayName}"
       NoPriestsOnline: "&cВ сети нет священников."
@@ -175,6 +181,7 @@ Language:
       Confirm: "[\"\",{\"text\":\"{PriestDisplayName}&r\"},{\"text\":\" хочет женить вас \",\"color\":\"white\"},{\"text\":\"{PlayerDisplayName}&r\"},{\"text\":\". Принять предложение \",\"color\":\"white\"},{\"text\":\"/marry accept\",\"color\":\"green\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry accept\"}},{\"text\":\" или отклонить \",\"color\":\"white\"},{\"text\":\"/marry deny\",\"color\":\"red\",\"underlined\":true,\"clickEvent\":{\"action\":\"run_command\",\"value\":\"/marry deny\"}},{\"text\":\".\",\"color\":\"white\"}]"
       PriestOff: "Священник {DisplayName}&r вышел из игры, свадьба отменена."
       PlayerOff: "{DisplayName}&r вышел из игры, свадьба отменена."
+      MaxPartnersReached: "{DisplayName}&r уже достигнуто максимально допустимое количество партнеров ({MaxPartnerCount})."
       Self:
         NotYourself: "&cВам не разрешают жениться на себе."
         NotInRange: "&cИгрок далеко! Он должен быть в пределах {Range} блоков!"
@@ -190,6 +197,8 @@ Language:
         RequestSent: "Запрос на брак отправлен."
         PlayerOff: "{DisplayName}&r вышел из игры, свадьба отменена."
         NotOnYourOwn: "&cВы не можете провести собственную свадьбу. Пожалуйста, попросите священника провести для вас венчание."
+        MaxPartnersReached: "Вы уже достигли максимально допустимого количества партнеров ({MaxPartnerCount})."
+        MaxPartnersReachedOther: "{DisplayName}&r уже достигнуто максимально допустимое количество партнеров ({MaxPartnerCount})."
     Divorce:
       Broadcast: "&a&r&a{PriestDisplayName}&r&a развел &r&a{Player1DisplayName}&r&a с &r&a{Player2DisplayName}&r&a."
       DivorcedPlayer: "&a&r&a{PriestDisplayName}&r&a развел ваш брак с &r&a{PartnerDisplayName}&r&a."
@@ -287,6 +296,7 @@ Language:
       Help: "Показывает все доступные команды и их описание."
       List: "Перечисляет всех замужних игроков."
       ListPriests: "Список всех священников онлайн."
+      Partners: "Список всех партнеров игрока"
       PvP: "Статус PvP с партнером."
       PvPOn: "Включает PvP с партнером."
       PvPOff: "Выключает PvP с партнером."
@@ -379,6 +389,10 @@ Command:
     - list
   ListPriests:
     - listpriests
+  Partners:
+    - partners
+    - listpartners
+    - partnerlist
   Tp:
     - tp
   SetColor:
@@ -449,8 +463,8 @@ Placeholders:
 # The name of the language represented by the language file
 LanguageName: "Русский"
 # The author of the language file
-Author: "The_stas (Stashenko)"
+Author: "maz1lovo (Semyon)"
 
 # Language file version. Don't touch it!
-Version: 111
+Version: 113
 Revision: 1
