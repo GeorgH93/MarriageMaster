@@ -469,6 +469,16 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	{
 		return getConfigE().getDouble("HealthRegain.Multiplier", 2);
 	}
+
+	public Set<String> getHPRegainBlackListedWorlds()
+	{
+		Set<String> blackListedWorlds = new HashSet<>();
+		for(String world : getConfigE().getStringList("HealthRegain.BlacklistedWorlds", new LinkedList<>()))
+		{
+			blackListedWorlds.add(world.toLowerCase(Locale.ENGLISH));
+		}
+		return blackListedWorlds;
+	}
 	//endregion
 
 	//region Database getter

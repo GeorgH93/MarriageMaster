@@ -175,6 +175,8 @@ BonusXp:
 HealthRegain:
   Enable: true
   Multiplier: 2
+  # List of worlds where players can't receive health regain bonus
+  BlacklistedWorlds: []
 
 Chat:
   Enabled: true
