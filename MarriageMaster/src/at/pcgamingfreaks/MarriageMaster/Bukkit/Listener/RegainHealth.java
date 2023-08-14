@@ -29,22 +29,27 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
+import java.util.Locale;
+import java.util.Set;
+
 public class RegainHealth implements Listener
 {
 	private final MarriageMaster plugin;
 	private final double range, multiplier;
+	private final Set<String> blacklistedWorlds;
 
 	public RegainHealth(MarriageMaster marriagemaster)
 	{
 		plugin = marriagemaster;
 		range = plugin.getConfiguration().getRangeSquared(Range.Heal);
 		multiplier = plugin.getConfiguration().getHPRegainMultiplier();
+		blacklistedWorlds = plugin.getConfiguration().getHPRegainBlackListedWorlds();
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onHeal(EntityRegainHealthEvent event)
 	{
-		if(event.getEntity() instanceof Player)
+		if(event.getEntity() instanceof Player && !blacklistedWorlds.contains(event.getEntity().getWorld().getName().toLowerCase(Locale.ENGLISH)))
 		{
 			MarriagePlayer player = plugin.getPlayerData((Player) event.getEntity());
 			if(player.isMarried())
