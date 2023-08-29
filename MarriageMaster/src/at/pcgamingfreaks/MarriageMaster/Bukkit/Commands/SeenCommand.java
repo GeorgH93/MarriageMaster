@@ -57,7 +57,7 @@ public class SeenCommand extends MarryCommand
 		{
 			player.sendMessage(CommonMessages.getMessageTargetPartnerNotFound());
 		}
-		else if(partner.isOnline())
+		else if(partner.isOnline() && player.canSee(partner.getPlayerOnline()))
 		{
 			player.sendMessage(messageCurrentlyOnline, partner);
 		}
