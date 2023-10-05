@@ -58,7 +58,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, IPlugin
@@ -239,7 +241,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 
 	private void unload()
 	{
-		placeholderManager.close();
+		if (placeholderManager != null) placeholderManager.close();
 		getServer().getMessenger().unregisterIncomingPluginChannel(this);
 		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
 		if(pluginChannelCommunicator != null)
@@ -248,12 +250,12 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			pluginChannelCommunicator = null;
 		}
 		HandlerList.unregisterAll(this);
-		getServer().getMessenger().unregisterIncomingPluginChannel(this);
-		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
-		database.close();
+		if (database != null) database.close();
 		database = null;
-		commandManager.close();
-		marriageManager.close();
+		if (commandManager != null) commandManager.close();
+		commandManager = null;
+		if (marriageManager != null) marriageManager.close();
+		marriageManager = null;
 	}
 	//endregion
 
