@@ -36,7 +36,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 {
 	public Config(MarriageMaster plugin)
 	{
-		super(plugin, new Version(MagicValues.BUNGEE_CONFIG_VERSION));
+		super(plugin, new Version(MagicValues.BUNGEE_CONFIG_VERSION), "config.yml", "bungee_");
 	}
 
 	@Override
