@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 			if(rs.next())
 			{
 				String version = rs.getString(1);
-				logger.log(Level.INFO, "MySQL server version: {}", version);
+				logger.log(Level.INFO, "MySQL server version: {0}", version);
 				serverVersion = new Version(version);
 			}
 		}
