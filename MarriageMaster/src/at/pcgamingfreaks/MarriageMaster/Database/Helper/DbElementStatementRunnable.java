@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -38,6 +38,7 @@ public class DbElementStatementRunnable implements Runnable
 	protected final SQLBasedDatabase database;
 	protected final @Language("SQL") String query;
 	protected final Object[] args;
+	public @Nullable Runnable callback = null;
 
 	public DbElementStatementRunnable(@NotNull SQLBasedDatabase database, @NotNull DatabaseElement databaseElement, @NonNls @Language("SQL") String query, @Nullable Object... args)
 	{
@@ -48,12 +49,13 @@ public class DbElementStatementRunnable implements Runnable
 	}
 
 	@Override
-	public void run()
+	public final void run()
 	{
 		if(!(databaseElement.getDatabaseKey() instanceof Integer)) return;
 		try(Connection connection = database.getConnection())
 		{
 			runStatement(connection);
+			if (callback != null) callback.run();
 		}
 		catch(SQLException e)
 		{

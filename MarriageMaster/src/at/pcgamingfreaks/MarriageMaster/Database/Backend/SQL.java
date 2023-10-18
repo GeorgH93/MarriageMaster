@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2023 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,6 +188,20 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	protected void runStatementAsyncIncludeKeyFirst(final @Language("SQL") @NotNull String query, final @NotNull DatabaseElement databaseElement, final @NotNull Object... args)
 	{
 		runAsync(new DbElementStatementWithKeyFirstRunnable(this, databaseElement, query, args), databaseElement);
+	}
+
+	protected void runStatementAsyncIncludeKey(final @Nullable Runnable callback, final @Language("SQL") @NotNull String query, final @NotNull DatabaseElement databaseElement, final @NotNull Object... args)
+	{
+		DbElementStatementWithKeyRunnable runnable = new DbElementStatementWithKeyRunnable(this, databaseElement, query, args);
+		runnable.callback = callback;
+		runAsync(runnable, databaseElement);
+	}
+
+	protected void runStatementAsyncIncludeKeyFirst(final @Nullable Runnable callback, final @Language("SQL") @NotNull String query, final @NotNull DatabaseElement databaseElement, final @NotNull Object... args)
+	{
+		DbElementStatementWithKeyFirstRunnable runnable = new DbElementStatementWithKeyFirstRunnable(this, databaseElement, query, args);
+		runnable.callback = callback;
+		runAsync(runnable, databaseElement);
 	}
 	//endregion
 
@@ -518,19 +533,19 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updateBackpackShareState(final @NotNull MARRIAGE_PLAYER player)
+	public void updateBackpackShareState(final @NotNull MARRIAGE_PLAYER player, final @Nullable Consumer<MarriagePlayerDataBase> updateCallback)
 	{
-		runStatementAsyncIncludeKey(querySetBackpackShareState, player, player.isSharingBackpack());
+		runStatementAsyncIncludeKey((updateCallback != null) ? () -> updateCallback.accept(player) : null, querySetBackpackShareState, player, player.isSharingBackpack());
 	}
 
 	@Override
-	public void updatePriestStatus(final @NotNull MARRIAGE_PLAYER player)
+	public void updatePriestStatus(final @NotNull MARRIAGE_PLAYER player, final @Nullable Consumer<MarriagePlayerDataBase> updateCallback)
 	{
-		runStatementAsyncIncludeKey(player.isPriest() ? querySetPriest : queryRemovePriest, player);
+		runStatementAsyncIncludeKey((updateCallback != null) ? () -> updateCallback.accept(player) : null, player.isPriest() ? querySetPriest : queryRemovePriest, player);
 	}
 
 	@Override
-	public void updateHome(final @NotNull MARRIAGE marriage)
+	public void updateHome(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
 		Home home = marriage.getHome();
 		if(home == null)
@@ -541,7 +556,8 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 		{
 			if(useBungee)
 			{
-				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName(), home.getHomeServer());
+				runStatementAsyncIncludeKeyFirst((updateCallback != null) ? () -> updateCallback.accept(marriage) : null,
+				                                 queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName(), home.getHomeServer());
 			}
 			else
 			{
@@ -551,15 +567,15 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updatePvPState(final @NotNull MARRIAGE marriage)
+	public void updatePvPState(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
-		runStatementAsyncIncludeKey(queryPvPState, marriage, marriage.isPVPEnabled());
+		runStatementAsyncIncludeKey((updateCallback != null) ? () -> updateCallback.accept(marriage) : null, queryPvPState, marriage, marriage.isPVPEnabled());
 	}
 
 	@Override
-	public void updateMarriageColor(final @NotNull MARRIAGE marriage)
+	public void updateMarriageColor(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
-		runStatementAsyncIncludeKey(queryUpdateMarriageColor, marriage, marriage.getColor().name());
+		runStatementAsyncIncludeKey((updateCallback != null) ? () -> updateCallback.accept(marriage) : null, queryUpdateMarriageColor, marriage, marriage.getColor().name());
 	}
 
 	@Override
@@ -569,7 +585,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void marry(final @NotNull MARRIAGE marriage)
+	public void marry(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
 		//TODO test if the player id is available
 		runAsync(() -> {
@@ -585,7 +601,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 					{
 						marriage.setDatabaseKey(rs.getInt(1));
 						cache.addDbKey(marriage);
-						if(marriageSavedCallback != null) marriageSavedCallback.run(marriage);
+						if(updateCallback != null) updateCallback.accept(marriage);
 					}
 				}
 			}
@@ -597,9 +613,9 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	}
 
 	@Override
-	public void updateSurname(final @NotNull MARRIAGE marriage)
+	public void updateSurname(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
-		runStatementAsyncIncludeKey(querySetSurname, marriage, marriage.getSurname());
+		runStatementAsyncIncludeKey((updateCallback != null) ? () -> updateCallback.accept(marriage) : null, querySetSurname, marriage, marriage.getSurname());
 	}
 
 	@Override
