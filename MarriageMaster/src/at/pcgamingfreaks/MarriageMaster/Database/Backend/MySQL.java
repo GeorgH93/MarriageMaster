@@ -157,8 +157,8 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 						String primKey = rs.getString("Column_name");
 						if(!primKey.equalsIgnoreCase(fieldPriestID))
 						{
-							logger.log(Level.WARNING, "PriestId field name currently used ({}}) in the database does not math the configured one in the config ({}})!\n" +
-									                  "If you would like to change the name of the field please change both the name in the database and the config.\nChanging config to: {}",
+							logger.log(Level.WARNING, "PriestId field name currently used ({0}) in the database does not math the configured one in the config ({1})!\n" +
+									                  "If you would like to change the name of the field please change both the name in the database and the config.\nChanging config to: {2}",
 							           new Object[]{ primKey, fieldPriestID, primKey });
 							dbConfig.getConfigE().set("Database.SQL.Tables.Fields.PriestID", primKey);
 							try

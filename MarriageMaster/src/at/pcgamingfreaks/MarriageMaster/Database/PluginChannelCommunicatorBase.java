@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 public abstract class PluginChannelCommunicatorBase
 {
-	private static final String MESSAGE_UNKNOWN_COMMAND = ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: {} " + ConsoleColor.RESET;
+	private static final String MESSAGE_UNKNOWN_COMMAND = ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: {0} " + ConsoleColor.RESET;
 	protected static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
 
 	protected final Logger logger;

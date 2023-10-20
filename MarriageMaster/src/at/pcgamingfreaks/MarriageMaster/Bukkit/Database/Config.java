@@ -655,7 +655,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		{
 			return channel;
 		}
-		else getLogger().log(Level.INFO, "Unknown update Channel: {}", channel);
+		else getLogger().log(Level.INFO, "Unknown update Channel: {0}", channel);
 		return null;
 	}
 

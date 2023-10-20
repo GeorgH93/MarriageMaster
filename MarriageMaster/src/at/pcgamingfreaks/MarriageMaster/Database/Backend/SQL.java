@@ -314,7 +314,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.log(Level.WARNING, "Player {} for marriage {} has not been loaded. Skipping", new Object[]{ (player1 == null ? 1 : 2), sm.marryID });
+					logger.log(Level.WARNING, "Player {0} for marriage {1} has not been loaded. Skipping", new Object[]{ (player1 == null ? 1 : 2), sm.marryID });
 				}
 			}
 			logger.info("Marriages loaded into cache");
@@ -341,7 +341,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 						MARRIAGE_PLAYER priest = (rs.getObject(fieldPriest) == null) ? null : playerFromId(connection, rs.getInt(fieldPriest));
 						if(player1 == null || player2 == null)
 						{
-							logger.log(Level.WARNING, "Failed to load marriage (id: {}) because one of its players could not be loaded successful!", marriageId);
+							logger.log(Level.WARNING, "Failed to load marriage (id: {0}) because one of its players could not be loaded successful!", marriageId);
 							return;
 						}
 						String surname = surnameEnabled ? rs.getString(fieldSurname) : null;
@@ -636,7 +636,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.log(Level.INFO, "No auto ID for player \"{}\", try to load id from database ...", player.name);
+					logger.log(Level.INFO, "No auto ID for player \"{0}\", try to load id from database ...", player.name);
 					try(PreparedStatement ps2 = connection.prepareStatement(queryLoadPlayer))
 					{
 						ps2.setString(1, player.uuid);
@@ -648,7 +648,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 							}
 							else
 							{
-								logger.log(Level.WARNING, ConsoleColor.RED + "No ID for player \"{}\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET, player.name);
+								logger.log(Level.WARNING, ConsoleColor.RED + "No ID for player \"{0}\", there is something wrong with this player! You should check that!" + ConsoleColor.RESET, player.name);
 								return;
 							}
 						}
@@ -698,7 +698,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 				}
 				else
 				{
-					logger.log(Level.WARNING, "No ID for marriage \"{} <-> {}\"!", new Object[]{marriage.player1.name, marriage.player2.name});
+					logger.log(Level.WARNING, "No ID for marriage \"{0} <-> {1}\"!", new Object[]{marriage.player1.name, marriage.player2.name});
 				}
 			}
 		}
