@@ -70,7 +70,7 @@ Language:
       Deleted: "&aO cafofo foi excluído com sucesso."
       PlayerNoHome: "&cO jogador ainda não tem um cafofo."
       NoHome: "&cVocê ainda não tem um cafofo."
-      TPed: "[\"\",{\"text\":\\Você foi teleportado(a) para seu cafofo com sucesso.\",\"color\":\"green\"}]"
+      TPed: "[\"\",{\"text\":\"Você foi teleportado(a) para seu cafofo com sucesso.\",\"color\":\"green\"}]"
       Set: "&aO cafofo foi definido com sucesso."
       BlockedFrom: "&cO teleporte para o cafofo não é permitido neste local."
       BlockedTo: "&cO cafofo não está adequado para teleportes."
