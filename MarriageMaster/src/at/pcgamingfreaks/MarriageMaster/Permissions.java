@@ -58,6 +58,7 @@ public class Permissions
 	public static final String BYPASS_GIFT_GAME_MODE = BYPASS + "gift.gamemode";
 	public static final String BYPASS_GIFT_WORLD = BYPASS + "gift.world";
 	public static final String BYPASS_GIFT_ITEM_FILTER = BYPASS + "gift.itemfilter";
+	public static final String BYPASS_PARTNER_LIMIT = BYPASS + "partnerlimit";
 	public static final String LISTEN_CHAT = BASE + "listenchat";
 	public static final String LISTEN_CHAT_AUTO_JOIN = LISTEN_CHAT + ".autojoin";
 	public static final String AUTO_ACCEPT_TP_REQUEST = BASE + "autoaccept.tprequest";

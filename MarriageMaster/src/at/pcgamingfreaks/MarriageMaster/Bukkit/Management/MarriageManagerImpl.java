@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2023 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ import at.pcgamingfreaks.Message.Placeholder.Placeholder;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Processors.ParameterTypeAwarePlaceholderProcessor;
 import at.pcgamingfreaks.Message.Placeholder.Processors.PassthroughMessageComponentPlaceholderProcessor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -396,11 +397,11 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 			if(player1.isMarried()) messageAlreadyMarried.send(priest, player1);
 			if(player2.isMarried()) messageAlreadyMarried.send(priest, player2);
 		}
-		else if(player1.getPartners().size() >= maxPartners)
+		else if(player1.getPartners().size() >= maxPartners && !player1.hasPermission(Permissions.BYPASS_PARTNER_LIMIT))
 		{
 			messageMaxPartnersReached.send(priest, player1);
 		}
-		else if(player2.getPartners().size() >= maxPartners)
+		else if(player2.getPartners().size() >= maxPartners && !player2.hasPermission(Permissions.BYPASS_PARTNER_LIMIT))
 		{
 			messageMaxPartnersReached.send(priest, player2);
 		}
@@ -495,11 +496,11 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 							priest.send(messageSelfOtherAlreadyMarried, otherPlayer);
 						}
 					}
-					else if(priest.getPartners().size() >= maxPartners)
+					else if(priest.getPartners().size() >= maxPartners && !priest.hasPermission(Permissions.BYPASS_PARTNER_LIMIT))
 					{
 						priest.send(messageSelfMaxPartnersReached);
 					}
-					else if(otherPlayer.getPartners().size() >= maxPartners)
+					else if(otherPlayer.getPartners().size() >= maxPartners && !otherPlayer.hasPermission(Permissions.BYPASS_PARTNER_LIMIT))
 					{
 						priest.send(messageSelfMaxPartnersReachedOther, otherPlayer);
 					}

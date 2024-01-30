@@ -174,6 +174,9 @@ permissions:
   marry.bypass.vanish:
     description: Allows to use tab complete on vanished players.
     default: op
+  marry.bypass.partnerlimit:
+    description: Allows to bypass the partner limit for this player. It's only applicable if the configured limit is set to more than 1.
+    default: op
   marry.offlinedivorce:
     description: Allows a priest to divorce players when only one of them is online.
     default: op
