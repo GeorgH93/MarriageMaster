@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -257,7 +257,7 @@ public class HomeCommand extends MarryCommand
 		if(!player.getServer().getInfo().getName().equals(homeServer.getName()))
 		{
 			player.connect(homeServer);
-			plugin.getProxy().getScheduler().schedule(plugin, () -> sendHome(homeServer, player.getUniqueId(), (player.equals(marriage.getPartner1().getPlayer()) ? marriage.getPartner2() : marriage.getPartner1()).getUUID()), 1L, TimeUnit.SECONDS);
+			plugin.getProxy().getScheduler().schedule(plugin, () -> sendHome(homeServer, player.getUniqueId(), (player.equals(marriage.getPartner1().getPlayer()) ? marriage.getPartner2() : marriage.getPartner1()).getUUID()), 2L, TimeUnit.SECONDS);
 		}
 		else
 		{

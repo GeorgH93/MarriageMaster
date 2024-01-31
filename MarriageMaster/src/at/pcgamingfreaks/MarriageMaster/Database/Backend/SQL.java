@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2023 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -548,21 +548,18 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 	public void updateHome(final @NotNull MARRIAGE marriage, final @Nullable Consumer<MarriageDataBase> updateCallback)
 	{
 		Home home = marriage.getHome();
-		if(home == null)
+		if (home == null)
 		{
 			runStatementAsyncIncludeKey(queryDelHome, marriage);
 		}
+		else if(useBungee)
+		{
+			runStatementAsyncIncludeKeyFirst((updateCallback != null) ? () -> updateCallback.accept(marriage) : null,
+			                                 queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName(), home.getHomeServer());
+		}
 		else
 		{
-			if(useBungee)
-			{
-				runStatementAsyncIncludeKeyFirst((updateCallback != null) ? () -> updateCallback.accept(marriage) : null,
-				                                 queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName(), home.getHomeServer());
-			}
-			else
-			{
-				runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName());
-			}
+			runStatementAsyncIncludeKeyFirst(queryUpdateHome, marriage, home.getX(), home.getY(), home.getZ(), home.getYaw(), home.getPitch(), home.getWorldName());
 		}
 	}
 

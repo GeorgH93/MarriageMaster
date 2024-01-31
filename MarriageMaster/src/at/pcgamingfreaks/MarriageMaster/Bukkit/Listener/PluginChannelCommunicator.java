@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.PluginChannelCommunicatorBase;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -202,6 +203,16 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	}
 
 	private void sendMessage(String channel, byte[] data)
+	{
+		if (Bukkit.isPrimaryThread())
+			performSendMessage(channel, data);
+		else
+		{
+			Bukkit.getScheduler().runTask(plugin, () -> performSendMessage(channel, data));
+		}
+	}
+
+	private void performSendMessage(String channel, byte[] data)
 	{
 		if(!plugin.getServer().getOnlinePlayers().isEmpty())
 		{

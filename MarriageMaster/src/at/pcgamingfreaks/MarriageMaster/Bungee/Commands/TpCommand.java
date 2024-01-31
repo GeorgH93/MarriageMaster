@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2021 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -138,7 +138,7 @@ public class TpCommand extends MarryCommand
 		if(!player.getServer().getInfo().getName().equals(partnerServer.getName()))
 		{
 			player.connect(partner.getServer().getInfo());
-			plugin.getProxy().getScheduler().schedule(plugin, () -> communicator.sendMessage(partner.getServer().getInfo(), "tp", player.getUniqueId().toString(), partner.getUniqueId().toString()), 1L, TimeUnit.SECONDS);
+			plugin.getProxy().getScheduler().schedule(plugin, () -> communicator.sendMessage(partner.getServer().getInfo(), "tp", player.getUniqueId().toString(), partner.getUniqueId().toString()), 2L, TimeUnit.SECONDS);
 		}
 		else
 		{

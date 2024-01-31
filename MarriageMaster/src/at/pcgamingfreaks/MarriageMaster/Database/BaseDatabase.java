@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2023 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@ package at.pcgamingfreaks.MarriageMaster.Database;
 import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.Database.ConnectionProvider.ConnectionProvider;
 import at.pcgamingfreaks.MarriageMaster.API.Home;
-import at.pcgamingfreaks.MarriageMaster.API.Marriage;
 import at.pcgamingfreaks.MarriageMaster.API.MarriageMasterPlugin;
 import at.pcgamingfreaks.MarriageMaster.Database.Backend.DatabaseBackend;
 import at.pcgamingfreaks.MarriageMaster.Database.Backend.MySQL;
