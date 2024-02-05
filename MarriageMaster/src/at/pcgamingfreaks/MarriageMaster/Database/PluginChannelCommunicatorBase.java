@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 public abstract class PluginChannelCommunicatorBase
 {
 	private static final String MESSAGE_UNKNOWN_COMMAND = ConsoleColor.YELLOW + "Received unknown command via plugin channel! Command: {0} " + ConsoleColor.RESET;
-	protected static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main", CHANNEL_BUNGEE_CORD = "BungeeCord";
+	protected static final String CHANNEL_MARRIAGE_MASTER = "marriagemaster:main";
 
 	protected final Logger logger;
 	protected final BaseDatabase database;

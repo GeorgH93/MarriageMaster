@@ -47,6 +47,8 @@ import java.util.logging.Level;
 
 public class PluginChannelCommunicator extends PluginChannelCommunicatorBase implements PluginMessageListener, Listener
 {
+	private static final String CHANNEL_BUNGEE_CORD = "BungeeCord";
+
 	@Getter @Setter(AccessLevel.PRIVATE) private static String serverName = null;
 
 	private final MarriageMaster plugin;
@@ -85,7 +87,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	@Override
 	protected void receiveUnknownChannel(@NotNull String channel, byte[] bytes)
 	{
-		if (channel.equals(CHANNEL_BUNGEE_CORD))
+		if (channel.equals(CHANNEL_BUNGEE_CORD) || channel.equals("bungeecord:main"))
 		{
 			try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
 			{
@@ -196,8 +198,10 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	{
 		if(!serverNameUpdated)
 		{
-			logger.info("Request server name from BungeeCord ...");
-			sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
+			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+				logger.info("Request server name from BungeeCord ...");
+				sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
+			}, 20);
 		}
 		// If the server is empty and a player joins the server we have to do a re-sync
 		if(plugin.getServer().getOnlinePlayers().size() == 1)
@@ -216,7 +220,9 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	private void sendMessage(String channel, byte[] data)
 	{
 		if (Bukkit.isPrimaryThread())
+		{
 			performSendMessage(channel, data);
+		}
 		else
 		{
 			Bukkit.getScheduler().runTask(plugin, () -> performSendMessage(channel, data));
