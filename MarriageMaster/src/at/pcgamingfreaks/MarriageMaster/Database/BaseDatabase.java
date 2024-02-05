@@ -118,7 +118,7 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 				}
 				if(bungee)
 				{
-					logger.warning("The used database does not support multi-server setups! Please consider switching to MySQL!");
+					logger.severe("The used database does not support multi-server setups! Please consider switching to MySQL!");
 				}
 			}
 			db.startup();

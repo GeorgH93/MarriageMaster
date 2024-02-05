@@ -303,7 +303,7 @@ public abstract class SQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIA
 			loadPlayers(connection, playerToLoad, priests); // Load players
 
 			// Load the marriages into the cache
-			logger.info("Writing marriages into cache ...");
+			logger.info("Loading marriages into cache ...");
 			for(StructMarriageSQL sm : marriagesSet)
 			{
 				MARRIAGE_PLAYER player1 = cache.getPlayerFromDbKey(sm.p1ID), player2 = cache.getPlayerFromDbKey(sm.p2ID);
