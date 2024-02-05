@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2024 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -53,6 +53,8 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		sendMessage(buildStringMessage("UseUUIDs", "true"), true);
 		sendMessage(buildStringMessage("UseUUIDSeparators", plugin.getConfig().useUUIDSeparators() + ""), true);
 		sendMessage(buildStringMessage("UUID_Type", plugin.getConfig().useOnlineUUIDs() ? "online" : "offline"), true);
+
+		logger.info("BungeeCord data sync handler initialized.");
 	}
 
 	public void setHomeCommand(HomeCommand home)

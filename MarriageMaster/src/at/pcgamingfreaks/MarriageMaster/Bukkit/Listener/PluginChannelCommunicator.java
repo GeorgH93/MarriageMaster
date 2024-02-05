@@ -67,6 +67,11 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		plugin.getServer().getMessenger().registerIncomingPluginChannel(plugin, CHANNEL_MARRIAGE_MASTER, this);
 
 		setServerName(plugin.getConfiguration().getServerName());
+
+		if (serverName == null) logger.info("Server name not yet known. Waiting for initial sync.");
+		else logger.info("Last known server name: " + serverName);
+
+		logger.info("BungeeCord data sync handler initialized.");
 	}
 
 	@Override
@@ -220,7 +225,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 		}
 		else
 		{
-			logger.warning("Failed to send PluginMessage, there is no player online!");
+			logger.severe("Failed to send PluginMessage, there is no player online!");
 		}
 	}
 	//endregion

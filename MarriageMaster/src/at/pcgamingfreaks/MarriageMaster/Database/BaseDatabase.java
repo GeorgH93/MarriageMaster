@@ -121,6 +121,10 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 					logger.severe("The used database does not support multi-server setups! Please consider switching to MySQL!");
 				}
 			}
+			else if (bungee)
+			{
+				logger.info("Database is ready for BungeeCord setup.");
+			}
 			db.startup();
 			return db;
 		}
