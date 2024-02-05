@@ -94,8 +94,13 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 					String server = in.readUTF();
 					if(!server.equals(serverName)) // Only save if the name of the server has changed
 					{
+						logger.info("Updating server name to: " + server);
 						setServerName(server);
 						plugin.getConfiguration().setServerName(server);
+					}
+					else
+					{
+						logger.info("Server name already up to date.");
 					}
 					serverNameUpdated = true;
 				}
@@ -191,6 +196,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	{
 		if(!serverNameUpdated)
 		{
+			logger.info("Request server name from BungeeCord ...");
 			sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
 		}
 		// If the server is empty and a player joins the server we have to do a re-sync
