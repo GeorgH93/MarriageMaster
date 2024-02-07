@@ -194,4 +194,15 @@ public interface MarriageManager<MARRIAGE extends Marriage, MARRIAGE_PLAYER exte
 	 * @param surname The surname for the new married couple.
 	 */
 	void marry(@NotNull MARRIAGE_PLAYER player1, @NotNull MARRIAGE_PLAYER player2, @NotNull MARRIAGE_PLAYER priest, @Nullable String surname);
+
+	/**
+	 * Initiates a marriage between two players, instantly uniting them in-game if 'forceMarry' is set to true, bypassing any preconditions.
+	 * If 'forceMarry' is false, the marriage proceeds only if all necessary conditions are met.
+	 *
+	 * @param player1 The first player to be married, must be non-null and represents one of the entities entering into marriage.
+	 * @param player2 The second player to be married, also must be non-null, representing the other entity entering into marriage.
+	 * @param forceMarry A boolean indicating the marriage type. True for immediate marriage without precondition checks,
+	 *                   false for a conditional marriage that requires all preconditions to be satisfied.
+	 */
+	void marry(@NotNull MARRIAGE_PLAYER player1, @NotNull MARRIAGE_PLAYER player2, boolean forceMarry);
 }
