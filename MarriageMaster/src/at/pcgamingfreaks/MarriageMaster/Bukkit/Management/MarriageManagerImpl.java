@@ -169,7 +169,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		SelfDivorceAcceptRequest.unLoadMessages();
 		PriestDivorceAcceptRequest.unLoadMessages();
 	}
-	
+
 	private Message getMSG(String path)
 	{
 		return plugin.getLanguage().getMessage(path);
@@ -410,6 +410,22 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void marry(@NotNull MarriagePlayer player1, @NotNull MarriagePlayer player2, boolean forceMarry)
+	{
+		if (forceMarry)
+		{
+			MarriageData marriage = new MarriageData(player1, player2, null, null);
+			plugin.getDatabase().cachedMarry(marriage);
+			messageBroadcastMarriage.broadcast(CONSOLE_NAME, CONSOLE_DISPLAY_NAME_COMPONENT, player1, player2);
+			plugin.getServer().getPluginManager().callEvent(new MarriedEvent(marriage));
+		}
+		else
+		{
+			marry(player1, player2);
+		}
 	}
 
 	public void marryPriestFinish(MarriagePlayer player1, MarriagePlayer player2, CommandSender priest, String surname)
