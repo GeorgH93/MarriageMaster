@@ -143,7 +143,7 @@ class EconomyHandlerTest
 	}
 
 	@Test
-	void testOnMarry() throws Exception
+	void testOnMarry()
 	{
 		Reflection.setValue(economyHandler, "costMarry", 10.0);
 		MarryEvent event = new MarryEvent(marriagePlayer1, marriagePlayer2, player3, null);

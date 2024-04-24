@@ -12,7 +12,7 @@
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.20-R0.2</bungeeVersion>
 		<pcgfPluginLibVersion>1.0.39.4-SNAPSHOT</pcgfPluginLibVersion>
-		<mockito.version>4.2.0</mockito.version>
+		<mockito.version>5.11.0</mockito.version>
 		<mavenShade.version>3.5.3</mavenShade.version>
 
 		<configFileVersion>107</configFileVersion>
@@ -81,7 +81,7 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>3.13.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
