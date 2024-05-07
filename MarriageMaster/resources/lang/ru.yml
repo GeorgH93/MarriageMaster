@@ -429,8 +429,8 @@ Placeholders:
     Boolean:
       True: true
       False: false
-    NotMarried: "не состоит в браке"
-    NoHome: "нет дома"
+    NotMarried: "Не состоит в браке"
+    NoHome: "Нет дома"
     Separator: "&r, "
     NoPartnerForSlot: ""
   Heart:
@@ -461,10 +461,10 @@ Placeholders:
 
 
 # The name of the language represented by the language file
-LanguageName: "Русский"
+LanguageName: "Russian"
 # The author of the language file
 Author: "maz1lovo (Semyon)"
 
 # Language file version. Don't touch it!
-Version: 113
+Version: ${languageFileVersion}
 Revision: 1
