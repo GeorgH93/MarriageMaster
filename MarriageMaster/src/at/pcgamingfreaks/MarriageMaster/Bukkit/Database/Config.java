@@ -30,6 +30,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
+import at.pcgamingfreaks.Reflection;
 import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
 
@@ -40,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -709,7 +711,15 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		try
 		{
 			if (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_9) && soundName.equals("ORB_PICKUP")) soundName = "ENTITY_EXPERIENCE_ORB_PICKUP";
-			return Sound.valueOf(soundName);
+			if (MCVersion.isNewerOrEqualThan(MCVersion.MC_1_21))
+			{
+				Field f = Reflection.getField(Sound.class, soundName);
+				if (f != null) return (Sound) f.get(null);
+			}
+			else
+			{
+				return Sound.valueOf(soundName);
+			}
 		}
 		catch(Exception ignored)
 		{
