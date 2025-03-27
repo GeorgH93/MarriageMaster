@@ -10,7 +10,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
-		<bungeeVersion>1.20-R0.2</bungeeVersion>
+		<bungeeVersion>1.21-R0.1</bungeeVersion>
 		<pcgfPluginLibVersion>1.0.39.8-SNAPSHOT</pcgfPluginLibVersion>
 		<mockito.version>5.11.0</mockito.version>
 		<mavenShade.version>3.5.3</mavenShade.version>
