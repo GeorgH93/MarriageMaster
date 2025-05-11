@@ -240,16 +240,16 @@ Language:
         Married:
           - " __Marry Commands__"
           -
-          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" kiss your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" tp to your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" talk private whit your partner","color":"aqua"}]'
-          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" give your partners things","color":"aqua"}]'
-          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+          - '[{"text":" ➤ ","color":"white"},{"text":"/marry kiss","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry kiss"}},{"text":" 亲吻你的伴侣","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"yellow"},{"text":"/marry tp","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry tp"}},{"text":" 传送至你的伴侣","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry chat toggle","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry chat toggle"}},{"text":" 私聊你的伴侣","color":"aqua"}]'
+          - '[{"text":" ➤ ","color":"gold"},{"text":"/marry gift","color":"dark_aqua","bold":true,"underlined":true,"clickEvent":{"action":"run_command","value":"/marry gift"}},{"text":" 赠与你的伴侣礼物","color":"aqua"}]'
+          - '[{"text":"使用 ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 来显示所有命令"}]'
         # Will be used if the player is a priest
         Priest:
           - " __Marry__"
           - " 您可以使用命令 /marry marry <player1> <player2> 让两位新人喜结连理"
-          - '[{"text":"Use ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" for full list of all commands"}]'
+          - '[{"text":"使用 ","color":"dark_green"},{"text":"/marry help","color":"dark_aqua","bold":true},{"text":" 来显示所有命令"}]'
         # Will be used if the player is neither married nor a priest
         Default:
           - " __Marry__"
