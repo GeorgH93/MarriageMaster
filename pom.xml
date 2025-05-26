@@ -12,7 +12,7 @@
 		<bukkitVersion>1.15.2-R0.1-SNAPSHOT</bukkitVersion>
 		<bungeeVersion>1.21-R0.2</bungeeVersion>
 		<pcgfPluginLibVersion>1.0.39.9-SNAPSHOT</pcgfPluginLibVersion>
-		<mockito.version>${mockito.version}</mockito.version>
+		<mockito.version>5.11.0</mockito.version>
 		<mavenShade.version>3.5.3</mavenShade.version>
 
 		<configFileVersion>107</configFileVersion>
