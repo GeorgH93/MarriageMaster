@@ -153,21 +153,13 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-<<<<<<< HEAD
-			<version>5.5.0</version>
-=======
 			<version>${mockito.version}</version>
->>>>>>> parent of 0b800d3 (fixed merge tests)
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
-<<<<<<< HEAD
-			<version>5.5.0</version>
-=======
 			<version>${mockito.version}</version>
->>>>>>> parent of 0b800d3 (fixed merge tests)
 			<scope>test</scope>
 		</dependency>
 		<!-- endregion -->
