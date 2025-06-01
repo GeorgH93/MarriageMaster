@@ -51,11 +51,12 @@ public class PlaceholderManager extends at.pcgamingfreaks.Bukkit.Placeholder.Pla
 		registerPlaceholder(new PartnerDisplayName(plugin));
 		registerPlaceholder(new PartnerName(plugin));
 		registerPlaceholder(new Prefix(plugin));
-		registerPlaceholder(new Suffix(plugin));
-		registerPlaceholder(new Surname(plugin));
-		registerPlaceholder(new StatusHeart(plugin));
-		registerPlaceholder(new MagicHeart(plugin));
-		for(Range range : Range.values())
+                registerPlaceholder(new Suffix(plugin));
+                registerPlaceholder(new Surname(plugin));
+                registerPlaceholder(new StatusHeart(plugin));
+                registerPlaceholder(new MagicHeart(plugin));
+                registerPlaceholder(new MarriedTime(plugin));
+                for(Range range : Range.values())
 		{
 			if(range == Range.Marry) continue;
 			registerPlaceholder(new IsInRange(plugin, range));
