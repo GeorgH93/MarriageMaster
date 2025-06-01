@@ -433,6 +433,12 @@ Placeholders:
     NoHome: "no home"
     Separator: "&r, "
     NoPartnerForSlot: ""
+    Years: "&6{years}&ey "
+    Months: "&6{months}&eM "
+    Days: "&6{days}&ed "
+    Hours: "&6{hours}&eh "
+    Minutes: "&6{minutes}&em"
+    TimeMain: "{years}{months}{days}{hours}{minutes}"
   Heart:
     Married: "&c<heart>&f"
     NotMarried: ""
