@@ -110,7 +110,8 @@ public class MarryDivorceCommand extends MarryCommand
 			return;
 		}
 
-		MarriagePlayer p2 = getMarriagePlugin().getPlayerData(args[1]);
+		MarriagePlayer p2 = p1.getPartner(args[1]);
+		if (p2 == null) p2 = getMarriagePlugin().getPlayerData(args[1]);
 		if(!p1.isMarried())
 		{
 			CommonMessages.getMessagePlayerNotMarried().send(sender, args[0]);
