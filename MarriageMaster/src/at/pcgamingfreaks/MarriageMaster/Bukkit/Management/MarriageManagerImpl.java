@@ -81,7 +81,9 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		}
 		else
 		{
-			surnameNotAllowedCharactersRex = "[^" + plugin.getConfiguration().getSurnamesAllowedCharacters() + "]";
+			String allowedChars = plugin.getConfiguration().getSurnamesAllowedCharacters();
+			if (surnameAllowColors && !allowedChars.contains("&")) allowedChars = "&" + allowedChars;
+			surnameNotAllowedCharactersRex = "[^" + allowedChars + "]";
 		}
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
@@ -202,7 +204,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 			String surnameCleaned = s.replaceAll(surnameNotAllowedCharactersRex, "");
 			if(!s.equals(surnameCleaned))
 			{ // Surname contains not allowed chars
-				surname = surnameCleaned; //TODO add back colors
+				surname = surnameCleaned;
 			}
 		}
 		return (surnameAllowColors) ? MessageColor.translateAlternateColorCodes('&', surname) : surname;
