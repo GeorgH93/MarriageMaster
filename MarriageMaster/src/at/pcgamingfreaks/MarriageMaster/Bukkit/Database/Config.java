@@ -216,6 +216,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 	{
 		return Math.max(getConfigE().getInt("Marriage.Surnames.MaxLength", 16), getSurnamesMinLength());
 	}
+
+	public Set<String> getSurnameBannedNames()
+	{
+		return new HashSet<>(getConfigE().getStringList("Marriage.Surnames.BannedNames", new LinkedList<>()));
+	}
 	//endregion
 
 	//region List command settings

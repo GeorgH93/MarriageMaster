@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.Set;
 
 public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
 { // TODO refactor me!!!!
@@ -69,6 +70,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	private final boolean surnameAllowColors, confirm, bothOnDivorce, autoDialog, otherPlayerOnSelfDivorce;
 	private final int surnameMinLength, surnameMaxLength, maxPartners;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
+	private final Set<String> bannedSurnames;
 
 	public MarriageManagerImpl(final @NotNull MarriageMaster plugin)
 	{
@@ -87,6 +89,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		}
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
+		bannedSurnames   = plugin.getConfiguration().getSurnameBannedNames();
 
 		rangeMarry       = plugin.getConfiguration().getRange(Range.Marry);
 		rangeDivorce     = plugin.getConfiguration().getRange(Range.Divorce);
@@ -220,7 +223,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	public boolean isSurnameValid(@NotNull String surname)
 	{
 		surname = cleanupSurname(surname);
-		return surname != null && isSurnameLengthValid(surname) && isSurnameAvailable(surname);
+		return surname != null && isSurnameLengthValid(surname) && isSurnameAvailable(surname) && !bannedSurnames.contains(surname);
 	}
 
 	@Override

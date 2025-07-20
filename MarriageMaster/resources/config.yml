@@ -66,6 +66,7 @@ Marriage:
     # Surname requirements
     AllowColors: false
     AllowedCharacters: A-Za-z
+    BannedNames: []
     # Values below 3 will be set to 3
     MinLength: 3
     # Values below the in length will be set to the min length
