@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Set;
 
 public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriageManager
@@ -223,7 +224,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	public boolean isSurnameValid(@NotNull String surname)
 	{
 		surname = cleanupSurname(surname);
-		return surname != null && isSurnameLengthValid(surname) && isSurnameAvailable(surname) && !bannedSurnames.contains(surname);
+		return surname != null && isSurnameLengthValid(surname) && isSurnameAvailable(surname) && !bannedSurnames.contains(surname.toLowerCase(Locale.ROOT));
 	}
 
 	@Override

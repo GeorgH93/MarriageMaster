@@ -219,7 +219,12 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public Set<String> getSurnameBannedNames()
 	{
-		return new HashSet<>(getConfigE().getStringList("Marriage.Surnames.BannedNames", new LinkedList<>()));
+		Set<String> badNames = new HashSet<>();
+		for (String name : getConfigE().getStringList("Marriage.Surnames.BannedNames", new LinkedList<>()))
+		{
+			badNames.add(name.toLowerCase(Locale.ROOT));
+		}
+		return badNames;
 	}
 	//endregion
 
