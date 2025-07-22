@@ -239,49 +239,59 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		setSurname(marriage, surname, Bukkit.getConsoleSender());
 	}
 
+	private boolean checkSetSurname(final @Nullable String surname, @NotNull CommandSender changer)
+	{
+		if (surname == null)
+		{
+			if (plugin.isSurnamesForced())
+			{
+				messageSurnameFailed.send(changer);
+				return false;
+			}
+			return true;
+		}
+		if (surname.length() < surnameMinLength)
+		{
+			messageSurnameToShort.send(changer);
+			return false;
+		}
+		if (surname.length() > surnameMaxLength)
+		{
+			messageSurnameToLong.send(changer);
+			return false;
+		}
+		return true;
+	}
+
 	@Override
 	public void setSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
 	{
 		surname = cleanupSurname(surname);
-		if(surname == null && plugin.isSurnamesForced())
+		if (!checkSetSurname(surname, changer)) return;
+		finishSetSurname(marriage, surname, changer);
+	}
+
+	public void finishSetSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
+	{
+		if (surname != null && !isSurnameAvailable(surname))
 		{
-			messageSurnameFailed.send(changer);
+			messageSurnameAlreadyUsed.send(changer);
+			return;
 		}
-		else if(surname == null || surname.length() >= surnameMinLength)
+		SurnameChangeEvent event = new SurnameChangeEvent(marriage, surname, changer);
+		plugin.getServer().getPluginManager().callEvent(event);
+		if(!event.isCancelled())
 		{
-			if(surname == null || surname.length() <= surnameMaxLength)
+			surname = event.getNewSurname();
+			if(marriage.setSurname(surname))
 			{
-				if(surname == null || isSurnameAvailable(surname))
-				{
-					SurnameChangeEvent event = new SurnameChangeEvent(marriage, surname, changer);
-					plugin.getServer().getPluginManager().callEvent(event);
-					if(!event.isCancelled())
-					{
-						surname = event.getNewSurname();
-						if(marriage.setSurname(surname))
-						{
-							messageSurnameSuccess.send(changer);
-							plugin.getServer().getPluginManager().callEvent(new SurnameChangedEvent(marriage, surname, changer));
-						}
-						else
-						{
-							messageSurnameFailed.send(changer);
-						}
-					}
-					else
-					{
-						messageSurnameAlreadyUsed.send(changer);
-					}
-				}
+				messageSurnameSuccess.send(changer);
+				plugin.getServer().getPluginManager().callEvent(new SurnameChangedEvent(marriage, surname, changer));
 			}
 			else
 			{
-				messageSurnameToLong.send(changer);
+				messageSurnameFailed.send(changer);
 			}
-		}
-		else
-		{
-			messageSurnameToShort.send(changer);
 		}
 	}
 	//endregion
