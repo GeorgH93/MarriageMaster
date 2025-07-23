@@ -161,6 +161,7 @@ Language:
       ToShort: "&cThe given surname is too short. It has to be at least {MinLength} characters long."
       ToLong: "&cThe given surname is too long. It can't be more than {MaxLength} characters long."
       AlreadyUsed: "&cThe given surname is already in use!"
+      Banned: "&cThe given surname is not allowed."
     Requests:
       NothingToAccept: "&cThere is no open request to accept."
       NothingToDeny: "&cThere is no open request to deny."
