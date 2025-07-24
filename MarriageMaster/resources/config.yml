@@ -71,6 +71,8 @@ Marriage:
     MinLength: 3
     # Values below the in length will be set to the min length
     MaxLength: 16
+    # Options: None, Player, BothPlayers
+    Confirmation: None
   # Defines if marriages should be announced to all players.
   AnnounceOnMarriage: true
   # Defines if divorces should be announced to all players. auto mirrors the AnnounceOnMarriage setting

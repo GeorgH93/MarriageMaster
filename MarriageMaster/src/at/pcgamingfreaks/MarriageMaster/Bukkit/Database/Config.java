@@ -27,6 +27,7 @@ import at.pcgamingfreaks.ConsoleColor;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker.UpgradedInfo;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.SurnameConfirmationMode;
 import at.pcgamingfreaks.MarriageMaster.Database.DatabaseConfiguration;
 import at.pcgamingfreaks.MarriageMaster.MagicValues;
 import at.pcgamingfreaks.Message.MessageColor;
@@ -225,6 +226,11 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 			badNames.add(name.toLowerCase(Locale.ROOT));
 		}
 		return badNames;
+	}
+
+	public SurnameConfirmationMode getSurnameConfirmationMode()
+	{
+		return SurnameConfirmationMode.formString(getConfigE().getString("Marriage.Surname.Confirmation", "None"));
 	}
 	//endregion
 

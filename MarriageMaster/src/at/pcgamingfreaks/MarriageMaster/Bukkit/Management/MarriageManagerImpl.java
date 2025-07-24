@@ -26,12 +26,10 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.CommonMessages;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriageData;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Database.MarriagePlayerData;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestDivorceAcceptRequest;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.PriestMarryAcceptRequest;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfDivorceAcceptRequest;
-import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.SelfMarryAcceptRequest;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.Management.Requests.*;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Range;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.SurnameConfirmationMode;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.MarriageMaster.Permissions;
 import at.pcgamingfreaks.MarriageMaster.Placeholder.Placeholders;
@@ -50,6 +48,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import lombok.Getter;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.Set;
@@ -61,7 +61,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 
 	private final MarriageMaster plugin;
 	private final String  surnameNotAllowedCharactersRex, dialogDoYouWant, dialogMarried;
-	private final Message messageSurnameSuccess, messageSurnameFailed, messageSurnameToShort, messageSurnameToLong, messageSurnameAlreadyUsed, messageSurnameBanned;
+	private final Message messageSurnameSuccess, messageSurnameFailed, messageSurnameToShort, messageSurnameToLong, messageSurnameAlreadyUsed, messageSurnameBanned, messageSurnamePlayerOffline;
 	private final Message messageAlreadyMarried, messageNotWithHimself, messageSurnameNeeded, messageMarried, messageHasMarried, messageBroadcastMarriage, messageNotInRange, messageAlreadyOpenRequest;
 	private final Message messageNotYourself, messageSelfNotInRange, messageSelfAlreadyMarried, messageSelfOtherAlreadyMarried, messageSelfAlreadyOpenRequest, messageSelfConfirm, messageSelfMarryRequestSent;
 	private final Message messageAlreadySamePair, messageSelfAlreadySamePair;
@@ -72,6 +72,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	private final int surnameMinLength, surnameMaxLength, maxPartners;
 	private final double rangeMarry, rangeDivorce, rangeMarrySquared, rangeDivorceSquared;
 	private final Set<String> bannedSurnames;
+	@Getter private final SurnameConfirmationMode surnameConfirmationMode;
 
 	public MarriageManagerImpl(final @NotNull MarriageMaster plugin)
 	{
@@ -91,6 +92,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		surnameMinLength = plugin.getConfiguration().getSurnamesMinLength();
 		surnameMaxLength = plugin.getConfiguration().getSurnamesMaxLength();
 		bannedSurnames   = plugin.getConfiguration().getSurnameBannedNames();
+		surnameConfirmationMode = plugin.getConfiguration().getSurnameConfirmationMode();
 
 		rangeMarry       = plugin.getConfiguration().getRange(Range.Marry);
 		rangeDivorce     = plugin.getConfiguration().getRange(Range.Divorce);
@@ -121,6 +123,7 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 		messageSurnameToLong           = getMSG("Surname.ToLong").staticPlaceholder("MinLength", null, String.valueOf(surnameMinLength)).staticPlaceholder("MaxLength", null, String.valueOf(surnameMaxLength));
 		messageSurnameAlreadyUsed      = getMSG("Surname.AlreadyUsed");
 		messageSurnameBanned           = getMSG("Surname.Banned");
+		messageSurnamePlayerOffline    = getMSG("Surname.PlayerOffline");
 
 		messageAlreadySamePair         = getMSG("Marry.AlreadySamePair").placeholders(Placeholders.PLAYER1_NAME).placeholders(Placeholders.PLAYER2_NAME);
 		messageAlreadyMarried          = getMSG("Marry.AlreadyMarried").placeholders(Placeholders.PLAYER_NAME);
@@ -274,7 +277,22 @@ public final class MarriageManagerImpl implements at.pcgamingfreaks.MarriageMast
 	{
 		surname = cleanupSurname(surname);
 		if (!checkSetSurname(surname, changer)) return;
-		finishSetSurname(marriage, surname, changer);
+		if (!(changer instanceof Player) || surnameConfirmationMode == SurnameConfirmationMode.None)
+			finishSetSurname(marriage, surname, changer);
+		else
+			requestSetSurname(marriage, surname, changer);
+	}
+
+	private void requestSetSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
+	{
+		Player player = (Player) changer;
+		MarriagePlayer partner = marriage.getAnyOnlinePartner();
+		if ((surnameConfirmationMode == SurnameConfirmationMode.BothPlayers && !marriage.isBothOnline()) || partner == null)
+		{
+			messageSurnamePlayerOffline.send(player, marriage.getSurnameString(), surname == null ? "" : surname);
+			return;
+		}
+		plugin.getCommandManager().registerAcceptPendingRequest(new PriestSurnameAcceptRequest(this, partner, plugin.getPlayerData(player), marriage, true, surname));
 	}
 
 	public void finishSetSurname(@NotNull Marriage marriage, String surname, @NotNull CommandSender changer)
