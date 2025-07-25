@@ -47,6 +47,13 @@ public interface Marriage <MARRIAGE_PLAYER extends MarriagePlayer, COMMAND_SENDE
 	 */
 	boolean isBothOnline();
 
+	default @Nullable MARRIAGE_PLAYER getAnyOnlinePartner()
+	{
+		if (getPartner1().isOnline()) return getPartner1();
+		if (getPartner2().isOnline()) return getPartner2();
+		return null;
+	}
+
 	/**
 	 * Gets the other player of the married players.
 	 *
