@@ -64,15 +64,16 @@ public class TpCommand extends MarryCommand
 	private final Message messageTeleport, messageTeleportTo, messageUnsafe, messageToUnsafe, messagePartnerVanished, messageWorldNotAllowed;
 	private final Message messageRequireConfirmation, messageWaitForConfirmation, messageRequestDenied, messageRequestDeniedPartner, messageRequestCanceled, messageRequestCanceledPartner;
 	private final Message messageRequestCanceledDisconnectRequester, messageRequestCanceledDisconnectTarget;
-	private final Set<String> blacklistedWorlds;
-	private final boolean safetyCheck, requireConfirmation, findSafeLocation;
+	private final Set<String> worldList;
+	private final boolean safetyCheck, requireConfirmation, findSafeLocation, filterBlockMode;
 	private final long delayTime;
 
 	public TpCommand(MarriageMaster plugin)
 	{
 		super(plugin, "tp", plugin.getLanguage().getTranslated("Commands.Description.Tp"), Permissions.TP, true, true, plugin.getLanguage().getCommandAliases("Tp"));
 
-		blacklistedWorlds   = plugin.getConfiguration().getTPBlackListedWorlds();
+		worldList           = plugin.getConfiguration().getTpFilteredWorlds();
+		filterBlockMode     = plugin.getConfiguration().isTPListBlockList();
 		safetyCheck         = plugin.getConfiguration().getSafetyCheck();
 		requireConfirmation = plugin.getConfiguration().getRequireConfirmation();
 		findSafeLocation    = plugin.getConfiguration().getFindSafeLocation();
@@ -186,12 +187,21 @@ public class TpCommand extends MarryCommand
 		return loc;
 	}
 
+	private boolean checkIsAllowed(final @NotNull Player player, final @NotNull Location loc)
+	{
+		if(filterBlockMode ^ !worldList.contains(loc.getWorld().getName().toLowerCase(Locale.ROOT)))
+		{
+			return true;
+		}
+		return player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST);
+	}
+
 	public void doTheTP(final @NotNull Player player, final @NotNull Player partner)
 	{
 		if(player.canSee(partner))
 		{
 			Location loc = partner.getLocation();
-			if(!blacklistedWorlds.contains(loc.getWorld().getName().toLowerCase(Locale.ENGLISH)) || player.hasPermission(Permissions.BYPASS_WORLD_BLACKLIST))
+			if(checkIsAllowed(player, loc))
 			{
 				if(!player.isFlying() && safetyCheck && (loc = getSafeLoc(loc)) == null)
 				{

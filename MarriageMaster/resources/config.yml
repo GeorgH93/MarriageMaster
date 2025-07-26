@@ -205,8 +205,10 @@ Teleport:
   Delay: false
   # Time in seconds
   DelayTime: 3
-  # List of worlds where you can't teleport to
-  BlacklistedWorlds: []
+  # List of worlds where you can/can't teleport to (based on FilterMode)
+  FilteredWorlds: []
+  # Defines how the FilteredWorlds will be treated, block = prevent players from teleporting to these worlds; allow = allows players to teleport to only these worlds
+  FilterMode: "block"
   # This option controls whether a safety check is performed before the player is teleported.
   CheckSafety: true
   # This option controls whether the plugin attempts to find a safe location if the safety check failed. Enabling this might allow the play to glitch through walls.

@@ -76,6 +76,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 			if(oldConfig.version().olderThan(new Version(98))) reMappings.put("Misc.AutoUpdate.Enable", "Misc.AutoUpdate");
 			if(oldConfig.version().olderThan(new Version(101))) reMappings.put("Database.Cache.UnCache.Strategy", "Database.Cache.UnCache.Strategie");
 			if(oldConfig.version().olderThan(new Version(107))) oldConfig.getYamlE().set("Marriage.MaxPartners", oldConfig.getYamlE().getBoolean("Marriage.AllowMultiplePartners", false) ? -1 : 1);
+			if(oldConfig.version().olderThan(new Version(108))) reMappings.put("Teleport.BlacklistedWorlds", "Teleport.FilteredWorlds");
 			Collection<String> keysToKeep = oldConfig.getYamlE().getKeysFiltered("Database\\.SQL\\.(Tables\\.Fields\\..+|MaxLifetime|IdleTimeout)");
 			keysToKeep.add(KEY_SERVER_NAME);
 			super.doUpgrade(oldConfig, reMappings, keysToKeep);
@@ -252,14 +253,20 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 		return (getConfigE().getBoolean("Teleport.Delay", false) ? getConfigE().getInt("Teleport.DelayTime", 3) : 0);
 	}
 
-	public Set<String> getTPBlackListedWorlds()
+	public Set<String> getTpFilteredWorlds()
 	{
 		Set<String> blackListedWorlds = new HashSet<>();
-		for(String world : getConfigE().getStringList("Teleport.BlacklistedWorlds", new LinkedList<>()))
+		for(String world : getConfigE().getStringList("Teleport.FilteredWorlds", new LinkedList<>()))
 		{
 			blackListedWorlds.add(world.toLowerCase(Locale.ENGLISH));
 		}
 		return blackListedWorlds;
+	}
+
+	public boolean isTPListBlockList()
+	{
+		String mode = getConfigE().getString("Teleport.FilterMode", "block").toLowerCase(Locale.ROOT);
+		return !(mode.equals("allow") || mode.equals("whitelist") || mode.equals("while"));
 	}
 
 	public boolean getSafetyCheck()
