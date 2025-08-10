@@ -87,6 +87,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	@Override
 	protected void receiveUnknownChannel(@NotNull String channel, byte[] bytes)
 	{
+		if (serverNameUpdated) return; // Ignore further bungeecord messages after name has been updated
 		if (channel.equals(CHANNEL_BUNGEE_CORD) || channel.equals("bungeecord:main"))
 		{
 			try(DataInputStream in = new DataInputStream(new ByteArrayInputStream(bytes)))
