@@ -24,6 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.HomeCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.TpCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.PluginChannelCommunicatorBase;
+import at.pcgamingfreaks.ServerType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -199,7 +200,7 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 	{
 		if(!serverNameUpdated)
 		{
-			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+			plugin.getScheduler().runLater(() -> {
 				logger.info("Request server name from BungeeCord ...");
 				sendMessage(CHANNEL_BUNGEE_CORD, buildStringMessage("GetServer"));
 			}, 20);
@@ -220,6 +221,19 @@ public class PluginChannelCommunicator extends PluginChannelCommunicatorBase imp
 
 	private void sendMessage(String channel, byte[] data)
 	{
+		if (ServerType.isFolia())
+		{
+			if(!plugin.getServer().getOnlinePlayers().isEmpty())
+			{
+				final Player p = plugin.getServer().getOnlinePlayers().iterator().next();
+				plugin.getScheduler().runAtEntity(p, task -> p.sendPluginMessage(plugin, channel, data));
+			}
+			else
+			{
+				logger.severe("Failed to send PluginMessage, there is no player online!");
+			}
+			return;
+		}
 		if (Bukkit.isPrimaryThread())
 		{
 			performSendMessage(channel, data);

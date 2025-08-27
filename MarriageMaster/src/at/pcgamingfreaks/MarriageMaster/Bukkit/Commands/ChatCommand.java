@@ -148,7 +148,7 @@ public class ChatCommand extends MarryCommand implements Listener
 	@Override
 	public void execute(@NotNull CommandSender sender, @NotNull String mainCommandAlias, @NotNull String alias, @NotNull String[] args)
 	{
-		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+		((MarriageMaster) plugin).getScheduler().runAsync(task -> {
 			MarriagePlayer player = getMarriagePlugin().getPlayerData((Player) sender);
 			if(args.length == 0)
 			{

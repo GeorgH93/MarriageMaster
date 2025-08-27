@@ -53,6 +53,6 @@ public class JoinLeaveInfo extends JoinLeaveInfoBase implements Listener
 	@Override
 	protected void runTaskLater(@NotNull Runnable task)
 	{
-		plugin.getServer().getScheduler().runTaskLater(plugin, task, delay);
+		plugin.getScheduler().runLater(task, delay);
 	}
 }

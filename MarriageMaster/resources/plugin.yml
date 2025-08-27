@@ -7,6 +7,7 @@ version: "${version}"
 api-version: "1.13"
 depend: [${dependencies}]
 softdepend: [ Vault, Minepacks, MinePacks, MVdWPlaceholderAPI, PlaceholderAPI, SkillAPI, mcMMO, Multiverse-Core ${soft-dependencies} ]
+folia-supported: true
 
 permissions:
   marry.everything:

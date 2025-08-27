@@ -56,7 +56,7 @@ public class ReloadCommand extends MarryCommand
 		{
 			messageReloadingDatabase.send(sender);
 			((MarriageMaster) getMarriagePlugin()).getDatabase().resync();
-			plugin.getServer().getScheduler().runTaskLater(plugin, () -> messageReloaded.send(sender), 20);
+			((MarriageMaster) plugin).getScheduler().runLater(() -> messageReloaded.send(sender), 20);
 		}
 	}
 

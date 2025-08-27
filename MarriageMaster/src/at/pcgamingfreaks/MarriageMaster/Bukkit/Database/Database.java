@@ -109,7 +109,7 @@ public final class Database extends BaseDatabase<MarriageMaster, MarriagePlayerD
 			if(player.getDatabaseKey() == null)
 			{
 				final MarriagePlayerData fPlayer = player;
-				plugin.getServer().getScheduler().runTaskLater(plugin, () -> load(fPlayer), 10);
+				plugin.getScheduler().runAtEntityLater(bPlayer, () -> load(fPlayer), 10);
 			}
 			else if(!player.getName().equals(bPlayer.getName()))
 			{
