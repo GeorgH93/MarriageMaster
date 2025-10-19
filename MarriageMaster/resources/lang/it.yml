@@ -435,8 +435,8 @@ Placeholders:
 # The name of the language represented by the language file
 LanguageName: "Italiano"
 # The author of the language file
-Author: "GeorgH93 (tradotto da AI)"
+Author: "tradotto da AI"
 
 # Language file version. Don't touch it!
-Version: ${languageFileVersion}
+Version: 113
 Revision: 1
