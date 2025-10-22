@@ -186,7 +186,7 @@ public class TpCommand extends MarryCommand
 
 	private boolean checkIsAllowed(final @NotNull Player player, final @NotNull Location loc)
 	{
-		if(filterBlockMode ^ !worldList.contains(loc.getWorld().getName().toLowerCase(Locale.ROOT)))
+		if(filterBlockMode ^ worldList.contains(loc.getWorld().getName().toLowerCase(Locale.ROOT)))
 		{
 			return true;
 		}
