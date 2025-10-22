@@ -2,7 +2,7 @@ name: "MarriageMaster"
 author: "GeorgH93"
 version: "${version}"
 api-version: "1.19"
-
+folia-supported: true
 main: "at.pcgamingfreaks.MarriageMasterStandalone.Bukkit.MarriageMaster"
 bootstrapper: "at.pcgamingfreaks.MarriageMaster.Paper.MarriageMasterBootstrap"
 
