@@ -231,7 +231,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public SurnameConfirmationMode getSurnameConfirmationMode()
 	{
-		return SurnameConfirmationMode.formString(getConfigE().getString("Marriage.Surname.Confirmation", "None"));
+		return SurnameConfirmationMode.formString(getConfigE().getString("Marriage.Surnames.Confirmation", "None"));
 	}
 	//endregion
 
