@@ -27,6 +27,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.Commands.KissCommand;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.MarriageMaster.Database.MarriagePlayerDataBase;
 import at.pcgamingfreaks.Message.MessageComponent;
+import at.pcgf.libs.com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -47,7 +48,7 @@ public class MarriagePlayerData extends MarriagePlayerDataBase<MarriagePlayer, C
 {
 	private AcceptPendingRequest openRequest = null;
 	private final List<AcceptPendingRequest> canCloseRequests = new LinkedList<>();
-	@Getter	@Setter	private BukkitTask delayedTpTask = null;
+	@Getter	@Setter	private WrappedTask delayedTpTask = null;
 	@Getter @Setter private long lastKissTime = 0, lastHugTime = 0;
 
 	public MarriagePlayerData(final @NotNull OfflinePlayer player)

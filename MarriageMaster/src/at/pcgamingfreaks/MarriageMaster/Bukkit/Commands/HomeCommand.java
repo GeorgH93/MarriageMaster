@@ -257,7 +257,7 @@ public class HomeCommand extends MarryCommand
 						player.send(messageNoHome);
 						return;
 					}
-					TpCommand.teleportAsync(player.getPlayerOnline(), marriage.getHome().getLocation());
+					((MarriageMaster) plugin).getScheduler().teleportAsync(player.getPlayerOnline(), marriage.getHome().getLocation());
 					player.send(messageTPed);
 				}
 				else

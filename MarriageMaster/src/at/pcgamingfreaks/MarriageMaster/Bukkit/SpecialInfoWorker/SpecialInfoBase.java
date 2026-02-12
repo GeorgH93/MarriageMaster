@@ -17,7 +17,8 @@
 
 package at.pcgamingfreaks.MarriageMaster.Bukkit.SpecialInfoWorker;
 
-import org.bukkit.Bukkit;
+import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,7 +41,7 @@ public abstract class SpecialInfoBase implements Listener
 	{
 		if(event.getPlayer().hasPermission(permission))
 		{
-			Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			((MarriageMaster) plugin).getScheduler().runAtEntityLater(event.getPlayer(), () -> {
 				if(event.getPlayer().isOnline())
 				{
 					sendMessage(event.getPlayer());

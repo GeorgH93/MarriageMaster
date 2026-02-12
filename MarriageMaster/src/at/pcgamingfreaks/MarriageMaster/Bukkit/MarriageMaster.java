@@ -45,6 +45,8 @@ import at.pcgamingfreaks.ServerType;
 import at.pcgamingfreaks.UUIDConverter;
 import at.pcgamingfreaks.Util.StringUtils;
 import at.pcgamingfreaks.Version;
+import at.pcgf.libs.com.tcoded.folialib.FoliaLib;
+import at.pcgf.libs.com.tcoded.folialib.impl.PlatformScheduler;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -69,6 +71,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	@Getter @Setter(AccessLevel.PRIVATE) private static MarriageMaster instance;
 
 	// Global Objects
+	private FoliaLib foliaLib = null;
 	@Getter private ManagedUpdater updater;
 	private Config config = null;
 	@Getter private Language language = null;
@@ -90,6 +93,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 	{
 		updater = new ManagedUpdater(this);
 		setInstance(this);
+		foliaLib = new FoliaLib(this);
 		setVersion(new Version(this.getDescription().getVersion()));
 		Utils.warnIfPerWorldPluginsIsInstalled(getLogger()); // Check if PerWorldPlugins is installed and show info
 
@@ -151,6 +155,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 			unload();
 		}
 		setInstance(null);
+		foliaLib = null;
 		updater.waitForAsyncOperation();
 		getLogger().info(StringUtils.getPluginDisabledMessage("Marriage Master"));
 	}
@@ -256,8 +261,14 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 		commandManager = null;
 		if (marriageManager != null) marriageManager.close();
 		marriageManager = null;
+		getScheduler().cancelAllTasks();
 	}
 	//endregion
+
+	public PlatformScheduler getScheduler()
+	{
+		return foliaLib.getScheduler();
+	}
 
 	public Config getConfiguration()
 	{
@@ -339,7 +350,7 @@ public class MarriageMaster extends JavaPlugin implements MarriageMasterPlugin, 
 				final double oldHealth = player.getHealth();
 				CommonMessages.getMessageDontMove().send(player, action.getDelay()/20L);
 				if(playerData.getDelayedTpTask() != null) playerData.getDelayedTpTask().cancel();
-				playerData.setDelayedTpTask(getServer().getScheduler().runTaskLater(this, () -> {
+				playerData.setDelayedTpTask(getScheduler().runAtEntityLater(player, () -> {
 					playerData.setDelayedTpTask(null);
 					if(action.getPlayer().isOnline())
 					{
