@@ -1,5 +1,5 @@
 /*
- *   Copyright (C) 2022 GeorgH93
+ *   Copyright (C) 2026 GeorgH93
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@ import at.pcgamingfreaks.MarriageMaster.Bukkit.API.MarriagePlayer;
 import at.pcgamingfreaks.MarriageMaster.Bukkit.MarriageMaster;
 import at.pcgamingfreaks.Message.Placeholder.Placeholder;
 import at.pcgamingfreaks.Message.Placeholder.Processors.FloatPlaceholderProcessor;
-
 import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -149,12 +147,12 @@ public class EconomyHandler implements Listener
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	private boolean billMarryOrDivorce(final @NotNull MarriagePlayer player1, final @NotNull MarriagePlayer player2, CommandSender priest, double cost, final @NotNull Message success, final @NotNull Message failPriest)
 	{
+		final String currencyName = getCurrencyName();
 		boolean failedPlayer2 = false;
 		if(hasPlayerEnoughMoney(player1, cost) && hasPlayerEnoughMoney(player2, cost) && billPlayer(player1, cost))
 		{
 			if(billPlayer(player2, cost))
 			{
-				String currencyName = getCurrencyName();
 				player1.send(success, cost, econ.getBalance(player1.getPlayer()), currencyName);
 				player2.send(success, cost, econ.getBalance(player2.getPlayer()), currencyName);
 				return true;
@@ -165,16 +163,15 @@ public class EconomyHandler implements Listener
 				failedPlayer2 = true;
 			}
 		}
-		String currencyName = getCurrencyName();
 		if(!hasPlayerEnoughMoney(player2, cost) || failedPlayer2)
 		{
 			player1.send(messagePartnerNotEnough);
-			player2.send(messageNotEnough, cost, currencyName);
+			player2.send(messageNotEnough, cost, econ.getBalance(player2.getPlayer()), currencyName);
 		}
 		else
 		{
 			player2.send(messagePartnerNotEnough);
-			player1.send(messageNotEnough, cost, currencyName);
+			player1.send(messageNotEnough, cost, econ.getBalance(player1.getPlayer()), currencyName);
 		}
 		if(priest != null) failPriest.send(priest);
 		return false;
