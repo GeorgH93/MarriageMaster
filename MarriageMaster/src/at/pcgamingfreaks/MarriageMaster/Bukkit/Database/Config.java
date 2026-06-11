@@ -251,7 +251,7 @@ public class Config extends Configuration implements DatabaseConfiguration, ILan
 
 	public Set<String> getTpFilteredWorlds()
 	{
-		return toLowercaseSet(getConfigE().getStringList("Marriage.Surnames.BannedNames", new LinkedList<>()));
+		return toLowercaseSet(getConfigE().getStringList("Teleport.FilteredWorlds", new LinkedList<>()));
 	}
 
 	public boolean isTPListBlockList()
