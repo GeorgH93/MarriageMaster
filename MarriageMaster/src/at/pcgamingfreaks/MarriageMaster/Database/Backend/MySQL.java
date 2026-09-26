@@ -75,7 +75,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 		{
 			if(rs.next())
 			{
-				String version = rs.getString(1);
+				final String version = rs.getString(1).trim().replace(' ', '_');
 				logger.log(Level.INFO, "MySQL server version: {0}", version);
 				serverVersion = new Version(version);
 			}
