@@ -56,7 +56,7 @@ public final class Database extends BaseDatabase<MarriageMaster, MarriagePlayerD
 	@Override
 	public void close()
 	{
-		unCacheStrategy.close(); // Killing the uncache strategy before killing the rest like the caches
+		if(unCacheStrategy != null) unCacheStrategy.close(); // Killing the uncache strategy before killing the rest like the caches
 		super.close();
 		HandlerList.unregisterAll(this);
 	}

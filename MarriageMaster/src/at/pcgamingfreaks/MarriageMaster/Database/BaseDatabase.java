@@ -128,9 +128,9 @@ public abstract class BaseDatabase<MARRIAGE_MASTER extends MarriageMasterPlugin,
 			db.startup();
 			return db;
 		}
-		catch(Exception ignored)
+		catch(Exception e)
 		{
-			logger.severe("Failed to initialize database backend!");
+			logger.log(Level.SEVERE, "Failed to initialize database backend!", e);
 		}
 		return null;
 	}
