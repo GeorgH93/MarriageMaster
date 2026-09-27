@@ -77,7 +77,7 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 			{
 				String version = rs.getString(1);
 				logger.log(Level.INFO, "MySQL server version: {0}", version);
-				serverVersion = new Version(version);
+				serverVersion = parseServerVersion(version);
 			}
 		}
 		catch(SQLException e)
@@ -88,6 +88,21 @@ public class MySQL<MARRIAGE_PLAYER extends MarriagePlayerDataBase, MARRIAGE exte
 		{
 			logger.warning("Unable to obtain MySQL server version.");
 			serverVersion = new Version("1.0");
+		}
+	}
+
+	private @NotNull Version parseServerVersion(final @NotNull String version)
+	{
+		// Some distributions (e.g. Ubuntu's MariaDB reports "11.8.6-MariaDB-5ubuntu0.1 from Ubuntu") append extra text that the Version parser rejects
+		String sanitized = version.trim().split("\\s+")[0];
+		try
+		{
+			return new Version(sanitized);
+		}
+		catch(RuntimeException e)
+		{
+			logger.log(Level.WARNING, "Unable to parse MySQL server version \"{0}\", falling back to legacy date handling.", version);
+			return new Version("1.0");
 		}
 	}
 
