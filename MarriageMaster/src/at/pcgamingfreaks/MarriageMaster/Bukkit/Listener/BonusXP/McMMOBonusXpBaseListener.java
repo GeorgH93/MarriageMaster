@@ -31,6 +31,15 @@ import org.jetbrains.annotations.NotNull;
 
 abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpListener<McMMOPlayerXpGainEvent, XP_TYPE>
 {
+	/**
+	 * Guards against infinite recursion: when MarriageMaster calls addXp() on the partner,
+	 * mcMMO fires another McMMOPlayerXpGainEvent for that partner. Without this flag,
+	 * the listener would catch that secondary event and try to award bonus XP to the
+	 * partner's partner (the original player), which fires yet another event — and so on
+	 * until a StackOverflowError occurs.
+	 */
+	private static final ThreadLocal<Boolean> PROCESSING_SPLIT = ThreadLocal.withInitial(() -> false);
+
 	protected final MarriageMaster plugin;
 	private final IBonusXpCalculator<McMMOPlayerXpGainEvent, XP_TYPE> calculator;
 
@@ -45,6 +54,7 @@ abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpLi
 
 	protected void onGainXp(final @NotNull McMMOPlayerXpGainEvent event, final @NotNull XP_TYPE type)
 	{
+		if(PROCESSING_SPLIT.get()) return; // Ignore secondary events caused by our own addXp() calls
 		calculator.process(event, event.getPlayer(), event.getRawXpGained(), type);
 	}
 
@@ -61,6 +71,14 @@ abstract class McMMOBonusXpBaseListener<XP_TYPE> implements Listener, IBonusXpLi
 	{
 		McMMOPlayer mcMMOPartner = UserManager.getPlayer(partner);
 		if(mcMMOPartner == null) return;
-		addXp(mcMMOPartner, (float) xp, type);
+		PROCESSING_SPLIT.set(true);
+		try
+		{
+			addXp(mcMMOPartner, (float) xp, type);
+		}
+		finally
+		{
+			PROCESSING_SPLIT.set(false);
+		}
 	}
 }
