@@ -43,6 +43,7 @@ public class McMMOBonusXpListener extends McMMOBonusXpBaseListener<PrimarySkillT
 		super(plugin);
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSkills().forEach(skill -> blockedSkills.add(PrimarySkillType.valueOf(skill)));
 		plugin.getConfiguration().getMcMMOBonusXpBlockedSources().forEach(source -> blockedSources.add(XPGainReason.valueOf(source)));
+		blockedSources.add(XPGainReason.UNKNOWN);
 		plugin.getLogger().info(ConsoleColor.GREEN + "mcMMO v2 hooked" + ConsoleColor.RESET);
 	}
 
